@@ -1872,7 +1872,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
 				.thenReturn(registrationCenters);
 		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/names/ENG/2").param("name", "bangalore")
+				.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "bangalore")
 						.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
@@ -1888,7 +1888,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
 				.thenThrow(DataAccessLayerException.class);
 
-		mockMvc.perform(get("/v1.0/registrationcenters/names/ENG/5").param("name", "bangalore")
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
@@ -1903,7 +1903,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
 				.thenReturn(emptyList);
-		mockMvc.perform(get("/v1.0/registrationcenters/names/ENG/5").param("name", "bangalore")
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
