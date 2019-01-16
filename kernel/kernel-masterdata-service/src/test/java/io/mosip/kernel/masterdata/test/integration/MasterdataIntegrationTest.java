@@ -1054,7 +1054,6 @@ public class MasterdataIntegrationTest {
 		blacklistedWords.setWord("testword");
 	}
 
-	// TODO:
 	@Before
 	public void LocationSetup() {
 		locationHierarchies = new ArrayList<>();
