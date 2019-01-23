@@ -3210,7 +3210,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(deviceHistoryRepository.create(Mockito.any())).thenReturn(deviceHistory);
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/v1.0/devices").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
