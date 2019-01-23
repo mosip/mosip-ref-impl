@@ -1826,8 +1826,8 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndTextAndLanguageCodeTest() throws Exception {
 		centers.add(center);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(registrationCenters);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(registrationCenters);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		MvcResult result = mockMvc
@@ -1842,8 +1842,8 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterHierarchyLevelFetchExceptionTest() throws Exception {
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenThrow(DataAccessLayerException.class);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
@@ -1857,8 +1857,8 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(emptyList);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
@@ -1869,8 +1869,8 @@ public class MasterdataIntegrationTest {
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(registrationCenters);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(registrationCenters);
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "bangalore")
 						.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
@@ -1885,8 +1885,8 @@ public class MasterdataIntegrationTest {
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeFetchExceptionTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenThrow(DataAccessLayerException.class);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
@@ -1901,7 +1901,7 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),Mockito.anyString()))
 				.thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
