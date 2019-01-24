@@ -1114,7 +1114,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(registrationCenterDeviceHistory);
 
 		mockMvc.perform(post("/v1.0/registrationcenterdevice").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -1184,7 +1184,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(registrationCenterMachineHistory);
 		mockMvc.perform(
 				post("/v1.0/registrationcentermachine").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -1254,7 +1254,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(registrationCenterMachineDeviceHistory);
 		mockMvc.perform(
 				post("/v1.0/registrationcentermachinedevice").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -1429,7 +1429,7 @@ public class MasterdataIntegrationTest {
 		String content = mapper.writeValueAsString(requestDto);
 		when(languageRepository.create(Mockito.any())).thenReturn(language);
 		mockMvc.perform(post("/v1.0/languages").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 
 	}
 
@@ -1607,7 +1607,7 @@ public class MasterdataIntegrationTest {
 		String json = "{ \"id\": \"string\", \"request\": { \"holidayDate\": \"2019-01-01\", \"holidayDay\": \"Sunday\", \"holidayDesc\": \"New Year\", \"holidayMonth\": \"January\", \"holidayName\": \"New Year\", \"holidayYear\": \"2019\", \"id\": 1, \"isActive\": true, \"langCode\": \"eng\", \"locationCode\": \"BLR\" }, \"timestamp\": \"2018-12-06T08:49:32.190Z\", \"ver\": \"string\"}";
 		when(holidayRepository.create(Mockito.any())).thenReturn(holiday);
 		mockMvc.perform(post("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(json))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -1723,7 +1723,7 @@ public class MasterdataIntegrationTest {
 	public void createReasonCateogryTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.create(Mockito.any())).thenReturn(reasoncategories.get(0));
 		mockMvc.perform(post("/v1.0/packetrejectionreasons/reasoncategory").contentType(MediaType.APPLICATION_JSON)
-				.content(reasonCategoryRequest.getBytes())).andExpect(status().isCreated());
+				.content(reasonCategoryRequest.getBytes())).andExpect(status().isOk());
 	}
 
 	@Test
@@ -1743,14 +1743,14 @@ public class MasterdataIntegrationTest {
 	public void createReasonCateogryLanguageCodeValidatorTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.create(Mockito.any())).thenReturn(reasoncategories.get(0));
 		mockMvc.perform(post("/v1.0/packetrejectionreasons/reasoncategory").contentType(MediaType.APPLICATION_JSON)
-				.content(reasonCategoryRequest.getBytes())).andExpect(status().isCreated());
+				.content(reasonCategoryRequest.getBytes())).andExpect(status().isOk());
 	}
 
 	@Test
 	public void createReasonListTest() throws Exception {
 		Mockito.when(reasonListRepository.create(Mockito.any())).thenReturn(reasonList.get(0));
 		mockMvc.perform(post("/v1.0/packetrejectionreasons/reasonlist").contentType(MediaType.APPLICATION_JSON)
-				.content(reasonListRequest.getBytes())).andExpect(status().isCreated());
+				.content(reasonListRequest.getBytes())).andExpect(status().isOk());
 	}
 
 	@Test
@@ -2153,7 +2153,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
 				.thenReturn(registrationCenterUserMachineHistory);
 		mockMvc.perform(post("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
-				.content(contentJson)).andExpect(status().isCreated());
+				.content(contentJson)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -2228,7 +2228,7 @@ public class MasterdataIntegrationTest {
 		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"eng\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"timestamp\": \"2018-12-17T09:10:25.829Z\", \"ver\": \"string\"}";
 		when(titleRepository.create(Mockito.any())).thenReturn(title);
 		mockMvc.perform(post("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -2349,7 +2349,7 @@ public class MasterdataIntegrationTest {
 		String content = mapper.writeValueAsString(requestDto);
 		when(genderTypeRepository.create(Mockito.any())).thenReturn(genderType);
 		mockMvc.perform(post("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -2460,7 +2460,7 @@ public class MasterdataIntegrationTest {
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(biometricAttributeRepository.create(Mockito.any())).thenReturn(biometricAttribute);
 		mockMvc.perform(post("/v1.0/biometricattributes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -2498,7 +2498,7 @@ public class MasterdataIntegrationTest {
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(templateRepository.create(Mockito.any())).thenReturn(template);
 		mockMvc.perform(post("/v1.0/templates").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -2536,7 +2536,7 @@ public class MasterdataIntegrationTest {
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(templateTypeRepository.create(Mockito.any())).thenReturn(templateType);
 		mockMvc.perform(post("/v1.0/templatetypes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -2625,7 +2625,7 @@ public class MasterdataIntegrationTest {
 
 		when(deviceSpecificationRepository.create(Mockito.any())).thenReturn(deviceSpecification);
 		mockMvc.perform(post("/v1.0/devicespecifications").contentType(MediaType.APPLICATION_JSON)
-				.content(deviceSpecificationJson)).andExpect(status().isCreated());
+				.content(deviceSpecificationJson)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -2672,7 +2672,7 @@ public class MasterdataIntegrationTest {
 
 		when(deviceTypeRepository.create(Mockito.any())).thenReturn(deviceType);
 		mockMvc.perform(post("/v1.0/devicetypes").contentType(MediaType.APPLICATION_JSON).content(DeviceTypeJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -2705,7 +2705,7 @@ public class MasterdataIntegrationTest {
 
 		when(machineSpecificationRepository.create(Mockito.any())).thenReturn(machineSpecification);
 		mockMvc.perform(post("/v1.0/machinespecifications").contentType(MediaType.APPLICATION_JSON)
-				.content(machineSpecificationJson)).andExpect(status().isCreated());
+				.content(machineSpecificationJson)).andExpect(status().isOk());
 
 	}
 
@@ -2954,7 +2954,7 @@ public class MasterdataIntegrationTest {
 		when(machineRepository.create(Mockito.any())).thenReturn(machine);
 		when(machineHistoryRepository.create(Mockito.any())).thenReturn(machineHistory);
 		mockMvc.perform(post("/v1.0/machines").contentType(MediaType.APPLICATION_JSON).content(machineJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3119,7 +3119,7 @@ public class MasterdataIntegrationTest {
 
 		when(machineTypeRepository.create(Mockito.any())).thenReturn(machineType);
 		mockMvc.perform(post("/v1.0/machinetypes").contentType(MediaType.APPLICATION_JSON).content(machineTypeJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3324,7 +3324,7 @@ public class MasterdataIntegrationTest {
 		blacklistedWords.setLangCode("TST");
 		Mockito.when(wordsRepository.create(Mockito.any())).thenReturn(blacklistedWords);
 		mockMvc.perform(post("/v1.0/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3376,7 +3376,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterTypeRepository.create(Mockito.any())).thenReturn(regCenterType);
 		mockMvc.perform(
 				post("/v1.0/registrationcentertypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3435,7 +3435,7 @@ public class MasterdataIntegrationTest {
 		idType.setCode("IDT001");
 		when(idTypeRepository.create(Mockito.any())).thenReturn(idType);
 		mockMvc.perform(post("/v1.0/idtypes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3493,7 +3493,7 @@ public class MasterdataIntegrationTest {
 
 		when(documentTypeRepository.create(Mockito.any())).thenReturn(type);
 		mockMvc.perform(post("/v1.0/documenttypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3688,7 +3688,7 @@ public class MasterdataIntegrationTest {
 
 		when(documentCategoryRepository.create(Mockito.any())).thenReturn(category);
 		mockMvc.perform(post("/v1.0/documentcategories").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -3849,7 +3849,7 @@ public class MasterdataIntegrationTest {
 
 		when(validDocumentRepository.create(Mockito.any())).thenReturn(validDocument);
 		mockMvc.perform(post("/v1.0/validdocuments").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -4639,7 +4639,7 @@ public class MasterdataIntegrationTest {
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterRepository.create(Mockito.any())).thenReturn(registrationCenter);
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isCreated());
+				.andExpect(status().isOk());
 	}
 
 	@Test
