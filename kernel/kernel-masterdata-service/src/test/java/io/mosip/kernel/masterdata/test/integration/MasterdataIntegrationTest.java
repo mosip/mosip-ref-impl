@@ -20,8 +20,10 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -1831,7 +1833,7 @@ public class MasterdataIntegrationTest {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+				.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
@@ -1842,11 +1844,13 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterHierarchyLevelFetchExceptionTest() throws Exception {
+		Set<String> codes = new HashSet<String>();
+		codes.add("TEST");
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
 	}
@@ -1866,19 +1870,29 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest2() throws Exception {
+
+		List<RegistrationCenter> emptyList = new ArrayList<>();
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+				.thenReturn(locationHierarchies);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
+
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(registrationCenters);
-		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "bangalore")
-						.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(2).getName(), is("Bangalore Central"));
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "PATANA")
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andReturn();
+
 	}
 
 	@Test
@@ -1888,7 +1902,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 
-		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
@@ -1901,9 +1915,24 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),Mockito.anyString()))
-				.thenReturn(emptyList);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeNotFoundExceptionTest2()
+			throws Exception {
+
+		List<RegistrationCenter> emptyList = new ArrayList<>();
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+				.thenReturn(locationHierarchies);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
