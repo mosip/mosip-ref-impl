@@ -3918,11 +3918,6 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isBadRequest());
 
-		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any())).thenReturn(null);
-		registrationCenterDto.setLanguageCode("eng");
-		contentJson = mapper.writeValueAsString(requestDto);
-		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isBadRequest());
 
 	}
 
