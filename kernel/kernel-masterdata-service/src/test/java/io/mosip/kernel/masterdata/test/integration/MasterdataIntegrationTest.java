@@ -63,6 +63,7 @@ import io.mosip.kernel.masterdata.dto.MachineSpecificationDto;
 import io.mosip.kernel.masterdata.dto.MachineTypeDto;
 import io.mosip.kernel.masterdata.dto.PostReasonCategoryDto;
 import io.mosip.kernel.masterdata.dto.ReasonListDto;
+import io.mosip.kernel.masterdata.dto.RegCenterMachineUserReqDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDeviceDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDeviceHistoryDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDto;
@@ -2201,6 +2202,95 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
 		mockMvc.perform(post("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
 				.content(contentJson)).andExpect(status().isInternalServerError());
+	}
+
+	// TODO:
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingCreateTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
+		when(registrationCenterMachineUserRepository.create(Mockito.any())).thenReturn(registrationCenterUserMachine);
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingUpdateTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.empty());
+		when(registrationCenterMachineUserRepository.update(Mockito.any())).thenReturn(registrationCenterUserMachine);
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingNotMappedTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.empty());
+		when(registrationCenterMachineUserRepository.create(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
 	}
 
 	// -----------------------------TitleIntegrationTest----------------------------------
