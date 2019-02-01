@@ -20,8 +20,10 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +63,7 @@ import io.mosip.kernel.masterdata.dto.MachineSpecificationDto;
 import io.mosip.kernel.masterdata.dto.MachineTypeDto;
 import io.mosip.kernel.masterdata.dto.PostReasonCategoryDto;
 import io.mosip.kernel.masterdata.dto.ReasonListDto;
+import io.mosip.kernel.masterdata.dto.RegCenterMachineUserReqDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDeviceDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDeviceHistoryDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDto;
@@ -1826,12 +1829,12 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndTextAndLanguageCodeTest() throws Exception {
 		centers.add(center);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(registrationCenters);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(registrationCenters);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+				.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
@@ -1842,11 +1845,13 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterHierarchyLevelFetchExceptionTest() throws Exception {
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenThrow(DataAccessLayerException.class);
+		Set<String> codes = new HashSet<String>();
+		codes.add("TEST");
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
 	}
@@ -1857,10 +1862,24 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(emptyList);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest2() throws Exception {
+
+		List<RegistrationCenter> emptyList = new ArrayList<>();
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+				.thenReturn(locationHierarchies);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
+
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
 	}
@@ -1869,26 +1888,22 @@ public class MasterdataIntegrationTest {
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(registrationCenters);
-		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "bangalore")
-						.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(2).getName(), is("Bangalore Central"));
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(registrationCenters);
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "PATANA")
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andReturn();
+
 	}
 
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeFetchExceptionTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenThrow(DataAccessLayerException.class);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 
-		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
@@ -1901,9 +1916,24 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(emptyList);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeNotFoundExceptionTest2()
+			throws Exception {
+
+		List<RegistrationCenter> emptyList = new ArrayList<>();
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+				.thenReturn(locationHierarchies);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
@@ -2172,6 +2202,95 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
 		mockMvc.perform(post("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
 				.content(contentJson)).andExpect(status().isInternalServerError());
+	}
+
+	// TODO:
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingCreateTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
+		when(registrationCenterMachineUserRepository.create(Mockito.any())).thenReturn(registrationCenterUserMachine);
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingUpdateTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.empty());
+		when(registrationCenterMachineUserRepository.update(Mockito.any())).thenReturn(registrationCenterUserMachine);
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingNotMappedTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.empty());
+		when(registrationCenterMachineUserRepository.create(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
 	}
 
 	// -----------------------------TitleIntegrationTest----------------------------------
