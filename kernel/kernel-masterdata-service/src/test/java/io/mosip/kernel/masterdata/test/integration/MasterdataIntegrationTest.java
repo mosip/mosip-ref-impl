@@ -1129,7 +1129,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(registrationCenterDeviceHistory);
 
 		mockMvc.perform(post("/v1.0/registrationcenterdevice").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1167,7 +1167,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterDeviceHistoryRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
 		mockMvc.perform(delete("/v1.0/registrationcenterdevice/RC001/DC001"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// -------RegistrationCenterMachine mapping-------------------------
@@ -1199,7 +1199,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(registrationCenterMachineHistory);
 		mockMvc.perform(
 				post("/v1.0/registrationcentermachine").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1236,7 +1236,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterMachineHistoryRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
 		mockMvc.perform(delete("/v1.0/registrationcentermachine/RC001/MC001"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// -------RegistrationCentermachineDevice mapping-------------------------
@@ -1269,7 +1269,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(registrationCenterMachineDeviceHistory);
 		mockMvc.perform(
 				post("/v1.0/registrationcentermachinedevice").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1314,7 +1314,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterMachineDeviceHistoryRepository.create(Mockito.any()))
 				.thenReturn(registrationCenterMachineDeviceHistory);
 		mockMvc.perform(delete("/v1.0/registrationcentermachinedevice/1/1000/1000"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// -----------------------------LanguageImplementationTest----------------------------------
@@ -1369,7 +1369,7 @@ public class MasterdataIntegrationTest {
 		when(languageRepository.findLanguageByCode(frenchDto.getCode())).thenReturn(french);
 		when(languageRepository.update(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(put("/v1.0/languages").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1411,7 +1411,7 @@ public class MasterdataIntegrationTest {
 		when(languageRepository.findLanguageByCode(languageDto.getCode())).thenReturn(language);
 		when(languageRepository.update(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(delete("/v1.0/languages/{code}", languageDto.getCode()))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1442,7 +1442,7 @@ public class MasterdataIntegrationTest {
 		String content = mapper.writeValueAsString(requestDto);
 		when(languageRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(post("/v1.0/languages").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1479,7 +1479,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getAllWordsBylangCodeFetchExceptionTest() throws Exception {
 		when(wordsRepository.findAllByLangCode(anyString())).thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/blacklistedwords/{langcode}", "ENG")).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/blacklistedwords/{langcode}", "ENG")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1495,7 +1495,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/gendertypes/ENG").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1516,7 +1516,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(genderTypeRepository.findAll(Gender.class)).thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1562,7 +1562,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getAllHolidaysHolidayFetchExceptionTest() throws Exception {
 		when(holidayRepository.findAllNonDeletedHoliday()).thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/holidays")).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/holidays")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1574,7 +1574,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getHolidayByIdHolidayFetchExceptionTest() throws Exception {
 		when(holidayRepository.findAllById(any(Integer.class))).thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/holidays/{holidayId}", 1)).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/holidays/{holidayId}", 1)).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1594,7 +1594,7 @@ public class MasterdataIntegrationTest {
 		when(holidayRepository.findHolidayByIdAndHolidayIdLangCode(any(Integer.class), anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/holidays/{holidayId}/{languagecode}", 1, "ENG"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1625,7 +1625,7 @@ public class MasterdataIntegrationTest {
 		when(holidayRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
 		mockMvc.perform(post("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(json))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1634,7 +1634,7 @@ public class MasterdataIntegrationTest {
 	public void getIdTypesByLanguageCodeFetchExceptionTest() throws Exception {
 		when(idTypeRepository.findByLangCode("ENG")).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/idtypes/ENG").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1679,7 +1679,7 @@ public class MasterdataIntegrationTest {
 	public void getAllRjectionReasonFetchExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/packetrejectionreasons")).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/packetrejectionreasons")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1687,7 +1687,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByCodeAndLangCode(ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/packetrejectionreasons/{code}/{languageCode}", "RC1", "ENG"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -1770,14 +1770,14 @@ public class MasterdataIntegrationTest {
 	public void createReasonCateogryFetchExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(post("/v1.0/packetrejectionreasons/reasoncategory").contentType(MediaType.APPLICATION_JSON)
-				.content(reasonCategoryRequest.getBytes())).andExpect(status().isOk());
+				.content(reasonCategoryRequest.getBytes())).andExpect(status().isInternalServerError());
 	}
 
 	@Test
 	public void createReasonListFetchExceptionTest() throws Exception {
 		Mockito.when(reasonListRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(post("/v1.0/packetrejectionreasons/reasonlist").contentType(MediaType.APPLICATION_JSON)
-				.content(reasonListRequest.getBytes())).andExpect(status().isOk());
+				.content(reasonListRequest.getBytes())).andExpect(status().isInternalServerError());
 	}
 
 	// -----------------------------RegistrationCenterTest----------------------------------
@@ -1820,7 +1820,7 @@ public class MasterdataIntegrationTest {
 		when(repository.findByIdAndLanguageCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 				"ENG", localDateTimeUTCFormat)).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
 	}
 
 	@Test
@@ -1847,7 +1847,7 @@ public class MasterdataIntegrationTest {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1890,7 +1890,7 @@ public class MasterdataIntegrationTest {
 
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1927,7 +1927,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1944,7 +1944,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCentersByLat(12.9180022, 77.5028892, 0.999785939, "ENG"))
 				.thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/getcoordinatespecificregistrationcenters/ENG/77.5028892/12.9180022/1609")
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
 	}
 
 	@Test
@@ -1969,7 +1969,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -1989,7 +1989,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -2078,7 +2078,7 @@ public class MasterdataIntegrationTest {
 				.findByCntrIdAndUsrIdAndMachineIdAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 						"1", "1", localDateTimeUTCFormat)).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/getregistrationmachineusermappinghistory/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING)
-				.concat("/1/1/1")).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.concat("/1/1/1")).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError())
 				.andReturn();
 	}
 
@@ -2134,7 +2134,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
 				.thenReturn(registrationCenterUserMachineHistory);
 		mockMvc.perform(delete("/v1.0/registrationmachineusermappings/REG001/MAC001/QC001"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -2171,7 +2171,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterMachineUserRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
 		mockMvc.perform(post("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
-				.content(contentJson)).andExpect(status().isOk());
+				.content(contentJson)).andExpect(status().isInternalServerError());
 	}
 
 	// -----------------------------TitleIntegrationTest----------------------------------
@@ -2193,7 +2193,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(titleRepository.findAll(Title.class)).thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/title").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2245,7 +2245,7 @@ public class MasterdataIntegrationTest {
 		when(titleRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
 		mockMvc.perform(post("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2311,7 +2311,7 @@ public class MasterdataIntegrationTest {
 		when(titleRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -2335,7 +2335,7 @@ public class MasterdataIntegrationTest {
 		when(titleRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/title/ABC").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 	// -----------------------------------gender-type----------------------------------------
@@ -2375,7 +2375,7 @@ public class MasterdataIntegrationTest {
 		when(genderTypeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
 		mockMvc.perform(post("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2421,7 +2421,7 @@ public class MasterdataIntegrationTest {
 				Mockito.any(), Mockito.any()))
 						.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -2445,7 +2445,7 @@ public class MasterdataIntegrationTest {
 		when(genderTypeRepository.deleteGenderType(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/gendertypes/GEN01").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2473,7 +2473,7 @@ public class MasterdataIntegrationTest {
 		when(biometricAttributeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(post("/v1.0/biometricattributes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -2523,7 +2523,7 @@ public class MasterdataIntegrationTest {
 		when(templateRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(post("/v1.0/templates").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// ----------------------------------TemplateTypeCreateApiTest--------------------------------------------------
@@ -2549,7 +2549,7 @@ public class MasterdataIntegrationTest {
 		when(templateTypeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(post("/v1.0/templatetypes").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -2584,7 +2584,7 @@ public class MasterdataIntegrationTest {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/devicespecifications/{langcode}", "ENG"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// --------------------------------------------
@@ -2609,7 +2609,7 @@ public class MasterdataIntegrationTest {
 		when(deviceSpecificationRepository.findByLangCodeAndDeviceTypeCodeAndIsDeletedFalseOrIsDeletedIsNull(
 				Mockito.anyString(), Mockito.anyString())).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/devicespecifications/{langcode}/{devicetypecode}", "ENG", "laptop"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 	// ----------------------------------------------------------------
 
@@ -2655,7 +2655,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(MockMvcRequestBuilders.post("/v1.0/devicespecifications")
 				.contentType(MediaType.APPLICATION_JSON).content(DeviceSpecificationJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// ---------------------------------DeviceTypeTest------------------------------------------------
@@ -2688,7 +2688,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(deviceTypeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(MockMvcRequestBuilders.post("/v1.0/devicetypes").contentType(MediaType.APPLICATION_JSON)
-				.content(DeviceTypeJson)).andExpect(status().isOk());
+				.content(DeviceTypeJson)).andExpect(status().isInternalServerError());
 	}
 
 	// -------------------------------MachineSpecificationTest-------------------------------
@@ -2742,7 +2742,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(MockMvcRequestBuilders.post("/v1.0/machinespecifications")
 				.contentType(MediaType.APPLICATION_JSON).content(machineSpecificationJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2821,7 +2821,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(MockMvcRequestBuilders.put("/v1.0/machinespecifications")
-				.contentType(MediaType.APPLICATION_JSON).content(content)).andExpect(status().isOk());
+				.contentType(MediaType.APPLICATION_JSON).content(content)).andExpect(status().isInternalServerError());
 
 	}
 	// -----------------------------------------------------------------------------------------------
@@ -2855,7 +2855,7 @@ public class MasterdataIntegrationTest {
 		when(machineSpecificationRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2871,7 +2871,7 @@ public class MasterdataIntegrationTest {
 						.thenReturn(machines);
 		when(machineSpecificationRepository.update(Mockito.any())).thenReturn(machineSpecification);
 		mockMvc.perform(delete("/v1.0/machinespecifications/MS001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 	// -------------------------MachineTest-----------------------------------------
 
@@ -2891,7 +2891,7 @@ public class MasterdataIntegrationTest {
 	public void getMachineAllFetchExceptionTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/machines")).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/machines")).andExpect(status().isInternalServerError());
 	}
 
 	// --------------------------------------------
@@ -2916,7 +2916,7 @@ public class MasterdataIntegrationTest {
 		when(machineRepository.findAllByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString())).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/machines/{id}/{langcode}", "1000", "ENG"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// -----------------------------------
@@ -2938,7 +2938,7 @@ public class MasterdataIntegrationTest {
 	public void getMachineLangcodeFetchExceptionTest() throws Exception {
 		when(machineRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/machines/{langcode}", "ENG")).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/machines/{langcode}", "ENG")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3008,7 +3008,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/v1.0/machines").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3074,7 +3074,7 @@ public class MasterdataIntegrationTest {
 
 		mockMvc.perform(
 				MockMvcRequestBuilders.put("/v1.0/machines").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -3103,7 +3103,7 @@ public class MasterdataIntegrationTest {
 		when(machineRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/machines/1000").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 	// -----------------------------MachineTypeTest-------------------------------------------
@@ -3147,7 +3147,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(machineTypeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(MockMvcRequestBuilders.post("/v1.0/machinetypes").contentType(MediaType.APPLICATION_JSON)
-				.content(machineTypeJson)).andExpect(status().isOk());
+				.content(machineTypeJson)).andExpect(status().isInternalServerError());
 	}
 
 	// --------------------------------DeviceTest-------------------------------------------------
@@ -3168,7 +3168,7 @@ public class MasterdataIntegrationTest {
 	public void getDeviceLangcodeFetchExceptionTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/devices/{langcode}", "ENG")).andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/devices/{langcode}", "ENG")).andExpect(status().isInternalServerError());
 	}
 
 	// ----------------------------
@@ -3193,7 +3193,7 @@ public class MasterdataIntegrationTest {
 		when(deviceRepository.findByLangCodeAndDtypeCode(Mockito.anyString(), Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/devices/{languagecode}/{deviceType}", "ENG", "LaptopCode"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// ---------------------------------------------
@@ -3225,7 +3225,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/v1.0/devices").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3305,7 +3305,7 @@ public class MasterdataIntegrationTest {
 						Mockito.anyString(), Mockito.anyString(), Mockito.any()))
 								.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/machineshistories/{id}/{langcode}/{effdatetimes}", "1000", "ENG",
-				"2018-01-01T10:10:30.956Z")).andExpect(status().isOk());
+				"2018-01-01T10:10:30.956Z")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3357,7 +3357,7 @@ public class MasterdataIntegrationTest {
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(wordsRepository.create(Mockito.any())).thenThrow(new DataAccessLayerException("", "cannot insert", null));
 		mockMvc.perform(post("/v1.0/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3415,7 +3415,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(
 				post("/v1.0/registrationcentertypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3474,7 +3474,7 @@ public class MasterdataIntegrationTest {
 		when(idTypeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(post("/v1.0/idtypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3512,7 +3512,7 @@ public class MasterdataIntegrationTest {
 		when(documentTypeRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(post("/v1.0/documenttypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3609,7 +3609,7 @@ public class MasterdataIntegrationTest {
 		when(documentTypeRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/documenttypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -3640,7 +3640,7 @@ public class MasterdataIntegrationTest {
 		when(documentTypeRepository.deleteDocumentType(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/documenttypes/DT001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -3651,7 +3651,7 @@ public class MasterdataIntegrationTest {
 		validDocumentList.add(document);
 		when(validDocumentRepository.findByDocTypeCode(Mockito.anyString())).thenReturn(validDocumentList);
 		mockMvc.perform(delete("/v1.0/documenttypes/DT001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3669,7 +3669,7 @@ public class MasterdataIntegrationTest {
 		when(validDocumentRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(post("/v1.0/validdocuments").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3727,7 +3727,7 @@ public class MasterdataIntegrationTest {
 		when(documentCategoryRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(post("/v1.0/documentcategories").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3788,7 +3788,7 @@ public class MasterdataIntegrationTest {
 		when(documentCategoryRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/documentcategories").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3820,7 +3820,7 @@ public class MasterdataIntegrationTest {
 		when(documentCategoryRepository.deleteDocumentCategory(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/documentcategories/DC001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -3831,7 +3831,7 @@ public class MasterdataIntegrationTest {
 		validDocumentList.add(document);
 		when(validDocumentRepository.findByDocCategoryCode(Mockito.anyString())).thenReturn(validDocumentList);
 		mockMvc.perform(delete("/v1.0/documentcategories/DC001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3875,7 +3875,7 @@ public class MasterdataIntegrationTest {
 		when(validDocumentRepository.deleteValidDocument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/validdocuments/DC001/DT001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -3890,7 +3890,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4003,7 +4003,7 @@ public class MasterdataIntegrationTest {
 		when(deviceSpecificationRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/devicespecifications").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4032,7 +4032,7 @@ public class MasterdataIntegrationTest {
 		when(deviceSpecificationRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -4047,7 +4047,7 @@ public class MasterdataIntegrationTest {
 				.thenReturn(devices);
 		when(deviceSpecificationRepository.update(Mockito.any())).thenReturn(deviceSpecification);
 		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	/*------------------------------ template update and delete test-----------------------------*/
@@ -4100,7 +4100,7 @@ public class MasterdataIntegrationTest {
 		when(templateRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/templates").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4125,7 +4125,7 @@ public class MasterdataIntegrationTest {
 		when(templateRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/templates/T001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -4227,7 +4227,7 @@ public class MasterdataIntegrationTest {
 		when(holidayRepository.deleteHolidays(any(), anyString(), any(), anyString()))
 				.thenThrow(DataRetrievalFailureException.class, DataAccessLayerException.class);
 		mockMvc.perform(delete("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4277,7 +4277,7 @@ public class MasterdataIntegrationTest {
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenThrow(DataRetrievalFailureException.class,
 				DataAccessLayerException.class);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	/*------------------------------------Blacklisted Word Update/delete -------------------------------------*/
@@ -4299,7 +4299,7 @@ public class MasterdataIntegrationTest {
 	public void deleteBlacklistedWordFailure() throws Exception {
 		when(wordsRepository.deleteBlackListedWord(anyString(), any())).thenThrow(DataRetrievalFailureException.class,
 				DataAccessLayerException.class);
-		mockMvc.perform(delete("/v1.0/blacklistedwords/{word}", "abc")).andExpect(status().isOk());
+		mockMvc.perform(delete("/v1.0/blacklistedwords/{word}", "abc")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4342,7 +4342,7 @@ public class MasterdataIntegrationTest {
 		when(wordsRepository.update(any())).thenThrow(DataRetrievalFailureException.class,
 				DataAccessLayerException.class);
 		mockMvc.perform(put("/v1.0/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(input))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4447,7 +4447,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(
 				put("/v1.0/registrationcentertypes").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4481,7 +4481,7 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 
 		mockMvc.perform(delete("/v1.0/registrationcentertypes/RC001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -4492,7 +4492,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterList.add(registrationCenter);
 		when(registrationCenterRepository.findByCenterTypeCode(Mockito.any())).thenReturn(registrationCenterList);
 		mockMvc.perform(delete("/v1.0/registrationcentertypes/RC001").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// -----------------------------------------DeviceHistory---------------------------------------------
@@ -4524,7 +4524,7 @@ public class MasterdataIntegrationTest {
 								.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(
 				get("/v1.0/deviceshistories/{id}/{langcode}/{effdatetimes}", "1000", "ENG", "2018-01-01T10:10:30.956Z"))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	// -------------------------------RegistrationCenterControllerTest--------------------------
@@ -4549,7 +4549,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(registrationCenterRepository.findByIdAndLanguageCode(anyString(), anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/getregistrationcenterholidays/{languagecode}/{registrationcenterid}/{year}", "ENG",
-				"REG_CR_001", 2017)).andExpect(status().isOk());
+				"REG_CR_001", 2017)).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4560,7 +4560,7 @@ public class MasterdataIntegrationTest {
 		Mockito.when(holidayRepository.findAllByLocationCodeYearAndLangCode(anyString(), anyString(), anyInt()))
 				.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/getregistrationcenterholidays/{languagecode}/{registrationcenterid}/{year}", "ENG",
-				"REG_CR_001", 2018)).andExpect(status().isOk());
+				"REG_CR_001", 2018)).andExpect(status().isInternalServerError());
 	}
 
 	// -------------------Registration center device history-----------
@@ -4590,7 +4590,7 @@ public class MasterdataIntegrationTest {
 						Mockito.anyString(), Mockito.anyString(), Mockito.any()))
 								.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/registrationcenterdevicehistory/{regcenterid}/{deviceid}/{effdatetimes}", "RCI1000",
-				"DID10", "2018-01-01T10:10:30.956Z")).andExpect(status().isOk());
+				"DID10", "2018-01-01T10:10:30.956Z")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
@@ -4795,7 +4795,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.deleteRegistrationCenter(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/registrationcenters/12").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -4925,7 +4925,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findByIdAndIsDeletedFalseOrNull(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 }
