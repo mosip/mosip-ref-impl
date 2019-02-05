@@ -20,8 +20,10 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +63,7 @@ import io.mosip.kernel.masterdata.dto.MachineSpecificationDto;
 import io.mosip.kernel.masterdata.dto.MachineTypeDto;
 import io.mosip.kernel.masterdata.dto.PostReasonCategoryDto;
 import io.mosip.kernel.masterdata.dto.ReasonListDto;
+import io.mosip.kernel.masterdata.dto.RegCenterMachineUserReqDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDeviceDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDeviceHistoryDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterDto;
@@ -183,8 +186,15 @@ import io.mosip.kernel.masterdata.utils.MapperUtils;
 @AutoConfigureMockMvc
 public class MasterdataIntegrationTest {
 
-	private static final String JSON_STRING_RESPONSE = "{\"uinLength\":24,\"numberOfWrongAttemptsForOtp\":5,\"accountFreezeTimeoutInHours\":10,\"mobilenumberlength\":10,\"archivalPolicy\":\"arc_policy_2\",\"tokenIdLength\":23,\"restrictedNumbers\":[\"8732\",\"321\",\"65\"],\"registrationCenterId\":\"KDUE83CJ3\",\"machineId\":\"MCBD3UI3\",\"supportedLanguages\":[\"eng\",\"hin\",\"ara\",\"deu\",\"fra\"],\"tspIdLength\":24,\"otpTimeOutInMinutes\":2,\"notificationtype\":\"SMS|EMAIL\",\"pridLength\":32,\"vidLength\":32}";
+//	private static final String JSON_STRING_RESPONSE = "{\"uinLength\":24,\"numberOfWrongAttemptsForOtp\":5,\"accountFreezeTimeoutInHours\":10,\"mobilenumberlength\":10,\"archivalPolicy\":\"arc_policy_2\",\"tokenIdLength\":23,\"restrictedNumbers\":[\"8732\",\"321\",\"65\"],\"registrationCenterId\":\"KDUE83CJ3\",\"machineId\":\"MCBD3UI3\",\"supportedLanguages\":[\"eng\",\"hin\",\"ara\",\"deu\",\"fra\"],\"tspIdLength\":24,\"otpTimeOutInMinutes\":2,\"notificationtype\":\"SMS|EMAIL\",\"pridLength\":32,\"vidLength\":32}";
 
+	private static final String JSON_STRING_RESPONSE = "{\r\n" + "\"registrationConfiguration\":\r\n"
+			+ "							{\"keyValidityPeriodPreRegPack\":\"3\",\"smsNotificationTemplateRegCorrection\":\"OTP for your request is $otp\",\"defaultDOB\":\"1-Jan\",\"smsNotificationTemplateOtp\":\"OTP for your request is $otp\",\"supervisorVerificationRequiredForExceptions\":\"true\",\"keyValidityPeriodRegPack\":\"3\",\"irisRetryAttempts\":\"10\",\"fingerprintQualityThreshold\":\"120\",\"multifactorauthentication\":\"true\",\"smsNotificationTemplateUpdateUIN\":\"OTP for your request is $otp\",\"supervisorAuthType\":\"password\",\"maxDurationRegPermittedWithoutMasterdataSyncInDays\":\"10\",\"modeOfNotifyingIndividual\":\"mobile\",\"emailNotificationTemplateUpdateUIN\":\"Hello $user the OTP is $otp\",\"maxDocSizeInMB\":\"150\",\"emailNotificationTemplateOtp\":\"Hello $user the OTP is $otp\",\"emailNotificationTemplateRegCorrection\":\"Hello $user the OTP is $otp\",\"faceRetry\":\"12\",\"noOfFingerprintAuthToOnboardUser\":\"10\",\"smsNotificationTemplateLostUIN\":\"OTP for your request is $otp\",\"supervisorAuthMode\":\"IRIS\",\"operatorRegSubmissionMode\":\"fingerprint\",\"officerAuthType\":\"password\",\"faceQualityThreshold\":\"25\",\"gpsDistanceRadiusInMeters\":\"3\",\"automaticSyncFreqServerToClient\":\"25\",\"maxDurationWithoutMasterdataSyncInDays\":\"7\",\"loginMode\":\"bootable dongle\",\"irisQualityThreshold\":\"25\",\"retentionPeriodAudit\":\"3\",\"fingerprintRetryAttempts\":\"234\",\"emailNotificationTemplateNewReg\":\"Hello $user the OTP is $otp\",\"passwordExpiryDurationInDays\":\"3\",\"emailNotificationTemplateLostUIN\":\"Hello $user the OTP is $otp\",\"blockRegistrationIfNotSynced\":\"10\",\"noOfIrisAuthToOnboardUser\":\"10\",\"smsNotificationTemplateNewReg\":\"OTP for your request is $otp\"},\r\n"
+			+ "\r\n" + "\"globalConfiguration\":\r\n"
+			+ "						{\"mosip.kernel.crypto.symmetric-algorithm-name\":\"AES\",\"mosip.kernel.virus-scanner.port\":\"3310\",\"mosip.kernel.email.max-length\":\"50\",\"mosip.kernel.email.domain.ext-max-lenght\":\"7\",\"mosip.kernel.rid.sequence-length\":\"5\",\"mosip.kernel.uin.uin-generation-cron\":\"0 * * * * *\",\"mosip.kernel.rid.centerid-length\":\"5\",\"mosip.kernel.email.special-char\":\"!#$%&'*+-\\/=?^_`{|}~.\",\"mosip.kernel.rid.timestamp-length\":\"14\",\"mosip.kernel.vid.length.sequence-limit\":\"3\",\"mosip.kernel.keygenerator.asymmetric-algorithm-length\":\"2048\",\"mosip.kernel.uin.min-unused-threshold\":\"100000\",\"mosip.kernel.prid.sequence-limit\":\"3\",\"auth.role.prefix\":\"ROLE_\",\"mosip.kernel.email.domain.ext-min-lenght\":\"2\",\"auth.server.validate.url\":\"http:\\/\\/localhost:8091\\/auth\\/validate_token\",\"mosip.kernel.machineid.length\":\"4\",\"mosip.supported-languages\":\"eng,ara,fra,hin,deu\",\"mosip.kernel.prid.length\":\"14\",\"auth.header.name\":\"Authorization\",\"mosip.kernel.crypto.asymmetric-algorithm-name\":\"RSA\",\"mosip.kernel.phone.min-length\":\"9\",\"mosip.kernel.uin.length\":\"10\",\"mosip.kernel.virus-scanner.host\":\"104.211.209.102\",\"mosip.kernel.email.min-length\":\"7\",\"mosip.kernel.rid.machineid-length\":\"5\",\"mosip.kernel.prid.repeating-block-limit\":\"3\",\"mosip.kernel.vid.length.repeating-block-limit\":\"2\",\"mosip.kernel.rid.length\":\"29\",\"mosip.kernel.phone.max-length\":\"15\",\"mosip.kernel.prid.repeating-limit\":\"2\",\"mosip.kernel.uin.restricted-numbers\":\"786,666\",\"mosip.kernel.email.domain.special-char\":\"-\",\"mosip.kernel.vid.length.repeating-limit\":\"2\",\"mosip.kernel.registrationcenterid.length\":\"4\",\"mosip.kernel.phone.special-char\":\"+ -\",\"mosip.kernel.uin.uins-to-generate\":\"200000\",\"mosip.kernel.vid.length\":\"16\",\"mosip.kernel.tokenid.length\":\"36\",\"mosip.kernel.uin.length.repeating-block-limit\":\"2\",\"mosip.kernel.tspid.length\":\"4\",\"mosip.kernel.tokenid.sequence-limit\":\"3\",\"mosip.kernel.uin.length.repeating-limit\":\"2\",\"mosip.kernel.uin.length.sequence-limit\":\"3\",\"mosip.kernel.keygenerator.symmetric-algorithm-length\":\"256\",\"mosip.kernel.data-key-splitter\":\"#KEY_SPLITTER#\"}\r\n"
+			+ "}";
+	
+	
 	@Autowired
 	private MockMvc mockMvc;
 	@MockBean
@@ -1826,12 +1836,12 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndTextAndLanguageCodeTest() throws Exception {
 		centers.add(center);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(registrationCenters);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(registrationCenters);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
 		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+				.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
@@ -1842,11 +1852,13 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterHierarchyLevelFetchExceptionTest() throws Exception {
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenThrow(DataAccessLayerException.class);
+		Set<String> codes = new HashSet<String>();
+		codes.add("TEST");
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
 	}
@@ -1857,10 +1869,24 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(emptyList);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest2() throws Exception {
+
+		List<RegistrationCenter> emptyList = new ArrayList<>();
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+				.thenReturn(locationHierarchies);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
+
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
 	}
@@ -1869,26 +1895,22 @@ public class MasterdataIntegrationTest {
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(registrationCenters);
-		MvcResult result = mockMvc
-				.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "bangalore")
-						.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(2).getName(), is("Bangalore Central"));
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(registrationCenters);
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/2/names").param("name", "PATANA")
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andReturn();
+
 	}
 
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeFetchExceptionTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenThrow(DataAccessLayerException.class);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
 
-		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
@@ -1901,9 +1923,24 @@ public class MasterdataIntegrationTest {
 		List<RegistrationCenter> emptyList = new ArrayList<>();
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet()))
-				.thenReturn(emptyList);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeNotFoundExceptionTest2()
+			throws Exception {
+
+		List<RegistrationCenter> emptyList = new ArrayList<>();
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+				.thenReturn(locationHierarchies);
+		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
+				Mockito.anyString())).thenReturn(emptyList);
+		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
@@ -2172,6 +2209,95 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
 		mockMvc.perform(post("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
 				.content(contentJson)).andExpect(status().isInternalServerError());
+	}
+
+	// TODO:
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingCreateTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
+		when(registrationCenterMachineUserRepository.create(Mockito.any())).thenReturn(registrationCenterUserMachine);
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingUpdateTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.empty());
+		when(registrationCenterMachineUserRepository.update(Mockito.any())).thenReturn(registrationCenterUserMachine);
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void createOrUpdateRegistrationCentersMachineUserMappingNotMappedTest() throws Exception {
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto1.setCntrId("REG001");
+		centerUserMachineMappingDto1.setUsrId("QC001");
+		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
+		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
+		centerUserMachineMappingDto2.setCntrId("REG001");
+		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setMachineId("MAC001");
+		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
+				Mockito.any())).thenReturn(Optional.empty());
+		when(registrationCenterMachineUserRepository.create(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
+		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
+				.thenReturn(registrationCenterUserMachineHistory);
+		mockMvc.perform(put("/v1.0/registrationmachineusermappings").contentType(MediaType.APPLICATION_JSON)
+				.content(contentJson)).andExpect(status().isOk());
 	}
 
 	// -----------------------------TitleIntegrationTest----------------------------------
@@ -3911,11 +4037,6 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isBadRequest());
 
-		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any())).thenReturn(null);
-		registrationCenterDto.setLanguageCode("eng");
-		contentJson = mapper.writeValueAsString(requestDto);
-		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isBadRequest());
 
 	}
 
