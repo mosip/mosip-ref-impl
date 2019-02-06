@@ -1887,7 +1887,7 @@ public class MasterdataIntegrationTest {
 				Mockito.anyString())).thenReturn(emptyList);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isOk());
 
 	}
 
@@ -1942,7 +1942,7 @@ public class MasterdataIntegrationTest {
 				Mockito.anyString())).thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
 				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isOk());
 
 	}
 
@@ -4042,7 +4042,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setLanguageCode("eng");
 		contentJson = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
-				.andExpect(status().isOk());
+				.andExpect(status().is5xxServerError());
 
 	}
 
