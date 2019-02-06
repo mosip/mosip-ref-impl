@@ -1950,7 +1950,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getCoordinateSpecificRegistrationCentersNumberFormatExceptionTest() throws Exception {
 		mockMvc.perform(get("/v1.0/getcoordinatespecificregistrationcenters/ENG/77.5028892/12.9180022/ae")
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn();
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
 	}
 
 	@Test
