@@ -18,7 +18,7 @@
         <BDBInfo>
             <FormatOwner>257</FormatOwner>
             <FormatType>7</FormatType>
-            <CreationDate>2019-02-06T13:00:48.388Z</CreationDate>
+            <CreationDate>2019-02-06T18:58:16.117Z</CreationDate>
             <Type>Finger</Type>
             <Subtype>Right IndexFinger MiddleFinger RingFinger LittleFinger</Subtype>
             <Level>Raw</Level>
@@ -34,7 +34,7 @@
         <BDBInfo>
             <FormatOwner>257</FormatOwner>
             <FormatType>7</FormatType>
-            <CreationDate>2019-02-06T09:59:40.940Z</CreationDate>
+            <CreationDate>2019-02-06T18:58:16.117Z</CreationDate>
             <Type>Finger</Type>
             <Subtype>Left IndexFinger MiddleFinger RingFinger LittleFinger</Subtype>
             <Level>Raw</Level>
@@ -50,7 +50,7 @@
         <BDBInfo>
             <FormatOwner>257</FormatOwner>
             <FormatType>7</FormatType>
-            <CreationDate>2019-02-06T09:59:40.940Z</CreationDate>
+            <CreationDate>2019-02-06T18:58:16.117Z</CreationDate>
             <Type>Finger</Type>
             <Subtype>Left Right Thumb</Subtype>
             <Level>Raw</Level>
@@ -66,7 +66,7 @@
         <BDBInfo>
             <FormatOwner>257</FormatOwner>
             <FormatType>9</FormatType>
-            <CreationDate>2019-02-06T09:59:40.940Z</CreationDate>
+            <CreationDate>2019-02-06T18:58:16.117Z</CreationDate>
             <Type>Iris</Type>
             <Subtype>Left</Subtype>
             <Level>Raw</Level>
@@ -82,7 +82,7 @@
         <BDBInfo>
             <FormatOwner>257</FormatOwner>
             <FormatType>9</FormatType>
-            <CreationDate>2019-02-06T09:59:40.940Z</CreationDate>
+            <CreationDate>2019-02-06T18:58:16.117Z</CreationDate>
             <Type>Iris</Type>
             <Subtype>Right</Subtype>
             <Level>Raw</Level>
@@ -98,7 +98,7 @@
         <BDBInfo>
             <FormatOwner>257</FormatOwner>
             <FormatType>8</FormatType>
-            <CreationDate>2019-02-06T09:59:40.940Z</CreationDate>
+            <CreationDate>2019-02-06T18:58:16.117Z</CreationDate>
             <Type>Face</Type>
             <Level>Raw</Level>
             <Purpose>Enroll</Purpose>
