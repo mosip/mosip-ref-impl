@@ -1783,6 +1783,7 @@ public class MasterdataIntegrationTest {
 				.content(reasonListRequest.getBytes())).andExpect(status().isInternalServerError());
 	}
 
+	
 	// -----------------------------RegistrationCenterTest----------------------------------
 
 	@Test
