@@ -940,7 +940,7 @@ public class MasterdataIntegrationTest {
 		center.setName("bangalore");
 		center.setLatitude("12.9180722");
 		center.setLongitude("77.5028792");
-		center.setLanguageCode("eng");
+		center.setLangCode("eng");
 		center.setLocationCode("BLR");
 		centers.add(center);
 	}
@@ -4025,20 +4025,20 @@ public class MasterdataIntegrationTest {
 		requestDto.setId("mosip.idtype.create");
 		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = getRegCenterDto();
-		registrationCenterDto.setLanguageCode(null);
+		registrationCenterDto.setLangCode(null);
 
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
 
-		registrationCenterDto.setLanguageCode("fsadgdsagdsaf");
+		registrationCenterDto.setLangCode("fsadgdsagdsaf");
 		contentJson = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
 
 		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any())).thenReturn(null);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		contentJson = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().is5xxServerError());
@@ -4067,7 +4067,7 @@ public class MasterdataIntegrationTest {
 		dto.setAddressLine1("test");
 		dto.setAddressLine2("test");
 		dto.setAddressLine3("test");
-		dto.setLanguageCode("eng");
+		dto.setLangCode("eng");
 		dto.setLocationCode("LOC01");
 		dto.setLatitude("12.9135636");
 		dto.setLongitude("77.5950804");
@@ -4736,7 +4736,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setHolidayLocationCode("HLC01");
 		registrationCenterDto.setId("676");
 		registrationCenterDto.setIsActive(true);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		registrationCenterDto.setLatitude("12.9646818");
 		registrationCenterDto.setLocationCode("LOC01");
 		registrationCenterDto.setLongitude("77.70168");
@@ -4785,7 +4785,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setHolidayLocationCode("HLC01");
 		registrationCenterDto.setId("676");
 		registrationCenterDto.setIsActive(true);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		registrationCenterDto.setLatitude("12.9646818");
 		registrationCenterDto.setLocationCode("LOC01");
 		registrationCenterDto.setLongitude("77.70168");
@@ -4854,7 +4854,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setHolidayLocationCode("HLC01");
 		registrationCenterDto.setId("676");
 		registrationCenterDto.setIsActive(true);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		registrationCenterDto.setLatitude("12.9646818");
 		registrationCenterDto.setLocationCode("LOC01");
 		registrationCenterDto.setLongitude("77.70168");
@@ -4942,7 +4942,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setHolidayLocationCode("HLC01");
 		registrationCenterDto.setId("676");
 		registrationCenterDto.setIsActive(true);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		registrationCenterDto.setLatitude("INVALID");
 		registrationCenterDto.setLocationCode("INVALID");
 		registrationCenterDto.setLongitude("77.70168");
@@ -4991,7 +4991,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setHolidayLocationCode("HLC01");
 		registrationCenterDto.setId("676");
 		registrationCenterDto.setIsActive(true);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		registrationCenterDto.setLatitude("INVALID");
 		registrationCenterDto.setLocationCode("INVALID");
 		registrationCenterDto.setLongitude("77.70168");
@@ -5039,7 +5039,7 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setHolidayLocationCode("HLC01");
 		registrationCenterDto.setId("676");
 		registrationCenterDto.setIsActive(true);
-		registrationCenterDto.setLanguageCode("eng");
+		registrationCenterDto.setLangCode("eng");
 		registrationCenterDto.setLatitude("12.9646818");
 		registrationCenterDto.setLocationCode("LOC");
 		registrationCenterDto.setLongitude("77.70168");
