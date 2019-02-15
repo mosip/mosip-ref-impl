@@ -433,7 +433,7 @@ public class MasterdataIntegrationTest {
 
 		registrationCenterSetup();
 
-		registrationCenterUserMachineSetup();
+//		registrationCenterUserMachineSetup();
 
 		titleIntegrationSetup();
 
@@ -895,14 +895,14 @@ public class MasterdataIntegrationTest {
 		titleList.add(title);
 	}
 
-	private void registrationCenterUserMachineSetup() {
-		registrationCenterUserMachine = new RegistrationCenterUserMachine();
-		registrationCenterUserMachine.setCntrId("REG001");
-		registrationCenterUserMachine.setUsrId("QC001");
-		registrationCenterUserMachine.setMachineId("MAC001");
-		registrationCenterUserMachineHistory = new RegistrationCenterUserMachineHistory("1", "1", "1",
-				LocalDateTime.now().minusDays(1), "eng");
-	}
+//	private void registrationCenterUserMachineSetup() {
+//		registrationCenterUserMachine = new RegistrationCenterUserMachine();
+//		registrationCenterUserMachine.setCntrId("REG001");
+//		registrationCenterUserMachine.setUsrId("QC001");
+//		registrationCenterUserMachine.setMachineId("MAC001");
+//		registrationCenterUserMachineHistory = new RegistrationCenterUserMachineHistory("1", "1", "1",
+//				LocalDateTime.now().minusDays(1), "eng");
+//	}
 
 	private void registrationCenterSetup() {
 		registrationCenter = new RegistrationCenter();
@@ -1954,7 +1954,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterByIdAndLangCodeNotFoundExceptionTest() throws Exception {
-		when(registrationCenterRepository.findByIdAndLanguageCode("1", "ENG")).thenReturn(null);
+		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenReturn(null);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
@@ -1964,7 +1964,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByIdAndLangCodeFetchExceptionTest() throws Exception {
 
-		when(registrationCenterRepository.findByIdAndLanguageCode("1", "ENG"))
+		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG"))
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
@@ -1996,7 +1996,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterByLocationCodeAndLangCodeNotFoundExceptionTest() throws Exception {
-		when(registrationCenterRepository.findByLocationCodeAndLanguageCode("ENG", "BLR")).thenReturn(null);
+		when(registrationCenterRepository.findByLocationCodeAndLangCode("ENG", "BLR")).thenReturn(null);
 
 		mockMvc.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
@@ -2006,7 +2006,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByLocationCodeAndLangCodeFetchExceptionTest() throws Exception {
 
-		when(registrationCenterRepository.findByLocationCodeAndLanguageCode("BLR", "ENG"))
+		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG"))
 				.thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
@@ -2035,7 +2035,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getSpecificRegistrationCenterByIdTestSuccessTest() throws Exception {
-		when(registrationCenterRepository.findByIdAndLanguageCode("1", "ENG")).thenReturn(banglore);
+		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenReturn(banglore);
 
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
@@ -2064,7 +2064,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getLocationSpecificRegistrationCentersTest() throws Exception {
-		when(registrationCenterRepository.findByLocationCodeAndLanguageCode("BLR", "ENG"))
+		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG"))
 				.thenReturn(registrationCenters);
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
@@ -2078,7 +2078,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getLocationSpecificMultipleRegistrationCentersTest() throws Exception {
-		when(registrationCenterRepository.findByLocationCodeAndLanguageCode("BLR", "ENG"))
+		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG"))
 				.thenReturn(registrationCenters);
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
@@ -4656,7 +4656,7 @@ public class MasterdataIntegrationTest {
 	// -------------------------------RegistrationCenterControllerTest--------------------------
 	@Test
 	public void testGetRegistraionCenterHolidaysSuccess() throws Exception {
-		Mockito.when(registrationCenterRepository.findByIdAndLanguageCode(anyString(), anyString()))
+		Mockito.when(registrationCenterRepository.findByIdAndLangCode(anyString(), anyString()))
 				.thenReturn(registrationCenter);
 		Mockito.when(holidayRepository.findAllByLocationCodeYearAndLangCode(anyString(), anyString(), anyInt()))
 				.thenReturn(holidays);
@@ -4672,7 +4672,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void testGetRegistraionCenterHolidaysRegistrationCenterFetchException() throws Exception {
-		Mockito.when(registrationCenterRepository.findByIdAndLanguageCode(anyString(), anyString()))
+		Mockito.when(registrationCenterRepository.findByIdAndLangCode(anyString(), anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/v1.0/getregistrationcenterholidays/{languagecode}/{registrationcenterid}/{year}", "ENG",
 				"REG_CR_001", 2017)).andExpect(status().isInternalServerError());
@@ -4680,7 +4680,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void testGetRegistraionCenterHolidaysHolidayFetchException() throws Exception {
-		Mockito.when(registrationCenterRepository.findByIdAndLanguageCode(anyString(), anyString()))
+		Mockito.when(registrationCenterRepository.findByIdAndLangCode(anyString(), anyString()))
 				.thenReturn(registrationCenter);
 
 		Mockito.when(holidayRepository.findAllByLocationCodeYearAndLangCode(anyString(), anyString(), anyInt()))
