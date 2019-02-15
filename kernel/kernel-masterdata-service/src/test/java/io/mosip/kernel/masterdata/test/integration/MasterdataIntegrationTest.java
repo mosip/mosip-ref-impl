@@ -902,7 +902,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setName("bangalore");
 		registrationCenter.setLatitude("12.9180722");
 		registrationCenter.setLongitude("77.5028792");
-		registrationCenter.setLanguageCode("eng");
+		registrationCenter.setLangCode("eng");
 		registrationCenter.setHolidayLocationCode("KAR");
 		registrationCenters.add(registrationCenter);
 
@@ -914,12 +914,12 @@ public class MasterdataIntegrationTest {
 		banglore.setName("bangalore");
 		banglore.setLatitude("12.9180722");
 		banglore.setLongitude("77.5028792");
-		banglore.setLanguageCode("eng");
+		banglore.setLangCode("eng");
 		banglore.setLocationCode("LOC");
 		chennai = new RegistrationCenter();
 		chennai.setId("2");
 		chennai.setName("Bangalore Central");
-		chennai.setLanguageCode("eng");
+		chennai.setLangCode("eng");
 		chennai.setLocationCode("LOC");
 		registrationCenters.add(banglore);
 		registrationCenters.add(chennai);
@@ -4756,7 +4756,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setHolidayLocationCode("HLC01");
 		registrationCenter.setId("676");
 		registrationCenter.setIsActive(true);
-		registrationCenter.setLanguageCode("eng");
+		registrationCenter.setLangCode("eng");
 		registrationCenter.setLatitude("12.9646818");
 		registrationCenter.setLocationCode("LOC01");
 		registrationCenter.setLongitude("77.70168");
@@ -4805,7 +4805,7 @@ public class MasterdataIntegrationTest {
 		updatedRegistrationCenter.setHolidayLocationCode("HLC01");
 		updatedRegistrationCenter.setId("676");
 		updatedRegistrationCenter.setIsActive(true);
-		updatedRegistrationCenter.setLanguageCode("eng");
+		updatedRegistrationCenter.setLangCode("eng");
 		updatedRegistrationCenter.setLatitude("12.9646818");
 		updatedRegistrationCenter.setLocationCode("LOC01");
 		updatedRegistrationCenter.setLongitude("77.70168");
@@ -4823,7 +4823,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setHolidayLocationCode("HLC01");
 		registrationCenter.setId("676");
 		registrationCenter.setIsActive(true);
-		registrationCenter.setLanguageCode("eng");
+		registrationCenter.setLangCode("eng");
 		registrationCenter.setLatitude("12.9646818");
 		registrationCenter.setLocationCode("LOC01");
 		registrationCenter.setLongitude("77.70168");
@@ -4874,7 +4874,7 @@ public class MasterdataIntegrationTest {
 		updatedRegistrationCenter.setHolidayLocationCode("HLC01");
 		updatedRegistrationCenter.setId("676");
 		updatedRegistrationCenter.setIsActive(true);
-		updatedRegistrationCenter.setLanguageCode("eng");
+		updatedRegistrationCenter.setLangCode("eng");
 		updatedRegistrationCenter.setLatitude("12.9646818");
 		updatedRegistrationCenter.setLocationCode("LOC01");
 		updatedRegistrationCenter.setLongitude("77.70168");
@@ -4893,7 +4893,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setHolidayLocationCode("HLC01");
 		registrationCenter.setId("676");
 		registrationCenter.setIsActive(true);
-		registrationCenter.setLanguageCode("eng");
+		registrationCenter.setLangCode("eng");
 		registrationCenter.setLatitude("12.9646818");
 		registrationCenter.setLocationCode("LOC01");
 		registrationCenter.setLongitude("77.70168");
@@ -4962,7 +4962,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setHolidayLocationCode("HLC01");
 		registrationCenter.setId("676");
 		registrationCenter.setIsActive(true);
-		registrationCenter.setLanguageCode("eng");
+		registrationCenter.setLangCode("eng");
 		registrationCenter.setLatitude("12.9646818");
 		registrationCenter.setLocationCode("LOC01");
 		registrationCenter.setLongitude("77.70168");
@@ -5011,7 +5011,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setHolidayLocationCode("HLC01");
 		registrationCenter.setId("676");
 		registrationCenter.setIsActive(true);
-		registrationCenter.setLanguageCode("eng");
+		registrationCenter.setLangCode("eng");
 		registrationCenter.setLatitude("12.9646818");
 		registrationCenter.setLocationCode("LOC01");
 		registrationCenter.setLongitude("77.70168");
