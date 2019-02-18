@@ -127,6 +127,7 @@ import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineDeviceID;
 import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineHistoryID;
 import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineID;
 import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineUserHistoryID;
+import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineUserID;
 import io.mosip.kernel.masterdata.exception.DataNotFoundException;
 import io.mosip.kernel.masterdata.exception.RequestException;
 import io.mosip.kernel.masterdata.repository.BiometricAttributeRepository;
@@ -433,7 +434,7 @@ public class MasterdataIntegrationTest {
 
 		registrationCenterSetup();
 
-//		registrationCenterUserMachineSetup();
+		registrationCenterUserMachineSetup();
 
 		titleIntegrationSetup();
 
@@ -895,14 +896,17 @@ public class MasterdataIntegrationTest {
 		titleList.add(title);
 	}
 
-//	private void registrationCenterUserMachineSetup() {
-//		registrationCenterUserMachine = new RegistrationCenterUserMachine();
-//		registrationCenterUserMachine.setCntrId("REG001");
-//		registrationCenterUserMachine.setUsrId("QC001");
-//		registrationCenterUserMachine.setMachineId("MAC001");
-//		registrationCenterUserMachineHistory = new RegistrationCenterUserMachineHistory("1", "1", "1",
-//				LocalDateTime.now().minusDays(1), "eng");
-//	}
+	private void registrationCenterUserMachineSetup() {
+		registrationCenterUserMachine = new RegistrationCenterUserMachine();
+		RegistrationCenterMachineUserID registrationCenterMachineUserID = new RegistrationCenterMachineUserID();
+		registrationCenterMachineUserID.setCntrId("REG001");
+		registrationCenterMachineUserID.setUsrId("QC001");
+		registrationCenterMachineUserID.setMachineId("MAC001");
+		registrationCenterUserMachine.setLangCode("eng");
+		registrationCenterUserMachine.setRegistrationCenterMachineUserID(registrationCenterMachineUserID);
+		registrationCenterUserMachineHistory = new RegistrationCenterUserMachineHistory("1", "1", "1",
+				LocalDateTime.now().minusDays(1), "eng");
+	}
 
 	private void registrationCenterSetup() {
 		registrationCenter = new RegistrationCenter();
@@ -1964,8 +1968,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByIdAndLangCodeFetchExceptionTest() throws Exception {
 
-		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG"))
-				.thenThrow(DataAccessLayerException.class);
+		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
@@ -2064,8 +2067,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getLocationSpecificRegistrationCentersTest() throws Exception {
-		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG"))
-				.thenReturn(registrationCenters);
+		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG")).thenReturn(registrationCenters);
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
@@ -2078,8 +2080,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getLocationSpecificMultipleRegistrationCentersTest() throws Exception {
-		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG"))
-				.thenReturn(registrationCenters);
+		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG")).thenReturn(registrationCenters);
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
@@ -2205,6 +2206,7 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto.setUsrId("QC001");
 		centerUserMachineMappingDto.setIsActive(true);
 		centerUserMachineMappingDto.setMachineId("MAC001");
+		centerUserMachineMappingDto.setLangCode("eng");
 		requestDto.setRequest(centerUserMachineMappingDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineUserRepository.create(Mockito.any()))
