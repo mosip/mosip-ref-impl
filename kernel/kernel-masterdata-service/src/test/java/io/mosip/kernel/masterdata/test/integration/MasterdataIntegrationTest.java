@@ -4186,7 +4186,8 @@ public class MasterdataIntegrationTest {
 		requestDto.setVer("1.0");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		when(templateRepository.findTemplateByIDAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(template);
+		when(templateRepository.findTemplateByIDAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any(),
+				Mockito.any())).thenReturn(template);
 		when(templateRepository.update(Mockito.any())).thenReturn(template);
 		mockMvc.perform(put("/v1.0/templates").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
@@ -4211,7 +4212,8 @@ public class MasterdataIntegrationTest {
 		requestDto.setVer("1.0");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(null);
+		when(templateRepository.findTemplateByIDAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any(),
+				Mockito.any())).thenReturn(null);
 		mockMvc.perform(put("/v1.0/templates").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
 
@@ -4224,7 +4226,8 @@ public class MasterdataIntegrationTest {
 		requestDto.setVer("1.0");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		when(templateRepository.findTemplateByIDAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(template);
+		when(templateRepository.findTemplateByIDAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any(),
+				Mockito.any())).thenReturn(template);
 		when(templateRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(put("/v1.0/templates").contentType(MediaType.APPLICATION_JSON).content(contentJson))
@@ -4233,15 +4236,14 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteTemplateTest() throws Exception {
-		when(templateRepository.findTemplateByIDAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(template);
-		when(templateRepository.update(Mockito.any())).thenReturn(template);
+		when(templateRepository.deleteTemplate(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(1);
 		mockMvc.perform(delete("/v1.0/templates/T001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void deleteTemplateRequestExceptionTest() throws Exception {
-		when(templateRepository.findTemplateByIDAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(null);
+		when(templateRepository.deleteTemplate(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(0);
 		mockMvc.perform(delete("/v1.0/templates/T001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
@@ -4249,8 +4251,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteTemplateDatabaseConnectionExceptionTest() throws Exception {
-		when(templateRepository.findTemplateByIDAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(template);
-		when(templateRepository.update(Mockito.any()))
+		when(templateRepository.deleteTemplate(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/templates/T001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
