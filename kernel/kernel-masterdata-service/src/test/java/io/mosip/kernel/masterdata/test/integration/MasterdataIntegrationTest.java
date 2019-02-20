@@ -489,7 +489,7 @@ public class MasterdataIntegrationTest {
 
 	private MachineSpecification machineSpecification;
 	private MachineSpecificationDto machineSpecificationDto;
-	private List<Machine> machineSpecList;
+	private List<MachineSpecification> machineSpecList;
 
 	private void machineSpecificationSetUp() {
 
@@ -506,6 +506,7 @@ public class MasterdataIntegrationTest {
 		machineSpecification.setModel("3168ngw");
 
 		machineSpecList = new ArrayList<>();
+		machineSpecList.add(machineSpecification);
 
 		machineSpecificationDto = new MachineSpecificationDto();
 		MapperUtils.map(machineSpecification, machineSpecificationDto);
@@ -2954,10 +2955,10 @@ public class MasterdataIntegrationTest {
 	}
 	// -----------------------------------------------------------------------------------------------
 
-	/*@Test
+	/*@Test ****
 	public void deleteMachineSpecificationTest() throws Exception {
 		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
-				.thenReturn(machineSpecification);
+				.thenReturn(machineSpecificationList);
 		when(machineRepository.findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
 				.thenReturn(machineSpecList);
 		when(machineSpecificationRepository.update(Mockito.any())).thenReturn(machineSpecification);
@@ -3207,33 +3208,34 @@ public class MasterdataIntegrationTest {
 	}
 
 	// ---------------------------------------------------------------------------------------
-	/*@Test
+	@Test
 	public void deleteMachineTest() throws Exception {
-		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(machine);
+		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(machineList);
 		when(machineRepository.update(Mockito.any())).thenReturn(machine);
 		when(machineHistoryRepository.create(Mockito.any())).thenReturn(machineHistory);
 		mockMvc.perform(delete("/v1.0/machines/1000").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
-	}*/
+	}
 
-	/*@Test
+	@Test
 	public void deleteMachineNotFoundExceptionTest() throws Exception {
-		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(null);
+		List<Machine> emptList = new ArrayList<>();
+		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(emptList);
 
 		mockMvc.perform(delete("/v1.0/machines/1000").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
-	}*/
-/*
+	}
+
 	@Test
 	public void deleteMachineDatabaseConnectionExceptionTest() throws Exception {
-		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(machine);
+		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(machineList);
 		when(machineRepository.update(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/machines/1000").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
-	}*/
+	}
 	// -----------------------------MachineTypeTest-------------------------------------------
 
 	@Test
@@ -3398,14 +3400,25 @@ public class MasterdataIntegrationTest {
 				.andExpect(status().isOk());
 	}
 
-	/*@Test
+	
+	@Test 
 	public void deleteDeviceExceptionTest() throws Exception {
-		Mockito.when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString())).thenReturn(null);
-		Mockito.when(deviceRepository.update(Mockito.any())).thenThrow(new RequestException("", ""));
+		List<Device> emptList = new ArrayList<>();
+		Mockito.when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString())).thenReturn(emptList);
 		mockMvc.perform(MockMvcRequestBuilders.delete("/v1.0/devices/1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
-	}*/
+	}
+	
+	@Test
+	public void deleteDeviceDatabaseConnectionExceptionTest() throws Exception {
+		when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(deviceList);
+		when(deviceRepository.update(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		mockMvc.perform(delete("/v1.0/devices/1000").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+
+	}
 
 	// -----------------------------------------MachineHistory---------------------------------------------
 	@Test
