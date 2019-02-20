@@ -1806,7 +1806,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByIdTest() throws Exception {
 
-		when(repository.findByIdAndLanguageCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
+		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 				"ENG", localDateTimeUTCFormat)).thenReturn(centers);
 
 		MvcResult result = mockMvc
@@ -1822,7 +1822,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryNotFoundExceptionTest() throws Exception {
-		when(repository.findByIdAndLanguageCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
+		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 				"ENG", localDateTimeUTCFormat)).thenReturn(null);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
@@ -1830,7 +1830,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryEmptyExceptionTest() throws Exception {
-		when(repository.findByIdAndLanguageCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
+		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 				"ENG", localDateTimeUTCFormat)).thenReturn(new ArrayList<RegistrationCenterHistory>());
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
@@ -1838,7 +1838,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryFetchExceptionTest() throws Exception {
-		when(repository.findByIdAndLanguageCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
+		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 				"ENG", localDateTimeUTCFormat)).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
@@ -2257,12 +2257,14 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto1.setUsrId("QC001");
 		centerUserMachineMappingDto1.setIsActive(true);
 		centerUserMachineMappingDto1.setMachineId("MAC001");
+		centerUserMachineMappingDto1.setLangCode("eng");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto2.setCntrId("REG001");
 		centerUserMachineMappingDto2.setUsrId("QC001");
 		centerUserMachineMappingDto2.setIsActive(true);
 		centerUserMachineMappingDto2.setMachineId("MAC001");
+		centerUserMachineMappingDto2.setLangCode("eng");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
 		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
 		String contentJson = mapper.writeValueAsString(requestDto);
