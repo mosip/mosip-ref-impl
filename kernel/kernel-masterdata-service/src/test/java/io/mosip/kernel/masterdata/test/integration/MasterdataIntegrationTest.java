@@ -632,14 +632,14 @@ public class MasterdataIntegrationTest {
 	public void DeviceSpecsetUp() {
 
 		deviceSpecList = new ArrayList<>();
-		/*
-		 * deviceSpecification = new DeviceSpecification();
-		 * deviceSpecification.setId("1000"); deviceSpecification.setName("Laptop");
-		 * deviceSpecification.setBrand("HP"); deviceSpecification.setModel("G-Series");
-		 * deviceSpecification.setMinDriverversion("version 7");
-		 * deviceSpecification.setDescription("HP Laptop");
-		 * deviceSpecification.setIsActive(true);
-		 */
+		
+		 deviceSpecification = new DeviceSpecification();
+		 deviceSpecification.setId("1000"); deviceSpecification.setName("Laptop");
+		 deviceSpecification.setBrand("HP"); deviceSpecification.setModel("G-Series");
+		 deviceSpecification.setMinDriverversion("version 7");
+		 deviceSpecification.setDescription("HP Laptop");
+		 deviceSpecification.setIsActive(true);
+		 
 
 		deviceSpecification = new DeviceSpecification();
 		deviceSpecification.setId("1000");
@@ -2958,58 +2958,58 @@ public class MasterdataIntegrationTest {
 	}
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * @Test **** public void deleteMachineSpecificationTest() throws Exception {
-	 * when(machineSpecificationRepository.
-	 * findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
-	 * .thenReturn(machineSpecificationList); when(machineRepository.
-	 * findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
-	 * .thenReturn(machineSpecList);
-	 * when(machineSpecificationRepository.update(Mockito.any())).thenReturn(
-	 * machineSpecification);
-	 * mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isOk()); }
-	 */
 
-	/*
-	 * @Test public void deleteMachineSpecificationDataNotFoundExceptionTest()
-	 * throws Exception { when(machineSpecificationRepository.
-	 * findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(null);
-	 * 
-	 * mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isOk());
-	 * 
-	 * }
-	 */
+	@Test
+	public void deleteMachineSpecificationTest() throws Exception {
+		List<Machine> emptyList = new ArrayList<>();
+		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(machineSpecList);
+		when(machineRepository.findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(emptyList);
+		when(machineSpecificationRepository.update(Mockito.any())).thenReturn(machineSpecification);
+		mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+	
 
-	/*
-	 * @Test public void deleteMachineSpecificationDatabaseConnectionExceptionTest()
-	 * throws Exception { when(machineSpecificationRepository.
-	 * findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
-	 * .thenReturn(machineSpecification); when(machineRepository.
-	 * findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
-	 * .thenReturn(machineSpecList);
-	 * when(machineSpecificationRepository.update(Mockito.any())) .thenThrow(new
-	 * DataAccessLayerException("", "cannot execute statement", null));
-	 * mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isInternalServerError());
-	 * 
-	 * }
-	 */
 
-	/*
-	 * @Test public void deleteMachineSpecificationExceptionTest() throws Exception
-	 * { List<Machine> machines = new ArrayList<Machine>(); Machine machine = new
-	 * Machine(); machines.add(machine); when(machineSpecificationRepository.
-	 * findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
-	 * .thenReturn(machineSpecification); when(machineRepository
-	 * .findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(
-	 * machineSpecification.getId())) .thenReturn(machines);
-	 * when(machineSpecificationRepository.update(Mockito.any())).thenReturn(
-	 * machineSpecification);
-	 * mockMvc.perform(delete("/v1.0/machinespecifications/MS001").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isInternalServerError()); }
-	 */
+	@Test
+	public void deleteMachineSpecificationDataNotFoundExceptionTest() throws Exception {
+		List<MachineSpecification> emptyList = new ArrayList<>();
+		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(emptyList);
+
+	}
+
+	@Test
+	public void deleteMachineSpecificationDatabaseConnectionExceptionTest() throws Exception {
+		List<Machine> emptyList = new ArrayList<>();
+		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(machineSpecList);
+		when(machineRepository.findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(emptyList);
+		when(machineSpecificationRepository.update(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+
+	}
+
+	/*@Test
+	public void deleteMachineSpecificationExceptionTest() throws Exception {
+		List<Machine> machines = new ArrayList<Machine>();
+		Machine machine = new Machine();
+		machines.add(machine);
+		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(machineSpecification);
+		when(machineRepository
+				.findMachineBymachineSpecIdAndIsDeletedFalseorIsDeletedIsNull(machineSpecification.getId()))
+						.thenReturn(machines);
+		when(machineSpecificationRepository.update(Mockito.any())).thenReturn(machineSpecification);
+		mockMvc.perform(delete("/v1.0/machinespecifications/MS001").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+	}*/
+
+
 	// -------------------------MachineTest-----------------------------------------
 
 	@Test
@@ -4164,6 +4164,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteDeviceSpecificationTest() throws Exception {
+
+		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(deviceSpecList);
 		when(deviceSpecificationRepository.findByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
 				Mockito.any())).thenReturn(deviceSpecification);
 		when(deviceRepository.findDeviceByDeviceSpecIdAndIsDeletedFalseorIsDeletedIsNull(deviceSpecification.getId()))
@@ -4173,43 +4176,38 @@ public class MasterdataIntegrationTest {
 				.andExpect(status().isOk());
 	}
 
-	/*
-	 * @Test public void deleteDeviceSpecificationRequestExceptionTest() throws
-	 * Exception {
-	 * when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull
-	 * (Mockito.any())).thenReturn(null);
-	 * mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isOk());
-	 * 
-	 * }
-	 */
+	@Test
+	public void deleteDeviceSpecificationRequestExceptionTest() throws Exception {
+	   List<DeviceSpecification> emptList = new ArrayList<>();
+		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(emptList);
+		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
 
-	/*
-	 * @Test public void deleteDeviceSpecificationDatabaseConnectionExceptionTest()
-	 * throws Exception {
-	 * when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull
-	 * (Mockito.any())) .thenReturn(deviceSpecification);
-	 * when(deviceSpecificationRepository.update(Mockito.any())) .thenThrow(new
-	 * DataAccessLayerException("", "cannot execute statement", null));
-	 * mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isInternalServerError());
-	 * 
-	 * }
-	 */
+	@Test
+	public void deleteDeviceSpecificationDatabaseConnectionExceptionTest() throws Exception {
+		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(deviceSpecList);
+		when(deviceSpecificationRepository.update(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+	}
 
-	/*
-	 * @Test public void deleteDeviceSpecificationExceptionTest() throws Exception {
-	 * List<Device> devices = new ArrayList<Device>(); Device device = new Device();
-	 * devices.add(device);
-	 * when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull
-	 * (Mockito.any())) .thenReturn(deviceSpecification); when(deviceRepository.
-	 * findDeviceByDeviceSpecIdAndIsDeletedFalseorIsDeletedIsNull(
-	 * deviceSpecification.getId())) .thenReturn(devices);
-	 * when(deviceSpecificationRepository.update(Mockito.any())).thenReturn(
-	 * deviceSpecification);
-	 * mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(
-	 * MediaType.APPLICATION_JSON)) .andExpect(status().isInternalServerError()); }
-	 */
+	/*@Test
+	public void deleteDeviceSpecificationExceptionTest() throws Exception {
+		List<Device> devices = new ArrayList<Device>();
+		Device device = new Device();
+		devices.add(device);
+		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(deviceSpecList);
+		when(deviceRepository.findDeviceByDeviceSpecIdAndIsDeletedFalseorIsDeletedIsNull(deviceSpecification.getId()))
+				.thenReturn(devices);
+		when(deviceSpecificationRepository.update(Mockito.any())).thenReturn(deviceSpecification);
+		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+	}*/
+
 
 	/*------------------------------ template update and delete test-----------------------------*/
 	@Test
