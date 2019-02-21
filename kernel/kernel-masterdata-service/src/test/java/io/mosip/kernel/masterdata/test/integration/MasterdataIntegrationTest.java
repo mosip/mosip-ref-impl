@@ -2228,18 +2228,20 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto1.setCntrId("REG001");
 		centerUserMachineMappingDto1.setUsrId("QC001");
 		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setLangCode("eng");
 		centerUserMachineMappingDto1.setMachineId("MAC001");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto2.setCntrId("REG001");
 		centerUserMachineMappingDto2.setUsrId("QC001");
+		centerUserMachineMappingDto2.setLangCode("eng");
 		centerUserMachineMappingDto2.setIsActive(true);
 		centerUserMachineMappingDto2.setMachineId("MAC001");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
 		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
-				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
+				Mockito.any())).thenReturn(Optional.empty());
 		when(registrationCenterMachineUserRepository.create(Mockito.any())).thenReturn(registrationCenterUserMachine);
 		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
 				.thenReturn(registrationCenterUserMachineHistory);
@@ -2247,6 +2249,7 @@ public class MasterdataIntegrationTest {
 				.content(contentJson)).andExpect(status().isOk());
 	}
 
+	// TODO:
 	@Test
 	public void createOrUpdateRegistrationCentersMachineUserMappingUpdateTest() throws Exception {
 		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
@@ -2270,7 +2273,7 @@ public class MasterdataIntegrationTest {
 		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
-				Mockito.any())).thenReturn(Optional.empty());
+				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
 		when(registrationCenterMachineUserRepository.update(Mockito.any())).thenReturn(registrationCenterUserMachine);
 		when(registrationCenterUserMachineHistoryRepository.create(Mockito.any()))
 				.thenReturn(registrationCenterUserMachineHistory);
@@ -2288,12 +2291,14 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto1.setCntrId("REG001");
 		centerUserMachineMappingDto1.setUsrId("QC001");
 		centerUserMachineMappingDto1.setIsActive(true);
+		centerUserMachineMappingDto1.setLangCode("eng");
 		centerUserMachineMappingDto1.setMachineId("MAC001");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto1);
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto2 = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto2.setCntrId("REG001");
 		centerUserMachineMappingDto2.setUsrId("QC001");
 		centerUserMachineMappingDto2.setIsActive(true);
+		centerUserMachineMappingDto2.setLangCode("eng");
 		centerUserMachineMappingDto2.setMachineId("MAC001");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
 		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
