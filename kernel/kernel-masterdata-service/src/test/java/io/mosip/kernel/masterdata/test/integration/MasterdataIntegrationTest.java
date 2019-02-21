@@ -632,14 +632,15 @@ public class MasterdataIntegrationTest {
 	public void DeviceSpecsetUp() {
 
 		deviceSpecList = new ArrayList<>();
-		
-		 deviceSpecification = new DeviceSpecification();
-		 deviceSpecification.setId("1000"); deviceSpecification.setName("Laptop");
-		 deviceSpecification.setBrand("HP"); deviceSpecification.setModel("G-Series");
-		 deviceSpecification.setMinDriverversion("version 7");
-		 deviceSpecification.setDescription("HP Laptop");
-		 deviceSpecification.setIsActive(true);
-		 
+
+		deviceSpecification = new DeviceSpecification();
+		deviceSpecification.setId("1000");
+		deviceSpecification.setName("Laptop");
+		deviceSpecification.setBrand("HP");
+		deviceSpecification.setModel("G-Series");
+		deviceSpecification.setMinDriverversion("version 7");
+		deviceSpecification.setDescription("HP Laptop");
+		deviceSpecification.setIsActive(true);
 
 		deviceSpecification = new DeviceSpecification();
 		deviceSpecification.setId("1000");
@@ -2958,7 +2959,6 @@ public class MasterdataIntegrationTest {
 	}
 	// -----------------------------------------------------------------------------------------------
 
-
 	@Test
 	public void deleteMachineSpecificationTest() throws Exception {
 		List<Machine> emptyList = new ArrayList<>();
@@ -2970,15 +2970,14 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
-	
-
 
 	@Test
 	public void deleteMachineSpecificationDataNotFoundExceptionTest() throws Exception {
 		List<MachineSpecification> emptyList = new ArrayList<>();
-		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(emptyList);
+		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(emptyList);
 		mockMvc.perform(delete("/v1.0/machinespecifications/1000").contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk());
+				.andExpect(status().isOk());
 
 	}
 
@@ -3008,9 +3007,8 @@ public class MasterdataIntegrationTest {
 						.thenReturn(machineList);
 		mockMvc.perform(delete("/v1.0/machinespecifications/MS001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
-			
-	}
 
+	}
 
 	// -------------------------MachineTest-----------------------------------------
 
@@ -3390,7 +3388,18 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	public void updateDeviceExceptionTest() throws Exception {
+	public void updateDeviceDatabaseConnectionExceptionTest() throws Exception {
+		when(deviceRepository.findByIdAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
+				Mockito.anyString())).thenReturn(device);
+		when(deviceRepository.update(Mockito.any()))
+				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		mockMvc.perform(put("/v1.0/devices/1000").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+
+	}
+
+	@Test
+	public void updateDeviceNotFoundExceptionTest() throws Exception {
 		RequestDto<DeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.create");
 		requestDto.setVer("1.0.0");
@@ -4180,8 +4189,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteDeviceSpecificationNotFoundExceptionTest() throws Exception {
-	   List<DeviceSpecification> emptList = new ArrayList<>();
-		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(emptList);
+		List<DeviceSpecification> emptList = new ArrayList<>();
+		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(emptList);
 		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
@@ -4208,7 +4218,6 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(delete("/v1.0/devicespecifications/DS001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 	}
-
 
 	/*------------------------------ template update and delete test-----------------------------*/
 	@Test
