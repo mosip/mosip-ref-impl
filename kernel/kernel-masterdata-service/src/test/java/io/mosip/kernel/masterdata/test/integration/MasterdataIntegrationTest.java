@@ -3228,6 +3228,30 @@ public class MasterdataIntegrationTest {
 	public void deleteMachineTest() throws Exception {
 		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
 				.thenReturn(machineList);
+		when(registrationCenterMachineDeviceRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
+		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterMachine>());
+		when(registrationCenterMachineUserRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
+		when(machineRepository.update(Mockito.any())).thenReturn(machine);
+		when(machineHistoryRepository.create(Mockito.any())).thenReturn(machineHistory);
+		mockMvc.perform(delete("/v1.0/machines/1000").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteMachineDependencyTest() throws Exception {
+		List<RegistrationCenterMachineDevice> regCenterMachineDevices = new ArrayList<RegistrationCenterMachineDevice>();
+		regCenterMachineDevices.add(registrationCenterMachineDevice);
+		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
+				.thenReturn(machineList);
+		when(registrationCenterMachineDeviceRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(regCenterMachineDevices);
+		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterMachine>());
+		when(registrationCenterMachineUserRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
 		when(machineRepository.update(Mockito.any())).thenReturn(machine);
 		when(machineHistoryRepository.create(Mockito.any())).thenReturn(machineHistory);
 		mockMvc.perform(delete("/v1.0/machines/1000").contentType(MediaType.APPLICATION_JSON))
@@ -3420,11 +3444,33 @@ public class MasterdataIntegrationTest {
 
 	}
 
+	// TODO:
 	@Test
 	public void deleteDeviceSuccessTest() throws Exception {
 		Mockito.when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(deviceList);
 		Mockito.when(deviceRepository.update(Mockito.any())).thenReturn(device);
+		Mockito.when(registrationCenterMachineDeviceRepository
+				.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
+		Mockito.when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterDevice>());
+		when(deviceHistoryRepository.create(Mockito.any())).thenReturn(deviceHistory);
+		mockMvc.perform(MockMvcRequestBuilders.delete("/v1.0/devices/123").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteDeviceDependecyTest() throws Exception {
+		List<RegistrationCenterMachineDevice> regCenterMachineDevices = new ArrayList<RegistrationCenterMachineDevice>();
+		regCenterMachineDevices.add(registrationCenterMachineDevice);
+		Mockito.when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(deviceList);
+		Mockito.when(deviceRepository.update(Mockito.any())).thenReturn(device);
+		Mockito.when(registrationCenterMachineDeviceRepository
+				.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(regCenterMachineDevices);
+		Mockito.when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any()))
+				.thenReturn(new ArrayList<RegistrationCenterDevice>());
 		when(deviceHistoryRepository.create(Mockito.any())).thenReturn(deviceHistory);
 		mockMvc.perform(MockMvcRequestBuilders.delete("/v1.0/devices/123").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
