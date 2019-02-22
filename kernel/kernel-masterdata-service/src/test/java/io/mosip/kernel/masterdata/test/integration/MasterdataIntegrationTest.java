@@ -401,9 +401,7 @@ public class MasterdataIntegrationTest {
 	@MockBean
 	private DeviceHistoryRepository deviceHistoryRepository;
 
-	@MockBean
-	private RegistrationCenterHistoryRepository registrationCenterHistoryRepository;
-
+	
 	public static LocalDateTime localDateTimeUTCFormat = LocalDateTime.now();
 
 	public static final DateTimeFormatter UTC_DATE_TIME_FORMAT = DateTimeFormatter
@@ -4978,6 +4976,7 @@ public class MasterdataIntegrationTest {
 		updatedRegistrationCenter.setTimeZone("UTC");
 		updatedRegistrationCenter.setWorkingHours("9");
 		updatedRegistrationCenter.setIsDeleted(true);
+		List<RegistrationCenter> registrationCenterlist = new ArrayList<>();
 		RegistrationCenter registrationCenter = new RegistrationCenter();
 		registrationCenter.setName("TEST CENTER");
 		registrationCenter.setAddressLine1("Address Line 1");
@@ -4997,10 +4996,11 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setTimeZone("UTC");
 		registrationCenter.setWorkingHours("9");
 		requestDto.setRequest(registrationCenterDto);
+		registrationCenterlist.add(registrationCenter);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
-		when(registrationCenterRepository.findByIdAndIsDeletedFalseOrNull(Mockito.any()))
-				.thenReturn(registrationCenter);
+		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
+				.thenReturn(registrationCenterlist);
 		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(new ArrayList<RegistrationCenterMachine>());
 
@@ -5014,9 +5014,10 @@ public class MasterdataIntegrationTest {
 
 		when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(new ArrayList<RegistrationCenterDevice>());
+		
 		when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
 		// TODO
-		when(registrationCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);
+		when(repository.create(Mockito.any())).thenReturn(registrationCenterHistory);
 		mockMvc.perform(
 				delete("/v1.0/registrationcenters/676").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
@@ -5067,6 +5068,7 @@ public class MasterdataIntegrationTest {
 		updatedRegistrationCenter.setTimeZone("UTC");
 		updatedRegistrationCenter.setWorkingHours("9");
 		updatedRegistrationCenter.setIsDeleted(true);
+		List<RegistrationCenter> registrationCenterlist = new ArrayList<>();
 		RegistrationCenter registrationCenter = new RegistrationCenter();
 		registrationCenter.setName("TEST CENTER");
 		registrationCenter.setAddressLine1("Address Line 1");
@@ -5085,12 +5087,13 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setNumberOfKiosks(numberOfKiosks);
 		registrationCenter.setTimeZone("UTC");
 		registrationCenter.setWorkingHours("9");
+		registrationCenterlist.add(registrationCenter);
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		when(registrationCenterRepository.findByIdAndIsDeletedFalseOrNull(Mockito.any()))
-				.thenReturn(registrationCenter);
+		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
+				.thenReturn(registrationCenterlist);
 		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
-				.thenReturn(new ArrayList<RegistrationCenterMachine>());
+				.thenReturn(registrationCenterMachines);
 
 		when(registrationCenterMachineDeviceRepository
 				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
@@ -5102,9 +5105,7 @@ public class MasterdataIntegrationTest {
 
 		when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(new ArrayList<RegistrationCenterDevice>());
-
-		when(registrationCenterRepository.deleteRegistrationCenter(Mockito.any(), Mockito.any(), Mockito.any()))
-				.thenReturn(1);
+		when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
 		mockMvc.perform(
 				delete("/v1.0/registrationcenters/676").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
@@ -5112,15 +5113,51 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteRegistrationCenterTestForRequestException() throws Exception {
-		when(registrationCenterRepository.deleteRegistrationCenter(Mockito.any(), Mockito.any(), Mockito.any()))
-				.thenReturn(0);
-		mockMvc.perform(delete("/v1.0/registrationcenters/12")).andExpect(status().isOk());
+		List<RegistrationCenter> registrationCenterlist  = new ArrayList<>();
+		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
+		.thenReturn(registrationCenterlist);
+	mockMvc.perform(delete("/v1.0/registrationcenters/12")).andExpect(status().isOk());
+		
 	}
 
 	@Test
 	public void deleteRegistrationCenterDataAccessExceptionTest() throws Exception {
-		when(registrationCenterRepository.deleteRegistrationCenter(Mockito.any(), Mockito.any(), Mockito.any()))
-				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		List<RegistrationCenter> registrationCenterlist = new ArrayList<>();
+		RegistrationCenter registrationCenter = new RegistrationCenter();
+		registrationCenter.setName("TEST CENTER");
+		registrationCenter.setAddressLine1("Address Line 1");
+		registrationCenter.setAddressLine2("Address Line 2");
+		registrationCenter.setAddressLine3("Address Line 3");
+		registrationCenter.setCenterTypeCode("REG01");
+		registrationCenter.setContactPerson("Test");
+		registrationCenter.setContactPhone("9999999999");
+		registrationCenter.setHolidayLocationCode("HLC01");
+		registrationCenter.setId("676");
+		registrationCenter.setIsActive(true);
+		registrationCenter.setLangCode("eng");
+		registrationCenter.setLatitude("12.9646818");
+		registrationCenter.setLocationCode("LOC01");
+		registrationCenter.setLongitude("77.70168");
+		registrationCenter.setTimeZone("UTC");
+		registrationCenter.setWorkingHours("9");
+		registrationCenterlist.add(registrationCenter);
+		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
+		.thenReturn(registrationCenterlist);
+when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+		.thenReturn(new ArrayList<RegistrationCenterMachine>());
+
+when(registrationCenterMachineDeviceRepository
+		.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
+
+when(registrationCenterMachineUserRepository
+		.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
+
+when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+		.thenReturn(new ArrayList<RegistrationCenterDevice>());
+
+		when(registrationCenterRepository.update(Mockito.any())).thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/registrationcenters/12").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
@@ -5177,6 +5214,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterRequestExceptionTest() throws Exception {
+		RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
 		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
@@ -5219,13 +5257,15 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setWorkingHours("9");
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		when(registrationCenterRepository.create(Mockito.any())).thenThrow(new RequestException("", ""));
+		when(registrationCenterRepository.findByIdAndLangCode(Mockito.anyString(), Mockito.anyString())).thenReturn(registrationCenter);
+		when(registrationCenterRepository.update(registrationCenter)).thenReturn(registrationCenter);
+		when(repository.create(Mockito.any())).thenReturn(registrationCenterHistory);
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void updateRegistrationCenterExceptionTest() throws Exception {
+	public void updateRegistrationCenterDataAccessExceptionTest() throws Exception {
 		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
 		requestDto.setVer("1.0");
@@ -5249,14 +5289,12 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setWorkingHours("9");
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		//RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
 		when(registrationCenterRepository.findByIdAndLangCode(Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
-		/*when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
-		when(registrationCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);*/
-
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isInternalServerError());
 	}
+	
+	
 
 }
