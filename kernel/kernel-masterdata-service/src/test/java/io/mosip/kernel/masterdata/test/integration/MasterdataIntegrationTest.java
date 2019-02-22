@@ -401,6 +401,9 @@ public class MasterdataIntegrationTest {
 	@MockBean
 	private DeviceHistoryRepository deviceHistoryRepository;
 
+	@MockBean
+	private RegistrationCenterHistoryRepository registrationCenterHistoryRepository;
+
 	public static LocalDateTime localDateTimeUTCFormat = LocalDateTime.now();
 
 	public static final DateTimeFormatter UTC_DATE_TIME_FORMAT = DateTimeFormatter
@@ -4995,8 +4998,111 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setWorkingHours("9");
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
+		RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
 		when(registrationCenterRepository.findByIdAndIsDeletedFalseOrNull(Mockito.any()))
 				.thenReturn(registrationCenter);
+		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterMachine>());
+
+		when(registrationCenterMachineDeviceRepository
+				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+						.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
+
+		when(registrationCenterMachineUserRepository
+				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+						.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
+
+		when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterDevice>());
+		when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
+		// TODO
+		when(registrationCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);
+		mockMvc.perform(
+				delete("/v1.0/registrationcenters/676").contentType(MediaType.APPLICATION_JSON).content(contentJson))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteRegistrationCenterDependecyTest() throws Exception {
+		List<RegistrationCenterMachine> registrationCenterMachines = new ArrayList<RegistrationCenterMachine>();
+		registrationCenterMachines.add(registrationCenterMachine);
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
+		short numberOfKiosks = 1;
+		requestDto.setId("mosip.idtype.create");
+		requestDto.setVer("1.0");
+		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
+		registrationCenterDto.setName("TEST CENTER");
+		registrationCenterDto.setAddressLine1("Address Line 1");
+		registrationCenterDto.setAddressLine2("Address Line 2");
+		registrationCenterDto.setAddressLine3("Address Line 3");
+		registrationCenterDto.setCenterTypeCode("REG01");
+		registrationCenterDto.setContactPerson("Test");
+		registrationCenterDto.setContactPhone("9999999999");
+		registrationCenterDto.setHolidayLocationCode("HLC01");
+		registrationCenterDto.setId("676");
+		registrationCenterDto.setIsActive(true);
+		registrationCenterDto.setLangCode("eng");
+		registrationCenterDto.setLatitude("12.9646818");
+		registrationCenterDto.setLocationCode("LOC01");
+		registrationCenterDto.setLongitude("77.70168");
+		registrationCenterDto.setNumberOfKiosks((short) 1);
+		registrationCenterDto.setTimeZone("UTC");
+		registrationCenterDto.setWorkingHours("9");
+		RegistrationCenter updatedRegistrationCenter = new RegistrationCenter();
+		updatedRegistrationCenter.setName("TEST CENTER");
+		updatedRegistrationCenter.setAddressLine1("Address Line 1");
+		updatedRegistrationCenter.setAddressLine2("Address Line 2");
+		updatedRegistrationCenter.setAddressLine3("Address Line 3");
+		updatedRegistrationCenter.setCenterTypeCode("REG01");
+		updatedRegistrationCenter.setContactPerson("Test");
+		updatedRegistrationCenter.setContactPhone("9999999999");
+		updatedRegistrationCenter.setHolidayLocationCode("HLC01");
+		updatedRegistrationCenter.setId("676");
+		updatedRegistrationCenter.setIsActive(true);
+		updatedRegistrationCenter.setLangCode("eng");
+		updatedRegistrationCenter.setLatitude("12.9646818");
+		updatedRegistrationCenter.setLocationCode("LOC01");
+		updatedRegistrationCenter.setLongitude("77.70168");
+		updatedRegistrationCenter.setNumberOfKiosks(numberOfKiosks);
+		updatedRegistrationCenter.setTimeZone("UTC");
+		updatedRegistrationCenter.setWorkingHours("9");
+		updatedRegistrationCenter.setIsDeleted(true);
+		RegistrationCenter registrationCenter = new RegistrationCenter();
+		registrationCenter.setName("TEST CENTER");
+		registrationCenter.setAddressLine1("Address Line 1");
+		registrationCenter.setAddressLine2("Address Line 2");
+		registrationCenter.setAddressLine3("Address Line 3");
+		registrationCenter.setCenterTypeCode("REG01");
+		registrationCenter.setContactPerson("Test");
+		registrationCenter.setContactPhone("9999999999");
+		registrationCenter.setHolidayLocationCode("HLC01");
+		registrationCenter.setId("676");
+		registrationCenter.setIsActive(true);
+		registrationCenter.setLangCode("eng");
+		registrationCenter.setLatitude("12.9646818");
+		registrationCenter.setLocationCode("LOC01");
+		registrationCenter.setLongitude("77.70168");
+		registrationCenter.setNumberOfKiosks(numberOfKiosks);
+		registrationCenter.setTimeZone("UTC");
+		registrationCenter.setWorkingHours("9");
+		requestDto.setRequest(registrationCenterDto);
+		String contentJson = mapper.writeValueAsString(requestDto);
+		when(registrationCenterRepository.findByIdAndIsDeletedFalseOrNull(Mockito.any()))
+				.thenReturn(registrationCenter);
+		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterMachine>());
+
+		when(registrationCenterMachineDeviceRepository
+				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+						.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
+
+		when(registrationCenterMachineUserRepository
+				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+						.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
+
+		when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterDevice>());
+
 		when(registrationCenterRepository.deleteRegistrationCenter(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenReturn(1);
 		mockMvc.perform(
@@ -5143,8 +5249,12 @@ public class MasterdataIntegrationTest {
 		registrationCenterDto.setWorkingHours("9");
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
+		//RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
 		when(registrationCenterRepository.findByIdAndLangCode(Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		/*when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
+		when(registrationCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);*/
+
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isInternalServerError());
 	}
