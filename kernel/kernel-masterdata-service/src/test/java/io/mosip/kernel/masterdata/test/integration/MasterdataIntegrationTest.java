@@ -314,7 +314,7 @@ public class MasterdataIntegrationTest {
 	private String reasonCategoryRequest = null;
 
 	@MockBean
-	RegistrationCenterHistoryRepository repository;
+	RegistrationCenterHistoryRepository repositoryCenterHistoryRepository;
 
 	RegistrationCenterHistory center;
 	Device device;
@@ -1808,7 +1808,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByIdTest() throws Exception {
 
-		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
 				localDateTimeUTCFormat)).thenReturn(centers);
 
 		MvcResult result = mockMvc
@@ -1824,7 +1824,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryNotFoundExceptionTest() throws Exception {
-		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
 				localDateTimeUTCFormat)).thenReturn(null);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
@@ -1832,7 +1832,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryEmptyExceptionTest() throws Exception {
-		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
 				localDateTimeUTCFormat)).thenReturn(new ArrayList<RegistrationCenterHistory>());
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
@@ -1840,7 +1840,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryFetchExceptionTest() throws Exception {
-		when(repository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
 				localDateTimeUTCFormat)).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
@@ -5017,7 +5017,7 @@ public class MasterdataIntegrationTest {
 		
 		when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
 		// TODO
-		when(repository.create(Mockito.any())).thenReturn(registrationCenterHistory);
+		when(repositoryCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);
 		mockMvc.perform(
 				delete("/v1.0/registrationcenters/676").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
@@ -5259,7 +5259,7 @@ when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDelet
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterRepository.findByIdAndLangCode(Mockito.anyString(), Mockito.anyString())).thenReturn(registrationCenter);
 		when(registrationCenterRepository.update(registrationCenter)).thenReturn(registrationCenter);
-		when(repository.create(Mockito.any())).thenReturn(registrationCenterHistory);
+		when(repositoryCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
 	}
