@@ -5055,5 +5055,54 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isInternalServerError());
 	}
+	
+	//-----------------------------------genderNameValidationTest-------------------//
+	
+	 @Test
+		public void validateGenderNameInvalidTest() throws Exception {
+			Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(false);
+			mockMvc.perform(get("/v1.0/gendertypes/validate/others")).andExpect(status().isOk()).andReturn();
+
+		}
+
+		@Test
+		public void validateGenderNameValid() throws Exception {
+			Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(true);
+			mockMvc.perform(get("/v1.0/gendertypes/validate/male")).andExpect(status().isOk()).andReturn();
+
+		}
+
+		@Test()
+		public void validateGenderNameException() throws Exception {
+			Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString()))
+					.thenThrow(DataRetrievalFailureException.class);
+			mockMvc.perform(get("/v1.0/gendertypes/validate/male")).andExpect(status().is5xxServerError());
+
+		}
+		
+		
+		// ----------------------------------------------------location------------------------------//
+
+		@Test
+		public void validateLocationNameInvalidTest() throws Exception {
+			Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(false);
+			mockMvc.perform(get("/v1.0/locations/validate/Morocco")).andExpect(status().isOk()).andReturn();
+
+		}
+
+		@Test
+		public void validateLocationNameValidTest() throws Exception {
+			Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(true);
+			mockMvc.perform(get("/v1.0/locations/validate/Morroco")).andExpect(status().isOk()).andReturn();
+
+		}
+
+		@Test()
+		public void validateLocationNameExceptionTest() throws Exception {
+			Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString()))
+					.thenThrow(DataRetrievalFailureException.class);
+			mockMvc.perform(get("/v1.0/locations/validate/Morroco")).andExpect(status().is5xxServerError());
+
+		}
 
 }
