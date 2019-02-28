@@ -57,6 +57,7 @@ import io.mosip.kernel.masterdata.dto.DocumentCategoryDto;
 import io.mosip.kernel.masterdata.dto.DocumentTypeDto;
 import io.mosip.kernel.masterdata.dto.GenderTypeDto;
 import io.mosip.kernel.masterdata.dto.IdTypeDto;
+import io.mosip.kernel.masterdata.dto.IndividualTypeDto;
 import io.mosip.kernel.masterdata.dto.LanguageDto;
 import io.mosip.kernel.masterdata.dto.MachineDto;
 import io.mosip.kernel.masterdata.dto.MachineSpecificationDto;
@@ -78,6 +79,7 @@ import io.mosip.kernel.masterdata.dto.TemplateTypeDto;
 import io.mosip.kernel.masterdata.dto.TitleDto;
 import io.mosip.kernel.masterdata.dto.ValidDocumentDto;
 import io.mosip.kernel.masterdata.dto.getresponse.IdTypeResponseDto;
+import io.mosip.kernel.masterdata.dto.getresponse.IndividualTypeResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterHistoryResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterUserMachineMappingHistoryResponseDto;
@@ -92,6 +94,7 @@ import io.mosip.kernel.masterdata.entity.DocumentType;
 import io.mosip.kernel.masterdata.entity.Gender;
 import io.mosip.kernel.masterdata.entity.Holiday;
 import io.mosip.kernel.masterdata.entity.IdType;
+import io.mosip.kernel.masterdata.entity.IndividualType;
 import io.mosip.kernel.masterdata.entity.Language;
 import io.mosip.kernel.masterdata.entity.Location;
 import io.mosip.kernel.masterdata.entity.Machine;
@@ -130,6 +133,7 @@ import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineUserHistory
 import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineUserID;
 import io.mosip.kernel.masterdata.exception.DataNotFoundException;
 import io.mosip.kernel.masterdata.exception.RequestException;
+import io.mosip.kernel.masterdata.repository.ApplicantValidDocumentRepository;
 import io.mosip.kernel.masterdata.repository.BiometricAttributeRepository;
 import io.mosip.kernel.masterdata.repository.BlacklistedWordsRepository;
 import io.mosip.kernel.masterdata.repository.DeviceHistoryRepository;
@@ -141,6 +145,7 @@ import io.mosip.kernel.masterdata.repository.DocumentTypeRepository;
 import io.mosip.kernel.masterdata.repository.GenderTypeRepository;
 import io.mosip.kernel.masterdata.repository.HolidayRepository;
 import io.mosip.kernel.masterdata.repository.IdTypeRepository;
+import io.mosip.kernel.masterdata.repository.IndividualTypeRepository;
 import io.mosip.kernel.masterdata.repository.LanguageRepository;
 import io.mosip.kernel.masterdata.repository.LocationRepository;
 import io.mosip.kernel.masterdata.repository.MachineHistoryRepository;
@@ -409,6 +414,11 @@ public class MasterdataIntegrationTest {
 
 	public static final String UTC_DATE_TIME_FORMAT_DATE_STRING = "2018-12-02T02:50:12.208Z";
 
+	@MockBean
+	private IndividualTypeRepository individualTypeRepository;
+	private IndividualTypeResponseDto individualTypeResponseDto;
+	private List<IndividualType> individualTypes = new ArrayList<>();
+
 	@SuppressWarnings("static-access")
 	@Before
 	public void setUp() {
@@ -422,6 +432,8 @@ public class MasterdataIntegrationTest {
 
 		mapper.registerModule(new JavaTimeModule());
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+		individualTypeSetup();
 
 		genderTypeSetup();
 
@@ -469,6 +481,93 @@ public class MasterdataIntegrationTest {
 		templateTypeTestSetup();
 		templateFileFormatSetup();
 		registrationCenterDeviceHistorySetup();
+	}
+
+	private void individualTypeSetup() {
+		IndividualType fr = new IndividualType();
+		fr.setIndividualTypeID(new CodeAndLanguageCodeID("FR", "eng"));
+		fr.setIsActive(true);
+		fr.setName("Foreigner");
+
+		IndividualType nfr = new IndividualType();
+		nfr.setIndividualTypeID(new CodeAndLanguageCodeID("NFR", "eng"));
+		nfr.setIsActive(true);
+		nfr.setName("Non-Foreigner");
+
+		individualTypes.add(fr);
+		individualTypes.add(nfr);
+
+		individualTypeResponseDto = new IndividualTypeResponseDto();
+		IndividualTypeDto frDto = new IndividualTypeDto();
+		MapperUtils.map(fr, frDto);
+		IndividualTypeDto nfrDto = new IndividualTypeDto();
+		MapperUtils.map(nfr, nfrDto);
+
+		individualTypeResponseDto.getIndividualTypes().add(frDto);
+		individualTypeResponseDto.getIndividualTypes().add(nfrDto);
+
+	}
+
+	/* Individual type test */
+	@Test
+	public void getAllIndividualTypeTest() throws Exception {
+		when(individualTypeRepository.findAll()).thenReturn(individualTypes);
+		mockMvc.perform(get("/v1.0/individualtypes").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getAllIndividualTypeNoTypeFoundTest() throws Exception {
+		when(individualTypeRepository.findAll()).thenReturn(null);
+		mockMvc.perform(get("/v1.0/individualtypes").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getAllIndividualTypeMasterDataServiceExceptionTest() throws Exception {
+		when(individualTypeRepository.findAll()).thenThrow(DataAccessLayerException.class);
+		mockMvc.perform(get("/v1.0/individualtypes").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+
+	}
+
+	/* Applicant type code */
+	@MockBean
+	private ApplicantValidDocumentRepository applicantValidRepository;
+
+	@Test
+	public void getValidApplicantTypeTest() throws Exception {
+
+		List<Object[]> list = new ArrayList<>();
+
+		Object[] arr = new Object[9];
+
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = "abc";
+		}
+
+		list.add(arr);
+		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
+				Mockito.anyList())).thenReturn(list);
+		mockMvc.perform(get("/v1.0/applicanttype/001/languages?languages=eng&languages=fra&languages=ara"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getValidApplicantTypeMasterDataServiceExceptionTest() throws Exception {
+		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
+				Mockito.anyList())).thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
+		mockMvc.perform(get("/v1.0/applicanttype/001/languages?languages=eng&languages=fra&languages=ara"))
+				.andExpect(status().isInternalServerError());
+
+	}
+
+	@Test
+	public void getValidApplicantTypeNoTypeFoundTest() throws Exception {
+		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
+				Mockito.anyList())).thenReturn(null);
+		mockMvc.perform(get("/v1.0/applicanttype/001/languages?languages=eng&languages=fra&languages=ara"))
+				.andExpect(status().isOk());
 	}
 
 	private DeviceType deviceType;
