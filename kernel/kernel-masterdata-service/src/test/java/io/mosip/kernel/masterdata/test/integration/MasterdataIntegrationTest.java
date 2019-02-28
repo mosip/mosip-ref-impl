@@ -57,6 +57,7 @@ import io.mosip.kernel.masterdata.dto.DocumentCategoryDto;
 import io.mosip.kernel.masterdata.dto.DocumentTypeDto;
 import io.mosip.kernel.masterdata.dto.GenderTypeDto;
 import io.mosip.kernel.masterdata.dto.IdTypeDto;
+import io.mosip.kernel.masterdata.dto.IndividualTypeDto;
 import io.mosip.kernel.masterdata.dto.LanguageDto;
 import io.mosip.kernel.masterdata.dto.MachineDto;
 import io.mosip.kernel.masterdata.dto.MachineSpecificationDto;
@@ -78,6 +79,7 @@ import io.mosip.kernel.masterdata.dto.TemplateTypeDto;
 import io.mosip.kernel.masterdata.dto.TitleDto;
 import io.mosip.kernel.masterdata.dto.ValidDocumentDto;
 import io.mosip.kernel.masterdata.dto.getresponse.IdTypeResponseDto;
+import io.mosip.kernel.masterdata.dto.getresponse.IndividualTypeResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterHistoryResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterUserMachineMappingHistoryResponseDto;
@@ -92,6 +94,7 @@ import io.mosip.kernel.masterdata.entity.DocumentType;
 import io.mosip.kernel.masterdata.entity.Gender;
 import io.mosip.kernel.masterdata.entity.Holiday;
 import io.mosip.kernel.masterdata.entity.IdType;
+import io.mosip.kernel.masterdata.entity.IndividualType;
 import io.mosip.kernel.masterdata.entity.Language;
 import io.mosip.kernel.masterdata.entity.Location;
 import io.mosip.kernel.masterdata.entity.Machine;
@@ -129,6 +132,7 @@ import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineID;
 import io.mosip.kernel.masterdata.entity.id.RegistrationCenterMachineUserHistoryID;
 import io.mosip.kernel.masterdata.exception.DataNotFoundException;
 import io.mosip.kernel.masterdata.exception.RequestException;
+import io.mosip.kernel.masterdata.repository.ApplicantValidDocumentRepository;
 import io.mosip.kernel.masterdata.repository.BiometricAttributeRepository;
 import io.mosip.kernel.masterdata.repository.BlacklistedWordsRepository;
 import io.mosip.kernel.masterdata.repository.DeviceHistoryRepository;
@@ -140,6 +144,7 @@ import io.mosip.kernel.masterdata.repository.DocumentTypeRepository;
 import io.mosip.kernel.masterdata.repository.GenderTypeRepository;
 import io.mosip.kernel.masterdata.repository.HolidayRepository;
 import io.mosip.kernel.masterdata.repository.IdTypeRepository;
+import io.mosip.kernel.masterdata.repository.IndividualTypeRepository;
 import io.mosip.kernel.masterdata.repository.LanguageRepository;
 import io.mosip.kernel.masterdata.repository.LocationRepository;
 import io.mosip.kernel.masterdata.repository.MachineHistoryRepository;
@@ -186,15 +191,15 @@ import io.mosip.kernel.masterdata.utils.MapperUtils;
 @AutoConfigureMockMvc
 public class MasterdataIntegrationTest {
 
-//	private static final String JSON_STRING_RESPONSE = "{\"uinLength\":24,\"numberOfWrongAttemptsForOtp\":5,\"accountFreezeTimeoutInHours\":10,\"mobilenumberlength\":10,\"archivalPolicy\":\"arc_policy_2\",\"tokenIdLength\":23,\"restrictedNumbers\":[\"8732\",\"321\",\"65\"],\"registrationCenterId\":\"KDUE83CJ3\",\"machineId\":\"MCBD3UI3\",\"supportedLanguages\":[\"eng\",\"hin\",\"ara\",\"deu\",\"fra\"],\"tspIdLength\":24,\"otpTimeOutInMinutes\":2,\"notificationtype\":\"SMS|EMAIL\",\"pridLength\":32,\"vidLength\":32}";
+	// private static final String JSON_STRING_RESPONSE =
+	// "{\"uinLength\":24,\"numberOfWrongAttemptsForOtp\":5,\"accountFreezeTimeoutInHours\":10,\"mobilenumberlength\":10,\"archivalPolicy\":\"arc_policy_2\",\"tokenIdLength\":23,\"restrictedNumbers\":[\"8732\",\"321\",\"65\"],\"registrationCenterId\":\"KDUE83CJ3\",\"machineId\":\"MCBD3UI3\",\"supportedLanguages\":[\"eng\",\"hin\",\"ara\",\"deu\",\"fra\"],\"tspIdLength\":24,\"otpTimeOutInMinutes\":2,\"notificationtype\":\"SMS|EMAIL\",\"pridLength\":32,\"vidLength\":32}";
 
 	private static final String JSON_STRING_RESPONSE = "{\r\n" + "\"registrationConfiguration\":\r\n"
 			+ "							{\"keyValidityPeriodPreRegPack\":\"3\",\"smsNotificationTemplateRegCorrection\":\"OTP for your request is $otp\",\"defaultDOB\":\"1-Jan\",\"smsNotificationTemplateOtp\":\"OTP for your request is $otp\",\"supervisorVerificationRequiredForExceptions\":\"true\",\"keyValidityPeriodRegPack\":\"3\",\"irisRetryAttempts\":\"10\",\"fingerprintQualityThreshold\":\"120\",\"multifactorauthentication\":\"true\",\"smsNotificationTemplateUpdateUIN\":\"OTP for your request is $otp\",\"supervisorAuthType\":\"password\",\"maxDurationRegPermittedWithoutMasterdataSyncInDays\":\"10\",\"modeOfNotifyingIndividual\":\"mobile\",\"emailNotificationTemplateUpdateUIN\":\"Hello $user the OTP is $otp\",\"maxDocSizeInMB\":\"150\",\"emailNotificationTemplateOtp\":\"Hello $user the OTP is $otp\",\"emailNotificationTemplateRegCorrection\":\"Hello $user the OTP is $otp\",\"faceRetry\":\"12\",\"noOfFingerprintAuthToOnboardUser\":\"10\",\"smsNotificationTemplateLostUIN\":\"OTP for your request is $otp\",\"supervisorAuthMode\":\"IRIS\",\"operatorRegSubmissionMode\":\"fingerprint\",\"officerAuthType\":\"password\",\"faceQualityThreshold\":\"25\",\"gpsDistanceRadiusInMeters\":\"3\",\"automaticSyncFreqServerToClient\":\"25\",\"maxDurationWithoutMasterdataSyncInDays\":\"7\",\"loginMode\":\"bootable dongle\",\"irisQualityThreshold\":\"25\",\"retentionPeriodAudit\":\"3\",\"fingerprintRetryAttempts\":\"234\",\"emailNotificationTemplateNewReg\":\"Hello $user the OTP is $otp\",\"passwordExpiryDurationInDays\":\"3\",\"emailNotificationTemplateLostUIN\":\"Hello $user the OTP is $otp\",\"blockRegistrationIfNotSynced\":\"10\",\"noOfIrisAuthToOnboardUser\":\"10\",\"smsNotificationTemplateNewReg\":\"OTP for your request is $otp\"},\r\n"
 			+ "\r\n" + "\"globalConfiguration\":\r\n"
 			+ "						{\"mosip.kernel.crypto.symmetric-algorithm-name\":\"AES\",\"mosip.kernel.virus-scanner.port\":\"3310\",\"mosip.kernel.email.max-length\":\"50\",\"mosip.kernel.email.domain.ext-max-lenght\":\"7\",\"mosip.kernel.rid.sequence-length\":\"5\",\"mosip.kernel.uin.uin-generation-cron\":\"0 * * * * *\",\"mosip.kernel.rid.centerid-length\":\"5\",\"mosip.kernel.email.special-char\":\"!#$%&'*+-\\/=?^_`{|}~.\",\"mosip.kernel.rid.timestamp-length\":\"14\",\"mosip.kernel.vid.length.sequence-limit\":\"3\",\"mosip.kernel.keygenerator.asymmetric-algorithm-length\":\"2048\",\"mosip.kernel.uin.min-unused-threshold\":\"100000\",\"mosip.kernel.prid.sequence-limit\":\"3\",\"auth.role.prefix\":\"ROLE_\",\"mosip.kernel.email.domain.ext-min-lenght\":\"2\",\"auth.server.validate.url\":\"http:\\/\\/localhost:8091\\/auth\\/validate_token\",\"mosip.kernel.machineid.length\":\"4\",\"mosip.supported-languages\":\"eng,ara,fra,hin,deu\",\"mosip.kernel.prid.length\":\"14\",\"auth.header.name\":\"Authorization\",\"mosip.kernel.crypto.asymmetric-algorithm-name\":\"RSA\",\"mosip.kernel.phone.min-length\":\"9\",\"mosip.kernel.uin.length\":\"10\",\"mosip.kernel.virus-scanner.host\":\"104.211.209.102\",\"mosip.kernel.email.min-length\":\"7\",\"mosip.kernel.rid.machineid-length\":\"5\",\"mosip.kernel.prid.repeating-block-limit\":\"3\",\"mosip.kernel.vid.length.repeating-block-limit\":\"2\",\"mosip.kernel.rid.length\":\"29\",\"mosip.kernel.phone.max-length\":\"15\",\"mosip.kernel.prid.repeating-limit\":\"2\",\"mosip.kernel.uin.restricted-numbers\":\"786,666\",\"mosip.kernel.email.domain.special-char\":\"-\",\"mosip.kernel.vid.length.repeating-limit\":\"2\",\"mosip.kernel.registrationcenterid.length\":\"4\",\"mosip.kernel.phone.special-char\":\"+ -\",\"mosip.kernel.uin.uins-to-generate\":\"200000\",\"mosip.kernel.vid.length\":\"16\",\"mosip.kernel.tokenid.length\":\"36\",\"mosip.kernel.uin.length.repeating-block-limit\":\"2\",\"mosip.kernel.tspid.length\":\"4\",\"mosip.kernel.tokenid.sequence-limit\":\"3\",\"mosip.kernel.uin.length.repeating-limit\":\"2\",\"mosip.kernel.uin.length.sequence-limit\":\"3\",\"mosip.kernel.keygenerator.symmetric-algorithm-length\":\"256\",\"mosip.kernel.data-key-splitter\":\"#KEY_SPLITTER#\"}\r\n"
 			+ "}";
-	
-	
+
 	@Autowired
 	private MockMvc mockMvc;
 	@MockBean
@@ -407,6 +412,11 @@ public class MasterdataIntegrationTest {
 
 	public static final String UTC_DATE_TIME_FORMAT_DATE_STRING = "2018-12-02T02:50:12.208Z";
 
+	@MockBean
+	private IndividualTypeRepository individualTypeRepository;
+	private IndividualTypeResponseDto individualTypeResponseDto;
+	private List<IndividualType> individualTypes = new ArrayList<>();
+
 	@SuppressWarnings("static-access")
 	@Before
 	public void setUp() {
@@ -420,6 +430,8 @@ public class MasterdataIntegrationTest {
 
 		mapper.registerModule(new JavaTimeModule());
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+		individualTypeSetup();
 
 		genderTypeSetup();
 
@@ -467,6 +479,93 @@ public class MasterdataIntegrationTest {
 		templateTypeTestSetup();
 		templateFileFormatSetup();
 		registrationCenterDeviceHistorySetup();
+	}
+
+	private void individualTypeSetup() {
+		IndividualType fr = new IndividualType();
+		fr.setIndividualTypeID(new CodeAndLanguageCodeID("FR", "eng"));
+		fr.setIsActive(true);
+		fr.setName("Foreigner");
+
+		IndividualType nfr = new IndividualType();
+		nfr.setIndividualTypeID(new CodeAndLanguageCodeID("NFR", "eng"));
+		nfr.setIsActive(true);
+		nfr.setName("Non-Foreigner");
+
+		individualTypes.add(fr);
+		individualTypes.add(nfr);
+
+		individualTypeResponseDto = new IndividualTypeResponseDto();
+		IndividualTypeDto frDto = new IndividualTypeDto();
+		MapperUtils.map(fr, frDto);
+		IndividualTypeDto nfrDto = new IndividualTypeDto();
+		MapperUtils.map(nfr, nfrDto);
+
+		individualTypeResponseDto.getIndividualTypes().add(frDto);
+		individualTypeResponseDto.getIndividualTypes().add(nfrDto);
+
+	}
+
+	/* Individual type test */
+	@Test
+	public void getAllIndividualTypeTest() throws Exception {
+		when(individualTypeRepository.findAll()).thenReturn(individualTypes);
+		mockMvc.perform(get("/v1.0/individualtypes").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getAllIndividualTypeNoTypeFoundTest() throws Exception {
+		when(individualTypeRepository.findAll()).thenReturn(null);
+		mockMvc.perform(get("/v1.0/individualtypes").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getAllIndividualTypeMasterDataServiceExceptionTest() throws Exception {
+		when(individualTypeRepository.findAll()).thenThrow(DataAccessLayerException.class);
+		mockMvc.perform(get("/v1.0/individualtypes").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError());
+
+	}
+
+	/* Applicant type code */
+	@MockBean
+	private ApplicantValidDocumentRepository applicantValidRepository;
+
+	@Test
+	public void getValidApplicantTypeTest() throws Exception {
+
+		List<Object[]> list = new ArrayList<>();
+
+		Object[] arr = new Object[9];
+
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = "abc";
+		}
+
+		list.add(arr);
+		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
+				Mockito.anyList())).thenReturn(list);
+		mockMvc.perform(get("/v1.0/applicanttype/001/languages?languages=eng&languages=fra&languages=ara"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getValidApplicantTypeMasterDataServiceExceptionTest() throws Exception {
+		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
+				Mockito.anyList())).thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
+		mockMvc.perform(get("/v1.0/applicanttype/001/languages?languages=eng&languages=fra&languages=ara"))
+				.andExpect(status().isInternalServerError());
+
+	}
+
+	@Test
+	public void getValidApplicantTypeNoTypeFoundTest() throws Exception {
+		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
+				Mockito.anyList())).thenReturn(null);
+		mockMvc.perform(get("/v1.0/applicanttype/001/languages?languages=eng&languages=fra&languages=ara"))
+				.andExpect(status().isOk());
 	}
 
 	private DeviceType deviceType;
@@ -1535,8 +1634,7 @@ public class MasterdataIntegrationTest {
 
 		Mockito.when(genderTypeRepository.findAll(Gender.class)).thenReturn(genderTypesNull);
 
-		mockMvc.perform(get("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
@@ -1652,8 +1750,7 @@ public class MasterdataIntegrationTest {
 		List<IdType> idTypeList = new ArrayList<>();
 		idTypeList.add(idType);
 		when(idTypeRepository.findByLangCode("ENG")).thenReturn(idTypeList);
-		mockMvc.perform(get("/v1.0/idtypes/HIN").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/idtypes/HIN").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -1790,7 +1887,6 @@ public class MasterdataIntegrationTest {
 				.content(reasonListRequest.getBytes())).andExpect(status().isInternalServerError());
 	}
 
-	
 	// -----------------------------RegistrationCenterTest----------------------------------
 
 	@Test
@@ -1927,8 +2023,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "bangalore")
-				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
@@ -1942,8 +2037,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/5/names").param("name", "PATANA")
-				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
@@ -2106,8 +2200,7 @@ public class MasterdataIntegrationTest {
 				.findByCntrIdAndUsrIdAndMachineIdAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
 						"1", "1", localDateTimeUTCFormat)).thenReturn(registrationCenterUserMachineHistories);
 		mockMvc.perform(get("/v1.0/getregistrationmachineusermappinghistory/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING)
-				.concat("/1/1/1")).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andReturn();
+				.concat("/1/1/1")).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 	}
 
 	@Test
@@ -2160,8 +2253,7 @@ public class MasterdataIntegrationTest {
 	public void deleteRegistrationCenterUserMachineMappingDataNotFoundExceptionTest() throws Exception {
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(Optional.empty());
-		mockMvc.perform(delete("/v1.0/registrationmachineusermappings/REG001/MAC001/QC001"))
-				.andExpect(status().isOk());
+		mockMvc.perform(delete("/v1.0/registrationmachineusermappings/REG001/MAC001/QC001")).andExpect(status().isOk());
 	}
 
 	@Test
@@ -2309,8 +2401,7 @@ public class MasterdataIntegrationTest {
 
 		Mockito.when(titleRepository.getThroughLanguageCode("ENG")).thenReturn(titlesNull);
 
-		mockMvc.perform(get("/v1.0/title/ENG").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		mockMvc.perform(get("/v1.0/title/ENG").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
@@ -2451,8 +2542,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void deleteTitleBadRequestTest() throws Exception {
 		when(titleRepository.getThroughLanguageCode(Mockito.any())).thenReturn(null);
-		mockMvc.perform(delete("/v1.0/title/ABC").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		mockMvc.perform(delete("/v1.0/title/ABC").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
@@ -4037,7 +4127,6 @@ public class MasterdataIntegrationTest {
 		contentJson = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isOk());
-
 
 		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any())).thenReturn(null);
 		registrationCenterDto.setLanguageCode("eng");
