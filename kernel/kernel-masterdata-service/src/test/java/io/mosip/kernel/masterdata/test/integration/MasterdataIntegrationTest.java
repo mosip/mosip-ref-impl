@@ -1637,7 +1637,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getAllGenderFetchExceptionTest() throws Exception {
 
-		Mockito.when(genderTypeRepository.findAll(Gender.class)).thenThrow(DataAccessLayerException.class);
+		Mockito.when(genderTypeRepository.findAllByIsActiveAndIsDeleted()).thenThrow(DataAccessLayerException.class);
 
 		mockMvc.perform(get("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
@@ -1647,7 +1647,7 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getAllGenderNotFoundExceptionTest() throws Exception {
 
-		Mockito.when(genderTypeRepository.findAll(Gender.class)).thenReturn(genderTypesNull);
+		Mockito.when(genderTypeRepository.findAllByIsActiveAndIsDeleted()).thenReturn(genderTypesNull);
 
 		mockMvc.perform(get("/v1.0/gendertypes").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
@@ -1664,7 +1664,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getAllGendersTest() throws Exception {
-		Mockito.when(genderTypeRepository.findAll(Gender.class)).thenReturn(genderTypes);
+		Mockito.when(genderTypeRepository.findAllByIsActiveAndIsDeleted()).thenReturn(genderTypes);
 		mockMvc.perform(get("/v1.0/gendertypes")).andExpect(status().isOk());
 
 	}
