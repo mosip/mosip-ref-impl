@@ -72,7 +72,7 @@ import io.mosip.kernel.masterdata.dto.RegistrationCenterMachineDeviceDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterMachineDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterTypeDto;
 import io.mosip.kernel.masterdata.dto.RegistrationCenterUserMachineMappingDto;
-import io.mosip.kernel.core.http.RequestWrapper;
+import io.mosip.kernel.masterdata.dto.RequestDto;
 import io.mosip.kernel.masterdata.dto.TemplateDto;
 import io.mosip.kernel.masterdata.dto.TemplateFileFormatDto;
 import io.mosip.kernel.masterdata.dto.TemplateTypeDto;
@@ -239,7 +239,7 @@ public class MasterdataIntegrationTest {
 	@MockBean
 	private TemplateFileFormatRepository templateFileFormatRepository;
 
-	private RequestWrapper<TemplateFileFormatDto> templateFileFormatRequestDto = new RequestWrapper<TemplateFileFormatDto>();
+	private RequestDto<TemplateFileFormatDto> templateFileFormatRequestDto = new RequestDto<TemplateFileFormatDto>();
 
 	@MockBean
 	private TemplateTypeRepository templateTypeRepository;
@@ -406,6 +406,7 @@ public class MasterdataIntegrationTest {
 	@MockBean
 	private DeviceHistoryRepository deviceHistoryRepository;
 
+	
 	public static LocalDateTime localDateTimeUTCFormat = LocalDateTime.now();
 
 	public static final DateTimeFormatter UTC_DATE_TIME_FORMAT = DateTimeFormatter
@@ -1084,13 +1085,13 @@ public class MasterdataIntegrationTest {
 		reasonListId.setCode("RL1");
 		reasonListId.setLangCode("eng");
 		reasonListId.setRsnCatCode("RC1");
-		RequestWrapper<ReasonListDto> requestDto = new RequestWrapper<>();
+		RequestDto<ReasonListDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.create.packetrejection.reason");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(reasonListDto);
-		RequestWrapper<PostReasonCategoryDto> requestDto1 = new RequestWrapper<>();
+		RequestDto<PostReasonCategoryDto> requestDto1 = new RequestDto<>();
 		requestDto1.setId("mosip.create.packetrejection.reason");
-		requestDto1.setVersion("1.0.0");
+		requestDto1.setVer("1.0.0");
 		requestDto1.setRequest(postReasonCategoryDto);
 		try {
 			reasonListRequest = mapper.writeValueAsString(requestDto);
@@ -1227,9 +1228,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterAndDeviceTest() throws Exception {
-		RequestWrapper<RegistrationCenterDeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.deviceid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(registrationCenterDeviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(registrationCenterDeviceRepository.create(Mockito.any())).thenReturn(registrationCenterDevice);
@@ -1242,9 +1243,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterAndDeviceDataAccessLayerExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterDeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.deviceid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(registrationCenterDeviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(registrationCenterDeviceRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
@@ -1258,9 +1259,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterAndDeviceBadRequestTest() throws Exception {
-		RequestWrapper<RegistrationCenterDeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.deviceid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		String content = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/registrationcenterdevice").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().isOk());
@@ -1297,9 +1298,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterAndMachineTest() throws Exception {
-		RequestWrapper<RegistrationCenterMachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterMachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(registrationCenterMachineDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineRepository.create(Mockito.any())).thenReturn(registrationCenterMachine);
@@ -1312,9 +1313,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterAndMachineDataAccessLayerExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterMachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterMachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(registrationCenterMachineDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
@@ -1327,9 +1328,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterAndMachineBadRequestTest() throws Exception {
-		RequestWrapper<RegistrationCenterMachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterMachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		String content = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(
 				post("/v1.0/registrationcentermachine").contentType(MediaType.APPLICATION_JSON).content(content))
@@ -1366,9 +1367,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterMachineAndDeviceTest() throws Exception {
-		RequestWrapper<RegistrationCenterMachineDeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterMachineDeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid.deviceid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(registrationCenterMachineDeviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineDeviceRepository.create(Mockito.any()))
@@ -1382,9 +1383,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterMachineAndDeviceDataAccessLayerExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterMachineDeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterMachineDeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid.deviceid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(registrationCenterMachineDeviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineDeviceRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
@@ -1397,9 +1398,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void mapRegistrationCenterMachineAndDeviceBadRequestTest() throws Exception {
-		RequestWrapper<RegistrationCenterMachineDeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterMachineDeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid.deviceid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		String content = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(
 				post("/v1.0/registrationcentermachinedevice").contentType(MediaType.APPLICATION_JSON).content(content))
@@ -1444,9 +1445,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateLanguagesTest() throws Exception {
-		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
+		RequestDto<LanguageDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 
 		LanguageDto frenchDto = new LanguageDto();
 		frenchDto.setCode("fra");
@@ -1471,9 +1472,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateLanguagesDataAccessLayerTest() throws Exception {
-		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
+		RequestDto<LanguageDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 
 		LanguageDto frenchDto = new LanguageDto();
 		frenchDto.setCode("fra");
@@ -1498,9 +1499,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateLanguagesNotFoundTest() throws Exception {
-		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
+		RequestDto<LanguageDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 
 		LanguageDto frenchDto = new LanguageDto();
 		frenchDto.setCode("FRN");
@@ -1545,9 +1546,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void saveLanguagesTest() throws Exception {
-		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
+		RequestDto<LanguageDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(languageDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(languageRepository.create(Mockito.any())).thenReturn(language);
@@ -1558,9 +1559,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void saveLanguagesDataAccessLayerExceptionTest() throws Exception {
-		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
+		RequestDto<LanguageDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(languageDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(languageRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
@@ -1571,9 +1572,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void saveLanguagesExceptionTest() throws Exception {
-		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
+		RequestDto<LanguageDto> requestDto = new RequestDto<>();
 		requestDto.setId("");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		String content = mapper.writeValueAsString(requestDto);
 		mockMvc.perform(post("/v1.0/languages").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().isOk());
@@ -1849,9 +1850,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createReasonCateogryLanguageCodeValidatorFailureTest() throws Exception {
-		RequestWrapper<PostReasonCategoryDto> requestDto1 = new RequestWrapper<>();
+		RequestDto<PostReasonCategoryDto> requestDto1 = new RequestDto<>();
 		requestDto1.setId("mosip.create.packetrejection.reason");
-		requestDto1.setVersion("1.0.0");
+		requestDto1.setVer("1.0.0");
 		postReasonCategoryDto.setLangCode("xxx");
 		requestDto1.setRequest(postReasonCategoryDto);
 		String content = mapper.writeValueAsString(requestDto1);
@@ -1876,9 +1877,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createReasonListLanguageCodeValidatorTest() throws Exception {
-		RequestWrapper<ReasonListDto> requestDto1 = new RequestWrapper<>();
+		RequestDto<ReasonListDto> requestDto1 = new RequestDto<>();
 		requestDto1.setId("mosip.create.packetrejection.reason");
-		requestDto1.setVersion("1.0.0");
+		requestDto1.setVer("1.0.0");
 		reasonListDto.setLangCode("xxx");
 		requestDto1.setRequest(reasonListDto);
 		String content = mapper.writeValueAsString(requestDto1);
@@ -1906,9 +1907,8 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByIdTest() throws Exception {
 
-		when(repositoryCenterHistoryRepository
-				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
-						localDateTimeUTCFormat)).thenReturn(centers);
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+				localDateTimeUTCFormat)).thenReturn(centers);
 
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
@@ -1923,27 +1923,24 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCentersHistoryNotFoundExceptionTest() throws Exception {
-		when(repositoryCenterHistoryRepository
-				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
-						localDateTimeUTCFormat)).thenReturn(null);
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+				localDateTimeUTCFormat)).thenReturn(null);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 	}
 
 	@Test
 	public void getRegistrationCentersHistoryEmptyExceptionTest() throws Exception {
-		when(repositoryCenterHistoryRepository
-				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
-						localDateTimeUTCFormat)).thenReturn(new ArrayList<RegistrationCenterHistory>());
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+				localDateTimeUTCFormat)).thenReturn(new ArrayList<RegistrationCenterHistory>());
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 	}
 
 	@Test
 	public void getRegistrationCentersHistoryFetchExceptionTest() throws Exception {
-		when(repositoryCenterHistoryRepository
-				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
-						localDateTimeUTCFormat)).thenThrow(DataAccessLayerException.class);
+		when(repositoryCenterHistoryRepository.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
+				localDateTimeUTCFormat)).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/v1.0/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
 	}
@@ -2284,9 +2281,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCentersMachineUserMappingTest() throws Exception {
-		RequestWrapper<RegistrationCenterUserMachineMappingDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterUserMachineMappingDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto.setCntrId("REG001");
 		centerUserMachineMappingDto.setUsrId("QC001");
@@ -2303,9 +2300,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCentersMachineUserMappingDataAccessLayerExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterUserMachineMappingDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterUserMachineMappingDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto.setCntrId("REG001");
 		centerUserMachineMappingDto.setUsrId("QC001");
@@ -2323,9 +2320,9 @@ public class MasterdataIntegrationTest {
 	// TODO:
 	@Test
 	public void createOrUpdateRegistrationCentersMachineUserMappingCreateTest() throws Exception {
-		RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>> requestDto = new RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>>();
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto1.setCntrId("REG001");
@@ -2341,9 +2338,7 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto2.setIsActive(true);
 		centerUserMachineMappingDto2.setMachineId("MAC001");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
-		RegCenterMachineUserReqDto regCenterMachineUserReqDto = new RegCenterMachineUserReqDto();
-		regCenterMachineUserReqDto.setRequest(registrationCenterUserMachineMappingDtos);
-		requestDto.setRequest(regCenterMachineUserReqDto);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(Optional.empty());
@@ -2357,9 +2352,9 @@ public class MasterdataIntegrationTest {
 	// TODO:
 	@Test
 	public void createOrUpdateRegistrationCentersMachineUserMappingUpdateTest() throws Exception {
-		RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>> requestDto = new RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>>();
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto1.setCntrId("REG001");
@@ -2375,9 +2370,7 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto2.setMachineId("MAC001");
 		centerUserMachineMappingDto2.setLangCode("eng");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
-		RegCenterMachineUserReqDto regCenterMachineUserReqDto = new RegCenterMachineUserReqDto();
-		regCenterMachineUserReqDto.setRequest(registrationCenterUserMachineMappingDtos);
-		requestDto.setRequest(regCenterMachineUserReqDto);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
@@ -2390,9 +2383,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createOrUpdateRegistrationCentersMachineUserMappingNotMappedTest() throws Exception {
-		RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>> requestDto = new RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>>();
+		RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto> requestDto = new RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		List<RegistrationCenterUserMachineMappingDto> registrationCenterUserMachineMappingDtos = new ArrayList<>();
 		RegistrationCenterUserMachineMappingDto centerUserMachineMappingDto1 = new RegistrationCenterUserMachineMappingDto();
 		centerUserMachineMappingDto1.setCntrId("REG001");
@@ -2408,9 +2401,7 @@ public class MasterdataIntegrationTest {
 		centerUserMachineMappingDto2.setLangCode("eng");
 		centerUserMachineMappingDto2.setMachineId("MAC001");
 		registrationCenterUserMachineMappingDtos.add(centerUserMachineMappingDto2);
-		RegCenterMachineUserReqDto regCenterMachineUserReqDto = new RegCenterMachineUserReqDto();
-		regCenterMachineUserReqDto.setRequest(registrationCenterUserMachineMappingDtos);
-		requestDto.setRequest(regCenterMachineUserReqDto);
+		requestDto.setRequest(registrationCenterUserMachineMappingDtos);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(Optional.empty());
@@ -2498,9 +2489,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTitleTest() throws Exception {
-		RequestWrapper<TitleDto> requestDto = new RequestWrapper<>();
+		RequestDto<TitleDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.title.update");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		TitleDto titleDto = new TitleDto();
 		titleDto.setCode("001");
 		titleDto.setTitleDescription("mosip");
@@ -2524,9 +2515,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTitleBadRequestTest() throws Exception {
-		RequestWrapper<TitleDto> requestDto = new RequestWrapper<>();
+		RequestDto<TitleDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.title.update");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		TitleDto titleDto = new TitleDto();
 		titleDto.setCode("001");
 		titleDto.setTitleDescription("mosip");
@@ -2543,9 +2534,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTitleDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<TitleDto> requestDto = new RequestWrapper<>();
+		RequestDto<TitleDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.title.update");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		TitleDto titleDto = new TitleDto();
 		titleDto.setCode("001");
 		titleDto.setTitleDescription("mosip");
@@ -2588,9 +2579,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addGenderTypeTest() throws Exception {
-		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<GenderTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(genderDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(genderTypeRepository.create(Mockito.any())).thenReturn(genderType);
@@ -2600,9 +2591,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addGenderTypeLandCodeValidationTest() throws Exception {
-		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<GenderTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		genderDto.setLangCode("akk");
 		requestDto.setRequest(genderDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -2613,9 +2604,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void addGenderTypeExceptionTest() throws Exception {
 
-		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<GenderTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(genderDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(genderTypeRepository.create(Mockito.any()))
@@ -2627,9 +2618,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateGenderTypeTest() throws Exception {
-		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<GenderTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		GenderTypeDto genderTypeDto = new GenderTypeDto("GEN01", "Male", "eng", true);
 		requestDto.setRequest(genderTypeDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
@@ -2642,9 +2633,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateGenderTypeNotFoundExceptionTest() throws Exception {
-		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<GenderTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		GenderTypeDto genderTypeDto = new GenderTypeDto("GEN01", "Male", "ENG", true);
 		requestDto.setRequest(genderTypeDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
@@ -2657,9 +2648,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateGenderTypeDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<GenderTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		GenderTypeDto genderTypeDto = new GenderTypeDto("GEN01", "Male", "eng", true);
 		requestDto.setRequest(genderTypeDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
@@ -2699,9 +2690,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void createBiometricAttributeTest() throws Exception {
 
-		RequestWrapper<BiometricAttributeDto> requestDto = new RequestWrapper<BiometricAttributeDto>();
+		RequestDto<BiometricAttributeDto> requestDto = new RequestDto<BiometricAttributeDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(biometricAttributeDto);
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(biometricAttributeRepository.create(Mockito.any())).thenReturn(biometricAttribute);
@@ -2711,9 +2702,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createBiometricAttributeExceptionTest() throws Exception {
-		RequestWrapper<BiometricAttributeDto> requestDto = new RequestWrapper<BiometricAttributeDto>();
+		RequestDto<BiometricAttributeDto> requestDto = new RequestDto<BiometricAttributeDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(biometricAttributeDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(biometricAttributeRepository.create(Mockito.any()))
@@ -2724,9 +2715,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createBiometricAttributeLangCodeValidationTest() throws Exception {
-		RequestWrapper<BiometricAttributeDto> requestDto = new RequestWrapper<BiometricAttributeDto>();
+		RequestDto<BiometricAttributeDto> requestDto = new RequestDto<BiometricAttributeDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		biometricAttributeDto.setLangCode("akk");
 		requestDto.setRequest(biometricAttributeDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -2737,9 +2728,9 @@ public class MasterdataIntegrationTest {
 	// ----------------------------------TemplateCreateApiTest--------------------------------------------------
 	@Test
 	public void createTemplateTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<TemplateDto>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<TemplateDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(templateDto);
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(templateRepository.create(Mockito.any())).thenReturn(template);
@@ -2749,9 +2740,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createTemplateLangCodeValidationTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<TemplateDto>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<TemplateDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		templateDto.setLangCode("akk");
 		requestDto.setRequest(templateDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -2761,9 +2752,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createTemplateExceptionTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<TemplateDto>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<TemplateDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(templateDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(templateRepository.create(Mockito.any()))
@@ -2775,9 +2766,9 @@ public class MasterdataIntegrationTest {
 	// ----------------------------------TemplateTypeCreateApiTest--------------------------------------------------
 	@Test
 	public void createTemplateTypeTest() throws Exception {
-		RequestWrapper<TemplateTypeDto> requestDto = new RequestWrapper<TemplateTypeDto>();
+		RequestDto<TemplateTypeDto> requestDto = new RequestDto<TemplateTypeDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(templateTypeDto);
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(templateTypeRepository.create(Mockito.any())).thenReturn(templateType);
@@ -2787,9 +2778,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createTemplatetypeExceptionTest() throws Exception {
-		RequestWrapper<TemplateTypeDto> requestDto = new RequestWrapper<TemplateTypeDto>();
+		RequestDto<TemplateTypeDto> requestDto = new RequestDto<TemplateTypeDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(templateTypeDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(templateTypeRepository.create(Mockito.any()))
@@ -2800,9 +2791,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createTemplatetypeLangValidationExceptionTest() throws Exception {
-		RequestWrapper<TemplateTypeDto> requestDto = new RequestWrapper<TemplateTypeDto>();
+		RequestDto<TemplateTypeDto> requestDto = new RequestDto<TemplateTypeDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		templateTypeDto.setLangCode("akk");
 		requestDto.setRequest(templateTypeDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -2861,10 +2852,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createDeviceSpecificationTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.DeviceSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceSpecificationDto);
 
 		String deviceSpecificationJson = mapper.writeValueAsString(requestDto);
@@ -2876,10 +2867,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createDeviceSpecificationLangCodeValidationTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.DeviceSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		deviceSpecificationDto.setLangCode("akk");
 		requestDto.setRequest(deviceSpecificationDto);
 		String deviceSpecificationJson = mapper.writeValueAsString(requestDto);
@@ -2889,10 +2880,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createDeviceSpecificationExceptionTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.DeviceSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceSpecificationDto);
 
 		String DeviceSpecificationJson = mapper.writeValueAsString(requestDto);
@@ -2909,9 +2900,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void createDeviceTypeTest() throws Exception {
 
-		RequestWrapper<DeviceTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.Devicetypecode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceTypeDto);
 
 		String DeviceTypeJson = mapper.writeValueAsString(requestDto);
@@ -2924,9 +2915,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void createDeviceTypeExceptionTest() throws Exception {
 
-		RequestWrapper<DeviceTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.Devicetypecode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceTypeDto);
 
 		String DeviceTypeJson = mapper.writeValueAsString(requestDto);
@@ -2941,10 +2932,10 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void createMachineSpecificationTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineSpecificationDto);
 
 		String machineSpecificationJson = mapper.writeValueAsString(requestDto);
@@ -2958,10 +2949,10 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void createMachineSpecificationLanguageCodeValidatorTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		machineSpecificationDto.setLangCode("xxx");
 		requestDto.setRequest(machineSpecificationDto);
 
@@ -2976,10 +2967,10 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void createMachineSpecificationExceptionTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineSpecificationDto);
 
 		String machineSpecificationJson = mapper.writeValueAsString(requestDto);
@@ -2994,9 +2985,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineSpecificationLangCodeValidationTest() throws Exception {
-		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineSpecificationcode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		machineSpecificationDto.setLangCode("akk");
 		requestDto.setRequest(machineSpecificationDto);
 		String machineSpecificationJson = mapper.writeValueAsString(requestDto);
@@ -3008,9 +2999,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineSpecificationTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machineSpecification.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineSpecificationDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(machineSpecificationRepository.findByIdAndLangCodeIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -3025,9 +3016,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineSpecificationLanguageCodeValidatorTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machineSpecification.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		machineSpecificationDto.setLangCode("xxx");
 		requestDto.setRequest(machineSpecificationDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -3043,9 +3034,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineSpecificationNotFoundExceptionTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machineSpecification.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineSpecificationDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(machineSpecificationRepository.findByIdAndLangCodeIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -3059,9 +3050,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineSpecificationDatabaseConnectionExceptionTest() throws Exception {
 
-		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machineSpecification.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineSpecificationDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(machineSpecificationRepository.findByIdAndLangCodeIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -3194,10 +3185,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineTest() throws Exception {
-		RequestWrapper<MachineDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineDto);
 
 		machineJson = mapper.writeValueAsString(requestDto);
@@ -3210,10 +3201,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineLanguageCodeValidatorTest() throws Exception {
-		RequestWrapper<MachineDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		machineDto.setLangCode("xxx");
 		requestDto.setRequest(machineDto);
 
@@ -3227,10 +3218,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineTestInvalid() throws Exception {
-		RequestWrapper<MachineDto> requestDto;
-		requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto;
+		requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		MachineDto mDto = new MachineDto();
 		mDto.setId("1000ddfagsdgfadsfdgdsagdsagdsagdagagagdsgagadgagdf");
 		mDto.setLangCode("eng");
@@ -3249,9 +3240,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineExceptionTest() throws Exception {
-		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.Machine.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineDto);
 		String content = mapper.writeValueAsString(requestDto);
 
@@ -3265,9 +3256,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineTest() throws Exception {
 
-		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machine.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineDto);
 		String content = mapper.writeValueAsString(requestDto);
 
@@ -3283,9 +3274,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineLanguageCodeValidatorTest() throws Exception {
 
-		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machine.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		machineDto.setLangCode("xxx");
 		requestDto.setRequest(machineDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -3302,9 +3293,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineNotFoundExceptionTest() throws Exception {
 
-		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machine.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(machineRepository.findMachineByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -3318,9 +3309,9 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateMachineDatabaseConnectionExceptionTest() throws Exception {
 
-		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.machine.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineDto);
 		String content = mapper.writeValueAsString(requestDto);
 		when(machineRepository.findMachineByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -3391,9 +3382,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineTypeTest() throws Exception {
-		RequestWrapper<MachineTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machinetypecode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineTypeDto);
 
 		String machineTypeJson = mapper.writeValueAsString(requestDto);
@@ -3405,9 +3396,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineTypeLangCodeValidationTest() throws Exception {
-		RequestWrapper<MachineTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machinetypecode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		machineTypeDto.setLangCode("akk");
 		requestDto.setRequest(machineTypeDto);
 
@@ -3418,9 +3409,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createMachineTypeExceptionTest() throws Exception {
-		RequestWrapper<MachineTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<MachineTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.match.regcentr.machinetypecode");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(machineTypeDto);
 
 		String machineTypeJson = mapper.writeValueAsString(requestDto);
@@ -3481,9 +3472,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createDeviceTest() throws Exception {
-		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 
@@ -3496,9 +3487,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createDeviceExceptionTest() throws Exception {
-		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 
@@ -3511,9 +3502,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDeviceSuccessTest() throws Exception {
-		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(deviceRepository.findByIdAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
@@ -3538,9 +3529,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDeviceNotFoundExceptionTest() throws Exception {
-		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(deviceDto);
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(deviceRepository.findByIdAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
@@ -3636,9 +3627,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addBlackListedWordTest() throws Exception {
-		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<>();
+		RequestDto<BlacklistedWordsDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		BlacklistedWordsDto blacklistedWordsDto = new BlacklistedWordsDto();
 		blacklistedWordsDto.setWord("test  word");
 		blacklistedWordsDto.setLangCode("eng");
@@ -3655,9 +3646,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createBlacklistedWordsLangValidationExceptionTest() throws Exception {
-		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<BlacklistedWordsDto>();
+		RequestDto<BlacklistedWordsDto> requestDto = new RequestDto<BlacklistedWordsDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		BlacklistedWordsDto blacklistedWordsDto = new BlacklistedWordsDto();
 		blacklistedWordsDto.setWord("test  word");
 		blacklistedWordsDto.setLangCode("akk");
@@ -3671,9 +3662,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addBlackListedWordExceptionTest() throws Exception {
-		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<>();
+		RequestDto<BlacklistedWordsDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		BlacklistedWordsDto blacklistedWordsDto = new BlacklistedWordsDto();
 		blacklistedWordsDto.setWord("test  word");
 		blacklistedWordsDto.setLangCode("eng");
@@ -3688,9 +3679,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterTypeListTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("testcode");
 		registrationCenterTypeDto.setDescr("testdescription");
@@ -3707,9 +3698,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterTypeListLanguageCodeValidationTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("testcode");
 		registrationCenterTypeDto.setDescr("testdescription");
@@ -3726,9 +3717,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterTypeListTestExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("testcode");
 		registrationCenterTypeDto.setDescr("testdescription");
@@ -3746,9 +3737,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createIdTypeTest() throws Exception {
-		RequestWrapper<IdTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<IdTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		IdTypeDto idTypeDto = new IdTypeDto();
 		idTypeDto.setCode("testcode");
 		idTypeDto.setDescr("testdescription");
@@ -3766,9 +3757,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createIdTypeLanguageCodeValidatorTest() throws Exception {
-		RequestWrapper<IdTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<IdTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		IdTypeDto idTypeDto = new IdTypeDto();
 		idTypeDto.setCode("testcode");
 		idTypeDto.setDescr("testdescription");
@@ -3786,9 +3777,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createIdTypeExceptionTest() throws Exception {
-		RequestWrapper<IdTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<IdTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		IdTypeDto idTypeDto = new IdTypeDto();
 		idTypeDto.setCode("testcode");
 		idTypeDto.setDescr("testdescription");
@@ -3805,9 +3796,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addDocumentTypeListTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3824,9 +3815,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addDocumentTypesDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3843,9 +3834,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addDocumentTypesLangCodeValidationTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3860,9 +3851,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentTypeTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3881,9 +3872,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentTypeLangValidationTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3900,9 +3891,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentTypeNotFoundExceptionTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3919,9 +3910,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentTypeDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
 		documentTypeDto.setCode("D001");
 		documentTypeDto.setDescription("Proof Of Identity");
@@ -3982,9 +3973,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void insertValidDocumentExceptionTest() throws Exception {
-		RequestWrapper<ValidDocumentDto> requestDto = new RequestWrapper<>();
+		RequestDto<ValidDocumentDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		ValidDocumentDto validDocumentDto = new ValidDocumentDto();
 		validDocumentDto.setIsActive(true);
 		validDocumentDto.setLangCode("eng");
@@ -4000,9 +3991,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addDocumentCategoryTest() throws Exception {
-		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentCategoryDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentCategoryDto documentCategoryDto = new DocumentCategoryDto();
 		documentCategoryDto.setCode("D001");
 		documentCategoryDto.setDescription("Proof Of Identity");
@@ -4019,9 +4010,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addDocumentCategoryLanguageCodeValidatorTest() throws Exception {
-		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentCategoryDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentCategoryDto documentCategoryDto = new DocumentCategoryDto();
 		documentCategoryDto.setCode("D001");
 		documentCategoryDto.setDescription("Proof Of Identity");
@@ -4038,9 +4029,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addDocumentCategoryDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentCategoryDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentCategoryDto documentCategoryDto = new DocumentCategoryDto();
 		documentCategoryDto.setCode("D001");
 		documentCategoryDto.setDescription("Proof Of Identity");
@@ -4058,9 +4049,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentCategoryTest() throws Exception {
-		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentCategoryDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentCategoryDto documentCategoryDto = new DocumentCategoryDto();
 		documentCategoryDto.setCode("D001");
 		documentCategoryDto.setDescription("Proof Of Identity");
@@ -4078,9 +4069,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentCategoryNotFoundExceptionTest() throws Exception {
-		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentCategoryDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentCategoryDto documentCategoryDto = new DocumentCategoryDto();
 		documentCategoryDto.setCode("D001");
 		documentCategoryDto.setDescription("Proof Of Identity");
@@ -4098,9 +4089,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDocumentCategoryDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
+		RequestDto<DocumentCategoryDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		DocumentCategoryDto documentCategoryDto = new DocumentCategoryDto();
 		documentCategoryDto.setCode("D001");
 		documentCategoryDto.setDescription("Proof Of Identity");
@@ -4162,9 +4153,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void insertValidDocumentTest() throws Exception {
-		RequestWrapper<ValidDocumentDto> requestDto = new RequestWrapper<>();
+		RequestDto<ValidDocumentDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		ValidDocumentDto validDocumentDto = new ValidDocumentDto();
 		validDocumentDto.setIsActive(true);
 		validDocumentDto.setLangCode("eng");
@@ -4206,9 +4197,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = getRegCenterDto();
 
 		requestDto.setRequest(registrationCenterDto);
@@ -4221,9 +4212,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterLangExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = getRegCenterDto();
 		registrationCenterDto.setLangCode(null);
 
@@ -4247,9 +4238,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void registrationCenterInvalidTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto invalidRegCntrDto = getRegCenterDto();
 		invalidRegCntrDto.setId("ID3456789102787");// more than 10 to check for invalid
 		requestDto.setRequest(invalidRegCntrDto);
@@ -4277,9 +4268,9 @@ public class MasterdataIntegrationTest {
 	/*------------------------- deviceSecification update and delete ----------------------------*/
 	@Test
 	public void updateDeviceSpecificationTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		requestDto.setRequest(deviceSpecificationDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(deviceSpecificationRepository.findByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -4292,9 +4283,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDeviceSpecificationLangCodeValidationTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		deviceSpecificationDto.setLangCode("akk");
 		requestDto.setRequest(deviceSpecificationDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
@@ -4305,9 +4296,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDeviceSpecificationRequestExceptionTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 
 		requestDto.setRequest(deviceSpecificationDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
@@ -4320,9 +4311,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateDeviceSpecificationDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
+		RequestDto<DeviceSpecificationDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		requestDto.setRequest(deviceSpecificationDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(deviceSpecificationRepository.findByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.any(),
@@ -4382,9 +4373,9 @@ public class MasterdataIntegrationTest {
 	/*------------------------------ template update and delete test-----------------------------*/
 	@Test
 	public void updateTemplateTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(templateRepository.findTemplateByIDAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any(),
@@ -4396,9 +4387,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTemplateLangCodeValidationTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		templateDto.setLangCode("akk");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
@@ -4408,9 +4399,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTemplateNotRequestExceptionTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(templateRepository.findTemplateByIDAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any(),
@@ -4422,9 +4413,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTemplateDatabaseConnectionExceptionTest() throws Exception {
-		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		requestDto.setRequest(templateDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
 		when(templateRepository.findTemplateByIDAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any(),
@@ -4462,9 +4453,9 @@ public class MasterdataIntegrationTest {
 	// ------------------------------- TemplateFileFormat Test
 	@Test
 	public void updateTemplateFileFormatSuccessTest() throws Exception {
-		RequestWrapper<TemplateFileFormatDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateFileFormatDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(templateFileFormatDto);
 		String content = mapper.writeValueAsString(requestDto);
 		Mockito.when(templateFileFormatRepository
@@ -4477,9 +4468,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTemplateFileFormatLanguageCodeValidationTest() throws Exception {
-		RequestWrapper<TemplateFileFormatDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateFileFormatDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		templateFileFormatDto.setLangCode("xxx");
 		requestDto.setRequest(templateFileFormatDto);
 		String content = mapper.writeValueAsString(requestDto);
@@ -4493,9 +4484,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTemplateFileFormatExceptionTest() throws Exception {
-		RequestWrapper<TemplateFileFormatDto> requestDto = new RequestWrapper<>();
+		RequestDto<TemplateFileFormatDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.device.update");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		requestDto.setRequest(templateFileFormatDto);
 		String content = mapper.writeValueAsString(requestDto);
 
@@ -4643,9 +4634,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateBlacklistedWordsLangValidationExceptionTest() throws Exception {
-		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<BlacklistedWordsDto>();
+		RequestDto<BlacklistedWordsDto> requestDto = new RequestDto<BlacklistedWordsDto>();
 		requestDto.setId("mosip.language.create");
-		requestDto.setVersion("1.0.0");
+		requestDto.setVer("1.0.0");
 		BlacklistedWordsDto blacklistedWordsDto = new BlacklistedWordsDto();
 		blacklistedWordsDto.setWord("test  word");
 		blacklistedWordsDto.setLangCode("akk");
@@ -4677,9 +4668,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterTypeTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("D001");
 		registrationCenterTypeDto.setIsActive(true);
@@ -4703,9 +4694,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterTypeLanguageCodeValidatorTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("D001");
 		registrationCenterTypeDto.setIsActive(true);
@@ -4729,9 +4720,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterTypeNotFoundExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("D001");
 		registrationCenterTypeDto.setIsActive(true);
@@ -4756,9 +4747,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterTypeDataAccessExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterTypeDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterTypeDto registrationCenterTypeDto = new RegistrationCenterTypeDto();
 		registrationCenterTypeDto.setCode("D001");
 		registrationCenterTypeDto.setIsActive(true);
@@ -4925,10 +4916,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -4974,10 +4965,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("UPDATED TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -5043,10 +5034,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteRegistrationCenterTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -5122,7 +5113,7 @@ public class MasterdataIntegrationTest {
 
 		when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(new ArrayList<RegistrationCenterDevice>());
-
+		
 		when(registrationCenterRepository.update(Mockito.any())).thenReturn(registrationCenter);
 		// TODO
 		when(repositoryCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);
@@ -5135,10 +5126,10 @@ public class MasterdataIntegrationTest {
 	public void deleteRegistrationCenterDependecyTest() throws Exception {
 		List<RegistrationCenterMachine> registrationCenterMachines = new ArrayList<RegistrationCenterMachine>();
 		registrationCenterMachines.add(registrationCenterMachine);
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -5221,11 +5212,11 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteRegistrationCenterTestForRequestException() throws Exception {
-		List<RegistrationCenter> registrationCenterlist = new ArrayList<>();
+		List<RegistrationCenter> registrationCenterlist  = new ArrayList<>();
 		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
-				.thenReturn(registrationCenterlist);
-		mockMvc.perform(delete("/v1.0/registrationcenters/12")).andExpect(status().isOk());
-
+		.thenReturn(registrationCenterlist);
+	mockMvc.perform(delete("/v1.0/registrationcenters/12")).andExpect(status().isOk());
+		
 	}
 
 	@Test
@@ -5250,23 +5241,22 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setWorkingHours("9");
 		registrationCenterlist.add(registrationCenter);
 		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
-				.thenReturn(registrationCenterlist);
-		when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
-				.thenReturn(new ArrayList<RegistrationCenterMachine>());
+		.thenReturn(registrationCenterlist);
+when(registrationCenterMachineRepository.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+		.thenReturn(new ArrayList<RegistrationCenterMachine>());
 
-		when(registrationCenterMachineDeviceRepository
-				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
-						.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
+when(registrationCenterMachineDeviceRepository
+		.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterMachineDevice>());
 
-		when(registrationCenterMachineUserRepository
-				.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
-						.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
+when(registrationCenterMachineUserRepository
+		.findByMachineIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+				.thenReturn(new ArrayList<RegistrationCenterUserMachine>());
 
-		when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
-				.thenReturn(new ArrayList<RegistrationCenterDevice>());
+when(registrationCenterDeviceRepository.findByDeviceIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
+		.thenReturn(new ArrayList<RegistrationCenterDevice>());
 
-		when(registrationCenterRepository.update(Mockito.any()))
-				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
+		when(registrationCenterRepository.update(Mockito.any())).thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/v1.0/registrationcenters/12").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 
@@ -5274,10 +5264,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createRegistrationCenterTestInvalidLatLongFormatTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -5324,10 +5314,10 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void updateRegistrationCenterRequestExceptionTest() throws Exception {
 		RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		short numberOfKiosks = 1;
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -5366,8 +5356,7 @@ public class MasterdataIntegrationTest {
 		registrationCenter.setWorkingHours("9");
 		requestDto.setRequest(registrationCenterDto);
 		String contentJson = mapper.writeValueAsString(requestDto);
-		when(registrationCenterRepository.findByIdAndLangCode(Mockito.anyString(), Mockito.anyString()))
-				.thenReturn(registrationCenter);
+		when(registrationCenterRepository.findByIdAndLangCode(Mockito.anyString(), Mockito.anyString())).thenReturn(registrationCenter);
 		when(registrationCenterRepository.update(registrationCenter)).thenReturn(registrationCenter);
 		when(repositoryCenterHistoryRepository.create(Mockito.any())).thenReturn(registrationCenterHistory);
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
@@ -5376,9 +5365,9 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateRegistrationCenterDataAccessExceptionTest() throws Exception {
-		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
+		RequestDto<RegistrationCenterDto> requestDto = new RequestDto<>();
 		requestDto.setId("mosip.idtype.create");
-		requestDto.setVersion("1.0");
+		requestDto.setVer("1.0");
 		RegistrationCenterDto registrationCenterDto = new RegistrationCenterDto();
 		registrationCenterDto.setName("TEST CENTER");
 		registrationCenterDto.setAddressLine1("Address Line 1");
@@ -5404,53 +5393,54 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(put("/v1.0/registrationcenters").contentType(MediaType.APPLICATION_JSON).content(contentJson))
 				.andExpect(status().isInternalServerError());
 	}
+	
+	//-----------------------------------genderNameValidationTest-------------------//
+	
+	 @Test
+		public void validateGenderNameInvalidTest() throws Exception {
+			Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(false);
+			mockMvc.perform(get("/v1.0/gendertypes/validate/others")).andExpect(status().isOk()).andReturn();
 
-	// -----------------------------------genderNameValidationTest-------------------//
+		}
 
-	@Test
-	public void validateGenderNameInvalidTest() throws Exception {
-		Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(false);
-		mockMvc.perform(get("/v1.0/gendertypes/validate/others")).andExpect(status().isOk()).andReturn();
+		@Test
+		public void validateGenderNameValid() throws Exception {
+			Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(true);
+			mockMvc.perform(get("/v1.0/gendertypes/validate/male")).andExpect(status().isOk()).andReturn();
 
-	}
+		}
 
-	@Test
-	public void validateGenderNameValid() throws Exception {
-		Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(true);
-		mockMvc.perform(get("/v1.0/gendertypes/validate/male")).andExpect(status().isOk()).andReturn();
+		@Test()
+		public void validateGenderNameException() throws Exception {
+			Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString()))
+					.thenThrow(DataRetrievalFailureException.class);
+			mockMvc.perform(get("/v1.0/gendertypes/validate/male")).andExpect(status().is5xxServerError());
 
-	}
+		}
+		
+		
+		// ----------------------------------------------------location------------------------------//
 
-	@Test()
-	public void validateGenderNameException() throws Exception {
-		Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString()))
-				.thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/gendertypes/validate/male")).andExpect(status().is5xxServerError());
+		@Test
+		public void validateLocationNameInvalidTest() throws Exception {
+			Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(false);
+			mockMvc.perform(get("/v1.0/locations/validate/Morocco")).andExpect(status().isOk()).andReturn();
 
-	}
+		}
 
-	// ----------------------------------------------------location------------------------------//
+		@Test
+		public void validateLocationNameValidTest() throws Exception {
+			Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(true);
+			mockMvc.perform(get("/v1.0/locations/validate/Morroco")).andExpect(status().isOk()).andReturn();
 
-	@Test
-	public void validateLocationNameInvalidTest() throws Exception {
-		Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(false);
-		mockMvc.perform(get("/v1.0/locations/validate/Morocco")).andExpect(status().isOk()).andReturn();
+		}
 
-	}
+		@Test()
+		public void validateLocationNameExceptionTest() throws Exception {
+			Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString()))
+					.thenThrow(DataRetrievalFailureException.class);
+			mockMvc.perform(get("/v1.0/locations/validate/Morroco")).andExpect(status().is5xxServerError());
 
-	@Test
-	public void validateLocationNameValidTest() throws Exception {
-		Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(true);
-		mockMvc.perform(get("/v1.0/locations/validate/Morroco")).andExpect(status().isOk()).andReturn();
-
-	}
-
-	@Test()
-	public void validateLocationNameExceptionTest() throws Exception {
-		Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString()))
-				.thenThrow(DataRetrievalFailureException.class);
-		mockMvc.perform(get("/v1.0/locations/validate/Morroco")).andExpect(status().is5xxServerError());
-
-	}
+		}
 
 }
