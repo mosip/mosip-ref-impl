@@ -1726,7 +1726,24 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addHolidayTypeTest() throws Exception {
-		String json = "{ \"id\": \"string\", \"request\": { \"holidayDate\": \"2019-01-01\", \"holidayDay\": \"Sunday\", \"holidayDesc\": \"New Year\", \"holidayMonth\": \"January\", \"holidayName\": \"New Year\", \"holidayYear\": \"2019\", \"id\": 1, \"isActive\": true, \"langCode\": \"eng\", \"locationCode\": \"BLR\" }, \"timestamp\": \"2018-12-06T08:49:32.190Z\", \"ver\": \"string\"}";
+		String json = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"holidayDate\": \"2019-01-01\",\n" + 
+				"    \"holidayDay\": \"Sunday\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"holidayMonth\": \"January\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayYear\": \"2019\",\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"locationCode\": \"BLR\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-06T08:49:32.190Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.create(Mockito.any())).thenReturn(holiday);
 		mockMvc.perform(post("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(status().isOk());
@@ -1734,7 +1751,24 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void addHolidayTypeLanguageValidationTest() throws Exception {
-		String json = "{ \"id\": \"string\", \"request\": { \"holidayDate\": \"2019-01-01\", \"holidayDay\": \"Sunday\", \"holidayDesc\": \"New Year\", \"holidayMonth\": \"January\", \"holidayName\": \"New Year\", \"holidayYear\": \"2019\", \"id\": 1, \"isActive\": true, \"langCode\": \"asd\", \"locationCode\": \"BLR\" }, \"timestamp\": \"2018-12-06T08:49:32.190Z\", \"ver\": \"string\"}";
+		String json = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"holidayDate\": \"2019-01-01\",\n" + 
+				"    \"holidayDay\": \"Sunday\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"holidayMonth\": \"January\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayYear\": \"2019\",\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"asd\",\n" + 
+				"    \"locationCode\": \"BLR\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-06T08:49:32.190Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.create(Mockito.any())).thenReturn(holiday);
 		mockMvc.perform(post("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(status().isOk());
@@ -1743,11 +1777,28 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void addHolidayTypeExceptionTest() throws Exception {
 
-		String json = "{ \"id\": \"string\", \"request\": { \"holidayDate\": \"2019-01-01\", \"holidayDay\": \"Sunday\", \"holidayDesc\": \"New Year\", \"holidayMonth\": \"January\", \"holidayName\": \"New Year\", \"holidayYear\": \"2019\", \"id\": 1, \"isActive\": true, \"langCode\": \"eng\", \"locationCode\": \"BLR\" }, \"timestamp\": \"2018-12-06T08:49:32.190Z\", \"ver\": \"string\"}";
+		String json = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"holidayDate\": \"2019-01-01\",\n" + 
+				"    \"holidayDay\": \"Sunday\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"holidayMonth\": \"January\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayYear\": \"2019\",\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"locationCode\": \"BLR\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-06T08:49:32.190Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
 		mockMvc.perform(post("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(json))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2472,7 +2523,19 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void saveTitleTest() throws Exception {
-		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"eng\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"timestamp\": \"2018-12-17T09:10:25.829Z\", \"ver\": \"string\"}";
+		String content = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"code\": \"43\",\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"titleDescription\": \"string\",\n" + 
+				"    \"titleName\": \"string\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-17T09:10:25.829Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(titleRepository.create(Mockito.any())).thenReturn(title);
 		mockMvc.perform(post("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().isOk());
@@ -2480,7 +2543,19 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void createTitleLangCodeValidationTest() throws Exception {
-		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"dfg\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"timestamp\": \"2018-12-17T09:10:25.829Z\", \"ver\": \"string\"}";
+		String content = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"code\": \"43\",\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"dfg\",\n" + 
+				"    \"titleDescription\": \"string\",\n" + 
+				"    \"titleName\": \"string\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-17T09:10:25.829Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		mockMvc.perform(post("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().isOk());
 	}
@@ -2488,11 +2563,23 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void saveTitleExceptionTest() throws Exception {
 
-		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"eng\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"timestamp\": \"2018-12-17T09:10:25.829Z\", \"ver\": \"string\"}";
+		String content = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"code\": \"43\",\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"titleDescription\": \"string\",\n" + 
+				"    \"titleName\": \"string\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-17T09:10:25.829Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(titleRepository.create(Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute ", null));
 		mockMvc.perform(post("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(content))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 
 	}
 
@@ -2517,7 +2604,19 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateTitleLangCodeValidationTest() throws Exception {
-		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"dfg\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"timestamp\": \"2018-12-17T09:10:25.829Z\", \"ver\": \"string\"}";
+		String content = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"code\": \"43\",\n" + 
+				"    \"isActive\": true,\n" + 
+				"    \"langCode\": \"dfg\",\n" + 
+				"    \"titleDescription\": \"string\",\n" + 
+				"    \"titleName\": \"string\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-17T09:10:25.829Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		mockMvc.perform(put("/v1.0/title").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().isOk());
 	}
@@ -4536,7 +4635,17 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteHolidaySuccess() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"locationCode\":\"LOC01\",\"holidayDate\":\"2019-01-01\",\"holidayName\":\"New Year\"},\"timestamp\": \"2018-12-24T06:15:12.494Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"holidayDate\": \"2019-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"locationCode\": \"LOC01\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:15:12.494Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.deleteHolidays(any(), anyString(), any(), anyString())).thenReturn(1);
 		mockMvc.perform(delete("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4544,7 +4653,17 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void deleteHolidayNoHolidayFound() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"locationCode\":\"LOC01\",\"holidayDate\":\"2019-01-01\",\"holidayName\":\"New Year\"},\"timestamp\": \"2018-12-24T06:15:12.494Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"holidayDate\": \"2019-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"locationCode\": \"LOC01\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:15:12.494Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.deleteHolidays(any(), anyString(), any(), anyString())).thenReturn(0);
 		mockMvc.perform(delete("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4553,16 +4672,32 @@ public class MasterdataIntegrationTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void deleteHolidayFailure() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"locationCode\":\"LOC01\",\"holidayDate\":\"2019-01-01\",\"holidayName\":\"New Year\"},\"timestamp\": \"2018-12-24T06:15:12.494Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"holidayDate\": \"2019-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"locationCode\": \"LOC01\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:15:12.494Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.deleteHolidays(any(), anyString(), any(), anyString()))
 				.thenThrow(DataRetrievalFailureException.class, DataAccessLayerException.class);
 		mockMvc.perform(delete("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
 	public void updateHolidaySuccessTest() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"holidayDate\": \"2018-01-01\", \"holidayDesc\": \"New Year\",\"holidayName\": \"New Year\",\"id\": 1,\"isActive\": false,\"langCode\": \"eng\",\"locationCode\": \"LOC01\"},\"timestamp\": \"2018-12-24T06:26:18.807Z\",\"ver\": \"string\"}";
+		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
+				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
+				+ "    \"holidayName\": \"New Year\",\n" + "    \"holidayDesc\": \"New Year\",\n"
+				+ "    \"langCode\": \"eng\",\n" + "    \"isActive\": false,\n"
+				+ "    \"newHolidayName\": \"string\",\n" + "    \"newHolidayDate\": \"string\",\n"
+				+ "    \"newHolidayDesc\": \"string\"\n" + "  },\n"
+				+ "  \"requesttime\": \"2018-12-24T06:26:18.807Z\",\n" + "  \"version\": \"string\"\n" + "}";
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenReturn(1);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4570,7 +4705,13 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateHolidayLanguageValidationTest() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"holidayDate\": \"2018-01-01\", \"holidayDesc\": \"New Year\",\"holidayName\": \"New Year\",\"id\": 1,\"isActive\": false,\"langCode\": \"asd\",\"locationCode\": \"LOC01\"},\"timestamp\": \"2018-12-24T06:26:18.807Z\",\"ver\": \"string\"}";
+		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
+				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
+				+ "    \"holidayName\": \"New Year\",\n" + "    \"holidayDesc\": \"New Year\",\n"
+				+ "    \"langCode\": \"asd\",\n" + "    \"isActive\": false,\n"
+				+ "    \"newHolidayName\": \"string\",\n" + "    \"newHolidayDate\": \"string\",\n"
+				+ "    \"newHolidayDesc\": \"string\"\n" + "  },\n"
+				+ "  \"requesttime\": \"2018-12-24T06:26:18.807Z\",\n" + "  \"version\": \"string\"\n" + "}";
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenReturn(1);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4578,7 +4719,24 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateHolidaySuccessNewNameAndDateTest() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"holidayDate\": \"2018-01-01\", \"holidayDesc\": \"New Year\",\"holidayName\": \"New Year\",\"id\": 1,\"isActive\": false,\"langCode\": \"eng\",\"locationCode\": \"LOC01\",\"newHolidayDate\": \"2019-01-01\",\"newHolidayDesc\": \"New Year Desc\",\"newHolidayName\": \"New Year\"},\"timestamp\": \"2018-12-24T06:26:18.807Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"locationCode\": \"LOC01\",\n" + 
+				"    \"holidayDate\": \"2018-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"isActive\": false,\n" + 
+				"    \"newHolidayName\": \"New Year\",\n" + 
+				"    \"newHolidayDate\": \"2019-01-01\",\n" + 
+				"    \"newHolidayDesc\": \"New Year Desc\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:26:18.807Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenReturn(1);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4586,7 +4744,24 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateHolidaySuccessNewData() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"holidayDate\": \"2018-01-01\", \"holidayDesc\": \"New Year\",\"holidayName\": \"New Year\",\"id\": 1,\"isActive\": false,\"langCode\": \"eng\",\"locationCode\": \"LOC01\",\"newHolidayDate\": null,\"newHolidayDesc\": \" \",\"newHolidayName\": \" \"},\"timestamp\": \"2018-12-24T06:26:18.807Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"locationCode\": \"LOC01\",\n" + 
+				"    \"holidayDate\": \"2018-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"isActive\": false,\n" + 
+				"    \"newHolidayName\": \" \",\n" + 
+				"    \"newHolidayDate\": \"null\",\n" + 
+				"    \"newHolidayDesc\": \" \"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:26:18.807Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenReturn(1);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4594,7 +4769,24 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateHolidayNoHolidayUpdated() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"holidayDate\": \"2018-01-01\", \"holidayDesc\": \"New Year\",\"holidayName\": \"New Year\",\"id\": 1,\"isActive\": false,\"langCode\": \"ENG\",\"locationCode\": \"LOC01\"},\"timestamp\": \"2018-12-24T06:26:18.807Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"locationCode\": \"LOC01\",\n" + 
+				"    \"holidayDate\": \"2018-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"langCode\": \"ENG\",\n" + 
+				"    \"isActive\": false,\n" + 
+				"    \"newHolidayName\": \"string\",\n" + 
+				"    \"newHolidayDate\": \"string\",\n" + 
+				"    \"newHolidayDesc\": \"string\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:26:18.807Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenReturn(0);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
@@ -4603,7 +4795,24 @@ public class MasterdataIntegrationTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void updateHolidayNoHolidayFailure() throws Exception {
-		String input = "{\"id\": \"string\",\"request\":{\"holidayDate\": \"2018-01-01\", \"holidayDesc\": \"New Year\",\"holidayName\": \"New Year\",\"id\": 1,\"isActive\": false,\"langCode\": \"eng\",\"locationCode\": \"LOC01\"},\"timestamp\": \"2018-12-24T06:26:18.807Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"id\": 1,\n" + 
+				"    \"locationCode\": \"LOC01\",\n" + 
+				"    \"holidayDate\": \"2018-01-01\",\n" + 
+				"    \"holidayName\": \"New Year\",\n" + 
+				"    \"holidayDesc\": \"New Year\",\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"isActive\": false,\n" + 
+				"    \"newHolidayName\": \"string\",\n" + 
+				"    \"newHolidayDate\": \"string\",\n" + 
+				"    \"newHolidayDesc\": \"string\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T06:26:18.807Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(holidayRepository.createQueryUpdateOrDelete(any(), any())).thenThrow(DataRetrievalFailureException.class,
 				DataAccessLayerException.class);
 		mockMvc.perform(put("/v1.0/holidays").contentType(MediaType.APPLICATION_JSON).content(input))
@@ -4634,7 +4843,10 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateBadWordSuccess() throws Exception {
-		String input = "{\"id\": \"string\",\"request\": {\"description\": \"bad word description\",\"isActive\": false,\"langCode\": \"eng\",\"word\": \"badword\"},\"timestamp\": \"2018-12-24T07:21:42.232Z\",\"ver\": \"string\"}";
+		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
+				+ "    \"description\": \"bad word description\",\n" + "    \"isActive\": false,\n"
+				+ "    \"langCode\": \"eng\",\n" + "    \"word\": \"badword\"\n" + "  },\n"
+				+ "  \"requesttime\": \"2018-12-24T07:21:42.232Z\",\n" + "  \"version\": \"string\"\n" + "}";
 		when(wordsRepository.findByWordAndLangCode(anyString(), anyString())).thenReturn(words.get(0));
 		when(wordsRepository.update(any())).thenReturn(words.get(0));
 		mockMvc.perform(put("/v1.0/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(input))
@@ -4659,7 +4871,18 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void updateBadWordNoWordFound() throws Exception {
-		String input = "{\"id\": \"string\",\"request\": {\"description\": \"bad word description\",\"isActive\": false,\"langCode\": \"ENG\",\"word\": \"badword\"},\"timestamp\": \"2018-12-24T07:21:42.232Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"description\": \"bad word description\",\n" + 
+				"    \"isActive\": false,\n" + 
+				"    \"langCode\": \"ENG\",\n" + 
+				"    \"word\": \"badword\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T07:21:42.232Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		mockMvc.perform(put("/v1.0/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(input))
 				.andExpect(status().isOk());
 	}
@@ -4667,12 +4890,23 @@ public class MasterdataIntegrationTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void updateBadWordFailure() throws Exception {
-		String input = "{\"id\": \"string\",\"request\": {\"description\": \"bad word description\",\"isActive\": false,\"langCode\": \"eng\",\"word\": \"badword\"},\"timestamp\": \"2018-12-24T07:21:42.232Z\",\"ver\": \"string\"}";
+		String input = "{\n" + 
+				"  \"id\": \"string\",\n" + 
+				"  \"metadata\": {},\n" + 
+				"  \"request\": {\n" + 
+				"    \"description\": \"bad word description\",\n" + 
+				"    \"isActive\": false,\n" + 
+				"    \"langCode\": \"eng\",\n" + 
+				"    \"word\": \"badword\"\n" + 
+				"  },\n" + 
+				"  \"requesttime\": \"2018-12-24T07:21:42.232Z\",\n" + 
+				"  \"version\": \"string\"\n" + 
+				"}";
 		when(wordsRepository.findByWordAndLangCode(anyString(), anyString())).thenReturn(words.get(0));
 		when(wordsRepository.update(any())).thenThrow(DataRetrievalFailureException.class,
 				DataAccessLayerException.class);
 		mockMvc.perform(put("/v1.0/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(input))
-				.andExpect(status().isOk());
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
