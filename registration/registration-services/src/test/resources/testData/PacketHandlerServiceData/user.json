@@ -281,12 +281,11 @@
     }
   },
   "registrationId" : null,
-  "registrationIdHash" : null,
   "preRegistrationId" : "",
   "registrationMetaDataDTO" : {
     "geoLatitudeLoc" : 33.986608,
     "geoLongitudeLoc" : -6.828873,
-    "applicationType" : "Adult",
+   
     "registrationCategory" : "New",
     "machineId" : "10011",
     "centerId" : "10031",
