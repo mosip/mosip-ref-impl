@@ -1184,7 +1184,7 @@ public class MasterdataIntegrationTest {
 		Location locationHierarchy = new Location();
 		locationHierarchy.setCode("PAT");
 		locationHierarchy.setName("PATANA");
-		locationHierarchy.setHierarchyLevel(2);
+		locationHierarchy.setHierarchyLevel((short)2);
 		locationHierarchy.setHierarchyName("Distic");
 		locationHierarchy.setParentLocCode("BHR");
 		locationHierarchy.setLangCode("ENG");
@@ -1195,7 +1195,7 @@ public class MasterdataIntegrationTest {
 		Location locationHierarchy1 = new Location();
 		locationHierarchy1.setCode("BX");
 		locationHierarchy1.setName("BAXOR");
-		locationHierarchy1.setHierarchyLevel(2);
+		locationHierarchy1.setHierarchyLevel((short)2);
 		locationHierarchy1.setHierarchyName("Distic");
 		locationHierarchy1.setParentLocCode("BHR");
 		locationHierarchy1.setLangCode("ENG");
@@ -1950,7 +1950,7 @@ public class MasterdataIntegrationTest {
 		centers.add(center);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(registrationCenters);
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		MvcResult result = mockMvc
 				.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
@@ -1968,7 +1968,7 @@ public class MasterdataIntegrationTest {
 		codes.add("TEST");
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		mockMvc.perform(get("/v1.0/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
@@ -1979,7 +1979,7 @@ public class MasterdataIntegrationTest {
 	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest() throws Exception {
 
 		List<RegistrationCenter> emptyList = new ArrayList<>();
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
@@ -1993,7 +1993,7 @@ public class MasterdataIntegrationTest {
 	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest2() throws Exception {
 
 		List<RegistrationCenter> emptyList = new ArrayList<>();
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
@@ -2005,7 +2005,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeTest() throws Exception {
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(registrationCenters);
@@ -2017,7 +2017,7 @@ public class MasterdataIntegrationTest {
 
 	@Test
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeFetchExceptionTest() throws Exception {
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenThrow(DataAccessLayerException.class);
@@ -2033,7 +2033,7 @@ public class MasterdataIntegrationTest {
 			throws Exception {
 
 		List<RegistrationCenter> emptyList = new ArrayList<>();
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
@@ -2047,7 +2047,7 @@ public class MasterdataIntegrationTest {
 			throws Exception {
 
 		List<RegistrationCenter> emptyList = new ArrayList<>();
-		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
+		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
