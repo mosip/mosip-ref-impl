@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Timestamp;
@@ -78,10 +79,7 @@ import io.mosip.kernel.masterdata.dto.TemplateFileFormatDto;
 import io.mosip.kernel.masterdata.dto.TemplateTypeDto;
 import io.mosip.kernel.masterdata.dto.TitleDto;
 import io.mosip.kernel.masterdata.dto.ValidDocumentDto;
-import io.mosip.kernel.masterdata.dto.getresponse.IdTypeResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.IndividualTypeResponseDto;
-import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterHistoryResponseDto;
-import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterUserMachineMappingHistoryResponseDto;
 import io.mosip.kernel.masterdata.entity.BiometricAttribute;
 import io.mosip.kernel.masterdata.entity.BlacklistedWords;
@@ -184,7 +182,7 @@ import io.mosip.kernel.masterdata.utils.MapperUtils;
  * @author Uday Kumar
  * @author Megha Tanga
  * @author Srinivasan
- * @author Neha
+ * @author Neha Sinha
  * @since 1.0.0
  */
 @SpringBootTest
@@ -1778,12 +1776,9 @@ public class MasterdataIntegrationTest {
 		List<IdType> idTypeList = new ArrayList<>();
 		idTypeList.add(idType);
 		when(idTypeRepository.findByLangCode("ENG")).thenReturn(idTypeList);
-		MvcResult result = mockMvc.perform(get("/idtypes/ENG").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
 
-		IdTypeResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				IdTypeResponseDto.class);
-		assertThat(returnResponse.getIdtypes().get(0).getCode(), is("POA"));
+		mockMvc.perform(get("/idtypes/ENG").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.idtypes[0].code", is("POA")));
 	}
 
 	// -----------------------------PacketRejectionTest----------------------------------
@@ -1912,16 +1907,9 @@ public class MasterdataIntegrationTest {
 		when(repositoryCenterHistoryRepository
 				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
 						localDateTimeUTCFormat)).thenReturn(centers);
-
-		MvcResult result = mockMvc
-				.perform(get("/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-
-		RegistrationCenterHistoryResponseDto returnResponse = mapper
-				.readValue(result.getResponse().getContentAsString(), RegistrationCenterHistoryResponseDto.class);
-
-		assertThat(returnResponse.getRegistrationCentersHistory().get(0).getId(), is("1"));
+		mockMvc.perform(get("/registrationcentershistory/1/ENG/".concat(UTC_DATE_TIME_FORMAT_DATE_STRING))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCentersHistory[0].name", is("bangalore")));
 	}
 
 	@Test
@@ -1958,14 +1946,9 @@ public class MasterdataIntegrationTest {
 				Mockito.anyString())).thenReturn(registrationCenters);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyInt()))
 				.thenReturn(locationHierarchies);
-		MvcResult result = mockMvc
-				.perform(get("/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(2).getName(), is("Bangalore Central"));
+		mockMvc.perform(get("/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
 
 	@Test
@@ -2146,66 +2129,44 @@ public class MasterdataIntegrationTest {
 	@Test
 	public void getSpecificRegistrationCenterByIdTestSuccessTest() throws Exception {
 		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenReturn(banglore);
-
-		MvcResult result = mockMvc.perform(get("/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-
-		assertThat(returnResponse.getRegistrationCenters().get(0).getId(), is("1"));
+		mockMvc.perform(get("/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
 
 	@Test
 	public void getCoordinateSpecificRegistrationCentersTest() throws Exception {
 		when(registrationCenterRepository.findRegistrationCentersByLat(12.9180022, 77.5028892, 0.999785939, "ENG"))
 				.thenReturn(registrationCenters);
-		MvcResult result = mockMvc
-				.perform(get("/getcoordinatespecificregistrationcenters/ENG/77.5028892/12.9180022/1609")
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
 
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getLatitude(), is("12.9180722"));
-		assertThat(returnResponse.getRegistrationCenters().get(1).getLongitude(), is("77.5028792"));
+		mockMvc.perform(get("/getcoordinatespecificregistrationcenters/ENG/77.5028892/12.9180022/1609")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
 
 	@Test
 	public void getLocationSpecificRegistrationCentersTest() throws Exception {
 		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG")).thenReturn(registrationCenters);
-		MvcResult result = mockMvc
-				.perform(get("/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(1).getLongitude(), is("77.5028792"));
+		mockMvc.perform(get("/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
 
 	@Test
 	public void getLocationSpecificMultipleRegistrationCentersTest() throws Exception {
 		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG")).thenReturn(registrationCenters);
-		MvcResult result = mockMvc
-				.perform(get("/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
 
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(2).getName(), is("Bangalore Central"));
+		mockMvc.perform(get("/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
 
 	@Test
 	public void getAllRegistrationCenterTest() throws Exception {
 		when(registrationCenterRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(registrationCenters);
-		MvcResult result = mockMvc.perform(get("/registrationcenters").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
-		RegistrationCenterResponseDto returnResponse = mapper.readValue(result.getResponse().getContentAsString(),
-				RegistrationCenterResponseDto.class);
-		assertThat(returnResponse.getRegistrationCenters().get(1).getName(), is("bangalore"));
-		assertThat(returnResponse.getRegistrationCenters().get(2).getName(), is("Bangalore Central"));
+
+		mockMvc.perform(get("/registrationcenters").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
 
 	// -----------------------------RegistrationCenterIntegrationTest----------------------------------
