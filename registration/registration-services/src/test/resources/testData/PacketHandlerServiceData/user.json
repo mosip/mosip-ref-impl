@@ -135,25 +135,46 @@
         "numOfIrisRetry" : 0,
         "forceCaptured" : false
       } ],
-      "faceDetailsDTO" : null
+      "faceDetailsDTO" : {
+      	"face" : null,
+      	"qualityScore" : 0.0,
+     
+      	"numOfRetries":0
+      }
     },
     "introducerBiometricDTO" : {
       "fingerprintDetailsDTO" : [ ],
       "biometricExceptionDTO" : [ ],
       "irisDetailsDTO" : [ ],
-      "faceDetailsDTO" : null
+      "faceDetailsDTO" : {
+      	"face" : null,
+      	"qualityScore" : 0.0,
+     
+      	"numOfRetries":0
+      }
     },
     "supervisorBiometricDTO" : {
       "fingerprintDetailsDTO" : [ ],
       "biometricExceptionDTO" : [ ],
       "irisDetailsDTO" : [ ],
-      "faceDetailsDTO" : null
+      "faceDetailsDTO" : {
+      	"face" : null,
+      	"qualityScore" : 0.0,
+     
+      	"numOfRetries":0
+      }
     },
     "operatorBiometricDTO" : {
       "fingerprintDetailsDTO" : [ ],
       "biometricExceptionDTO" : [ ],
       "irisDetailsDTO" : [ ],
-      "faceDetailsDTO" : null
+      "faceDetailsDTO" : {
+      
+      	"face" : null,
+      	"qualityScore" : 0.0,
+     
+      	"numOfRetries":0
+      }
     }
   },
   "demographicDTO" : {
@@ -259,13 +280,12 @@
       }
     }
   },
-  "registrationId" : "10031100110017420190228180357",
-  "registrationIdHash" : null,
+  "registrationId" : null,
   "preRegistrationId" : "",
   "registrationMetaDataDTO" : {
     "geoLatitudeLoc" : 33.986608,
     "geoLongitudeLoc" : -6.828873,
-    "applicationType" : "Adult",
+   
     "registrationCategory" : "New",
     "machineId" : "10011",
     "centerId" : "10031",
