@@ -1946,7 +1946,7 @@ public class MasterdataIntegrationTest {
 				Mockito.anyString())).thenReturn(registrationCenters);
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
-		mockMvc.perform(get("/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/registrationcenters/ENG/2/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.response.registrationCenters[0].name", is("bangalore")));
 	}
@@ -1973,7 +1973,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
 
-		mockMvc.perform(get("/registrationcenters/ENG/1/BANGALORE").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/registrationcenters/ENG/2/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
 	}
@@ -1987,7 +1987,7 @@ public class MasterdataIntegrationTest {
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
 
-		mockMvc.perform(get("/registrationcenters/ENG/1/PATANA").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/registrationcenters/ENG/2/PATANA").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
 	}
@@ -2026,8 +2026,8 @@ public class MasterdataIntegrationTest {
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
-		mockMvc.perform(get("/registrationcenters/ENG/5/names").param("name", "bangalore")
-				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mockMvc.perform(get("/registrationcenters/ENG/2/names").param("name", "bangalore")
+				.param("name", "BAXOR").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
@@ -2040,8 +2040,8 @@ public class MasterdataIntegrationTest {
 				.thenReturn(locationHierarchies);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
 				Mockito.anyString())).thenReturn(emptyList);
-		mockMvc.perform(get("/registrationcenters/ENG/5/names").param("name", "PATANA")
-				.param("name", "Bangalore Central").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mockMvc.perform(get("/registrationcenters/ENG/2/names").param("name", "PATANA")
+				.param("name", "BAXOR").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
 
