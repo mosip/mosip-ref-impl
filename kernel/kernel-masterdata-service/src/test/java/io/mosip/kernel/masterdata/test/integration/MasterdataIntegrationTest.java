@@ -4174,7 +4174,6 @@ public class MasterdataIntegrationTest {
 				.andExpect(status().isInternalServerError());
 	}
 	
-	//Neha
 	@Test
 	public void getValidDocumentSuccessTest() throws Exception {
 		DocumentCategory documentCategory = new DocumentCategory();
@@ -4200,32 +4199,15 @@ public class MasterdataIntegrationTest {
 		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(documentCategories);
 		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(documentTypes);
 		
-		ValidDocCategoryAndDocTypeResponseDto validDocCategoryAndDocTypeResponseDto = new ValidDocCategoryAndDocTypeResponseDto();
-		ValidDocCategoryDto validDocCategoryDto = new ValidDocCategoryDto();
-		
-		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
-		documentTypeDto.setCode("RNC");
-		documentTypeDto.setName("Rental contract");
-		documentTypeDto.setDescription("Rental Agreement of address");
-		documentTypeDto.setLangCode("eng");
-		documentTypeDto.setIsActive(true);
-		
-		List<DocumentTypeDto> documentTypeDtos = new ArrayList<>();
-		documentTypeDtos.add(documentTypeDto);
-		
-		validDocCategoryDto.setCode("POA");
-		validDocCategoryDto.setName("Proof of Address");
-		validDocCategoryDto.setDescription("Address Proof");
-		validDocCategoryDto.setLangCode("eng");
-		validDocCategoryDto.setIsActive(true);
-		validDocCategoryDto.setDocumenttypes(documentTypeDtos);
-		List<ValidDocCategoryDto> categoryDtos = new ArrayList<>();
-		categoryDtos.add(validDocCategoryDto);
-		
-		validDocCategoryAndDocTypeResponseDto.setDocumentcategories(categoryDtos);
-		
-		String jsonString = new ObjectMapper().writeValueAsString(validDocCategoryAndDocTypeResponseDto);
 		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void getValidDocumentNotFoundExceptionTest() throws Exception {
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(new ArrayList<DocumentCategory>());
+		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(null);
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
