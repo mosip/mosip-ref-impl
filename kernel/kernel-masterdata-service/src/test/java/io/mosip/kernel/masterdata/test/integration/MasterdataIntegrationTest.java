@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.assertj.core.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +80,8 @@ import io.mosip.kernel.masterdata.dto.TemplateDto;
 import io.mosip.kernel.masterdata.dto.TemplateFileFormatDto;
 import io.mosip.kernel.masterdata.dto.TemplateTypeDto;
 import io.mosip.kernel.masterdata.dto.TitleDto;
+import io.mosip.kernel.masterdata.dto.ValidDocCategoryAndDocTypeResponseDto;
+import io.mosip.kernel.masterdata.dto.ValidDocCategoryDto;
 import io.mosip.kernel.masterdata.dto.ValidDocumentDto;
 import io.mosip.kernel.masterdata.dto.getresponse.IndividualTypeResponseDto;
 import io.mosip.kernel.masterdata.dto.getresponse.RegistrationCenterUserMachineMappingHistoryResponseDto;
@@ -4168,6 +4172,60 @@ public class MasterdataIntegrationTest {
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/validdocuments/DC001/DT001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
+	}
+	
+	//Neha
+	@Test
+	public void getValidDocumentSuccessTest() throws Exception {
+		DocumentCategory documentCategory = new DocumentCategory();
+		documentCategory.setCode("POA");
+		documentCategory.setName("Proof of Address");
+		documentCategory.setDescription("Address Proof");
+		documentCategory.setLangCode("eng");
+		documentCategory.setIsActive(true);
+		
+		List<DocumentCategory> documentCategories = new ArrayList<>();
+		documentCategories.add(documentCategory);
+		
+		DocumentType documentType = new DocumentType();
+		documentType.setCode("RNC");
+		documentType.setName("Rental contract");
+		documentType.setDescription("Rental Agreement of address");
+		documentType.setLangCode("eng");
+		documentType.setIsActive(true);
+		
+		List<DocumentType> documentTypes = new ArrayList<>();
+		documentTypes.add(documentType);
+		
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(documentCategories);
+		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(documentTypes);
+		
+		ValidDocCategoryAndDocTypeResponseDto validDocCategoryAndDocTypeResponseDto = new ValidDocCategoryAndDocTypeResponseDto();
+		ValidDocCategoryDto validDocCategoryDto = new ValidDocCategoryDto();
+		
+		DocumentTypeDto documentTypeDto = new DocumentTypeDto();
+		documentTypeDto.setCode("RNC");
+		documentTypeDto.setName("Rental contract");
+		documentTypeDto.setDescription("Rental Agreement of address");
+		documentTypeDto.setLangCode("eng");
+		documentTypeDto.setIsActive(true);
+		
+		List<DocumentTypeDto> documentTypeDtos = new ArrayList<>();
+		documentTypeDtos.add(documentTypeDto);
+		
+		validDocCategoryDto.setCode("POA");
+		validDocCategoryDto.setName("Proof of Address");
+		validDocCategoryDto.setDescription("Address Proof");
+		validDocCategoryDto.setLangCode("eng");
+		validDocCategoryDto.setIsActive(true);
+		validDocCategoryDto.setDocumenttypes(documentTypeDtos);
+		List<ValidDocCategoryDto> categoryDtos = new ArrayList<>();
+		categoryDtos.add(validDocCategoryDto);
+		
+		validDocCategoryAndDocTypeResponseDto.setDocumentcategories(categoryDtos);
+		
+		String jsonString = new ObjectMapper().writeValueAsString(validDocCategoryAndDocTypeResponseDto);
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isOk());
 	}
 
 	@Test
