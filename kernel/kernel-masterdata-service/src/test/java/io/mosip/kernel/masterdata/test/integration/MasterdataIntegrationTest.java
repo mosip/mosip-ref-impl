@@ -4209,6 +4209,13 @@ public class MasterdataIntegrationTest {
 		
 		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
 	}
+	
+	@Test
+	public void getValidDocumentFetchExceptionTest() throws Exception {
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenThrow(new DataAccessLayerException(null, null, null));
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
+	}
 
 	@Test
 	public void createRegistrationCenterExceptionTest() throws Exception {
