@@ -4412,6 +4412,52 @@ public class MasterdataIntegrationTest {
 		mockMvc.perform(delete("/validdocuments/DC001/DT001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 	}
+	
+	@Test
+	@WithUserDetails("test")
+	public void getValidDocumentSuccessTest() throws Exception {
+		DocumentCategory documentCategory = new DocumentCategory();
+		documentCategory.setCode("POA");
+		documentCategory.setName("Proof of Address");
+		documentCategory.setDescription("Address Proof");
+		documentCategory.setLangCode("eng");
+		documentCategory.setIsActive(true);
+		
+		List<DocumentCategory> documentCategories = new ArrayList<>();
+		documentCategories.add(documentCategory);
+		
+		DocumentType documentType = new DocumentType();
+		documentType.setCode("RNC");
+		documentType.setName("Rental contract");
+		documentType.setDescription("Rental Agreement of address");
+		documentType.setLangCode("eng");
+		documentType.setIsActive(true);
+		
+		List<DocumentType> documentTypes = new ArrayList<>();
+		documentTypes.add(documentType);
+		
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(documentCategories);
+		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(documentTypes);
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithUserDetails("test")
+	public void getValidDocumentNotFoundExceptionTest() throws Exception {
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(new ArrayList<DocumentCategory>());
+		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(null);
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
+	}
+	
+	@Test
+	@WithUserDetails("test")
+	public void getValidDocumentFetchExceptionTest() throws Exception {
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenThrow(new DataAccessLayerException(null, null, null));
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
+	}
 
 	@Test
 	@WithUserDetails("test")
