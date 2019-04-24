@@ -37,6 +37,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -168,6 +169,7 @@ import io.mosip.kernel.masterdata.repository.TemplateRepository;
 import io.mosip.kernel.masterdata.repository.TemplateTypeRepository;
 import io.mosip.kernel.masterdata.repository.TitleRepository;
 import io.mosip.kernel.masterdata.repository.ValidDocumentRepository;
+import io.mosip.kernel.masterdata.test.TestBootApplication;
 import io.mosip.kernel.masterdata.utils.MapperUtils;
 
 /**
@@ -185,7 +187,7 @@ import io.mosip.kernel.masterdata.utils.MapperUtils;
  * @author Neha Sinha
  * @since 1.0.0
  */
-@SpringBootTest
+@SpringBootTest(classes = TestBootApplication.class)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class MasterdataIntegrationTest {
@@ -507,18 +509,21 @@ public class MasterdataIntegrationTest {
 
 	/* Individual type test */
 	@Test
+	@WithUserDetails("individual")
 	public void getAllIndividualTypeTest() throws Exception {
 		when(individualTypeRepository.findAll()).thenReturn(individualTypes);
 		mockMvc.perform(get("/individualtypes").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getAllIndividualTypeNoTypeFoundTest() throws Exception {
 		when(individualTypeRepository.findAll()).thenReturn(null);
 		mockMvc.perform(get("/individualtypes").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getAllIndividualTypeMasterDataServiceExceptionTest() throws Exception {
 		when(individualTypeRepository.findAll()).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/individualtypes").contentType(MediaType.APPLICATION_JSON))
@@ -531,6 +536,7 @@ public class MasterdataIntegrationTest {
 	private ApplicantValidDocumentRepository applicantValidRepository;
 
 	@Test
+	@WithUserDetails("individual")
 	public void getValidApplicantTypeTest() throws Exception {
 
 		List<Object[]> list = new ArrayList<>();
@@ -549,6 +555,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getValidApplicantTypeMasterDataServiceExceptionTest() throws Exception {
 		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
 				Mockito.anyList())).thenThrow(new DataAccessLayerException("errorCode", "errorMessage", null));
@@ -558,6 +565,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getValidApplicantTypeNoTypeFoundTest() throws Exception {
 		when(applicantValidRepository.getDocumentCategoryAndTypesForApplicantCode(Mockito.anyString(),
 				Mockito.anyList())).thenReturn(null);
@@ -1179,7 +1187,7 @@ public class MasterdataIntegrationTest {
 		Location locationHierarchy = new Location();
 		locationHierarchy.setCode("PAT");
 		locationHierarchy.setName("PATANA");
-		locationHierarchy.setHierarchyLevel((short)2);
+		locationHierarchy.setHierarchyLevel((short) 2);
 		locationHierarchy.setHierarchyName("Distic");
 		locationHierarchy.setParentLocCode("BHR");
 		locationHierarchy.setLangCode("ENG");
@@ -1190,7 +1198,7 @@ public class MasterdataIntegrationTest {
 		Location locationHierarchy1 = new Location();
 		locationHierarchy1.setCode("BX");
 		locationHierarchy1.setName("BAXOR");
-		locationHierarchy1.setHierarchyLevel((short)2);
+		locationHierarchy1.setHierarchyLevel((short) 2);
 		locationHierarchy1.setHierarchyName("Distic");
 		locationHierarchy1.setParentLocCode("BHR");
 		locationHierarchy1.setLangCode("ENG");
@@ -1222,6 +1230,7 @@ public class MasterdataIntegrationTest {
 	// -------RegistrationCenter mapping-------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterAndDeviceTest() throws Exception {
 		RequestWrapper<RegistrationCenterDeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.deviceid");
@@ -1237,6 +1246,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterAndDeviceDataAccessLayerExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterDeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.deviceid");
@@ -1253,6 +1263,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterAndDeviceBadRequestTest() throws Exception {
 		RequestWrapper<RegistrationCenterDeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.deviceid");
@@ -1264,6 +1275,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterAndDeviceMappingTest() throws Exception {
 		when(registrationCenterDeviceRepository.findAllNondeletedMappings(Mockito.any()))
 				.thenReturn(Optional.of(registrationCenterDevice));
@@ -1274,12 +1286,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterAndDeviceMappingDataNotFoundExceptionTest() throws Exception {
 		when(registrationCenterDeviceRepository.findAllNondeletedMappings(Mockito.any())).thenReturn(Optional.empty());
 		mockMvc.perform(delete("/registrationcenterdevice/RC001/DC001")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterAndDeviceMappingDataAccessLayerExceptionTest() throws Exception {
 		when(registrationCenterDeviceRepository.findAllNondeletedMappings(Mockito.any()))
 				.thenReturn(Optional.of(registrationCenterDevice));
@@ -1291,6 +1305,7 @@ public class MasterdataIntegrationTest {
 	// -------RegistrationCenterMachine mapping-------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterAndMachineTest() throws Exception {
 		RequestWrapper<RegistrationCenterMachineDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
@@ -1305,6 +1320,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterAndMachineDataAccessLayerExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterMachineDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
@@ -1319,6 +1335,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterAndMachineBadRequestTest() throws Exception {
 		RequestWrapper<RegistrationCenterMachineDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineid");
@@ -1329,6 +1346,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterAndMachineMappingTest() throws Exception {
 		when(registrationCenterMachineRepository.findAllNondeletedMappings(Mockito.any()))
 				.thenReturn(Optional.of(registrationCenterMachine));
@@ -1339,12 +1357,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterAndMachineMappingDataNotFoundExceptionTest() throws Exception {
 		when(registrationCenterMachineRepository.findAllNondeletedMappings(Mockito.any())).thenReturn(Optional.empty());
 		mockMvc.perform(delete("/registrationcentermachine/RC001/MC001")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterAndMachineMappingDataAccessLayerExceptionTest() throws Exception {
 		when(registrationCenterMachineRepository.findAllNondeletedMappings(Mockito.any()))
 				.thenReturn(Optional.of(registrationCenterMachine));
@@ -1356,6 +1376,7 @@ public class MasterdataIntegrationTest {
 	// -------RegistrationCentermachineDevice mapping-------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterMachineAndDeviceTest() throws Exception {
 		RequestWrapper<RegistrationCenterMachineDeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineid.deviceid");
@@ -1372,6 +1393,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterMachineAndDeviceDataAccessLayerExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterMachineDeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineid.deviceid");
@@ -1387,6 +1409,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void mapRegistrationCenterMachineAndDeviceBadRequestTest() throws Exception {
 		RequestWrapper<RegistrationCenterMachineDeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineid.deviceid");
@@ -1398,6 +1421,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegCenterMachineDeviceTest() throws Exception {
 		when(registrationCenterMachineDeviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString(), Mockito.anyString())).thenReturn(registrationCenterMachineDevice);
@@ -1409,6 +1433,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegCenterMachineDeviceDataNotFoundTest() throws Exception {
 		when(registrationCenterMachineDeviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString(), Mockito.anyString())).thenReturn(null);
@@ -1420,6 +1445,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegCenterMachineDeviceDataAccessExcpetionTest() throws Exception {
 		when(registrationCenterMachineDeviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString(), Mockito.anyString())).thenThrow(DataRetrievalFailureException.class);
@@ -1434,6 +1460,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------LanguageImplementationTest----------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void updateLanguagesTest() throws Exception {
 		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.update");
@@ -1461,6 +1488,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateLanguagesDataAccessLayerTest() throws Exception {
 		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.update");
@@ -1488,6 +1516,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateLanguagesNotFoundTest() throws Exception {
 		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.update");
@@ -1514,6 +1543,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteLanguagesTest() throws Exception {
 		when(languageRepository.findLanguageByCode(languageDto.getCode())).thenReturn(language);
 		when(languageRepository.update(Mockito.any())).thenReturn(language);
@@ -1521,6 +1551,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDataAccessLayerLanguagesTest() throws Exception {
 		when(languageRepository.findLanguageByCode(languageDto.getCode())).thenReturn(language);
 		when(languageRepository.update(Mockito.any())).thenThrow(DataAccessLayerException.class);
@@ -1528,12 +1559,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteNotFoundLanguagesTest() throws Exception {
 		when(languageRepository.findLanguageByCode(languageDto.getCode())).thenReturn(null);
 		mockMvc.perform(delete("/languages/{code}", languageDto.getCode())).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void saveLanguagesTest() throws Exception {
 		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.create");
@@ -1547,6 +1580,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void saveLanguagesDataAccessLayerExceptionTest() throws Exception {
 		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.create");
@@ -1560,6 +1594,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void saveLanguagesExceptionTest() throws Exception {
 		RequestWrapper<LanguageDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("");
@@ -1572,36 +1607,42 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------BlacklistedWordsTest----------------------------------
 	@Test
+	@WithUserDetails("individual")
 	public void getAllWordsBylangCodeSuccessTest() throws Exception {
 		when(wordsRepository.findAllByLangCode(anyString())).thenReturn(words);
 		mockMvc.perform(get("/blacklistedwords/{langcode}", "ENG")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getAllWordsBylangCodeNullResponseTest() throws Exception {
 		when(wordsRepository.findAllByLangCode(anyString())).thenReturn(null);
 		mockMvc.perform(get("/blacklistedwords/{langcode}", "ENG")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getAllWordsBylangCodeEmptyArrayResponseTest() throws Exception {
 		when(wordsRepository.findAllByLangCode(anyString())).thenReturn(new ArrayList<>());
 		mockMvc.perform(get("/blacklistedwords/{langcode}", "ENG")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getAllWordsBylangCodeFetchExceptionTest() throws Exception {
 		when(wordsRepository.findAllByLangCode(anyString())).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/blacklistedwords/{langcode}", "ENG")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getAllWordsBylangCodeNullArgExceptionTest() throws Exception {
 		mockMvc.perform(get("/blacklistedwords/{langcode}", " ")).andExpect(status().isOk());
 	}
 
 	// -----------------------------GenderTypeTest----------------------------------
 	@Test
+	@WithUserDetails("id-auth")
 	public void getGenderByLanguageCodeFetchExceptionTest() throws Exception {
 
 		Mockito.when(genderTypeRepository.findGenderByLangCodeAndIsDeletedFalseOrIsDeletedIsNull("ENG"))
@@ -1613,6 +1654,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getGenderByLanguageCodeNotFoundExceptionTest() throws Exception {
 
 		Mockito.when(genderTypeRepository.findGenderByLangCodeAndIsDeletedFalseOrIsDeletedIsNull("ENG"))
@@ -1623,6 +1665,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("id-auth")
 	public void getAllGenderFetchExceptionTest() throws Exception {
 
 		Mockito.when(genderTypeRepository.findAllByIsActiveAndIsDeleted()).thenThrow(DataAccessLayerException.class);
@@ -1633,6 +1676,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("id-auth")
 	public void getAllGenderNotFoundExceptionTest() throws Exception {
 
 		Mockito.when(genderTypeRepository.findAllByIsActiveAndIsDeleted()).thenReturn(genderTypesNull);
@@ -1642,6 +1686,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getGenderByLanguageCodeTest() throws Exception {
 
 		Mockito.when(genderTypeRepository.findGenderByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
@@ -1651,6 +1696,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("id-auth")
 	public void getAllGendersTest() throws Exception {
 		Mockito.when(genderTypeRepository.findAllByIsActiveAndIsDeleted()).thenReturn(genderTypes);
 		mockMvc.perform(get("/gendertypes")).andExpect(status().isOk());
@@ -1660,40 +1706,47 @@ public class MasterdataIntegrationTest {
 	// -----------------------------HolidayTest----------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayAllHolidaysSuccessTest() throws Exception {
 		when(holidayRepository.findAllNonDeletedHoliday()).thenReturn(holidays);
 		mockMvc.perform(get("/holidays")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllHolidaNoHolidayFoundTest() throws Exception {
 		mockMvc.perform(get("/holidays")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllHolidaysHolidayFetchExceptionTest() throws Exception {
 		when(holidayRepository.findAllNonDeletedHoliday()).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/holidays")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayByIdSuccessTest() throws Exception {
 		when(holidayRepository.findAllById(any(Integer.class))).thenReturn(holidays);
 		mockMvc.perform(get("/holidays/{holidayId}", 1)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayByIdHolidayFetchExceptionTest() throws Exception {
 		when(holidayRepository.findAllById(any(Integer.class))).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/holidays/{holidayId}", 1)).andExpect(status().isInternalServerError());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayByIdNoHolidayFoundTest() throws Exception {
 		mockMvc.perform(get("/holidays/{holidayId}", 1)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayByIdAndLangCodeSuccessTest() throws Exception {
 		when(holidayRepository.findHolidayByIdAndHolidayIdLangCode(any(Integer.class), anyString()))
 				.thenReturn(holidays);
@@ -1701,6 +1754,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayByIdAndLangCodeHolidayFetchExceptionTest() throws Exception {
 		when(holidayRepository.findHolidayByIdAndHolidayIdLangCode(any(Integer.class), anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -1709,11 +1763,13 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getHolidayByIdAndLangCodeHolidayNoDataFoundTest() throws Exception {
 		mockMvc.perform(get("/holidays/{holidayId}/{languagecode}", 1, "ENG")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addHolidayTypeTest() throws Exception {
 		String json = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"holidayDate\": \"2019-01-01\",\n" + "    \"holidayDay\": \"Sunday\",\n"
@@ -1727,6 +1783,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addHolidayTypeLanguageValidationTest() throws Exception {
 		String json = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"holidayDate\": \"2019-01-01\",\n" + "    \"holidayDay\": \"Sunday\",\n"
@@ -1740,6 +1797,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addHolidayTypeExceptionTest() throws Exception {
 
 		String json = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
@@ -1757,6 +1815,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------IdTypeTest----------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getIdTypesByLanguageCodeFetchExceptionTest() throws Exception {
 		when(idTypeRepository.findByLangCode("ENG")).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/idtypes/ENG").contentType(MediaType.APPLICATION_JSON))
@@ -1764,6 +1823,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getIdTypesByLanguageCodeNotFoundExceptionTest() throws Exception {
 		List<IdType> idTypeList = new ArrayList<>();
 		idTypeList.add(idType);
@@ -1772,6 +1832,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getIdTypesByLanguageCodeTest() throws Exception {
 		List<IdType> idTypeList = new ArrayList<>();
 		idTypeList.add(idType);
@@ -1783,6 +1844,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------PacketRejectionTest----------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getAllRjectionReasonTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenReturn(reasoncategories);
@@ -1790,6 +1852,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRejectionReasonByCodeAndLangCodeTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByCodeAndLangCode(ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenReturn(reasoncategories);
@@ -1797,6 +1860,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRjectionReasonFetchExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataRetrievalFailureException.class);
@@ -1804,6 +1868,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRejectionReasonByCodeAndLangCodeFetchExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByCodeAndLangCode(ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenThrow(DataRetrievalFailureException.class);
@@ -1812,12 +1877,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRjectionReasonRecordsNotFoundTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(null);
 		mockMvc.perform(get("/packetrejectionreasons")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getRjectionReasonByCodeAndLangCodeRecordsNotFoundExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByCodeAndLangCode(ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenReturn(null);
@@ -1825,6 +1892,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getRjectionReasonByCodeAndLangCodeRecordsEmptyExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByCodeAndLangCode(ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenReturn(new ArrayList<ReasonCategory>());
@@ -1832,6 +1900,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRjectionReasonRecordsEmptyExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenReturn(new ArrayList<ReasonCategory>());
@@ -1839,6 +1908,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonCateogryTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.create(Mockito.any())).thenReturn(reasoncategories.get(0));
 		mockMvc.perform(post("/packetrejectionreasons/reasoncategory").contentType(MediaType.APPLICATION_JSON)
@@ -1846,6 +1916,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonCateogryLanguageCodeValidatorFailureTest() throws Exception {
 		RequestWrapper<PostReasonCategoryDto> requestDto1 = new RequestWrapper<>();
 		requestDto1.setId("mosip.create.packetrejection.reason");
@@ -1859,6 +1930,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonCateogryLanguageCodeValidatorTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.create(Mockito.any())).thenReturn(reasoncategories.get(0));
 		mockMvc.perform(post("/packetrejectionreasons/reasoncategory").contentType(MediaType.APPLICATION_JSON)
@@ -1866,6 +1938,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonListTest() throws Exception {
 		Mockito.when(reasonListRepository.create(Mockito.any())).thenReturn(reasonList.get(0));
 		mockMvc.perform(post("/packetrejectionreasons/reasonlist").contentType(MediaType.APPLICATION_JSON)
@@ -1873,6 +1946,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonListLanguageCodeValidatorTest() throws Exception {
 		RequestWrapper<ReasonListDto> requestDto1 = new RequestWrapper<>();
 		requestDto1.setId("mosip.create.packetrejection.reason");
@@ -1886,6 +1960,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonCateogryFetchExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(post("/packetrejectionreasons/reasoncategory").contentType(MediaType.APPLICATION_JSON)
@@ -1893,6 +1968,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createReasonListFetchExceptionTest() throws Exception {
 		Mockito.when(reasonListRepository.create(Mockito.any())).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(post("/packetrejectionreasons/reasonlist").contentType(MediaType.APPLICATION_JSON)
@@ -1902,6 +1978,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------RegistrationCenterTest----------------------------------
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getSpecificRegistrationCenterByIdTest() throws Exception {
 
 		when(repositoryCenterHistoryRepository
@@ -1913,6 +1990,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegistrationCentersHistoryNotFoundExceptionTest() throws Exception {
 		when(repositoryCenterHistoryRepository
 				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
@@ -1922,6 +2000,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegistrationCentersHistoryEmptyExceptionTest() throws Exception {
 		when(repositoryCenterHistoryRepository
 				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
@@ -1931,6 +2010,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegistrationCentersHistoryFetchExceptionTest() throws Exception {
 		when(repositoryCenterHistoryRepository
 				.findByIdAndLangCodeAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1", "ENG",
@@ -1940,6 +2020,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterByHierarchylevelAndTextAndLanguageCodeTest() throws Exception {
 		centers.add(center);
 		when(registrationCenterRepository.findRegistrationCenterByListOfLocationCode(Mockito.anySet(),
@@ -1952,6 +2033,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getSpecificRegistrationCenterHierarchyLevelFetchExceptionTest() throws Exception {
 		Set<String> codes = new HashSet<String>();
 		codes.add("TEST");
@@ -1965,6 +2047,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest() throws Exception {
 
 		List<RegistrationCenter> emptyList = new ArrayList<>();
@@ -1979,6 +2062,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterHierarchyLevelNotFoundExceptionTest2() throws Exception {
 
 		List<RegistrationCenter> emptyList = new ArrayList<>();
@@ -1993,6 +2077,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
@@ -2005,6 +2090,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeFetchExceptionTest() throws Exception {
 		when(locationRepository.getAllLocationsByLangCodeAndLevel(Mockito.anyString(), Mockito.anyShort()))
 				.thenReturn(locationHierarchies);
@@ -2018,6 +2104,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeNotFoundExceptionTest()
 			throws Exception {
 
@@ -2032,6 +2119,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getRegistrationCenterByHierarchylevelAndListTextAndLanguageCodeNotFoundExceptionTest2()
 			throws Exception {
 
@@ -2048,6 +2136,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------RegistrationCenterIntegrationTest----------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void getSpecificRegistrationCenterByIdAndLangCodeNotFoundExceptionTest() throws Exception {
 		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenReturn(null);
 
@@ -2057,6 +2146,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getSpecificRegistrationCenterByIdAndLangCodeFetchExceptionTest() throws Exception {
 
 		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenThrow(DataAccessLayerException.class);
@@ -2067,6 +2157,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getCoordinateSpecificRegistrationCentersRegistrationCenterNotFoundExceptionTest() throws Exception {
 		when(registrationCenterRepository.findRegistrationCentersByLat(12.9180022, 77.5028892, 0.999785939, "ENG"))
 				.thenReturn(new ArrayList<>());
@@ -2075,6 +2166,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getCoordinateSpecificRegistrationCentersRegistrationCenterFetchExceptionTest() throws Exception {
 		when(registrationCenterRepository.findRegistrationCentersByLat(12.9180022, 77.5028892, 0.999785939, "ENG"))
 				.thenThrow(DataAccessLayerException.class);
@@ -2083,12 +2175,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getCoordinateSpecificRegistrationCentersNumberFormatExceptionTest() throws Exception {
 		mockMvc.perform(get("/getcoordinatespecificregistrationcenters/ENG/77.5028892/12.9180022/ae")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError()).andReturn();
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getSpecificRegistrationCenterByLocationCodeAndLangCodeNotFoundExceptionTest() throws Exception {
 		when(registrationCenterRepository.findByLocationCodeAndLangCode("ENG", "BLR")).thenReturn(null);
 
@@ -2098,6 +2192,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getSpecificRegistrationCenterByLocationCodeAndLangCodeFetchExceptionTest() throws Exception {
 
 		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG"))
@@ -2109,6 +2204,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRegistrationCentersNotFoundExceptionTest() throws Exception {
 		when(registrationCenterRepository.findAll(RegistrationCenter.class))
 				.thenReturn(new ArrayList<RegistrationCenter>());
@@ -2118,6 +2214,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRegistrationCentersFetchExceptionTest() throws Exception {
 		when(registrationCenterRepository.findAllByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataAccessLayerException.class);
@@ -2127,6 +2224,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getSpecificRegistrationCenterByIdTestSuccessTest() throws Exception {
 		when(registrationCenterRepository.findByIdAndLangCode("1", "ENG")).thenReturn(banglore);
 		mockMvc.perform(get("/registrationcenters/1/ENG").contentType(MediaType.APPLICATION_JSON))
@@ -2135,6 +2233,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void getCoordinateSpecificRegistrationCentersTest() throws Exception {
 		when(registrationCenterRepository.findRegistrationCentersByLat(12.9180022, 77.5028892, 0.999785939, "ENG"))
 				.thenReturn(registrationCenters);
@@ -2145,6 +2244,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getLocationSpecificRegistrationCentersTest() throws Exception {
 		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG")).thenReturn(registrationCenters);
 		mockMvc.perform(get("/getlocspecificregistrationcenters/ENG/BLR").contentType(MediaType.APPLICATION_JSON))
@@ -2153,6 +2253,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getLocationSpecificMultipleRegistrationCentersTest() throws Exception {
 		when(registrationCenterRepository.findByLocationCodeAndLangCode("BLR", "ENG")).thenReturn(registrationCenters);
 
@@ -2162,6 +2263,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getAllRegistrationCenterTest() throws Exception {
 		when(registrationCenterRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(registrationCenters);
 
@@ -2172,6 +2274,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------RegistrationCenterIntegrationTest----------------------------------
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegistrationCentersMachineUserMappingNotFoundExceptionTest() throws Exception {
 		when(registrationCenterUserMachineHistoryRepository
 				.findByCntrIdAndUsrIdAndMachineIdAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
@@ -2183,6 +2286,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegistrationCentersMachineUserMappingFetchExceptionTest() throws Exception {
 		when(registrationCenterUserMachineHistoryRepository
 				.findByCntrIdAndUsrIdAndMachineIdAndEffectivetimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull("1",
@@ -2194,12 +2298,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getCoordinateSpecificRegistrationCentersDateTimeParseExceptionTest() throws Exception {
 		mockMvc.perform(get("/getregistrationmachineusermappinghistory/2018-10-30T19:20:30.45+5:30/1/1/1")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 	}
 
 	// @Test
+	// @WithUserDetails("reg-processor")
 	public void getRegistrationCentersMachineUserMappingTest() throws Exception {
 		registrationCenterUserMachineHistories.add(registrationCenterUserMachineHistory);
 		when(registrationCenterUserMachineHistoryRepository
@@ -2218,6 +2324,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void deleteRegistrationCenterUserMachineMappingTest() throws Exception {
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(Optional.of(registrationCenterUserMachine));
@@ -2228,6 +2335,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void deleteRegistrationCenterUserMachineMappingDataNotFoundExceptionTest() throws Exception {
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(Optional.empty());
@@ -2235,6 +2343,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterUserMachineMappingDataAccessLayerExceptionTest() throws Exception {
 		when(registrationCenterMachineUserRepository.findAllNondeletedMappings(Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString())).thenThrow(DataRetrievalFailureException.class);
@@ -2246,6 +2355,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCentersMachineUserMappingTest() throws Exception {
 		RequestWrapper<RegistrationCenterUserMachineMappingDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -2266,6 +2376,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCentersMachineUserMappingDataAccessLayerExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterUserMachineMappingDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -2285,8 +2396,8 @@ public class MasterdataIntegrationTest {
 				.andExpect(status().isInternalServerError());
 	}
 
-	// TODO:
 	@Test
+	@WithUserDetails("test")
 	public void createOrUpdateRegistrationCentersMachineUserMappingCreateTest() throws Exception {
 		RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>> requestDto = new RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>>();
 		requestDto.setId("mosip.idtype.create");
@@ -2320,8 +2431,8 @@ public class MasterdataIntegrationTest {
 				.andExpect(status().isOk());
 	}
 
-	// TODO:
 	@Test
+	@WithUserDetails("test")
 	public void createOrUpdateRegistrationCentersMachineUserMappingUpdateTest() throws Exception {
 		RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>> requestDto = new RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>>();
 		requestDto.setId("mosip.idtype.create");
@@ -2356,6 +2467,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createOrUpdateRegistrationCentersMachineUserMappingNotMappedTest() throws Exception {
 		RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>> requestDto = new RequestWrapper<RegCenterMachineUserReqDto<RegistrationCenterUserMachineMappingDto>>();
 		requestDto.setId("mosip.idtype.create");
@@ -2392,6 +2504,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------TitleIntegrationTest----------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getTitleByLanguageCodeNotFoundExceptionTest() throws Exception {
 
 		titlesNull = new ArrayList<>();
@@ -2403,6 +2516,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("id-auth")
 	public void getAllTitleFetchExceptionTest() throws Exception {
 
 		Mockito.when(titleRepository.findAll(Title.class)).thenThrow(DataAccessLayerException.class);
@@ -2413,6 +2527,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("id-auth")
 	public void getAllTitleNotFoundExceptionTest() throws Exception {
 
 		titlesNull = new ArrayList<>();
@@ -2424,6 +2539,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("id-auth")
 	public void getAllTitlesTest() throws Exception {
 		Mockito.when(titleRepository.findAll(Title.class)).thenReturn(titleList);
 		mockMvc.perform(get("/title")).andExpect(status().isOk());
@@ -2431,6 +2547,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getTitleByLanguageCodeTest() throws Exception {
 
 		Mockito.when(titleRepository.getThroughLanguageCode(Mockito.anyString())).thenReturn(titleList);
@@ -2439,6 +2556,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void saveTitleTest() throws Exception {
 		String content = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"code\": \"43\",\n" + "    \"isActive\": true,\n" + "    \"langCode\": \"eng\",\n"
@@ -2450,6 +2568,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createTitleLangCodeValidationTest() throws Exception {
 		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"dfg\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"requesttime\": \"2018-12-17T09:10:25.829Z\", \"version\": \"string\"}";
 		mockMvc.perform(post("/title").contentType(MediaType.APPLICATION_JSON).content(content))
@@ -2457,6 +2576,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void saveTitleExceptionTest() throws Exception {
 
 		String content = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
@@ -2471,6 +2591,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTitleTest() throws Exception {
 		RequestWrapper<TitleDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.title.update");
@@ -2490,6 +2611,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTitleLangCodeValidationTest() throws Exception {
 		String content = "{ \"id\": \"string\", \"request\": { \"code\": \"43\", \"isActive\": true, \"langCode\": \"dfg\", \"titleDescription\": \"string\", \"titleName\": \"string\" }, \"requesttime\": \"2018-12-17T09:10:25.829Z\", \"version\": \"string\"}";
 		mockMvc.perform(put("/title").contentType(MediaType.APPLICATION_JSON).content(content))
@@ -2498,6 +2620,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTitleBadRequestTest() throws Exception {
 		RequestWrapper<TitleDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.title.update");
@@ -2517,6 +2640,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTitleDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<TitleDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.title.update");
@@ -2537,6 +2661,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTitleTest() throws Exception {
 		when(titleRepository.findByCode(Mockito.any())).thenReturn(titleList);
 		when(titleRepository.update(Mockito.any())).thenReturn(title);
@@ -2544,6 +2669,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTitleBadRequestTest() throws Exception {
 		when(titleRepository.getThroughLanguageCode(Mockito.any())).thenReturn(null);
 		mockMvc.perform(delete("/title/ABC").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -2551,6 +2677,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTitleDatabaseConnectionExceptionTest() throws Exception {
 		when(titleRepository.findByCode(Mockito.any())).thenReturn(titleList);
 		when(titleRepository.update(Mockito.any()))
@@ -2562,6 +2689,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------------gender-type----------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void addGenderTypeTest() throws Exception {
 		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.create");
@@ -2574,6 +2702,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addGenderTypeLandCodeValidationTest() throws Exception {
 		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.language.create");
@@ -2586,6 +2715,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addGenderTypeExceptionTest() throws Exception {
 
 		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
@@ -2601,6 +2731,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateGenderTypeTest() throws Exception {
 		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -2616,6 +2747,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateGenderTypeNotFoundExceptionTest() throws Exception {
 		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -2631,6 +2763,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateGenderTypeDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<GenderTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -2646,6 +2779,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteGenderTypeTest() throws Exception {
 		when(genderTypeRepository.deleteGenderType(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(1);
 		mockMvc.perform(delete("/gendertypes/GEN01").contentType(MediaType.APPLICATION_JSON))
@@ -2653,6 +2787,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteGenderTypeNotFoundExceptionTest() throws Exception {
 		when(genderTypeRepository.deleteGenderType(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(0);
 		mockMvc.perform(delete("/gendertypes/GEN01").contentType(MediaType.APPLICATION_JSON))
@@ -2661,6 +2796,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteGenderTypeDatabaseConnectionExceptionTest() throws Exception {
 
 		when(genderTypeRepository.deleteGenderType(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -2672,6 +2808,7 @@ public class MasterdataIntegrationTest {
 
 	// ----------------------------------BiometricAttributeCreateApiTest--------------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void createBiometricAttributeTest() throws Exception {
 
 		RequestWrapper<BiometricAttributeDto> requestDto = new RequestWrapper<BiometricAttributeDto>();
@@ -2685,6 +2822,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createBiometricAttributeExceptionTest() throws Exception {
 		RequestWrapper<BiometricAttributeDto> requestDto = new RequestWrapper<BiometricAttributeDto>();
 		requestDto.setId("mosip.language.create");
@@ -2698,6 +2836,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createBiometricAttributeLangCodeValidationTest() throws Exception {
 		RequestWrapper<BiometricAttributeDto> requestDto = new RequestWrapper<BiometricAttributeDto>();
 		requestDto.setId("mosip.language.create");
@@ -2711,6 +2850,7 @@ public class MasterdataIntegrationTest {
 
 	// ----------------------------------TemplateCreateApiTest--------------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void createTemplateTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<TemplateDto>();
 		requestDto.setId("mosip.language.create");
@@ -2723,6 +2863,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createTemplateLangCodeValidationTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<TemplateDto>();
 		requestDto.setId("mosip.language.create");
@@ -2735,6 +2876,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createTemplateExceptionTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<TemplateDto>();
 		requestDto.setId("mosip.language.create");
@@ -2749,6 +2891,7 @@ public class MasterdataIntegrationTest {
 
 	// ----------------------------------TemplateTypeCreateApiTest--------------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void createTemplateTypeTest() throws Exception {
 		RequestWrapper<TemplateTypeDto> requestDto = new RequestWrapper<TemplateTypeDto>();
 		requestDto.setId("mosip.language.create");
@@ -2761,6 +2904,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createTemplatetypeExceptionTest() throws Exception {
 		RequestWrapper<TemplateTypeDto> requestDto = new RequestWrapper<TemplateTypeDto>();
 		requestDto.setId("mosip.language.create");
@@ -2774,6 +2918,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createTemplatetypeLangValidationExceptionTest() throws Exception {
 		RequestWrapper<TemplateTypeDto> requestDto = new RequestWrapper<TemplateTypeDto>();
 		requestDto.setId("mosip.language.create");
@@ -2787,6 +2932,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------------DeviceSpecificationTest---------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void findDeviceSpecLangcodeSuccessTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(deviceSpecList);
@@ -2794,6 +2940,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void findDeviceSpecLangcodeNullResponseTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(null);
@@ -2801,6 +2948,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void findDeviceSpecLangcodeFetchExceptionTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -2809,6 +2957,7 @@ public class MasterdataIntegrationTest {
 
 	// --------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void findDeviceSpecByLangCodeAndDevTypeCodeSuccessTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndDeviceTypeCodeAndIsDeletedFalseOrIsDeletedIsNull(
 				Mockito.anyString(), Mockito.anyString())).thenReturn(deviceSpecList);
@@ -2817,6 +2966,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void findDeviceSpecByLangCodeAndDevTypeCodeNullResponseTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndDeviceTypeCodeAndIsDeletedFalseOrIsDeletedIsNull(
 				Mockito.anyString(), Mockito.anyString())).thenReturn(null);
@@ -2825,6 +2975,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void findDeviceSpecByLangCodeAndDevTypeCodeFetchExceptionTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndDeviceTypeCodeAndIsDeletedFalseOrIsDeletedIsNull(
 				Mockito.anyString(), Mockito.anyString())).thenThrow(DataRetrievalFailureException.class);
@@ -2834,6 +2985,7 @@ public class MasterdataIntegrationTest {
 	// ----------------------------------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceSpecificationTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto;
 		requestDto = new RequestWrapper<>();
@@ -2850,6 +3002,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceSpecificationLangCodeValidationTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto;
 		requestDto = new RequestWrapper<>();
@@ -2864,6 +3017,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceSpecificationExceptionTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto;
 		requestDto = new RequestWrapper<>();
@@ -2882,6 +3036,7 @@ public class MasterdataIntegrationTest {
 	// ---------------------------------DeviceTypeTest------------------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceTypeTest() throws Exception {
 
 		RequestWrapper<DeviceTypeDto> requestDto = new RequestWrapper<>();
@@ -2897,6 +3052,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceTypeExceptionTest() throws Exception {
 
 		RequestWrapper<DeviceTypeDto> requestDto = new RequestWrapper<>();
@@ -2914,6 +3070,7 @@ public class MasterdataIntegrationTest {
 
 	// -------------------------------MachineSpecificationTest-------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void createMachineSpecificationTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto;
@@ -2931,6 +3088,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineSpecificationLanguageCodeValidatorTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto;
@@ -2949,6 +3107,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineSpecificationExceptionTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto;
@@ -2967,6 +3126,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineSpecificationLangCodeValidationTest() throws Exception {
 		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machineSpecificationcode");
@@ -2980,6 +3140,7 @@ public class MasterdataIntegrationTest {
 
 	// -------------------------------------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineSpecificationTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
@@ -2997,6 +3158,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineSpecificationLanguageCodeValidatorTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
@@ -3015,6 +3177,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineSpecificationNotFoundExceptionTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
@@ -3031,6 +3194,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineSpecificationDatabaseConnectionExceptionTest() throws Exception {
 
 		RequestWrapper<MachineSpecificationDto> requestDto = new RequestWrapper<>();
@@ -3048,6 +3212,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------------------------------------------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineSpecificationTest() throws Exception {
 		List<Machine> emptyList = new ArrayList<>();
 		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
@@ -3060,6 +3225,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineSpecificationDataNotFoundExceptionTest() throws Exception {
 		List<MachineSpecification> emptyList = new ArrayList<>();
 		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
@@ -3070,6 +3236,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineSpecificationDatabaseConnectionExceptionTest() throws Exception {
 		List<Machine> emptyList = new ArrayList<>();
 		when(machineSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
@@ -3084,6 +3251,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineSpecificationDependencyExceptionTest() throws Exception {
 		List<Machine> machineList = new ArrayList<Machine>();
 		Machine machine = new Machine();
@@ -3101,18 +3269,21 @@ public class MasterdataIntegrationTest {
 	// -------------------------MachineTest-----------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineAllSuccessTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(machineList);
 		mockMvc.perform(get("/machines")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineAllNullResponseTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(null);
 		mockMvc.perform(get("/machines")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineAllFetchExceptionTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataRetrievalFailureException.class);
@@ -3121,6 +3292,7 @@ public class MasterdataIntegrationTest {
 
 	// --------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getMachineIdLangcodeSuccessTest() throws Exception {
 		List<Machine> machines = new ArrayList<Machine>();
 		machines.add(machine);
@@ -3130,6 +3302,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineIdLangcodeNullResponseTest() throws Exception {
 		when(machineRepository.findAllByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString())).thenReturn(null);
@@ -3137,6 +3310,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineIdLangcodeFetchExceptionTest() throws Exception {
 		when(machineRepository.findAllByIdAndLangCodeAndIsDeletedFalseorIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString())).thenThrow(DataRetrievalFailureException.class);
@@ -3145,6 +3319,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getMachineLangcodeSuccessTest() throws Exception {
 		when(machineRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(machineList);
@@ -3152,6 +3327,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineLangcodeNullResponseTest() throws Exception {
 		when(machineRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(null);
@@ -3159,6 +3335,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getMachineLangcodeFetchExceptionTest() throws Exception {
 		when(machineRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -3166,6 +3343,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineTest() throws Exception {
 		RequestWrapper<MachineDto> requestDto;
 		requestDto = new RequestWrapper<>();
@@ -3182,6 +3360,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineLanguageCodeValidatorTest() throws Exception {
 		RequestWrapper<MachineDto> requestDto;
 		requestDto = new RequestWrapper<>();
@@ -3199,6 +3378,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineTestInvalid() throws Exception {
 		RequestWrapper<MachineDto> requestDto;
 		requestDto = new RequestWrapper<>();
@@ -3221,6 +3401,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineExceptionTest() throws Exception {
 		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.Machine.create");
@@ -3236,6 +3417,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineTest() throws Exception {
 
 		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
@@ -3254,6 +3436,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineLanguageCodeValidatorTest() throws Exception {
 
 		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
@@ -3273,6 +3456,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineNotFoundExceptionTest() throws Exception {
 
 		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
@@ -3289,6 +3473,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateMachineDatabaseConnectionExceptionTest() throws Exception {
 
 		RequestWrapper<MachineDto> requestDto = new RequestWrapper<>();
@@ -3307,6 +3492,7 @@ public class MasterdataIntegrationTest {
 
 	// ---------------------------------------------------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineTest() throws Exception {
 		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
 				.thenReturn(machineList);
@@ -3322,6 +3508,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineDependencyTest() throws Exception {
 		List<RegistrationCenterMachineDevice> regCenterMachineDevices = new ArrayList<RegistrationCenterMachineDevice>();
 		regCenterMachineDevices.add(registrationCenterMachineDevice);
@@ -3339,6 +3526,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineNotFoundExceptionTest() throws Exception {
 		List<Machine> emptList = new ArrayList<>();
 		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any())).thenReturn(emptList);
@@ -3348,6 +3536,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteMachineDatabaseConnectionExceptionTest() throws Exception {
 		when(machineRepository.findMachineByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
 				.thenReturn(machineList);
@@ -3360,6 +3549,7 @@ public class MasterdataIntegrationTest {
 	// -----------------------------MachineTypeTest-------------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineTypeTest() throws Exception {
 		RequestWrapper<MachineTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machinetypecode");
@@ -3374,6 +3564,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineTypeLangCodeValidationTest() throws Exception {
 		RequestWrapper<MachineTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machinetypecode");
@@ -3387,6 +3578,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createMachineTypeExceptionTest() throws Exception {
 		RequestWrapper<MachineTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.match.regcentr.machinetypecode");
@@ -3403,6 +3595,7 @@ public class MasterdataIntegrationTest {
 
 	// --------------------------------DeviceTest-------------------------------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getDeviceLangcodeSuccessTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(deviceList);
@@ -3410,12 +3603,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getDeviceLangcodeNullResponseTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString())).thenReturn(null);
 		mockMvc.perform(get("/devices/{langcode}", "ENG")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getDeviceLangcodeFetchExceptionTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -3424,6 +3619,7 @@ public class MasterdataIntegrationTest {
 
 	// ----------------------------
 	@Test
+	@WithUserDetails("test")
 	public void getDeviceLangCodeAndDeviceTypeSuccessTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndDtypeCode(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(objectList);
@@ -3431,13 +3627,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-
+	@WithUserDetails("test")
 	public void getDeviceLangCodeAndDeviceTypeNullResponseTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndDtypeCode(Mockito.anyString(), Mockito.anyString())).thenReturn(null);
 		mockMvc.perform(get("/devices/{languagecode}/{deviceType}", "ENG", "LaptopCode")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void getDeviceLangCodeAndDeviceTypeFetchExceptionTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndDtypeCode(Mockito.anyString(), Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -3448,6 +3645,7 @@ public class MasterdataIntegrationTest {
 	// ---------------------------------------------
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceTest() throws Exception {
 		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.create");
@@ -3463,6 +3661,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createDeviceExceptionTest() throws Exception {
 		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.create");
@@ -3478,6 +3677,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceSuccessTest() throws Exception {
 		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.update");
@@ -3493,6 +3693,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceDatabaseConnectionExceptionTest() throws Exception {
 		when(deviceRepository.findByIdAndLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString(),
 				Mockito.anyString())).thenReturn(device);
@@ -3504,6 +3705,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceNotFoundExceptionTest() throws Exception {
 		RequestWrapper<DeviceDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.create");
@@ -3519,8 +3721,8 @@ public class MasterdataIntegrationTest {
 
 	}
 
-	// TODO:
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceSuccessTest() throws Exception {
 		Mockito.when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(deviceList);
@@ -3536,6 +3738,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceDependecyTest() throws Exception {
 		List<RegistrationCenterMachineDevice> regCenterMachineDevices = new ArrayList<RegistrationCenterMachineDevice>();
 		regCenterMachineDevices.add(registrationCenterMachineDevice);
@@ -3552,6 +3755,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceExceptionTest() throws Exception {
 		List<Device> emptList = new ArrayList<>();
 		Mockito.when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
@@ -3562,6 +3766,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceDatabaseConnectionExceptionTest() throws Exception {
 		when(deviceRepository.findByIdAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(deviceList);
 		when(deviceRepository.update(Mockito.any()))
@@ -3573,6 +3778,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------------------MachineHistory---------------------------------------------
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getMachineHistroyIdLangEffDTimeSuccessTest() throws Exception {
 		when(machineHistoryRepository
 				.findByFirstByIdAndLangCodeAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -3583,6 +3789,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getMachineHistroyIdLangEffDTimeNullResponseTest() throws Exception {
 		when(machineHistoryRepository
 				.findByFirstByIdAndLangCodeAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -3593,6 +3800,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getMachineHistroyIdLangEffDTimeFetchExceptionTest() throws Exception {
 		when(machineHistoryRepository
 				.findByFirstByIdAndLangCodeAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -3604,6 +3812,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addBlackListedWordTest() throws Exception {
 		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3623,6 +3832,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createBlacklistedWordsLangValidationExceptionTest() throws Exception {
 		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<BlacklistedWordsDto>();
 		requestDto.setId("mosip.language.create");
@@ -3639,6 +3849,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addBlackListedWordExceptionTest() throws Exception {
 		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3656,6 +3867,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterTypeListTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3674,6 +3886,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterTypeListLanguageCodeValidationTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3692,6 +3905,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterTypeListTestExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3711,6 +3925,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createIdTypeTest() throws Exception {
 		RequestWrapper<IdTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3731,6 +3946,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createIdTypeLanguageCodeValidatorTest() throws Exception {
 		RequestWrapper<IdTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3751,6 +3967,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createIdTypeExceptionTest() throws Exception {
 		RequestWrapper<IdTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3770,6 +3987,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addDocumentTypeListTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3789,6 +4007,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addDocumentTypesDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3808,6 +4027,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addDocumentTypesLangCodeValidationTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3825,6 +4045,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void updateDocumentTypeTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3846,6 +4067,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDocumentTypeLangValidationTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3865,6 +4087,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDocumentTypeNotFoundExceptionTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3884,6 +4107,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDocumentTypeDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<DocumentTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3906,6 +4130,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentTypeTest() throws Exception {
 
 		when(validDocumentRepository.findByDocTypeCode(Mockito.anyString())).thenReturn(new ArrayList<ValidDocument>());
@@ -3916,6 +4141,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentTypeNotFoundExceptionTest() throws Exception {
 		when(validDocumentRepository.findByDocTypeCode(Mockito.anyString())).thenReturn(new ArrayList<ValidDocument>());
 		when(documentTypeRepository.deleteDocumentType(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(0);
@@ -3926,6 +4152,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentTypeDatabaseConnectionExceptionTest() throws Exception {
 		when(validDocumentRepository.findByDocCategoryCode(Mockito.anyString()))
 				.thenReturn(new ArrayList<ValidDocument>());
@@ -3937,6 +4164,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentTypeDependencyExceptionTest() throws Exception {
 		ValidDocument document = new ValidDocument();
 		List<ValidDocument> validDocumentList = new ArrayList<>();
@@ -3947,6 +4175,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void insertValidDocumentExceptionTest() throws Exception {
 		RequestWrapper<ValidDocumentDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3965,6 +4194,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addDocumentCategoryTest() throws Exception {
 		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -3984,6 +4214,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addDocumentCategoryLanguageCodeValidatorTest() throws Exception {
 		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4003,6 +4234,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void addDocumentCategoryDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4023,6 +4255,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDocumentCategoryTest() throws Exception {
 		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4043,6 +4276,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDocumentCategoryNotFoundExceptionTest() throws Exception {
 		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4063,6 +4297,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDocumentCategoryDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<DocumentCategoryDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4084,6 +4319,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentCategoryTest() throws Exception {
 		when(validDocumentRepository.findByDocCategoryCode(Mockito.anyString()))
 				.thenReturn(new ArrayList<ValidDocument>());
@@ -4094,6 +4330,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentCategoryNotFoundExceptionTest() throws Exception {
 		when(validDocumentRepository.findByDocCategoryCode(Mockito.anyString()))
 				.thenReturn(new ArrayList<ValidDocument>());
@@ -4106,6 +4343,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentCategoryDatabaseConnectionExceptionTest() throws Exception {
 		when(validDocumentRepository.findByDocCategoryCode(Mockito.anyString()))
 				.thenReturn(new ArrayList<ValidDocument>());
@@ -4117,6 +4355,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDocumentCategoryDependencyExceptionTest() throws Exception {
 		ValidDocument document = new ValidDocument();
 		List<ValidDocument> validDocumentList = new ArrayList<>();
@@ -4127,6 +4366,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void insertValidDocumentTest() throws Exception {
 		RequestWrapper<ValidDocumentDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4145,6 +4385,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteValidDocumentTest() throws Exception {
 		when(validDocumentRepository.deleteValidDocument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenReturn(1);
@@ -4154,6 +4395,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteValidDocumentNotFoundExceptionTest() throws Exception {
 		when(validDocumentRepository.deleteValidDocument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenReturn(0);
@@ -4163,14 +4405,62 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteValidDocumentDatabaseConnectionExceptionTest() throws Exception {
 		when(validDocumentRepository.deleteValidDocument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
 		mockMvc.perform(delete("/validdocuments/DC001/DT001").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 	}
+	
+	@Test
+	@WithUserDetails("test")
+	public void getValidDocumentSuccessTest() throws Exception {
+		DocumentCategory documentCategory = new DocumentCategory();
+		documentCategory.setCode("POA");
+		documentCategory.setName("Proof of Address");
+		documentCategory.setDescription("Address Proof");
+		documentCategory.setLangCode("eng");
+		documentCategory.setIsActive(true);
+		
+		List<DocumentCategory> documentCategories = new ArrayList<>();
+		documentCategories.add(documentCategory);
+		
+		DocumentType documentType = new DocumentType();
+		documentType.setCode("RNC");
+		documentType.setName("Rental contract");
+		documentType.setDescription("Rental Agreement of address");
+		documentType.setLangCode("eng");
+		documentType.setIsActive(true);
+		
+		List<DocumentType> documentTypes = new ArrayList<>();
+		documentTypes.add(documentType);
+		
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(documentCategories);
+		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(documentTypes);
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithUserDetails("test")
+	public void getValidDocumentNotFoundExceptionTest() throws Exception {
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(new ArrayList<DocumentCategory>());
+		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(null);
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
+	}
+	
+	@Test
+	@WithUserDetails("test")
+	public void getValidDocumentFetchExceptionTest() throws Exception {
+		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenThrow(new DataAccessLayerException(null, null, null));
+		
+		mockMvc.perform(get("/validdocuments/eng")).andExpect(status().isInternalServerError());
+	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4186,6 +4476,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterLangExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4212,6 +4503,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void registrationCenterInvalidTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4242,6 +4534,7 @@ public class MasterdataIntegrationTest {
 
 	/*------------------------- deviceSecification update and delete ----------------------------*/
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceSpecificationTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4257,6 +4550,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceSpecificationLangCodeValidationTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4270,6 +4564,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceSpecificationRequestExceptionTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4285,6 +4580,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateDeviceSpecificationDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<DeviceSpecificationDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4300,6 +4596,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceSpecificationTest() throws Exception {
 
 		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
@@ -4314,6 +4611,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceSpecificationNotFoundExceptionTest() throws Exception {
 		List<DeviceSpecification> emptList = new ArrayList<>();
 		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
@@ -4323,6 +4621,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceSpecificationDatabaseConnectionExceptionTest() throws Exception {
 		when(deviceSpecificationRepository.findByIdAndIsDeletedFalseorIsDeletedIsNull(Mockito.any()))
 				.thenReturn(deviceSpecList);
@@ -4333,6 +4632,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteDeviceSpecificationdependencyExceptionTest() throws Exception {
 		List<Device> deviceList = new ArrayList<Device>();
 		Device device = new Device();
@@ -4347,6 +4647,7 @@ public class MasterdataIntegrationTest {
 
 	/*------------------------------ template update and delete test-----------------------------*/
 	@Test
+	@WithUserDetails("individual")
 	public void updateTemplateTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4361,6 +4662,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTemplateLangCodeValidationTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4373,6 +4675,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTemplateNotRequestExceptionTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4387,6 +4690,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTemplateDatabaseConnectionExceptionTest() throws Exception {
 		RequestWrapper<TemplateDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4402,12 +4706,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTemplateTest() throws Exception {
 		when(templateRepository.deleteTemplate(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(1);
 		mockMvc.perform(delete("/templates/T001").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTemplateRequestExceptionTest() throws Exception {
 		when(templateRepository.deleteTemplate(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(0);
 		mockMvc.perform(delete("/templates/T001").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -4415,6 +4721,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTemplateDatabaseConnectionExceptionTest() throws Exception {
 		when(templateRepository.deleteTemplate(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenThrow(new DataAccessLayerException("", "cannot execute statement", null));
@@ -4425,6 +4732,7 @@ public class MasterdataIntegrationTest {
 
 	// ------------------------------- TemplateFileFormat Test
 	@Test
+	@WithUserDetails("test")
 	public void updateTemplateFileFormatSuccessTest() throws Exception {
 		RequestWrapper<TemplateFileFormatDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.update");
@@ -4440,6 +4748,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTemplateFileFormatLanguageCodeValidationTest() throws Exception {
 		RequestWrapper<TemplateFileFormatDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.update");
@@ -4456,6 +4765,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateTemplateFileFormatExceptionTest() throws Exception {
 		RequestWrapper<TemplateFileFormatDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.device.update");
@@ -4472,6 +4782,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTemplateFileFormatSuccessTest() throws Exception {
 		List<Template> templates = new ArrayList<>();
 		Mockito.when(templateRepository.findAllByFileFormatCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
@@ -4484,6 +4795,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteTemplateFileFormatExceptionTest() throws Exception {
 		List<Template> templates = new ArrayList<>();
 		Mockito.when(templateRepository.findAllByFileFormatCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
@@ -4497,6 +4809,7 @@ public class MasterdataIntegrationTest {
 	/*------------------------------------Holiday Update/delete -------------------------------------*/
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteHolidaySuccess() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"holidayDate\": \"2019-01-01\",\n" + "    \"holidayName\": \"New Year\",\n"
@@ -4508,6 +4821,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteHolidayNoHolidayFound() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"holidayDate\": \"2019-01-01\",\n" + "    \"holidayName\": \"New Year\",\n"
@@ -4520,6 +4834,7 @@ public class MasterdataIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	@WithUserDetails("test")
 	public void deleteHolidayFailure() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"holidayDate\": \"2019-01-01\",\n" + "    \"holidayName\": \"New Year\",\n"
@@ -4533,6 +4848,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateHolidaySuccessTest() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
@@ -4547,6 +4863,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateHolidayLanguageValidationTest() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
@@ -4561,6 +4878,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateHolidaySuccessNewNameAndDateTest() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
@@ -4575,6 +4893,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateHolidaySuccessNewData() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
@@ -4588,6 +4907,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateHolidayNoHolidayUpdated() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
@@ -4603,6 +4923,7 @@ public class MasterdataIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	@WithUserDetails("test")
 	public void updateHolidayNoHolidayFailure() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"id\": 1,\n" + "    \"locationCode\": \"LOC01\",\n" + "    \"holidayDate\": \"2018-01-01\",\n"
@@ -4620,12 +4941,14 @@ public class MasterdataIntegrationTest {
 	/*------------------------------------Blacklisted Word Update/delete -------------------------------------*/
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteBlacklistedWordSuccess() throws Exception {
 		when(wordsRepository.deleteBlackListedWord(anyString(), any())).thenReturn(1);
 		mockMvc.perform(delete("/blacklistedwords/{word}", "abc")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteBlacklistedWordNoWordDeleted() throws Exception {
 		when(wordsRepository.deleteBlackListedWord(anyString(), any())).thenReturn(0);
 		mockMvc.perform(delete("/blacklistedwords/{word}", "abc")).andExpect(status().isOk());
@@ -4633,6 +4956,7 @@ public class MasterdataIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	@WithUserDetails("test")
 	public void deleteBlacklistedWordFailure() throws Exception {
 		when(wordsRepository.deleteBlackListedWord(anyString(), any())).thenThrow(DataRetrievalFailureException.class,
 				DataAccessLayerException.class);
@@ -4640,6 +4964,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateBadWordSuccess() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"description\": \"bad word description\",\n" + "    \"isActive\": false,\n"
@@ -4652,6 +4977,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateBlacklistedWordsLangValidationExceptionTest() throws Exception {
 		RequestWrapper<BlacklistedWordsDto> requestDto = new RequestWrapper<BlacklistedWordsDto>();
 		requestDto.setId("mosip.language.create");
@@ -4668,6 +4994,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateBadWordNoWordFound() throws Exception {
 		String input = "{\"id\": \"string\",\"request\": {\"description\": \"bad word description\",\"isActive\": false,\"langCode\": \"ENG\",\"word\": \"badword\"},\"requesttime\": \"2018-12-24T07:21:42.232Z\",\"version\": \"string\"}";
 		mockMvc.perform(put("/blacklistedwords").contentType(MediaType.APPLICATION_JSON).content(input))
@@ -4676,6 +5003,7 @@ public class MasterdataIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	@WithUserDetails("test")
 	public void updateBadWordFailure() throws Exception {
 		String input = "{\n" + "  \"id\": \"string\",\n" + "  \"metadata\": {},\n" + "  \"request\": {\n"
 				+ "    \"description\": \"bad word description\",\n" + "    \"isActive\": false,\n"
@@ -4690,6 +5018,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterTypeTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4715,6 +5044,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterTypeLanguageCodeValidatorTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4740,6 +5070,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterTypeNotFoundExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4766,6 +5097,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterTypeDataAccessExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterTypeDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -4791,6 +5123,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterTypeTest() throws Exception {
 		RegistrationCenterType registrationCenterType = new RegistrationCenterType();
 		registrationCenterType.setCode("RC001");
@@ -4805,6 +5138,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterTypeNotFoundExceptionTest() throws Exception {
 		when(registrationCenterTypeRepository.findByCode(Mockito.any())).thenReturn(new ArrayList<>());
 		when(registrationCenterTypeRepository.deleteRegistrationCenterType(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -4815,6 +5149,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterTypeDataAccessExceptionTest() throws Exception {
 		when(registrationCenterTypeRepository.findByCode(Mockito.any())).thenReturn(new ArrayList<>());
 		when(registrationCenterTypeRepository.deleteRegistrationCenterType(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -4826,6 +5161,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterTypeDependencyExceptionTest() throws Exception {
 		RegistrationCenter registrationCenter = new RegistrationCenter();
 		List<RegistrationCenter> registrationCenterList = new ArrayList<>();
@@ -4837,6 +5173,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------------------DeviceHistory---------------------------------------------
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getDeviceHistroyIdLangEffDTimeSuccessTest() throws Exception {
 		when(deviceHistoryRepository
 				.findByFirstByIdAndLangCodeAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -4847,6 +5184,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getDeviceHistroyIdLangEffDTimeNullResponseTest() throws Exception {
 		when(deviceHistoryRepository
 				.findByFirstByIdAndLangCodeAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -4857,6 +5195,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getDeviceHistroyIdLangEffDTimeFetchExceptionTest() throws Exception {
 		when(deviceHistoryRepository
 				.findByFirstByIdAndLangCodeAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -4869,6 +5208,7 @@ public class MasterdataIntegrationTest {
 
 	// -------------------------------RegistrationCenterControllerTest--------------------------
 	@Test
+	@WithUserDetails("individual")
 	public void testGetRegistraionCenterHolidaysSuccess() throws Exception {
 		Mockito.when(registrationCenterRepository.findByIdAndLangCode(anyString(), anyString()))
 				.thenReturn(registrationCenter);
@@ -4879,12 +5219,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void testGetRegistraionCenterHolidaysNoRegCenterFound() throws Exception {
 		mockMvc.perform(get("/getregistrationcenterholidays/{languagecode}/{registrationcenterid}/{year}", "ENG",
 				"REG_CR_001", 2017)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void testGetRegistraionCenterHolidaysRegistrationCenterFetchException() throws Exception {
 		Mockito.when(registrationCenterRepository.findByIdAndLangCode(anyString(), anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -4893,6 +5235,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("individual")
 	public void testGetRegistraionCenterHolidaysHolidayFetchException() throws Exception {
 		Mockito.when(registrationCenterRepository.findByIdAndLangCode(anyString(), anyString()))
 				.thenReturn(registrationCenter);
@@ -4905,6 +5248,7 @@ public class MasterdataIntegrationTest {
 
 	// -------------------Registration center device history-----------
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegCentDevHistByregCentIdDevIdEffTimeTest() throws Exception {
 		when(registrationCenterDeviceHistoryRepository
 				.findByFirstByRegCenterIdAndDeviceIdAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -4915,6 +5259,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegCentDevHistByregCentIdDevIdEffTimeNullResponseTest() throws Exception {
 		when(registrationCenterDeviceHistoryRepository
 				.findByFirstByRegCenterIdAndDeviceIdAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -4924,6 +5269,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("reg-processor")
 	public void getRegCentDevHistByregCentIdDevIdEffTimeFetchExceptionTest() throws Exception {
 		when(registrationCenterDeviceHistoryRepository
 				.findByFirstByRegCenterIdAndDeviceIdAndEffectDtimesLessThanEqualAndIsDeletedFalseOrIsDeletedIsNull(
@@ -4934,6 +5280,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		short numberOfKiosks = 1;
@@ -4983,6 +5330,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		short numberOfKiosks = 1;
@@ -5052,6 +5400,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		short numberOfKiosks = 1;
@@ -5141,6 +5490,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterDependecyTest() throws Exception {
 		List<RegistrationCenterMachine> registrationCenterMachines = new ArrayList<RegistrationCenterMachine>();
 		registrationCenterMachines.add(registrationCenterMachine);
@@ -5228,6 +5578,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterTestForRequestException() throws Exception {
 		List<RegistrationCenter> registrationCenterlist = new ArrayList<>();
 		when(registrationCenterRepository.findByRegIdAndIsDeletedFalseOrNull(Mockito.any()))
@@ -5237,6 +5588,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void deleteRegistrationCenterDataAccessExceptionTest() throws Exception {
 		List<RegistrationCenter> registrationCenterlist = new ArrayList<>();
 		RegistrationCenter registrationCenter = new RegistrationCenter();
@@ -5281,6 +5633,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void createRegistrationCenterTestInvalidLatLongFormatTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		short numberOfKiosks = 1;
@@ -5330,6 +5683,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterRequestExceptionTest() throws Exception {
 		RegistrationCenterHistory registrationCenterHistory = new RegistrationCenterHistory();
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
@@ -5383,6 +5737,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
+	@WithUserDetails("test")
 	public void updateRegistrationCenterDataAccessExceptionTest() throws Exception {
 		RequestWrapper<RegistrationCenterDto> requestDto = new RequestWrapper<>();
 		requestDto.setId("mosip.idtype.create");
@@ -5415,6 +5770,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------------genderNameValidationTest-------------------//
 
+	@WithUserDetails("reg-processor")
 	@Test
 	public void validateGenderNameInvalidTest() throws Exception {
 		Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(false);
@@ -5422,6 +5778,7 @@ public class MasterdataIntegrationTest {
 
 	}
 
+	@WithUserDetails("reg-processor")
 	@Test
 	public void validateGenderNameValid() throws Exception {
 		Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString())).thenReturn(true);
@@ -5429,6 +5786,7 @@ public class MasterdataIntegrationTest {
 
 	}
 
+	@WithUserDetails("individual")
 	@Test()
 	public void validateGenderNameException() throws Exception {
 		Mockito.when(genderTypeRepository.isGenderNamePresent(Mockito.anyString()))
@@ -5439,6 +5797,7 @@ public class MasterdataIntegrationTest {
 
 	// ----------------------------------------------------location------------------------------//
 
+	@WithUserDetails("reg-processor")
 	@Test
 	public void validateLocationNameInvalidTest() throws Exception {
 		Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(false);
@@ -5446,6 +5805,7 @@ public class MasterdataIntegrationTest {
 
 	}
 
+	@WithUserDetails("reg-processor")
 	@Test
 	public void validateLocationNameValidTest() throws Exception {
 		Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString())).thenReturn(true);
@@ -5453,6 +5813,7 @@ public class MasterdataIntegrationTest {
 
 	}
 
+	@WithUserDetails("reg-processor")
 	@Test()
 	public void validateLocationNameExceptionTest() throws Exception {
 		Mockito.when(locationRepository.isLocationNamePresent(Mockito.anyString()))
