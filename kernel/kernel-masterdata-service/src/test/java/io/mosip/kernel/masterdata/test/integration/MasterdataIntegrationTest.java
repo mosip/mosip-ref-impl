@@ -5844,7 +5844,7 @@ public class MasterdataIntegrationTest {
 	}
 	
 	@Test
-	@WithUserDetails("reg-admin")
+	@WithUserDetails("reg-processor")
 	public void getUserDetailHistoryByIdTest() throws Exception {
 		
 		
@@ -5857,7 +5857,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("reg-admin")
+	@WithUserDetails("reg-processor")
 	public void getUserDetailHistoryByIdNotFoundExceptionTest() throws Exception {
 		when(userDetailsRepository
 				.getByUserIdAndTimestamp("110001",
@@ -5867,7 +5867,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("reg-admin")
+	@WithUserDetails("reg-processor")
 	public void getUserDetailHistoryByIdEmptyExceptionTest() throws Exception {
 		when(userDetailsRepository
 				.getByUserIdAndTimestamp("11001",
