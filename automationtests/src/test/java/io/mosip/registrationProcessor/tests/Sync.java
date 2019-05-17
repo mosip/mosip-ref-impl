@@ -6,15 +6,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
+import org.json.JSONString;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.testng.ITest;
 import org.testng.ITestContext;
@@ -41,6 +49,7 @@ import io.mosip.service.ApplicationLibrary;
 import io.mosip.service.AssertResponses;
 import io.mosip.service.BaseTestCase;
 import io.mosip.util.CommonLibrary;
+import io.mosip.util.EncrypterDecrypter;
 import io.mosip.util.ReadFolder;
 import io.mosip.util.ResponseRequestMapper;
 import io.restassured.response.Response;
@@ -88,7 +97,7 @@ public class Sync extends BaseTestCase implements ITest {
 		try {
 			prop.load(new FileReader(new File(propertyFilePath)));
 			String testParam = context.getCurrentXmlTest().getParameter("testType");
-			switch (testParam) {
+			switch ("smoke") {
 			case "smoke":
 				readFolder = ReadFolder.readFolders(folderPath, outputFile, requestKeyFile, "smoke");
 				break;
@@ -118,15 +127,44 @@ public class Sync extends BaseTestCase implements ITest {
 		List<String> outerKeys = new ArrayList<String>();
 		List<String> innerKeys = new ArrayList<String>();
 		RegProcDataRead readDataFromDb = new RegProcDataRead();
+		EncrypterDecrypter encrypter = new EncrypterDecrypter();
 		description=common.getDescription(testSuite,object);
 		//testCaseName =testCaseName +": "+ description;
 		try{
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd'T'HHmmssSSS");
 			actualRequest = ResponseRequestMapper.mapRequest(testSuite, object);
+			JSONArray requestBody=(JSONArray) actualRequest.get("request");
+			JSONObject insideRequest=(JSONObject) requestBody.get(0);
+			String regId=(String) insideRequest.get("registrationId");
+			String center_machine_refID=regId.substring(0,5)+"_"+regId.substring(5, 10);
+			/*String timeStamp=regId.substring(regId.length() - 14);
+			int n = 100 + new Random().nextInt(900);
+			String milliseconds = String.valueOf(n);
+			//encryptedPacket.close();
+			Date date=null;
+			try {
+				date = formatter.parse(timeStamp.substring(0, 8) + "T"
+						+ timeStamp.substring(timeStamp.length() - 6)+milliseconds);
+			} catch (java.text.ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+			ldt.atOffset(ZoneOffset.UTC).toString();
+			logger.info("timestamp in sync request : "+ldt.atOffset(ZoneOffset.UTC).toString());*/
+		//	JSONObject encryptedJson = encrypter.generateCryptographicDataEncryption(actualRequest);
+			Map<String,Object> resp = encrypter.encryptJson(actualRequest);
+			String encryptedData = resp.get("data").toString();
+			String timeStamp = resp.get("responsetime").toString();
+			
+			System.out.println("encryptedData :" +encryptedData);
+			System.out.println("TimeStamp :" +timeStamp);
 			// Expected response generation
 			expectedResponse = ResponseRequestMapper.mapResponse(testSuite, object);
 
 			// Actual response generation
-			actualResponse = applicationLibrary.regProcSync(actualRequest.toJSONString(),prop.getProperty("syncListApi"));
+			actualResponse = applicationLibrary.regProcSync(encryptedData,prop.getProperty("syncListApi"),center_machine_refID,
+					timeStamp);
 
 			//outer and inner keys which are dynamic in the actual response
 			outerKeys.add("requesttime");
