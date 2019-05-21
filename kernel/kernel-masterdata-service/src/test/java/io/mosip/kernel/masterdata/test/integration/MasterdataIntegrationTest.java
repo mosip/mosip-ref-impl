@@ -1727,27 +1727,27 @@ public class MasterdataIntegrationTest {
 	// -----------------------------HolidayTest----------------------------------
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getHolidayAllHolidaysSuccessTest() throws Exception {
 		when(holidayRepository.findAllNonDeletedHoliday()).thenReturn(holidays);
 		mockMvc.perform(get("/holidays")).andExpect(status().isOk());
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllHolidaNoHolidayFoundTest() throws Exception {
 		mockMvc.perform(get("/holidays")).andExpect(status().isOk());
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllHolidaysHolidayFetchExceptionTest() throws Exception {
 		when(holidayRepository.findAllNonDeletedHoliday()).thenThrow(DataRetrievalFailureException.class);
 		mockMvc.perform(get("/holidays")).andExpect(status().isInternalServerError());
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getHolidayByIdSuccessTest() throws Exception {
 		when(holidayRepository.findAllById(any(Integer.class))).thenReturn(holidays);
 		mockMvc.perform(get("/holidays/{holidayId}", 1)).andExpect(status().isOk());
@@ -1836,7 +1836,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------IdTypeTest----------------------------------
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getIdTypesByLanguageCodeFetchExceptionTest() throws Exception {
 		when(idTypeRepository.findByLangCode("ENG")).thenThrow(DataAccessLayerException.class);
 		mockMvc.perform(get("/idtypes/ENG").contentType(MediaType.APPLICATION_JSON))
@@ -1844,7 +1844,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getIdTypesByLanguageCodeNotFoundExceptionTest() throws Exception {
 		List<IdType> idTypeList = new ArrayList<>();
 		idTypeList.add(idType);
@@ -1853,7 +1853,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getIdTypesByLanguageCodeTest() throws Exception {
 		List<IdType> idTypeList = new ArrayList<>();
 		idTypeList.add(idType);
@@ -1865,7 +1865,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------PacketRejectionTest----------------------------------
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRjectionReasonTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenReturn(reasoncategories);
@@ -1881,7 +1881,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRjectionReasonFetchExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataRetrievalFailureException.class);
@@ -1898,7 +1898,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRjectionReasonRecordsNotFoundTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(null);
 		mockMvc.perform(get("/packetrejectionreasons")).andExpect(status().isOk());
@@ -1921,7 +1921,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRjectionReasonRecordsEmptyExceptionTest() throws Exception {
 		Mockito.when(reasonCategoryRepository.findReasonCategoryByIsDeletedFalseOrIsDeletedIsNull())
 				.thenReturn(new ArrayList<ReasonCategory>());
@@ -2225,7 +2225,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRegistrationCentersNotFoundExceptionTest() throws Exception {
 		when(registrationCenterRepository.findAll(RegistrationCenter.class))
 				.thenReturn(new ArrayList<RegistrationCenter>());
@@ -2235,7 +2235,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRegistrationCentersFetchExceptionTest() throws Exception {
 		when(registrationCenterRepository.findAllByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataAccessLayerException.class);
@@ -2284,7 +2284,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getAllRegistrationCenterTest() throws Exception {
 		when(registrationCenterRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(registrationCenters);
 
@@ -2953,7 +2953,7 @@ public class MasterdataIntegrationTest {
 
 	// -----------------------------------DeviceSpecificationTest---------------------------------
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void findDeviceSpecLangcodeSuccessTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(deviceSpecList);
@@ -2961,7 +2961,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void findDeviceSpecLangcodeNullResponseTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(null);
@@ -2969,7 +2969,7 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void findDeviceSpecLangcodeFetchExceptionTest() throws Exception {
 		when(deviceSpecificationRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -3290,21 +3290,21 @@ public class MasterdataIntegrationTest {
 	// -------------------------MachineTest-----------------------------------------
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getMachineAllSuccessTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(machineList);
 		mockMvc.perform(get("/machines")).andExpect(status().isOk());
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getMachineAllNullResponseTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull()).thenReturn(null);
 		mockMvc.perform(get("/machines")).andExpect(status().isOk());
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getMachineAllFetchExceptionTest() throws Exception {
 		when(machineRepository.findAllByIsDeletedFalseOrIsDeletedIsNull())
 				.thenThrow(DataRetrievalFailureException.class);
@@ -3616,7 +3616,7 @@ public class MasterdataIntegrationTest {
 
 	// --------------------------------DeviceTest-------------------------------------------------
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getDeviceLangcodeSuccessTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenReturn(deviceList);
@@ -3624,14 +3624,14 @@ public class MasterdataIntegrationTest {
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getDeviceLangcodeNullResponseTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString())).thenReturn(null);
 		mockMvc.perform(get("/devices/{langcode}", "ENG")).andExpect(status().isOk());
 	}
 
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getDeviceLangcodeFetchExceptionTest() throws Exception {
 		when(deviceRepository.findByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.anyString()))
 				.thenThrow(DataRetrievalFailureException.class);
@@ -4435,7 +4435,7 @@ public class MasterdataIntegrationTest {
 	}
 	
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getValidDocumentSuccessTest() throws Exception {
 		DocumentCategory documentCategory = new DocumentCategory();
 		documentCategory.setCode("POA");
@@ -4464,7 +4464,7 @@ public class MasterdataIntegrationTest {
 	}
 	
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getValidDocumentNotFoundExceptionTest() throws Exception {
 		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenReturn(new ArrayList<DocumentCategory>());
 		when(documentTypeRepository.findByCodeAndLangCodeAndIsDeletedFalse(Mockito.any(), Mockito.any())).thenReturn(null);
@@ -4473,7 +4473,7 @@ public class MasterdataIntegrationTest {
 	}
 	
 	@Test
-	@WithUserDetails("test")
+	@WithUserDetails("zonal-admin")
 	public void getValidDocumentFetchExceptionTest() throws Exception {
 		when(documentCategoryRepository.findAllByLangCodeAndIsDeletedFalseOrIsDeletedIsNull(Mockito.any())).thenThrow(new DataAccessLayerException(null, null, null));
 		
