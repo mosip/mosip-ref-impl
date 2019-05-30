@@ -27,9 +27,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -52,21 +52,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -107,9 +107,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -132,21 +132,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -187,9 +187,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -212,21 +212,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -267,9 +267,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -292,21 +292,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -347,9 +347,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -372,21 +372,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -427,9 +427,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -452,21 +452,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -507,9 +507,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -532,21 +532,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -587,9 +587,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -612,21 +612,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -667,9 +667,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -692,21 +692,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -748,9 +748,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -773,21 +773,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -828,9 +828,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -853,21 +853,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -908,9 +908,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -933,21 +933,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -988,9 +988,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1013,21 +1013,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1068,9 +1068,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1093,21 +1093,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1148,9 +1148,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1173,21 +1173,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1228,9 +1228,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1253,21 +1253,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1308,9 +1308,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1333,21 +1333,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1388,9 +1388,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1413,21 +1413,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1468,9 +1468,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1493,21 +1493,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1548,9 +1548,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1573,21 +1573,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1628,9 +1628,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1653,21 +1653,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1708,9 +1708,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1733,21 +1733,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1788,9 +1788,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1813,21 +1813,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1868,9 +1868,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1893,21 +1893,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -1948,9 +1948,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -1973,21 +1973,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2028,9 +2028,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2053,21 +2053,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2108,9 +2108,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2133,21 +2133,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2188,9 +2188,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2213,21 +2213,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2268,9 +2268,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2293,21 +2293,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2348,9 +2348,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2373,21 +2373,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2428,9 +2428,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2453,21 +2453,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2508,9 +2508,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2533,21 +2533,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2583,9 +2583,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2608,21 +2608,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2663,9 +2663,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2688,21 +2688,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2742,9 +2742,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2767,21 +2767,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2822,9 +2822,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2847,21 +2847,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2902,9 +2902,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -2927,21 +2927,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -2982,9 +2982,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3007,21 +3007,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3062,9 +3062,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3087,21 +3087,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3142,9 +3142,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3167,21 +3167,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3222,9 +3222,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3247,21 +3247,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3302,9 +3302,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3327,21 +3327,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3382,9 +3382,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3407,21 +3407,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3462,9 +3462,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3487,21 +3487,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3542,9 +3542,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3567,21 +3567,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3622,9 +3622,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3647,21 +3647,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3702,9 +3702,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3727,21 +3727,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3782,9 +3782,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3807,21 +3807,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3862,9 +3862,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3887,21 +3887,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -3942,9 +3942,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -3967,21 +3967,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -4022,9 +4022,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -4047,21 +4047,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -4102,9 +4102,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -4127,21 +4127,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
@@ -4182,9 +4182,9 @@ testdata:
       languagelocalAdministrativeAuthority0: $TestData:english_lang_code_valid$
       languagelocalAdministrativeAuthority2: $TestData:french_lang_code_valid$
       languagelocalAdministrativeAuthority1: $TestData:arabic_lang_code_valid$
-      valuelocalAdministrativeAuthority2: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~fr$
-      valuelocalAdministrativeAuthority1: $TRANSLATE~$input.create-request:valuelocalAdministrativeAuthority0$~en~ar$
-      valuelocalAdministrativeAuthority0: $TRANSLATE~$TestData:name_valid$~en~en$
+      valuelocalAdministrativeAuthority2: $TestData:localAdministrativeAuthority_fra_valid$
+      valuelocalAdministrativeAuthority1: $TestData:localAdministrativeAuthority_ara_valid$
+      valuelocalAdministrativeAuthority0: $TestData:localAdministrativeAuthority_eng_valid$
       age: $TestData:age_valid$
       languageaddressLine10: $TestData:english_lang_code_valid$
       languageaddressLine12: $TestData:french_lang_code_valid$
@@ -4207,21 +4207,21 @@ testdata:
       languageregion0: $TestData:english_lang_code_valid$
       languageregion2: $TestData:french_lang_code_valid$
       languageregion1: $TestData:arabic_lang_code_valid$
-      valueregion2: $TRANSLATE~$input.create-request:valueregion0$~en~fr$
-      valueregion1: $TRANSLATE~$input.create-request:valueregion0$~en~ar$
-      valueregion0: $TRANSLATE~$TestData:location2_valid$~en~en$
+      valueregion2: $TestData:region_fra_valid$
+      valueregion1: $TestData:region_ara_valid$
+      valueregion0: $TestData:region_eng_valid$
       languageprovince0: $TestData:english_lang_code_valid$
       languageprovince2: $TestData:french_lang_code_valid$
       languageprovince1: $TestData:arabic_lang_code_valid$
-      valueprovince2: $TRANSLATE~$input.create-request:valueprovince0$~en~fr$
-      valueprovince1: $TRANSLATE~$input.create-request:valueprovince0$~en~ar$
-      valueprovince0: $TRANSLATE~$TestData:location3_valid$~en~en$
+      valueprovince2: $TestData:province_fra_valid$
+      valueprovince1: $TestData:province_ara_valid$
+      valueprovince0: $TestData:province_eng_valid$
       languagecity0: $TestData:english_lang_code_valid$
       languagecity2: $TestData:french_lang_code_valid$
       languagecity1: $TestData:arabic_lang_code_valid$
-      valuecity2:  $TRANSLATE~$input.create-request:valuecity0$~en~fr$
-      valuecity1:  $TRANSLATE~$input.create-request:valuecity0$~en~ar$
-      valuecity0: $TRANSLATE~$TestData:location1_valid$~en~en$
+      valuecity2: $TestData:city_fra_valid$
+      valuecity1: $TestData:city_ara_valid$
+      valuecity0: $TestData:city_eng_valid$
       timestamp: $TIMESTAMPZ$
       phone: $TestData:phone_valid$
       postalCode: $TestData:postalcode_valid$
