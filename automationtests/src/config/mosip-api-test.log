@@ -16947,3 +16947,1245 @@ INFO    2019-06-20 12:47:20,514 [TestNG-tests-1] io.mosip.authentication.fw.prec
 }
 INFO    2019-06-20 12:47:20,516 [TestNG-tests-1] io.mosip.authentication.idRepository.prerequiste.CreateUinRecord  - ******Post request Json to EndPointUrl: https://qa.mosip.io/idrepository/v1/identity/ *******
 INFO    2019-06-20 12:47:20,519 [TestNG-tests-1] io.mosip.authentication.fw.util.RestClient  - REST-ASSURED: Sending a POST request to https://qa.mosip.io/idrepository/v1/identity/
+INFO    2019-06-20 13:10:26,467 [main] io.mosip.service.BaseTestCase  - Test Framework for Mosip api Initialized
+INFO    2019-06-20 13:10:26,469 [main] io.mosip.service.BaseTestCase  - Logging initialized: All logs are located at src/logs/mosip-api-test.log
+INFO    2019-06-20 13:10:26,470 [main] io.mosip.service.BaseTestCase  - Environemnt is  ==== :qa
+INFO    2019-06-20 13:10:26,470 [main] io.mosip.service.BaseTestCase  - Application URI ======https://qa.mosip.io
+INFO    2019-06-20 13:10:26,470 [main] io.mosip.service.BaseTestCase  - Test Level ======smoke
+INFO    2019-06-20 13:10:26,470 [main] io.mosip.service.BaseTestCase  - Configs from properties file are set.
+INFO    2019-06-20 13:10:26,470 [main] io.mosip.service.BaseTestCase  - Done with BeforeSuite and test case setup! BEGINNING TEST EXECUTION!
+
+
+INFO    2019-06-20 13:10:26,652 [main] io.mosip.authentication.fw.util.AuthTestsUtil  - DemoApp Jar: C:\Users\M1013977\.m2\repository\io\mosip\authentication\authentication-partnerdemo-service\0.12.4\authentication-partnerdemo-service-0.12.4.jar
+INFO    2019-06-20 13:10:26,653 [main] io.mosip.authentication.fw.util.AuthTestsUtil  - Cmd Path: "C:\Program Files\Java\jdk1.8.0_171/bin/java" -Dspring.cloud.config.label=QA_IDA -Dspring.profiles.active=testqa -Dspring.cloud.config.uri=http://104.211.212.28:51000 -jar "C:\Users\M1013977\.m2\repository\io\mosip\authentication\authentication-partnerdemo-service\0.12.4\authentication-partnerdemo-service-0.12.4.jar"
+INFO    2019-06-20 13:11:27,139 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST:ASSURED:Sending post request tohttps://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:32,470 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response from request is: {"id":"string","version":"string","responsetime":"2019-06-20T07:41:32.370Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:32,470 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response Time is: 1745
+INFO    2019-06-20 13:11:32,537 [TestNG-tests-1] io.mosip.kernel.tests.AuditLog  - Test Case Name:allValid_smoke
+INFO    2019-06-20 13:11:32,542 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST:ASSURED:Sending post request tohttps://qa.mosip.io/v1/auditmanager/audits
+INFO    2019-06-20 13:11:32,853 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response from request is: {"id":"string","version":"string","responsetime":"2019-06-20T07:41:32.904Z","metadata":null,"response":{"status":true},"errors":null}
+INFO    2019-06-20 13:11:32,853 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response Time is: 290
+ERROR   2019-06-20 13:11:32,876 [TestNG-tests-1] io.mosip.kernel.service.AssertKernel  - ======[]==========
+INFO    2019-06-20 13:11:32,876 [TestNG-tests-1] io.mosip.kernel.service.AssertKernel  - equal
+INFO    2019-06-20 13:11:32,892 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST:ASSURED:Sending post request tohttps://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:33,123 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response from request is: {"id":"string","version":"string","responsetime":"2019-06-20T07:41:33.173Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:33,123 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response Time is: 183
+INFO    2019-06-20 13:11:33,128 [TestNG-tests-1] io.mosip.kernel.tests.AuditLog  - Test Case Name:allValid_smoke_removing_optional_fields
+INFO    2019-06-20 13:11:33,132 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST:ASSURED:Sending post request tohttps://qa.mosip.io/v1/auditmanager/audits
+INFO    2019-06-20 13:11:33,492 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response from request is: {"id":"string","version":"string","responsetime":"2019-06-20T07:41:33.535Z","metadata":null,"response":{"status":true},"errors":null}
+INFO    2019-06-20 13:11:33,492 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response Time is: 346
+ERROR   2019-06-20 13:11:33,504 [TestNG-tests-1] io.mosip.kernel.service.AssertKernel  - ======[]==========
+INFO    2019-06-20 13:11:33,504 [TestNG-tests-1] io.mosip.kernel.service.AssertKernel  - equal
+INFO    2019-06-20 13:11:33,511 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST:ASSURED:Sending post request tohttps://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:33,626 [TestNG-tests-2] org.hibernate.Version  - HHH000412: Hibernate Core {5.4.0.Final}
+INFO    2019-06-20 13:11:33,635 [TestNG-tests-2] org.hibernate.cfg.Environment  - HHH000206: hibernate.properties not found
+INFO    2019-06-20 13:11:33,751 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response from request is: {"id":"string","version":"string","responsetime":"2019-06-20T07:41:33.802Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:33,751 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response Time is: 229
+INFO    2019-06-20 13:11:33,758 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: Sending a PUT request to   https://qa.mosip.io/v1/masterdata/registrationmachineusermappings
+INFO    2019-06-20 13:11:34,120 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"string","version":"string","responsetime":"2019-06-20T07:41:34.164Z","metadata":null,"response":{"mapped":[],"notmapped":[{"cntrId":"10001","usrId":"110001","machineId":"10001"}]},"errors":null}
+INFO    2019-06-20 13:11:34,120 [TestNG-tests-1] io.mosip.kernel.util.CommonLibrary  - REST-ASSURED: The response Time is: 339
+ERROR   2019-06-20 13:11:34,138 [TestNG-tests-1] io.mosip.kernel.service.AssertKernel  - ======[{"op":"move","from":"/response/notmapped/0","path":"/response/mapped/0"}]==========
+INFO    2019-06-20 13:11:34,138 [TestNG-tests-1] io.mosip.kernel.service.AssertKernel  - equal
+INFO    2019-06-20 13:11:34,618 [TestNG-tests-1] io.mosip.util.ReadFolder  - regProc/Sync
+INFO    2019-06-20 13:11:34,641 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - URL IS  :: https://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:34,885 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"id":"io.mosip.registration.processor","version":"1.0","responsetime":"2019-06-20T07:41:34.932Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:34,885 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 214
+INFO    2019-06-20 13:11:34,885 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED:454545445 The response Time is: {"id":"io.mosip.registration.processor","version":"1.0","responsetime":"2019-06-20T07:41:34.932Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:34,898 [TestNG-tests-1] io.mosip.util.ResponseRequestMapper  - Testcase name isregProc_Sync_smoke
+INFO    2019-06-20 13:11:35,034 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a data packet tohttps://qa.mosip.io/v1/cryptomanager/encrypt
+INFO    2019-06-20 13:11:35,035 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST ASSURRED :: Request To Encrypt Is {"request":{"timeStamp":"2019-06-18T08:11:37.488Z","data":"ew0KICAiaWQiIDogIm1vc2lwLnJlZ2lzdHJhdGlvbi5zeW5jIiwNCiAgInJlcXVlc3R0aW1lIiA6ICIyMDE5LTA2LTE4VDA4OjExOjM3LjEzOVoiLA0KICAidmVyc2lvbiIgOiAiMS4wIiwNCiAgInJlcXVlc3QiIDogWyB7DQogICAgImxhbmdDb2RlIiA6ICJlbmciLA0KICAgICJyZWdpc3RyYXRpb25JZCIgOiAiMTAwMDYxMDAwNjEwMjQ2MjAxOTA2MTgwODExMzciLA0KICAgICJyZWdpc3RyYXRpb25UeXBlIiA6ICJVUERBVEUiLA0KICAgICJwYWNrZXRIYXNoVmFsdWUiIDogIkJDNUM1RDM1RDEzMzc1MTZERjgxRTBCRkVBQzUyNzhGMUE2OUQ4RTc0RkE5MjBBMkFGRDExQjJDQUU3MUYyRjMiLA0KICAgICJwYWNrZXRTaXplIiA6IDMwOTY5NCwNCiAgICAic3VwZXJ2aXNvclN0YXR1cyIgOiAiQVBQUk9WRUQiLA0KICAgICJzdXBlcnZpc29yQ29tbWVudCIgOiAiQVBQUk9WRUQiDQogIH0gXQ0KfQ","applicationId":"REGISTRATION","referenceId":"10006_10006"},"metadata":"","requesttime":"2019-06-18T08:11:37.306Z","id":"mosip.registration.sync","version":"1.0"}
+INFO    2019-06-20 13:11:35,166 [TestNG-tests-2] org.hibernate.annotations.common.Version  - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+WARN    2019-06-20 13:11:35,658 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+INFO    2019-06-20 13:11:35,684 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://52.172.54.231:9001/mosip_kernel]
+INFO    2019-06-20 13:11:35,685 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001001: Connection properties: {user=postgres, password=****}
+INFO    2019-06-20 13:11:35,685 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001003: Autocommit mode: false
+INFO    2019-06-20 13:11:35,693 [TestNG-tests-2] org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl  - HHH000115: Hibernate connection pool size: 1 (min=1)
+INFO    2019-06-20 13:11:36,017 [TestNG-tests-2] org.hibernate.dialect.Dialect  - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+INFO    2019-06-20 13:11:36,130 [TestNG-tests-1] io.mosip.util.ResponseRequestMapper  - Testcase name isregProc_Sync_smoke
+INFO    2019-06-20 13:11:36,131 [TestNG-tests-1] io.mosip.registrationProcessor.tests.Sync  - sync API url : /registrationprocessor/v1/registrationstatus/sync
+INFO    2019-06-20 13:11:37,322 [TestNG-tests-1] io.mosip.service.AssertResponses  - not equal: value differences={response=([{registrationId=10006100061024620190618081137, status=SUCCESS}], [{registrationId=10006100060001020190617083346, status=SUCCESS}])}
+INFO    2019-06-20 13:11:37,332 [TestNG-tests-1] io.mosip.registrationProcessor.tests.Sync  - Successfully updated Results to SyncOutput.json
+INFO    2019-06-20 13:11:37,333 [TestNG-tests-1] io.mosip.util.ReadFolder  - regProc/PacketStatus
+INFO    2019-06-20 13:11:37,339 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - URL IS  :: https://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:37,544 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"id":"mosip.io.userId.pwd","version":"1.0","responsetime":"2019-06-20T07:41:37.587Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:37,545 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 188
+INFO    2019-06-20 13:11:37,545 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED:454545445 The response Time is: {"id":"mosip.io.userId.pwd","version":"1.0","responsetime":"2019-06-20T07:41:37.587Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:37,553 [TestNG-tests-1] io.mosip.util.ResponseRequestMapper  - Testcase name isPacketStatus_mutipleRegIds_smoke
+INFO    2019-06-20 13:11:37,555 [TestNG-tests-1] io.mosip.util.ResponseRequestMapper  - Testcase name isPacketStatus_mutipleRegIds_smoke
+INFO    2019-06-20 13:11:37,557 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a post request to/registrationprocessor/v1/registrationstatus/search
+INFO    2019-06-20 13:11:38,150 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"response":[{"registrationId":"10002100320001320190614090820","statusCode":"REREGISTER"},{"registrationId":"10003100030001820190610083145","statusCode":"PROCESSING"}],"id":"mosip.registration.status","version":"1.0","responsetime":"2019-06-20T07:41:38.202Z"}
+INFO    2019-06-20 13:11:38,150 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 575
+INFO    2019-06-20 13:11:38,152 [TestNG-tests-1] io.mosip.service.AssertResponses  - not equal: value differences={response=([{registrationId=10002100320001320190614090820, statusCode=REREGISTER}, {registrationId=10003100030001820190610083145, statusCode=PROCESSING}], [{registrationId=10002100320001320190614090820, statusCode=REREGISTER}, {registrationId=10003100030001820190610083145, statusCode=RESEND}])}
+INFO    2019-06-20 13:11:38,161 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - URL IS  :: https://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:38,424 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"id":"mosip.io.userId.pwd","version":"1.0","responsetime":"2019-06-20T07:41:38.461Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:38,424 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 227
+INFO    2019-06-20 13:11:38,425 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED:454545445 The response Time is: {"id":"mosip.io.userId.pwd","version":"1.0","responsetime":"2019-06-20T07:41:38.461Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:38,442 [TestNG-tests-1] io.mosip.util.ResponseRequestMapper  - Testcase name isPacketStatus_smoke
+INFO    2019-06-20 13:11:38,447 [TestNG-tests-1] io.mosip.util.ResponseRequestMapper  - Testcase name isPacketStatus_smoke
+INFO    2019-06-20 13:11:38,450 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a post request to/registrationprocessor/v1/registrationstatus/search
+INFO    2019-06-20 13:11:39,070 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"response":[{"registrationId":"10002100320001320190614090820","statusCode":"REREGISTER"}],"id":"mosip.registration.status","version":"1.0","responsetime":"2019-06-20T07:41:39.111Z"}
+INFO    2019-06-20 13:11:39,070 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 608
+INFO    2019-06-20 13:11:39,071 [TestNG-tests-1] io.mosip.service.AssertResponses  - equal
+INFO    2019-06-20 13:11:39,071 [TestNG-tests-1] io.mosip.service.AssertResponses  - both object are equal
+INFO    2019-06-20 13:11:39,071 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - isError ========= : false
+INFO    2019-06-20 13:11:39,087 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - response : [{registrationId=10002100320001320190614090820, statusCode=REREGISTER}]
+INFO    2019-06-20 13:11:39,087 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - expected: [{"registrationId":"10002100320001320190614090820","statusCode":"REREGISTER"}]
+INFO    2019-06-20 13:11:39,087 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - expectedRegId: 10002100320001320190614090820
+INFO    2019-06-20 13:11:39,087 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - Reg Id is : 10002100320001320190614090820
+WARN    2019-06-20 13:11:39,134 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+INFO    2019-06-20 13:11:39,135 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://52.172.54.231:9001/mosip_regprc]
+INFO    2019-06-20 13:11:39,135 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001001: Connection properties: {user=postgres, password=****}
+INFO    2019-06-20 13:11:39,135 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001003: Autocommit mode: false
+INFO    2019-06-20 13:11:39,135 [TestNG-tests-1] org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl  - HHH000115: Hibernate connection pool size: 1 (min=1)
+INFO    2019-06-20 13:11:39,258 [TestNG-tests-1] org.hibernate.dialect.Dialect  - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+INFO    2019-06-20 13:11:42,503 [TestNG-tests-2] org.hibernate.type.BasicTypeRegistry  - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@30f23e04
+INFO    2019-06-20 13:11:42,997 [TestNG-tests-2] org.hibernate.validator.internal.util.Version  - HV000001: Hibernate Validator 6.0.9.Final
+INFO    2019-06-20 13:11:44,640 [TestNG-tests-1] org.hibernate.type.BasicTypeRegistry  - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@30f23e04
+INFO    2019-06-20 13:11:44,671 [TestNG-tests-1] io.mosip.dbaccess.RegProcDataRead  - Reg id inside validateRegIdinRegistration method :10002100320001320190614090820
+INFO    2019-06-20 13:11:44,676 [TestNG-tests-1] io.mosip.dbaccess.RegProcDataRead  - regId is : 10002100320001320190614090820
+INFO    2019-06-20 13:11:44,706 [TestNG-tests-1] io.mosip.dbaccess.RegProcDataRead  - Size is : 1
+WARN    2019-06-20 13:11:44,760 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+INFO    2019-06-20 13:11:44,761 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://52.172.54.231:9001/mosip_regprc]
+INFO    2019-06-20 13:11:44,761 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001001: Connection properties: {user=postgres, password=****}
+INFO    2019-06-20 13:11:44,761 [TestNG-tests-1] org.hibernate.orm.connections.pooling  - HHH10001003: Autocommit mode: false
+INFO    2019-06-20 13:11:44,761 [TestNG-tests-1] org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl  - HHH000115: Hibernate connection pool size: 1 (min=1)
+INFO    2019-06-20 13:11:44,873 [TestNG-tests-1] org.hibernate.dialect.Dialect  - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+INFO    2019-06-20 13:11:47,525 [TestNG-tests-2] io.mosip.service.BaseTestCase  - document upload request ::::{"request":{"docCatCode":"POA","docTypCode":"RNC","langCode":"fra"},"requesttime":"2019-06-20T07:41:47.525Z","id":"mosip.pre-registration.document.upload","version":"1.0"}
+INFO    2019-06-20 13:11:49,254 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST:ASSURED: The response from request is:{"id":"mosip.pre-registration.document.upload","version":"1.0","responsetime":"2019-06-20T07:41:49.229Z","response":{"preRegistrationId":"20843079357640","docId":"dc7da095-932e-11e9-ad05-455ade89170d","docName":"AadhaarCard_POA.pdf","docCatCode":"POA","docTypCode":"RNC","docFileFormat":"pdf"},"errors":null}
+INFO    2019-06-20 13:11:49,254 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: the response time is: 1694
+INFO    2019-06-20 13:11:49,255 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: Sending a GET request to https://qa.mosip.io/preregistration/v1/appointment/availability/10002
+INFO    2019-06-20 13:11:49,682 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.appointment.availability","version":"1.0","responsetime":"2019-06-20T07:41:49.704Z","response":{"regCenterId":"10002","centerDetails":[{"date":"2019-06-22","timeSlots":[{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-23","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-24","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-25","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-26","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-27","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-28","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-29","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-30","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-07-01","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false}]},"errors":null}
+INFO    2019-06-20 13:11:49,691 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response Time is: 374
+INFO    2019-06-20 13:11:50,802 [TestNG-tests-1] org.hibernate.type.BasicTypeRegistry  - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@30f23e04
+INFO    2019-06-20 13:11:50,828 [TestNG-tests-1] io.mosip.dbaccess.RegProcDataRead  - regId is : 10002100320001320190614090820
+INFO    2019-06-20 13:11:50,845 [TestNG-tests-1] io.mosip.dbaccess.RegProcDataRead  - result==== : []
+INFO    2019-06-20 13:11:50,862 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - dbDto :io.mosip.dbentity.RegistrationStatusEntity@53c0785f
+INFO    2019-06-20 13:11:50,863 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - Validated in DB.......
+INFO    2019-06-20 13:11:50,889 [TestNG-tests-1] io.mosip.registrationProcessor.tests.PacketStatus  - Successfully updated Results to PacketStatusOutput.json
+INFO    2019-06-20 13:11:50,898 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - URL IS  :: https://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:51,156 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"id":"io.mosip.registration.processor","version":"1.0","responsetime":"2019-06-20T07:41:51.203Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:51,157 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 242
+INFO    2019-06-20 13:11:51,159 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED:454545445 The response Time is: {"id":"io.mosip.registration.processor","version":"1.0","responsetime":"2019-06-20T07:41:51.203Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:51,167 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - URL IS  :: https://qa.mosip.io/v1/authmanager/authenticate/useridPwd
+INFO    2019-06-20 13:11:51,167 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: Sending a PUT request to https://qa.mosip.io/preregistration/v1/batch/consumedStatus
+INFO    2019-06-20 13:11:51,427 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"id":"mosip.io.userId.pwd","version":"1.0","responsetime":"2019-06-20T07:41:51.452Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:51,427 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 222
+INFO    2019-06-20 13:11:51,428 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED:454545445 The response Time is: {"id":"mosip.io.userId.pwd","version":"1.0","responsetime":"2019-06-20T07:41:51.452Z","metadata":null,"response":{"status":"success","message":"Username and password combination had been validated successfully"},"errors":null}
+INFO    2019-06-20 13:11:51,462 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a data packet tohttps://qa.mosip.io/v1/cryptomanager/encrypt
+INFO    2019-06-20 13:11:51,462 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST ASSURRED :: Request To Encrypt Is {"request":{"timeStamp":"2019-05-22T06:50:02.798Z","data":"ew0KICAiaWQiIDogIm1vc2lwLnJlZ2lzdHJhdGlvbi5zeW5jIiwNCiAgInJlcXVlc3R0aW1lIiA6ICIyMDE5LTA1LTIyVDA2OjUwOjAyLjY5OVoiLA0KICAidmVyc2lvbiIgOiAiMS4wIiwNCiAgInJlcXVlc3QiIDogWyB7DQogICAgImxhbmdDb2RlIiA6ICJlbmciLA0KICAgICJyZWdpc3RyYXRpb25JZCIgOiAiMTAwMDcxMDAyNjAwMDEyMjAxOTA1MjIwNjUwMDIiLA0KICAgICJyZWdpc3RyYXRpb25UeXBlIiA6ICJORVciLA0KICAgICJwYWNrZXRIYXNoVmFsdWUiIDogIjMzRTg2QzIwRjE2RDJCRjRFRTdCNEI5QzEwNUFFOTUzMjY4MDg3OUUxNTk0OEQ5M0VENTAzQjI1Qjk4NzU4NDEiLA0KICAgICJwYWNrZXRTaXplIiA6IDUxNDk2MywNCiAgICAic3VwZXJ2aXNvclN0YXR1cyIgOiAiQVBQUk9WRUQiLA0KICAgICJzdXBlcnZpc29yQ29tbWVudCIgOiAiQVBQUk9WRUQiDQogIH0gXQ0KfQ","applicationId":"REGISTRATION","referenceId":"10007_10026"},"metadata":"","requesttime":"2019-05-22T06:50:02.229Z","id":"mosip.registration.sync","version":"1.0"}
+INFO    2019-06-20 13:11:51,845 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.batchjob.service.consumed","version":"1.0","responsetime":"2019-06-20T07:41:51.888Z","response":"Demographic status to consumed updated successfully","errors":null}
+INFO    2019-06-20 13:11:51,845 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: the response Time is: 428
+INFO    2019-06-20 13:11:51,858 [TestNG-tests-2] io.mosip.service.BaseTestCase  - values are equal
+INFO    2019-06-20 13:11:52,083 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.demographic.retrieve.details","version":"1.0","responsetime":"2019-06-20T07:41:52.144Z","response":null,"errors":[{"errorCode":"PRG_PAM_APP_005","message":"No data found for the requested pre-registration id"}]}
+INFO    2019-06-20 13:11:52,084 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response Time is: 209
+INFO    2019-06-20 13:11:52,141 [TestNG-tests-2] io.mosip.service.BaseTestCase  - values are equal
+INFO    2019-06-20 13:11:52,744 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a data packet tohttps://qa.mosip.io/v1/cryptomanager/encrypt
+INFO    2019-06-20 13:11:52,746 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST ASSURRED :: Request To Encrypt Is {"request":{"timeStamp":"2019-05-22T06:50:02.798Z","data":"ew0KICAiaWQiIDogIm1vc2lwLnJlZ2lzdHJhdGlvbi5zeW5jIiwNCiAgInJlcXVlc3R0aW1lIiA6ICIyMDE5LTA1LTIyVDA2OjUwOjAyLjY5OVoiLA0KICAidmVyc2lvbiIgOiAiMS4wIiwNCiAgInJlcXVlc3QiIDogWyB7DQogICAgImxhbmdDb2RlIiA6ICJlbmciLA0KICAgICJyZWdpc3RyYXRpb25JZCIgOiAiMTAwMDcxMDAyNjAwMDEyMjAxOTA1MjIwNjUwMDIiLA0KICAgICJyZWdpc3RyYXRpb25UeXBlIiA6ICJORVciLA0KICAgICJwYWNrZXRIYXNoVmFsdWUiIDogIjMzRTg2QzIwRjE2RDJCRjRFRTdCNEI5QzEwNUFFOTUzMjY4MDg3OUUxNTk0OEQ5M0VENTAzQjI1Qjk4NzU4NDEiLA0KICAgICJwYWNrZXRTaXplIiA6IDUxNDk2MywNCiAgICAic3VwZXJ2aXNvclN0YXR1cyIgOiAiQVBQUk9WRUQiLA0KICAgICJzdXBlcnZpc29yQ29tbWVudCIgOiAiQVBQUk9WRUQiDQogIH0gXQ0KfQ","applicationId":"REGISTRATION","referenceId":"10007_10026"},"metadata":"","requesttime":"2019-05-22T06:50:02.229Z","id":"mosip.registration.sync","version":"1.0"}
+INFO    2019-06-20 13:11:53,542 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a data packet tohttps://qa.mosip.io/registrationprocessor/v1/packetreceiver/registrationpackets
+INFO    2019-06-20 13:11:55,220 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED: The response from request is:{"errors":[{"errorCode":"RPR-PKR-005","message":"The request received is a duplicate request to upload a Packet"}],"id":"mosip.registration.packet","version":"1.0","responsetime":"2019-06-20T07:41:54.980Z"}
+INFO    2019-06-20 13:11:55,220 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: the response time is: 1287
+INFO    2019-06-20 13:11:55,230 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED:Sending a data packet tohttps://qa.mosip.io/registrationprocessor/v1/packetreceiver/registrationpackets
+INFO    2019-06-20 13:11:55,303 [TestNG-tests-2] io.mosip.service.BaseTestCase  - document upload request ::::{"request":{"docCatCode":"POA","docTypCode":"RNC","langCode":"fra"},"requesttime":"2019-06-20T07:41:55.303Z","id":"mosip.pre-registration.document.upload","version":"1.0"}
+INFO    2019-06-20 13:11:55,914 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST:ASSURED: The response from request is:{"errors":[{"errorCode":"RPR-AUT-01","message":"JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted."}],"id":"mosip.registration.packet","version":"1.0","responsetime":"2019-06-20T07:41:55.725Z"}
+INFO    2019-06-20 13:11:55,914 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: the response time is: 676
+INFO    2019-06-20 13:11:55,937 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: Sending a GET request to https://qa.mosip.io/registrationprocessor/v1/registrationstatus/search
+INFO    2019-06-20 13:11:56,102 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"timestamp":"2019-06-20T07:41:56.161+0000","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/registrationprocessor/v1/registrationstatus/search"}
+INFO    2019-06-20 13:11:56,102 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 151
+INFO    2019-06-20 13:11:56,105 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: Sending a GET request to https://qa.mosip.io/registrationprocessor/v1/registrationstatus/search
+INFO    2019-06-20 13:11:56,279 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response from the request is: {"timestamp":"2019-06-20T07:41:56.339+0000","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/registrationprocessor/v1/registrationstatus/search"}
+INFO    2019-06-20 13:11:56,279 [TestNG-tests-1] io.mosip.registrationProcessor.util.RegProcApiRequests  - REST-ASSURED: The response Time is: 164
+INFO    2019-06-20 13:11:56,547 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Valid_Request_IntegrationTest_Smoke_Pos
+INFO    2019-06-20 13:11:56,593 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST:ASSURED: The response from request is:{"id":"mosip.pre-registration.document.upload","version":"1.0","responsetime":"2019-06-20T07:41:56.575Z","response":{"preRegistrationId":"43084154915320","docId":"e0ded7d6-932e-11e9-ad05-a7b7da8c91f7","docName":"AadhaarCard_POA.pdf","docCatCode":"POA","docTypCode":"RNC","docFileFormat":"pdf"},"errors":null}
+INFO    2019-06-20 13:11:56,594 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: the response time is: 1274
+INFO    2019-06-20 13:11:56,594 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: Sending a GET request to https://qa.mosip.io/preregistration/v1/appointment/availability/10012
+INFO    2019-06-20 13:11:56,759 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6352183104",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:56.056+05:30",
+  "transactionID": "0104704115",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:56,777 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0104704115",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:56,857 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Valid_Request_IntegrationTest_Smoke_Using_VID_Pos
+INFO    2019-06-20 13:11:56,903 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.appointment.availability","version":"1.0","responsetime":"2019-06-20T07:41:56.960Z","response":{"regCenterId":"10012","centerDetails":[{"date":"2019-06-22","timeSlots":[{"fromTime":"09:15:00","toTime":"09:30:00","availability":1},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-23","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-24","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-25","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-26","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":1},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-27","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-28","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-29","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false},{"date":"2019-06-30","timeSlots":[{"fromTime":"09:00:00","toTime":"09:15:00","availability":2},{"fromTime":"09:15:00","toTime":"09:30:00","availability":2},{"fromTime":"09:30:00","toTime":"09:45:00","availability":2},{"fromTime":"09:45:00","toTime":"10:00:00","availability":2},{"fromTime":"10:00:00","toTime":"10:15:00","availability":2},{"fromTime":"10:15:00","toTime":"10:30:00","availability":2},{"fromTime":"10:30:00","toTime":"10:45:00","availability":2},{"fromTime":"10:45:00","toTime":"11:00:00","availability":2},{"fromTime":"11:00:00","toTime":"11:15:00","availability":2},{"fromTime":"11:15:00","toTime":"11:30:00","availability":2},{"fromTime":"11:30:00","toTime":"11:45:00","availability":2},{"fromTime":"11:45:00","toTime":"12:00:00","availability":2},{"fromTime":"12:00:00","toTime":"12:15:00","availability":2},{"fromTime":"12:15:00","toTime":"12:30:00","availability":2},{"fromTime":"12:30:00","toTime":"12:45:00","availability":2},{"fromTime":"12:45:00","toTime":"13:00:00","availability":2},{"fromTime":"14:00:00","toTime":"14:15:00","availability":2},{"fromTime":"14:15:00","toTime":"14:30:00","availability":2},{"fromTime":"14:30:00","toTime":"14:45:00","availability":2},{"fromTime":"14:45:00","toTime":"15:00:00","availability":2},{"fromTime":"15:00:00","toTime":"15:15:00","availability":2},{"fromTime":"15:15:00","toTime":"15:30:00","availability":2},{"fromTime":"15:30:00","toTime":"15:45:00","availability":2},{"fromTime":"15:45:00","toTime":"16:00:00","availability":2},{"fromTime":"16:00:00","toTime":"16:15:00","availability":2},{"fromTime":"16:15:00","toTime":"16:30:00","availability":2},{"fromTime":"16:30:00","toTime":"16:45:00","availability":2},{"fromTime":"16:45:00","toTime":"17:00:00","availability":2}],"holiday":false}]},"errors":null}
+INFO    2019-06-20 13:11:56,904 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response Time is: 294
+INFO    2019-06-20 13:11:57,053 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3754182713683516",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "transactionID": "0344484438",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,296 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0344484438",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,298 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Valid_Request_EMAIL_alone_IntegrationTest_Smoke_Pos
+INFO    2019-06-20 13:11:57,366 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "otpChannel": [
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "individualId": "9457935469",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "3837136830"
+}
+INFO    2019-06-20 13:11:57,384 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "id": "mosip.identity.otp",
+  "version": "1.0",
+  "transactionID": "3837136830"
+}
+INFO    2019-06-20 13:11:57,384 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Valid_Request_Phone_alone_IntegrationTest_Smoke_Pos
+INFO    2019-06-20 13:11:57,417 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "otpChannel": [
+    "PHONE"
+  ],
+  "id": "mosip.identity.otp",
+  "individualId": "4984064738",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "2557470813"
+}
+INFO    2019-06-20 13:11:57,434 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "response": {
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "id": "mosip.identity.otp",
+  "version": "1.0",
+  "transactionID": "2557470813"
+}
+INFO    2019-06-20 13:11:57,434 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_Id_Neg
+INFO    2019-06-20 13:11:57,471 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "otp.mosip.identity",
+  "individualId": "5297619463",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "transactionID": "0077102236",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,481 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-009",
+      "errorMessage": "Invalid Input Parameter - id"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0077102236",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,482 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_Version_Neg
+INFO    2019-06-20 13:11:57,512 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3164936150",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "transactionID": "6367752202",
+  "version": "A.0"
+}
+INFO    2019-06-20 13:11:57,523 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-009",
+      "errorMessage": "Invalid Input Parameter - version"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "6367752202",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,523 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_transactionID_Neg
+INFO    2019-06-20 13:11:57,549 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "4738250863",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "transactionID": "123789009",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,563 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "responseTime": "$TIMESTAMP$",
+  "version": "1.0",
+  "errors": [
+    {
+      "errorMessage": "Invalid Input Parameter - transactionID",
+      "errorCode": "IDA-MLC-009"
+    }
+  ]
+}
+INFO    2019-06-20 13:11:57,564 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_requestTime_Neg
+INFO    2019-06-20 13:11:57,594 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "8327459384",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019/04/01T11:48:59.059+05:30",
+  "transactionID": "5385184126",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,603 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-009",
+      "errorMessage": "Invalid Input Parameter - requestTime"
+    }
+  ],
+  "responseTime": "$TIMESTAMPZ$",
+  "transactionID": "5385184126",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,603 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_future_requestTime_Neg
+INFO    2019-06-20 13:11:57,628 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "9463058698",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:21:57.057+05:30",
+  "transactionID": "5681877100",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,637 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-001",
+      "errorMessage": "Request to be received at MOSIP within 30 minutes"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "5681877100",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,637 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_requestTime_LT30MIN_Neg
+INFO    2019-06-20 13:11:57,669 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "8327459384",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T12:36:57.057+05:30",
+  "transactionID": "8670347167",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,697 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-001",
+      "errorMessage": "Request to be received at MOSIP within 30 minutes"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "8670347167",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,697 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_requestTime_GT30MIN_Neg
+WARN    2019-06-20 13:11:57,777 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+INFO    2019-06-20 13:11:57,778 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://52.172.54.231:9001/mosip_prereg]
+INFO    2019-06-20 13:11:57,778 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001001: Connection properties: {user=postgres, password=****}
+INFO    2019-06-20 13:11:57,778 [TestNG-tests-2] org.hibernate.orm.connections.pooling  - HHH10001003: Autocommit mode: false
+INFO    2019-06-20 13:11:57,778 [TestNG-tests-2] org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl  - HHH000115: Hibernate connection pool size: 1 (min=1)
+INFO    2019-06-20 13:11:57,806 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6741051702",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:46:57.057+05:30",
+  "transactionID": "3612640486",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,815 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-001",
+      "errorMessage": "Request to be received at MOSIP within 30 minutes"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "3612640486",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,815 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_deactivated_UIN_Neg
+INFO    2019-06-20 13:11:57,862 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "9517237163",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "transactionID": "8424777531",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,873 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-003",
+      "errorMessage": "UIN has been deactivated"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "8424777531",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:57,874 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_individualId_UIN_as_per_data_definition_Neg
+INFO    2019-06-20 13:11:57,892 [TestNG-tests-2] org.hibernate.dialect.Dialect  - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+INFO    2019-06-20 13:11:58,023 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "1234567890",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:57.057+05:30",
+  "transactionID": "4745040523",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,034 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-002",
+      "errorMessage": "Invalid UIN"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "4745040523",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,034 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_individualId_VID_Neg
+INFO    2019-06-20 13:11:58,093 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "0478851603773380",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "3872268082",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,107 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-004",
+      "errorMessage": "Invalid VID"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "3872268082",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,108 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_expired_VID_Neg
+INFO    2019-06-20 13:11:58,145 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3045386406315097",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "1346381640",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,153 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-005",
+      "errorMessage": "VID is EXPIRED"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "1346381640",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,159 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_individualId_VID_as_per_data_definition_Neg
+INFO    2019-06-20 13:11:58,184 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "983584538149251",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "1444071644",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,191 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-004",
+      "errorMessage": "Invalid VID"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "1444071644",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,191 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_individualIdType_Neg
+INFO    2019-06-20 13:11:58,210 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "9457935469",
+  "individualIdType": "^UI",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "2187440158",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,220 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-009",
+      "errorMessage": "Invalid Input Parameter - individualIdType"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "2187440158",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,220 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_email_otpchannel_Neg
+INFO    2019-06-20 13:11:58,239 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3698164023",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "fa%ls",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "6327848583",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,249 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-009",
+      "errorMessage": "$REGEXP:Invalid Input Parameter - otpChannel.*$"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "6327848583",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,250 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Invalid_phone_otpchannel_Neg
+INFO    2019-06-20 13:11:58,270 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5621578025",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "fa%ls"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "8866588145",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,279 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-009",
+      "errorMessage": "$REGEXP:Invalid Input Parameter - otpChannel.*$"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "8866588145",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,279 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_Id_Neg
+INFO    2019-06-20 13:11:58,297 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "",
+  "individualId": "5912479046",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "1677113632",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,307 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - id"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "1677113632",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,307 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_Version_Neg
+INFO    2019-06-20 13:11:58,331 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3698164023",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "0556066254",
+  "version": ""
+}
+INFO    2019-06-20 13:11:58,339 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - version"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0556066254",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,339 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_transactionID_Neg
+INFO    2019-06-20 13:11:58,363 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3502580157",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,372 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "responseTime": "$TIMESTAMP$",
+  "version": "1.0",
+  "errors": [
+    {
+      "errorMessage": "Missing Input Parameter - transactionID",
+      "errorCode": "IDA-MLC-006"
+    }
+  ]
+}
+INFO    2019-06-20 13:11:58,372 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_requestTime_Neg
+INFO    2019-06-20 13:11:58,397 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5621578025",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "",
+  "transactionID": "8523483663",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,404 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - requestTime"
+    }
+  ],
+  "responseTime": "$TIMESTAMPZ$",
+  "transactionID": "8523483663",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,404 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_UIN_Neg
+INFO    2019-06-20 13:11:58,420 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "0743064667",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,428 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - individualId"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0743064667",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,428 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_individualId_VID_Neg
+INFO    2019-06-20 13:11:58,442 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "8748672103",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,449 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - individualId"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "8748672103",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,449 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_With_Null_individualIdType_Neg
+INFO    2019-06-20 13:11:58,466 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "7097560130",
+  "individualIdType": "",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "7558237512",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,475 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - individualIdType"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "7558237512",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,475 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_Id_Neg
+INFO    2019-06-20 13:11:58,490 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "individualId": "9463058698",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "5281417348"
+}
+INFO    2019-06-20 13:11:58,498 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - id"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "5281417348",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,498 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_Version_Neg
+INFO    2019-06-20 13:11:58,520 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "individualId": "5621578025",
+  "individualIdType": "UIN",
+  "transactionID": "5303447370"
+}
+INFO    2019-06-20 13:11:58,530 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - version"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "5303447370",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,530 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_transactionID_Neg
+INFO    2019-06-20 13:11:58,551 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "individualId": "4086503593",
+  "version": "1.0",
+  "individualIdType": "UIN"
+}
+INFO    2019-06-20 13:11:58,558 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "responseTime": "$TIMESTAMP$",
+  "version": "1.0",
+  "errors": [
+    {
+      "errorMessage": "Missing Input Parameter - transactionID",
+      "errorCode": "IDA-MLC-006"
+    }
+  ]
+}
+INFO    2019-06-20 13:11:58,558 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_requestTime_Neg
+INFO    2019-06-20 13:11:58,573 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "individualId": "5208534905",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "0214083511"
+}
+INFO    2019-06-20 13:11:58,581 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - requestTime"
+    }
+  ],
+  "responseTime": "$TIMESTAMPZ$",
+  "transactionID": "0214083511",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,582 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_UIN_Neg
+INFO    2019-06-20 13:11:58,598 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "4052086200"
+}
+INFO    2019-06-20 13:11:58,606 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - individualId"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "4052086200",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,606 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_individualId_VID_Neg
+INFO    2019-06-20 13:11:58,621 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "version": "1.0",
+  "individualIdType": "VID",
+  "transactionID": "6724061114"
+}
+INFO    2019-06-20 13:11:58,630 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - individualId"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "6724061114",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,630 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Without_individualIdType_Neg
+INFO    2019-06-20 13:11:58,646 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [
+    "PHONE",
+    "EMAIL"
+  ],
+  "id": "mosip.identity.otp",
+  "individualId": "9457935469",
+  "version": "1.0",
+  "transactionID": "0848162774"
+}
+INFO    2019-06-20 13:11:58,653 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-006",
+      "errorMessage": "Missing Input Parameter - individualIdType"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0848162774",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,653 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_set_email_phone_false_IntegrationTest_Neg
+INFO    2019-06-20 13:11:58,667 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "otpChannel": [],
+  "id": "mosip.identity.otp",
+  "individualId": "6819602905",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "5017020335"
+}
+INFO    2019-06-20 13:11:58,678 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-OTA-008",
+      "errorMessage": "OTP Notification Channel not provided"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "5017020335",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,678 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_without_OTPChannel_IntegrationTest_Neg
+INFO    2019-06-20 13:11:58,697 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "id": "mosip.identity.otp",
+  "individualId": "8327459384",
+  "version": "1.0",
+  "individualIdType": "UIN",
+  "transactionID": "1711477035"
+}
+INFO    2019-06-20 13:11:58,707 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-OTA-008",
+      "errorMessage": "OTP Notification Channel not provided"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "1711477035",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,707 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_null_OTPChannel_IntegrationTest_Neg
+INFO    2019-06-20 13:11:58,762 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "3164936150",
+  "individualIdType": "UIN",
+  "otpChannel": "",
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "7375056484",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,779 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-MLC-007",
+      "errorMessage": "Request could not be processed. Please try again"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "7375056484",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,779 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Neg1
+INFO    2019-06-20 13:11:58,818 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5703805391",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "6840818370",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,829 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "6840818370",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,829 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Neg2
+INFO    2019-06-20 13:11:58,848 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5703805391",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "6462585201",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,856 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "response": {},
+  "id": "mosip.identity.otp",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,857 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Neg3
+INFO    2019-06-20 13:11:58,874 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5703805391",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "6084740262",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,883 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "6084740262",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,883 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Neg4
+INFO    2019-06-20 13:11:58,907 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5703805391",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "4782300475",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,917 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "4782300475",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,917 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Neg5
+INFO    2019-06-20 13:11:58,936 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "5703805391",
+  "individualIdType": "UIN",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "0470886867",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,944 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-OTA-001",
+      "errorMessage": "Innumerous OTP requests received"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "0470886867",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,944 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Using_VID_Neg1
+INFO    2019-06-20 13:11:58,968 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6138073102635724",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "8752455076",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,978 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "8752455076",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:58,978 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Using_VID_Neg2
+INFO    2019-06-20 13:11:58,999 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6138073102635724",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:58.058+05:30",
+  "transactionID": "6054507135",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,010 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "response": {},
+  "id": "mosip.identity.otp",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,011 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Using_VID_Neg3
+INFO    2019-06-20 13:11:59,032 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6138073102635724",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:59.059+05:30",
+  "transactionID": "1214514040",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,045 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "1214514040",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,045 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Using_VID_Neg4
+INFO    2019-06-20 13:11:59,063 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6138073102635724",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:59.059+05:30",
+  "transactionID": "3701142577",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,076 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "response": {
+    "maskedEmail": "$REGEXP:XX.*XX.*$",
+    "maskedMobile": "$REGEXP:XX.*XX.*$"
+  },
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "3701142577",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,076 [TestNG-tests-1] io.mosip.authentication.testdata.TestDataUtil  - TestCaseName : Authentication_OTPGenerate_Check_OTP_Flooding_Using_VID_Neg5
+INFO    2019-06-20 13:11:59,097 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "id": "mosip.identity.otp",
+  "individualId": "6138073102635724",
+  "individualIdType": "VID",
+  "otpChannel": [
+    "EMAIL",
+    "PHONE"
+  ],
+  "requestTime": "2019-06-20T13:09:59.059+05:30",
+  "transactionID": "4111175805",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:11:59,105 [TestNG-tests-1] io.mosip.authentication.testdata.Precondtion  - Updated json file content: {
+  "errors": [
+    {
+      "errorCode": "IDA-OTA-001",
+      "errorMessage": "Innumerous OTP requests received"
+    }
+  ],
+  "responseTime": "$TIMESTAMP$",
+  "transactionID": "4111175805",
+  "version": "1.0"
+}
+INFO    2019-06-20 13:12:03,400 [TestNG-tests-2] org.hibernate.type.BasicTypeRegistry  - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@30f23e04
+INFO    2019-06-20 13:12:03,465 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: Sending a PUT request to https://qa.mosip.io/preregistration/v1/batch/expiredStatus
+INFO    2019-06-20 13:12:03,934 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.batchjob.service.expired","version":"1.0","responsetime":"2019-06-20T07:42:04.002Z","response":"Registration appointment status updated to expired successfully","errors":null}
+INFO    2019-06-20 13:12:03,934 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: the response Time is: 289
+INFO    2019-06-20 13:12:03,934 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: Sending a GET request to https://qa.mosip.io/preregistration/v1/appointment/43084154915320
+INFO    2019-06-20 13:12:04,238 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.appointment.fetch","version":"1.0","responsetime":"2019-06-20T07:42:04.307Z","response":{"registration_center_id":"10012","appointment_date":"2019-06-18","time_slot_from":"09:15","time_slot_to":"09:30"},"errors":null}
+INFO    2019-06-20 13:12:04,238 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response Time is: 300
+INFO    2019-06-20 13:12:04,439 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response from the request is: {"id":"mosip.pre-registration.demographic.retrieve.status","version":"1.0","responsetime":"2019-06-20T07:42:04.508Z","response":{"statusCode":"Expired","preRegistartionId":"43084154915320"},"errors":null}
+INFO    2019-06-20 13:12:04,439 [TestNG-tests-2] io.mosip.util.CommonLibrary  - REST-ASSURED: The response Time is: 197
+INFO    2019-06-20 13:12:04,451 [TestNG-tests-2] io.mosip.service.BaseTestCase  - values are equal
+INFO    2019-06-20 13:12:04,494 [main] io.mosip.service.BaseTestCase  - 
+
+
+INFO    2019-06-20 13:12:04,494 [main] io.mosip.service.BaseTestCase  - Rest Assured framework has been reset because all tests have been executed.
+INFO    2019-06-20 13:12:04,494 [main] io.mosip.service.BaseTestCase  - TESTING COMPLETE: SHUTTING DOWN FRAMEWORK!!
+INFO    2019-06-20 13:14:51,498 [main] io.mosip.service.BaseTestCase  - Test Framework for Mosip api Initialized
+INFO    2019-06-20 13:14:51,500 [main] io.mosip.service.BaseTestCase  - Logging initialized: All logs are located at src/logs/mosip-api-test.log
+INFO    2019-06-20 13:14:51,503 [main] io.mosip.service.BaseTestCase  - Environemnt is  ==== :qa
+INFO    2019-06-20 13:14:51,504 [main] io.mosip.service.BaseTestCase  - Application URI ======https://qa.mosip.io
+INFO    2019-06-20 13:14:51,504 [main] io.mosip.service.BaseTestCase  - Test Level ======smoke
+INFO    2019-06-20 13:14:51,504 [main] io.mosip.service.BaseTestCase  - Configs from properties file are set.
+INFO    2019-06-20 13:14:51,504 [main] io.mosip.service.BaseTestCase  - Done with BeforeSuite and test case setup! BEGINNING TEST EXECUTION!
+
+
+INFO    2019-06-20 13:14:51,621 [main] io.mosip.authentication.fw.util.AuthTestsUtil  - DemoApp Jar: C:\Users\M1013977\.m2\repository\io\mosip\authentication\authentication-partnerdemo-service\0.12.4\authentication-partnerdemo-service-0.12.4.jar
+INFO    2019-06-20 13:14:51,622 [main] io.mosip.authentication.fw.util.AuthTestsUtil  - Cmd Path: "C:\Program Files\Java\jdk1.8.0_171/bin/java" -Dspring.cloud.config.label=QA_IDA -Dspring.profiles.active=testqa -Dspring.cloud.config.uri=http://104.211.212.28:51000 -jar "C:\Users\M1013977\.m2\repository\io\mosip\authentication\authentication-partnerdemo-service\0.12.4\authentication-partnerdemo-service-0.12.4.jar"
