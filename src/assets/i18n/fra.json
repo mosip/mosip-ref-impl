@@ -1,0 +1,45 @@
+{
+    "menuItems": {
+        "item1": {
+            "title": "MAISON"
+        },
+        "item2": {
+            "title": "RESSOURCES",
+            "subItem1": "Centre",
+            "subItem2": "Dispositifs",
+            "subItem3": "Utilisateurs",
+            "subItem4": "Machines"
+        }
+    },
+    "center": {
+        "center-detail-view" : "Vue détaillée du centre",
+        "center-name": "Nom du centre",
+        "center-id": "Identifiant du centre",
+        "status": "Statut",
+        "created-on": "Créé sur",
+        "updated-on": "Mis à jour le",
+        "updated-by": "Mis à jour par",
+        "center-details": "Détails du centre",
+        "registration-center-name": "Nom du centre d'inscription",
+        "registration-center-type": "Type de centre d'inscription",
+        "location-zone": "Zone de localisation",
+        "contact-number": "Numéro de contact",
+        "location-details": "Détails de l'emplacement",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "address": "Adresse",
+        "region": "Région",
+        "province": "Province",
+        "city": "Ville",
+        "laa": "LAA",
+        "postal-code": "code postal",
+        "operational-details": "Détails opérationnels",
+        "holiday-zone": "Zone de vacances",
+        "working-hrs": "Heures de travail",
+        "no-kiosk": "Nombre de kiosque",
+        "per-kiosk-process-time": "Temps de traitement par kiosque (minutes)",
+        "start-time": "Heure de début",
+        "end-time": "Heure de fin",
+        "edit": "modifier"
+    }
+}

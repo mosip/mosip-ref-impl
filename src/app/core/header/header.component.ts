@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginServiceService } from '../../shared/services/login-service.service';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+
+import { SideMenuService } from '../services/side-menu.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
 
-  username = '';
+  @Input() screenResize;
 
-  constructor(private router: Router, private loginService: LoginServiceService) { }
+  profile = {
+    name: 'Joan Doe',
+    zone: 'Zonal Admin'
+  };
+
+  constructor(public sideMenuService: SideMenuService, private translateService: TranslateService) {
+       translateService.use('eng');
+  }
 
   ngOnInit() {
-    this.username = localStorage.getItem('userName');
   }
-
-  logOut() {
-   this.loginService.logout().subscribe(response => {
-     console.log(response);
-     localStorage.removeItem('userName');
-     localStorage.setItem('loggedIn', ' false');
-     localStorage.setItem('loggedOut', ' true');
-     this.router.navigateByUrl('login');
-   });
-  }
-
 }

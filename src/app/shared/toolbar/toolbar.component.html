@@ -1,0 +1,15 @@
+<div class="container">
+  <mat-card>
+    <div class="card-row">
+    <button mat-raised-button>Add {{ route }}</button>
+    <span style="flex: 1 1 auto;"></span>
+    <mat-paginator
+      [length]="100"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 15, 20, 25]"
+    >
+    </mat-paginator>
+    <button mat-button><img src="assets/images/download.png" height="20px;" width="20px;"></button>
+  </div>
+  </mat-card>
+</div>

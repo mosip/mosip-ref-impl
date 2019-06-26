@@ -1,32 +1,26 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { ParentComponent } from './shared/parent/parent.component';
+import { ParentComponent } from './core/parent/parent.component';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { HomeComponent } from './core/home/home.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    loadChildren: './navigation/navigation.module#NavigationModule'
-  },
+  { path: '', redirectTo: 'admin', pathMatch: 'full' },
   {
     path: 'admin',
     component: ParentComponent,
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', loadChildren: './feature/masterdata/masterdata.module#MasterdataModule' },
-      { path: 'usermgmt', loadChildren: './feature/usermgmt/usermgmt.module#UsermgmtModule' },
-      { path: 'assetmgmt', loadChildren: './feature/assetmgmt/assetmgmt.module#AssetmgmtModule' },
-      { path: 'uinmgmt', loadChildren: './feature/uinmgmt/uinmgmt.module#UinmgmtModule' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'resources', loadChildren: './features/resources/resources.module#ResourcesModule' }
     ]
-  }
+  },
+  { path: '**', redirectTo: '404' },
+  { path: '404', component: NotFoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules })],
+  imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

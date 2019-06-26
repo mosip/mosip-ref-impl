@@ -1,0 +1,10 @@
+<div id="menu-button">
+  <button mat-button class="cdk-visually-hidden" [matMenuTriggerFor]="menu">
+    <div class="name">{{data.name}}</div>
+    <div class="mat-small">{{data.zone}}</div>
+  </button>
+  <mat-menu #menu="matMenu" backdropClass="menu">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+</div> 

@@ -1,0 +1,279 @@
+<div id="create-component">
+  <div class="navigation">
+    <span><i class="material-icons" (click) = "naviagteBack()" >keyboard_arrow_left</i></span>&nbsp;<span class="title">{{'center.center-detail-view'|translate}}</span>
+  </div>
+  <div id="center">
+    <!--Center header  -->
+    <app-center-header></app-center-header>
+    <!--Ceneter Details  -->
+<div class="container">
+      <mat-card style="margin-bottom: 30px;">
+        <mat-card-content class="forms-container">
+            <div class="primary-form">
+              <span><strong>English</strong></span>
+              <hr />
+              <br /><br />
+              <h3>{{ 'center.center-details' | translate }}</h3>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.registration-center-name' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.registration-center-type' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.location-zone' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.contact-number' | translate }}">
+                </mat-form-field>
+                <br /><br />
+                <h3>{{ 'center.location-details' | translate }}</h3>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.longitude' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.latitude' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.address' | translate }}">
+                </mat-form-field>
+                <div class="flex-display">
+                    <mat-form-field class="left-sizing">
+                        <mat-label>{{ 'center.region' | translate }}</mat-label>
+                        <mat-select>
+                          <mat-option [value]="">
+                            Option
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="right-sizing">
+                        <mat-label>{{ 'center.province' | translate }}</mat-label>
+                        <mat-select>
+                          <mat-option [value]="">
+                            Option
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div class="flex-display">
+                    <mat-form-field class="left-sizing">
+                        <mat-label>{{ 'center.city' | translate }}</mat-label>
+                        <mat-select>
+                          <mat-option [value]="">
+                            Option
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="right-sizing">
+                        <mat-label>{{ 'center.laa' | translate }}</mat-label>
+                        <mat-select>
+                          <mat-option [value]="">
+                            Option
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+            </div>
+            <div class="flex-display">
+                <mat-form-field class="left-sizing">
+                    <mat-label>{{ 'center.postal-code' | translate }}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <br /><br />
+            <h3>{{ 'center.operational-details' | translate }}</h3>
+            <mat-form-field>
+                <mat-label>{{ 'center.holiday-zone' | translate }}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{ 'center.working-hrs' | translate }}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            <div class="flex-display">
+                <mat-form-field class="left-sizing">
+                    <mat-label>{{ 'center.no-kiosk' | translate }}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="right-sizing">
+                    <mat-label>{{ 'center.per-kiosk-process-time' | translate }}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div class="flex-display">
+                <mat-form-field class="left-sizing">
+                    <mat-label>{{ 'center.start-time' | translate }}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="right-sizing">
+                    <mat-label>{{ 'center.end-time' | translate }}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            </div>
+            <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+            <div *ngIf="secondaryLanguageLabels" class="secondary-form">
+                <span><strong>Arabic</strong></span>
+                <hr />
+                <br /><br />
+                <h3>{{secondaryLanguageLabels['center-details']}}</h3>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['registration-center-name']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['registration-center-type']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['location-zone']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['contact-number']}}">
+                </mat-form-field>
+                <br /><br />
+                <h3>{{secondaryLanguageLabels['location-details']}}</h3>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['longitude']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['latitude']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['address']}}">
+                </mat-form-field>
+                <div class="flex-display">
+                  <mat-form-field class="left-sizing">
+                    <mat-label>{{secondaryLanguageLabels['region']}}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="right-sizing">
+                    <mat-label>{{secondaryLanguageLabels['province']}}</mat-label>
+                    <mat-select>
+                      <mat-option [value]="">
+                        Option
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field class="left-sizing">
+                <mat-label>{{secondaryLanguageLabels['city']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="right-sizing">
+                <mat-label>{{secondaryLanguageLabels['laa']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field class="left-sizing">
+                <mat-label>{{secondaryLanguageLabels['postal-code']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <br /><br />
+            <h3>{{secondaryLanguageLabels['operational-details']}}</h3>
+            <mat-form-field>
+              <mat-label>{{secondaryLanguageLabels['holiday-zone']}}</mat-label>
+              <mat-select>
+                <mat-option [value]="">
+                  Option
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{secondaryLanguageLabels['working-hours']}}</mat-label>
+              <mat-select>
+                <mat-option [value]="">
+                  Option
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="flex-display">
+              <mat-form-field class="left-sizing">
+                <mat-label>{{secondaryLanguageLabels['no-kiosk']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="right-sizing">
+                <mat-label>{{secondaryLanguageLabels['per-kiosk-process-time']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field class="left-sizing">
+                <mat-label>{{secondaryLanguageLabels['start-time']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="right-sizing">
+                <mat-label>{{secondaryLanguageLabels['end-time']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="action-buttons">
+          <button id="createButton" mat-raised-button>Create</button>
+          <button mat-raised-button>Cancel</button>
+      </mat-card-actions>
+      </mat-card>
+</div>
+</div>
+</div>

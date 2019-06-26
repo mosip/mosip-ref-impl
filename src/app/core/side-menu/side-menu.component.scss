@@ -1,0 +1,27 @@
+@import '../../theme';
+@import '../../breakpoints';
+
+:host {
+    display: flex;
+    flex-direction: column;
+    outline: none;
+    width: 100%;
+}
+
+.mat-nav-list {
+    .list-item-active {
+        background: mat-color($app-primary, 500) !important;
+        color: white;
+    }
+}
+ 
+.mat-list-item {
+  display: flex;
+  width: auto !important;
+}
+
+@include breakpoint-max(600px) { 
+    .mat-list-item-content {
+        font-size: 13px !important;
+    }
+}

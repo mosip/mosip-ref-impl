@@ -1,23 +1,16 @@
 <mat-toolbar>
-  <span
-    ><img
-      src="assets/logo-final.png"
-      class="image"
-      height="50px"
-      width="45px"
-      alt=""
-  /></span>
-  <span class="logo-text">MOSIP</span>
-  <span class="spacer"></span>
-  <!-- <div class="dropdown"> -->
-  <!-- <span class="account-logo"></span> -->
-  <!-- <span class="account-logo"><span class="placer"><i style="margin-top: -2px;" class="material-icons">account_circle</i>&nbsp;John Doe&nbsp;&nbsp;<i style="margin-top: -2px;" class="material-icons">arrow_drop_down</i></span></span>
-        <div class="dropdown-content">
-            <a>Logout</a>
-        </div>
-    </div> -->
-  <button mat-button [matMenuTriggerFor]="menu"><mat-icon class="icon">account_circle</mat-icon>&nbsp;<span>{{username}}</span></button>
-  <mat-menu [overlapTrigger]="false" #menu="matMenu">
-    <button mat-menu-item (click)="logOut()">Logout</button>
-  </mat-menu>
+  <div class="menu" [ngStyle]="{'display' : (screenResize > 840) ? 'none' : 'block'}">
+    <button mat-icon-button id="menu" (click)="sideMenuService.openNav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+  </div>
+  <div class="mosip-logo">
+    <span><img src="assets/images/logo-final.png" alt="Logo"></span>&nbsp;<span><h6>MOSIP</h6></span>
+  </div>
+  <div class="zone">
+    <h6>Zone</h6>
+  </div>
+  <div class="profile">
+    <app-dialog [data]="profile"></app-dialog>
+  </div>
 </mat-toolbar>
