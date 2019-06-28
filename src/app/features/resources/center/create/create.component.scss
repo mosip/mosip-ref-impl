@@ -53,7 +53,7 @@
             vertical-align: middle;
             padding-left: 15px;
             padding-right: 15px;
-            width:35vw;
+            width:34vw;
             border-right: 1px solid white;
             word-wrap: break-word;
             @media (max-width: 420px) {
@@ -132,6 +132,13 @@
             }
         }
     }
+
+.container {
+    .mat-card {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+}
 
 .forms-container {
     display: flex;

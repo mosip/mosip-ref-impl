@@ -1,10 +1,41 @@
-<div id="menu-button">
-  <button mat-button class="cdk-visually-hidden" [matMenuTriggerFor]="menu">
-    <div class="name">{{data.name}}</div>
-    <div class="mat-small">{{data.zone}}</div>
-  </button>
-  <mat-menu #menu="matMenu" backdropClass="menu">
-    <button mat-menu-item>Item 1</button>
-    <button mat-menu-item>Item 2</button>
-  </mat-menu>
-</div> 
+<div class="center-filter">
+  <h2 class="filter-heading">Add Filters</h2>
+  <mat-divider></mat-divider>
+  <div class="grid-container">
+    <mat-form-field>
+      <input matInput placeholder="Center Type" />
+    </mat-form-field>
+    <mat-form-field> <input matInput placeholder="Status" /> </mat-form-field>
+    <mat-form-field> <input matInput placeholder="Region" /> </mat-form-field>
+    <mat-form-field> <input matInput placeholder="Province" /> </mat-form-field>
+    <mat-form-field> <input matInput placeholder="City" /> </mat-form-field>
+    <mat-form-field> <input matInput placeholder="LAA" /> </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Postal Code"
+    /></mat-form-field>
+    <mat-form-field
+      ><input matInput placeholder="Holiday Zone"
+    /></mat-form-field>
+    </div>
+    <div class="date-header"><h5>Select Created Date Range</h5></div>
+    <div class="grid-container">
+    <mat-form-field>
+      <input matInput [matDatepicker]="frompicker" placeholder="From" />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="frompicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #frompicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="topicker" placeholder="To" />
+      <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
+      <mat-datepicker #topicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="footer">
+    <button mat-button class="footer-button">Reset</button>
+    <button mat-button class="footer-button">Cancel</button>
+    <button mat-button class="footer-button" style="background-color: black; color:white;">Apply</button>
+  </div>
+</div>

@@ -1,14 +1,68 @@
-table {
-    width: 100%;
-  }
+table.mat-table {
+  border-spacing: 0;
+  width:100%;
+}
+
+tr.mat-header-row {
+  height: 45px;
+}
+
+tr.mat-row, tr.mat-footer-row {
+  height: 40px;
+}
+
+th.mat-header-cell {
+  text-align: left;
+  white-space: nowrap;
+}
+
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+th.mat-header-cell{
+  padding: 10px;
+}
+td.mat-cell{
+  text-align: center;
+  padding: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+}
+th.mat-header-cell:first-child, td.mat-cell:first-child, td.mat-footer-cell:first-child {
+  padding-left: 24px;
+}
+
+th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-child {
+  padding-right: 24px;
+}
 .table-header{
-    background-color: rgb(206, 205, 205);
-    color: white;
+    background-color: rgb(202, 198, 198);
+    color: rgb(255, 255, 255);
     text-transform: capitalize;
+    font-size: 12px;
+    line-height: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .container {
     overflow: auto;
     width: 100%;
     margin: 0;
-    height:300px;
+    height:350px;
+
   }
+  ::ng-deep .mat-menu-content {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  
+  ::ng-deep.mat-menu-item{
+    height:40px !important;
+  }
+  .sticky-header {
+    top: 0px;
+    position: sticky;
+    z-index: 100;
+    }

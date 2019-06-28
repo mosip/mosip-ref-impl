@@ -1,34 +1,68 @@
-@import '../../_theme.scss';
 
-#menu-button {
-    display: inline-block;
-    margin: 2px;
-    position:relative;
-    font-size: 17px !important;
-    padding: 10px 10px 10px 10px;
-    .mat-button-wrapper {
-        display: inline-block
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    align-items: center;
+    padding: 20px;
+  }
+  .filter-heading{
+      line-height: 16px;
+      font-family: 'Franklin Gothic Medium';
+      font-size: 18px;
+      word-spacing: 1px;
+      padding: 10px 20px;
+  }
+  ::ng-deep .mat-form-field {
+    .mat-input-element {
+        color:black;
+        
     }
-
-    .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
-        line-height: 15px !important;
+    .mat-form-field-label {
+        color: black;
+        font-size: 12px;
     }
-    .name {
-        font-size: mat-font-size($custom-typography, caption);
+    .mat-form-field-underline {
+        background-color: slategray;
     }
-    .mat-small {
-        font-size: 10px;
-        font-weight: 200;
-    }
-
+  
 }
-    .menu + * .cdk-overlay-pane > div.mat-menu-panel {
-            margin-top: 40px !important;
+::ng-deep .mat-form-field.mat-focused {
+    .mat-form-field-label {
+        color: slategray;
     }
-
-
-    .mat-button-focus-overlay {
-        transition: none !important; 
-        top: initial !important;
-        position: relative !important;
+    .mat-form-field-underline {
+        background-color: slategray;
     }
+    .mat-input-element {
+        color:black;
+    }
+    .mat-form-field-ripple {
+        background-color: slategray;
+    }
+}
+.date-header{
+ margin-left: 15px;
+}
+::ng-deep.mat-dialog-container{
+    border-radius: 0;
+    padding: 0;
+}
+.footer{
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0;
+    position: relative;
+    background-color: rgb(233, 233, 233);
+    padding: 10px 0px;
+}
+.footer-button{
+    border: 1px solid black;
+    border-radius:0;
+    margin: 3px; 
+    text-transform: capitalize;
+    font-family: sans-serif;
+    font-size: 12px;
+    word-spacing: 1px;
+    width: 80px;
+}

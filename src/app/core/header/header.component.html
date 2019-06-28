@@ -1,3 +1,4 @@
+
 <mat-toolbar>
   <div class="menu" [ngStyle]="{'display' : (screenResize > 840) ? 'none' : 'block'}">
     <button mat-icon-button id="menu" (click)="sideMenuService.openNav()">
@@ -5,12 +6,12 @@
         </button>
   </div>
   <div class="mosip-logo">
-    <span><img src="assets/images/logo-final.png" alt="Logo"></span>&nbsp;<span><h6>MOSIP</h6></span>
+    <span><img src="assets/images/logo-final.png" width="50" height="50" alt="Logo"></span>
   </div>
   <div class="zone">
-    <h6>Zone</h6>
+    <h6>work under progress</h6>
   </div>
   <div class="profile">
-    <app-dialog [data]="profile"></app-dialog>
+    <app-hamburger-menu [data]="profile"></app-hamburger-menu>
   </div>
 </mat-toolbar>

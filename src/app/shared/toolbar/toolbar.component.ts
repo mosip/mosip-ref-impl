@@ -1,24 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { SideMenuService } from 'src/app/core/services/side-menu.service';
-import { MatPaginatorIntl } from '@angular/material';
+import { Component, OnInit, Input } from '@angular/core';
+import { MatPaginatorIntl, MatDialog } from '@angular/material';
+import { Observable } from 'rxjs';
+import { DialogComponent } from '../dialog/dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent extends MatPaginatorIntl implements OnInit  {
-
-  route: string;
-  constructor(private sideMenuService: SideMenuService) {
+export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
+  @Input() buttonList: any;
+  @Input() paginationOptions: any;
+  constructor(public dialog: MatDialog, private router: Router) {
     super();
     this.itemsPerPageLabel = 'Show rows';
   }
 
   ngOnInit() {
-     this.sideMenuService.currentUrl.subscribe((data) => {
-      console.log('Subscriber :', data.split('/')[3]);
-      this.route = data.split('/')[3];
-  });
+  }
+  iconDisplay(buttonName) {
+    if (buttonName.toLowerCase() === 'filter') {
+      return true;
+    }
+  }
+
+  actionEvent(buttonAction) {
+    console.log(buttonAction);
+    if (buttonAction.actionListType === 'action') {
+      console.log(buttonAction.actionListType);
+      this.openFilterDialog();
+    }
+    if (buttonAction.actionListType === 'redirect') {
+      console.log(buttonAction.actionListType);
+      this.router.navigateByUrl( 'admin/resources/centers/create' );
+    }
+
+  }
+  openFilterDialog(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '700px',
+      height: '30em'
+    }).afterClosed().subscribe(result => {
+      console.log(result + 'dislog is closed');
+    }
+      );
   }
 }

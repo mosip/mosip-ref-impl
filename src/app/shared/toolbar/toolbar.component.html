@@ -1,15 +1,26 @@
 <div class="container">
   <mat-card>
     <div class="card-row">
-    <button mat-raised-button>Add {{ route }}</button>
-    <span style="flex: 1 1 auto;"></span>
-    <mat-paginator
-      [length]="100"
-      [pageSize]="5"
-      [pageSizeOptions]="[5, 10, 15, 20, 25]"
-    >
-    </mat-paginator>
-    <button mat-button><img src="assets/images/download.png" height="20px;" width="20px;"></button>
-  </div>
+      <button
+        mat-raised-button
+        *ngFor="let button of buttonList; index as i"
+        [ngStyle]="{ margin: '10px', borderRadius: '0' }"
+        (click)="actionEvent(button)"
+        
+      >
+        <mat-icon *ngIf="iconDisplay(button.buttonName)">filter_list</mat-icon
+        >{{ button.buttonName }}
+      </button>
+      <span style="flex: 1 1 auto;"></span>
+      <mat-paginator
+        [length]="paginationOptions?.totalEntries"
+        [pageSize]="paginationOptions?.pageSize"
+        [pageSizeOptions]="paginationOptions?.pageSizeList"
+      >
+      </mat-paginator>
+      <button mat-icon-button>
+        <mat-icon>save_alt</mat-icon>
+      </button>
+    </div>
   </mat-card>
 </div>

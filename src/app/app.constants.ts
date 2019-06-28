@@ -1,7 +1,8 @@
 export const navItems = [
     {
       displayName: 'menuItems.item1.title',
-      route: '/admin/home'
+      route: '/admin/home',
+      children: null
     },
     {
       displayName: 'menuItems.item2.title',

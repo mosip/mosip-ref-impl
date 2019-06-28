@@ -22,12 +22,14 @@
         "center-details": "تفاصيل المركز",
         "registration-center-name": "اسم مركز التسجيل",
         "registration-center-type": "نوع مركز التسجيل",
-        "location-zone": "منطقة الموقع",
+        "contact-person": "الشخص الذي يمكن الاتصال به",
         "contact-number": "رقم الاتصال",
         "location-details": "تفاصيل الموقع",
         "longitude": "خط الطول",
         "latitude": "خط العرض",
-        "address": "عنوان",
+        "address1": "سطر العنوان 1",
+        "address2": "سطر العنوان 2",
+        "address3": "سطر العنوان 3",
         "region": "منطقة",
         "province": "المحافظة",
         "city": "مدينة",
@@ -40,6 +42,8 @@
         "per-kiosk-process-time": "لكل كشك وقت العملية (بالدقائق)",
         "start-time": "وقت البدء",
         "end-time": "وقت النهاية",
+        "lunch-start-time": "وقت بدء الغداء",
+        "lunch-end-time": "وقت انتهاء الغداء",
         "edit": "تصحيح"
     }
 }

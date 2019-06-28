@@ -12,7 +12,7 @@ import { NavItem } from '../../core/nav-item';
 })
 export class SideMenuComponent implements OnInit {
 
-  @Input() item: any;
+  @Input() item: NavItem;
   @Input() index: number;
   @Input() depth: number;
   @Input() screenResize: number;
@@ -21,7 +21,6 @@ export class SideMenuComponent implements OnInit {
   constructor(private sideMenuService: SideMenuService, private router: Router) {  }
 
   ngOnInit() {
-    console.log('Index', this.index);
     if (this.depth === undefined) {
       this.depth = 0;
     }
@@ -35,9 +34,4 @@ export class SideMenuComponent implements OnInit {
       this.router.navigate([singleItem.route]);
     }
   }
-
-  private getMarginTop(i) {
-    console.log('vasfsa', i);
-  }
-
 }

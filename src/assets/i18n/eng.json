@@ -22,12 +22,14 @@
         "center-details": "Center Details",
         "registration-center-name": "Registration Center Name",
         "registration-center-type": "Registration Center Type",
-        "location-zone": "Location Zone",
+        "contact-person": "Contact Person",
         "contact-number": "Contact Number",
         "location-details": "Location Details",
         "longitude": "Longitude",
         "latitude": "Latitude",
-        "address": "Address",
+        "address1": "Address Line 1",
+        "address2": "Address Line 2",
+        "address3": "Address Line 3",
         "region": "Region",
         "province": "Province",
         "city": "City",
@@ -40,6 +42,8 @@
         "per-kiosk-process-time": "Per Kiosk Process Time(minutes)",
         "start-time": "Start Time",
         "end-time": "End Time",
+        "lunch-start-time": "Lunch Start time",
+        "lunch-end-time": "Lunch End Time",
         "edit": "Edit"
     }
 }

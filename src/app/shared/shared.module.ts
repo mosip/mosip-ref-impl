@@ -7,6 +7,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { MaterialModule } from './material.module';
 import { MatPaginatorIntl } from '@angular/material';
 import { I18nModule } from '../i18n.module';
+import { HamburgerComponent } from '../shared/hamburger-menu/hamburger-menu.component';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { I18nModule } from '../i18n.module';
     MaterialModule,
     I18nModule
   ],
-  declarations: [DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent],
-  exports: [I18nModule, DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, MaterialModule],
+  declarations: [DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, HamburgerComponent],
+  exports: [I18nModule, DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, MaterialModule, HamburgerComponent],
+  entryComponents: [DialogComponent],
   providers: [
     {
       provide: MatPaginatorIntl,

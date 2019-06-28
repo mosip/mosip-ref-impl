@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-center-header',
@@ -7,14 +7,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class CenterHeaderComponent implements OnInit {
 
-  @Output() navigate = new EventEmitter<void>();
-
   constructor() { }
 
   ngOnInit() {
-  }
-
-  naviagtionBack() {
-    this.navigate.emit();
   }
 }

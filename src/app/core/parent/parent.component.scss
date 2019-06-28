@@ -2,7 +2,7 @@
 @import '../../breakpoints';
 #parent-component {
     .mat-sidenav {
-        width: 300px;
+        width: 200px;
         @media (max-width: 600px) {
             width: 50vw;
             font-size: 13px;
@@ -16,7 +16,7 @@
         }
 
         .mat-sidenav-content {
-            margin-left: 350px !important;
+            margin-left: 250px !important;
             margin-right: 50px !important;
             display: flex;
             flex-direction: column;
@@ -44,9 +44,9 @@
     width: 100% !important;
   }
 
-  .mat-drawer-container,
-  .mat-drawer {
-    padding-top: 56px;
-  }
-}
+    .mat-drawer-container,
+        .mat-drawer {
+            padding-top: 10vh;
+        }
+    }
 }

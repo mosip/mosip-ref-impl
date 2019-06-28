@@ -1,25 +1,48 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges
+} from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
   @Input() data: [];
   @Input() displayedColumns: [];
+  @Input() buttonList: [];
   tableData = [];
-  constructor() { }
-  columnsToDisplay: string[];
+  columnsOfTableData = [];
+  constructor(private router:Router) {}
   ngOnInit() {
     this.tableData = [...this.data];
-    this.columnsToDisplay = this.displayedColumns;
-    console.log(...this.data);
+    console.log(this.tableData);
     console.log(this.displayedColumns);
   }
-  style(index) {
-    if (index === 0) {
-     return 'blue';
-    }
+
+  ngOnChanges(): void {
+    this.columnsOfTableData = [];
+    this.displayedColumns.forEach(column => {
+      // tslint:disable-next-line:no-string-literal
+      this.columnsOfTableData.push(column['name']);
+    });
   }
+
+  selectedRow(data, index) {
+    console.log(data + index);
+ //   this.tableData.splice(index, 1);
+    this.router.navigate(['404']);
+  }
+
+  tableStyle(index) {
+    if (index === 0) {
+    return 'rgb(24, 181, 209)';
+  }
+}
+
 }

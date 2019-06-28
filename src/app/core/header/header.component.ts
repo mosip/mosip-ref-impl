@@ -15,11 +15,17 @@ export class HeaderComponent implements OnInit {
 
   profile = {
     name: 'Joan Doe',
-    zone: 'Zonal Admin'
+    zone: 'Zonal Admin',
+    menuList: [
+      {
+        displayName: 'Work In Progress',
+        route: null
+      }
+    ]
   };
 
   constructor(public sideMenuService: SideMenuService, private translateService: TranslateService) {
-       translateService.use('eng');
+    translateService.use('eng');
   }
 
   ngOnInit() {

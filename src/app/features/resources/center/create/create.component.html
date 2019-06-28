@@ -17,11 +17,16 @@
                 <mat-form-field>
                     <input matInput placeholder="{{ 'center.registration-center-name' | translate }}">
                 </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="{{ 'center.registration-center-type' | translate }}">
+                <mat-form-field class="left-sizing">
+                  <mat-label>{{ 'center.registration-center-type' | translate }}</mat-label>
+                  <mat-select>
+                    <mat-option [value]="">
+                      Option
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="{{ 'center.location-zone' | translate }}">
+                    <input matInput placeholder="{{ 'center.contact-person' | translate }}">
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput placeholder="{{ 'center.contact-number' | translate }}">
@@ -35,7 +40,13 @@
                     <input matInput placeholder="{{ 'center.latitude' | translate }}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="{{ 'center.address' | translate }}">
+                    <input matInput placeholder="{{ 'center.address1' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.address2' | translate }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{ 'center.address3' | translate }}">
                 </mat-form-field>
                 <div class="flex-display">
                     <mat-form-field class="left-sizing">
@@ -137,6 +148,24 @@
                     </mat-select>
                   </mat-form-field>
             </div>
+                  <div class="flex-display">
+                    <mat-form-field class="left-sizing">
+                      <mat-label>{{ 'center.lunch-start-time' | translate }}</mat-label>
+                      <mat-select>
+                        <mat-option [value]="">
+                          Option
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="right-sizing">
+                      <mat-label>{{ 'center.lunch-end-time' | translate }}</mat-label>
+                      <mat-select>
+                        <mat-option [value]="">
+                          Option
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
             </div>
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
             <div *ngIf="secondaryLanguageLabels" class="secondary-form">
@@ -147,11 +176,16 @@
                 <mat-form-field>
                     <input matInput placeholder="{{secondaryLanguageLabels['registration-center-name']}}">
                 </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="{{secondaryLanguageLabels['registration-center-type']}}">
+                <mat-form-field class="left-sizing">
+                  <mat-label>{{ secondaryLanguageLabels['registration-center-type'] }}</mat-label>
+                  <mat-select>
+                    <mat-option [value]="">
+                      Option
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="{{secondaryLanguageLabels['location-zone']}}">
+                    <input matInput placeholder="{{secondaryLanguageLabels['contact-person']}}">
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput placeholder="{{secondaryLanguageLabels['contact-number']}}">
@@ -165,7 +199,13 @@
                     <input matInput placeholder="{{secondaryLanguageLabels['latitude']}}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="{{secondaryLanguageLabels['address']}}">
+                    <input matInput placeholder="{{secondaryLanguageLabels['address1']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['address2']}}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="{{secondaryLanguageLabels['address3']}}">
                 </mat-form-field>
                 <div class="flex-display">
                   <mat-form-field class="left-sizing">
@@ -224,7 +264,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <mat-label>{{secondaryLanguageLabels['working-hours']}}</mat-label>
+              <mat-label>{{secondaryLanguageLabels['working-hrs']}}</mat-label>
               <mat-select>
                 <mat-option [value]="">
                   Option
@@ -260,6 +300,24 @@
               </mat-form-field>
               <mat-form-field class="right-sizing">
                 <mat-label>{{secondaryLanguageLabels['end-time']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field class="left-sizing">
+                <mat-label>{{secondaryLanguageLabels['lunch-start-time']}}</mat-label>
+                <mat-select>
+                  <mat-option [value]="">
+                    Option
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="right-sizing">
+                <mat-label>{{secondaryLanguageLabels['lunch-end-time']}}</mat-label>
                 <mat-select>
                   <mat-option [value]="">
                     Option
