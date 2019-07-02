@@ -1,4 +1,4 @@
-<div class="container mat-elevation-z8">
+<div class="container mat-elevation-z8" *ngIf="data.length>0; else nodata">
   <table class="mat-table">
     <tr class="mat-row">
       <th
@@ -9,7 +9,7 @@
       </th>
       <th class="table-header sticky-header ">&emsp;</th>
     </tr>
-    <div *ngIf="data.length>0; else nodata" >
+    <div>
     <tr *ngFor="let data of tableData;index as i" class="mat-row">
       <td
         *ngFor="let item of columnsOfTableData; let i = index;"
@@ -30,7 +30,9 @@
     </tr>
   </div>  
   </table>
-  <ng-template #nodata>
-      <h3>NO DATA TO DISPLAY</h3>
-    </ng-template>
 </div>
+<ng-template #nodata>
+  <div style="display: flex; justify-content: center;">
+    <h3>NO DATA TO DISPLAY</h3>
+  </div>
+  </ng-template>
