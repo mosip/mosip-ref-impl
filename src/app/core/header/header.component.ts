@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
     zone: 'Zonal Admin',
     menuList: [
       {
-        displayName: 'Work In Progress',
+        displayName: 'Logout',
         route: null
       }
     ]

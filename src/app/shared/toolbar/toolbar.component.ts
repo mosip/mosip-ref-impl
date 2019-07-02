@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatPaginatorIntl, MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
 export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   @Input() buttonList: any;
   @Input() paginationOptions: any;
+  @Input() resourceFilter: any;
+  @Output() pageEvent = new EventEmitter();
+
   constructor(public dialog: MatDialog, private router: Router) {
     super();
     this.itemsPerPageLabel = 'Show rows';
@@ -39,11 +42,16 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   }
   openFilterDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
+      data: this.resourceFilter,
       width: '700px',
-      height: '30em'
+      height: '30em',
     }).afterClosed().subscribe(result => {
       console.log(result + 'dislog is closed');
     }
       );
+  }
+  onPaginateChange(event: Event){
+    console.log(event);
+    this.pageEvent.emit(event);
   }
 }

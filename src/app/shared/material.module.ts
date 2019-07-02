@@ -37,6 +37,7 @@ import {
   MatDividerModule
 } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   imports: [
@@ -112,7 +113,9 @@ import { CdkTableModule } from '@angular/cdk/table';
     MatToolbarModule,
     MatTooltipModule,
     MatDividerModule,
-    CdkTableModule
+    CdkTableModule,
+// tslint:disable-next-line: deprecation
+    ScrollDispatchModule
   ]
 })
 export class MaterialModule {}

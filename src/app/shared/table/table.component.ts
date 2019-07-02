@@ -18,7 +18,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() buttonList: [];
   tableData = [];
   columnsOfTableData = [];
-  constructor(private router:Router) {}
+  constructor(private router: Router) {}
   ngOnInit() {
     this.tableData = [...this.data];
     console.log(this.tableData);
