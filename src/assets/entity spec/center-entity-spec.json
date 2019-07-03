@@ -64,7 +64,7 @@
                 "buttonName":"Add Centers", 
                 "actionListType":"redirect",	
                 "actionURL":"",
-                "redirectURL":"",
+                "redirectURL":"admin/resources/centers/create",
                 "showIn":"Button",
                 "validations":""
             }
@@ -156,8 +156,8 @@
         "paginator":
             {
                 "totalEntries":"200",
-                "pageSize":"10",
-                "pageSizeList":[10,20,30,40,50]
+                "pageSize":"5",
+                "pageSizeList":[5,10,15,20,25]
             },
             "filterColumns":[
                 {

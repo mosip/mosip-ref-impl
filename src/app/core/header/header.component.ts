@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
   };
 
   constructor(public sideMenuService: SideMenuService, private translateService: TranslateService) {
-    translateService.use('eng');
+    translateService.use(localStorage.getItem('langCode'));
   }
 
   ngOnInit() {

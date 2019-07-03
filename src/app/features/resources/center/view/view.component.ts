@@ -13,11 +13,7 @@ export class ViewComponent implements OnInit {
   actionButtons: [];
   actionEllipsis: [];
   paginatorOptions: any;
-  resourceFilter = {
-    case: 'center'
-  };
-  centers = [
-  ];
+  centers = [];
   ngOnInit() {
     this.dataStroageService
       .getCenterSpecificLabelsAndActions()
@@ -33,10 +29,16 @@ export class ViewComponent implements OnInit {
         );
         this.paginatorOptions = eng.paginator;
         console.log(this.paginatorOptions);
+        console.log(this.actionEllipsis);
       });
+    this.getCentersData();
   }
-  pageEvent(event: Event) {
-    console.log(event);
+
+  getCentersData() {
+    this.dataStroageService.getCentersData().subscribe(response => {
+      this.centers = response;
+      console.log(this.centers);
+    });
   }
 
 }

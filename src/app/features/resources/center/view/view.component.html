@@ -1,13 +1,11 @@
 <span><h3>Centers</h3></span>
 <mat-card class="mat-elevation-z8">
-  <app-toolbar *ngIf="actionEllipsis && actionEllipsis && resourceFilter" 
+  <app-toolbar *ngIf="actionEllipsis && actionEllipsis" 
     [buttonList]="actionEllipsis"
     [paginationOptions]="paginatorOptions"
-    [resourceFilter]="resourceFilter"
-    (pageEvent)="pageEvent($event)"
   ></app-toolbar>
   <app-table
-    *ngIf="centers && displayedColumns && actionButtons"
+    *ngIf="centers.length > 0 && displayedColumns && actionButtons"
     [data]="centers"
     [displayedColumns]="displayedColumns"
     [buttonList]="actionButtons"

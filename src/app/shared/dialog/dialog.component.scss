@@ -1,5 +1,4 @@
 @import '../../_theme.scss';
-
 .grid-container {
     display: grid;
     grid-template-columns: auto auto;
@@ -14,34 +13,34 @@
       word-spacing: 1px;
       padding: 10px 20px;
   }
-//   ::ng-deep .mat-form-field {
-//     .mat-input-element {
-//         color:black;
+  ::ng-deep .mat-form-field {
+    .mat-input-element {
+        color:black;
         
-//     }
-//     .mat-form-field-label {
-//         color: black;
-//         font-size: 12px;
-//     }
-//     .mat-form-field-underline {
-//         background-color: slategray;
-//     }
+    }
+    .mat-form-field-label {
+        color: black;
+        font-size: 12px;
+    }
+    .mat-form-field-underline {
+        background-color: slategray;
+    }
   
-// }
-// ::ng-deep .mat-form-field.mat-focused {
-//     .mat-form-field-label {
-//         color: slategray;
-//     }
-//     .mat-form-field-underline {
-//         background-color: slategray;
-//     }
-//     .mat-input-element {
-//         color:black;
-//     }
-//     .mat-form-field-ripple {
-//         background-color: slategray;
-//     }
-// }
+}
+::ng-deep .mat-form-field.mat-focused {
+    .mat-form-field-label {
+        color: slategray;
+    }
+    .mat-form-field-underline {
+        background-color: slategray;
+    }
+    .mat-input-element {
+        color:black;
+    }
+    .mat-form-field-ripple {
+        background-color: slategray;
+    }
+}
 .date-header{
  margin-left: 15px;
 }
@@ -71,8 +70,7 @@
 // Coinformation PopUp 
 .mat-dialog-actions {
     justify-content: flex-end;
-}
-.spinner{
-display: flex;
-margin: 120px;
+    // .mat-button{
+    //     background: 
+    // }
 }

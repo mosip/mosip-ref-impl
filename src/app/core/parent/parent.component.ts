@@ -31,7 +31,9 @@ export class ParentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.translateService.use('eng');
+    localStorage.setItem('langCode', 'eng');
+    localStorage.setItem('secondaryLangCode', 'ara');
+    this.translateService.use(localStorage.getItem('langCode'));
     this.navItems = cloneObject(appConstants.navItems);
   }
 

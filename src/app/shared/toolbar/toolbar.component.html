@@ -16,10 +16,9 @@
         [length]="paginationOptions?.totalEntries"
         [pageSize]="paginationOptions?.pageSize"
         [pageSizeOptions]="paginationOptions?.pageSizeList"
-        (page)="onPaginateChange($event)"
       >
       </mat-paginator>
-      <button type="button" mat-button class="download">
+      <button mat-icon-button>
         <mat-icon>save_alt</mat-icon>
       </button>
     </div>

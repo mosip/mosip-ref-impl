@@ -27,3 +27,9 @@ export const navItems = [
       ]
     }
   ];
+
+export const MASTERDATA_BASE_URL = 'https://dev.mosip.io/r2/v1/masterdata/';
+export const processingTimeStart = 15;
+export const processingTimeEnd = 45;
+export const processingTimeInterval = 5;
+export const timeSlotsInterval = 30;

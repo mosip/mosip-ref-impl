@@ -44,6 +44,73 @@
         "end-time": "Heure de fin",
         "lunch-start-time": "L'heure du déjeuner",
         "lunch-end-time": "Heure de fin du déjeuner",
-        "edit": "modifier"
+        "edit": "modifier",
+        "validationMessages": {
+            "name": {
+                "required": "Le nom est requis",
+                "max-length": "Longueur maximale dépassée (128)"
+            },
+            "centerTypeCode": {
+                "required": "Le type de centre est requis"
+            },
+            "contactPerson": {
+                "max-length": "Longueur maximale dépassée (128)"
+            },
+            "contactPhone": {
+                "max-length": "Longueur maxi dépassée (16)"
+            },
+            "longitude": {
+                "required": "La longitude est obligatoire",
+                "max-length": "Longueur maxi dépassée (32)",
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+            },
+            "latitude": {
+                "required": "La longitude est obligatoire",
+                "max-length": "Longueur maxi dépassée (32)",
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+            },
+            "addressLine1": {
+                "required": "La ligne d'adresse 1 est obligatoire",
+                "max-length": "Longueur maxi dépassée (256)"
+            },
+            "addressLine2": {
+                "max-length": "Longueur maxi dépassée (256)"
+            },
+            "addressLine3": {
+                "max-length": "Longueur maxi dépassée (256)"
+            },
+            "region": {
+                "required": "La région est requise"
+            },
+            "province": {
+                "required": "La province est requise"
+            },
+            "city": {
+                "required": "Ville est obligatoire"
+            },
+            "laa": {
+                "required": "LAA est nécessaire"
+            },
+            "postalCode": {
+                "required": "Code postal requis"
+            },
+            "holidayZone": {
+                "required": "Zone de vacances est nécessaire"
+            },
+            "noKiosk": {
+                "required": "Nombre de kiosque requis",
+                "min": "Le nombre minimum de kiosques est 0",
+                "invalidNoKiosk": "Nombre invalide de kiosques entrés"
+            },
+            "processingTime": {
+                "required": "Un délai de traitement par kiosque est requis"
+            },
+            "startTime": {
+                "required": "Heure de début du centre requise"
+            },
+            "endTime": {
+                "required": "Heure de fin de centre requise"
+            }
+        }
     }
 }
