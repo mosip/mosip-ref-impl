@@ -10,7 +10,7 @@ import { SideMenuService } from './services/side-menu.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DataStorageService } from './services/data-storage.service';
 import { SharedModule } from '../shared/shared.module';
-import { HttpIntersepter } from './services/httpintercepter';
+import {  AdminHttpInterceptor } from './services/httpinterceptor';
 import { AuthService } from './services/authservice.service';
 import { LoginRedirectService } from './services/loginredirect.service';
 import { AuthguardService } from './services/authguard.service';
@@ -27,7 +27,7 @@ import { AuthguardService } from './services/authguard.service';
   exports: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent, MaterialModule, RouterModule],
   providers: [SideMenuService, DataStorageService, AuthService , LoginRedirectService, AuthguardService,
     {provide: HTTP_INTERCEPTORS,
-    useClass: HttpIntersepter,
+    useClass: AdminHttpInterceptor,
     multi: true}]
 })
 export class CoreModule { }

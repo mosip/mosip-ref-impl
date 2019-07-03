@@ -13,7 +13,7 @@ import { LoginRedirectService } from './loginredirect.service';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class HttpIntersepter implements HttpInterceptor {
+export class HttpInterceptor implements HttpInterceptor {
     constructor(private redirectService: LoginRedirectService, private router: Router) { }
     // function which will be called for all http calls
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

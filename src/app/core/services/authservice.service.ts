@@ -15,7 +15,7 @@ export class AuthService {
    token: string;
    roles: string[];
    isAuthenticated(): Observable<boolean> {
-    return this.http.get('http://localhost:8091/v1/authmanager/authorize/admin/validateToken', { observe: 'response'}).
+    return this.http.get('https://dev.mosip.io/r2/v1/authmanager/authorize/admin/validateToken', { observe: 'response'}).
     pipe(map(res => res.status === 200),
     catchError(error => {
       console.log(error);
