@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MaterialModule } from './shared/material.module';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { MaterialModule } from './shared/material.module';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
