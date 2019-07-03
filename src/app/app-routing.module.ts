@@ -16,14 +16,14 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'resources', loadChildren: './features/resources/resources.module#ResourcesModule' }
     ], canActivateChild : [AuthguardService]
-  },
+    },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
   { path: '404', component: NotFoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: true})],
+  imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
