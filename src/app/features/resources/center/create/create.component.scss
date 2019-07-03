@@ -53,7 +53,7 @@
             vertical-align: middle;
             padding-left: 15px;
             padding-right: 15px;
-            width:34vw;
+            width:35.1vw;
             border-right: 1px solid white;
             word-wrap: break-word;
             @media (max-width: 420px) {
@@ -124,8 +124,6 @@
         .mat-card {
             justify-content: flex-end;
             background: mat-color($app-primary, 50);
-            border-top-left-radius: 0px;
-            border-top-right-radius: 0px;
             .mat-raised-button {
                 background: mat-color($app-primary, 500);
                 color: white;
@@ -137,47 +135,35 @@
     .mat-card {
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
+        padding: 16px 0px 0px 0px;
     }
 }
 
 .forms-container {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
 }
 
 .primary-form {
-    width: 40%;
-    padding-left: 3%;
+    padding-left: 25px;
     padding-top: 30px;
+    width: 48%;
 }
 
 .secondary-form {
-    width: 40%;
-    padding-left: 5%;
+    padding-right: 25px;
     padding-top: 30px;
     text-align: right;
+    width: 48%;
 }
 
 .secondary-form > .mat-form-field {
-    width: 120%;
+    width: 100%;
     text-align: right;
 }
 
-.secondary-form > h3 {
-    margin-right: -53px;
-}
-
-.secondary-form > hr {
-    width: 120%;
-}
-
-.primary-form > hr {
-    width: 112%;
-}
-
 .primary-form > .mat-form-field {
-    width: 112%;
+    width: 100%;
 }
 
 .flex-display {
@@ -185,33 +171,35 @@
 }
 
 .primary-form > .flex-display > .left-sizing {
-    width: 53.5%; 
-    margin-right: 17px;
+    margin-right: 40px;
 }
 
 .primary-form > .flex-display > .right-sizing {
-    width: 53.5%; 
+    width: 50%; 
 }
 
 .secondary-form > .flex-display > .left-sizing {
-    width: 57%; 
-    margin-right: 17px;
+    margin-right: 40px;
     text-align: right;
 }
 
 .secondary-form > .flex-display > .right-sizing {
-    width: 57%; 
     text-align: right;
 }
 
 .action-buttons {
-    direction: rtl; 
-    padding: 20px 30px 20px 30px !important;
+    direction: rtl;
+    padding: 16px;
+    background: mat-color($app-primary, 50);
 }
 
 .action-buttons > #createButton {
     background-color: black !important;
     color: white !important;
+}
+
+.mat-divider.mat-divider-inset {
+    margin: 0 19px !important;
 }
 
 @media(max-width: 1040px) {
@@ -237,7 +225,7 @@
     }
 
     .left-sizing, .right-sizing {
-        width: 47.5% !important;
+        width: 47.5%;
     }
 
     .secondary-form > h3 {
@@ -248,9 +236,11 @@
 @media(max-width: 500px) {
     .primary-form > .flex-display > .left-sizing {
         width: 40% !important;
+        margin-right: 20px !important;
     }
     .secondary-form > .flex-display > .left-sizing {
         width: 40% !important;
+        margin-right: 20px !important;
     }
 }
 }

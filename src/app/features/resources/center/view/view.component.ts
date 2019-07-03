@@ -13,63 +13,7 @@ export class ViewComponent implements OnInit {
   actionButtons: [];
   actionEllipsis: [];
   paginatorOptions: any;
-  centers = [
-    {
-      id: '10001',
-      name: 'Center A Ben Mansour',
-      NumberOfUsers: 22,
-      NumberOfMachines: 22,
-      NumberOfDevices: 22,
-      contactPhone: '779517433',
-      contactPerson: 'John Doe',
-      isActive: true,
-      createdTime: 2019
-  },
-    {
-      id: '10001',
-      name: 'Center A Ben Mansour',
-      NumberOfUsers: 22,
-      NumberOfMachines: 22,
-      NumberOfDevices: 22,
-      contactPhone: '779517433',
-      contactPerson: 'John Doe',
-      isActive: true,
-      createdTime: 2019
-    },
-    {
-      id: '10001',
-      name: 'Center A Ben Mansour',
-      NumberOfUsers: 22,
-      NumberOfMachines: 22,
-      NumberOfDevices: 22,
-      contactPhone: '779517433',
-      contactPerson: 'John Doe',
-      isActive: true,
-      createdTime: 2019
-  },
-  {
-    id: '10001',
-    name: 'Center A Ben Mansour',
-    NumberOfUsers: 22,
-    NumberOfMachines: 22,
-    NumberOfDevices: 22,
-    contactPhone: '779517433',
-    contactPerson: 'John Doe',
-    isActive: true,
-    createdTime: 2019
-},
-{
-  id: '10001',
-  name: 'Center A Ben Mansour',
-  NumberOfUsers: 22,
-  NumberOfMachines: 22,
-  NumberOfDevices: 22,
-  contactPhone: '779517433',
-  contactPerson: 'John Doe',
-  isActive: true,
-  createdTime: 2019
-}
-  ];
+  centers = [];
   ngOnInit() {
     this.dataStroageService
       .getCenterSpecificLabelsAndActions()
@@ -85,7 +29,16 @@ export class ViewComponent implements OnInit {
         );
         this.paginatorOptions = eng.paginator;
         console.log(this.paginatorOptions);
+        console.log(this.actionEllipsis);
       });
+    this.getCentersData();
+  }
+
+  getCentersData() {
+    this.dataStroageService.getCentersData().subscribe(response => {
+      this.centers = response;
+      console.log(this.centers);
+    });
   }
 
 }

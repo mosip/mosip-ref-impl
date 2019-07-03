@@ -64,7 +64,7 @@
                 "buttonName":"Add Centers", 
                 "actionListType":"redirect",	
                 "actionURL":"",
-                "redirectURL":"",
+                "redirectURL":"admin/resources/centers/create",
                 "showIn":"Button",
                 "validations":""
             }

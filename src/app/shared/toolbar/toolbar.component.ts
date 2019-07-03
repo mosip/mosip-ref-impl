@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatPaginatorIntl, MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Router } from '@angular/router';
 
@@ -12,6 +11,7 @@ import { Router } from '@angular/router';
 export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   @Input() buttonList: any;
   @Input() paginationOptions: any;
+
   constructor(public dialog: MatDialog, private router: Router) {
     super();
     this.itemsPerPageLabel = 'Show rows';
@@ -30,6 +30,8 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
     if (buttonAction.actionListType === 'action') {
       console.log(buttonAction.actionListType);
       this.openFilterDialog();
+    } else if (buttonAction.actionListType === 'redirect') {
+      this.router.navigateByUrl(buttonAction.redirectURL);
     }
     if (buttonAction.actionListType === 'redirect') {
       console.log(buttonAction.actionListType);
@@ -40,7 +42,10 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   openFilterDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '700px',
-      height: '30em'
+      height: '30em',
+      data: {
+        case: 'FILTER'
+      }
     }).afterClosed().subscribe(result => {
       console.log(result + 'dislog is closed');
     }

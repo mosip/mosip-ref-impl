@@ -18,14 +18,14 @@ export class HeaderComponent implements OnInit {
     zone: 'Zonal Admin',
     menuList: [
       {
-        displayName: 'Work In Progress',
+        displayName: 'Logout',
         route: null
       }
     ]
   };
 
   constructor(public sideMenuService: SideMenuService, private translateService: TranslateService) {
-    translateService.use('eng');
+    translateService.use(localStorage.getItem('langCode'));
   }
 
   ngOnInit() {

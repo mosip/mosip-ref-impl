@@ -1,5 +1,5 @@
-<div class="center-filter">
-  <h2 class="filter-heading">Add Filters</h2>
+<div *ngIf="data.case === 'FILTER'" class="center-filter">
+  <h2 class="filter-heading">Add Filters (WIP)</h2>
   <mat-divider></mat-divider>
   <div class="grid-container">
     <mat-form-field>
@@ -11,20 +11,16 @@
     <mat-form-field> <input matInput placeholder="City" /> </mat-form-field>
     <mat-form-field> <input matInput placeholder="LAA" /> </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Postal Code"
-    /></mat-form-field>
-    <mat-form-field
-      ><input matInput placeholder="Holiday Zone"
-    /></mat-form-field>
-    </div>
-    <div class="date-header"><h5>Select Created Date Range</h5></div>
-    <div class="grid-container">
+      <input matInput placeholder="Postal Code" /></mat-form-field>
+    <mat-form-field><input matInput placeholder="Holiday Zone" /></mat-form-field>
+  </div>
+  <div class="date-header">
+    <h5>Select Created Date Range</h5>
+  </div>
+  <div class="grid-container">
     <mat-form-field>
       <input matInput [matDatepicker]="frompicker" placeholder="From" />
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="frompicker"
-      ></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="frompicker"></mat-datepicker-toggle>
       <mat-datepicker #frompicker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
@@ -37,5 +33,17 @@
     <button mat-button class="footer-button">Reset</button>
     <button mat-button class="footer-button">Cancel</button>
     <button mat-button class="footer-button" style="background-color: black; color:white;">Apply</button>
+  </div>
+</div>
+
+<!-- Confirmation PopUp -->
+<div *ngIf="input.case === 'CONFIRMATION'">
+  <h1 mat-dialog-title>{{ input.title }}</h1>
+  <div mat-dialog-content>
+    <p>{{ input.message }}</p>
+  </div>
+  <div mat-dialog-actions>
+    <span><button mat-button [mat-dialog-close]="confirm" cdkFocusInitial>{{ input.yesBtnTxt }}</button></span>
+    <span><button mat-button (click)="onNoClick()" cdkFocusInitial>{{ input.noBtnTxt }}</button></span>
   </div>
 </div>

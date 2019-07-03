@@ -1,4 +1,4 @@
-
+@import '../../_theme.scss';
 .grid-container {
     display: grid;
     grid-template-columns: auto auto;
@@ -65,4 +65,12 @@
     font-size: 12px;
     word-spacing: 1px;
     width: 80px;
+}
+
+// Coinformation PopUp 
+.mat-dialog-actions {
+    justify-content: flex-end;
+    // .mat-button{
+    //     background: 
+    // }
 }
