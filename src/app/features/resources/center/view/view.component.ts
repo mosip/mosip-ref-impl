@@ -50,7 +50,7 @@ export class ViewComponent implements OnInit {
       });
   }
 
-  pageEvent(event: any) {
+  pageEvent(event: any) { 
     console.log(event);
     if (event) {
       this.pagination.pageFetch = event.pageSize;

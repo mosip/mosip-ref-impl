@@ -8,6 +8,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { CenterHeaderComponent } from './center-header/center-header.component';
 import { I18nModule } from '../../../../app/i18n.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -15,7 +16,9 @@ import { I18nModule } from '../../../../app/i18n.module';
     CenterRoutingModule,
     SharedModule,
     MaterialModule,
-    I18nModule
+    I18nModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [CreateComponent, ViewComponent, CenterHeaderComponent]
 })

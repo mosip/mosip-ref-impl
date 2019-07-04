@@ -3,6 +3,8 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { ParentComponent } from './core/parent/parent.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { HomeComponent } from './core/home/home.component';
+import { AuthguardService } from './core/services/authguard.service';
+import { ErrorComponent } from './shared/error/error.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'admin', pathMatch: 'full' },
@@ -13,9 +15,11 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'resources', loadChildren: './features/resources/resources.module#ResourcesModule' }
-    ]
-  },
-  { path: '**', redirectTo: '404' },
+    ],
+    // ], canActivateChild : [AuthguardService]
+    },
+  { path: 'error', component: ErrorComponent },
+  { path: '**', component: NotFoundComponent },
   { path: '404', component: NotFoundComponent }
 ];
 

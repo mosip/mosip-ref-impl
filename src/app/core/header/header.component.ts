@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 import { SideMenuService } from '../services/side-menu.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-header',
@@ -24,8 +25,11 @@ export class HeaderComponent implements OnInit {
     ]
   };
 
-  constructor(public sideMenuService: SideMenuService, private translateService: TranslateService) {
-    translateService.use('eng');
+  constructor(public sideMenuService: SideMenuService,
+              private translateService: TranslateService,
+              private appConfigService: AppConfigService) {
+    // tslint:disable-next-line:no-string-literal
+    translateService.use(appConfigService.getConfig()['primaryLangCode']);
   }
 
   ngOnInit() {

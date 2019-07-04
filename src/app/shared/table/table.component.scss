@@ -53,6 +53,13 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
     height:350px;
 
   }
+
+  .sticky-header {
+    top: 0px;
+    position: sticky;
+    z-index: 100;
+  }
+
   ::ng-deep .mat-menu-content {
     padding-top: 0px !important;
     padding-bottom: 0px !important;

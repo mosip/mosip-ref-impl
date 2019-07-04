@@ -1,3 +1,4 @@
+import { ErrorComponent } from './error/error.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogComponent } from './dialog/dialog.component';
@@ -15,8 +16,9 @@ import { HamburgerComponent } from '../shared/hamburger-menu/hamburger-menu.comp
     MaterialModule,
     I18nModule
   ],
-  declarations: [DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, HamburgerComponent],
-  exports: [I18nModule, DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, MaterialModule, HamburgerComponent],
+  declarations: [DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, HamburgerComponent, ErrorComponent],
+  exports: [I18nModule, DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, MaterialModule, HamburgerComponent,
+    ErrorComponent],
   entryComponents: [DialogComponent],
   providers: [
     {

@@ -44,6 +44,73 @@
         "end-time": "وقت النهاية",
         "lunch-start-time": "وقت بدء الغداء",
         "lunch-end-time": "وقت انتهاء الغداء",
-        "edit": "تصحيح"
+        "edit": "تصحيح",
+        "validationMessages": {
+            "name": {
+                "required": "مطلوب اسم",
+                "max-length": "تجاوز الحد الأقصى للطول (128)"
+            },
+            "centerTypeCode": {
+                "required": "نوع المركز مطلوب"
+            },
+            "contactPerson": {
+                "max-length": "تجاوز الحد الأقصى للطول (128)"
+            },
+            "contactPhone": {
+                "max-length": "تجاوز الحد الأقصى للطول (16)"
+            },
+            "longitude": {
+                "required": "خط الطول مطلوب",
+                "max-length": "تجاوز الحد الأقصى للطول (32)",
+                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي"
+            },
+            "latitude": {
+                "required": "خط الطول مطلوب",
+                "max-length": "تجاوز الحد الأقصى للطول (32)",
+                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي"
+            },
+            "addressLine1": {
+                "required": "سطر العنوان 1 مطلوب",
+                "max-length": "تجاوز الحد الأقصى للطول (256)"
+            },
+            "addressLine2": {
+                "max-length": "تجاوز الحد الأقصى للطول (256)"
+            },
+            "addressLine3": {
+                "max-length": "تجاوز الحد الأقصى للطول (256)"
+            },
+            "region": {
+                "required": "المنطقة مطلوبة"
+            },
+            "province": {
+                "required": "مطلوب مقاطعة"
+            },
+            "city": {
+                "required": "المدينة مطلوبة"
+            },
+            "laa": {
+                "required": "LAA مطلوب"
+            },
+            "postalCode": {
+                "required": "الرمز البريدي مطلوب"
+            },
+            "holidayZone": {
+                "required": "مطلوب منطقة عطلة"
+            },
+            "noKiosk": {
+                "required": "عدد كشك مطلوب",
+                "min": "الحد الأدنى لعدد الأكشاك هو 0",
+                "invalidNoKiosk": "عدد غير صحيح من كشك دخلت"
+            },
+            "processingTime": {
+                "required": "لكل كشك وقت المعالجة مطلوب"
+            },
+            "startTime": {
+                "required": "مركز وقت البدء مطلوب"
+            },
+            "endTime": {
+                "required": "مركز نهاية الوقت مطلوب"
+            }
+        }
     }
 }
