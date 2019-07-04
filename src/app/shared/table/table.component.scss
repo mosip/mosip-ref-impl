@@ -12,7 +12,7 @@ tr.mat-row, tr.mat-footer-row {
 }
 
 th.mat-header-cell {
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -62,7 +62,7 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
     height:40px !important;
   }
   .sticky-header {
-    top: 0px;
-    position: sticky;
+    top: 0px !important;
+    position: sticky !important;
     z-index: 100;
     }

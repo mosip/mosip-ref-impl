@@ -9,7 +9,6 @@
       </th>
       <th class="table-header sticky-header ">&emsp;</th>
     </tr>
-    <div>
     <tr *ngFor="let data of tableData;index as i" class="mat-row">
       <td
         *ngFor="let item of columnsOfTableData; let i = index;"
@@ -28,11 +27,10 @@
         </button>
       </mat-menu>
     </tr>
-  </div>  
   </table>
 </div>
 <ng-template #nodata>
   <div style="display: flex; justify-content: center;">
-    <h3>NO DATA TO DISPLAY</h3>
+   <span>Loading......</span>
   </div>
   </ng-template>

@@ -16,6 +16,7 @@
         [length]="paginationOptions?.totalEntries"
         [pageSize]="paginationOptions?.pageSize"
         [pageSizeOptions]="paginationOptions?.pageSizeList"
+        showFirstLastButtons="true"
         (page)="onPaginateChange($event)"
       >
       </mat-paginator>

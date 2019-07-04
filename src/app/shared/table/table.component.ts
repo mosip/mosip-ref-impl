@@ -26,6 +26,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    this.tableData = [...this.data];
     this.columnsOfTableData = [];
     this.displayedColumns.forEach(column => {
       // tslint:disable-next-line:no-string-literal

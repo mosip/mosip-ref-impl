@@ -81,7 +81,7 @@
                 "LinkURL":""
             },
             {
-                "name":"cntrtyp_name",
+                "name":"centerTypeCode",
                 "showInListView":"true",
                 "label":"Center Type",
                 "sortOrder":"",
@@ -144,7 +144,7 @@
                 "LinkURL":""
             },
             {
-                "name":"cr_dtimes",
+                "name":"createdDateTime",
                 "showInListView":"",
                 "label":"Created Time",
                 "sortOrder":"",
@@ -155,7 +155,7 @@
         ],
         "paginator":
             {
-                "totalEntries":"200",
+                "totalEntries":"",
                 "pageSize":"10",
                 "pageSizeList":[10,20,30,40,50]
             },

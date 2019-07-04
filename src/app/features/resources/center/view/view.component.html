@@ -1,5 +1,5 @@
 <span><h3>Centers</h3></span>
-<mat-card class="mat-elevation-z8">
+<mat-card class="mat-elevation-z8" *ngIf="centers.length>0 && displayedColumns && displayedColumns; else nodata" >
   <app-toolbar *ngIf="actionEllipsis && actionEllipsis && resourceFilter" 
     [buttonList]="actionEllipsis"
     [paginationOptions]="paginatorOptions"
@@ -13,3 +13,8 @@
     [buttonList]="actionButtons"
   ></app-table>
 </mat-card>
+<ng-template #nodata>
+  <div style="display: flex; justify-content: center;">
+   <mat-spinner [diameter]="30"></mat-spinner>
+  </div>
+  </ng-template>

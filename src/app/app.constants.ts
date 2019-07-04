@@ -1,29 +1,35 @@
+export const VERSION = '1.0';
+export const IDS = {
+  centers: 'mosip.admin.registration.centers'
+};
+export const BASE_URL = 'https://dev.mosip.io/r2/v1';
+export const URL = {
+  centers: `${BASE_URL}/masterdata/registrationcenters/search`
+};
 export const navItems = [
-    {
-      displayName: 'menuItems.item1.title',
-      route: '/admin/home',
-      children: null
-    },
-    {
-      displayName: 'menuItems.item2.title',
-      route: 'admin/resources',
-      children: [
-        {
-          displayName: 'menuItems.item2.subItem1',
-          route: '/admin/resources/centers',
-        },
-        {
-          displayName: 'menuItems.item2.subItem2',
-          route: '/admin/resources/devices',
-        },
-        {
-          displayName: 'menuItems.item2.subItem3',
-          route: 'resources/users',
-        },
-        {
-          displayName: 'menuItems.item2.subItem4',
-          route: '/admin/resources/machines',
-        },
-      ]
-    }
-  ];
+  {
+    displayName: 'Home',
+    route: '/admin/home',
+    children: null
+  },
+  {
+    displayName: 'Resource',
+    route: '/admin/resources/'
+  },
+  {
+    displayName: 'Centers',
+    route: '/admin/resources/centers'
+  },
+  {
+    displayName: 'Devices',
+    route: '/admin/resources/devices'
+  },
+  {
+    displayName: 'Users',
+    route: 'resources/users'
+  },
+  {
+    displayName: 'Machines',
+    route: '/admin/resources/machines'
+  }
+];
