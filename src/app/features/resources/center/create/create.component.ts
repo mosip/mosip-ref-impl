@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import Utils from '../../../../app.utils';
 import * as appConstants from '../../../../app.constants';
 import { ValidateLatLong, ValidateKiosk } from 'src/app/core/validators/center.validator';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-create',
@@ -19,8 +20,8 @@ import { ValidateLatLong, ValidateKiosk } from 'src/app/core/validators/center.v
 export class CreateComponent implements OnInit {
 
   secondaryLanguageLabels: any;
-  primaryLang = localStorage.getItem('langCode');
-  secondaryLang = localStorage.getItem('secondaryLangCode');
+  primaryLang: string;
+  secondaryLang: string;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
 
@@ -31,7 +32,12 @@ export class CreateComponent implements OnInit {
               private translateService: TranslateService,
               private dataStorageService: DataStorageService,
               private dialog: MatDialog,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private appConfigService: AppConfigService) {
+                   // tslint:disable-next-line:no-string-literal
+                   this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
+                   // tslint:disable-next-line:no-string-literal
+                   this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
                    translateService.use(this.primaryLang);
                    this.loadLocationData('MOR', 'region');
   }
