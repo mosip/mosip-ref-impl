@@ -12,7 +12,8 @@
     <tr *ngFor="let data of tableData;index as i" class="mat-row">
       <td
         *ngFor="let item of columnsOfTableData; let i = index;"
-        class="mat-cell mat-header-cell " [ngStyle]="{'color': tableStyle(i)}"
+        class="mat-cell  " [ngStyle]="{'color': tableStyle(i)}"
+        (click)="getTableRowData(data,i)"
       >
         {{ data[item] }}
       </td>
@@ -31,6 +32,6 @@
 </div>
 <ng-template #nodata>
   <div style="display: flex; justify-content: center;">
-   <span>Loading......</span>
+    <mat-progress-bar></mat-progress-bar>
   </div>
   </ng-template>

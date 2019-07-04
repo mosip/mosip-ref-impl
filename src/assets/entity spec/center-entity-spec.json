@@ -99,7 +99,7 @@
                 "LinkURL":""
             },
             {
-                "name":"NumberOfUsers",
+                "name":"users",
                 "showInListView":"",
                 "label":"No. of Users",
                 "sortOrder":"",
@@ -108,7 +108,7 @@
                 "LinkURL":""
             },
             {
-                "name":"NumberOfDevices",
+                "name":"devices",
                 "showInListView":"",
                 "label":"No. of Devices",
                 "sortOrder":"",
@@ -117,7 +117,7 @@
                 "LinkURL":""
             },
             {
-                "name":"NumberOfMachines",
+                "name":"machines",
                 "showInListView":"",
                 "label":"No. of Machines",
                 "sortOrder":"",
@@ -155,7 +155,7 @@
         ],
         "paginator":
             {
-                "totalEntries":"",
+                "totalEntries":null,
                 "pageSize":"10",
                 "pageSizeList":[10,20,30,40,50]
             },

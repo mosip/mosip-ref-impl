@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
@@ -8,11 +8,12 @@ import { RequestModel } from 'src/app/core/models/request.model';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent implements OnInit, OnChanges {
   constructor(
     private dataStroageService: DataStorageService,
     private centerService: CenterService
-  ) {}
+  ) {
+  }
   displayedColumns: [];
   actionButtons: [];
   actionEllipsis: [];
@@ -30,6 +31,9 @@ export class ViewComponent implements OnInit {
   ngOnInit() {
     this.getCenterConfigs();
     this.getRegistrationCenters();
+  }
+  ngOnChanges(){
+  this.getCenterConfigs();
   }
 
   getCenterConfigs() {
@@ -50,7 +54,7 @@ export class ViewComponent implements OnInit {
       });
   }
 
-  pageEvent(event: any) { 
+  pageEvent(event: any) {
     console.log(event);
     if (event) {
       this.pagination.pageFetch = event.pageSize;
