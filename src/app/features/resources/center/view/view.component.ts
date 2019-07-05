@@ -3,6 +3,7 @@ import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
+import { AppConfigService } from 'src/app/app-config.service';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -11,9 +12,9 @@ import { RequestModel } from 'src/app/core/models/request.model';
 export class ViewComponent implements OnInit, OnChanges {
   constructor(
     private dataStroageService: DataStorageService,
-    private centerService: CenterService
-  ) {
-  }
+    private centerService: CenterService,
+    private appService: AppConfigService
+  ) {}
   displayedColumns: [];
   actionButtons: [];
   actionEllipsis: [];
@@ -32,7 +33,7 @@ export class ViewComponent implements OnInit, OnChanges {
     this.getCenterConfigs();
     this.getRegistrationCenters();
   }
-  ngOnChanges(){
+  ngOnChanges() {
   this.getCenterConfigs();
   }
 
@@ -68,7 +69,8 @@ export class ViewComponent implements OnInit, OnChanges {
     this.centerRequest.filters = [],
     this.centerRequest.pagination = this.pagination;
     this.centerRequest.sort = [],
-    this.centerRequest.languageCode = 'eng';
+    // tslint:disable-next-line:no-string-literal
+    this.centerRequest.languageCode = this.appService.getConfig()['primaryLangCode'];
     this.requestModel = new RequestModel(null, null, this.centerRequest);
     console.log(JSON.stringify(this.requestModel));
     this.centerService

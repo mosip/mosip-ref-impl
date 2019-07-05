@@ -10,10 +10,9 @@ import { SideMenuService } from './services/side-menu.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DataStorageService } from './services/data-storage.service';
 import { SharedModule } from '../shared/shared.module';
-// import { AuthService } from './services/authservice.service';
-// import { LoginRedirectService } from './services/loginredirect.service';
-// import { AuthguardService } from './services/authguard.service';
-// import { AuthInterceptor } from './services/httpinterceptor';
+import { AuthService } from './services/authservice.service';
+import { LoginRedirectService } from './services/loginredirect.service';
+import { AuthguardService } from './services/authguard.service';
 
 @NgModule({
   imports: [
@@ -25,11 +24,12 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent],
   exports: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent, MaterialModule, RouterModule],
-  providers: [SideMenuService, DataStorageService]
+  providers: [SideMenuService, DataStorageService, AuthService, LoginRedirectService, AuthguardService,
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: AuthInterceptor,
     //   multi: true
-    // }]
+    // }
+  ]
 })
 export class CoreModule { }

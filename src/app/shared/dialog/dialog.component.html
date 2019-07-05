@@ -160,3 +160,13 @@
     <span><button mat-button (click)="onNoClick()" cdkFocusInitial>{{ input.noBtnTxt }}</button></span>
   </div>
 </div>
+
+<div *ngIf="input.case === 'MESSAGE'">
+  <h1 mat-dialog-title>{{ input.title }}</h1>
+  <div mat-dialog-content>
+    <p>{{ input.message }}</p>
+  </div>
+  <div mat-dialog-actions>
+    <span><button mat-button cdkFocusInitial>{{ input.btnTxt }}</button></span>
+  </div>
+</div>

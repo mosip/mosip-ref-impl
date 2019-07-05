@@ -53,4 +53,12 @@ export default class Utils {
     }
     return timeInSeconds;
   }
+
+  static convertTime(time: string) {
+    const d = this.getTimeInSeconds(time);
+    const h = Math.floor(d / 3600) < 10 ? '0' + Math.floor(d / 3600) : Math.floor(d / 3600);
+    const m = Math.floor(d % 3600 / 60) < 10 ? '0' + Math.floor(d % 3600 / 60) : Math.floor(d % 3600 / 60);
+    const s = Math.floor(d % 3600 % 60) < 10 ? '0' + Math.floor(d % 3600 % 60) : Math.floor(d % 3600 % 60);
+    return h + ':' + m + ':' + s;
+  }
 }
