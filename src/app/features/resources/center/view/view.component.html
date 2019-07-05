@@ -1,6 +1,9 @@
 <span><h3>Centers</h3></span>
 <mat-card class="mat-elevation-z8">
-  <app-toolbar *ngIf="actionEllipsis && actionEllipsis && resourceFilter" 
+  <app-toolbar
+    *ngIf="
+      actionEllipsis && actionEllipsis && resourceFilter && paginatorOptions
+    "
     [buttonList]="actionEllipsis"
     [paginationOptions]="paginatorOptions"
     [resourceFilter]="resourceFilter"
@@ -13,8 +16,3 @@
     [buttonList]="actionButtons"
   ></app-table>
 </mat-card>
-<!-- <ng-template #nodata>
-  <div style="display: flex; justify-content: center;">
-   <mat-spinner [diameter]="30"></mat-spinner>
-  </div>
-  </ng-template> -->

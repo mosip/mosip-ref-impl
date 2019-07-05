@@ -6,7 +6,6 @@
         *ngFor="let button of buttonList; index as i"
         [ngStyle]="{ margin: '10px', borderRadius: '0' }"
         (click)="actionEvent(button)"
-        
       >
         <mat-icon *ngIf="iconDisplay(button.buttonName)">filter_list</mat-icon
         >{{ button.buttonName }}

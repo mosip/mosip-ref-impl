@@ -13,6 +13,7 @@ export class ViewComponent implements OnInit, OnChanges {
     private dataStroageService: DataStorageService,
     private centerService: CenterService
   ) {
+    this.getCenterConfigs();
   }
   displayedColumns: [];
   actionButtons: [];
@@ -29,11 +30,11 @@ export class ViewComponent implements OnInit, OnChanges {
   requestModel: RequestModel;
   centers = [];
   ngOnInit() {
-    this.getCenterConfigs();
-    this.getRegistrationCenters();
+    if (this.paginatorOptions !== null || this.paginatorOptions !== undefined) {
+      this.getRegistrationCenters();
+    }
   }
-  ngOnChanges(){
-  this.getCenterConfigs();
+  ngOnChanges() {
   }
 
   getCenterConfigs() {
@@ -73,10 +74,10 @@ export class ViewComponent implements OnInit, OnChanges {
     console.log(JSON.stringify(this.requestModel));
     this.centerService
       .getRegistrationCentersDetails(this.requestModel)
-      .subscribe(({response}) => {
-        this.paginatorOptions.totalEntries = response.totalRecord;
+      .subscribe(({response, errors}) => {
         console.log(response);
         if (response != null) {
+          this.paginatorOptions.totalEntries = response.totalRecord;
           this.centers = [...response.data];
           console.log(this.centers);
         }
