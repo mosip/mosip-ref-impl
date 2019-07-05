@@ -5,7 +5,7 @@
   </button>
   <mat-menu #menu="matMenu" backdropClass="menu">
     <ng-container *ngFor = "let item of profileList">
-       <button (click)="onItem()" mat-menu-item>{{item?.displayName}}</button>
+       <button (click)="logout()" mat-menu-item>{{item?.displayName}}</button>
     </ng-container>
    
   </mat-menu>
