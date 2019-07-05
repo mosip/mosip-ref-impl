@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'resources', loadChildren: './features/resources/resources.module#ResourcesModule' }
-    ]// , canActivateChild : [AuthguardService]
+    ], canActivateChild : [AuthguardService]
     },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
