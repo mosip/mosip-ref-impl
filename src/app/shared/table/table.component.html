@@ -5,14 +5,14 @@
         *ngFor="let item of displayedColumns; let i = index"
         class="mat-header-cell table-header sticky-header "
       >
-        {{ item.label }}
+        {{ item.label }}<span (click)="sortColumn(item.name)" ><img src="assets/images/sort.png" height="7px" width="7px" class="sort-icon"></span>
       </th>
       <th class="table-header sticky-header ">&emsp;</th>
     </tr>
     <tr *ngFor="let data of tableData;index as i" class="mat-row">
       <td
         *ngFor="let item of columnsOfTableData; let i = index;"
-        class="mat-cell  " [ngStyle]="{'color': tableStyle(i)}"
+        class="mat-cell  " [ngStyle]="tableStyle(i)"
         (click)="getTableRowData(data,i)"
       >
         {{ data[item] }}
@@ -32,6 +32,9 @@
 </div>
 <ng-template #nodata>
   <div style="display: flex; justify-content: center;">
-    <mat-progress-bar></mat-progress-bar>
+    <mat-progress-bar
+    mode="determinate"
+    [value]="progressValue"
+    color="primary"></mat-progress-bar>
   </div>
   </ng-template>

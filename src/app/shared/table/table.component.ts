@@ -2,10 +2,12 @@ import {
   Component,
   OnInit,
   Input,
-  OnChanges
+  OnChanges,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { SortModel } from 'src/app/core/models/sort.model';
 
 @Component({
   selector: 'app-table',
@@ -16,16 +18,23 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() data: [];
   @Input() displayedColumns: [];
   @Input() buttonList: [];
+  @Output() sort = new EventEmitter();
+  progressValue = 30;
   tableData = [];
   columnsOfTableData = [];
+  sortStatusArray: string[];
   constructor(private router: Router) {}
   ngOnInit() {
     this.tableData = [...this.data];
     console.log(this.tableData);
     console.log(this.displayedColumns);
+    this.sortStatusArray = [];
   }
 
   ngOnChanges(): void {
+    if (this.data.length > 0) {
+      this.progressValue = 100;
+    }
     this.tableData = [...this.data];
     this.columnsOfTableData = [];
     this.displayedColumns.forEach(column => {
@@ -36,20 +45,41 @@ export class TableComponent implements OnInit, OnChanges {
 
   selectedRow(data, index) {
     console.log(data + index);
- //   this.tableData.splice(index, 1);
     this.router.navigate(['404']);
   }
   getTableRowData(data, index) {
     console.log(data.id + 'index' + index);
-    if (index === 0){
+    if (index === 0) {
       this.router.navigate(['admin/resources/centers/single-view', data.id]);
     }
   }
+  sortColumn(columnName) {
+    const sortModel = new SortModel();
+    sortModel.sortfield = columnName;
+    if (this.sortStatusArray.length === 0) {
+      this.sortStatusArray.push(columnName);
+      sortModel.sorttype = 'asc';
+    } else if (this.sortStatusArray.indexOf(columnName) >= 0) {
+      const valueIndex = this.sortStatusArray.indexOf(columnName);
+      this.sortStatusArray.splice(valueIndex, 1);
+      sortModel.sorttype = 'desc';
+    } else if (this.sortStatusArray.indexOf(columnName) === -1) {
+      this.sortStatusArray.push(columnName);
+      sortModel.sorttype = 'asc';
+    }
+    console.log(sortModel);
+    this.sort.emit(sortModel);
+  }
 
   tableStyle(index) {
+    const myTableStyles = {
+      color: '',
+      cursor: ''
+    };
     if (index === 0) {
-    return 'rgb(24, 181, 209)';
+      myTableStyles.color = 'rgb(24, 181, 209)';
+      myTableStyles.cursor = 'pointer';
+      return myTableStyles;
+    }
   }
-}
-
 }

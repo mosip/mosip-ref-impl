@@ -17,6 +17,6 @@ export class CenterService {
 
   getRegistrationCentersDetails(request: RequestModel): Observable<any> {
     console.log(JSON.stringify(request));
-    return this.http.post(URL.centers, JSON.stringify(request), httpOptions);
+    return this.http.post(URL.centers, request, httpOptions);
   }
 }

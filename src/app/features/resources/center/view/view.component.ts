@@ -4,6 +4,7 @@ import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
+import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 @Component({
   selector: 'app-view',
@@ -15,7 +16,9 @@ export class ViewComponent implements OnInit, OnChanges {
     private dataStroageService: DataStorageService,
     private centerService: CenterService,
     private appService: AppConfigService
-  ) {}
+  ) {
+    this.getCenterConfigs();
+  }
   displayedColumns: [];
   actionButtons: [];
   actionEllipsis: [];
@@ -23,16 +26,19 @@ export class ViewComponent implements OnInit, OnChanges {
   resourceFilter = {
     case: 'center'
   };
+  sortFilter: any;
   pagination = new PaginationModel();
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   centers = [];
   ngOnInit() {
-    this.getCenterConfigs();
-    this.getRegistrationCenters();
+    this.sortFilter = [];
+    if (this.paginatorOptions !== null || this.paginatorOptions !== undefined) {
+      this.getRegistrationCenters();
+    }
   }
   ngOnChanges() {
-  this.getCenterConfigs();
+    this.ngOnInit();
   }
 
   getCenterConfigs() {
@@ -62,21 +68,26 @@ export class ViewComponent implements OnInit, OnChanges {
     }
   }
 
+  getSortColumn(event) {
+    console.log(event);
+    this.sortFilter.push(event);
+    console.log(this.sortFilter);
+  }
+
   getRegistrationCenters() {
     this.centers = [];
     this.centerRequest.filters = [],
     this.centerRequest.pagination = this.pagination;
-    this.centerRequest.sort = [],
-    // tslint:disable-next-line:no-string-literal
-    this.centerRequest.languageCode = this.appService.getConfig()['primaryLangCode'];
+    this.centerRequest.sort = this.sortFilter,
+    this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
     this.requestModel = new RequestModel(null, null, this.centerRequest);
     console.log(JSON.stringify(this.requestModel));
     this.centerService
       .getRegistrationCentersDetails(this.requestModel)
-      .subscribe(({response}) => {
-        this.paginatorOptions.totalEntries = response.totalRecord;
+      .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {
+          this.paginatorOptions.totalEntries = response.totalRecord;
           this.centers = [...response.data];
           console.log(this.centers);
         }

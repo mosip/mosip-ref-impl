@@ -81,7 +81,7 @@
                 "LinkURL":""
             },
             {
-                "name":"centerTypeCode",
+                "name":"centerTypeName",
                 "showInListView":"true",
                 "label":"Center Type",
                 "sortOrder":"",

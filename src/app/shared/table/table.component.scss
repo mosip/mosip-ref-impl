@@ -49,7 +49,8 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
     overflow: auto;
     width: 100%;
     margin: 0;
-    height:365px;
+    min-height: auto;
+    max-height:365px;
 
   }
 
@@ -71,6 +72,8 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
   ::ng-deep.mat-menu-item{
     height:40px !important;
   }
-.spinner{
-  padding: 10px;
+.sort-icon{
+  opacity: 0.5;
+  margin-left: 3px;
+  cursor: pointer !important;
 }
