@@ -46,6 +46,11 @@
         "lunch-start-time": "Lunch Start time",
         "lunch-end-time": "Lunch End Time",
         "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "language": "English",
+        "isActive": "Is Active",
+        "update": "Update",
         "validationMessages": {
             "name": {
                 "required": "Name is required",

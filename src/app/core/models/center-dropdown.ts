@@ -13,6 +13,7 @@ export class CenterDropdown {
     public startTime: any = {},
     public endTime: any = {},
     public lunchStartTime: any = {},
-    public lunchEndTime: any = {}
+    public lunchEndTime: any = {},
+    public isActive = [true, false]
   ) {}
 }

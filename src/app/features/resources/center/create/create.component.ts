@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -120,7 +120,7 @@ export class CreateComponent implements OnInit {
       this.data[0].timeZone,
       this.primaryForm.controls.workingHours.value,
       this.data[0].id,
-      this.data[0].isActive,
+      this.primaryForm.controls.isActive.value,
       this.primaryForm.controls.noKiosk.value
     );
     const secondaryObject = new CenterModel(
@@ -144,7 +144,7 @@ export class CreateComponent implements OnInit {
       this.data[1].timeZone,
       this.secondaryForm.controls.workingHours.value,
       this.data[1].id,
-      this.data[1].isActive,
+      this.secondaryForm.controls.isActive.value,
       this.secondaryForm.controls.noKiosk.value
     );
     const request = new RequestModel(
@@ -309,6 +309,7 @@ export class CreateComponent implements OnInit {
     this.primaryForm.controls.endTime.setValue(Utils.convertTimeTo12Hours(this.data[0].centerEndTime));
     this.primaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchStartTime));
     this.primaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchEndTime));
+    this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
   setSecondaryFormValues() {
@@ -334,6 +335,7 @@ export class CreateComponent implements OnInit {
     this.secondaryForm.controls.endTime.setValue(Utils.convertTimeTo12Hours(this.data[1].centerEndTime));
     this.secondaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[1].lunchStartTime));
     this.secondaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[1].lunchEndTime));
+    this.secondaryForm.controls.isActive.setValue(this.data[1].isActive);
   }
 
   initializeheader() {
@@ -393,7 +395,8 @@ export class CreateComponent implements OnInit {
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
       lunchStartTime: [''],
-      lunchEndTime: ['']
+      lunchEndTime: [''],
+      isActive: [{value: false, disabled: true}]
     });
     if (this.disableForms) {
       this.primaryForm.disable();
@@ -423,7 +426,8 @@ export class CreateComponent implements OnInit {
       startTime: [{value: '', disabled: true}],
       endTime: [{value: '', disabled: true}],
       lunchStartTime: [{value: '', disabled: true}],
-      lunchEndTime: [{value: '', disabled: true}]
+      lunchEndTime: [{value: '', disabled: true}],
+      isActive: [{value: false, disabled: true}]
     });
     if (this.disableForms) {
       this.secondaryForm.disable();
@@ -460,6 +464,7 @@ export class CreateComponent implements OnInit {
       this.setPrimaryFormValues();
       this.setSecondaryFormValues();
       this.primaryForm.controls.noKiosk.enable();
+      this.primaryForm.controls.isActive.enable();
     }
   }
 
@@ -514,5 +519,4 @@ export class CreateComponent implements OnInit {
       this.dropDownValues[targetField] = x.splice(0, index + 1);
     }
   }
-
 }
