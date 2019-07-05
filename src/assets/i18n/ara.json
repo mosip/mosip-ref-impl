@@ -17,6 +17,7 @@
         "center-id": "معرف المركز",
         "status": "الحالة",
         "created-on": "تم إنشاؤها على",
+        "created-by": "صنع من قبل",
         "updated-on": "تحديث في",
         "updated-by": "تم التحديث بواسطة",
         "center-details": "تفاصيل المركز",
@@ -45,6 +46,11 @@
         "lunch-start-time": "وقت بدء الغداء",
         "lunch-end-time": "وقت انتهاء الغداء",
         "edit": "تصحيح",
+        "create": "خلق",
+        "cancel": "إلغاء",
+        "language": "عربى",
+        "isActive": "نشط",
+        "update": "تحديث",
         "validationMessages": {
             "name": {
                 "required": "مطلوب اسم",

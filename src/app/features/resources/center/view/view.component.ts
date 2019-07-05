@@ -1,20 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
-
-
+import { CenterRequest } from 'src/app/core/models/centerRequest.model';
+import { CenterService } from 'src/app/core/services/center.service';
+import { RequestModel } from 'src/app/core/models/request.model';
+import { AppConfigService } from 'src/app/app-config.service';
+import { PaginationModel } from 'src/app/core/models/pagination.model';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit {
-  constructor(private dataStroageService: DataStorageService) {}
+export class ViewComponent implements OnInit, OnChanges {
+  constructor(
+    private dataStroageService: DataStorageService,
+    private centerService: CenterService,
+    private appService: AppConfigService
+  ) {}
   displayedColumns: [];
   actionButtons: [];
   actionEllipsis: [];
   paginatorOptions: any;
+  resourceFilter = {
+    case: 'center'
+  };
+  pagination = new PaginationModel();
+  centerRequest = {} as CenterRequest;
+  requestModel: RequestModel;
   centers = [];
   ngOnInit() {
+    this.getCenterConfigs();
+    this.getRegistrationCenters();
+  }
+  ngOnChanges() {
+  this.getCenterConfigs();
+  }
+
+  getCenterConfigs() {
     this.dataStroageService
       .getCenterSpecificLabelsAndActions()
       .subscribe(({ eng }) => {
@@ -29,16 +50,36 @@ export class ViewComponent implements OnInit {
         );
         this.paginatorOptions = eng.paginator;
         console.log(this.paginatorOptions);
-        console.log(this.actionEllipsis);
       });
-    this.getCentersData();
   }
 
-  getCentersData() {
-    this.dataStroageService.getCentersData().subscribe(response => {
-      this.centers = response;
-      console.log(this.centers);
-    });
+  pageEvent(event: any) {
+    console.log(event);
+    if (event) {
+      this.pagination.pageFetch = event.pageSize;
+      this.pagination.pageStart = event.pageIndex;
+      this.getRegistrationCenters();
+    }
   }
 
+  getRegistrationCenters() {
+    this.centers = [];
+    this.centerRequest.filters = [],
+    this.centerRequest.pagination = this.pagination;
+    this.centerRequest.sort = [],
+    // tslint:disable-next-line:no-string-literal
+    this.centerRequest.languageCode = this.appService.getConfig()['primaryLangCode'];
+    this.requestModel = new RequestModel(null, null, this.centerRequest);
+    console.log(JSON.stringify(this.requestModel));
+    this.centerService
+      .getRegistrationCentersDetails(this.requestModel)
+      .subscribe(({response}) => {
+        this.paginatorOptions.totalEntries = response.totalRecord;
+        console.log(response);
+        if (response != null) {
+          this.centers = [...response.data];
+          console.log(this.centers);
+        }
+      });
+  }
 }

@@ -1,4 +1,4 @@
-<div class="container mat-elevation-z8">
+<div class="container mat-elevation-z8" *ngIf="data.length>0;else nodata" >
   <table class="mat-table">
     <tr class="mat-row">
       <th
@@ -12,7 +12,8 @@
     <tr *ngFor="let data of tableData;index as i" class="mat-row">
       <td
         *ngFor="let item of columnsOfTableData; let i = index;"
-        class="mat-cell mat-header-cell " [ngStyle]="{'color': tableStyle(i)}"
+        class="mat-cell  " [ngStyle]="{'color': tableStyle(i)}"
+        (click)="getTableRowData(data,i)"
       >
         {{ data[item] }}
       </td>
@@ -29,3 +30,8 @@
     </tr>
   </table>
 </div>
+<ng-template #nodata>
+  <div style="display: flex; justify-content: center;">
+    <mat-progress-bar></mat-progress-bar>
+  </div>
+  </ng-template>

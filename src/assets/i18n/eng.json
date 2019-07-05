@@ -17,6 +17,7 @@
         "center-id": "Center Id",
         "status": "Status",
         "created-on": "Created On",
+        "created-by": "Created By",
         "updated-on": "Updated On",
         "updated-by": "Updated By",
         "center-details": "Center Details",
@@ -45,6 +46,11 @@
         "lunch-start-time": "Lunch Start time",
         "lunch-end-time": "Lunch End Time",
         "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "language": "English",
+        "isActive": "Is Active",
+        "update": "Update",
         "validationMessages": {
             "name": {
                 "required": "Name is required",

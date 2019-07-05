@@ -18,7 +18,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() buttonList: [];
   tableData = [];
   columnsOfTableData = [];
-  constructor(private router:Router) {}
+  constructor(private router: Router) {}
   ngOnInit() {
     this.tableData = [...this.data];
     console.log(this.tableData);
@@ -26,6 +26,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    this.tableData = [...this.data];
     this.columnsOfTableData = [];
     this.displayedColumns.forEach(column => {
       // tslint:disable-next-line:no-string-literal
@@ -37,6 +38,12 @@ export class TableComponent implements OnInit, OnChanges {
     console.log(data + index);
  //   this.tableData.splice(index, 1);
     this.router.navigate(['404']);
+  }
+  getTableRowData(data, index) {
+    console.log(data.id + 'index' + index);
+    if (index === 0){
+      this.router.navigate(['admin/resources/centers/single-view', data.id]);
+    }
   }
 
   tableStyle(index) {

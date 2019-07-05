@@ -8,11 +8,11 @@ tr.mat-header-row {
 }
 
 tr.mat-row, tr.mat-footer-row {
-  height: 40px;
+  height: 30px;
 }
 
 th.mat-header-cell {
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -26,21 +26,20 @@ th.mat-header-cell{
 }
 td.mat-cell{
   text-align: center;
-  padding: 10px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 11px;
-  line-height: 13px;
+  line-height: 12px;
 }
 th.mat-header-cell:first-child, td.mat-cell:first-child, td.mat-footer-cell:first-child {
-  padding-left: 24px;
+  padding-left: 20px;
 }
 
 th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-child {
-  padding-right: 24px;
+  padding-right: 20px;
 }
 .table-header{
-    background-color: rgb(202, 198, 198);
-    color: rgb(255, 255, 255);
+    background-color: #E6E7E7;
+    color: #54595A;
     text-transform: capitalize;
     font-size: 12px;
     line-height: 13px;
@@ -50,13 +49,17 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
     overflow: auto;
     width: 100%;
     margin: 0;
-    height:350px;
+    height:365px;
 
   }
 
   .sticky-header {
-    top: 0px;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -o-sticky;
+    position: -ms-sticky;
     position: sticky;
+    top: 0; 
     z-index: 100;
   }
 
@@ -68,8 +71,6 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
   ::ng-deep.mat-menu-item{
     height:40px !important;
   }
-  .sticky-header {
-    top: 0px;
-    position: sticky;
-    z-index: 100;
-    }
+.spinner{
+  padding: 10px;
+}

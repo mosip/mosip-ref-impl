@@ -81,7 +81,7 @@
                 "LinkURL":""
             },
             {
-                "name":"cntrtyp_name",
+                "name":"centerTypeCode",
                 "showInListView":"true",
                 "label":"Center Type",
                 "sortOrder":"",
@@ -99,7 +99,7 @@
                 "LinkURL":""
             },
             {
-                "name":"NumberOfUsers",
+                "name":"users",
                 "showInListView":"",
                 "label":"No. of Users",
                 "sortOrder":"",
@@ -108,7 +108,7 @@
                 "LinkURL":""
             },
             {
-                "name":"NumberOfDevices",
+                "name":"devices",
                 "showInListView":"",
                 "label":"No. of Devices",
                 "sortOrder":"",
@@ -117,7 +117,7 @@
                 "LinkURL":""
             },
             {
-                "name":"NumberOfMachines",
+                "name":"machines",
                 "showInListView":"",
                 "label":"No. of Machines",
                 "sortOrder":"",
@@ -144,7 +144,7 @@
                 "LinkURL":""
             },
             {
-                "name":"cr_dtimes",
+                "name":"createdDateTime",
                 "showInListView":"",
                 "label":"Created Time",
                 "sortOrder":"",
@@ -155,9 +155,9 @@
         ],
         "paginator":
             {
-                "totalEntries":"200",
-                "pageSize":"5",
-                "pageSizeList":[5,10,15,20,25]
+                "totalEntries":null,
+                "pageSize":"10",
+                "pageSizeList":[10,20,30,40,50]
             },
             "filterColumns":[
                 {

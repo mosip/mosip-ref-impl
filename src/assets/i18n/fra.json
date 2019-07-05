@@ -17,6 +17,7 @@
         "center-id": "Identifiant du centre",
         "status": "Statut",
         "created-on": "Créé sur",
+        "created-by": "Créé par",
         "updated-on": "Mis à jour le",
         "updated-by": "Mis à jour par",
         "center-details": "Détails du centre",
@@ -45,6 +46,11 @@
         "lunch-start-time": "L'heure du déjeuner",
         "lunch-end-time": "Heure de fin du déjeuner",
         "edit": "modifier",
+        "create": "Créer",
+        "cancel": "Annuler",
+        "language": "French",
+        "isActive": "C'est actif",
+        "update": "mettre à jour",
         "validationMessages": {
             "name": {
                 "required": "Le nom est requis",
