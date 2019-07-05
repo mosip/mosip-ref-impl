@@ -3,6 +3,8 @@ import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
+import { AppConfigService } from 'src/app/app-config.service';
+import { SortModel } from 'src/app/core/models/sort.model';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -11,7 +13,8 @@ import { RequestModel } from 'src/app/core/models/request.model';
 export class ViewComponent implements OnInit, OnChanges {
   constructor(
     private dataStroageService: DataStorageService,
-    private centerService: CenterService
+    private centerService: CenterService,
+    private appService: AppConfigService
   ) {
     this.getCenterConfigs();
   }
@@ -26,15 +29,18 @@ export class ViewComponent implements OnInit, OnChanges {
     pageFetch: 10,
     pageStart: 0
   };
+  sortFilter: any;
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   centers = [];
   ngOnInit() {
+    this.sortFilter = [];
     if (this.paginatorOptions !== null || this.paginatorOptions !== undefined) {
       this.getRegistrationCenters();
     }
   }
   ngOnChanges() {
+    this.ngOnInit();
   }
 
   getCenterConfigs() {
@@ -64,17 +70,23 @@ export class ViewComponent implements OnInit, OnChanges {
     }
   }
 
+  getSortColumn(event) {
+    console.log(event);
+    this.sortFilter.push(event);
+    console.log(this.sortFilter);
+  }
+
   getRegistrationCenters() {
     this.centers = [];
     this.centerRequest.filters = [],
     this.centerRequest.pagination = this.pagination;
-    this.centerRequest.sort = [],
-    this.centerRequest.languageCode = 'eng';
+    this.centerRequest.sort = this.sortFilter,
+    this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
     this.requestModel = new RequestModel(null, null, this.centerRequest);
     console.log(JSON.stringify(this.requestModel));
     this.centerService
       .getRegistrationCentersDetails(this.requestModel)
-      .subscribe(({response, errors}) => {
+      .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalRecord;

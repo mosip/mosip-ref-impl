@@ -4,7 +4,7 @@
   </div>
   <div id="center">
     <!--Center header  -->
-    <app-center-header></app-center-header>
+    <app-center-header *ngIf="headerObject" [data]="headerObject"></app-center-header>
     <!--Ceneter Details  -->
 <div class="container">
       <mat-card>
@@ -168,7 +168,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                  <input formControlName="workingHours" matInput placeholder="{{ 'center.working-hrs' | translate }}">
+                  <input formControlName="workingHours" readonly matInput placeholder="{{ 'center.working-hrs' | translate }}">
               </mat-form-field>
             <div class="flex-display">
                 <mat-form-field class="left-sizing">
@@ -410,7 +410,8 @@
             </div>
         </mat-card-content>
         <mat-card-actions class="action-buttons">
-          <button id="createButton" mat-raised-button (click)="submit()">Create</button>
+          <button id="createButton" mat-raised-button *ngIf="!disableForms" (click)="submit()">Create</button>
+          <button id="createButton" mat-raised-button *ngIf="disableForms" (click)="submit()">Edit</button>
           <button mat-raised-button>Cancel</button>
       </mat-card-actions>
       </mat-card>

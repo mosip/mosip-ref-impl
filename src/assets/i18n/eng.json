@@ -17,6 +17,7 @@
         "center-id": "Center Id",
         "status": "Status",
         "created-on": "Created On",
+        "created-by": "Created By",
         "updated-on": "Updated On",
         "updated-by": "Updated By",
         "center-details": "Center Details",

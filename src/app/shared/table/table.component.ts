@@ -1,5 +1,13 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { Router } from '@angular/router';
+import { SortModel } from 'src/app/core/models/sort.model';
 
 @Component({
   selector: 'app-table',
@@ -10,14 +18,17 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() data: [];
   @Input() displayedColumns: [];
   @Input() buttonList: [];
+  @Output() sort = new EventEmitter();
   progressValue = 30;
   tableData = [];
   columnsOfTableData = [];
+  sortStatusArray: string[];
   constructor(private router: Router) {}
   ngOnInit() {
     this.tableData = [...this.data];
     console.log(this.tableData);
     console.log(this.displayedColumns);
+    this.sortStatusArray = [];
   }
 
   ngOnChanges(): void {
@@ -34,7 +45,6 @@ export class TableComponent implements OnInit, OnChanges {
 
   selectedRow(data, index) {
     console.log(data + index);
-    //   this.tableData.splice(index, 1);
     this.router.navigate(['404']);
   }
   getTableRowData(data, index) {
@@ -42,6 +52,23 @@ export class TableComponent implements OnInit, OnChanges {
     if (index === 0) {
       this.router.navigate(['admin/resources/centers/single-view', data.id]);
     }
+  }
+  sortColumn(columnName) {
+    const sortModel = new SortModel();
+    sortModel.sortfield = columnName;
+    if (this.sortStatusArray.length === 0) {
+      this.sortStatusArray.push(columnName);
+      sortModel.sorttype = 'asc';
+    } else if (this.sortStatusArray.indexOf(columnName) >= 0) {
+      const valueIndex = this.sortStatusArray.indexOf(columnName);
+      this.sortStatusArray.splice(valueIndex, 1);
+      sortModel.sorttype = 'desc';
+    } else if (this.sortStatusArray.indexOf(columnName) === -1) {
+      this.sortStatusArray.push(columnName);
+      sortModel.sorttype = 'asc';
+    }
+    console.log(sortModel);
+    this.sort.emit(sortModel);
   }
 
   tableStyle(index) {

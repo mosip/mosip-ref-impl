@@ -14,5 +14,6 @@
     [data]="centers"
     [displayedColumns]="displayedColumns"
     [buttonList]="actionButtons"
+    (sort)="getSortColumn($event)"
   ></app-table>
 </mat-card>

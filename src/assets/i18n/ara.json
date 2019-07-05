@@ -17,6 +17,7 @@
         "center-id": "معرف المركز",
         "status": "الحالة",
         "created-on": "تم إنشاؤها على",
+        "created-by": "صنع من قبل",
         "updated-on": "تحديث في",
         "updated-by": "تم التحديث بواسطة",
         "center-details": "تفاصيل المركز",

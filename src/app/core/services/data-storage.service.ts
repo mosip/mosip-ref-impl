@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as appConstants from '../../app.constants';
+import { RequestModel } from '../models/request.model';
 
 @Injectable()
 export class DataStorageService {
@@ -28,5 +29,9 @@ export class DataStorageService {
 
   getStubbedDataForDropdowns(): Observable<any> {
     return this.http.get('./assets/data/centers-stub-data.json');
+  }
+
+  createCenter(data: RequestModel): Observable<any> {
+    return this.http.post(appConstants.MASTERDATA_BASE_URL + 'registrationcenters', data);
   }
 }

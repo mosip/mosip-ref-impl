@@ -45,9 +45,9 @@
 .date-header{
  margin-left: 15px;
 }
-::ng-deep.mat-dialog-container{
+.mat-dialog-container{
     border-radius: 0;
-    padding: 0;
+    padding: 0 !important;
 }
 .footer{
     display: flex;

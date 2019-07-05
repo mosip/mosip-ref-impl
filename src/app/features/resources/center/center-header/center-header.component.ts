@@ -1,4 +1,5 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
+import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
 
 @Component({
   selector: 'app-center-header',
@@ -6,6 +7,8 @@ import { Component, OnInit} from '@angular/core';
   styleUrls: ['./center-header.component.scss']
 })
 export class CenterHeaderComponent implements OnInit {
+
+  @Input() data: CenterHeaderModel;
 
   constructor() { }
 

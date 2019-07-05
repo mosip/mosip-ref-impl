@@ -5,7 +5,7 @@
         *ngFor="let item of displayedColumns; let i = index"
         class="mat-header-cell table-header sticky-header "
       >
-        {{ item.label }}
+        {{ item.label }}<span (click)="sortColumn(item.name)" ><img src="assets/images/sort.png" height="7px" width="7px" class="sort-icon"></span>
       </th>
       <th class="table-header sticky-header ">&emsp;</th>
     </tr>
