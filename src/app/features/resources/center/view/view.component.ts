@@ -4,6 +4,7 @@ import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
+import { PaginationModel } from 'src/app/core/models/pagination.model';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -22,10 +23,7 @@ export class ViewComponent implements OnInit, OnChanges {
   resourceFilter = {
     case: 'center'
   };
-  pagination = {
-    pageFetch: 10,
-    pageStart: 0
-  };
+  pagination = new PaginationModel();
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   centers = [];

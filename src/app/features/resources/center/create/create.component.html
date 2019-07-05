@@ -202,10 +202,10 @@
                       <mat-option *ngFor="let data of dropDownValues.startTime" [value]="data">
                         {{data}}
                       </mat-option>
-                      <mat-error *ngIf="primary.startTime.touched && primary.startTime.hasError('required')">
-                        {{ 'center.validationMessages.startTime.required' | translate }}
-                      </mat-error>
                     </mat-select>
+                    <mat-error *ngIf="primary.startTime.touched && primary.startTime.hasError('required')">
+                      {{ 'center.validationMessages.startTime.required' | translate }}
+                    </mat-error>
                   </mat-form-field>
                   <mat-form-field class="right-sizing">
                     <mat-label>{{ 'center.end-time' | translate }}</mat-label>

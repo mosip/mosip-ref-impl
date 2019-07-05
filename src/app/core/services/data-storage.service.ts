@@ -34,4 +34,8 @@ export class DataStorageService {
   createCenter(data: RequestModel): Observable<any> {
     return this.http.post(appConstants.MASTERDATA_BASE_URL + 'registrationcenters', data);
   }
+
+  updateCenter(data: RequestModel): Observable<any> {
+    return this.http.put(appConstants.MASTERDATA_BASE_URL + 'registrationcenters', data);
+  }
 }
