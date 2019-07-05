@@ -6,7 +6,10 @@ import { Observable, of } from 'rxjs';
 import { map, catchError} from 'rxjs/operators';
 
 
-
+/**
+ * @description AuthService for Admin App
+ * @author Urvil Joshi
+ */
 @Injectable()
 export class AuthService {
 
