@@ -1,3 +1,4 @@
+import { LogoutService } from './../../core/services/logout.service';
 import { Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
 import { Location } from '@angular/common';
 
@@ -13,14 +14,14 @@ export class HamburgerComponent implements OnInit {
 
   profileList: any[];
 
-  constructor(private location: Location) { }
+  constructor(private location: Location, private logoutService: LogoutService) { }
 
   ngOnInit() {
     this.profileList = this.data.menuList;
   }
 
-  onItem() {
-    // this.location.back();
+  logout() {
+    this.logoutService.logout();
   }
 
 }
