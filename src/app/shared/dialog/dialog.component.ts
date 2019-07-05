@@ -3,7 +3,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from '@angular/material/dialog';
-import { Component, OnInit, Inject, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-dialog',

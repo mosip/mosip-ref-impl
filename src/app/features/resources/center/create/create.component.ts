@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
 import { CenterModel } from 'src/app/core/models/center.model';
 import { RequestModel } from 'src/app/core/models/request.model';
+import { CenterService } from 'src/app/core/services/center.service';
+import { CenterRequest } from 'src/app/core/models/centerRequest.model';
+import { FilterModel } from 'src/app/core/models/filter.model';
 
 @Component({
   selector: 'app-create',
@@ -30,9 +33,12 @@ export class CreateComponent implements OnInit {
   allSlots: string[];
   disableForms: boolean;
   headerObject: CenterHeaderModel;
+  centerRequest = {} as CenterRequest;
 
   primaryForm: FormGroup;
   secondaryForm: FormGroup;
+
+  data = [];
 
   constructor(private location: Location,
               private translateService: TranslateService,
@@ -41,7 +47,8 @@ export class CreateComponent implements OnInit {
               private formBuilder: FormBuilder,
               private appConfigService: AppConfigService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private centerService: CenterService) {
                    // tslint:disable-next-line:no-string-literal
                    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
                    // tslint:disable-next-line:no-string-literal
@@ -50,16 +57,14 @@ export class CreateComponent implements OnInit {
                    this.loadLocationData('MOR', 'region');
   }
 
-  ngOnInit() {
+ async ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
         this.disableForms = true;
-        this.getData();
+        this.getData(params);
       } else {
-        this.headerObject = new CenterHeaderModel(
-          '-', '-', '-', '-', '-', '-', '-'
-        );
+        this.initializeheader();
       }
     });
     this.dataStorageService.getLanguageSpecificLabels(this.secondaryLang).subscribe(response => {
@@ -79,96 +84,276 @@ export class CreateComponent implements OnInit {
       data: {
         case: 'CONFIRMATION',
         title: 'Confirmation',
-        message: 'Click On yes To Create Center',
+        message: 'Click On yes To Create/Edit Center',
         yesBtnTxt: 'Yes',
         noBtnTxt: 'No'
       }
     });
     dialogRef.afterClosed().subscribe(response => {
-      if (response) {
-        const primaryObject = new CenterModel(
-          this.primaryForm.controls.addressLine1.value,
-          this.primaryForm.controls.addressLine2.value,
-          this.primaryForm.controls.addressLine3.value,
-          Utils.convertTime(this.primaryForm.controls.endTime.value),
-          Utils.convertTime(this.primaryForm.controls.startTime.value),
-          this.primaryForm.controls.centerTypeCode.value,
-          this.primaryForm.controls.contactPerson.value,
-          this.primaryForm.controls.contactPhone.value,
-          this.primaryForm.controls.holidayZone.value,
-          this.primaryLang,
-          this.primaryForm.controls.latitude.value,
-          this.primaryForm.controls.postalCode.value,
-          this.primaryForm.controls.longitude.value,
-          Utils.convertTime(this.primaryForm.controls.lunchEndTime.value),
-          Utils.convertTime(this.primaryForm.controls.lunchStartTime.value),
-          this.primaryForm.controls.name.value,
-          '00:' + this.primaryForm.controls.processingTime.value + ':00',
-          '(GTM+01:00) CENTRAL EUROPEAN TIME',
-          this.primaryForm.controls.workingHours.value
-        );
-        const secondaryObject = new CenterModel(
-          this.secondaryForm.controls.addressLine1.value,
-          this.secondaryForm.controls.addressLine2.value,
-          this.secondaryForm.controls.addressLine3.value,
-          Utils.convertTime(this.secondaryForm.controls.endTime.value),
-          Utils.convertTime(this.secondaryForm.controls.startTime.value),
-          this.secondaryForm.controls.centerTypeCode.value,
-          this.secondaryForm.controls.contactPerson.value,
-          this.secondaryForm.controls.contactPhone.value,
-          this.secondaryForm.controls.holidayZone.value,
-          this.secondaryLang,
-          this.secondaryForm.controls.latitude.value,
-          this.secondaryForm.controls.postalCode.value,
-          this.secondaryForm.controls.longitude.value,
-          Utils.convertTime(this.secondaryForm.controls.lunchEndTime.value),
-          Utils.convertTime(this.secondaryForm.controls.lunchStartTime.value),
-          this.secondaryForm.controls.name.value,
-          '00:' + this.secondaryForm.controls.processingTime.value + ':00',
-          '(GTM+01:00) CENTRAL EUROPEAN TIME',
-          this.secondaryForm.controls.workingHours.value
-        );
-        const request = new RequestModel(
-          appConstants.registrationCenterCreateId, null, [primaryObject, secondaryObject]
-        );
-        console.log(request);
-        this.dataStorageService.createCenter(request).subscribe(createResponse => {
-          console.log(createResponse);
-          if (!response.error) {
-            this.dialog.open(DialogComponent, {
-              width: '350px',
-              data: {
-                case: 'MESSAGE',
-                title: 'Success',
-                message: 'Center is created Successfully with Center ID: ' + createResponse.response.registrationCenters[0].id,
-                btnTxt: 'Ok'
-              }
-            }).afterClosed().subscribe(() => {
-              this.primaryForm.reset();
-              this.secondaryForm.reset();
-              this.router.navigateByUrl('admin/resources/centers/view');
-            });
-          } else {
-            this.dialog.open(DialogComponent, {
-              width: '350px',
-              data: {
-                case: 'MESSAGE',
-                title: 'Error',
-                message: 'There was some issue in creating a center. Please try again',
-                btnTxt: 'Ok'
-              }
-            });
+      if (response && this.data.length === 0) {
+        this.saveData();
+      } else if (response && this.data.length !== 0) {
+        this.updateData();
+      }
+    });
+  }
+
+  updateData() {
+    const primaryObject = new CenterModel(
+      this.primaryForm.controls.addressLine1.value,
+      this.primaryForm.controls.addressLine2.value,
+      this.primaryForm.controls.addressLine3.value,
+      Utils.convertTime(this.primaryForm.controls.endTime.value),
+      Utils.convertTime(this.primaryForm.controls.startTime.value),
+      this.primaryForm.controls.centerTypeCode.value,
+      this.primaryForm.controls.contactPerson.value,
+      this.primaryForm.controls.contactPhone.value,
+      this.primaryForm.controls.holidayZone.value,
+      this.primaryLang,
+      this.primaryForm.controls.latitude.value,
+      this.primaryForm.controls.postalCode.value,
+      this.primaryForm.controls.longitude.value,
+      Utils.convertTime(this.primaryForm.controls.lunchEndTime.value),
+      Utils.convertTime(this.primaryForm.controls.lunchStartTime.value),
+      this.primaryForm.controls.name.value,
+      '00:' + this.primaryForm.controls.processingTime.value + ':00',
+      this.data[0].timeZone,
+      this.primaryForm.controls.workingHours.value,
+      this.data[0].id,
+      this.primaryForm.controls.isActive.value,
+      this.primaryForm.controls.noKiosk.value
+    );
+    const secondaryObject = new CenterModel(
+      this.secondaryForm.controls.addressLine1.value,
+      this.secondaryForm.controls.addressLine2.value,
+      this.secondaryForm.controls.addressLine3.value,
+      Utils.convertTime(this.secondaryForm.controls.endTime.value),
+      Utils.convertTime(this.secondaryForm.controls.startTime.value),
+      this.secondaryForm.controls.centerTypeCode.value,
+      this.secondaryForm.controls.contactPerson.value,
+      this.secondaryForm.controls.contactPhone.value,
+      this.secondaryForm.controls.holidayZone.value,
+      this.secondaryLang,
+      this.secondaryForm.controls.latitude.value,
+      this.secondaryForm.controls.postalCode.value,
+      this.secondaryForm.controls.longitude.value,
+      Utils.convertTime(this.secondaryForm.controls.lunchEndTime.value),
+      Utils.convertTime(this.secondaryForm.controls.lunchStartTime.value),
+      this.secondaryForm.controls.name.value,
+      '00:' + this.secondaryForm.controls.processingTime.value + ':00',
+      this.data[1].timeZone,
+      this.secondaryForm.controls.workingHours.value,
+      this.data[1].id,
+      this.secondaryForm.controls.isActive.value,
+      this.secondaryForm.controls.noKiosk.value
+    );
+    const request = new RequestModel(
+      appConstants.registrationCenterCreateId, null, [primaryObject, secondaryObject]
+    );
+    console.log(request);
+    this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
+      console.log(updateResponse);
+      if (!updateResponse.error) {
+        this.dialog.open(DialogComponent, {
+          width: '350px',
+          data: {
+            case: 'MESSAGE',
+            title: 'Success',
+            message: 'Center is updated Successfully',
+            btnTxt: 'Ok'
+          }
+        }).afterClosed().subscribe(() => {
+          this.router.navigateByUrl('admin/resources/centers/view');
+        });
+      } else {
+        this.dialog.open(DialogComponent, {
+          width: '350px',
+          data: {
+            case: 'MESSAGE',
+            title: 'Error',
+            message: 'There was some issue in updating the center. Please try again',
+            btnTxt: 'Ok'
           }
         });
       }
     });
   }
 
-  getData() {
-    console.log('Get Data Called');
-    this.headerObject = new CenterHeaderModel(
-      '-', '-', '-', '-', '-', '-', '-'
+  saveData() {
+    const primaryObject = new CenterModel(
+      this.primaryForm.controls.addressLine1.value,
+      this.primaryForm.controls.addressLine2.value,
+      this.primaryForm.controls.addressLine3.value,
+      Utils.convertTime(this.primaryForm.controls.endTime.value),
+      Utils.convertTime(this.primaryForm.controls.startTime.value),
+      this.primaryForm.controls.centerTypeCode.value,
+      this.primaryForm.controls.contactPerson.value,
+      this.primaryForm.controls.contactPhone.value,
+      this.primaryForm.controls.holidayZone.value,
+      this.primaryLang,
+      this.primaryForm.controls.latitude.value,
+      this.primaryForm.controls.postalCode.value,
+      this.primaryForm.controls.longitude.value,
+      Utils.convertTime(this.primaryForm.controls.lunchEndTime.value),
+      Utils.convertTime(this.primaryForm.controls.lunchStartTime.value),
+      this.primaryForm.controls.name.value,
+      '00:' + this.primaryForm.controls.processingTime.value + ':00',
+      '(GTM+01:00) CENTRAL EUROPEAN TIME',
+      this.primaryForm.controls.workingHours.value
     );
+    const secondaryObject = new CenterModel(
+      this.secondaryForm.controls.addressLine1.value,
+      this.secondaryForm.controls.addressLine2.value,
+      this.secondaryForm.controls.addressLine3.value,
+      Utils.convertTime(this.secondaryForm.controls.endTime.value),
+      Utils.convertTime(this.secondaryForm.controls.startTime.value),
+      this.secondaryForm.controls.centerTypeCode.value,
+      this.secondaryForm.controls.contactPerson.value,
+      this.secondaryForm.controls.contactPhone.value,
+      this.secondaryForm.controls.holidayZone.value,
+      this.secondaryLang,
+      this.secondaryForm.controls.latitude.value,
+      this.secondaryForm.controls.postalCode.value,
+      this.secondaryForm.controls.longitude.value,
+      Utils.convertTime(this.secondaryForm.controls.lunchEndTime.value),
+      Utils.convertTime(this.secondaryForm.controls.lunchStartTime.value),
+      this.secondaryForm.controls.name.value,
+      '00:' + this.secondaryForm.controls.processingTime.value + ':00',
+      '(GTM+01:00) CENTRAL EUROPEAN TIME',
+      this.secondaryForm.controls.workingHours.value
+    );
+    delete primaryObject.id;
+    delete secondaryObject.id;
+    delete primaryObject.isActive;
+    delete secondaryObject.isActive;
+    delete primaryObject.numberOfKiosks;
+    delete secondaryObject.numberOfKiosks;
+    const request = new RequestModel(
+      appConstants.registrationCenterCreateId, null, [primaryObject, secondaryObject]
+    );
+    console.log(request);
+    this.dataStorageService.createCenter(request).subscribe(createResponse => {
+      console.log(createResponse);
+      if (!createResponse.error) {
+        this.dialog.open(DialogComponent, {
+          width: '350px',
+          data: {
+            case: 'MESSAGE',
+            title: 'Success',
+            message: 'Center is created Successfully with Center ID: ' +
+                      createResponse.response.registrationCenters[0].id +
+                      ' and Center Name: ' + createResponse.response.registrationCenters[0].name,
+            btnTxt: 'Ok'
+          }
+        }).afterClosed().subscribe(() => {
+          this.primaryForm.reset();
+          this.secondaryForm.reset();
+          this.router.navigateByUrl('admin/resources/centers/view');
+        });
+      } else {
+        this.dialog.open(DialogComponent, {
+          width: '350px',
+          data: {
+            case: 'MESSAGE',
+            title: 'Error',
+            message: 'There was some issue in creating a center. Please try again',
+            btnTxt: 'Ok'
+          }
+        });
+      }
+    });
+  }
+
+  getData(params: any) {
+    const filter = new FilterModel('id', 'equals', params.id);
+    this.centerRequest.filters = [filter];
+    this.centerRequest.languageCode = this.primaryLang;
+    this.centerRequest.sort = [];
+    this.centerRequest.pagination = {pageStart: 0, pageFetch: 10};
+    let request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
+    this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
+      console.log(response.response.data[0]);
+      this.data[0] = response.response.data[0];
+      this.initializeheader();
+      this.setPrimaryFormValues();
+    });
+    this.centerRequest.languageCode = this.secondaryLang;
+    request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
+    this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
+      console.log(response.response.data[0]);
+      this.data[1] = response.response.data[0];
+      this.setSecondaryFormValues();
+    });
+  }
+
+  setPrimaryFormValues() {
+    this.primaryForm.controls.name.setValue(this.data[0].name);
+    this.primaryForm.controls.centerTypeCode.setValue(this.data[0].centerTypeCode);
+    this.primaryForm.controls.contactPerson.setValue(this.data[0].contactPerson);
+    this.primaryForm.controls.contactPhone.setValue(this.data[0].contactPhone);
+    this.primaryForm.controls.longitude.setValue(this.data[0].longitude);
+    this.primaryForm.controls.latitude.setValue(this.data[0].latitude);
+    this.primaryForm.controls.addressLine1.setValue(this.data[0].addressLine1);
+    this.primaryForm.controls.addressLine2.setValue(this.data[0].addressLine2);
+    this.primaryForm.controls.addressLine3.setValue(this.data[0].addressLine3);
+    this.primaryForm.controls.region.setValue(this.data[0].region);
+    this.primaryForm.controls.province.setValue(this.data[0].province);
+    this.primaryForm.controls.city.setValue(this.data[0].city);
+    this.primaryForm.controls.laa.setValue(this.data[0].localAdminAuthority);
+    this.primaryForm.controls.postalCode.setValue(this.data[0].locationCode);
+    this.primaryForm.controls.holidayZone.setValue(this.data[0].holidayLocationCode);
+    this.primaryForm.controls.workingHours.setValue(this.data[0].workingHours.split(':')[0]);
+    this.primaryForm.controls.noKiosk.setValue(this.data[0].numberOfKiosks);
+    this.primaryForm.controls.processingTime.setValue(Number(this.data[0].perKioskProcessTime.split(':')[1]));
+    this.primaryForm.controls.startTime.setValue(Utils.convertTimeTo12Hours(this.data[0].centerStartTime));
+    this.primaryForm.controls.endTime.setValue(Utils.convertTimeTo12Hours(this.data[0].centerEndTime));
+    this.primaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchStartTime));
+    this.primaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchEndTime));
+    this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
+  }
+
+  setSecondaryFormValues() {
+    this.secondaryForm.controls.name.setValue(this.data[1].name);
+    this.secondaryForm.controls.centerTypeCode.setValue(this.data[1].centerTypeCode);
+    this.secondaryForm.controls.contactPerson.setValue(this.data[1].contactPerson);
+    this.secondaryForm.controls.contactPhone.setValue(this.data[1].contactPhone);
+    this.secondaryForm.controls.longitude.setValue(this.data[1].longitude);
+    this.secondaryForm.controls.latitude.setValue(this.data[1].latitude);
+    this.secondaryForm.controls.addressLine1.setValue(this.data[1].addressLine1);
+    this.secondaryForm.controls.addressLine2.setValue(this.data[1].addressLine2);
+    this.secondaryForm.controls.addressLine3.setValue(this.data[1].addressLine3);
+    this.secondaryForm.controls.region.setValue(this.data[1].region);
+    this.secondaryForm.controls.province.setValue(this.data[1].province);
+    this.secondaryForm.controls.city.setValue(this.data[1].city);
+    this.secondaryForm.controls.laa.setValue(this.data[1].localAdminAuthority);
+    this.secondaryForm.controls.postalCode.setValue(this.data[1].locationCode);
+    this.secondaryForm.controls.holidayZone.setValue(this.data[1].holidayLocationCode);
+    this.secondaryForm.controls.workingHours.setValue(this.data[1].workingHours.split(':')[0]);
+    this.secondaryForm.controls.noKiosk.setValue(this.data[1].numberOfKiosks);
+    this.secondaryForm.controls.processingTime.setValue(Number(this.data[1].perKioskProcessTime.split(':')[1]));
+    this.secondaryForm.controls.startTime.setValue(Utils.convertTimeTo12Hours(this.data[1].centerStartTime));
+    this.secondaryForm.controls.endTime.setValue(Utils.convertTimeTo12Hours(this.data[1].centerEndTime));
+    this.secondaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[1].lunchStartTime));
+    this.secondaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[1].lunchEndTime));
+    this.secondaryForm.controls.isActive.setValue(this.data[1].isActive);
+  }
+
+  initializeheader() {
+    if (this.data.length === 0) {
+      this.headerObject = new CenterHeaderModel(
+        '-', '-', '-', '-', '-', '-', '-'
+      );
+    } else {
+      this.headerObject = new CenterHeaderModel(
+        this.data[0].name,
+        this.data[0].id,
+        this.data[0].isActive ? 'Active' : 'Inactive',
+        this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
+        this.data[0].createdBy ? this.data[0].createdBy : '-',
+        this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
+        this.data[0].updatedBy ? this.data[0].updatedBy : '-'
+      );
+    }
   }
 
   naviagteBack() {
@@ -210,7 +395,8 @@ export class CreateComponent implements OnInit {
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
       lunchStartTime: [''],
-      lunchEndTime: ['']
+      lunchEndTime: [''],
+      isActive: [{value: false, disabled: true}]
     });
     if (this.disableForms) {
       this.primaryForm.disable();
@@ -240,7 +426,8 @@ export class CreateComponent implements OnInit {
       startTime: [{value: '', disabled: true}],
       endTime: [{value: '', disabled: true}],
       lunchStartTime: [{value: '', disabled: true}],
-      lunchEndTime: [{value: '', disabled: true}]
+      lunchEndTime: [{value: '', disabled: true}],
+      isActive: [{value: false, disabled: true}]
     });
     if (this.disableForms) {
       this.secondaryForm.disable();
@@ -274,7 +461,10 @@ export class CreateComponent implements OnInit {
       this.primaryForm.enable();
       this.initializePrimaryForm();
       this.initializeSecondaryForm();
+      this.setPrimaryFormValues();
+      this.setSecondaryFormValues();
       this.primaryForm.controls.noKiosk.enable();
+      this.primaryForm.controls.isActive.enable();
     }
   }
 
@@ -329,5 +519,4 @@ export class CreateComponent implements OnInit {
       this.dropDownValues[targetField] = x.splice(0, index + 1);
     }
   }
-
 }

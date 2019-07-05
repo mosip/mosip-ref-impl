@@ -14,15 +14,7 @@ export default class Utils {
     for (let i = 0; i < 24; i += intervalInHours) {
       let time = Math.floor(i) < 10 ? '0' + Math.floor(i) : Math.floor(i);
       time += ':' + ((i % 1) * 60 < 10 ? '0' + (i % 1) * 60 : (i % 1) * 60);
-      const timeString12hr = new Date(
-        '1970-01-01T' + time + 'Z'
-      ).toLocaleTimeString('en-US', {
-        timeZone: 'UTC',
-        hour12: true,
-        hour: 'numeric',
-        minute: 'numeric'
-      });
-      slots.push(timeString12hr);
+      slots.push(this.convertTimeTo12Hours(time));
     }
     return slots;
   }
@@ -60,5 +52,17 @@ export default class Utils {
     const m = Math.floor(d % 3600 / 60) < 10 ? '0' + Math.floor(d % 3600 / 60) : Math.floor(d % 3600 / 60);
     const s = Math.floor(d % 3600 % 60) < 10 ? '0' + Math.floor(d % 3600 % 60) : Math.floor(d % 3600 % 60);
     return h + ':' + m + ':' + s;
+  }
+
+  static convertTimeTo12Hours(time: string | number) {
+    const timeString12hr = new Date(
+      '1970-01-01T' + time + 'Z'
+    ).toLocaleTimeString('en-US', {
+      timeZone: 'UTC',
+      hour12: true,
+      hour: 'numeric',
+      minute: 'numeric'
+    });
+    return timeString12hr;
   }
 }

@@ -167,6 +167,6 @@
     <p>{{ input.message }}</p>
   </div>
   <div mat-dialog-actions>
-    <span><button mat-button cdkFocusInitial>{{ input.btnTxt }}</button></span>
+    <span><button mat-button cdkFocusInitial (click)="onNoClick()">{{ input.btnTxt }}</button></span>
   </div>
 </div>

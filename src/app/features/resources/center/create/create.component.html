@@ -10,7 +10,7 @@
       <mat-card>
         <mat-card-content class="forms-container">
             <div [formGroup]="primaryForm" class="primary-form">
-              <span><strong>English</strong></span>
+              <span><strong>{{ 'center.language' | translate }}</strong></span>
               <hr />
               <br /><br />
               <h3>{{ 'center.center-details' | translate }}</h3>
@@ -202,10 +202,10 @@
                       <mat-option *ngFor="let data of dropDownValues.startTime" [value]="data">
                         {{data}}
                       </mat-option>
-                      <mat-error *ngIf="primary.startTime.touched && primary.startTime.hasError('required')">
-                        {{ 'center.validationMessages.startTime.required' | translate }}
-                      </mat-error>
                     </mat-select>
+                    <mat-error *ngIf="primary.startTime.touched && primary.startTime.hasError('required')">
+                      {{ 'center.validationMessages.startTime.required' | translate }}
+                    </mat-error>
                   </mat-form-field>
                   <mat-form-field class="right-sizing">
                     <mat-label>{{ 'center.end-time' | translate }}</mat-label>
@@ -237,10 +237,18 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
+                  <mat-form-field>
+                    <mat-label>{{ 'center.isActive' | translate }}</mat-label>
+                      <mat-select formControlName="isActive" (selectionChange)="copyDataToSecondaryForm('isActive', primary.isActive.value)">
+                          <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
+                              {{data}}
+                            </mat-option>
+                      </mat-select>
+                </mat-form-field>
             </div>
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
             <div *ngIf="secondaryLanguageLabels" [formGroup]="secondaryForm" [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
-                <span><strong>Arabic</strong></span>
+                <span><strong>{{secondaryLanguageLabels['language']}}</strong></span>
                 <hr />
                 <br /><br />
                 <h3>{{secondaryLanguageLabels['center-details']}}</h3>
@@ -407,12 +415,21 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <mat-form-field>
+              <mat-label>{{ secondaryLanguageLabels['isActive'] }}</mat-label>
+                <mat-select formControlName="isActive">
+                    <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
+                        {{data}}
+                      </mat-option>
+                </mat-select>
+          </mat-form-field>
             </div>
         </mat-card-content>
         <mat-card-actions class="action-buttons">
-          <button id="createButton" mat-raised-button *ngIf="!disableForms" (click)="submit()">Create</button>
-          <button id="createButton" mat-raised-button *ngIf="disableForms" (click)="submit()">Edit</button>
-          <button mat-raised-button>Cancel</button>
+          <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length === 0" (click)="submit()">{{ 'center.create' | translate }}</button>
+          <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length !== 0" (click)="submit()">{{ 'center.update' | translate }} </button>
+          <button id="createButton" mat-raised-button *ngIf="disableForms" (click)="submit()">{{ 'center.edit' | translate }}</button>
+          <button mat-raised-button>{{ 'center.cancel' | translate }}</button>
       </mat-card-actions>
       </mat-card>
 </div>

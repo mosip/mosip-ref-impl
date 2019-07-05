@@ -43,3 +43,5 @@ export const processingTimeInterval = 5;
 export const timeSlotsInterval = 30;
 
 export const registrationCenterCreateId = 'string';
+
+export const viewFields = [];
