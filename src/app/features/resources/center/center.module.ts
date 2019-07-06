@@ -10,6 +10,7 @@ import { CenterHeaderComponent } from './center-header/center-header.component';
 import { I18nModule } from '../../../../app/i18n.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
+
 @NgModule({
   imports: [
     CommonModule,

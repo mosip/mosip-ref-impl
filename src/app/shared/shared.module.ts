@@ -9,16 +9,29 @@ import { MaterialModule } from './material.module';
 import { MatPaginatorIntl } from '@angular/material';
 import { I18nModule } from '../i18n.module';
 import { HamburgerComponent } from '../shared/hamburger-menu/hamburger-menu.component';
+import { StatusPipe } from '../core/pipes/status.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule,
-    I18nModule
+  imports: [CommonModule, MaterialModule, I18nModule],
+  declarations: [
+    DialogComponent,
+    TableComponent,
+    ToolbarComponent,
+    NotFoundComponent,
+    HamburgerComponent,
+    ErrorComponent,
+    StatusPipe
   ],
-  declarations: [DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, HamburgerComponent, ErrorComponent],
-  exports: [I18nModule, DialogComponent, TableComponent, ToolbarComponent, NotFoundComponent, MaterialModule, HamburgerComponent,
-    ErrorComponent],
+  exports: [
+    I18nModule,
+    DialogComponent,
+    TableComponent,
+    ToolbarComponent,
+    NotFoundComponent,
+    MaterialModule,
+    HamburgerComponent,
+    ErrorComponent,
+  ],
   entryComponents: [DialogComponent],
   providers: [
     {
@@ -27,4 +40,4 @@ import { HamburgerComponent } from '../shared/hamburger-menu/hamburger-menu.comp
     }
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

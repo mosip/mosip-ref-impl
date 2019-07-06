@@ -15,7 +15,7 @@
         class="mat-cell  " [ngStyle]="tableStyle(i)"
         (click)="getTableRowData(data,i)"
       >
-        {{ data[item] }}
+        <span>{{ data[item]|status}}</span>
       </td>
       <td class="mat-cell mat-header-cell">
         <button mat-icon-button [matMenuTriggerFor]="menu" >
@@ -33,8 +33,7 @@
 <ng-template #nodata>
   <div style="display: flex; justify-content: center;">
     <mat-progress-bar
-    mode="determinate"
-    [value]="progressValue"
+    mode="indeterminate"
     color="primary"></mat-progress-bar>
   </div>
   </ng-template>

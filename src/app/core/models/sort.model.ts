@@ -1,5 +1,5 @@
 export class SortModel {
-  public sortfield: string;
-  public sorttype: string;
+  public sortField: string;
+  public sortType: string;
   constructor() {}
 }
