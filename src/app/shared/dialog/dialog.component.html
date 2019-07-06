@@ -157,7 +157,7 @@
   </div>
   <div mat-dialog-actions>
     <span><button mat-button [mat-dialog-close]="confirm" cdkFocusInitial>{{ input.yesBtnTxt }}</button></span>
-    <span><button mat-button (click)="onNoClick()" cdkFocusInitial>{{ input.noBtnTxt }}</button></span>
+    <span><button mat-button [mat-dialog-close]="!confirm" cdkFocusInitial>{{ input.noBtnTxt }}</button></span>
   </div>
 </div>
 

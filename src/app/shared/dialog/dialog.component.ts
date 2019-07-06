@@ -8,8 +8,7 @@ import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent implements OnInit {
 
@@ -23,6 +22,7 @@ export class DialogComponent implements OnInit {
 
   ngOnInit() {
     this.input = this.data;
+    console.log(this.input);
   }
 
   onNoClick(): void {
