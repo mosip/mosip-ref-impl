@@ -117,6 +117,40 @@
             "endTime": {
                 "required": "Heure de fin de centre requise"
             }
+        },
+        "popupMessages": {
+            "create-edit": {
+                "title": "Confirmation",
+                "message": "Cliquez sur oui pour créer / modifier le centre",
+                "yesBtnText": "Oui",
+                "noBtnText": "Non"
+            },
+            "update-success": {
+                "title": "Succès",
+                "message": "Le centre est mis à jour avec succès",
+                "btnTxt": "D'accord"
+            },
+            "update-error": {
+                "title": "Erreur",
+                "message": "Il y avait un problème dans la mise à jour du centre. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "create-success": {
+                "title": "Succès",
+                "message": ["Le centre est créé avec succès avec l'ID du centre: ", " et nom du centre: "],
+                "btnTxt": "D'accord"
+            },
+            "create-error": {
+                "title": "Erreur",
+                "message": "Il y avait un problème dans la création d'un centre. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Vous avez des données non sauvegardées. S'éloigner de la page perdra les données. Voulez-vous continuer?",
+                "yesBtnTxt": "Oui",
+                "noBtnTxt": "Non"
+            }
         }
     }
 }
