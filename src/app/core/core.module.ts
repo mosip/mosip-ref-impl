@@ -14,6 +14,7 @@ import { AuthService } from './services/authservice.service';
 import { LoginRedirectService } from './services/loginredirect.service';
 import { AuthguardService } from './services/authguard.service';
 import { AuthInterceptor } from './services/httpinterceptor';
+import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { AuthInterceptor } from './services/httpinterceptor';
   declarations: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent],
   exports: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent, MaterialModule, RouterModule],
   providers: [SideMenuService, DataStorageService, AuthService, LoginRedirectService, AuthguardService,
+    CanDeactivateGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
