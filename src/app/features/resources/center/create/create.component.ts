@@ -10,13 +10,14 @@ import Utils from '../../../../app.utils';
 import * as appConstants from '../../../../app.constants';
 import { ValidateLatLong, ValidateKiosk } from 'src/app/core/validators/center.validator';
 import { AppConfigService } from 'src/app/app-config.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
 import { CenterModel } from 'src/app/core/models/center.model';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -39,6 +40,7 @@ export class CreateComponent implements OnInit {
   secondaryForm: FormGroup;
 
   data = [];
+  popupMessages: any;
 
   constructor(private location: Location,
               private translateService: TranslateService,
@@ -76,6 +78,9 @@ export class CreateComponent implements OnInit {
     this.getStubbedData();
     this.getProcessingTime();
     this.getTimeSlots();
+    this.translateService.getTranslation(this.primaryLang).subscribe(response => {
+      this.popupMessages = response.center.popupMessages;
+    });
   }
 
   onCreate() {
@@ -83,10 +88,10 @@ export class CreateComponent implements OnInit {
       width: '350px',
       data: {
         case: 'CONFIRMATION',
-        title: 'Confirmation',
-        message: 'Click On yes To Create/Edit Center',
-        yesBtnTxt: 'Yes',
-        noBtnTxt: 'No'
+        title: this.popupMessages['create-edit'].title,
+        message: this.popupMessages['create-edit'].message,
+        yesBtnTxt: this.popupMessages['create-edit'].yesBtnText,
+        noBtnTxt: this.popupMessages['create-edit'].noBtnText
       }
     });
     dialogRef.afterClosed().subscribe(response => {
@@ -158,9 +163,9 @@ export class CreateComponent implements OnInit {
           width: '350px',
           data: {
             case: 'MESSAGE',
-            title: 'Success',
-            message: 'Center is updated Successfully',
-            btnTxt: 'Ok'
+            title: this.popupMessages['update-success'].title,
+            message: this.popupMessages['update-success'].message,
+            btnTxt: this.popupMessages['update-success'].btnTxt
           }
         }).afterClosed().subscribe(() => {
           this.router.navigateByUrl('admin/resources/centers/view');
@@ -170,9 +175,9 @@ export class CreateComponent implements OnInit {
           width: '350px',
           data: {
             case: 'MESSAGE',
-            title: 'Error',
-            message: 'There was some issue in updating the center. Please try again',
-            btnTxt: 'Ok'
+            title: this.popupMessages['update-error'].title,
+            message: this.popupMessages['update-error'].message,
+            btnTxt: this.popupMessages['update-error'].btnTxt
           }
         });
       }
@@ -239,11 +244,11 @@ export class CreateComponent implements OnInit {
           width: '350px',
           data: {
             case: 'MESSAGE',
-            title: 'Success',
-            message: 'Center is created Successfully with Center ID: ' +
+            title: this.popupMessages['create-success'].title,
+            message:  this.popupMessages['create-success'].message[0] +
                       createResponse.response.registrationCenters[0].id +
-                      ' and Center Name: ' + createResponse.response.registrationCenters[0].name,
-            btnTxt: 'Ok'
+                      this.popupMessages['create-success'].message[1] + createResponse.response.registrationCenters[0].name,
+            btnTxt:  this.popupMessages['create-success'].btnTxt
           }
         }).afterClosed().subscribe(() => {
           this.primaryForm.reset();
@@ -255,9 +260,9 @@ export class CreateComponent implements OnInit {
           width: '350px',
           data: {
             case: 'MESSAGE',
-            title: 'Error',
-            message: 'There was some issue in creating a center. Please try again',
-            btnTxt: 'Ok'
+            title:  this.popupMessages['create-error'].title,
+            message:  this.popupMessages['create-error'].title,
+            btnTxt:  this.popupMessages['create-error'].title
           }
         });
       }
@@ -517,6 +522,28 @@ export class CreateComponent implements OnInit {
       this.dropDownValues[targetField] = x.splice(index + 1);
     } else if (action === 'less') {
       this.dropDownValues[targetField] = x.splice(0, index + 1);
+    }
+  }
+
+  cancel() {
+    this.router.navigateByUrl('admin/resources/centers/view');
+  }
+
+  canDeactivate(): Observable<any> | boolean {
+    console.log('can deactivate called');
+    if (this.primaryForm.touched || this.secondaryForm.touched) {
+       return this.dialog.open(DialogComponent, {
+        width: '350px',
+        data: {
+          case: 'CONFIRMATION',
+          title:  this.popupMessages['navigation-popup'].title,
+          message:  this.popupMessages['navigation-popup'].message,
+          yesBtnTxt: this.popupMessages['navigation-popup'].yesBtnTxt,
+          noBtnTxt: this.popupMessages['navigation-popup'].noBtnTxt
+        }
+      }).afterClosed();
+    } else {
+      return true;
     }
   }
 }

@@ -429,7 +429,7 @@
           <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length === 0" (click)="submit()">{{ 'center.create' | translate }}</button>
           <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length !== 0" (click)="submit()">{{ 'center.update' | translate }} </button>
           <button id="createButton" mat-raised-button *ngIf="disableForms" (click)="submit()">{{ 'center.edit' | translate }}</button>
-          <button mat-raised-button>{{ 'center.cancel' | translate }}</button>
+          <button mat-raised-button (click)="cancel()">{{ 'center.cancel' | translate }}</button>
       </mat-card-actions>
       </mat-card>
 </div>

@@ -117,6 +117,40 @@
             "endTime": {
                 "required": "Center End Time is required"
             }
+        },
+        "popupMessages": {
+            "create-edit": {
+                "title": "Confirmation",
+                "message": "Click On yes To Create/Edit Center",
+                "yesBtnText": "Yes",
+                "noBtnText": "No"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": "Center is updated Successfully",
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the center. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Center is created Successfully with Center ID: ", " and Center Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a center. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "You have unsaved data. Moving away from the page will lose the data. Do you want to Continue?",
+                "yesBtnTxt": "Yes",
+                "noBtnTxt": "No"
+            }
         }
     }
 }
