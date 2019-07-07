@@ -6,6 +6,7 @@ import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
+import * as centerConfig from 'src/assets/entity-spec/center-entity-spec.json';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -19,44 +20,34 @@ export class ViewComponent implements OnInit, OnChanges {
   ) {
     this.getCenterConfigs();
   }
-  displayedColumns: [];
-  actionButtons: [];
-  actionEllipsis: [];
+  displayedColumns = [];
+  actionButtons = [];
+  actionEllipsis = [];
   paginatorOptions: any;
   resourceFilter = {
     case: 'center'
   };
-  sortFilter: any;
+  sortFilter = [];
   pagination = new PaginationModel();
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   centers = [];
   ngOnInit() {
-    this.sortFilter = [];
-    if (this.paginatorOptions !== null || this.paginatorOptions !== undefined) {
-      this.getRegistrationCenters();
-    }
+    this.getRegistrationCenters();
   }
   ngOnChanges() {
-    this.ngOnInit();
   }
 
   getCenterConfigs() {
-    this.dataStroageService
-      .getCenterSpecificLabelsAndActions()
-      .subscribe(({ eng }) => {
-        console.log(eng.columnsToDisplay);
-        this.displayedColumns = eng.columnsToDisplay;
-        console.log(this.displayedColumns);
-        this.actionButtons = eng.actionButtons.filter(
-          value => value.showIn.toLowerCase() === 'ellipsis'
-        );
-        this.actionEllipsis = eng.actionButtons.filter(
-          value => value.showIn.toLowerCase() === 'button'
-        );
-        this.paginatorOptions = eng.paginator;
-        console.log(this.paginatorOptions);
-      });
+    this.displayedColumns = centerConfig.eng.columnsToDisplay;
+    console.log(this.displayedColumns);
+    this.actionButtons = centerConfig.eng.actionButtons.filter(
+      value => value.showIn.toLowerCase() === 'ellipsis'
+    );
+    this.actionEllipsis = centerConfig.eng.actionButtons.filter(
+      value => value.showIn.toLowerCase() === 'button'
+    );
+    this.paginatorOptions = centerConfig.eng.paginator;
   }
 
   pageEvent(event: any) {
@@ -68,18 +59,25 @@ export class ViewComponent implements OnInit, OnChanges {
     }
   }
 
-  getSortColumn(event) {
+  getSortColumn(event: SortModel) {
     console.log(event);
+    this.sortFilter.forEach(element => {
+      if (element.sortField === event.sortField) {
+        const index = this.sortFilter.indexOf(element);
+        this.sortFilter.splice(index, 1);
+      }
+    });
     this.sortFilter.push(event);
     console.log(this.sortFilter);
+    this.getRegistrationCenters();
   }
 
   getRegistrationCenters() {
     this.centers = [];
-    this.centerRequest.filters = [],
-    this.centerRequest.pagination = this.pagination;
-    this.centerRequest.sort = this.sortFilter,
-    this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
+    (this.centerRequest.filters = []),
+      (this.centerRequest.pagination = this.pagination);
+    (this.centerRequest.sort = this.sortFilter),
+      (this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode);
     this.requestModel = new RequestModel(null, null, this.centerRequest);
     console.log(JSON.stringify(this.requestModel));
     this.centerService
@@ -90,6 +88,8 @@ export class ViewComponent implements OnInit, OnChanges {
           this.paginatorOptions.totalEntries = response.totalRecord;
           this.centers = [...response.data];
           console.log(this.centers);
+        } else if (errors != null) {
+          console.log(errors);
         }
       });
   }

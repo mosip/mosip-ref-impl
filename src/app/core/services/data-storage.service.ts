@@ -16,7 +16,7 @@ export class DataStorageService {
   }
 
   getCenterSpecificLabelsAndActions(): Observable<any> {
-    return this.http.get('./assets/entity spec/center-entity-spec.json');
+    return this.http.get('./assets/entity-spec/center-entity-spec.json');
   }
 
   getCentersData(): Observable<any> {

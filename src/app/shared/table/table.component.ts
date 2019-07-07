@@ -19,7 +19,6 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() displayedColumns: [];
   @Input() buttonList: [];
   @Output() sort = new EventEmitter();
-  progressValue = 30;
   tableData = [];
   columnsOfTableData = [];
   sortStatusArray: string[];
@@ -32,9 +31,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.data.length > 0) {
-      this.progressValue = 100;
-    }
     this.tableData = [...this.data];
     this.columnsOfTableData = [];
     this.displayedColumns.forEach(column => {
@@ -55,17 +51,17 @@ export class TableComponent implements OnInit, OnChanges {
   }
   sortColumn(columnName) {
     const sortModel = new SortModel();
-    sortModel.sortfield = columnName;
+    sortModel.sortField = columnName;
     if (this.sortStatusArray.length === 0) {
       this.sortStatusArray.push(columnName);
-      sortModel.sorttype = 'asc';
+      sortModel.sortType = 'asc';
     } else if (this.sortStatusArray.indexOf(columnName) >= 0) {
       const valueIndex = this.sortStatusArray.indexOf(columnName);
       this.sortStatusArray.splice(valueIndex, 1);
-      sortModel.sorttype = 'desc';
+      sortModel.sortType = 'desc';
     } else if (this.sortStatusArray.indexOf(columnName) === -1) {
       this.sortStatusArray.push(columnName);
-      sortModel.sorttype = 'asc';
+      sortModel.sortType = 'asc';
     }
     console.log(sortModel);
     this.sort.emit(sortModel);
