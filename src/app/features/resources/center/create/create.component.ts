@@ -352,7 +352,7 @@ export class CreateComponent implements OnInit {
       this.headerObject = new CenterHeaderModel(
         this.data[0].name,
         this.data[0].id,
-        this.data[0].isActive ? 'Active' : 'Inactive',
+        this.data[0].isActive,
         this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
         this.data[0].createdBy ? this.data[0].createdBy : '-',
         this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
