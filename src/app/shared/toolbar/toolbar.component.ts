@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatPaginatorIntl, MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Router } from '@angular/router';
 
@@ -50,7 +49,7 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
     }
       );
   }
-  onPaginateChange(event: Event){
+  onPaginateChange(event: Event) {
     console.log(event);
     this.pageEvent.emit(event);
   }

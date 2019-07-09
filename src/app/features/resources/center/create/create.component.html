@@ -211,6 +211,30 @@
                   {{ 'center.validationMessages.processingTime.required' | translate }}
                 </mat-error>
               </mat-form-field>
+            <div class="flex-display">
+                <mat-form-field class="left-sizing">
+                    <input formControlName="noKiosk" (change)="copyDataToSecondaryForm('noKiosk', primary.noKiosk.value)" matInput placeholder="{{ 'center.no-kiosk' | translate }}">
+                    <mat-error *ngIf="primary.noKiosk.touched && primary.noKiosk.hasError('required')">
+                      {{ 'center.validationMessages.noKiosk.required' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="primary.noKiosk.touched && primary.noKiosk.hasError('min')">
+                      {{ 'center.validationMessages.noKiosk.min' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="primary.noKiosk.touched && primary.noKiosk.hasError('invalidNoKiosk')">
+                      {{ 'center.validationMessages.noKiosk.invalidNoKiosk' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                  <mat-form-field class="right-sizing">
+                    <mat-label>{{ 'center.per-kiosk-process-time' | translate }}</mat-label>
+                    <mat-select formControlName="processingTime" (selectionChange)="copyDataToSecondaryForm('processingTime', primary.processingTime.value)">
+                      <mat-option *ngFor="let data of dropDownValues.processingTime" [value]="data">
+                        {{data}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="primary.processingTime.touched && primary.processingTime.hasError('required')">
+                      {{ 'center.validationMessages.processingTime.required' | translate }}
+                    </mat-error>
+                  </mat-form-field>
             </div>
             <div class="flex-display">
               <mat-form-field class="left-sizing">
@@ -238,25 +262,35 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div class="flex-display">
-              <mat-form-field class="left-sizing">
-                <mat-label>{{ 'center.lunch-start-time' | translate }}</mat-label>
-                <mat-select formControlName="lunchStartTime"
-                  (selectionChange)="copyDataToSecondaryForm('lunchStartTime', primary.lunchStartTime.value); updateTimeSlotDropdownOptions('lunchStartTime', 'lunchEndTime', 'more')">
-                  <mat-option *ngFor="let data of dropDownValues.lunchStartTime" [value]="data">
-                    {{data}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="right-sizing">
-                <mat-label>{{ 'center.lunch-end-time' | translate }}</mat-label>
-                <mat-select formControlName="lunchEndTime"
-                  (selectionChange)="copyDataToSecondaryForm('lunchEndTime', primary.lunchEndTime.value); updateTimeSlotDropdownOptions('lunchEndTime', 'lunchStartTime', 'less')">
-                  <mat-option *ngFor="let data of dropDownValues.lunchEndTime" [value]="data">
-                    {{data}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+            <mat-form-field>
+              <input formControlName="workingHours" readonly matInput placeholder="{{ 'center.working-hrs' | translate }}">
+            </mat-form-field>
+                  <div class="flex-display">
+                    <mat-form-field class="left-sizing">
+                      <mat-label>{{ 'center.lunch-start-time' | translate }}</mat-label>
+                      <mat-select formControlName="lunchStartTime" (selectionChange)="copyDataToSecondaryForm('lunchStartTime', primary.lunchStartTime.value); updateTimeSlotDropdownOptions('lunchStartTime', 'lunchEndTime', 'more')">
+                          <mat-option *ngFor="let data of dropDownValues.lunchStartTime" [value]="data">
+                              {{data}}
+                            </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="right-sizing">
+                      <mat-label>{{ 'center.lunch-end-time' | translate }}</mat-label>
+                      <mat-select formControlName="lunchEndTime" (selectionChange)="copyDataToSecondaryForm('lunchEndTime', primary.lunchEndTime.value); updateTimeSlotDropdownOptions('lunchEndTime', 'lunchStartTime', 'less')">
+                          <mat-option *ngFor="let data of dropDownValues.lunchEndTime" [value]="data">
+                              {{data}}
+                            </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field>
+                    <mat-label>{{ 'center.isActive' | translate }}</mat-label>
+                      <mat-select formControlName="isActive" (selectionChange)="copyDataToSecondaryForm('isActive', primary.isActive.value)">
+                          <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
+                              {{data}}
+                            </mat-option>
+                      </mat-select>
+                </mat-form-field>
             </div>
             <mat-form-field>
               <mat-label>{{ 'center.isActive' | translate }}</mat-label>
@@ -391,9 +425,6 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field>
-              <input formControlName="workingHours" matInput placeholder="{{secondaryLanguageLabels['working-hrs']}}">
-            </mat-form-field>
             <div class="flex-display">
               <mat-form-field class="left-sizing">
                 <input formControlName="noKiosk" matInput placeholder="{{secondaryLanguageLabels['no-kiosk']}}">
@@ -425,6 +456,9 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <mat-form-field>
+              <input formControlName="workingHours" matInput placeholder="{{secondaryLanguageLabels['working-hrs']}}">
+            </mat-form-field>
             <div class="flex-display">
               <mat-form-field class="left-sizing">
                 <mat-label>{{secondaryLanguageLabels['lunch-start-time']}}</mat-label>
