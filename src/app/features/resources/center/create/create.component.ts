@@ -35,6 +35,7 @@ export class CreateComponent implements OnInit {
   disableForms: boolean;
   headerObject: CenterHeaderModel;
   centerRequest = {} as CenterRequest;
+  createUpdate = false;
 
   primaryForm: FormGroup;
   secondaryForm: FormGroup;
@@ -69,7 +70,7 @@ export class CreateComponent implements OnInit {
         this.initializeheader();
       }
     });
-    this.dataStorageService.getLanguageSpecificLabels(this.secondaryLang).subscribe(response => {
+    this.translateService.getTranslation(this.secondaryLang).subscribe(response => {
       this.secondaryLanguageLabels = response.center;
       console.log(this.secondaryLanguageLabels);
     });
@@ -104,6 +105,7 @@ export class CreateComponent implements OnInit {
   }
 
   updateData() {
+    this.createUpdate = true;
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -185,6 +187,7 @@ export class CreateComponent implements OnInit {
   }
 
   saveData() {
+    this.createUpdate = true;
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -448,8 +451,8 @@ export class CreateComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.primaryForm);
-    console.log(this.secondaryForm);
+   // console.log(this.primaryForm);
+  //  console.log(this.secondaryForm);
     if (!this.disableForms) {
       if (this.primaryForm.valid && this.secondaryForm.valid) {
         this.onCreate();
@@ -526,12 +529,11 @@ export class CreateComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigateByUrl('admin/resources/centers/view');
+   this.location.back();
   }
 
   canDeactivate(): Observable<any> | boolean {
-    console.log('can deactivate called');
-    if (this.primaryForm.touched || this.secondaryForm.touched) {
+    if ((this.primaryForm.touched || this.secondaryForm.touched) && !this.createUpdate) {
        return this.dialog.open(DialogComponent, {
         width: '350px',
         data: {

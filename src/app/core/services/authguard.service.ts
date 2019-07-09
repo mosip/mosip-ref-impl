@@ -12,7 +12,7 @@ export class AuthguardService implements CanActivate, CanActivateChild {
     return this.authService.isAuthenticated();
 }
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean|Observable<boolean>{
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean|Observable<boolean> {
   return this.canActivate(childRoute, state);
  }
 
