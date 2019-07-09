@@ -29,3 +29,5 @@ local.properties
 /Packet_Store/
 dist/*
 coverage/*
+.editorconfig
+e2e/*
