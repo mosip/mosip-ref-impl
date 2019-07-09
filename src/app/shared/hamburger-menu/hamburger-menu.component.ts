@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
@@ -9,13 +9,14 @@ import { Location } from '@angular/common';
 })
 export class HamburgerComponent implements OnInit {
 
-  @Input() data;
+  @Input() data: any;
 
   profileList: any[];
 
   constructor(private location: Location) { }
 
   ngOnInit() {
+    console.log('hfdasfdsf', this.data);
     this.profileList = this.data.menuList;
   }
 

@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'resources', loadChildren: () => import('./features/resources/resources.module').then(m => m.ResourcesModule) }
-    ], canActivateChild : [AuthguardService]
+    ], // canActivateChild : [AuthguardService]
     },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
@@ -23,7 +23,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules})],
+  imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

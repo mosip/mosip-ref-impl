@@ -7,8 +7,8 @@ import { CanDeactivateGuardService } from 'src/app/core/services/can-deactivate-
 
 const routes: Routes = [
   { path: '', redirectTo: 'view', pathMatch: 'full' },
-  { path: 'create', component: CreateComponent, canDeactivate: [CanDeactivateGuardService] },
   { path: 'view', component: ViewComponent },
+  { path: 'create', component: CreateComponent, canDeactivate: [CanDeactivateGuardService] },
   { path: 'single-view/:id', component: CreateComponent, canDeactivate: [CanDeactivateGuardService] }
 ];
 
@@ -16,4 +16,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CenterRoutingModule {}
+export class CenterRoutingModule { }

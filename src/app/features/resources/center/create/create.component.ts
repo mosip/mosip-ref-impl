@@ -394,8 +394,8 @@ export class CreateComponent implements OnInit {
       laa: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
       holidayZone: ['', [Validators.required]],
-      workingHours: [{value: '', disabled: true}],
-      noKiosk: [{value: 0, disabled: true}, [Validators.required, Validators.min(0), ValidateKiosk]],
+      workingHours: [{ value: '', disabled: true }],
+      noKiosk: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0), ValidateKiosk]],
       processingTime: ['', [Validators.required]],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
@@ -411,11 +411,11 @@ export class CreateComponent implements OnInit {
   initializeSecondaryForm() {
     this.secondaryForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(128)]],
-      centerTypeCode: [{value: '', disabled: true}],
+      centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],
-      contactPhone: [{value: '', disabled: true}],
-      longitude: [{value: '', disabled: true}],
-      latitude: [{value: '', disabled: true}],
+      contactPhone: [{ value: '', disabled: true }],
+      longitude: [{ value: '', disabled: true }],
+      latitude: [{ value: '', disabled: true }],
       addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
@@ -508,10 +508,10 @@ export class CreateComponent implements OnInit {
 
   calculateWorkingHours() {
     if (this.primaryForm.controls.startTime.value && this.primaryForm.controls.endTime.value) {
-    const x = Utils.getTimeInSeconds(this.primaryForm.controls.endTime.value) -
-              Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
-    this.primaryForm.controls.workingHours.setValue(x / 3600);
-    this.secondaryForm.controls.workingHours.setValue(x / 3600);
+      const x = Utils.getTimeInSeconds(this.primaryForm.controls.endTime.value) -
+        Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
+      this.primaryForm.controls.workingHours.setValue(x / 3600);
+      this.secondaryForm.controls.workingHours.setValue(x / 3600);
     }
   }
 

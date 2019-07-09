@@ -7,34 +7,40 @@ export const URL = {
   centers: `${BASE_URL}/masterdata/registrationcenters/search`
 };
 export const navItems = [
-    {
-      displayName: 'menuItems.item1.title',
-      route: '/admin/home',
-      children: null
-    },
-    {
-      displayName: 'menuItems.item2.title',
-      route: 'admin/resources',
-      children: [
-        {
-          displayName: 'menuItems.item2.subItem1',
-          route: '/admin/resources/centers',
-        },
-        {
-          displayName: 'menuItems.item2.subItem2',
-          route: '/admin/resources/devices',
-        },
-        {
-          displayName: 'menuItems.item2.subItem3',
-          route: 'resources/users',
-        },
-        {
-          displayName: 'menuItems.item2.subItem4',
-          route: '/admin/resources/machines',
-        },
-      ]
-    }
-  ];
+  {
+    displayName: 'menuItems.item1.title',
+    icon: '../assets/images/home.svg',
+    route: '/admin/home',
+    children: null
+  },
+  {
+    displayName: 'menuItems.item2.title',
+    icon: 'assets/images/support.svg',
+    route: 'admin/resources/',
+    children: [
+      {
+        displayName: 'menuItems.item2.subItem1',
+        icon: null,
+        route: '/admin/resources/centers/view',
+      },
+      {
+        displayName: 'menuItems.item2.subItem2',
+        icon: null,
+        route: '/admin/resources/devices/view',
+      },
+      {
+        displayName: 'menuItems.item2.subItem3',
+        icon: null,
+        route: 'resources/users',
+      },
+      {
+        displayName: 'menuItems.item2.subItem4',
+        icon: null,
+        route: '/admin/resources/machines',
+      },
+    ]
+  }
+];
 
 export const MASTERDATA_BASE_URL = 'https://dev.mosip.io/r2/v1/masterdata/';
 export const processingTimeStart = 15;
