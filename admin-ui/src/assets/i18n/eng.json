@@ -1,0 +1,156 @@
+{
+    "menuItems": {
+        "item1": {
+            "title": "HOME"
+        },
+        "item2": {
+            "title": "RESOURCES",
+            "subItem1": "Center",
+            "subItem2": "Devices",
+            "subItem3": "Users",
+            "subItem4": "Machines"
+        }
+    },
+    "center": {
+        "center-detail-view" : "Center Detail View",
+        "center-name": "Center Name",
+        "center-id": "Center Id",
+        "status": "Status",
+        "created-on": "Created On",
+        "created-by": "Created By",
+        "updated-on": "Updated On",
+        "updated-by": "Updated By",
+        "center-details": "Center Details",
+        "registration-center-name": "Registration Center Name",
+        "registration-center-type": "Registration Center Type",
+        "contact-person": "Contact Person",
+        "contact-number": "Contact Number",
+        "location-details": "Location Details",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "address1": "Address Line 1",
+        "address2": "Address Line 2",
+        "address3": "Address Line 3",
+        "region": "Region",
+        "province": "Province",
+        "city": "City",
+        "laa": "LAA",
+        "postal-code": "Postal Code",
+        "operational-details": "Operational Details",
+        "holiday-zone": "Holiday Zone",
+        "working-hrs": "Working Hours",
+        "no-kiosk": "No.Kiosk",
+        "per-kiosk-process-time": "Per Kiosk Process Time(minutes)",
+        "start-time": "Start Time",
+        "end-time": "End Time",
+        "lunch-start-time": "Lunch Start time",
+        "lunch-end-time": "Lunch End Time",
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "language": "English",
+        "isActive": "Is Active",
+        "update": "Update",
+        "validationMessages": {
+            "name": {
+                "required": "Name is required",
+                "max-length": "Exceeded max length (128)"
+            },
+            "centerTypeCode": {
+                "required": "Center Type is required"
+            },
+            "contactPerson": {
+                "max-length": "Exceeded max length (128)"
+            },
+            "contactPhone": {
+                "max-length": "Exceeded max length (16)"
+            },
+            "longitude": {
+                "required": "Longitude is required",
+                "max-length": "Exceeded max length (32)",
+                "validLatLong": "Atleast 4 digits after decimal is mandatory"
+            },
+            "latitude": {
+                "required": "Longitude is required",
+                "max-length": "Exceeded max length (32)",
+                "validLatLong": "Atleast 4 digits after decimal is mandatory"
+            },
+            "addressLine1": {
+                "required": "Address Line 1 is required",
+                "max-length": "Exceeded max length (256)"
+            },
+            "addressLine2": {
+                "max-length": "Exceeded max length (256)"
+            },
+            "addressLine3": {
+                "max-length": "Exceeded max length (256)"
+            },
+            "region": {
+                "required": "Region is required"
+            },
+            "province": {
+                "required": "Province is required"
+            },
+            "city": {
+                "required": "City is required"
+            },
+            "laa": {
+                "required": "LAA is required"
+            },
+            "postalCode": {
+                "required": "Postal Code is required"
+            },
+            "holidayZone": {
+                "required": "Holiday Zone is required"
+            },
+            "noKiosk": {
+                "required": "Number of Kiosk is required",
+                "min": "Minimum number of Kiosk is 0",
+                "invalidNoKiosk": "Invalid Number of Kiosk Entered"
+            },
+            "processingTime": {
+                "required": "Per Kiosk Processing Time is required"
+            },
+            "startTime": {
+                "required": "Center Start Time is required"
+            },
+            "endTime": {
+                "required": "Center End Time is required"
+            }
+        },
+        "popupMessages": {
+            "create-edit": {
+                "title": "Confirmation",
+                "message": "Click On yes To Create/Edit Center",
+                "yesBtnText": "Yes",
+                "noBtnText": "No"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": "Center is updated Successfully",
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the center. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Center is created Successfully with Center ID: ", " and Center Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a center. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "You have unsaved data. Moving away from the page will lose the data. Do you want to Continue?",
+                "yesBtnTxt": "Yes",
+                "noBtnTxt": "No"
+            }
+        }
+    }
+}

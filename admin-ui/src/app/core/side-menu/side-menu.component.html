@@ -1,0 +1,6 @@
+<a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active" [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
+  (click)="onItemSelected(item)" class="menu-list-item" [style.marginTop.px]="index == 0 ? 50:0">
+    {{ item?.displayName | translate }}
+</a>
+<app-side-menu *ngFor="let child of item?.children" (click)="onItemSelected(child)" [item]="child" [depth]="depth + 1">
+</app-side-menu>

@@ -1,0 +1,156 @@
+{
+    "menuItems": {
+        "item1": {
+            "title": "MAISON"
+        },
+        "item2": {
+            "title": "RESSOURCES",
+            "subItem1": "Centre",
+            "subItem2": "Dispositifs",
+            "subItem3": "Utilisateurs",
+            "subItem4": "Machines"
+        }
+    },
+    "center": {
+        "center-detail-view" : "Vue détaillée du centre",
+        "center-name": "Nom du centre",
+        "center-id": "Identifiant du centre",
+        "status": "Statut",
+        "created-on": "Créé sur",
+        "created-by": "Créé par",
+        "updated-on": "Mis à jour le",
+        "updated-by": "Mis à jour par",
+        "center-details": "Détails du centre",
+        "registration-center-name": "Nom du centre d'inscription",
+        "registration-center-type": "Type de centre d'inscription",
+        "contact-person": "Contact",
+        "contact-number": "Numéro de contact",
+        "location-details": "Détails de l'emplacement",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "address1": "Adresse Ligne 1",
+        "address2": "Adresse Ligne 2",
+        "address3": "Adresse Ligne 3",
+        "region": "Région",
+        "province": "Province",
+        "city": "Ville",
+        "laa": "LAA",
+        "postal-code": "code postal",
+        "operational-details": "Détails opérationnels",
+        "holiday-zone": "Zone de vacances",
+        "working-hrs": "Heures de travail",
+        "no-kiosk": "Nombre de kiosque",
+        "per-kiosk-process-time": "Temps de traitement par kiosque (minutes)",
+        "start-time": "Heure de début",
+        "end-time": "Heure de fin",
+        "lunch-start-time": "L'heure du déjeuner",
+        "lunch-end-time": "Heure de fin du déjeuner",
+        "edit": "modifier",
+        "create": "Créer",
+        "cancel": "Annuler",
+        "language": "French",
+        "isActive": "C'est actif",
+        "update": "mettre à jour",
+        "validationMessages": {
+            "name": {
+                "required": "Le nom est requis",
+                "max-length": "Longueur maximale dépassée (128)"
+            },
+            "centerTypeCode": {
+                "required": "Le type de centre est requis"
+            },
+            "contactPerson": {
+                "max-length": "Longueur maximale dépassée (128)"
+            },
+            "contactPhone": {
+                "max-length": "Longueur maxi dépassée (16)"
+            },
+            "longitude": {
+                "required": "La longitude est obligatoire",
+                "max-length": "Longueur maxi dépassée (32)",
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+            },
+            "latitude": {
+                "required": "La longitude est obligatoire",
+                "max-length": "Longueur maxi dépassée (32)",
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+            },
+            "addressLine1": {
+                "required": "La ligne d'adresse 1 est obligatoire",
+                "max-length": "Longueur maxi dépassée (256)"
+            },
+            "addressLine2": {
+                "max-length": "Longueur maxi dépassée (256)"
+            },
+            "addressLine3": {
+                "max-length": "Longueur maxi dépassée (256)"
+            },
+            "region": {
+                "required": "La région est requise"
+            },
+            "province": {
+                "required": "La province est requise"
+            },
+            "city": {
+                "required": "Ville est obligatoire"
+            },
+            "laa": {
+                "required": "LAA est nécessaire"
+            },
+            "postalCode": {
+                "required": "Code postal requis"
+            },
+            "holidayZone": {
+                "required": "Zone de vacances est nécessaire"
+            },
+            "noKiosk": {
+                "required": "Nombre de kiosque requis",
+                "min": "Le nombre minimum de kiosques est 0",
+                "invalidNoKiosk": "Nombre invalide de kiosques entrés"
+            },
+            "processingTime": {
+                "required": "Un délai de traitement par kiosque est requis"
+            },
+            "startTime": {
+                "required": "Heure de début du centre requise"
+            },
+            "endTime": {
+                "required": "Heure de fin de centre requise"
+            }
+        },
+        "popupMessages": {
+            "create-edit": {
+                "title": "Confirmation",
+                "message": "Cliquez sur oui pour créer / modifier le centre",
+                "yesBtnText": "Oui",
+                "noBtnText": "Non"
+            },
+            "update-success": {
+                "title": "Succès",
+                "message": "Le centre est mis à jour avec succès",
+                "btnTxt": "D'accord"
+            },
+            "update-error": {
+                "title": "Erreur",
+                "message": "Il y avait un problème dans la mise à jour du centre. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "create-success": {
+                "title": "Succès",
+                "message": ["Le centre est créé avec succès avec l'ID du centre: ", " et nom du centre: "],
+                "btnTxt": "D'accord"
+            },
+            "create-error": {
+                "title": "Erreur",
+                "message": "Il y avait un problème dans la création d'un centre. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Vous avez des données non sauvegardées. S'éloigner de la page perdra les données. Voulez-vous continuer?",
+                "yesBtnTxt": "Oui",
+                "noBtnTxt": "Non"
+            }
+        }
+    }
+}

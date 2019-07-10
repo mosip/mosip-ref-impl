@@ -1,0 +1,156 @@
+{
+    "menuItems": {
+        "item1": {
+            "title": "الصفحة الرئيسية"
+        },
+        "item2": {
+            "title": "مصادر",
+            "subItem1": "مركز",
+            "subItem2": "الأجهزة",
+            "subItem3": "المستخدمين",
+            "subItem4": "آلات"
+        }
+    },
+    "center": {
+        "center-detail-view" : "عرض مركز التفاصيل",
+        "center-name": "اسم المركز",
+        "center-id": "معرف المركز",
+        "status": "الحالة",
+        "created-on": "تم إنشاؤها على",
+        "created-by": "صنع من قبل",
+        "updated-on": "تحديث في",
+        "updated-by": "تم التحديث بواسطة",
+        "center-details": "تفاصيل المركز",
+        "registration-center-name": "اسم مركز التسجيل",
+        "registration-center-type": "نوع مركز التسجيل",
+        "contact-person": "الشخص الذي يمكن الاتصال به",
+        "contact-number": "رقم الاتصال",
+        "location-details": "تفاصيل الموقع",
+        "longitude": "خط الطول",
+        "latitude": "خط العرض",
+        "address1": "سطر العنوان 1",
+        "address2": "سطر العنوان 2",
+        "address3": "سطر العنوان 3",
+        "region": "منطقة",
+        "province": "المحافظة",
+        "city": "مدينة",
+        "laa": "LAA",
+        "postal-code": "الرمز البريدي",
+        "operational-details": "تفاصيل التشغيل",
+        "holiday-zone": "منطقة عطلة",
+        "working-hrs": "ساعات العمل",
+        "no-kiosk": "رقم كشك",
+        "per-kiosk-process-time": "لكل كشك وقت العملية (بالدقائق)",
+        "start-time": "وقت البدء",
+        "end-time": "وقت النهاية",
+        "lunch-start-time": "وقت بدء الغداء",
+        "lunch-end-time": "وقت انتهاء الغداء",
+        "edit": "تصحيح",
+        "create": "خلق",
+        "cancel": "إلغاء",
+        "language": "عربى",
+        "isActive": "نشط",
+        "update": "تحديث",
+        "validationMessages": {
+            "name": {
+                "required": "مطلوب اسم",
+                "max-length": "تجاوز الحد الأقصى للطول (128)"
+            },
+            "centerTypeCode": {
+                "required": "نوع المركز مطلوب"
+            },
+            "contactPerson": {
+                "max-length": "تجاوز الحد الأقصى للطول (128)"
+            },
+            "contactPhone": {
+                "max-length": "تجاوز الحد الأقصى للطول (16)"
+            },
+            "longitude": {
+                "required": "خط الطول مطلوب",
+                "max-length": "تجاوز الحد الأقصى للطول (32)",
+                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي"
+            },
+            "latitude": {
+                "required": "خط الطول مطلوب",
+                "max-length": "تجاوز الحد الأقصى للطول (32)",
+                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي"
+            },
+            "addressLine1": {
+                "required": "سطر العنوان 1 مطلوب",
+                "max-length": "تجاوز الحد الأقصى للطول (256)"
+            },
+            "addressLine2": {
+                "max-length": "تجاوز الحد الأقصى للطول (256)"
+            },
+            "addressLine3": {
+                "max-length": "تجاوز الحد الأقصى للطول (256)"
+            },
+            "region": {
+                "required": "المنطقة مطلوبة"
+            },
+            "province": {
+                "required": "مطلوب مقاطعة"
+            },
+            "city": {
+                "required": "المدينة مطلوبة"
+            },
+            "laa": {
+                "required": "LAA مطلوب"
+            },
+            "postalCode": {
+                "required": "الرمز البريدي مطلوب"
+            },
+            "holidayZone": {
+                "required": "مطلوب منطقة عطلة"
+            },
+            "noKiosk": {
+                "required": "عدد كشك مطلوب",
+                "min": "الحد الأدنى لعدد الأكشاك هو 0",
+                "invalidNoKiosk": "عدد غير صحيح من كشك دخلت"
+            },
+            "processingTime": {
+                "required": "لكل كشك وقت المعالجة مطلوب"
+            },
+            "startTime": {
+                "required": "مركز وقت البدء مطلوب"
+            },
+            "endTime": {
+                "required": "مركز نهاية الوقت مطلوب"
+            }
+        },
+        "popupMessages": {
+            "create-edit": {
+                "title": "التأكيد",
+                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+                "yesBtnText": "نعم فعلا",
+                "noBtnText": "لا"
+            },
+            "update-success": {
+                "title": "نجاح",
+                "message": "تم تحديث المركز بنجاح",
+                "btnTxt": "حسنا"
+            },
+            "update-error": {
+                "title": "خطأ",
+                "message": "كانت هناك بعض المشاكل في تحديث المركز. حاول مرة اخرى",
+                "btnTxt": "حسنا"
+            },
+            "create-success": {
+                "title": "نجاح",
+                "message": ["تم إنشاء المركز بنجاح باستخدام معرف المركز:", "واسم المركز:"],
+                "btnTxt": "حسنا"
+            },
+            "create-error": {
+                "title": "خطأ",
+                "message": "كان هناك بعض المشكلة في إنشاء مركز. حاول مرة اخرى",
+                "btnTxt": "حسنا"
+            },
+            "navigation-popup": {
+                "title": "التأكيد",
+                "message": "لديك بيانات غير محفوظة. الابتعاد عن الصفحة سيفقد البيانات. هل تريد الاستمرار؟",
+                "yesBtnTxt": "نعم فعل",
+                "noBtnTxt": "لا"
+            }
+        }
+    }
+}

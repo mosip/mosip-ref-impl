@@ -1,0 +1,13 @@
+<div id="parent-component">
+  <div class="fixed-topnav">
+    <app-header [screenResize]="screenWidth">></app-header>
+  </div>
+  <mat-sidenav-container>
+    <mat-sidenav #appDrawer [opened]="screenWidth > 840" [mode]="(screenWidth > 840) ? 'side' : 'over'">
+      <mat-nav-list>
+        <app-side-menu *ngFor="let item of navItems; let i = index" [index]="i" [screenResize]="screenWidth" [item]="item"></app-side-menu>
+      </mat-nav-list>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>
+</div>

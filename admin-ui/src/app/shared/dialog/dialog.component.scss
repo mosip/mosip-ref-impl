@@ -1,0 +1,78 @@
+@import '../../_theme.scss';
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    align-items: center;
+    padding: 20px;
+  }
+  .filter-heading{
+      line-height: 16px;
+      font-family: 'Franklin Gothic Medium';
+      font-size: 18px;
+      word-spacing: 1px;
+      padding: 10px 20px;
+  }
+//   ::ng-deep .mat-form-field {
+//     .mat-input-element {
+//         color:black;
+        
+//     }
+//     .mat-form-field-label {
+//         color: black;
+//         font-size: 12px;
+//     }
+//     .mat-form-field-underline {
+//         background-color: slategray;
+//     }
+  
+// }
+// ::ng-deep .mat-form-field.mat-focused {
+//     .mat-form-field-label {
+//         color: slategray;
+//     }
+//     .mat-form-field-underline {
+//         background-color: slategray;
+//     }
+//     .mat-input-element {
+//         color:black;
+//     }
+//     .mat-form-field-ripple {
+//         background-color: slategray;
+//     }
+// }
+.date-header{
+ margin-left: 15px;
+}
+.mat-dialog-container{
+    border-radius: 0;
+    padding: 0 !important;
+}
+.footer{
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0;
+    position: relative;
+    background-color: rgb(233, 233, 233);
+    padding: 10px 0px;
+}
+.footer-button{
+    border: 1px solid black;
+    border-radius:0;
+    margin: 3px; 
+    text-transform: capitalize;
+    font-family: sans-serif;
+    font-size: 12px;
+    word-spacing: 1px;
+    width: 80px;
+}
+
+// Coinformation PopUp 
+.mat-dialog-actions {
+    justify-content: flex-end;
+}
+.spinner{
+display: flex;
+margin: 120px;
+}

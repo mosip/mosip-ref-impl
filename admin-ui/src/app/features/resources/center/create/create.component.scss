@@ -1,0 +1,212 @@
+@import '../../../../_theme.scss';
+
+#create-component {
+    padding-top: 18px; 
+    overflow: hidden;
+    #center {
+        overflow: auto;
+        max-height: 83vh;
+        padding-bottom: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        &::-webkit-scrollbar {
+            width: 0px;
+            background: transparent; 
+        }
+    }
+    
+    .example-form {
+        margin-top: 20px;
+    }
+    .center-detail-heading {
+        font-size: mat-font-size($custom-typography, headline)
+    }
+    .navigation{
+        .material-icons {
+                cursor: pointer;
+                vertical-align: middle;
+            }
+    }
+    
+    .title {
+        font-size: mat-font-size($custom-typography, body-1);
+        vertical-align: middle;
+    }
+    .card {
+        margin-top: 5px;
+        .mat-card {
+            display: flex;
+            background: mat-color($app-primary, 50);
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+        .profile-img{
+            height: auto;
+            vertical-align: middle;
+            width: 15vw;
+            img {
+                max-width: 100%;
+                max-height: 100%;               
+            }
+        }
+        .center-details {
+            vertical-align: middle;
+            padding-left: 15px;
+            padding-right: 15px;
+            width:35.1vw;
+            border-right: 1px solid white;
+            word-wrap: break-word;
+            @media (max-width: 420px) {
+                h3 {
+                    font-size: 10px;
+                }
+                p {
+                    font-size: 8px;
+                }
+            }
+        }
+        .center-details1 {
+            vertical-align: middle;
+            padding-left: 15px;
+            padding-right: 15px;
+            width:50vw;
+            word-wrap: break-word;
+        }
+        .small-text{
+            font-size: mat-font-size($custom-typography, subheading-1);
+            margin-block-end: 16px;
+            margin-block-start: 16px;
+            margin-inline-end: 0px;
+            margin-inline-start: 0px;
+            @media (max-width: 420px) { 
+                font-size: 8px;
+            }
+
+        }
+    }
+    .center-form-details {
+        .mat-card {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+
+        }
+        .seperator {
+            width: 50vw;
+            padding-left: 15px;
+            padding-right: 15px;
+            vertical-align: middle; 
+            .example-full-width {
+                width: 100%;
+            } 
+        }
+        .row {
+            display: flex;
+            flex-direction: row;
+            .example-full-width:nth-child(2) {
+                padding-left: 15px;
+            }
+        }
+    }
+    .center-form-details {
+        .seperator:nth-child(1) {
+           border-right: 1px solid #ccc;
+           padding-right: 32px;
+        }
+    }
+    .center-form-details {
+        .seperator:nth-child(2) {
+           padding-left: 32px;
+        }
+    }
+    .center-footer {
+        .mat-card {
+            justify-content: flex-end;
+            background: mat-color($app-primary, 50);
+            .mat-raised-button {
+                background: mat-color($app-primary, 500);
+                color: white;
+            }
+        }
+    }
+
+.container {
+    .mat-card {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        padding: 16px 0px 0px 0px;
+    }
+}
+
+.forms-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.primary-form {
+    padding-left: 25px;
+    padding-top: 30px;
+    width: 48%;
+}
+
+.secondary-form {
+    padding-right: 25px;
+    padding-top: 30px;
+    text-align: right;
+    width: 48%;
+}
+
+.secondary-form > .mat-form-field {
+    width: 100%;
+    text-align: right;
+}
+
+.primary-form > .mat-form-field {
+    width: 100%;
+}
+
+.flex-display {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+.secondary-form > .flex-display > .right-sizing {
+    text-align: right;
+}
+
+.action-buttons {
+    direction: rtl;
+    padding: 16px;
+    background: mat-color($app-primary, 50);
+}
+
+.action-buttons > #createButton {
+    background-color: black !important;
+    color: white !important;
+}
+
+.mat-divider.mat-divider-inset {
+    margin: 0 19px !important;
+}
+
+@media(max-width: 1040px) {
+    .primary-form, .secondary-form {
+        width: 100%;
+        padding: 25px !important;
+    }
+    .flex-display {
+        .mat-form-field {
+            width: 48% !important;
+        }
+    }
+}
+
+@media(max-width: 500px) {
+        .primary-form, .secondary-form {
+            padding: 20px !important;
+        }
+    }
+}
