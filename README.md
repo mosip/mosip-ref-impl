@@ -1,2 +1,2 @@
 # mosip-platform-ext-mt
-Country-specific MOSIP Mindtree repository
+This repository contains customized implemetations of Country-specific modules developed for MOSIP.
