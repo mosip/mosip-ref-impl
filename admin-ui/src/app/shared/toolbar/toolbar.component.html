@@ -1,0 +1,27 @@
+<div class="container">
+  <mat-card>
+    <div class="card-row">
+      <button
+        mat-raised-button
+        *ngFor="let button of buttonList; index as i"
+        [ngStyle]="{ margin: '10px', borderRadius: '0' }"
+        (click)="actionEvent(button)"
+      >
+        <mat-icon *ngIf="iconDisplay(button.buttonName)">filter_list</mat-icon
+        >{{ button.buttonName }}
+      </button>
+      <span style="flex: 1 1 auto;"></span>
+      <mat-paginator
+        [length]="paginationOptions?.totalEntries"
+        [pageSize]="paginationOptions?.pageSize"
+        [pageSizeOptions]="paginationOptions?.pageSizeList"
+        showFirstLastButtons="true"
+        (page)="onPaginateChange($event)"
+      >
+      </mat-paginator>
+      <button mat-icon-button>
+        <mat-icon>save_alt</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>

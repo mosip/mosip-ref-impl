@@ -1,0 +1,75 @@
+.mat-card {
+  border-radius: 0;
+  height: 5.5em;
+}
+.card-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.container{
+  overflow: auto;
+  width: 100%;
+  margin:0;
+}
+:host
+  ::ng-deep.mat-paginator-navigation-previous.mat-icon-button,
+  ::ng-deep.mat-paginator-navigation-next.mat-icon-button {
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid lightgrey;
+  cursor: pointer;
+}
+:host
+  ::ng-deep.mat-paginator-page-size-label {
+  margin: 0 4px;
+  font-size: 12px;
+}
+:host
+  ::ng-deep.mat-paginator-range-label {
+  margin: 0 24px 0 20px;
+  font-size: 13px;
+}
+  :host
+  ::ng-deep.mat-paginator-page-size {
+    align-items: center;
+  }
+.container {
+    overflow: auto;
+    width: 100%;
+    margin: 0;
+  }
+  :host::ng-deep.mat-paginator-range-label{
+    white-space: nowrap;
+    margin: 5px;
+  }
+  :host::ng-deep.mat-paginator-container{
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 0 8px;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+
+  }
+  :host::ng-deep.mat-paginator-icon{
+    width: 25px;
+    fill: currentColor;
+  }
+  :host::ng-deep.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width:auto;
+    height: 35px;
+    flex-shrink: 0;
+    line-height: 35px;
+    border-radius: 0;
+  }
+.download{
+  min-width: 0;
+  line-height: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}

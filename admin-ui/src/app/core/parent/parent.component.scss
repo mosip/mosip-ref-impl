@@ -1,0 +1,52 @@
+@import '../../theme';
+@import '../../breakpoints';
+#parent-component {
+    .mat-sidenav {
+        width: 200px;
+        @media (max-width: 600px) {
+            width: 50vw;
+            font-size: 13px;
+        }
+    }
+    .mat-sidenav-container {
+        background-color: #ccc !important;
+        height: 89.7vh;
+        @media (max-width: 840px) {
+            height: 100vh;
+        }
+
+        .mat-sidenav-content {
+            margin-left: 250px !important;
+            margin-right: 50px !important;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            @media (max-width: 840px) {
+                margin-left: 28px !important;
+                 margin-right: 28px !important;
+            }
+        }
+}
+.mat-toolbar-single-row {
+    height: 10vh;
+}
+
+.fixed-topnav {
+    border-bottom: 1px solid #000; 
+}
+
+@include breakpoint-max(600px) {
+  .fixed-topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100% !important;
+  }
+
+    .mat-drawer-container,
+        .mat-drawer {
+            padding-top: 10vh;
+        }
+    }
+}

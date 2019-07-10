@@ -1,0 +1,12 @@
+<div id="menuButton">
+  <button class="menu-button" [matMenuTriggerFor]="menu">
+    <div class="name">{{data.name}}</div>
+    <div class="mat-small">{{data.zone}}</div>
+  </button>
+  <mat-menu #menu="matMenu" backdropClass="menu">
+    <ng-container *ngFor = "let item of profileList">
+       <button (click)="logout()" mat-menu-item>{{item?.displayName}}</button>
+    </ng-container>
+   
+  </mat-menu>
+</div>

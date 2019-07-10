@@ -1,0 +1,67 @@
+@import '../../theme';
+
+.mat-icon {
+    cursor: pointer;
+}
+.mosip-logo {
+    // width: 40vw;
+    flex: 1;
+    margin: 5px 0 0 5px;
+    span{
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    img{
+        max-width: 100%; 
+        max-height: 100%;
+    }
+}
+
+.zone{
+    text-align: center;
+    padding: 5px 5px;
+    flex: 1;
+    background: mat-color($app-primary, 50);
+    border-radius: 50px;
+    
+    h6 {
+        font: 600 14px/16px Roboto, sans-serif !important;
+         margin: 0 5px 0 5px;
+         
+    }
+
+    @media (max-width: 840px) {
+        h6 {
+            width: 50px;
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            text-overflow: ellipsis;
+            white-space: nowrap; 
+        }
+    }
+    
+}
+.profile{
+    flex: 1;
+    text-align: right;
+    .name {
+        font-size: mat-font-size($custom-typography, caption);
+    }
+    .sub-heading {
+        font-size: mat-font-size($custom-typography, subheading-1);
+    }
+}
+.mat-toolbar{
+    font: 500 16px/14px Roboto, sans-serif !important;
+    justify-content: space-between;
+}
+
+@media (max-width: 600px) {
+    .mosip-logo {
+        flex:0.7 !important;
+    }      
+}
