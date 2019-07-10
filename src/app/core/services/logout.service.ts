@@ -13,7 +13,7 @@ export class LogoutService {
   constructor(private http: HttpClient, private router: Router, private redirectService: LoginRedirectService) { }
 
    logout() {
-    this.http.delete('http://localhost:8091/r2/v1/authmanager/logout/user',
+    this.http.delete('https://dev.mosip.io/r2/v1/authmanager/logout/user',
     { observe: 'response'}).subscribe((res: HttpResponse<ResponseModel<LogoutResponse>>) => {
      if (res.body.response.status === 'Success') {
        this.redirectService.redirect(window.location.origin + '/admin/home');
