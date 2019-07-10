@@ -1,6 +1,6 @@
 <div id="menuButton">
   <div *ngIf="data?.type === 'profile'">
-    <span >
+    <span>
       <img src="{{data?.profileImg}}" alt="Profile">
     </span>
     <span>
@@ -9,13 +9,23 @@
         <div class="zone-text">{{data.zone}}</div>
       </button>
     </span>
+    <mat-menu #menu="matMenu" backdropClass="profile">
+      <ng-container *ngFor="let item of dataList">
+        <button (click)="onItem()" mat-menu-item>{{item?.displayName}}</button>
+      </ng-container>
+    </mat-menu>
   </div>
-  <button *ngIf="data?.type === 'elipses'" mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu" backdropClass="menu">
-    <ng-container *ngFor="let item of profileList">
-      <button (click)="onItem()" mat-menu-item>{{item?.displayName}}</button>
-    </ng-container>
-  </mat-menu>
+
+  <div *ngIf="data?.type === 'elipses'">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" backdropClass="elipses">
+      <ng-container *ngFor="let item of dataList">
+        <button (click)="onItem()" mat-menu-item>{{item?.buttonName}}</button>
+      </ng-container>
+    </mat-menu>
+  </div>
+
+
 </div>
