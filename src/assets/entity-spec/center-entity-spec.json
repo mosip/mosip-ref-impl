@@ -55,7 +55,7 @@
             {
                 "buttonName":"Filter", 	
                 "actionListType":"action",
-                "actionURL":"",
+                "actionURL":{"case":"center"},
                 "redirectURL":"",
                 "showIn":"Button",
                 "validations":""

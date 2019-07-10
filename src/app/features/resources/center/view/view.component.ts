@@ -24,9 +24,6 @@ export class ViewComponent implements OnInit, OnChanges {
   actionButtons = [];
   actionEllipsis = [];
   paginatorOptions: any;
-  resourceFilter = {
-    case: 'center'
-  };
   sortFilter = [];
   pagination = new PaginationModel();
   centerRequest = {} as CenterRequest;

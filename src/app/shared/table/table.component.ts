@@ -43,9 +43,9 @@ export class TableComponent implements OnInit, OnChanges {
     console.log(data + index);
     this.router.navigate(['404']);
   }
-  getTableRowData(data, index) {
-    console.log(data.id + 'index' + index);
-    if (index === 0) {
+  getTableRowData(data, index, columnName) {
+    console.log(data.id + 'index' + index + columnName);
+    if (index === 0 && columnName === 'name' ) {
       this.router.navigate(['admin/resources/centers/single-view', data.id]);
     }
   }
@@ -70,11 +70,22 @@ export class TableComponent implements OnInit, OnChanges {
   tableStyle(index) {
     const myTableStyles = {
       color: '',
-      cursor: ''
+      cursor: '',
+      border: '',
+      padding: '',
+      borderRadius: '',
+      backgroundColor: ''
     };
     if (index === 0) {
       myTableStyles.color = 'rgb(24, 181, 209)';
       myTableStyles.cursor = 'pointer';
+      return myTableStyles;
+    }
+    if (index === 2 ) {
+      myTableStyles.backgroundColor = 'rgb(209, 209, 209)';
+      myTableStyles.padding = '5px';
+      myTableStyles.border = '1px solid grey';
+      myTableStyles.borderRadius = '7px';
       return myTableStyles;
     }
   }
