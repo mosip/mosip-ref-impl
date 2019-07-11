@@ -16,7 +16,7 @@ export class LogoutService {
     this.http.delete('https://dev.mosip.io/r2/v1/authmanager/logout/user',
     { observe: 'response'}).subscribe((res: HttpResponse<ResponseModel<LogoutResponse>>) => {
      if (res.body.response.status === 'Success') {
-       this.redirectService.redirect(window.location.origin + '/r2/admin-ui/admin/home');
+       this.redirectService.redirect(window.location.origin + '/r2/admin-ui/');
     } else {
        window.alert(res.body.response.message);
      }
