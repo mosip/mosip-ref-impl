@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
 
 @Component({
@@ -8,10 +8,16 @@ import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
 })
 export class CenterHeaderComponent implements OnInit {
 
-  @Input() data: CenterHeaderModel;
+  @Input() headerData: CenterHeaderModel;
+
+  elipses = {
+    type: 'elipses',
+    menuList: ['']
+  };
 
   constructor() { }
 
   ngOnInit() {
+    //   console.log('ScreenWidth', this.screenResize);
   }
 }

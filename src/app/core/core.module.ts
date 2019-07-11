@@ -13,7 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthService } from './services/authservice.service';
 import { LoginRedirectService } from './services/loginredirect.service';
 import { AuthguardService } from './services/authguard.service';
-import { AuthInterceptor } from './services/httpinterceptor';
+// import { AuthInterceptor } from './services/httpinterceptor';
 import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
 
 @NgModule({
@@ -28,11 +28,11 @@ import { CanDeactivateGuardService } from './services/can-deactivate-guard.servi
   exports: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent, MaterialModule, RouterModule],
   providers: [SideMenuService, DataStorageService, AuthService, LoginRedirectService, AuthguardService,
     CanDeactivateGuardService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true
+    // }
   ]
 })
 export class CoreModule { }

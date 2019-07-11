@@ -35,6 +35,7 @@ export class CreateComponent implements OnInit {
   disableForms: boolean;
   headerObject: CenterHeaderModel;
   centerRequest = {} as CenterRequest;
+  createUpdate = false;
 
   primaryForm: FormGroup;
   secondaryForm: FormGroup;
@@ -69,7 +70,7 @@ export class CreateComponent implements OnInit {
         this.initializeheader();
       }
     });
-    this.dataStorageService.getLanguageSpecificLabels(this.secondaryLang).subscribe(response => {
+    this.translateService.getTranslation(this.secondaryLang).subscribe(response => {
       this.secondaryLanguageLabels = response.center;
       console.log(this.secondaryLanguageLabels);
     });
@@ -104,6 +105,7 @@ export class CreateComponent implements OnInit {
   }
 
   updateData() {
+    this.createUpdate = true;
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -185,6 +187,7 @@ export class CreateComponent implements OnInit {
   }
 
   saveData() {
+    this.createUpdate = true;
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -352,7 +355,7 @@ export class CreateComponent implements OnInit {
       this.headerObject = new CenterHeaderModel(
         this.data[0].name,
         this.data[0].id,
-        this.data[0].isActive ? 'Active' : 'Inactive',
+        this.data[0].isActive,
         this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
         this.data[0].createdBy ? this.data[0].createdBy : '-',
         this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
@@ -394,8 +397,8 @@ export class CreateComponent implements OnInit {
       laa: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
       holidayZone: ['', [Validators.required]],
-      workingHours: [{value: '', disabled: true}],
-      noKiosk: [{value: 0, disabled: true}, [Validators.required, Validators.min(0), ValidateKiosk]],
+      workingHours: [{ value: '', disabled: true }],
+      noKiosk: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0), ValidateKiosk]],
       processingTime: ['', [Validators.required]],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
@@ -411,11 +414,11 @@ export class CreateComponent implements OnInit {
   initializeSecondaryForm() {
     this.secondaryForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(128)]],
-      centerTypeCode: [{value: '', disabled: true}],
+      centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],
-      contactPhone: [{value: '', disabled: true}],
-      longitude: [{value: '', disabled: true}],
-      latitude: [{value: '', disabled: true}],
+      contactPhone: [{ value: '', disabled: true }],
+      longitude: [{ value: '', disabled: true }],
+      latitude: [{ value: '', disabled: true }],
       addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
@@ -448,8 +451,8 @@ export class CreateComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.primaryForm);
-    console.log(this.secondaryForm);
+   // console.log(this.primaryForm);
+  //  console.log(this.secondaryForm);
     if (!this.disableForms) {
       if (this.primaryForm.valid && this.secondaryForm.valid) {
         this.onCreate();
@@ -508,10 +511,10 @@ export class CreateComponent implements OnInit {
 
   calculateWorkingHours() {
     if (this.primaryForm.controls.startTime.value && this.primaryForm.controls.endTime.value) {
-    const x = Utils.getTimeInSeconds(this.primaryForm.controls.endTime.value) -
-              Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
-    this.primaryForm.controls.workingHours.setValue(x / 3600);
-    this.secondaryForm.controls.workingHours.setValue(x / 3600);
+      const x = Utils.getTimeInSeconds(this.primaryForm.controls.endTime.value) -
+        Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
+      this.primaryForm.controls.workingHours.setValue(x / 3600);
+      this.secondaryForm.controls.workingHours.setValue(x / 3600);
     }
   }
 
@@ -526,12 +529,11 @@ export class CreateComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigateByUrl('admin/resources/centers/view');
+   this.location.back();
   }
 
   canDeactivate(): Observable<any> | boolean {
-    console.log('can deactivate called');
-    if (this.primaryForm.touched || this.secondaryForm.touched) {
+    if ((this.primaryForm.touched || this.secondaryForm.touched) && !this.createUpdate) {
        return this.dialog.open(DialogComponent, {
         width: '350px',
         data: {

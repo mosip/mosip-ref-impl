@@ -21,7 +21,7 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   ngOnInit() {
   }
   iconDisplay(buttonName) {
-    if (buttonName.toLowerCase() === 'filter') {
+    if (buttonName.eng.toLowerCase() === 'filter') {
       return true;
     }
   }

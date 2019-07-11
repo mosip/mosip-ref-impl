@@ -1,0 +1,88 @@
+{
+  "eng": {
+    "actionButtons": [
+      {
+        "buttonName": {
+          "eng": "Filter",
+          "fra": "",
+          "ara": ""
+        },
+        "actionListType": "action",
+        "actionURL": { "case": "holiday-type" },
+        "redirectURL": "",
+        "showIn": "Button",
+        "validations": ""
+      }
+    ],
+    "columnsToDisplay": [
+      {
+        "name": "holidayDate",
+        "showInListView": "True",
+        "label": { "eng": "Holiday Date", "ara": "تاريخ", "fra": "date" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "holidayName",
+        "showInListView": "true",
+        "label": {
+          "eng": "Holiday Name",
+          "ara": "اسم العطلة",
+          "fra": "Nom des vacances"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "isActive",
+        "showInListView": "true",
+        "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+        "sortOrder": "",
+        "showAsLink": "false",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "createdDateTime",
+        "showInListView": "",
+        "label": {
+          "eng": "Created Time",
+          "ara": "الوقت الذي تم إنشاؤه",
+          "fra": "Temps créé"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "description",
+        "showInListView": "",
+        "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "locationCode",
+        "showInListView": "",
+        "label": { "eng": "Location", "ara": "موقع", "fra": "Emplacement" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      }
+    ],
+    "paginator": {
+      "totalEntries": null,
+      "pageSize": "10",
+      "pageSizeList": [10, 20, 30, 40, 50]
+    },
+    "filterColumns": []
+  }
+}

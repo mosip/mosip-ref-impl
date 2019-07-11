@@ -11,10 +11,6 @@ export class DataStorageService {
 
   constructor(private http: HttpClient) {}
 
-  getLanguageSpecificLabels(langCode: string): Observable<any> {
-    return this.http.get(`./assets/i18n/${langCode}.json`);
-  }
-
   getCenterSpecificLabelsAndActions(): Observable<any> {
     return this.http.get('./assets/entity-spec/center-entity-spec.json');
   }
@@ -37,5 +33,14 @@ export class DataStorageService {
 
   updateCenter(data: RequestModel): Observable<any> {
     return this.http.put(appConstants.MASTERDATA_BASE_URL + 'registrationcenters', data);
+  }
+
+  getDevicesData(request: RequestModel): Observable<any> {
+    return this.http.post(appConstants.URL.devices + '', request);
+  }
+
+  getMachinesData(request: RequestModel): Observable<any> {
+    console.log(request);
+    return this.http.post(appConstants.URL.machines, request);
   }
 }

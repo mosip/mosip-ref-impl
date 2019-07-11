@@ -1,6 +1,18 @@
 <span><h3>Devices</h3></span>
-<!-- <mat-card>
-<app-toolbar></app-toolbar>
-<app-table [data]='devices' [displayedColumns]='columns'></app-table>
-</mat-card> -->
-<mat-card style="padding: 20px;">Work In Progress</mat-card>
+<mat-card class="mat-elevation-z8">
+  <app-toolbar
+    *ngIf="
+      actionEllipsis && actionEllipsis  && paginatorOptions
+    "
+    [buttonList]="actionEllipsis"
+    [paginationOptions]="paginatorOptions"
+    (pageEvent)="pageEvent($event)"
+  ></app-toolbar>
+  <app-table
+    *ngIf="devices && displayedColumns && actionButtons"
+    [data]="devices"
+    [displayedColumns]="displayedColumns"
+    [buttonList]="actionButtons"
+    (sort)="getSortColumn($event)"
+  ></app-table>
+</mat-card>

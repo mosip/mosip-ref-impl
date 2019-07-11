@@ -15,7 +15,9 @@ th.mat-header-cell {
   text-align: center;
   white-space: nowrap;
 }
-
+tr:nth-child(odd){
+  background-color: rgb(250, 250, 250);
+}
 
 th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
   border-bottom-width: 1px;
@@ -76,4 +78,11 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
   opacity: 0.5;
   margin-left: 3px;
   cursor: pointer !important;
+}
+.flex-display{
+  display: inline-flex;
+  align-items: center;
+}
+.text-alignment{
+  text-align: left !important;
 }

@@ -4,9 +4,10 @@ import {
   Input,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewEncapsulation
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SortModel } from 'src/app/core/models/sort.model';
 
 @Component({
@@ -22,7 +23,9 @@ export class TableComponent implements OnInit, OnChanges {
   tableData = [];
   columnsOfTableData = [];
   sortStatusArray: string[];
-  constructor(private router: Router) {}
+  currentRoute: string;
+  constructor(private router: Router ,
+              private activateRoute: ActivatedRoute) {}
   ngOnInit() {
     this.tableData = [...this.data];
     console.log(this.tableData);
@@ -45,6 +48,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
   getTableRowData(data, index, columnName) {
     console.log(data.id + 'index' + index + columnName);
+    const route = this.router.url;
+    this.currentRoute = route.split('/')[3];
+    console.log(this.currentRoute);
     if (index === 0 && columnName === 'name' ) {
       this.router.navigate(['admin/resources/centers/single-view', data.id]);
     }
@@ -67,24 +73,31 @@ export class TableComponent implements OnInit, OnChanges {
     this.sort.emit(sortModel);
   }
 
-  tableStyle(index) {
+  tableStyle(index, columnValue) {
     const myTableStyles = {
-      color: '',
+      color: '#0F2126',
       cursor: '',
       border: '',
       padding: '',
       borderRadius: '',
-      backgroundColor: ''
+      backgroundColor: '',
+      whiteSpace: 'nowrap'
     };
     if (index === 0) {
-      myTableStyles.color = 'rgb(24, 181, 209)';
+      myTableStyles.color = '#0F2126';
       myTableStyles.cursor = 'pointer';
       return myTableStyles;
     }
-    if (index === 2 ) {
-      myTableStyles.backgroundColor = 'rgb(209, 209, 209)';
+    if (index === 2 && columnValue === true ) {
+      myTableStyles.backgroundColor = '#C2F2DA';
       myTableStyles.padding = '5px';
-      myTableStyles.border = '1px solid grey';
+      myTableStyles.border = '1px solid #4AD991';
+      myTableStyles.borderRadius = '7px';
+      return myTableStyles;
+    } else if (index === 2 && columnValue === false) {
+      myTableStyles.backgroundColor = '#CECFD0';
+      myTableStyles.padding = '5px';
+      myTableStyles.border = '1px solid #9C9F9F';
       myTableStyles.borderRadius = '7px';
       return myTableStyles;
     }

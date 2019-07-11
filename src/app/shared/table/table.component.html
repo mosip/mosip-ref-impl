@@ -1,29 +1,49 @@
-<div class="container mat-elevation-z8" *ngIf="data.length>0;else nodata" >
+<div class="container mat-elevation-z8" *ngIf="data.length > 0; else nodata">
   <table class="mat-table">
     <tr class="mat-row sticky-header">
       <th
         *ngFor="let item of displayedColumns; let i = index"
-        class="mat-header-cell table-header"
+        class="mat-header-cell table-header sticky-header"
       >
-        {{ item.label }}<span (click)="sortColumn(item.name)" ><img src="assets/images/sort.png" height="7px" width="7px" class="sort-icon"></span>
+        {{ item.label.eng
+        }}<span (click)="sortColumn(item.name)"
+          ><img
+            src="assets/images/sort.png"
+            height="7px"
+            width="7px"
+            class="sort-icon"
+        /></span>
       </th>
-      <th class="table-header">&emsp;</th>
+      <th class="table-header sticky-header">&emsp;</th>
     </tr>
-    <tr *ngFor="let data of tableData;index as i" class="mat-row">
+    <tr *ngFor="let data of tableData; index as i" class="mat-row">
       <td
-        *ngFor="let item of columnsOfTableData; let i = index;"
-        class="mat-cell  " 
-        (click)="getTableRowData(data,i,item)"
+        *ngFor="let item of columnsOfTableData; let i = index"
+        class="mat-cell  "
+        (click)="getTableRowData(data, i, item)"
+        [ngClass]="{'text-alignment':item === 'name'}"
       >
-        <span  [ngStyle]="tableStyle(i)">{{ data[item]|status}}</span>
+        <span class="flex-display" [ngStyle]="tableStyle(i,data[item])"
+          ><img
+            src="assets/images/center-name-icon.png"
+            height="20px;"
+            width="30px;"
+            *ngIf="item === 'name'"
+            style="padding-right:10px;"
+          />{{ data[item] | status }}</span
+        >
       </td>
       <td class="mat-cell mat-header-cell">
-        <button mat-icon-button [matMenuTriggerFor]="menu" >
+        <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
         </button>
       </td>
       <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-        <button mat-menu-item *ngFor="let button of buttonList" (click)="selectedRow(data,i)" >
+        <button
+          mat-menu-item
+          *ngFor="let button of buttonList"
+          (click)="selectedRow(data, i)"
+        >
           <span>{{ button.buttonName }}</span>
         </button>
       </mat-menu>
@@ -32,8 +52,6 @@
 </div>
 <ng-template #nodata>
   <div style="display: flex; justify-content: center;">
-    <mat-progress-bar
-    mode="indeterminate"
-    color="primary"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
   </div>
-  </ng-template>
+</ng-template>

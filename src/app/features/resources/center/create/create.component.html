@@ -4,7 +4,7 @@
   </div>
   <div id="center">
     <!--Center header  -->
-    <app-center-header *ngIf="headerObject" [data]="headerObject"></app-center-header>
+    <app-center-header *ngIf="headerObject" [headerData]="headerObject"></app-center-header>
     <!--Ceneter Details  -->
 <div class="container">
       <mat-card>
@@ -167,9 +167,6 @@
                   {{ 'center.validationMessages.holidayZone.required' | translate }}
                 </mat-error>
               </mat-form-field>
-              <mat-form-field>
-                  <input formControlName="workingHours" readonly matInput placeholder="{{ 'center.working-hrs' | translate }}">
-              </mat-form-field>
             <div class="flex-display">
                 <mat-form-field class="left-sizing">
                     <input formControlName="noKiosk" (change)="copyDataToSecondaryForm('noKiosk', primary.noKiosk.value)" matInput placeholder="{{ 'center.no-kiosk' | translate }}">
@@ -219,6 +216,9 @@
                     </mat-error>
                   </mat-form-field>
             </div>
+            <mat-form-field>
+              <input formControlName="workingHours" readonly matInput placeholder="{{ 'center.working-hrs' | translate }}">
+            </mat-form-field>
                   <div class="flex-display">
                     <mat-form-field class="left-sizing">
                       <mat-label>{{ 'center.lunch-start-time' | translate }}</mat-label>
@@ -363,9 +363,6 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field>
-                <input formControlName="workingHours" matInput placeholder="{{secondaryLanguageLabels['working-hrs']}}">
-            </mat-form-field>
             <div class="flex-display">
               <mat-form-field class="left-sizing">
                   <input formControlName="noKiosk" matInput placeholder="{{secondaryLanguageLabels['no-kiosk']}}">
@@ -397,6 +394,9 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <mat-form-field>
+              <input formControlName="workingHours" matInput placeholder="{{secondaryLanguageLabels['working-hrs']}}">
+            </mat-form-field>
             <div class="flex-display">
               <mat-form-field class="left-sizing">
                 <mat-label>{{secondaryLanguageLabels['lunch-start-time']}}</mat-label>
