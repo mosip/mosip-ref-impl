@@ -11,13 +11,17 @@ export class HamburgerComponent implements OnInit {
 
   @Input() data: any;
 
-  profileList: any[];
+  dataList: any[];
 
   constructor(private location: Location) { }
 
   ngOnInit() {
     console.log('hfdasfdsf', this.data);
-    this.profileList = this.data.menuList;
+    if (this.data && this.data.menuList) {
+      this.dataList = this.data.menuList;
+      console.log('ButtonName', this.dataList);
+    }
+
   }
 
   onItem() {
