@@ -7,6 +7,7 @@
           "fra": "",
           "ara": ""
         },
+        "imagePath":"assets/images/filter.png",
         "actionListType": "action",
         "actionURL": { "case": "holiday-type" },
         "redirectURL": "",

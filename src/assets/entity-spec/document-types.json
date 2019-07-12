@@ -31,6 +31,7 @@
       },
       {
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
         "actionListType": "action",
         "actionURL": { "case": "document-type" },
         "redirectURL": "",
@@ -43,6 +44,7 @@
           "ara": "إضافة نوع المستند",
           "fra": "Ajouter un type de document"
         },
+        "imagePath":"assets/images/add-icon.png",
         "actionListType": "redirect",
         "actionURL": "",
         "redirectURL": "admin/resources/centers/create",
