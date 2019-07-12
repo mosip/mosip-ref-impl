@@ -5,7 +5,7 @@
   overflow: hidden;
   #center {
     overflow: auto;
-    max-height: 83vh;
+    max-height: 80vh;
     padding-bottom: 20px;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -189,7 +189,7 @@
   .action-buttons {
     direction: rtl;
     padding: 16px;
-    background: mat-color($app-primary, 50);
+    background: #E6E7E7;
   }
 
   .action-buttons > #createButton {

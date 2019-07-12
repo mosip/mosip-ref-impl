@@ -22,7 +22,7 @@
     </button>
     <mat-menu #menu="matMenu" backdropClass="elipses">
       <ng-container *ngFor="let item of dataList">
-        <button (click)="onItem()" mat-menu-item>{{item?.buttonName}}</button>
+        <button (click)="onItem()" mat-menu-item>{{item?.buttonName?.eng}}</button>
       </ng-container>
     </mat-menu>
   </div>
