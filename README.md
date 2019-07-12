@@ -1,2 +1,2 @@
-# mosip-platform-ext-mt
-This open-source repository contains customized implementations of Country-specific modules developed for MOSIP.
+# mosip-ref-impl
+This repository contains components that can be customized by a country. For example, pre-registration-ui that builds on top of the Pre-Registration services can be customized by a country as per their needs.
