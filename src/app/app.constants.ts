@@ -84,5 +84,12 @@ export const masterdataMapping = {
     name: 'Document Types',
     nameKey: 'name',
     idKey: 'code'
+  },
+  location: {
+    apiName: 'locations',
+    specFileName: 'location-data',
+    name: 'Location',
+    nameKey: 'name',
+    idKey: 'code'
   }
 };

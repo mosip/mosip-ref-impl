@@ -8,10 +8,10 @@ import { SingleViewComponent } from './single-view/single-view.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: MasterDataComponent },
-  { path: 'holidays/view', component: ListViewComponent },
-  { path: 'holidays/single-view/:id', component: SingleViewComponent },
   { path: 'document-type/view', component: ListViewComponent },
-  { path: 'document-type/single-view/:id', component: SingleViewComponent }
+  { path: 'document-type/single-view/:id', component: SingleViewComponent },
+  { path: 'location/view', component: ListViewComponent },
+  { path: 'location/single-view/:id', component: SingleViewComponent }
 ];
 
 @NgModule({

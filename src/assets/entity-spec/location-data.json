@@ -54,12 +54,13 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "postalCode",
+      "name": "code",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": {
-        "eng": "Postal Code",
-        "ara": "رمز بريدي",
-        "fra": "Code postal"
+        "eng": "Code",
+        "ara": "رمز",
+        "fra": "Code"
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -67,12 +68,13 @@
       "LinkURL": ""
     },
     {
-      "name": "postalCode",
+      "name": "name",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": {
-        "eng": "Postal Code",
-        "ara": "رمز بريدي",
-        "fra": "Code postal"
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "prénom"
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -81,12 +83,13 @@
     },
 
     {
-      "name": "laa",
+      "name": "hierarchyName",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": {
-        "eng": "Local Administrative Authority",
-        "ara": "السلطة الإدارية المحلية",
-        "fra": "Autorité administrative locale"
+        "eng": "Hierarchy Name",
+        "ara": "اسم التسلسل الهرمي",
+        "fra": "Nom de la hiérarchie"
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -94,18 +97,20 @@
       "LinkURL": ""
     },
     {
-      "name": "city",
+      "name": "parentLocCode",
       "showInListView": "true",
-      "label": { "eng": "city", "ara": "المدينه", "fra": "ville" },
+      "showInSingleView": "true",
+      "label": { "eng": "Parent Location Code", "ara": "رمز موقع الوالد", "fra": "Code d'emplacement parent" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": ""
     },
     {
-      "name": "province",
+      "name": "isActive",
       "showInListView": "true",
-      "label": { "eng": "Province", "ara": "مقاطعه", "fra": "province" },
+      "showInSingleView": "true",
+      "label": { "eng": "Is Active", "ara": "نشط", "fra": "c'est actif" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -114,6 +119,7 @@
     {
       "name": "region",
       "showInListView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Region", "ara": "المنطقه", "fra": "région" },
       "sortOrder": "",
       "showAsLink": "false",
@@ -123,6 +129,7 @@
     {
       "name": "createdDateTime",
       "showInListView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
@@ -136,6 +143,7 @@
     {
       "name": "createdBy",
       "showInListView": "false",
+      "showInSingleView": "false",
       "label": {
         "eng": "Created By",
         "ara": "تم إنشاؤه من قبل",
@@ -149,6 +157,7 @@
     {
       "name": "updatedBy",
       "showInListView": "false",
+      "showInSingleView": "false",
       "label": {
         "eng": "Updated By",
         "ara": "تم التحديث بواسطة",
@@ -162,6 +171,7 @@
     {
       "name": "updatedDateTime",
       "showInListView": "false",
+      "showInSingleView": "false",
       "label": {
         "eng": "Updated Time",
         "ara": "وقت التحديث",
