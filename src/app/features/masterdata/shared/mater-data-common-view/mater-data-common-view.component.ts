@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'src/app/app-config.service';
+import { HeaderModel } from 'src/app/core/models/header.model';
 
 @Component({
   selector: 'app-mater-data-common-view',
@@ -10,9 +11,13 @@ import { AppConfigService } from 'src/app/app-config.service';
 })
 export class MaterDataCommonViewComponent implements OnInit {
 
-  secondaryLanguageLabels: any;
-  primaryLang: string;
-  secondaryLang: string;
+  @Input() masterDataName: string;
+  @Input() headerData: HeaderModel;
+  @Input() primaryData: any;
+  @Input() secondaryData: any;
+  @Input() fields: any;
+  @Input() primaryLang: string;
+  @Input() secondaryLang: string;
 
   constructor(private translateService: TranslateService, private appConfigService: AppConfigService) {
     // tslint:disable-next-line:no-string-literal

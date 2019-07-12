@@ -12,11 +12,7 @@ export class DataStorageService {
   constructor(private http: HttpClient) {}
 
   getCenterSpecificLabelsAndActions(): Observable<any> {
-    return this.http.get('./assets/entity-spec/center-entity-spec.json');
-  }
-
-  getCentersData(): Observable<any> {
-    return this.http.get('./assets/data/centers-data.json');
+    return this.http.get('./assets/entity-spec/center.json');
   }
 
   getImmediateChildren(locationCode: string, langCode: string): Observable<any>  {
@@ -42,5 +38,13 @@ export class DataStorageService {
   getMachinesData(request: RequestModel): Observable<any> {
     console.log(request);
     return this.http.post(appConstants.URL.machines, request);
+  }
+
+  getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {
+    return this.http.post(appConstants.MASTERDATA_BASE_URL + type + '/search', data);
+  }
+
+  getSpecFileForMasterDataEntity(filename: string): Observable<any> {
+    return this.http.get(`./assets/entity-spec/${filename}.json`);
   }
 }

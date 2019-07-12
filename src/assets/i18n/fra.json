@@ -9,6 +9,9 @@
             "subItem2": "Dispositifs",
             "subItem3": "Utilisateurs",
             "subItem4": "Machines"
+        },
+        "item3": {
+            "title": "données de base"
         }
     },
     "center": {

@@ -9,6 +9,9 @@
             "subItem2": "Devices",
             "subItem3": "Users",
             "subItem4": "Machines"
+        },
+        "item3": {
+            "title": "MASTER DATA"
         }
     },
     "center": {

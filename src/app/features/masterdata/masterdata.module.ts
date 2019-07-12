@@ -8,14 +8,25 @@ import { MaterDataCommonBodyComponent } from './shared/mater-data-common-body/ma
 import { MaterDataCommonViewComponent } from './shared/mater-data-common-view/mater-data-common-view.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { I18nModule } from '../../../app/i18n.module';
+import { ListViewComponent } from './list-view/list-view.component';
+import { SingleViewComponent } from './single-view/single-view.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [MasterDataComponent, MaterDataCommonHeaderComponent, MaterDataCommonBodyComponent, MaterDataCommonViewComponent],
+  declarations: [
+    MasterDataComponent,
+    MaterDataCommonHeaderComponent,
+    MaterDataCommonBodyComponent,
+    MaterDataCommonViewComponent,
+    ListViewComponent,
+    SingleViewComponent
+  ],
   imports: [
     CommonModule,
     MasterdataRoutingModule,
     MaterialModule,
-    I18nModule
+    I18nModule,
+    SharedModule
   ]
 })
 export class MasterdataModule { }
