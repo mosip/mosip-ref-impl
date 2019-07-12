@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SortModel } from 'src/app/core/models/sort.model';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-table',
@@ -24,13 +25,16 @@ export class TableComponent implements OnInit, OnChanges {
   columnsOfTableData = [];
   sortStatusArray: string[];
   currentRoute: string;
+  lang: string;
   constructor(private router: Router ,
-              private activateRoute: ActivatedRoute) {}
+              private activateRoute: ActivatedRoute,
+              private appConfig: AppConfigService) {}
   ngOnInit() {
     this.tableData = [...this.data];
     console.log(this.tableData);
     console.log(this.displayedColumns);
     this.sortStatusArray = [];
+    this.lang = this.appConfig.getConfig().primaryLangCode;
   }
 
   ngOnChanges(): void {
@@ -47,12 +51,12 @@ export class TableComponent implements OnInit, OnChanges {
     this.router.navigate(['404']);
   }
   getTableRowData(data, index, columnName) {
-    console.log(data.id + 'index' + index + columnName);
-    const route = this.router.url;
-    this.currentRoute = route.split('/')[3];
+    console.log(data.id + ' index ' + index + '  ' + columnName);
+    const routeIndex = this.router.url.lastIndexOf('/');
+    this.currentRoute = this.router.url.slice(0, routeIndex);
     console.log(this.currentRoute);
     if (index === 0 && columnName === 'name' ) {
-      this.router.navigate(['admin/resources/centers/single-view', data.id]);
+      this.router.navigate([`${this.currentRoute}/single-view`, data.id]);
     }
   }
   sortColumn(columnName) {

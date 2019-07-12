@@ -1,5 +1,4 @@
 {
-  "eng": {
     "actionButtons": [
       {
         "buttonName": {
@@ -7,6 +6,7 @@
           "fra": "",
           "ara": ""
         },
+        "imagePath":"assets/images/filter.png",
         "actionListType": "action",
         "actionURL": { "case": "holiday-type" },
         "redirectURL": "",
@@ -48,7 +48,7 @@
       },
       {
         "name": "createdDateTime",
-        "showInListView": "",
+        "showInListView": "false",
         "label": {
           "eng": "Created Time",
           "ara": "الوقت الذي تم إنشاؤه",
@@ -60,8 +60,8 @@
         "LinkURL": ""
       },
       {
-        "name": "description",
-        "showInListView": "",
+        "name": "holidayDesc",
+        "showInListView": "true",
         "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
         "sortOrder": "",
         "showAsLink": "",
@@ -70,7 +70,7 @@
       },
       {
         "name": "locationCode",
-        "showInListView": "",
+        "showInListView": "true",
         "label": { "eng": "Location", "ara": "موقع", "fra": "Emplacement" },
         "sortOrder": "",
         "showAsLink": "",
@@ -84,5 +84,4 @@
       "pageSizeList": [10, 20, 30, 40, 50]
     },
     "filterColumns": []
-  }
 }

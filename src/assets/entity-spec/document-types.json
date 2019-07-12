@@ -31,6 +31,7 @@
       },
       {
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
         "actionListType": "action",
         "actionURL": { "case": "document-type" },
         "redirectURL": "",
@@ -43,6 +44,7 @@
           "ara": "إضافة نوع المستند",
           "fra": "Ajouter un type de document"
         },
+        "imagePath":"assets/images/add-icon.png",
         "actionListType": "redirect",
         "actionURL": "",
         "redirectURL": "admin/resources/centers/create",
@@ -54,6 +56,7 @@
     {
       "name": "code",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
       "sortOrder": "3",
       "showAsLink": "",
@@ -63,6 +66,7 @@
     {
       "name": "name",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
       "sortOrder": "",
       "showAsLink": "",
@@ -72,6 +76,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label":{ "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",
@@ -79,8 +84,9 @@
       "LinkURL": ""
     },
     {
-      "name": "descr",
+      "name": "description",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Description", "ara": "وصف", "fra": "La description" },
       "sortOrder": "",
       "showAsLink": "",
@@ -90,6 +96,7 @@
     {
       "name": "createdDateTime",
       "showInListView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
@@ -103,6 +110,7 @@
     {
         "name": "createdBy",
         "showInListView": "false",
+        "showInSingleView": "false",
         "label": { "eng": "Created By", "ara": "تم إنشاؤه من قبل", "fra": "Créé par" },
         "sortOrder": "3",
         "showAsLink": "",
@@ -112,6 +120,7 @@
       {
         "name": "updatedBy",
         "showInListView": "false",
+        "showInSingleView": "false",
         "label": { "eng": "Updated By", "ara": "تم التحديث بواسطة", "fra": "Mise à jour par" },
         "sortOrder": "3",
         "showAsLink": "",
@@ -121,6 +130,7 @@
       {
         "name": "updatedDateTime",
         "showInListView": "false",
+        "showInSingleView": "false",
         "label": { "eng": "Updated Time", "ara": "وقت التحديث", "fra": "Temps mis à jour" },
         "sortOrder": "3",
         "showAsLink": "",

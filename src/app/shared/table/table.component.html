@@ -2,11 +2,13 @@
   <table class="mat-table">
     <tr class="mat-row sticky-header">
       <th
-        *ngFor="let item of displayedColumns; let i = index"
+        *ngFor="let columnName of displayedColumns; let i = index"
         class="mat-header-cell table-header sticky-header"
       >
-        {{ item.label.eng
-        }}<span (click)="sortColumn(item.name)"
+        <span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
+        <span *ngIf="lang === 'fra'">{{ columnName.label.fra }}</span>
+        <span *ngIf="lang === 'ara'">{{ columnName.label.ara }}</span>
+        <span (click)="sortColumn(item.name)"
           ><img
             src="assets/images/sort.png"
             height="7px"

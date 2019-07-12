@@ -42,6 +42,7 @@
       },
       {
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
         "actionListType": "action",
         "actionURL": { "case": "devices" },
         "redirectURL": "",
@@ -54,6 +55,7 @@
           "ara": "إضافة آلة",
           "fra": "Ajouter le deivce"
         },
+        "imagePath":"assets/images/add-icon.png",
         "actionListType": "redirect",
         "actionURL": "",
         "redirectURL": "admin/resources/centers/create",

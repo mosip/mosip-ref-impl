@@ -2,12 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { MasterDataComponent } from './master-data/master-data.component';
-import { MaterDataCommonViewComponent } from './shared/mater-data-common-view/mater-data-common-view.component';
+import { ListViewComponent } from './list-view/list-view.component';
+import { SingleViewComponent } from './single-view/single-view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: MasterDataComponent },
-  { path: 'masterDataView', component: MaterDataCommonViewComponent }
+  { path: 'document-type/view', component: ListViewComponent },
+  { path: 'document-type/single-view/:id', component: SingleViewComponent },
+  { path: 'location/view', component: ListViewComponent },
+  { path: 'location/single-view/:id', component: SingleViewComponent }
 ];
 
 @NgModule({

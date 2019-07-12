@@ -1,4 +1,5 @@
 {
     "primaryLangCode": "eng",
-    "secondaryLangCode": "ara"
+    "secondaryLangCode": "ara",
+    "baseUrl": "https://dev.mosip.io/r2/v1/"
 }

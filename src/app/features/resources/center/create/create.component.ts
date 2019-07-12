@@ -11,7 +11,7 @@ import * as appConstants from '../../../../app.constants';
 import { ValidateLatLong, ValidateKiosk } from 'src/app/core/validators/center.validator';
 import { AppConfigService } from 'src/app/app-config.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
+import { HeaderModel } from 'src/app/core/models/header.model';
 import { CenterModel } from 'src/app/core/models/center.model';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { CenterService } from 'src/app/core/services/center.service';
@@ -33,7 +33,7 @@ export class CreateComponent implements OnInit {
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   disableForms: boolean;
-  headerObject: CenterHeaderModel;
+  headerObject: HeaderModel;
   centerRequest = {} as CenterRequest;
   createUpdate = false;
 
@@ -160,7 +160,7 @@ export class CreateComponent implements OnInit {
     console.log(request);
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
       console.log(updateResponse);
-      if (!updateResponse.error) {
+      if (!updateResponse.errors) {
         this.dialog.open(DialogComponent, {
           width: '350px',
           data: {
@@ -348,18 +348,18 @@ export class CreateComponent implements OnInit {
 
   initializeheader() {
     if (this.data.length === 0) {
-      this.headerObject = new CenterHeaderModel(
+      this.headerObject = new HeaderModel(
         '-', '-', '-', '-', '-', '-', '-'
       );
     } else {
-      this.headerObject = new CenterHeaderModel(
+      this.headerObject = new HeaderModel(
         this.data[0].name,
-        this.data[0].id,
-        this.data[0].isActive,
         this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
         this.data[0].createdBy ? this.data[0].createdBy : '-',
         this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
-        this.data[0].updatedBy ? this.data[0].updatedBy : '-'
+        this.data[0].updatedBy ? this.data[0].updatedBy : '-',
+        this.data[0].id,
+        this.data[0].isActive,
       );
     }
   }

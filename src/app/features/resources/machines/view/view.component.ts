@@ -78,6 +78,7 @@ export class ViewComponent implements OnInit {
       .getMachinesData(this.requestModel)
       .subscribe(({ response, errors }) => {
         if (response != null) {
+          this.paginatorOptions.totalEntries = response.totalRecord;
           this.machines = [...response.data];
         }
       });
