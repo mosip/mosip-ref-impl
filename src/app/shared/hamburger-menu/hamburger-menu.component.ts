@@ -25,7 +25,7 @@ export class HamburgerComponent implements OnInit {
 
   }
 
-  logout() {
+  onItem() {
     this.logoutService.logout();
   }
 
