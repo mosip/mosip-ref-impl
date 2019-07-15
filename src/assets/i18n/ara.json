@@ -9,6 +9,9 @@
             "subItem2": "الأجهزة",
             "subItem3": "المستخدمين",
             "subItem4": "آلات"
+        },
+        "item3": {
+            "title": "البيانات الرئيسية"
         }
     },
     "center": {
@@ -152,5 +155,13 @@
                 "noBtnTxt": "لا"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "لا يوجد سجلات",
+            "لقد حدث خطأ فني"
+        ],
+        "buttonText": "حسنا",
+        "title": "خطأ"
     }
 }

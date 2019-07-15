@@ -9,10 +9,12 @@ import { MaterialModule } from './material.module';
 import { MatPaginatorIntl } from '@angular/material';
 import { I18nModule } from '../i18n.module';
 import { HamburgerComponent } from '../shared/hamburger-menu/hamburger-menu.component';
-import { StatusPipe } from '../core/pipes/status.pipe';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { StatusPipe } from './pipes/status.pipe';
+import { DateFormatPipe } from './pipes/date-format.pipe';
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, I18nModule],
+  imports: [CommonModule, MaterialModule, I18nModule , ReactiveFormsModule, FormsModule],
   declarations: [
     DialogComponent,
     TableComponent,
@@ -20,7 +22,8 @@ import { StatusPipe } from '../core/pipes/status.pipe';
     NotFoundComponent,
     HamburgerComponent,
     ErrorComponent,
-    StatusPipe
+    StatusPipe,
+    DateFormatPipe
   ],
   exports: [
     I18nModule,
@@ -31,6 +34,8 @@ import { StatusPipe } from '../core/pipes/status.pipe';
     MaterialModule,
     HamburgerComponent,
     ErrorComponent,
+    StatusPipe,
+    DateFormatPipe
   ],
   entryComponents: [DialogComponent],
   providers: [

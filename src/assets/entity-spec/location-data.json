@@ -1,0 +1,196 @@
+{
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "devices" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Add Location",
+        "ara": "أضف الموقع",
+        "fra": "Ajouter un emplacement"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/centers/create",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "code",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Code",
+        "ara": "رمز",
+        "fra": "Code"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey":"id"
+    },
+    {
+      "name": "name",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "prénom"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey":"id"
+    },
+
+    {
+      "name": "hierarchyName",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Hierarchy Name",
+        "ara": "اسم التسلسل الهرمي",
+        "fra": "Nom de la hiérarchie"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey":"code"
+    },
+    {
+      "name": "parentLocCode",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Parent Location Code", "ara": "رمز موقع الوالد", "fra": "Code d'emplacement parent" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey":"code"
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "region",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": { "eng": "Region", "ara": "المنطقه", "fra": "région" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created By",
+        "ara": "تم إنشاؤه من قبل",
+        "fra": "Créé par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedDateTime",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated Time",
+        "ara": "وقت التحديث",
+        "fra": "Temps mis à jour"
+      },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": []
+}

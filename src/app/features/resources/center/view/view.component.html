@@ -2,11 +2,10 @@
 <mat-card class="mat-elevation-z8">
   <app-toolbar
     *ngIf="
-      actionEllipsis && actionEllipsis && resourceFilter && paginatorOptions
+      actionEllipsis && actionEllipsis  && paginatorOptions
     "
     [buttonList]="actionEllipsis"
     [paginationOptions]="paginatorOptions"
-    [resourceFilter]="resourceFilter"
     (pageEvent)="pageEvent($event)"
   ></app-toolbar>
   <app-table

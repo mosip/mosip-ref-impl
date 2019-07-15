@@ -10,14 +10,19 @@ import { Location } from '@angular/common';
 })
 export class HamburgerComponent implements OnInit {
 
-  @Input() data;
+  @Input() data: any;
 
-  profileList: any[];
+  dataList: any[];
 
   constructor(private location: Location, private logoutService: LogoutService) { }
 
   ngOnInit() {
-    this.profileList = this.data.menuList;
+    console.log('hfdasfdsf', this.data);
+    if (this.data && this.data.menuList) {
+      this.dataList = this.data.menuList;
+      console.log('ButtonName', this.dataList);
+    }
+
   }
 
   logout() {

@@ -1,0 +1,72 @@
+<div id="mater-data-home">
+    <div class="heading">
+        <span><strong>Master Data</strong></span>
+        <span><b>Total No:&nbsp;15</b></span>
+    </div>
+    <div id="master-data-list">
+        <div class="item1">
+            <mat-card>
+                <mat-card-header class="header">
+                    <b>Common</b>
+                </mat-card-header>
+                <ng-container *ngFor="let itemList of masterDataCommonList">
+                    <mat-card-content class="content">
+                        <span>{{itemList?.label?.eng}}</span>
+                        <span style="text-align: right"><i class="material-icons">
+                                keyboard_arrow_right
+                            </i></span>
+                    </mat-card-content>
+                </ng-container>
+            </mat-card>
+        </div>
+        <div class="item1">
+            <div class="sub-items">
+                <div class="sub-item1">
+                    <mat-card>
+                        <mat-card-header class="header">
+                            <b>Device Definition</b>
+                        </mat-card-header>
+                        <ng-container *ngFor="let itemList of masterDataDeviceList">
+                            <mat-card-content class="content">
+                                <span>{{itemList?.label?.eng}}</span>
+                                <span style="text-align: right"><i class="material-icons">
+                                        keyboard_arrow_right
+                                    </i></span>
+                            </mat-card-content>
+                        </ng-container>
+                    </mat-card>
+                </div>
+                <div class="sub-item2">
+                    <mat-card>
+                        <mat-card-header class="header">
+                            <b>Machine Definition</b>
+                        </mat-card-header>
+                        <ng-container *ngFor="let itemList of masterDataMachineList">
+                            <mat-card-content class="content">
+                                <span>{{itemList?.label?.eng}}</span>
+                                <span style="text-align: right"><i class="material-icons">
+                                        keyboard_arrow_right
+                                    </i></span>
+                            </mat-card-content>
+                        </ng-container>
+                    </mat-card>
+                </div>
+                <div class="sub-item3">
+                    <mat-card>
+                        <mat-card-header class="header">
+                            <b>Device Definition</b>
+                        </mat-card-header>
+                        <ng-container *ngFor="let itemList of masterDataDocumentList">
+                            <mat-card-content class="content">
+                                <span>{{itemList?.label?.eng}}</span>
+                                <span style="text-align: right"><i class="material-icons">
+                                        keyboard_arrow_right
+                                    </i></span>
+                            </mat-card-content>
+                        </ng-container>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
