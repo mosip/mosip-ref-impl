@@ -9,8 +9,8 @@
                 <mat-card-header class="header">
                     <b>Common</b>
                 </mat-card-header>
-                <ng-container *ngFor="let itemList of masterDataCommonList">
-                    <mat-card-content class="content">
+                <ng-container *ngFor="let itemList of masterDataCommonList; let i = index">
+                    <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0">
                         <span>{{itemList?.label?.eng}}</span>
                         <span style="text-align: right"><i class="material-icons">
                                 keyboard_arrow_right
@@ -26,8 +26,8 @@
                         <mat-card-header class="header">
                             <b>Device Definition</b>
                         </mat-card-header>
-                        <ng-container *ngFor="let itemList of masterDataDeviceList">
-                            <mat-card-content class="content">
+                        <ng-container *ngFor="let itemList of masterDataDeviceList; let j = index">
+                            <mat-card-content class="content" [style.marginTop.px]="j === 0 ? 10:0">
                                 <span>{{itemList?.label?.eng}}</span>
                                 <span style="text-align: right"><i class="material-icons">
                                         keyboard_arrow_right
@@ -41,8 +41,8 @@
                         <mat-card-header class="header">
                             <b>Machine Definition</b>
                         </mat-card-header>
-                        <ng-container *ngFor="let itemList of masterDataMachineList">
-                            <mat-card-content class="content">
+                        <ng-container *ngFor="let itemList of masterDataMachineList; let k = index">
+                            <mat-card-content class="content" [style.marginTop.px]="k === 0 ? 10:0">
                                 <span>{{itemList?.label?.eng}}</span>
                                 <span style="text-align: right"><i class="material-icons">
                                         keyboard_arrow_right
@@ -56,8 +56,8 @@
                         <mat-card-header class="header">
                             <b>Device Definition</b>
                         </mat-card-header>
-                        <ng-container *ngFor="let itemList of masterDataDocumentList">
-                            <mat-card-content class="content">
+                        <ng-container *ngFor="let itemList of masterDataDocumentList; let l = index">
+                            <mat-card-content class="content" [style.marginTop.px]="l === 0 ? 10:0">
                                 <span>{{itemList?.label?.eng}}</span>
                                 <span style="text-align: right"><i class="material-icons">
                                         keyboard_arrow_right
