@@ -130,6 +130,16 @@ export const ListViewIdKeyMapping = {
 
   centers: { idKey: 'id' },
   devices: { idKey: 'id' },
-  machines: { idKey: 'id' }
+  machines: { idKey: 'id' },
+  'machine-type': {idKey: 'code'},
+  templates: {idKey: 'id'},
+  title: {idKey: 'code'},
+  'blacklisted-words': {idKey: 'word'},
+  'document-type': {idKey: 'code'},
+  location: {idKey: 'code'},
+
+
+
+
 
 };
