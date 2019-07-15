@@ -2,6 +2,6 @@
     "primaryLangCode": "eng",
     "secondaryLangCode": "ara",
     "baseUrl": "https://dev.mosip.io/v1/",
-    "adminUrl":"/admin-ui/"
+    "adminUrl":"/r2/admin-ui/"
 
 } 
