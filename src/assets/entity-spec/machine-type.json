@@ -52,7 +52,7 @@
         "LinkURL": ""
       },
       {
-        "name": "descrption",
+        "name": "description",
         "showInListView": "true",
         "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
         "sortOrder": "",
