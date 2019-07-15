@@ -1,14 +1,10 @@
 import * as config from 'src/assets/config.json';
 
-
 export const VERSION = '1.0';
-export const IDS = {
-  centers: 'mosip.admin.registration.centers'
-};
-export const BASE_URL = 'https://dev.mosip.io/r2/v1';
+export const BASE_URL = config.baseUrl;
 export const URL = {
-  centers: `${config.baseUrl}masterdata/registrationcenters/search`,
-  devices: `${config.baseUrl}masterdata/devices/search`,
+  centers:  `${config.baseUrl}masterdata/registrationcenters/search`,
+  devices:  `${config.baseUrl}masterdata/devices/search`,
   machines: `${config.baseUrl}masterdata/machines/search`
 };
 export const navItems = [
@@ -69,27 +65,71 @@ export const masterdataMapping = {
     specFileName: 'blacklisted-words',
     name: 'Black Listed Word',
     nameKey: '',
-    idKey: ''
+    idKey: '',
+    headerName: 'Blacklisted Words'
   },
   holidays: {
     apiName: 'holidays',
     specFileName: 'holiday-data',
     name: 'Holiday',
     nameKey: 'holidayName',
-    idKey: ''
+    idKey: '',
+    headerName: 'Holidays'
   },
   'document-type': {
     apiName: 'documenttypes',
     specFileName: 'document-types',
     name: 'Document Types',
     nameKey: 'name',
-    idKey: 'code'
+    idKey: 'code',
+    headerName: 'Document Type'
   },
   location: {
     apiName: 'locations',
     specFileName: 'location-data',
     name: 'Location',
     nameKey: 'name',
-    idKey: 'code'
+    idKey: 'code',
+    headerName: 'Location'
+  },
+  'gender-type': {
+    apiName: 'gendertype',
+    specFileName: 'gender-types',
+    name: 'Location',
+    nameKey: 'name',
+    idKey: 'code',
+    headerName: 'Gender Type'
+  },
+  title: {
+    apiName: 'title',
+    specFileName: 'titles',
+    name: 'Location',
+    nameKey: 'name',
+    idKey: 'code',
+    headerName: 'Title'
+  },
+  templates: {
+    apiName: 'templates',
+    specFileName: 'templates',
+    name: 'Location',
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Templates'
+  },
+  'machine-type': {
+    apiName: 'machinetypes',
+    specFileName: 'machine-type',
+    name: 'Location',
+    nameKey: 'name',
+    idKey: 'code',
+    headerName: 'Machine Type'
   }
+};
+
+export const ListViewIdKeyMapping = {
+
+  centers: { idKey: 'id' },
+  devices: { idKey: 'id' },
+  machines: { idKey: 'id' }
+
 };

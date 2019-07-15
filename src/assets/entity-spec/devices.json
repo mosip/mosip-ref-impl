@@ -76,6 +76,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+    
       },
       {
         "name": "deviceTypeName",
@@ -89,6 +90,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+      
       },
       {
         "name": "isActive",
@@ -98,6 +100,7 @@
         "showAsLink": "false",
         "linkType": "",
         "LinkURL": ""
+      
       },
       {
         "name": "macAddress",
@@ -120,6 +123,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+       
       },
       {
         "name": "mapStatus",
@@ -133,6 +137,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+       
       },
       {
         "name": "createdDateTime",
