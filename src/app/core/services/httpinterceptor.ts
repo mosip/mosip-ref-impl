@@ -11,10 +11,7 @@ import {
 import { Observable } from 'rxjs';
 import { LoginRedirectService } from './loginredirect.service';
 import { Router } from '@angular/router';
-/**
- * @description Http intercepter for Admin App
- * @author Urvil Joshi
- */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return next.handle(request).pipe(tap(event => {
       if (event instanceof HttpResponse) {
-        console.log(event);
+        console.log(event.status);
       }
     }, err => {
         if (err instanceof HttpErrorResponse) {
