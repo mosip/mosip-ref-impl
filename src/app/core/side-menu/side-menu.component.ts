@@ -28,7 +28,7 @@ export class SideMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('afsgfasgfdgsa', this.item);
+  //  console.log('afsgfasgfdgsa', this.item);
     if (this.depth === undefined) {
       this.depth = 0;
     }

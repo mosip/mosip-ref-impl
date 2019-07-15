@@ -78,6 +78,14 @@ export class ListViewComponent implements OnInit {
     console.log(this.sortFilter);
     this.getMasterDataTypeValues();
   }
+  pageEvent(event: any) {
+    console.log(event);
+    if (event) {
+      this.pagination.pageFetch = event.pageSize;
+      this.pagination.pageStart = event.pageIndex;
+      this.getMasterDataTypeValues();
+    }
+  }
 
   getMasterDataTypeValues() {
     return new Promise((resolve, reject) => {

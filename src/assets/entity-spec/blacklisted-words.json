@@ -3,8 +3,8 @@
       {
         "buttonName": {
           "eng": "Filter",
-          "fra": "",
-          "ara": ""
+          "fra": "filtre",
+          "ara": "تصفيه"
         },
         "imagePath":"assets/images/filter.png",
         "actionListType": "action",
@@ -37,7 +37,7 @@
           {
             "name": "langCode",
             "showInListView": "true",
-            "label": { "eng": "Language", "ara": "حاله", "fra": "statut" },
+            "label": { "eng": "Language", "ara": "حاله", "fra": "Language" },
             "sortOrder": "",
             "showAsLink": "false",
             "linkType": "",

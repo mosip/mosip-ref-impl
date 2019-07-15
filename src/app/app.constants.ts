@@ -10,7 +10,7 @@ export const URL = {
 export const navItems = [
   {
     displayName: 'menuItems.item1.title',
-    icon: '../assets/images/home.svg',
+    icon: './assets/images/home.svg',
     route: '/admin/home',
     children: null
   },
@@ -43,7 +43,7 @@ export const navItems = [
   },
   {
     displayName: 'menuItems.item3.title',
-    icon: '../assets/images/home.svg',
+    icon: './assets/images/home.svg',
     route: '/admin/masterdata',
     children: null
   }
@@ -130,6 +130,16 @@ export const ListViewIdKeyMapping = {
 
   centers: { idKey: 'id' },
   devices: { idKey: 'id' },
-  machines: { idKey: 'id' }
+  machines: { idKey: 'id' },
+  'machine-type': {idKey: 'code'},
+  templates: {idKey: 'id'},
+  title: {idKey: 'code'},
+  'blacklisted-words': {idKey: 'word'},
+  'document-type': {idKey: 'code'},
+  location: {idKey: 'code'},
+
+
+
+
 
 };
