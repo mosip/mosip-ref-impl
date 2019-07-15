@@ -14,7 +14,7 @@ export const URL = {
 export const navItems = [
   {
     displayName: 'menuItems.item1.title',
-    icon: '../assets/images/home.svg',
+    icon: './assets/images/home.svg',
     route: '/admin/home',
     children: null
   },
@@ -47,7 +47,7 @@ export const navItems = [
   },
   {
     displayName: 'menuItems.item3.title',
-    icon: '../assets/images/home.svg',
+    icon: './assets/images/home.svg',
     route: '/admin/masterdata',
     children: null
   }
