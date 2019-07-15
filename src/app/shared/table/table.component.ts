@@ -58,7 +58,7 @@ export class TableComponent implements OnInit, OnChanges {
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     console.log(id);
     console.log(this.currentRoute);
-    if (index === 0 && columnName === 'name' ) {
+    if (index === 0) {
       // tslint:disable-next-line:no-string-literal
       this.router.navigate([`${this.currentRoute}/single-view`, data[id.idKey]]);
     }
