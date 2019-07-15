@@ -76,6 +76,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+   
       },
       {
         "name": "machineTypeName",
@@ -89,6 +90,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+      
       },
       {
         "name": "isActive",
@@ -98,6 +100,7 @@
         "showAsLink": "false",
         "linkType": "",
         "LinkURL": ""
+      
       },
       {
         "name": "macAddress",
@@ -107,6 +110,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+     
       },
       {
         "name": "serialNum",
@@ -120,6 +124,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+    
       },
       {
         "name": "mapStatus",
@@ -133,6 +138,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+    
       },
       {
         "name": "createdDateTime",
@@ -146,6 +152,7 @@
         "showAsLink": "",
         "linkType": "",
         "LinkURL": ""
+     
       }
     ],
     "paginator": {
