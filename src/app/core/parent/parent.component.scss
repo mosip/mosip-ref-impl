@@ -5,15 +5,16 @@
   .mat-sidenav {
     width: 260px;
     @media (max-width: 600px) {
-      width: 130px;
+      width: 200px;
       font-size: 13px;
     }
   }
   .mat-sidenav-container {
     background-color: #f0f0f0 !important;
-    // @media (max-width: 840px) {
-    //   height: 100vh !important;
-    // }
+    height: calc(100vh - 80px);
+    @media (max-width: 840px) {
+      height: 100vh !important;
+    }
 
     .mat-sidenav-content {
       margin-left: 280px !important;
