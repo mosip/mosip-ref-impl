@@ -95,7 +95,7 @@ export const masterdataMapping = {
   'gender-type': {
     apiName: 'gendertype',
     specFileName: 'gender-types',
-    name: 'Location',
+    name: 'Gender Type',
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Gender Type'
@@ -103,7 +103,7 @@ export const masterdataMapping = {
   title: {
     apiName: 'title',
     specFileName: 'titles',
-    name: 'Location',
+    name: 'Title',
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Title'
@@ -111,7 +111,7 @@ export const masterdataMapping = {
   templates: {
     apiName: 'templates',
     specFileName: 'templates',
-    name: 'Location',
+    name: 'Templates',
     nameKey: 'name',
     idKey: 'id',
     headerName: 'Templates'
@@ -119,7 +119,7 @@ export const masterdataMapping = {
   'machine-type': {
     apiName: 'machinetypes',
     specFileName: 'machine-type',
-    name: 'Location',
+    name: 'Machine Type',
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Machine Type'
