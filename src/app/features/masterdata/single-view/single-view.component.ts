@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import * as appConstants from '../../../app.constants';
 import { AppConfigService } from 'src/app/app-config.service';
@@ -7,13 +7,17 @@ import { HeaderModel } from 'src/app/core/models/header.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { RequestModel } from 'src/app/core/models/request.model';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-single-view',
   templateUrl: './single-view.component.html',
   styleUrls: ['./single-view.component.scss']
 })
-export class SingleViewComponent implements OnInit {
+export class SingleViewComponent implements OnDestroy {
   specFileData: any;
   mapping: any;
   id: string;
@@ -22,31 +26,49 @@ export class SingleViewComponent implements OnInit {
   primaryData: any;
   secondaryData: any;
   headerData: HeaderModel;
+  showSpinner = true;
+
+  subscribed: any;
+  masterdataType: string;
 
   fetchRequest = {} as CenterRequest;
 
   data = [];
 
+  popupMessages = [];
+
   constructor(
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
-    private appService: AppConfigService
-  ) {}
+    private appService: AppConfigService,
+    private dialog: MatDialog,
+    private location: Location,
+    private router: Router,
+    private translate: TranslateService
+  ) {
+    this.subscribed = router.events.subscribe( event => {
+      if (event instanceof NavigationEnd) {
+        this.initializeComponent();
+      }
+    });
+  }
 
-  ngOnInit() {
+  async initializeComponent() {
+    this.showSpinner = true;
     // tslint:disable-next-line:no-string-literal
-    this.primaryLangCode = this.appService.getConfig()['primaryLangCode'];
+    this.primaryLangCode = await this.appService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
-    this.secondaryLangCode = this.appService.getConfig()['secondaryLangCode'];
-    this.activatedRoute.params.subscribe(response => (this.id = response.id));
+    this.secondaryLangCode = await this.appService.getConfig()['secondaryLangCode'];
+    this.translate.getTranslation(this.primaryLangCode).subscribe(response => this.popupMessages = response.singleView);
+    this.activatedRoute.params.subscribe(response => {
+      this.id = response.id;
+      this.masterdataType = response.type;
+      this.mapping = appConstants.masterdataMapping[response.type];
+    });
     this.loadData();
   }
 
  async loadData() {
-    const routeParts = this.router.url.split('/');
-    this.mapping =
-      appConstants.masterdataMapping[routeParts[routeParts.length - 3]];
     this.dataStorageService
       .getSpecFileForMasterDataEntity(this.mapping.specFileName)
       .subscribe(response => {
@@ -67,6 +89,7 @@ export class SingleViewComponent implements OnInit {
       this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
       this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
     );
+    this.showSpinner = false;
   }
 
   getData(language: string, isPrimary: boolean) {
@@ -80,14 +103,41 @@ export class SingleViewComponent implements OnInit {
     this.dataStorageService
       .getMasterDataByTypeAndId(this.mapping.apiName, request)
       .subscribe(response => {
-        this.data.push(response.response.data);
-        if (isPrimary) {
+        if (response.response.data) {
+          this.data.push(response.response.data);
+          if (isPrimary) {
            this.primaryData = response.response.data[0];
-        } else {
+          } else {
            this.secondaryData = response.response.data[0];
+          }
+          resolve(true);
+        } else {
+          // tslint:disable-next-line:no-string-literal
+          this.displayMessage(this.popupMessages['errorMessages'][0]);
         }
-        resolve(true);
+      }, error => {
+        // tslint:disable-next-line:no-string-literal
+        this.displayMessage(this.popupMessages['errorMessages'][1]);
       });
     });
+  }
+
+  displayMessage(message: string) {
+    this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: {
+        case: 'MESSAGE',
+        // tslint:disable-next-line:no-string-literal
+        title: this.popupMessages['title'],
+        message,
+        // tslint:disable-next-line:no-string-literal
+        btnTxt: this.popupMessages['buttonText']
+      },
+      disableClose: true
+    }).afterClosed().subscribe(() => this.router.navigateByUrl(`admin/masterdata/${this.masterdataType}/view`));
+  }
+
+  ngOnDestroy() {
+    this.subscribed.unsubscribe();
   }
 }

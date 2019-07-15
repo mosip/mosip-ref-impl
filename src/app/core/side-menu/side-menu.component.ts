@@ -23,7 +23,7 @@ export class SideMenuComponent implements OnInit {
   constructor(private sideMenuService: SideMenuService, private router: Router, private location: Location) {
     router.events.subscribe(() => {
       this.locationUrl = location.path();
-      console.log('location', this.locationUrl);
+    //  console.log('location', this.locationUrl);
     });
   }
 

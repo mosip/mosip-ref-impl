@@ -155,5 +155,13 @@
                 "noBtnTxt": "Non"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "Aucun Enregistrement Trouvé",
+            "Une erreur technique est survenue"
+        ],
+        "buttonText": "D'accord",
+        "title": "Erreur"
     }
 }
