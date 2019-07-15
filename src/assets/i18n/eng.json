@@ -155,5 +155,13 @@
                 "noBtnTxt": "No"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "No record found",
+            "A technical error has occurred"
+        ],
+        "buttonText": "OK",
+        "title": "Error"
     }
 }

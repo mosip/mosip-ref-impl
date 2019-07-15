@@ -9,13 +9,13 @@ export class DataStorageService {
 
   BASE_URL = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCenterSpecificLabelsAndActions(): Observable<any> {
     return this.http.get('./assets/entity-spec/center.json');
   }
 
-  getImmediateChildren(locationCode: string, langCode: string): Observable<any>  {
+  getImmediateChildren(locationCode: string, langCode: string): Observable<any> {
     return this.http.get(appConstants.MASTERDATA_BASE_URL + 'locations/immediatechildren/' + locationCode + '/' + langCode);
   }
 
@@ -38,6 +38,10 @@ export class DataStorageService {
   getMachinesData(request: RequestModel): Observable<any> {
     console.log(request);
     return this.http.post(appConstants.URL.machines, request);
+  }
+
+  getMasterDataTypesList(): Observable<any> {
+    return this.http.get('./assets/entity-spec/master-data-entity-spec.json');
   }
 
   getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {

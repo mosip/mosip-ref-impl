@@ -17,17 +17,17 @@ export const navItems = [
   {
     displayName: 'menuItems.item2.title',
     icon: 'assets/images/support.svg',
-    route: 'admin/resources/',
+    route: 'admin/resources',
     children: [
       {
         displayName: 'menuItems.item2.subItem1',
         icon: null,
-        route: '/admin/resources/centers/view'
+        route: '/admin/resources/centers',
       },
       {
         displayName: 'menuItems.item2.subItem2',
         icon: null,
-        route: '/admin/resources/devices/view'
+        route: '/admin/resources/devices',
       },
       {
         displayName: 'menuItems.item2.subItem3',

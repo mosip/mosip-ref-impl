@@ -3,25 +3,24 @@
 
 #parent-component {
   .mat-sidenav {
-    width: 200px;
+    width: 260px;
     @media (max-width: 600px) {
-      width: 50vw;
+      width: 200px;
       font-size: 13px;
     }
   }
   .mat-sidenav-container {
     background-color: #f0f0f0 !important;
-    height: 86.7vh;
+    height: calc(100vh - 80px);
     @media (max-width: 840px) {
-      height: 100vh;
+      height: 100vh !important;
     }
 
     .mat-sidenav-content {
-      margin-left: 230px !important;
+      margin-left: 280px !important;
       margin-right: 20px !important;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
       @media (max-width: 840px) {
         margin-left: 28px !important;
         margin-right: 28px !important;

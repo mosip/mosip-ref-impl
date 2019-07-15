@@ -19,11 +19,14 @@
   display: flex;
   width: auto !important;
   .routeIcon {
-    margin-left: 10px;
+    margin-left: 24px;
   }
   .padding-left {
     margin-left: 45px;
   }
+}
+.mat-list-base .mat-list-item .mat-list-item-content {
+  padding: 0 43px !important;
 }
 
 @include breakpoint-max(600px) {
