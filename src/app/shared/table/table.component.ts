@@ -10,6 +10,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
+import * as appConstants from 'src/app/app.constants';
 
 @Component({
   selector: 'app-table',
@@ -51,12 +52,15 @@ export class TableComponent implements OnInit, OnChanges {
     this.router.navigate(['404']);
   }
   getTableRowData(data, index, columnName) {
-    console.log(data.id + ' index ' + index + '  ' + columnName);
     const routeIndex = this.router.url.lastIndexOf('/');
     this.currentRoute = this.router.url.slice(0, routeIndex);
+    const currentRouteType = this.router.url.split('/')[3];
+    const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    console.log(id);
     console.log(this.currentRoute);
-    if (index === 0 && columnName === 'name' ) {
-      this.router.navigate([`${this.currentRoute}/single-view`, data.id]);
+    if (index === 0) {
+      // tslint:disable-next-line:no-string-literal
+      this.router.navigate([`${this.currentRoute}/single-view`, data[id.idKey]]);
     }
   }
   sortColumn(columnName) {
@@ -77,7 +81,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.sort.emit(sortModel);
   }
 
-  tableStyle(index, columnValue) {
+  tableStyle(index, columnValue , columnName) {
     const myTableStyles = {
       color: '#0F2126',
       cursor: '',
@@ -92,13 +96,13 @@ export class TableComponent implements OnInit, OnChanges {
       myTableStyles.cursor = 'pointer';
       return myTableStyles;
     }
-    if (index === 2 && columnValue === true ) {
+    if (columnValue === true && columnName === 'isActive') {
       myTableStyles.backgroundColor = '#C2F2DA';
       myTableStyles.padding = '5px';
       myTableStyles.border = '1px solid #4AD991';
       myTableStyles.borderRadius = '7px';
       return myTableStyles;
-    } else if (index === 2 && columnValue === false) {
+    } else if (columnValue === false && columnName === 'isActive') {
       myTableStyles.backgroundColor = '#CECFD0';
       myTableStyles.padding = '5px';
       myTableStyles.border = '1px solid #9C9F9F';

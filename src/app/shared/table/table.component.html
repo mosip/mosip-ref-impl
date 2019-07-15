@@ -8,7 +8,7 @@
         <span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
         <span *ngIf="lang === 'fra'">{{ columnName.label.fra }}</span>
         <span *ngIf="lang === 'ara'">{{ columnName.label.ara }}</span>
-        <span (click)="sortColumn(item.name)"
+        <span (click)="sortColumn(columnName.name)"
           ><img
             src="assets/images/sort.png"
             height="7px"
@@ -25,13 +25,13 @@
         (click)="getTableRowData(data, i, item)"
         [ngClass]="{'text-alignment':item === 'name'}"
       >
-        <span class="flex-display" [ngStyle]="tableStyle(i,data[item])"
+        <span class="flex-display" [ngStyle]="tableStyle(i,data[item],item)"
           ><img
             src="assets/images/center-name-icon.png"
             height="20px;"
-            width="30px;"
+            width="35px;"
             *ngIf="item === 'name'"
-            style="padding-right:10px;"
+            style="padding-right:15px;"
           />{{ data[item] | status }}</span
         >
       </td>

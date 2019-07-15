@@ -25,7 +25,6 @@ export class HamburgerComponent implements OnInit {
   }
 
   onItem() {
-    // this.location.back();
   }
 
 }

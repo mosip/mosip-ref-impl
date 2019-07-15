@@ -65,7 +65,8 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "idKey":"id"
     },
     {
       "name": "name",
@@ -79,7 +80,8 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "idKey":"id"
     },
 
     {
@@ -94,7 +96,8 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "idKey":"code"
     },
     {
       "name": "parentLocCode",
@@ -104,13 +107,14 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "idKey":"code"
     },
     {
       "name": "isActive",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Is Active", "ara": "نشط", "fra": "c'est actif" },
+      "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",

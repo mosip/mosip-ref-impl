@@ -25,9 +25,9 @@
     margin-left: 45px;
   }
 }
-.mat-list-base .mat-list-item .mat-list-item-content {
-  padding: 0 43px !important;
-}
+// .mat-list-base .mat-list-item .mat-list-item-content {
+//   padding: 0 43px !important;
+// }
 
 @include breakpoint-max(600px) {
   .mat-list-item-content {
