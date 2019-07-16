@@ -163,5 +163,13 @@
         ],
         "buttonText": "OK",
         "title": "Error"
+    }, 
+    "masterData": {
+        "master-data": "Master Data",
+        "total-no": "Total No",
+        "common": "Common",
+        "device-definition": "Device Definition",
+        "machine-definition": "Machine Definition",
+        "document-definition": "Document Definition"
     }
 }
