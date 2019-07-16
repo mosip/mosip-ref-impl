@@ -5,16 +5,16 @@
         *ngFor="let columnName of displayedColumns; let i = index"
         class="mat-header-cell table-header sticky-header"
       >
-        <span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
+        <span class="columnName-sort-span"><span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
         <span *ngIf="lang === 'fra'">{{ columnName.label.fra }}</span>
         <span *ngIf="lang === 'ara'">{{ columnName.label.ara }}</span>
         <span (click)="sortColumn(columnName.name)"
           ><img
-            src="assets/images/sort.png"
-            height="7px"
-            width="7px"
+            src='assets/images/icon_table_sort_both.png'
+            height="20px"
+            width="13px"
             class="sort-icon"
-        /></span>
+        /></span></span>
       </th>
       <th class="table-header sticky-header">&emsp;</th>
     </tr>
