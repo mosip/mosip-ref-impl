@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class HeaderService {
 
-  private Username: string;
-  private roles: string;
+  private Username = '';
+  private roles = '';
 
   constructor() { }
 
