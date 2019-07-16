@@ -1,5 +1,9 @@
+#mater-data-home {
+  padding-top: 18px;
+}
+
 .heading {
-  margin: 38px 10px 15px 10px;
+  margin: 0px 10px 5px;
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -12,8 +16,8 @@
 #master-data-list {
   display: flex;
   overflow: auto;
-  max-height: 75vh;
-  padding-bottom: 20px;
+  max-height: 80vh;
+  // padding-bottom: 20px;
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -33,7 +37,6 @@
   .content {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
     span {
       display: inline-block;
       vertical-align: middle;
@@ -49,11 +52,11 @@
     @media (max-width: 768px) {
       margin-right: 0px !important;
       margin-left: 0px !important;
-      margin-bottom: 10px;
+      margin-bottom: 10px !important;
     }
 
     mat-card {
-      height: calc(100% + 53px);
+      height: calc(100% + 3px);
     }
   }
   .sub-items {

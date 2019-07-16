@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
     type: 'profile',
     name: 'Joan Doe',
     zone: 'Zonal Admin',
-    profileImg: '/assets/images/profile.png',
+    profileImg: './assets/images/profile.png',
     menuList: [
       {
         displayName: 'Logout',

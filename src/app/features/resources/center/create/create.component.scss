@@ -48,16 +48,11 @@
       flex: 0.2;
       display: flex;
       align-items: center;
-    }
-    .profile-img {
-      border-radius: 50%;
-      background: #ff7f3b;
-      display: flex;
-      width: 80px;
-      height: 80px;
-
-      img {
-        margin: 0 auto;
+      .profile-img {
+        img{
+          width: 100%;
+          height: auto;
+        }
       }
     }
     .center-details {
