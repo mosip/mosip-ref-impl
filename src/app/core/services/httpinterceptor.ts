@@ -12,6 +12,8 @@ import { Observable } from 'rxjs';
 import { LoginRedirectService } from './loginredirect.service';
 import { Router } from '@angular/router';
 import { HeaderService } from './header.service';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,8 @@ import { HeaderService } from './header.service';
 export class AuthInterceptor implements HttpInterceptor {
     constructor(private redirectService: LoginRedirectService,
                 private router: Router,
-                private headerService: HeaderService) { }
+                private headerService: HeaderService,
+                private dialog: MatDialog) { }
     // function which will be called for all http calls
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         request = request.clone({
@@ -27,9 +30,13 @@ export class AuthInterceptor implements HttpInterceptor {
       });
         return next.handle(request).pipe(tap(event => {
       if (event instanceof HttpResponse) {
-        console.log(event.status);
-        this.headerService.setUsername(event.body.response.userId);
-        this.headerService.setRoles(event.body.response.role);
+        console.log(event);
+        if (event.url.split('/').includes('validateToken')) {
+          if (event.body.response) {
+            this.headerService.setUsername(event.body.response.userId);
+            this.headerService.setRoles(event.body.response.role);
+          }
+        }
       }
     }, err => {
         if (err instanceof HttpErrorResponse) {
@@ -37,7 +44,17 @@ export class AuthInterceptor implements HttpInterceptor {
         if (err.status === 401 || err.status === 403) {
           this.redirectService.redirect(window.location.href);
         } else {
-          this.router.navigate(['/error', {errorMessage: err.message}]);
+         this.dialog.open(DialogComponent, {
+           width: '868px',
+           height: '365px',
+           data: {
+            case: 'MESSAGE',
+            title: 'Technical Error',
+            message: 'A technical error has occurred. Please refresh your page to continue or try again later',
+            btnTxt: 'Ok'
+           },
+           disableClose: true
+         });
         }
     }}));
   }
