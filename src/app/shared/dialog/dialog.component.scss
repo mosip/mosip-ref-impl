@@ -40,48 +40,75 @@ h5 {
   width: 80px;
 }
 
-
 .spinner {
   display: flex;
   margin: 120px;
 }
-
 .mat-dialog-container {
   border-radius: 0;
   padding: 0;
 }
-// Coinformation PopUp
+
 .mat-dialog-actions {
-    justify-content: flex-end;
+  justify-content: flex-end;
+}
+.flex-container > .mat-form-field {
+  width: 50%;
+  padding: 0px 10px;
+}
+.flex-container > .mat-form-field {
+  .mat-input-element {
+    color: black;
   }
-  .flex-container > .mat-form-field {
-    width: 50%;
-    padding: 0px 10px;
+  .mat-form-field-label {
+    color: black;
+    font-size: 12px;
   }
-  .flex-container > .mat-form-field {
-    .mat-input-element {
-      color: black;
-    }
-    .mat-form-field-label {
-      color: black;
-      font-size: 12px;
-    }
-    .mat-form-field-underline {
-      background-color: slategray;
+  .mat-form-field-underline {
+    background-color: slategray;
+  }
+}
+.flex-container > .mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: slategray;
+  }
+  .mat-form-field-underline {
+    background-color: slategray;
+  }
+  .mat-input-element {
+    color: black;
+  }
+  .mat-form-field-ripple {
+    background-color: slategray;
+  }
+}
+
+// Confirmation popup
+
+.confiramation {
+  .cofirmation-header {
+    padding: 16px !important;
+  }
+  .mat-dialog-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .confiramtion-footer {
+    background: #e6e7e7;
+    margin-bottom: 0px;
+    padding: 0 16px;
+    .mat-button {
+      outline: 1px solid #FF4081 !important;
+      margin: 0 10px;
+      border-radius: 0;
+      color: #FF4081;
     }
   }
-  .flex-container > .mat-form-field.mat-focused {
-    .mat-form-field-label {
-      color: slategray;
-    }
-    .mat-form-field-underline {
-      background-color: slategray;
-    }
-    .mat-input-element {
-      color: black;
-    }
-    .mat-form-field-ripple {
-      background-color: slategray;
+  .confiramtion-footer {
+    .mat-button:focus {
+      background: #FF4081 !important;
+      color: #ffffff;
+      outline: 0 !important;
     }
   }
-  
+}
