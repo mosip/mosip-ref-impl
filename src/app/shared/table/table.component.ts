@@ -27,6 +27,8 @@ export class TableComponent implements OnInit, OnChanges {
   sortStatusArray: string[];
   currentRoute: string;
   lang: string;
+  sortTrackIndex: number;
+  tableSortIconSource = '';
   constructor(private router: Router ,
               private activateRoute: ActivatedRoute,
               private appConfig: AppConfigService) {}
@@ -64,21 +66,39 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
   sortColumn(columnName) {
-    const sortModel = new SortModel();
-    sortModel.sortField = columnName;
-    if (this.sortStatusArray.length === 0) {
+      const sortModel = new SortModel();
+      sortModel.sortField = columnName;
+    // if (this.sortStatusArray.length === 0) {
+    //   this.sortStatusArray.push(columnName);
+    //   sortModel.sortType = 'asc';
+    // } else if (this.sortStatusArray.indexOf(columnName) >= 0) {
+    //   const valueIndex = this.sortStatusArray.indexOf(columnName);
+    //   this.sortStatusArray.splice(valueIndex, 1);
+    //   sortModel.sortType = 'desc';
+    // } else if (this.sortStatusArray.indexOf(columnName) === -1) {
+    //   this.sortStatusArray.push(columnName);
+    //   sortModel.sortType = 'asc';
+    // }
+    // console.log(sortModel);
+    // this.sort.emit(sortModel);
+      if (this.sortStatusArray.length === 0) {
+      this.sortTrackIndex = 0;
       this.sortStatusArray.push(columnName);
       sortModel.sortType = 'asc';
-    } else if (this.sortStatusArray.indexOf(columnName) >= 0) {
+    } else if (this.sortStatusArray.indexOf(columnName) >= 0 && this.sortTrackIndex === 0)  {
+      sortModel.sortType = 'desc';
+      this.sortTrackIndex = 1;
+    } else if (this.sortStatusArray.indexOf(columnName) >= 0  && this.sortTrackIndex === 1 ) {
       const valueIndex = this.sortStatusArray.indexOf(columnName);
       this.sortStatusArray.splice(valueIndex, 1);
-      sortModel.sortType = 'desc';
+      sortModel.sortType = null;
     } else if (this.sortStatusArray.indexOf(columnName) === -1) {
       this.sortStatusArray.push(columnName);
       sortModel.sortType = 'asc';
     }
-    console.log(sortModel);
-    this.sort.emit(sortModel);
+      console.log(this.sortStatusArray);
+      console.log(sortModel);
+      this.sort.emit(sortModel);
   }
 
   tableStyle(index, columnValue , columnName) {

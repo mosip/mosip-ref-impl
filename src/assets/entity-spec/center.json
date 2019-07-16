@@ -72,17 +72,8 @@
         "validations": ""
       },
       {
-        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-        "imagePath":"assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "center" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      },
-      {
         "buttonName": {
-          "eng": "Add Center",
+          "eng": "Create Center",
           "ara": "إضافة مركز",
           "fra": "Ajouter le centre"
         },
@@ -92,7 +83,17 @@
         "redirectURL": "admin/resources/centers/create",
         "showIn": "Button",
         "validations": ""
+      },
+      {
+        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
+        "actionListType": "action",
+        "actionURL": { "case": "center" },
+        "redirectURL": "",
+        "showIn": "Button",
+        "validations": ""
       }
+      
     ],
     "columnsToDisplay": [
       {
@@ -195,7 +196,7 @@
         "name": "createdDateTime",
         "showInListView": "",
         "label": {
-          "eng": "Contact Person",
+          "eng": "Created Time",
           "ara": "الوقت الذي تم إنشاؤه",
           "fra": "Temps créé"
         },

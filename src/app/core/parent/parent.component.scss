@@ -3,9 +3,9 @@
 
 #parent-component {
   .mat-sidenav {
-    width: 230px;
+    width: 200px;
     @media (max-width: 600px) {
-      width: 200px;
+      width: 180px;
       font-size: 13px;
     }
   }
@@ -17,7 +17,7 @@
     }
 
     .mat-sidenav-content {
-      margin-left: 280px !important;
+      margin-left: 220px !important;
       margin-right: 20px !important;
       display: flex;
       flex-direction: column;
