@@ -5,8 +5,8 @@
     </span>
     <span>
       <button class="menu-button" [matMenuTriggerFor]="menu">
-        <div class="mat-caption">{{data.name}}</div>
-        <div class="zone-text">{{data.zone}}</div>
+        <div class="mat-caption">{{headerService.getUsername()}}</div>
+        <div class="zone-text">{{headerService.getRoles()}}</div>
       </button>
     </span>
     <mat-menu #menu="matMenu" backdropClass="profile">

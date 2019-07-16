@@ -4,7 +4,6 @@ import {
   MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { CenterFilterForm } from 'src/app/core/validators/centerFilterForm';
 
 @Component({
