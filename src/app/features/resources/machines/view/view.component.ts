@@ -61,7 +61,9 @@ export class ViewComponent implements OnInit {
         this.sortFilter.splice(index, 1);
       }
     });
-    this.sortFilter.push(event);
+    if (event.sortType != null) {
+      this.sortFilter.push(event);
+    }
     console.log(this.sortFilter);
     this.getMachines();
   }

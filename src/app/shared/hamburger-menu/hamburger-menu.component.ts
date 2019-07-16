@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { Location } from '@angular/common';
+import { HeaderService } from 'src/app/core/services/header.service';
+import { LogoutService } from './../../core/services/logout.service';
+import { Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'app-hamburger-menu',
@@ -13,7 +14,7 @@ export class HamburgerComponent implements OnInit {
 
   dataList: any[];
 
-  constructor(private location: Location) { }
+  constructor(public headerService: HeaderService, private logoutService: LogoutService) { }
 
   ngOnInit() {
     console.log('hfdasfdsf', this.data);
@@ -25,6 +26,7 @@ export class HamburgerComponent implements OnInit {
   }
 
   onItem() {
+    this.logoutService.logout();
   }
 
 }

@@ -43,7 +43,7 @@ export const navItems = [
   },
   {
     displayName: 'menuItems.item3.title',
-    icon: '../assets/images/id-card.svg',
+    icon: './assets/images/id-card.svg',
     route: '/admin/masterdata',
     children: null
   }

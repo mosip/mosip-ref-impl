@@ -41,17 +41,8 @@
         "validations": ""
       },
       {
-        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-        "imagePath":"assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "machines" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      },
-      {
         "buttonName": {
-          "eng": "Add Machine",
+          "eng": "Create Machine",
           "ara": "إضافة آلة" ,
           "fra": "Ajouter le machine"
         },
@@ -59,6 +50,15 @@
         "actionListType": "redirect",
         "actionURL": "",
         "redirectURL": "admin/resources/centers/create",
+        "showIn": "Button",
+        "validations": ""
+      },
+      {
+        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
+        "actionListType": "action",
+        "actionURL": { "case": "machines" },
+        "redirectURL": "",
         "showIn": "Button",
         "validations": ""
       }

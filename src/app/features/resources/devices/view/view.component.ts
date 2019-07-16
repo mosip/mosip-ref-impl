@@ -60,26 +60,29 @@ export class ViewComponent implements OnInit {
         this.sortFilter.splice(index, 1);
       }
     });
+    if (event.sortType != null) {
     this.sortFilter.push(event);
+  }
     console.log(this.sortFilter);
     this.getDevices();
   }
 
   getDevices() {
-   this.devices =[];
-   this.devices = [];
-   this.centerRequest.filters = [],
-   this.centerRequest.pagination = this.pagination;
-   this.centerRequest.sort = this.sortFilter,
-   this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
-   this.requestModel = new RequestModel(null, null, this.centerRequest);
-   console.log(JSON.stringify(this.requestModel));
-   this.dataStroageService.getDevicesData(this.requestModel).subscribe(({response, errors}) => {
-    console.log(response);
-    if (response != null) {
-      this.paginatorOptions.totalEntries = response.totalRecord;
-      this.devices = [...response.data];
-    }
-   });
+    this.devices = [];
+    (this.centerRequest.filters = []),
+      (this.centerRequest.pagination = this.pagination);
+    (this.centerRequest.sort = this.sortFilter),
+      (this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode);
+    this.requestModel = new RequestModel(null, null, this.centerRequest);
+    console.log(JSON.stringify(this.requestModel));
+    this.dataStroageService
+      .getDevicesData(this.requestModel)
+      .subscribe(({ response, errors }) => {
+        console.log(response);
+        if (response != null) {
+          this.paginatorOptions.totalEntries = response.totalRecord;
+          this.devices = [...response.data];
+        }
+      });
   }
 }

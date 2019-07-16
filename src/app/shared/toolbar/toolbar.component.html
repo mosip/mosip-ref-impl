@@ -4,7 +4,7 @@
       <button
         mat-raised-button
         *ngFor="let button of buttonList; index as i"
-        [ngStyle]="{ margin: '10px', borderRadius: '0' }"
+        [ngStyle]="{ margin: '10px'}"
         (click)="actionEvent(button)"
         [ngClass]="{
           'button-style': button.buttonName.eng != 'Filter',
