@@ -86,7 +86,8 @@ export class CreateComponent implements OnInit {
 
   onCreate() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '868px',
+      height: '365px',
       data: {
         case: 'CONFIRMATION',
         title: this.popupMessages['create-edit'].title,
