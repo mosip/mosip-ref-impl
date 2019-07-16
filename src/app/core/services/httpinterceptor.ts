@@ -27,9 +27,9 @@ export class AuthInterceptor implements HttpInterceptor {
       });
         return next.handle(request).pipe(tap(event => {
       if (event instanceof HttpResponse) {
-        console.log(event.status);
-        this.headerService.setUsername(event.body.response.userId);
-        this.headerService.setRoles(event.body.response.role);
+        console.log(event);
+       // this.headerService.setUsername(event.body.response.userId);
+       // this.headerService.setRoles(event.body.response.role);
       }
     }, err => {
         if (err instanceof HttpErrorResponse) {
