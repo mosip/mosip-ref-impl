@@ -24,6 +24,7 @@ export class HeaderService {
 
   getRoles(): string {
     const x = this.roles.split(',');
-    return x.join(', ').replace('_', ' ');
+    x.splice(x.length - 1, 1);
+    return x.join(', ').replace(/_/g, ' ');
   }
 }
