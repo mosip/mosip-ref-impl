@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { Location } from '@angular/common';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-hamburger-menu',
@@ -13,7 +13,7 @@ export class HamburgerComponent implements OnInit {
 
   dataList: any[];
 
-  constructor(private location: Location) { }
+  constructor(public headerService: HeaderService) { }
 
   ngOnInit() {
     console.log('hfdasfdsf', this.data);
