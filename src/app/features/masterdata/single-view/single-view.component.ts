@@ -124,7 +124,8 @@ export class SingleViewComponent implements OnDestroy {
 
   displayMessage(message: string) {
     this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '868px',
+      height: '365px',
       data: {
         case: 'MESSAGE',
         // tslint:disable-next-line:no-string-literal

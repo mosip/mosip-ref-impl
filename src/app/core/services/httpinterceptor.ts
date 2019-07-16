@@ -45,7 +45,8 @@ export class AuthInterceptor implements HttpInterceptor {
           this.redirectService.redirect(window.location.href);
         } else {
          this.dialog.open(DialogComponent, {
-           width: '350px',
+           width: '868px',
+           height: '365px',
            data: {
             case: 'MESSAGE',
             title: 'Technical Error',
