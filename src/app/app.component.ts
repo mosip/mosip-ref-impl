@@ -10,8 +10,10 @@ export class AppComponent {
   title = 'app';
   loading = true;
 
+  subscribed: any;
+
   constructor(private router: Router) {
-    router.events.subscribe((event: RouterEvent) => {
+    this.subscribed = router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
     });
   }
@@ -22,14 +24,17 @@ export class AppComponent {
     }
     if (event instanceof NavigationEnd) {
       this.loading = false;
+      this.subscribed.unsubscribe();
     }
 
     // Set loading state to false in both of the below events to hide the spinner in case a request fails
     if (event instanceof NavigationCancel) {
       this.loading = false;
+      this.subscribed.unsubscribe();
     }
     if (event instanceof NavigationError) {
       this.loading = false;
+      this.subscribed.unsubscribe();
     }
   }
 }
