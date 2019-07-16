@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs';
 
+/**
+ * @description Authguard for Admin app
+ * @author Urvil Joshi
+ */
 @Injectable()
 export class AuthguardService implements CanActivate, CanActivateChild {
 

@@ -7,7 +7,10 @@ import { map, catchError} from 'rxjs/operators';
 import * as config from 'src/assets/config.json';
 
 
-
+/**
+ * @description AuthService for Admin App
+ * @author Urvil Joshi
+ */
 @Injectable()
 export class AuthService {
 

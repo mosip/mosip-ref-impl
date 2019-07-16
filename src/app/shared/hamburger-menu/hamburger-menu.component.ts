@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HeaderService } from 'src/app/core/services/header.service';
+import { LogoutService } from './../../core/services/logout.service';
+import { Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-hamburger-menu',
@@ -25,6 +27,7 @@ export class HamburgerComponent implements OnInit {
   }
 
   onItem() {
+    this.logoutService.logout();
   }
 
 }
