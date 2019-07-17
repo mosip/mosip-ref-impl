@@ -123,7 +123,40 @@ export const masterdataMapping = {
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Machine Type'
-  }
+  },
+  'device-type': {
+    apiName: 'devicetypes',
+    specFileName: 'device-type',
+    name: 'Device Type',
+    nameKey: 'name',
+    idKey: 'code',
+    headerName: 'Device Type'
+  },
+  'document-category': {
+    apiName: 'documentcategories',
+    specFileName: 'document-category',
+    name: 'Document Category',
+    nameKey: 'name',
+    idKey: 'code',
+    headerName: 'Document Category'
+  },
+  'machine-specification': {
+    apiName: 'machinespecifications',
+    specFileName: 'machine-specification',
+    name: 'Machine Specification',
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Machine Specification'
+  },
+  'device-specification': {
+    apiName: 'devicespecifications',
+    specFileName: 'device-specification',
+    name: 'Device Specification',
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Device Specification'
+  },
+
 };
 
 export const ListViewIdKeyMapping = {
@@ -136,7 +169,12 @@ export const ListViewIdKeyMapping = {
   title: {idKey: 'code'},
   'blacklisted-words': {idKey: 'word'},
   'document-type': {idKey: 'code'},
-  location: {idKey: 'code'},
+   location: {idKey: 'code'},
+   'device-specification': {idKey: 'id'},
+   'machine-specification': {idKey: 'id'},
+   'device-type': {idKey: 'code'},
+   'document-category': {idKey: 'code'},
+
 
 
 
