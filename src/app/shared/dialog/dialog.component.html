@@ -123,14 +123,14 @@
 
 <!-- Confirmation PopUp -->
 
-<div class="confiramation" *ngIf="input.case === 'CONFIRMATION'">
-  <div class="cofirmation-header">
+<div class="pop-up" *ngIf="input.case === 'CONFIRMATION'">
+  <div class="pop-up-header">
     <b mat-dialog-title>{{ input.title }}</b>
     <div mat-dialog-content>
       <p>{{ input.message }}</p>
     </div>
   </div>
-  <div mat-dialog-actions class="confiramtion-footer">
+  <div mat-dialog-actions class="pop-up-footer">
     <span><button mat-button [mat-dialog-close]="!confirm">
         {{ input.noBtnTxt }}
       </button></span>
@@ -140,9 +140,24 @@
   </div>
 </div>
 
+<!-- Message PopUp -->
+<div class="pop-up" *ngIf="input.case === 'MESSAGE'">
+  <div class="pop-up-header">
+    <b mat-dialog-title>{{ input.title }}</b>
+    <div mat-dialog-content>
+      <p>{{ input.message }}</p>
+    </div>
+  </div>
+  <div mat-dialog-actions class="pop-up-footer">
+    <span><button mat-button cdkFocusInitial (click)="onNoClick()">
+        {{ input.btnTxt }}
+      </button></span>
+  </div>
+</div>
 
 
-<div *ngIf="input.case === 'MESSAGE'" style="padding: 10px;">
+
+<!-- <div *ngIf="input.case === 'MESSAGE'" style="padding: 10px;">
   <h1 mat-dialog-title>{{ input.title }}</h1>
   <div mat-dialog-content>
     <p>{{ input.message }}</p>
@@ -152,4 +167,4 @@
         {{ input.btnTxt }}
       </button></span>
   </div>
-</div>
+</div> -->

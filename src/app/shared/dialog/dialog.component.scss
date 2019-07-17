@@ -85,15 +85,15 @@ h5 {
 
 // Confirmation popup
 
-.confiramation {
-  .cofirmation-header {
+.pop-up {
+  .pop-up-header {
     padding: 16px !important;
   }
   .mat-dialog-content {
     margin: 0 !important;
     padding: 0 !important;
   }
-  .confiramtion-footer {
+  .pop-up-footer  {
     background: #e6e7e7;
     margin-bottom: 0px;
     padding: 0 16px;
@@ -104,7 +104,7 @@ h5 {
       color: #FF4081;
     }
   }
-  .confiramtion-footer {
+  .pop-up-footer {
     .mat-button:focus {
       background: #FF4081 !important;
       color: #ffffff;
