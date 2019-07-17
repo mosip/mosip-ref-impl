@@ -247,7 +247,7 @@
                 </mat-form-field>
             </div>
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-            <div *ngIf="secondaryLanguageLabels" [formGroup]="secondaryForm" [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
+            <div *ngIf="secondaryLanguageLabels && secondaryLang" [formGroup]="secondaryForm" [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
                 <span><strong>{{secondaryLanguageLabels['language']}}</strong></span>
                 <hr />
                 <br /><br />

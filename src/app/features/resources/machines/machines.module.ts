@@ -5,6 +5,7 @@ import { CreateComponent } from './create/create.component';
 import { MachinesRoutingModule } from './machines-routing.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MachinesHeaderComponent } from './machines-header/machines-header.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MaterialModule,
     SharedModule
   ],
-  declarations: [ViewComponent, CreateComponent]
+  declarations: [ViewComponent, CreateComponent, MachinesHeaderComponent]
 })
 export class MachinesModule { }
