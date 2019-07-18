@@ -28,11 +28,13 @@ export class TableComponent implements OnInit, OnChanges {
   currentRoute: string;
   lang: string;
   sortTrackIndex: number;
-  tableSortIconSource = '';
-  constructor(private router: Router ,
-              private activateRoute: ActivatedRoute,
-              private appConfig: AppConfigService) {}
-  ngOnInit() {
+  sortIconTrackerArray = new Array(15).fill(0);
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private appConfig: AppConfigService
+  ) {}
+  ngOnInit(): void {
     this.tableData = [...this.data];
     console.log(this.tableData);
     console.log(this.displayedColumns);
@@ -49,11 +51,11 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
-  selectedRow(data, index) {
+  selectedRow(data: any, index: number) {
     console.log(data + index);
     this.router.navigate(['404']);
   }
-  getTableRowData(data, index, columnName) {
+  getTableRowData(data: any, index: number, columnName: string) {
     const routeIndex = this.router.url.lastIndexOf('/');
     this.currentRoute = this.router.url.slice(0, routeIndex);
     const currentRouteType = this.router.url.split('/')[3];
@@ -62,46 +64,49 @@ export class TableComponent implements OnInit, OnChanges {
     console.log(this.currentRoute);
     if (index === 0) {
       // tslint:disable-next-line:no-string-literal
-      this.router.navigate([`${this.currentRoute}/single-view`, data[id.idKey]]);
+      this.router.navigate([
+        `${this.currentRoute}/single-view`,
+        data[id.idKey]
+      ]);
     }
   }
-  sortColumn(columnName) {
-      const sortModel = new SortModel();
-      sortModel.sortField = columnName;
-    // if (this.sortStatusArray.length === 0) {
-    //   this.sortStatusArray.push(columnName);
-    //   sortModel.sortType = 'asc';
-    // } else if (this.sortStatusArray.indexOf(columnName) >= 0) {
-    //   const valueIndex = this.sortStatusArray.indexOf(columnName);
-    //   this.sortStatusArray.splice(valueIndex, 1);
-    //   sortModel.sortType = 'desc';
-    // } else if (this.sortStatusArray.indexOf(columnName) === -1) {
-    //   this.sortStatusArray.push(columnName);
-    //   sortModel.sortType = 'asc';
-    // }
-    // console.log(sortModel);
-    // this.sort.emit(sortModel);
-      if (this.sortStatusArray.length === 0) {
+  sortColumn(columnName: string, columnIndex: number) {
+    console.log(this.sortIconTrackerArray);
+    const sortModel = new SortModel();
+    sortModel.sortField = columnName;
+    if (this.sortStatusArray.length === 0) {
       this.sortTrackIndex = 0;
       this.sortStatusArray.push(columnName);
       sortModel.sortType = 'asc';
-    } else if (this.sortStatusArray.indexOf(columnName) >= 0 && this.sortTrackIndex === 0)  {
+      this.sortIconTrackerArray[columnIndex] = 1;
+    } else if (
+      this.sortStatusArray.indexOf(columnName) >= 0 &&
+      this.sortTrackIndex === 0
+    ) {
       sortModel.sortType = 'desc';
       this.sortTrackIndex = 1;
-    } else if (this.sortStatusArray.indexOf(columnName) >= 0  && this.sortTrackIndex === 1 ) {
+      this.sortIconTrackerArray[columnIndex] = -1;
+    } else if (
+      this.sortStatusArray.indexOf(columnName) >= 0 &&
+      this.sortTrackIndex === 1
+    ) {
+      this.sortTrackIndex = 0;
       const valueIndex = this.sortStatusArray.indexOf(columnName);
       this.sortStatusArray.splice(valueIndex, 1);
       sortModel.sortType = null;
+      this.sortIconTrackerArray[columnIndex] = 0;
     } else if (this.sortStatusArray.indexOf(columnName) === -1) {
+      this.sortTrackIndex = 0;
       this.sortStatusArray.push(columnName);
       sortModel.sortType = 'asc';
+      this.sortIconTrackerArray[columnIndex] = 1;
     }
-      console.log(this.sortStatusArray);
-      console.log(sortModel);
-      this.sort.emit(sortModel);
+    console.log(this.sortStatusArray);
+    console.log(sortModel);
+    this.sort.emit(sortModel);
   }
 
-  tableStyle(index, columnValue , columnName) {
+  tableStyle(index, columnValue, columnName) {
     const myTableStyles = {
       color: '#0F2126',
       cursor: '',

@@ -46,7 +46,7 @@ export class AuthInterceptor implements HttpInterceptor {
         } else {
          this.dialog.open(DialogComponent, {
            width: '868px',
-           height: '365px',
+           height: '190px',
            data: {
             case: 'MESSAGE',
             title: 'Technical Error',
