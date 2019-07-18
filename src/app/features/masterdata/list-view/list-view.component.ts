@@ -51,6 +51,7 @@ export class ListViewComponent implements OnInit {
           this.displayedColumns = response.columnsToDisplay.filter(
             values => values.showInListView === 'true'
           );
+          console.log(this.displayedColumns.length);
           this.actionButtons = response.actionButtons.filter(
             value => value.showIn.toLowerCase() === 'ellipsis'
           );
@@ -98,7 +99,7 @@ export class ListViewComponent implements OnInit {
       this.centerRequest.sort = this.sortFilter,
       this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
       this.requestModel = new RequestModel(null, null, this.centerRequest);
-      console.log(this.requestModel);
+      console.log(JSON.stringify(this.requestModel));
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
         .subscribe(({response}) => {

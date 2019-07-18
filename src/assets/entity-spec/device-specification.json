@@ -1,0 +1,151 @@
+{
+    "actionButtons": [
+      {
+        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath": "assets/images/filter.png",
+        "actionListType": "action",
+        "actionURL": { "case": "devices" },
+        "redirectURL": "",
+        "showIn": "Button",
+        "validations": ""
+      }
+    ],
+    "columnsToDisplay": [
+      {
+        "name": "id",
+        "showInListView": "false",
+        "label": { "eng": "Machine Spec ID", "ara": "معرف الجهاز المواصفات", "fra": "ID de spécification" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "name",
+        "showInListView": "true",
+        "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+          "name": "brand",
+          "showInListView": "true",
+          "label": { "eng": "Brand", "ara": "علامة تجارية", "fra": "Marque" },
+          "sortOrder": "",
+          "showAsLink": "",
+          "linkType": "",
+          "LinkURL": ""
+        },
+        {
+          "name": "model",
+          "showInListView": "true",
+          "label": { "eng": "Model", "ara": "نموذج", "fra": "Modèle" },
+          "sortOrder": "",
+          "showAsLink": "",
+          "linkType": "",
+          "LinkURL": ""
+        },
+        {
+          "name": "machineTypeName",
+          "showInListView": "true",
+          "label": { "eng": "Machine Type", "ara": "نوع الجهاز", "fra": "Type de machine" },
+          "sortOrder": "",
+          "showAsLink": "",
+          "linkType": "",
+          "LinkURL": ""
+        },
+        {
+          "name": "minDriverVersion",
+          "showInListView": "false",
+          "label": { "eng": "Minimum Driver Version", "ara": "الحد الأدنى لإصدار برنامج التشغيل ", "fra": "Minimum Driver Version" },
+          "sortOrder": "",
+          "showAsLink": "",
+          "linkType": "",
+          "LinkURL": ""
+        },
+        {
+          "name": "description",
+          "showInListView": "false",
+          "label": { "eng": "Description", "ara": " وصف", "fra": "La description" },
+          "sortOrder": "",
+          "showAsLink": "",
+          "linkType": "",
+          "LinkURL": ""
+        },
+      {
+        "name": "isActive",
+        "showInListView": "true",
+        "showInSingleView": "true",
+        "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
+        "sortOrder": "",
+        "showAsLink": "false",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "createdDateTime",
+        "showInListView": "true",
+        "showInSingleView": "false",
+        "label": {
+          "eng": "Created Time",
+          "ara": "الوقت الذي تم إنشاؤه",
+          "fra": "Temps créé"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "createdBy",
+        "showInListView": "false",
+        "showInSingleView": "false",
+        "label": {
+          "eng": "Created By",
+          "ara": "تم إنشاؤه من قبل",
+          "fra": "Créé par"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "updatedBy",
+        "showInListView": "false",
+        "showInSingleView": "false",
+        "label": {
+          "eng": "Updated By",
+          "ara": "تم التحديث بواسطة",
+          "fra": "Mise à jour par"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "updatedDateTime",
+        "showInListView": "false",
+        "showInSingleView": "false",
+        "label": {
+          "eng": "Updated Time",
+          "ara": "وقت التحديث",
+          "fra": "Temps mis à jour"
+        },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      }
+    ],
+    "paginator": {
+      "totalEntries": null,
+      "pageSize": "10",
+      "pageSizeList": [10, 20, 30, 40, 50]
+    },
+    "filterColumns": []
+  }
+  

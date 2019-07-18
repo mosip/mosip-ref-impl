@@ -49,7 +49,7 @@
         "imagePath":"assets/images/add-icon.png",
         "actionListType": "redirect",
         "actionURL": "",
-        "redirectURL": "admin/resources/centers/create",
+        "redirectURL": "admin/resources/machines/create",
         "showIn": "Button",
         "validations": ""
       },

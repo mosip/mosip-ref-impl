@@ -52,15 +52,15 @@ export class CreateComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private centerService: CenterService) {
-                   // tslint:disable-next-line:no-string-literal
-                   this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
-                   // tslint:disable-next-line:no-string-literal
-                   this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
-                   translateService.use(this.primaryLang);
-                   this.loadLocationData('MOR', 'region');
+    // tslint:disable-next-line:no-string-literal
+    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
+    // tslint:disable-next-line:no-string-literal
+    this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
+    translateService.use(this.primaryLang);
+    this.loadLocationData('MOR', 'region');
   }
 
- async ngOnInit() {
+  async ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
@@ -163,7 +163,8 @@ export class CreateComponent implements OnInit {
       console.log(updateResponse);
       if (!updateResponse.errors) {
         this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '868px',
+          height: '365px',
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['update-success'].title,
@@ -175,7 +176,8 @@ export class CreateComponent implements OnInit {
         });
       } else {
         this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '868px',
+          height: '365px',
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['update-error'].title,
@@ -249,10 +251,10 @@ export class CreateComponent implements OnInit {
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['create-success'].title,
-            message:  this.popupMessages['create-success'].message[0] +
-                      createResponse.response.registrationCenters[0].id +
-                      this.popupMessages['create-success'].message[1] + createResponse.response.registrationCenters[0].name,
-            btnTxt:  this.popupMessages['create-success'].btnTxt
+            message: this.popupMessages['create-success'].message[0] +
+              createResponse.response.registrationCenters[0].id +
+              this.popupMessages['create-success'].message[1] + createResponse.response.registrationCenters[0].name,
+            btnTxt: this.popupMessages['create-success'].btnTxt
           }
         }).afterClosed().subscribe(() => {
           this.primaryForm.reset();
@@ -264,9 +266,9 @@ export class CreateComponent implements OnInit {
           width: '350px',
           data: {
             case: 'MESSAGE',
-            title:  this.popupMessages['create-error'].title,
-            message:  this.popupMessages['create-error'].title,
-            btnTxt:  this.popupMessages['create-error'].title
+            title: this.popupMessages['create-error'].title,
+            message: this.popupMessages['create-error'].title,
+            btnTxt: this.popupMessages['create-error'].title
           }
         });
       }
@@ -278,7 +280,7 @@ export class CreateComponent implements OnInit {
     this.centerRequest.filters = [filter];
     this.centerRequest.languageCode = this.primaryLang;
     this.centerRequest.sort = [];
-    this.centerRequest.pagination = {pageStart: 0, pageFetch: 10};
+    this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
     let request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
     this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
       console.log(response.response.data[0]);
@@ -405,7 +407,7 @@ export class CreateComponent implements OnInit {
       endTime: ['', [Validators.required]],
       lunchStartTime: [''],
       lunchEndTime: [''],
-      isActive: [{value: false, disabled: true}]
+      isActive: [{ value: false, disabled: true }]
     });
     if (this.disableForms) {
       this.primaryForm.disable();
@@ -423,20 +425,20 @@ export class CreateComponent implements OnInit {
       addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
-      region: [{value: '', disabled: true}],
-      province: [{value: '', disabled: true}],
-      city: [{value: '', disabled: true}],
-      laa: [{value: '', disabled: true}],
-      postalCode: [{value: '', disabled: true}],
-      holidayZone: [{value: '', disabled: true}],
-      workingHours: [{value: '', disabled: true}],
-      noKiosk: [{value: 0, disabled: true}],
-      processingTime: [{value: '', disabled: true}],
-      startTime: [{value: '', disabled: true}],
-      endTime: [{value: '', disabled: true}],
-      lunchStartTime: [{value: '', disabled: true}],
-      lunchEndTime: [{value: '', disabled: true}],
-      isActive: [{value: false, disabled: true}]
+      region: [{ value: '', disabled: true }],
+      province: [{ value: '', disabled: true }],
+      city: [{ value: '', disabled: true }],
+      laa: [{ value: '', disabled: true }],
+      postalCode: [{ value: '', disabled: true }],
+      holidayZone: [{ value: '', disabled: true }],
+      workingHours: [{ value: '', disabled: true }],
+      noKiosk: [{ value: 0, disabled: true }],
+      processingTime: [{ value: '', disabled: true }],
+      startTime: [{ value: '', disabled: true }],
+      endTime: [{ value: '', disabled: true }],
+      lunchStartTime: [{ value: '', disabled: true }],
+      lunchEndTime: [{ value: '', disabled: true }],
+      isActive: [{ value: false, disabled: true }]
     });
     if (this.disableForms) {
       this.secondaryForm.disable();
@@ -452,8 +454,8 @@ export class CreateComponent implements OnInit {
   }
 
   submit() {
-   // console.log(this.primaryForm);
-  //  console.log(this.secondaryForm);
+    // console.log(this.primaryForm);
+    //  console.log(this.secondaryForm);
     if (!this.disableForms) {
       if (this.primaryForm.valid && this.secondaryForm.valid) {
         this.onCreate();
@@ -530,17 +532,17 @@ export class CreateComponent implements OnInit {
   }
 
   cancel() {
-   this.location.back();
+    this.location.back();
   }
 
   canDeactivate(): Observable<any> | boolean {
     if ((this.primaryForm.touched || this.secondaryForm.touched) && !this.createUpdate) {
-       return this.dialog.open(DialogComponent, {
+      return this.dialog.open(DialogComponent, {
         width: '350px',
         data: {
           case: 'CONFIRMATION',
-          title:  this.popupMessages['navigation-popup'].title,
-          message:  this.popupMessages['navigation-popup'].message,
+          title: this.popupMessages['navigation-popup'].title,
+          message: this.popupMessages['navigation-popup'].message,
           yesBtnTxt: this.popupMessages['navigation-popup'].yesBtnTxt,
           noBtnTxt: this.popupMessages['navigation-popup'].noBtnTxt
         }

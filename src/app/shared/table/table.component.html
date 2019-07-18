@@ -5,16 +5,28 @@
         *ngFor="let columnName of displayedColumns; let i = index"
         class="mat-header-cell table-header sticky-header"
       >
-        <span class="columnName-sort-span"><span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
-        <span *ngIf="lang === 'fra'">{{ columnName.label.fra }}</span>
-        <span *ngIf="lang === 'ara'">{{ columnName.label.ara }}</span>
-        <span (click)="sortColumn(columnName.name)"
-          ><img
-            src='assets/images/icon_table_sort_both.png'
-            height="20px"
-            width="13px"
-            class="sort-icon"
-        /></span></span>
+        <span class="columnName-sort-span"
+          ><span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
+          <span *ngIf="lang === 'fra'">{{ columnName.label.fra }}</span>
+          <span *ngIf="lang === 'ara'">{{ columnName.label.ara }}</span>
+          <span (click)="sortColumn(columnName.name,i)"
+            ><img *ngIf="sortIconTrackerArray[i] === 0"
+              src="assets/images/icon_table_sort_both.png"
+              height="20px"
+              width="13px"
+              class="sort-icon"
+            /><img *ngIf="sortIconTrackerArray[i] === 1"
+              src="assets/images/icon_table_sort_up.png"
+              height="20px"
+              width="13px"
+              class="sort-icon"
+            /><img *ngIf="sortIconTrackerArray[i] === -1"
+              src="assets/images/icon_table_sort_Down.png"
+              height="20px"
+              width="13px"
+              class="sort-icon"
+            /> </span
+        ></span>
       </th>
       <th class="table-header sticky-header">&emsp;</th>
     </tr>
@@ -23,9 +35,9 @@
         *ngFor="let item of columnsOfTableData; let i = index"
         class="mat-cell  "
         (click)="getTableRowData(data, i, item)"
-        [ngClass]="{'text-alignment':item === 'name'}"
+        [ngClass]="{ 'text-alignment': item === 'name' }"
       >
-        <span class="flex-display" [ngStyle]="tableStyle(i,data[item],item)"
+        <span class="flex-display" [ngStyle]="tableStyle(i, data[item], item)"
           ><img
             src="assets/images/center-name-icon.png"
             height="20px;"

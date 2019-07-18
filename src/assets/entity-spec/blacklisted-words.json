@@ -19,18 +19,18 @@
           {
             "name": "word",
             "showInListView": "true",
-            "label": { "eng": "Word", "ara": "اسم", "fra": "prénom" },
+            "label": { "eng": " Blacklisted Words", "ara": "اسم", "fra": "prénom" },
             "sortOrder": "",
             "showAsLink": "",
             "linkType": "",
             "LinkURL": ""
           },
           {
-            "name": "isActive",
+            "name": "description",
             "showInListView": "true",
-            "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+            "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
             "sortOrder": "",
-            "showAsLink": "false",
+            "showAsLink": "",
             "linkType": "",
             "LinkURL": ""
           },
@@ -44,11 +44,11 @@
             "LinkURL": ""
           },
           {
-            "name": "description",
+            "name": "isActive",
             "showInListView": "true",
-            "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
+            "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
             "sortOrder": "",
-            "showAsLink": "",
+            "showAsLink": "false",
             "linkType": "",
             "LinkURL": ""
           },
