@@ -93,7 +93,7 @@ export const masterdataMapping = {
     headerName: 'Location'
   },
   'gender-type': {
-    apiName: 'gendertype',
+    apiName: 'gendertypes',
     specFileName: 'gender-types',
     name: 'Gender Type',
     nameKey: 'name',
