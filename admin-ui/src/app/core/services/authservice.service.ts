@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError} from 'rxjs/operators';
+import * as config from 'src/assets/config.json';
 
 
 /**
@@ -18,7 +19,7 @@ export class AuthService {
    token: string;
    roles: string[];
    isAuthenticated(): Observable<boolean> {
-    return this.http.get('https://dev.mosip.io/r2/v1/authmanager/authorize/admin/validateToken', { observe: 'response'}).
+    return this.http.get(`${config.baseUrl}authmanager/authorize/admin/validateToken`, { observe: 'response'}).
     pipe(map(res => res.status === 200),
     catchError(error => {
       console.log(error);

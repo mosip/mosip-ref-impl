@@ -1,0 +1,18 @@
+<span><h3>{{headerName}}</h3></span>
+<mat-card class="mat-elevation-z8">
+    <app-toolbar
+      *ngIf="
+        actionEllipsis && actionEllipsis  && paginatorOptions
+      "
+      [buttonList]="actionEllipsis"
+      [paginationOptions]="paginatorOptions"
+      (pageEvent)="pageEvent($event)"
+    ></app-toolbar>
+    <app-table
+      *ngIf="masterData && displayedColumns && actionButtons"
+      [data]="masterData"
+      [displayedColumns]="displayedColumns"
+      [buttonList]="actionButtons"
+      (sort)="getSortColumn($event)"
+    ></app-table>
+  </mat-card>

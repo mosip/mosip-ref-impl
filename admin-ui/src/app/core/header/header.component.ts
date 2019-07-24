@@ -12,11 +12,13 @@ import { AppConfigService } from 'src/app/app-config.service';
 })
 export class HeaderComponent implements OnInit {
 
-  @Input() screenResize;
+  @Input() screenResize: number;
 
   profile = {
+    type: 'profile',
     name: 'Joan Doe',
     zone: 'Zonal Admin',
+    profileImg: './assets/images/profile.png',
     menuList: [
       {
         displayName: 'Logout',
@@ -33,5 +35,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('SreenWidth', this.screenResize);
   }
 }

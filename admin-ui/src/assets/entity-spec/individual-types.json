@@ -1,0 +1,101 @@
+{
+    "actionButtons": [
+      {
+        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
+        "actionListType": "action",
+        "actionURL": { "case": "devices" },
+        "redirectURL": "",
+        "showIn": "Button",
+        "validations": ""
+      }
+    ],
+    "columnsToDisplay": [
+      {
+        "name": "code",
+        "showInListView": "true",
+        "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "name",
+        "showInListView": "true",
+        "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "isActive",
+        "showInListView": "true",
+        "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+        "sortOrder": "",
+        "showAsLink": "false",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "createdDateTime",
+        "showInListView": "true",
+        "label": {
+          "eng": "Created Time",
+          "ara": "الوقت الذي تم إنشاؤه",
+          "fra": "Temps créé"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "createdBy",
+        "showInListView": "false",
+        "label": {
+          "eng": "Created By",
+          "ara": "تم إنشاؤه من قبل",
+          "fra": "Créé par"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "updatedBy",
+        "showInListView": "false",
+        "label": {
+          "eng": "Updated By",
+          "ara": "تم التحديث بواسطة",
+          "fra": "Mise à jour par"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "updatedDateTime",
+        "showInListView": "false",
+        "label": {
+          "eng": "Updated Time",
+          "ara": "وقت التحديث",
+          "fra": "Temps mis à jour"
+        },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      }
+    ],
+    "paginator": {
+      "totalEntries": null,
+      "pageSize": "10",
+      "pageSizeList": [10, 20, 30, 40, 50]
+    },
+    "filterColumns": []
+  }
+  

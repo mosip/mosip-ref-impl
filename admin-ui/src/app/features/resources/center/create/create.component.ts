@@ -11,7 +11,7 @@ import * as appConstants from '../../../../app.constants';
 import { ValidateLatLong, ValidateKiosk } from 'src/app/core/validators/center.validator';
 import { AppConfigService } from 'src/app/app-config.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { CenterHeaderModel } from 'src/app/core/models/center-header.model';
+import { HeaderModel } from 'src/app/core/models/header.model';
 import { CenterModel } from 'src/app/core/models/center.model';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { CenterService } from 'src/app/core/services/center.service';
@@ -33,8 +33,9 @@ export class CreateComponent implements OnInit {
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   disableForms: boolean;
-  headerObject: CenterHeaderModel;
+  headerObject: HeaderModel;
   centerRequest = {} as CenterRequest;
+  createUpdate = false;
 
   primaryForm: FormGroup;
   secondaryForm: FormGroup;
@@ -51,15 +52,15 @@ export class CreateComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private centerService: CenterService) {
-                   // tslint:disable-next-line:no-string-literal
-                   this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
-                   // tslint:disable-next-line:no-string-literal
-                   this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
-                   translateService.use(this.primaryLang);
-                   this.loadLocationData('MOR', 'region');
+    // tslint:disable-next-line:no-string-literal
+    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
+    // tslint:disable-next-line:no-string-literal
+    this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
+    translateService.use(this.primaryLang);
+    this.loadLocationData('MOR', 'region');
   }
 
- async ngOnInit() {
+  async ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
@@ -69,7 +70,7 @@ export class CreateComponent implements OnInit {
         this.initializeheader();
       }
     });
-    this.dataStorageService.getLanguageSpecificLabels(this.secondaryLang).subscribe(response => {
+    this.translateService.getTranslation(this.secondaryLang).subscribe(response => {
       this.secondaryLanguageLabels = response.center;
       console.log(this.secondaryLanguageLabels);
     });
@@ -85,7 +86,8 @@ export class CreateComponent implements OnInit {
 
   onCreate() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '868px',
+      height: '365px',
       data: {
         case: 'CONFIRMATION',
         title: this.popupMessages['create-edit'].title,
@@ -104,6 +106,7 @@ export class CreateComponent implements OnInit {
   }
 
   updateData() {
+    this.createUpdate = true;
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -158,9 +161,10 @@ export class CreateComponent implements OnInit {
     console.log(request);
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
       console.log(updateResponse);
-      if (!updateResponse.error) {
+      if (!updateResponse.errors) {
         this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '868px',
+          height: '365px',
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['update-success'].title,
@@ -172,7 +176,8 @@ export class CreateComponent implements OnInit {
         });
       } else {
         this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '868px',
+          height: '365px',
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['update-error'].title,
@@ -185,6 +190,7 @@ export class CreateComponent implements OnInit {
   }
 
   saveData() {
+    this.createUpdate = true;
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -245,10 +251,10 @@ export class CreateComponent implements OnInit {
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['create-success'].title,
-            message:  this.popupMessages['create-success'].message[0] +
-                      createResponse.response.registrationCenters[0].id +
-                      this.popupMessages['create-success'].message[1] + createResponse.response.registrationCenters[0].name,
-            btnTxt:  this.popupMessages['create-success'].btnTxt
+            message: this.popupMessages['create-success'].message[0] +
+              createResponse.response.registrationCenters[0].id +
+              this.popupMessages['create-success'].message[1] + createResponse.response.registrationCenters[0].name,
+            btnTxt: this.popupMessages['create-success'].btnTxt
           }
         }).afterClosed().subscribe(() => {
           this.primaryForm.reset();
@@ -260,9 +266,9 @@ export class CreateComponent implements OnInit {
           width: '350px',
           data: {
             case: 'MESSAGE',
-            title:  this.popupMessages['create-error'].title,
-            message:  this.popupMessages['create-error'].title,
-            btnTxt:  this.popupMessages['create-error'].title
+            title: this.popupMessages['create-error'].title,
+            message: this.popupMessages['create-error'].title,
+            btnTxt: this.popupMessages['create-error'].title
           }
         });
       }
@@ -274,7 +280,7 @@ export class CreateComponent implements OnInit {
     this.centerRequest.filters = [filter];
     this.centerRequest.languageCode = this.primaryLang;
     this.centerRequest.sort = [];
-    this.centerRequest.pagination = {pageStart: 0, pageFetch: 10};
+    this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
     let request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
     this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
       console.log(response.response.data[0]);
@@ -345,18 +351,18 @@ export class CreateComponent implements OnInit {
 
   initializeheader() {
     if (this.data.length === 0) {
-      this.headerObject = new CenterHeaderModel(
+      this.headerObject = new HeaderModel(
         '-', '-', '-', '-', '-', '-', '-'
       );
     } else {
-      this.headerObject = new CenterHeaderModel(
+      this.headerObject = new HeaderModel(
         this.data[0].name,
-        this.data[0].id,
-        this.data[0].isActive ? 'Active' : 'Inactive',
         this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
         this.data[0].createdBy ? this.data[0].createdBy : '-',
         this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
-        this.data[0].updatedBy ? this.data[0].updatedBy : '-'
+        this.data[0].updatedBy ? this.data[0].updatedBy : '-',
+        this.data[0].id,
+        this.data[0].isActive,
       );
     }
   }
@@ -394,14 +400,14 @@ export class CreateComponent implements OnInit {
       laa: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
       holidayZone: ['', [Validators.required]],
-      workingHours: [{value: '', disabled: true}],
-      noKiosk: [{value: 0, disabled: true}, [Validators.required, Validators.min(0), ValidateKiosk]],
+      workingHours: [{ value: '', disabled: true }],
+      noKiosk: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0), ValidateKiosk]],
       processingTime: ['', [Validators.required]],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
       lunchStartTime: [''],
       lunchEndTime: [''],
-      isActive: [{value: false, disabled: true}]
+      isActive: [{ value: false, disabled: true }]
     });
     if (this.disableForms) {
       this.primaryForm.disable();
@@ -411,28 +417,28 @@ export class CreateComponent implements OnInit {
   initializeSecondaryForm() {
     this.secondaryForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(128)]],
-      centerTypeCode: [{value: '', disabled: true}],
+      centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],
-      contactPhone: [{value: '', disabled: true}],
-      longitude: [{value: '', disabled: true}],
-      latitude: [{value: '', disabled: true}],
+      contactPhone: [{ value: '', disabled: true }],
+      longitude: [{ value: '', disabled: true }],
+      latitude: [{ value: '', disabled: true }],
       addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
-      region: [{value: '', disabled: true}],
-      province: [{value: '', disabled: true}],
-      city: [{value: '', disabled: true}],
-      laa: [{value: '', disabled: true}],
-      postalCode: [{value: '', disabled: true}],
-      holidayZone: [{value: '', disabled: true}],
-      workingHours: [{value: '', disabled: true}],
-      noKiosk: [{value: 0, disabled: true}],
-      processingTime: [{value: '', disabled: true}],
-      startTime: [{value: '', disabled: true}],
-      endTime: [{value: '', disabled: true}],
-      lunchStartTime: [{value: '', disabled: true}],
-      lunchEndTime: [{value: '', disabled: true}],
-      isActive: [{value: false, disabled: true}]
+      region: [{ value: '', disabled: true }],
+      province: [{ value: '', disabled: true }],
+      city: [{ value: '', disabled: true }],
+      laa: [{ value: '', disabled: true }],
+      postalCode: [{ value: '', disabled: true }],
+      holidayZone: [{ value: '', disabled: true }],
+      workingHours: [{ value: '', disabled: true }],
+      noKiosk: [{ value: 0, disabled: true }],
+      processingTime: [{ value: '', disabled: true }],
+      startTime: [{ value: '', disabled: true }],
+      endTime: [{ value: '', disabled: true }],
+      lunchStartTime: [{ value: '', disabled: true }],
+      lunchEndTime: [{ value: '', disabled: true }],
+      isActive: [{ value: false, disabled: true }]
     });
     if (this.disableForms) {
       this.secondaryForm.disable();
@@ -448,8 +454,8 @@ export class CreateComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.primaryForm);
-    console.log(this.secondaryForm);
+    // console.log(this.primaryForm);
+    //  console.log(this.secondaryForm);
     if (!this.disableForms) {
       if (this.primaryForm.valid && this.secondaryForm.valid) {
         this.onCreate();
@@ -508,10 +514,10 @@ export class CreateComponent implements OnInit {
 
   calculateWorkingHours() {
     if (this.primaryForm.controls.startTime.value && this.primaryForm.controls.endTime.value) {
-    const x = Utils.getTimeInSeconds(this.primaryForm.controls.endTime.value) -
-              Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
-    this.primaryForm.controls.workingHours.setValue(x / 3600);
-    this.secondaryForm.controls.workingHours.setValue(x / 3600);
+      const x = Utils.getTimeInSeconds(this.primaryForm.controls.endTime.value) -
+        Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
+      this.primaryForm.controls.workingHours.setValue(x / 3600);
+      this.secondaryForm.controls.workingHours.setValue(x / 3600);
     }
   }
 
@@ -526,18 +532,17 @@ export class CreateComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigateByUrl('admin/resources/centers/view');
+    this.location.back();
   }
 
   canDeactivate(): Observable<any> | boolean {
-    console.log('can deactivate called');
-    if (this.primaryForm.touched || this.secondaryForm.touched) {
-       return this.dialog.open(DialogComponent, {
+    if ((this.primaryForm.touched || this.secondaryForm.touched) && !this.createUpdate) {
+      return this.dialog.open(DialogComponent, {
         width: '350px',
         data: {
           case: 'CONFIRMATION',
-          title:  this.popupMessages['navigation-popup'].title,
-          message:  this.popupMessages['navigation-popup'].message,
+          title: this.popupMessages['navigation-popup'].title,
+          message: this.popupMessages['navigation-popup'].message,
           yesBtnTxt: this.popupMessages['navigation-popup'].yesBtnTxt,
           noBtnTxt: this.popupMessages['navigation-popup'].noBtnTxt
         }

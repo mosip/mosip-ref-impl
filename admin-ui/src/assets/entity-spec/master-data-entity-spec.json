@@ -1,0 +1,132 @@
+{
+    "masterDatatList": {
+      "common": [
+        {
+          "label": {
+            "eng": "Center Type",
+            "ara": "نوع المركز",
+            "fra": "Type de centre"
+          },
+          "actionURL": "admin/masterdata/center-type/view"
+        },
+        {
+          "label": {
+            "eng": "Blacklisted Words",
+            "ara": "كلمات في القائمة السوداء",
+            "fra": "Mots sur la liste noire"
+          },
+          "actionURL": "admin/masterdata/blacklisted-words/view"
+        },
+        {
+          "label": {
+            "eng": "Gender",
+            "ara": "جنس",
+            "fra": "le sexe"
+          },
+          "actionURL": "admin/masterdata/gender-type/view"
+        },
+        {
+          "label": {
+            "eng": "Individual Type",
+            "ara": "نوع الفردية",
+            "fra": "Type individuel"
+          },
+          "actionURL": "admin/masterdata/individual-type/view"
+        },
+        {
+          "label": {
+            "eng": "List Of Holiday",
+            "ara": "قائمة عطلة",
+            "fra": "Liste de vacances"
+          },
+          "actionURL": "admin/masterdata/holiday/view"
+        },
+        {
+          "label": {
+            "eng": "Location Data",
+            "ara": "بيانات الموقع",
+            "fra": "Données de localisation"
+          },
+          "actionURL": "admin/masterdata/location/view"
+        },
+        {
+          "label": {
+            "eng": "Templates",
+            "ara": "قوالب",
+            "fra": "Modèles"
+          },
+          "actionURL": "admin/masterdata/templates/view"
+        },
+        {
+          "label": {
+            "eng": "Titles",
+            "ara": "العناوين",
+            "fra": "Les titres"
+          },
+          "actionURL": "admin/masterdata/title/view"
+        }
+      ],
+      "deviceDefinition": [
+        {
+          "label": {
+            "eng": "Device Specs",
+            "ara": "مواصفات الجهاز",
+            "fra": "Spécifications de l'appareil"
+          },
+          "actionURL": "admin/masterdata/device-specs/view"
+        },
+        {
+          "label": {
+            "eng": "Device Types",
+            "ara": "أنواع الأجهزة",
+            "fra": "Types de périphériques"
+          },
+          "actionURL": "admin/masterdata/device-types/view"
+        }
+      ],
+      "machineDefinition": [
+        {
+          "label": {
+            "eng": "Machine Specs",
+            "ara": "المواصفات الجهاز",
+            "fra": "Spécifications de la machine"
+          },
+          "actionURL": "admin/masterdata/machine-specs/view"
+        },
+        {
+          "label": {
+            "eng": "Machine Types",
+            "ara": "أنواع الآلات",
+            "fra": "Types de machines"
+          },
+          "actionURL": "admin/masterdata/machine-type/view"
+        }
+      ],
+      "documentDefinition": [
+        {
+          "label": {
+            "eng": "Document Type",
+            "ara": "أنواع المستندات",
+            "fra": "Types de documents"
+          },
+          "actionURL": "admin/masterdata/document-type/view"
+        },
+        {
+          "label": {
+            "eng": "Document Categories",
+            "ara": "فئات المستندات",
+            "fra": "Catégories de document"
+          },
+          "actionURL": "admin/masterdata/document-categories/view"
+        },
+        {
+          "label": {
+            "eng": "Document Category - Type Mapping",
+            "ara": "فئة الوثيقة - نوع التعيين",
+            "fra": "Catégorie de document - Mappage de types"
+          },
+          "actionURL": "admin/masterdata/center-type/view"
+        }
+      ]
+    }
+  }

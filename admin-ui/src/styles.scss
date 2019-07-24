@@ -5,6 +5,9 @@
 
 @include angular-material-theme($app-theme);
 
+:root {
+  font-size: 16px;
+}
 
 body {
   margin: 0;
@@ -21,3 +24,21 @@ a {
   color: mat-color($app-primary);
 }
 
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+hr{
+  height: 1.5px;
+  color: lightgray;
+  background: lightgray;
+  border: none;
+}
+h3 {
+  display: block;
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}

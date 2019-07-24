@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatPaginatorIntl, MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Router } from '@angular/router';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -12,45 +12,46 @@ import { Router } from '@angular/router';
 export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   @Input() buttonList: any;
   @Input() paginationOptions: any;
-  @Input() resourceFilter: any;
   @Output() pageEvent = new EventEmitter();
+  lang: string;
 
-  constructor(public dialog: MatDialog, private router: Router) {
+  constructor(
+    public dialog: MatDialog,
+    private router: Router,
+    private appConfig: AppConfigService
+  ) {
     super();
     this.itemsPerPageLabel = 'Show rows';
   }
 
   ngOnInit() {
-  }
-  iconDisplay(buttonName) {
-    if (buttonName.toLowerCase() === 'filter') {
-      return true;
-    }
+    this.lang = this.appConfig.getConfig().primaryLangCode;
   }
 
   actionEvent(buttonAction) {
     console.log(buttonAction);
     if (buttonAction.actionListType === 'action') {
       console.log(buttonAction.actionListType);
-      this.openFilterDialog();
+      this.openFilterDialog(buttonAction.actionURL);
     }
     if (buttonAction.actionListType === 'redirect') {
       console.log(buttonAction.actionListType);
-      this.router.navigateByUrl( 'admin/resources/centers/create' );
+      this.router.navigateByUrl(buttonAction.redirectURL);
     }
-
   }
-  openFilterDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      data: this.resourceFilter,
-      width: '700px',
-      height: '30em',
-    }).afterClosed().subscribe(result => {
-      console.log(result + 'dislog is closed');
-    }
-      );
+  openFilterDialog(action): void {
+    const dialogRef = this.dialog
+      .open(DialogComponent, {
+        data: action,
+        width: '700px',
+        height: '33em'
+      })
+      .afterClosed()
+      .subscribe(result => {
+        console.log('dislog is closed');
+      });
   }
-  onPaginateChange(event: Event){
+  onPaginateChange(event: Event) {
     console.log(event);
     this.pageEvent.emit(event);
   }

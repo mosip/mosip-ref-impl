@@ -1,12 +1,31 @@
 <div id="menuButton">
-  <button class="menu-button" [matMenuTriggerFor]="menu">
-    <div class="name">{{data.name}}</div>
-    <div class="mat-small">{{data.zone}}</div>
-  </button>
-  <mat-menu #menu="matMenu" backdropClass="menu">
-    <ng-container *ngFor = "let item of profileList">
-       <button (click)="logout()" mat-menu-item>{{item?.displayName}}</button>
-    </ng-container>
-   
-  </mat-menu>
+  <div *ngIf="data?.type === 'profile'">
+    <span>
+      <img src="{{data?.profileImg}}" alt="Profile">
+    </span>
+    <span>
+      <button class="menu-button" [matMenuTriggerFor]="menu">
+       <div class="mat-caption">{{headerService.getUsername()}}</div>
+        <div class="zone-text">{{headerService.getRoles()}}</div>
+      </button>
+    </span>
+    <mat-menu #menu="matMenu" backdropClass="profile">
+      <ng-container *ngFor="let item of dataList">
+        <button (click)="onItem()" mat-menu-item>{{item?.displayName}}</button>
+      </ng-container>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="data?.type === 'elipses'">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" backdropClass="elipses">
+      <ng-container *ngFor="let item of dataList">
+        <button (click)="onItem()" mat-menu-item>{{item?.buttonName?.eng}}</button>
+      </ng-container>
+    </mat-menu>
+  </div>
+
+
 </div>

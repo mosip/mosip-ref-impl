@@ -1,37 +1,36 @@
-@import '../../_theme.scss';
+@import "../../_theme.scss";
 
 #menuButton {
+  display: inline-block;
+  margin: 2px;
+  position: relative;
+  font-size: 17px !important;
+  padding: 10px 10px 10px 10px;
+  .mat-button-wrapper {
     display: inline-block;
-    margin: 2px;
-    position:relative;
-    font-size: 17px !important;
-    padding: 10px 10px 10px 10px;
-    .mat-button-wrapper {
-        display: inline-block
-    }
-    .name {
-        font-size: mat-font-size($custom-typography, caption);
-    }
-    .mat-small {
-        font-size: 10px;
-        font-weight: 200;
-    }
-    .menu-button {
-        background: transparent;
-        outline: none;
-        border: none;
-        cursor: pointer;
-    }
-    
-
+  }
+  .mat-caption {
+    text-align: left;
+    color: #ffffff;
+  }
+  .zone-text {
+    font-size: 14px;
+    text-align: left;
+    color: #ffffff;
+  }
+  .menu-button {
+    background: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
 }
-.menu + * .cdk-overlay-pane > div.mat-menu-panel {
-    margin-top: 12px !important;
-
-    // .mat-menu-content {
-    //     .mat-menu-item {
-    //         border-bottom: 1px solid #ccc !important; 
-    //     }
-    // }
+.profile + * .cdk-overlay-pane > div.mat-menu-panel {
+  margin-top: 21px !important;
 }
-
+.elipses + * .cdk-overlay-pane > div.mat-menu-panel {
+    .mat-menu-item {
+        line-height: 34px !important;
+        height: 34px !important;
+    }
+}

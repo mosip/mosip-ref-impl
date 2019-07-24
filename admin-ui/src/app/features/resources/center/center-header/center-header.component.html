@@ -1,19 +1,27 @@
 <!--Center Header  -->
 <div class="card">
   <mat-card>
-    <div class="profile-img">
-      <img src="../../../../../assets/images/logo-final.png" alt="img">
+    <div class="item1">
+      <div class="profile-img">
+        <img src="./assets/images/icon_center.svg" alt="img">
+      </div>
     </div>
     <div class="center-details">
-      <h3>{{'center.center-name'|translate}}:&nbsp;<span>{{data.name}}</span></h3>
-      <p>{{'center.center-id'|translate}}:&nbsp; <span>{{data.id}}</span></p>
-      <p class="small-text">{{'center.status'|translate}}:&nbsp; <span>{{data.isActive}}</span></p>
+      <h3>{{'center.center-name'|translate}}:&nbsp;<span>{{headerData.name}}</span></h3>
+      <p>{{'center.center-id'|translate}}:&nbsp; <span>{{headerData.id}}</span></p>
+      <p class="small-text">{{'center.status'|translate}}:&nbsp; <span>{{headerData.isActive | status}}</span></p>
     </div>
+    <mat-divider [vertical]="true" [inset]="true"></mat-divider>
     <div class="center-details1">
-      <p class="small-text">{{'center.created-on'|translate}}:&nbsp;<span>{{data.createdOn}}</span></p>
-      <p class="small-text">{{'center.created-by'|translate}}:&nbsp;<span>{{data.createdBy}}</span></p>
-      <p class="small-text">{{'center.updated-on'|translate}}:&nbsp;<span>{{data.updatedOn}}</span></p>
-      <p class="small-text">{{'center.updated-by'|translate}}:&nbsp;<span>{{data.updatedBy}}</span></p>
+      <p class="small-text">{{'center.created-on'|translate}}:&nbsp;<span>{{headerData.createdOn | formatDate}}</span>
+      </p>
+      <p class="small-text">{{'center.created-by'|translate}}:&nbsp;<span>{{headerData.createdBy}}</span></p>
+      <p class="small-text">{{'center.updated-on'|translate}}:&nbsp;<span>{{headerData.updatedOn | formatDate}}</span>
+      </p>
+      <p class="small-text">{{'center.updated-by'|translate}}:&nbsp;<span>{{headerData.updatedBy}}</span></p>
+    </div>
+    <div class="elipses">
+      <app-hamburger-menu [data]="elipses"></app-hamburger-menu>
     </div>
   </mat-card>
 </div>

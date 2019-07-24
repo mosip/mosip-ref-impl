@@ -6,7 +6,7 @@ import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
-import * as centerConfig from 'src/assets/entity-spec/center-entity-spec.json';
+import * as centerConfig from 'src/assets/entity-spec/center.json';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -24,9 +24,6 @@ export class ViewComponent implements OnInit, OnChanges {
   actionButtons = [];
   actionEllipsis = [];
   paginatorOptions: any;
-  resourceFilter = {
-    case: 'center'
-  };
   sortFilter = [];
   pagination = new PaginationModel();
   centerRequest = {} as CenterRequest;
@@ -67,7 +64,9 @@ export class ViewComponent implements OnInit, OnChanges {
         this.sortFilter.splice(index, 1);
       }
     });
-    this.sortFilter.push(event);
+    if (event.sortType != null) {
+      this.sortFilter.push(event);
+    }
     console.log(this.sortFilter);
     this.getRegistrationCenters();
   }

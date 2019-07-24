@@ -12,6 +12,7 @@ export class SideMenuService {
   constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
+        console.log('Naviagtion', event.urlAfterRedirects);
         this.currentUrl.next(event.urlAfterRedirects);
       }
     });

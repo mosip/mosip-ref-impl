@@ -1,29 +1,63 @@
-<div class="container mat-elevation-z8" *ngIf="data.length>0;else nodata" >
+<div class="container mat-elevation-z8" *ngIf="data.length > 0; else nodata">
   <table class="mat-table">
-    <tr class="mat-row">
+    <tr class="mat-row sticky-header">
       <th
-        *ngFor="let item of displayedColumns; let i = index"
-        class="mat-header-cell table-header sticky-header "
+        *ngFor="let columnName of displayedColumns; let i = index"
+        class="mat-header-cell table-header sticky-header"
       >
-        {{ item.label }}<span (click)="sortColumn(item.name)" ><img src="assets/images/sort.png" height="7px" width="7px" class="sort-icon"></span>
+        <span class="columnName-sort-span"
+          ><span *ngIf="lang === 'eng'">{{ columnName.label.eng }}</span>
+          <span *ngIf="lang === 'fra'">{{ columnName.label.fra }}</span>
+          <span *ngIf="lang === 'ara'">{{ columnName.label.ara }}</span>
+          <span (click)="sortColumn(columnName.name,i)"
+            ><img *ngIf="sortIconTrackerArray[i] === 0"
+              src="assets/images/icon_table_sort_both.png"
+              height="20px"
+              width="13px"
+              class="sort-icon"
+            /><img *ngIf="sortIconTrackerArray[i] === 1"
+              src="assets/images/icon_table_sort_up.png"
+              height="20px"
+              width="13px"
+              class="sort-icon"
+            /><img *ngIf="sortIconTrackerArray[i] === -1"
+              src="assets/images/icon_table_sort_Down.png"
+              height="20px"
+              width="13px"
+              class="sort-icon"
+            /> </span
+        ></span>
       </th>
-      <th class="table-header sticky-header ">&emsp;</th>
+      <th class="table-header sticky-header">&emsp;</th>
     </tr>
-    <tr *ngFor="let data of tableData;index as i" class="mat-row">
+    <tr *ngFor="let data of tableData; index as i" class="mat-row">
       <td
-        *ngFor="let item of columnsOfTableData; let i = index;"
-        class="mat-cell  " [ngStyle]="tableStyle(i)"
-        (click)="getTableRowData(data,i)"
+        *ngFor="let item of columnsOfTableData; let i = index"
+        class="mat-cell  "
+        (click)="getTableRowData(data, i, item)"
+        [ngClass]="{ 'text-alignment': item === 'name' }"
       >
-        <span>{{ data[item]|status}}</span>
+        <span class="flex-display" [ngStyle]="tableStyle(i, data[item], item)"
+          ><img
+            src="assets/images/center-name-icon.png"
+            height="20px;"
+            width="35px;"
+            *ngIf="item === 'name'"
+            style="padding-right:15px;"
+          />{{ data[item] | status }}</span
+        >
       </td>
       <td class="mat-cell mat-header-cell">
-        <button mat-icon-button [matMenuTriggerFor]="menu" >
+        <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
         </button>
       </td>
       <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-        <button mat-menu-item *ngFor="let button of buttonList" (click)="selectedRow(data,i)" >
+        <button
+          mat-menu-item
+          *ngFor="let button of buttonList"
+          (click)="selectedRow(data, i)"
+        >
           <span>{{ button.buttonName }}</span>
         </button>
       </mat-menu>
@@ -32,8 +66,6 @@
 </div>
 <ng-template #nodata>
   <div style="display: flex; justify-content: center;">
-    <mat-progress-bar
-    mode="indeterminate"
-    color="primary"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
   </div>
-  </ng-template>
+</ng-template>

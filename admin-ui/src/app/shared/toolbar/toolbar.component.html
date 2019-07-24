@@ -4,11 +4,17 @@
       <button
         mat-raised-button
         *ngFor="let button of buttonList; index as i"
-        [ngStyle]="{ margin: '10px', borderRadius: '0' }"
+        [ngStyle]="{ margin: '10px'}"
         (click)="actionEvent(button)"
+        [ngClass]="{
+          'button-style': button.buttonName.eng != 'Filter',
+          'filter-button-style': button.buttonName.eng === 'Filter'
+        }"
       >
-        <mat-icon *ngIf="iconDisplay(button.buttonName)">filter_list</mat-icon
-        >{{ button.buttonName }}
+        <img [src]="button.imagePath" />
+        <span *ngIf="lang === 'eng'">{{ button.buttonName['eng']}}</span>
+        <span *ngIf="lang === 'fra'">{{ button.buttonName['fra']}}</span>
+        <span *ngIf="lang === 'ara'">{{ button.buttonName['ara']}}</span>
       </button>
       <span style="flex: 1 1 auto;"></span>
       <mat-paginator

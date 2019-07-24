@@ -1,6 +1,29 @@
-<a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active" [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
-  (click)="onItemSelected(item)" class="menu-list-item" [style.marginTop.px]="index == 0 ? 50:0">
+<ul>
+  <li>
+    <a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active" (click)="onItemSelected(item)"
+      class="menu-list-item" [style.marginTop.px]="index == 0 ? 57:0">
+      <span *ngIf="item?.icon" class="routeIcon"><img src="{{item?.icon}}" alt="Icon"></span>&nbsp;
+      <span class="menu-list-text">{{ item?.displayName | translate }}</span>
+    </a>
+    <ul>
+      <ng-container *ngFor="let subItem of item?.children;let i=index">
+        <li><a mat-list-item [routerLink]="[subItem?.route]" routerLinkActive="list-item-active"
+            (click)="onItemSelected(subItem)" class="menu-list-item">
+            <span class="menu-list-text padding-left">{{subItem?.displayName | translate }}</span>
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </li>
+</ul>
+<!-- <nav>
+  <a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active"
+    [ngStyle]="{'padding-left': (depth * 12) + 'px'}" (click)="onItemSelected(item)" class="menu-list-item"
+    [style.marginTop.px]="index == 0 ? 50:0">
     {{ item?.displayName | translate }}
-</a>
-<app-side-menu *ngFor="let child of item?.children" (click)="onItemSelected(child)" [item]="child" [depth]="depth + 1">
-</app-side-menu>
+  </a>
+</nav> -->
+
+<!-- <app-side-menu *ngFor="let child of item?.children; let i = index" (click)="onItemSelected(child)" [item]="child"
+  [depth]="depth + 1">
+</app-side-menu> -->

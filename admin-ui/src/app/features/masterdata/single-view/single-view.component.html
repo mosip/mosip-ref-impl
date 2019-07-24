@@ -1,0 +1,11 @@
+<app-mater-data-common-view
+        *ngIf="mapping && headerData && specFileData && !showSpinner"
+        [masterDataName]="mapping.name"
+        [headerData]="headerData"
+        [primaryData]="primaryData"
+        [secondaryData]="secondaryData"
+        [fields]="specFileData"
+        [primaryLang]="primaryLangCode"
+        [secondaryLang]="secondaryLangCode">
+</app-mater-data-common-view>
+<mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>

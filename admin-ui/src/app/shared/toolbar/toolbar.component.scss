@@ -1,6 +1,8 @@
 .mat-card {
   border-radius: 0;
-  height: 5.5em;
+  height: 5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .card-row {
   display: flex;
@@ -72,4 +74,14 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
+}
+.button-style{
+  background-color: #FF4081;
+  color: white;
+  font-size: 11px;
+}
+.filter-button-style{
+font-size: 13px;
+color: #FF4081;
+border: 1px solid #FF4081;
 }

@@ -1,0 +1,20 @@
+<div id="master-data-single-view">
+  <h3>Add {{masterDataName}}</h3>
+  <div id="master-data-view">
+    <div class="master-data-header">
+      <app-mater-data-common-header
+        [masterDataName]="masterDataName"
+        [headerData]="headerData"
+      ></app-mater-data-common-header>
+    </div>
+    <div class="master-data-body">
+      <app-mater-data-common-body
+        [primaryData]="primaryData"
+        [secondaryData]="secondaryData"
+        [fields]="fields"
+        [primaryLang]="primaryLang"
+        [secondaryLang]="secondaryLang"
+      ></app-mater-data-common-body>
+    </div>
+  </div>
+</div>

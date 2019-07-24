@@ -9,6 +9,9 @@
             "subItem2": "Dispositifs",
             "subItem3": "Utilisateurs",
             "subItem4": "Machines"
+        },
+        "item3": {
+            "title": "données de base"
         }
     },
     "center": {
@@ -152,5 +155,13 @@
                 "noBtnTxt": "Non"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "Aucun Enregistrement Trouvé",
+            "Une erreur technique est survenue"
+        ],
+        "buttonText": "D'accord",
+        "title": "Erreur"
     }
 }

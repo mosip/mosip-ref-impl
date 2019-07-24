@@ -1,27 +1,36 @@
-@import '../../theme';
-@import '../../breakpoints';
+@import "../../theme";
+@import "../../breakpoints";
 
 :host {
-    display: flex;
-    flex-direction: column;
-    outline: none;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  width: 100%;
 }
 
 .mat-nav-list {
-    .list-item-active {
-        background: mat-color($app-primary, 500) !important;
-        color: white;
-    }
+  .list-item-active {
+    background: #F1F1F3 !important;
+    border-right: 6px solid #FF4081 !important;
+  }
 }
- 
+
 .mat-list-item {
   display: flex;
   width: auto !important;
+  .routeIcon {
+    margin-left: 24px;
+  }
+  .padding-left {
+    margin-left: 45px;
+  }
 }
+// .mat-list-base .mat-list-item .mat-list-item-content {
+//   padding: 0 43px !important;
+// }
 
-@include breakpoint-max(600px) { 
-    .mat-list-item-content {
-        font-size: 13px !important;
-    }
+@include breakpoint-max(600px) {
+  .mat-list-item-content {
+    font-size: 13px !important;
+  }
 }

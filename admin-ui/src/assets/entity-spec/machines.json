@@ -1,0 +1,164 @@
+{
+    "actionButtons": [
+      {
+        "buttonName": {
+          "eng": "Activate",
+          "ara": "تنشيط",
+          "fra": "déclencher"
+        },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": {
+          "eng": "Deactivate",
+          "ara": "الغاء تنشيط",
+          "fra": "désactiver"
+        },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": {
+          "eng": "Decommission",
+          "ara": "وقف التشغيل",
+          "fra": "mettre hors service"
+        },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": {
+          "eng": "Create Machine",
+          "ara": "إضافة آلة" ,
+          "fra": "Ajouter le machine"
+        },
+        "imagePath":"assets/images/add-icon.png",
+        "actionListType": "redirect",
+        "actionURL": "",
+        "redirectURL": "admin/resources/machines/create",
+        "showIn": "Button",
+        "validations": ""
+      },
+      {
+        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
+        "actionListType": "action",
+        "actionURL": { "case": "machines" },
+        "redirectURL": "",
+        "showIn": "Button",
+        "validations": ""
+      }
+    ],
+    "columnsToDisplay": [
+      {
+        "name": "name",
+        "showInListView": "True",
+        "label": {
+          "eng": "Machine Name",
+          "ara": "اسم الجهاز",
+          "fra": "Nom de la machine"
+        },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+   
+      },
+      {
+        "name": "machineTypeName",
+        "showInListView": "true",
+        "label": {
+          "eng": "Machine Type",
+          "ara": "نوع الجهاز",
+          "fra": "Type de machine"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      
+      },
+      {
+        "name": "isActive",
+        "showInListView": "true",
+        "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+        "sortOrder": "",
+        "showAsLink": "false",
+        "linkType": "",
+        "LinkURL": ""
+      
+      },
+      {
+        "name": "macAddress",
+        "showInListView": "",
+        "label": { "eng": "Mac Address", "ara": "عنوان", "fra": "Mac Adresse" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+     
+      },
+      {
+        "name": "serialNum",
+        "showInListView": "",
+        "label": {
+          "eng": "Serial Number",
+          "ara": "الرقم التسلسلي",
+          "fra": "numéro"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+    
+      },
+      {
+        "name": "mapStatus",
+        "showInListView": "",
+        "label": {
+          "eng": "Map Status",
+          "ara": "تعيين الحالة",
+          "fra": "Attribuer un statut"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+    
+      },
+      {
+        "name": "createdDateTime",
+        "showInListView": "",
+        "label": {
+          "eng": "Created Time",
+          "ara": "الوقت الذي تم إنشاؤه",
+          "fra": "Temps créé"
+        },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+     
+      }
+    ],
+    "paginator": {
+      "totalEntries": null,
+      "pageSize": "10",
+      "pageSizeList": [10, 20, 30, 40, 50]
+    },
+    "filterColumns": []
+}

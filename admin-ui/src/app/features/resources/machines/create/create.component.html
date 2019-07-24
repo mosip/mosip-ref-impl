@@ -1,3 +1,41 @@
-<p>
-  create works!
-</p>
+<!--<div id="machine-create">
+  <h3>Device</h3>
+  <div class="machine-container">
+    <div class="machine-header">
+      <app-machines-header></app-machines-header>
+    </div>
+    <div class="machine-body">
+      <mat-card>
+        <mat-card-content class="forms-container">
+          <div class="primary-form">
+            <strong class="title">English</strong>
+            <hr />
+            <br /><br />
+            <div *ngFor="let field of fields" class="mat-form1">
+              <mat-form-field *ngIf="field.showInSingleView === 'true'">
+                <input matInput disabled placeholder="{{ field.label[primaryLang] }}" [value]="primaryData[field.name]">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+
+          <div class="secondary-form">
+            <strong class="title">English</strong>
+            <hr />
+            <br /><br />
+            <div *ngFor="let field of fields" class="mat-form2">
+              <mat-form-field *ngIf="field.showInSingleView === 'true'">
+                <input matInput disabled placeholder="{{ field.label[secondaryLang] }}"
+                  [value]="secondaryData[field.name]">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="action-buttons">
+           <button mat-raised-button>{{ 'center.create' | translate }}</button> 
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>-->

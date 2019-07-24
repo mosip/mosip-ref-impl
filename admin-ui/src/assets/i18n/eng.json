@@ -9,6 +9,9 @@
             "subItem2": "Devices",
             "subItem3": "Users",
             "subItem4": "Machines"
+        },
+        "item3": {
+            "title": "MASTER DATA"
         }
     },
     "center": {
@@ -152,5 +155,21 @@
                 "noBtnTxt": "No"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "No record found",
+            "A technical error has occurred"
+        ],
+        "buttonText": "OK",
+        "title": "Error"
+    }, 
+    "masterData": {
+        "master-data": "Master Data",
+        "total-no": "Total No",
+        "common": "Common",
+        "device-definition": "Device Definition",
+        "machine-definition": "Machine Definition",
+        "document-definition": "Document Definition"
     }
 }
