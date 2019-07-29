@@ -42,7 +42,7 @@ import { FormDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/
   templateUrl: './demographic.component.html',
   styleUrls: ['./demographic.component.css']
 })
-export class DemographicComponent implements OnInit {
+export class DemographicComponent extends FormDeactivateGuardService implements OnInit {
   textDir = localStorage.getItem('dir');
   secTextDir = localStorage.getItem('secondaryDir');
   primaryLang = localStorage.getItem('langCode');
@@ -185,7 +185,7 @@ export class DemographicComponent implements OnInit {
     private routerService: RouterExtService,
     private loggerService: LogService // private errorService: ErrorService
   ) {
-    // super(dialog);
+    super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
     this.regService.getMessage().subscribe(message => (this.message = message));
   }

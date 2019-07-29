@@ -19,7 +19,7 @@ import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-gua
   templateUrl: './center-selection.component.html',
   styleUrls: ['./center-selection.component.css']
 })
-export class CenterSelectionComponent implements OnInit {
+export class CenterSelectionComponent extends BookingDeactivateGuardService implements OnInit {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
   canDeactivateFlag = true;
@@ -51,7 +51,7 @@ export class CenterSelectionComponent implements OnInit {
     private translate: TranslateService,
     private configService: ConfigService
   ) {
-    // super(dialog);
+    super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
   }
 
