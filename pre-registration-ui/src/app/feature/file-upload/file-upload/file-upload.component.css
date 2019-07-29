@@ -119,6 +119,15 @@ mat-select:focus {
   padding-bottom: 20px;
 }
 
+:host ::ng-deep .ng2-pdf-viewer-container {
+  width: 100% !important;
+  height: 44vh !important;
+}
+
+.pdf-viewer {
+  max-width: 300px;
+}
+
 .file-upload__body__2 > p {
   margin: 0px 0px 16px 0px;
   font-size: 0.8rem;

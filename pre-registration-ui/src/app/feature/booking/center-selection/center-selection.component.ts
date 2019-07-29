@@ -42,7 +42,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   users: UserModel[];
 
   constructor(
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private service: BookingService,
     private dataService: DataStorageService,
     private router: Router,
@@ -51,7 +51,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     private translate: TranslateService,
     private configService: ConfigService
   ) {
-    super();
+    super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
   }
 

@@ -15,7 +15,7 @@
             disableOptionCentering
             placeholder="{{ document.code }}"
             (selectionChange)="selectChange($event, i)"
-            (openedChange)="openedChange(i)"
+            (openedChange)="openedChange(i, $event)"
             [disabled]="document.code === 'POA' && sameAsselected ? true : false"
           >
             <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
@@ -38,7 +38,7 @@
             value="{{ 'documents.action_browse' | translate }}"
             type="button"
             onclick="document.getElementById('file').click();"
-            [disabled]="i != documentIndex || (document.code === 'POA' && sameAsselected) ? true : false"
+            [disabled]="i != documentIndex || !enableBrowseButtonList[i] || (document.code === 'POA' && sameAsselected) ? true : false"
           />
         </span>
         <span *ngIf="document.code === 'POA'">
