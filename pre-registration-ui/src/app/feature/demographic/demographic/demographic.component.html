@@ -61,7 +61,7 @@
             </div>
 
             <div class="user__pref">
-              OR
+              {{ 'demographic.text_or' | translate }}
             </div>
             <div class="user__age">
               <mat-form-field>
@@ -192,7 +192,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 (selectionChange)="onLocationSelect($event, provinces, regions, formControlNames.province)"
                 placeholder="{{ 'demographic.label_region' | translate }}"
                 [formControlName]="formControlNames.region"
@@ -209,7 +209,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 (selectionChange)="onLocationSelect($event, cities, provinces, formControlNames.city)"
                 placeholder="{{ 'demographic.label_province' | translate }}"
                 [formControlName]="formControlNames.province"
@@ -227,7 +227,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 (selectionChange)="
                   onLocationSelect(
                     $event,
@@ -250,7 +250,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 (selectionChange)="onLocationSelect($event, null, localAdministrativeAuthorities)"
                 placeholder="{{ 'demographic.label_local_administrative_authority' | translate }}"
                 [formControlName]="formControlNames.localAdministrativeAuthority"
@@ -371,7 +371,7 @@
             </div>
 
             <div class="user__pref">
-              OR
+              {{ secondaryLanguagelabels.text_or }}
             </div>
             <div class="user__age">
               <mat-form-field>
@@ -492,7 +492,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 required
                 name="t_region"
                 [value]="userForm.get(formControlNames.region).value"
@@ -509,7 +509,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 [disabled]="true"
                 [placeholder]="secondaryLanguagelabels.label_province"
                 [value]="userForm.get(formControlNames.province).value"
@@ -524,7 +524,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 [disabled]="true"
                 [placeholder]="secondaryLanguagelabels.label_city"
                 [value]="userForm.get(formControlNames.city).value"
@@ -539,7 +539,7 @@
           <div class="user__dropdown">
             <mat-form-field>
               <mat-select
-              disableOptionCentering
+                disableOptionCentering
                 [disabled]="true"
                 [placeholder]="secondaryLanguagelabels.label_local_administrative_authority"
                 [value]="userForm.get(formControlNames.localAdministrativeAuthority).value"
