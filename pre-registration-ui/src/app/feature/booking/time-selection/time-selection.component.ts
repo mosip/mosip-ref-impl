@@ -22,7 +22,7 @@ import LanguageFactory from 'src/assets/i18n';
   templateUrl: './time-selection.component.html',
   styleUrls: ['./time-selection.component.css']
 })
-export class TimeSelectionComponent extends BookingDeactivateGuardService implements OnInit, OnDestroy {
+export class TimeSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('widgetsContent', { read: ElementRef }) public widgetsContent;
   @ViewChild('cardsContent', { read: ElementRef }) public cardsContent;
   registrationCenter: String;
@@ -58,7 +58,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
     private translate: TranslateService,
     private configService: ConfigService
   ) {
-    super(dialog);
+    // super(dialog);
     smoothscroll.polyfill();
     this.translate.use(this.primaryLangCode);
   }
