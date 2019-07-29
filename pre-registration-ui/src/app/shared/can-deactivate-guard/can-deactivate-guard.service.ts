@@ -18,11 +18,11 @@ export class CanDeactivateGuardService implements CanDeactivate<UnloadDeactivate
       let response = factory.getCurrentlanguage();
       const message = response['dialog']['navigation_alert'];
 
-      if (confirm(message)) {
-        return true;
-      } else {
-        return false;
-      }
+      // if (confirm(message)) {
+      //   return true;
+      // } else {
+      //   return false;
+      // }
     }
     return true;
   }
