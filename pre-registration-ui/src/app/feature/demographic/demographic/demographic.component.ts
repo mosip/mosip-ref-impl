@@ -180,12 +180,12 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     private bookingService: BookingService,
     private configService: ConfigService,
     private translate: TranslateService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private matKeyboardService: MatKeyboardService,
     private routerService: RouterExtService,
     private loggerService: LogService // private errorService: ErrorService
   ) {
-    super();
+    super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
     this.regService.getMessage().subscribe(message => (this.message = message));
   }

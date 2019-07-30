@@ -51,14 +51,14 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
   primaryLangCode = localStorage.getItem('langCode');
   constructor(
     private bookingService: BookingService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private dataService: DataStorageService,
     private router: Router,
     private registrationService: RegistrationService,
     private translate: TranslateService,
     private configService: ConfigService
   ) {
-    super();
+    super(dialog);
     smoothscroll.polyfill();
     this.translate.use(this.primaryLangCode);
   }

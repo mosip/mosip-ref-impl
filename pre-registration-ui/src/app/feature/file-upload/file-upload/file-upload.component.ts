@@ -42,6 +42,7 @@ export class FileUploadComponent implements OnInit {
   formData = new FormData();
   user: UserModel = new UserModel();
   users: UserModel[] = [];
+  enableBrowseButtonList = [];
   activeUsers: UserModel[] = [];
   documentCategory: string;
   documentType: string;
@@ -61,6 +62,7 @@ export class FileUploadComponent implements OnInit {
   disableNavigation: boolean = false;
   start: boolean = false;
   browseDisabled: boolean = true;
+  documentName: string;
 
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: '',
@@ -358,6 +360,7 @@ export class FileUploadComponent implements OnInit {
       res => {
         if (res['errors'] == null) {
           this.LOD = res['response'].documentCategories;
+          this.enableBrowseButtonList = new Array(this.LOD.length).fill(false);
           this.registration.setDocumentCategories(res['response'].documentCategories);
         } else {
           this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
@@ -583,9 +586,11 @@ export class FileUploadComponent implements OnInit {
     let notSelectedFile: number;
     if (this.fileUrl) {
       this.users[0].files.documentsMetaData.filter((data, i) => {
-        if (data.docName !== event.target.files[0].name) notSelectedFile = i;
+        if (data.docName !== event.target.files[0].name) {
+          notSelectedFile = i;
+          this.viewFileByIndex(notSelectedFile);
+        }
       });
-      this.viewFileByIndex(notSelectedFile);
     }
     const extensionRegex = new RegExp('(?:pdf|jpg|png|jpeg)');
     this.fileExtension = event.target.files[0].name.substring(event.target.files[0].name.indexOf('.') + 1);
@@ -670,6 +675,7 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   selectChange(event, index: number) {
+    this.enableBrowseButtonList[index] = true;
     let found = false;
     let i = -1;
     this.documentCategory = event.source.placeholder;
@@ -705,7 +711,7 @@ export class FileUploadComponent implements OnInit {
    * @param {number} index
    * @memberof FileUploadComponent
    */
-  openedChange(index: number) {
+  openedChange(index: number, event) {
     this.documentCategory = this.LOD[index].code;
     this.documentIndex = index;
     if (this.selectedDocuments.length > 0) {
@@ -716,7 +722,6 @@ export class FileUploadComponent implements OnInit {
       }
     }
   }
-
   onFilesChange() {}
   /**
    *@description method to remove the preview of a file.
@@ -833,6 +838,12 @@ export class FileUploadComponent implements OnInit {
             this.registration.setSameAs(event.value);
             this.removePOADocument();
             this.updateUsers(response);
+            let poaTypes = this.LOD.filter(ele => ele.code === 'POA');
+            let docList = poaTypes[0].documentTypes.filter(
+              element => element.code === response['response']['docTypCode']
+            );
+            this.documentName = docList[0].name;
+            console.log('DOC NAME IN SAME AS', this.documentName);
           } else {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
