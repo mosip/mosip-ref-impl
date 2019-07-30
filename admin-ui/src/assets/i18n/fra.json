@@ -11,7 +11,7 @@
             "subItem4": "Machines"
         },
         "item3": {
-            "title": "données de base"
+            "title": "DONNÉES DE BASE"
         }
     },
     "center": {
@@ -39,6 +39,7 @@
         "city": "Ville",
         "laa": "LAA",
         "postal-code": "code postal",
+        "zone": "Zone",
         "operational-details": "Détails opérationnels",
         "holiday-zone": "Zone de vacances",
         "working-hrs": "Heures de travail",
@@ -103,6 +104,9 @@
             "postalCode": {
                 "required": "Code postal requis"
             },
+            "zone": {
+                "required": "Zone est nécessaire"
+            },
             "holidayZone": {
                 "required": "Zone de vacances est nécessaire"
             },
@@ -163,5 +167,51 @@
         ],
         "buttonText": "D'accord",
         "title": "Erreur"
+    },
+    "devices": {
+        "header": "Dispositif",
+        "name": "Nom de l'appareil",
+        "serialNumber": "Numéro de série",
+        "macAddress": "MAC Adresse",
+        "ipAddress": "IP Adresse",
+        "validity": "Date valide heure",
+        "isActive": "C'est actif",
+        "zone": "Zone",
+        "language": "French",
+        "errorMessages": {
+            "title": "Erreur",
+            "message": "Aucune donnée disponible",
+            "btnTxt": "D'accord"
+        }
+    },
+    "machines": {
+        "header": "Machine",
+        "name": "Nom de la machine",
+        "machineSpecId": "Identifiant de machine",
+        "serialNumber": "Numéro de série",
+        "macAddress": "MAC Adresse",
+        "ipAddress": "IP Adresse",
+        "validity": "Date valide heure",
+        "isActive": "C'est actif",
+        "zone": "Zone",
+        "language": "French",
+        "errorMessages": {
+            "title": "Erreur",
+            "message": "Aucune donnée disponible",
+            "btnTxt": "D'accord"
+        }
+    },
+    "masterData": {
+        "master-data": "Données de base",
+        "total-no": "Total non",
+        "common": "Commune",
+        "device-definition": "Définition de l'appareil",
+        "machine-definition": "Définition de la machine",
+        "document-definition": "Définition du document",
+        "doc-category-mapping": "Catégorie de document - Mappage de types",
+        "category": "Catégorie",
+        "mapped-documents": "Documents mappés",
+        "unmapped-documents": "Documents non mappés"
+        
     }
 }

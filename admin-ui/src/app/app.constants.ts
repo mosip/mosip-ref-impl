@@ -2,10 +2,14 @@ import * as config from 'src/assets/config.json';
 
 export const VERSION = '1.0';
 export const BASE_URL = config.baseUrl;
+export const IDS = 'dummy';
 export const URL = {
-  centers:  `${config.baseUrl}masterdata/registrationcenters/search`,
-  devices:  `${config.baseUrl}masterdata/devices/search`,
-  machines: `${config.baseUrl}masterdata/machines/search`
+  centers: `${config.baseUrl}masterdata/registrationcenters/search`,
+  devices: `${config.baseUrl}masterdata/devices/search`,
+  machines: `${config.baseUrl}masterdata/machines/search`,
+  documentCategories: `${config.baseUrl}masterdata/documentcategories`,
+  mappedDocUrl: `${config.baseUrl}masterdata/documenttypes/`,
+  unMappedDocUrl: `${config.baseUrl}masterdata/documenttypes/`
 };
 export const navItems = [
   {
@@ -68,7 +72,7 @@ export const masterdataMapping = {
     idKey: '',
     headerName: 'Blacklisted Words'
   },
-  holidays: {
+  holiday: {
     apiName: 'holidays',
     specFileName: 'holiday-data',
     name: 'Holiday',
@@ -124,7 +128,7 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Machine Type'
   },
-  'device-type': {
+  'device-types': {
     apiName: 'devicetypes',
     specFileName: 'device-type',
     name: 'Device Type',
@@ -132,7 +136,7 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Device Type'
   },
-  'document-category': {
+  'document-categories': {
     apiName: 'documentcategories',
     specFileName: 'document-category',
     name: 'Document Category',
@@ -140,7 +144,7 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Document Category'
   },
-  'machine-specification': {
+  'machine-specs': {
     apiName: 'machinespecifications',
     specFileName: 'machine-specification',
     name: 'Machine Specification',
@@ -148,7 +152,7 @@ export const masterdataMapping = {
     idKey: 'id',
     headerName: 'Machine Specification'
   },
-  'device-specification': {
+  'device-specs': {
     apiName: 'devicespecifications',
     specFileName: 'device-specification',
     name: 'Device Specification',
@@ -156,6 +160,22 @@ export const masterdataMapping = {
     idKey: 'id',
     headerName: 'Device Specification'
   },
+  'center-type': {
+    apiName: 'registrationcentertypes',
+    specFileName: 'center-type',
+    name: 'Registration Center Type',
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Registration Center Type'
+  },
+  'individual-type': {
+    apiName: 'individualtypes',
+    specFileName: 'individual-types',
+    name: 'Individual Type',
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Individual Type'
+  }
 
 };
 
@@ -170,14 +190,82 @@ export const ListViewIdKeyMapping = {
   'blacklisted-words': {idKey: 'word'},
   'document-type': {idKey: 'code'},
    location: {idKey: 'code'},
-   'device-specification': {idKey: 'id'},
-   'machine-specification': {idKey: 'id'},
-   'device-type': {idKey: 'code'},
-   'document-category': {idKey: 'code'},
+   'device-specs': {idKey: 'id'},
+   'machine-specs': {idKey: 'id'},
+   'device-types': {idKey: 'code'},
+   'document-categories': {idKey: 'code'},
+   'individual-type': {idKey: 'code'},
+   'gender-type': {idKey: 'code'},
+   'center-type': {idKey: 'code'}
+};
 
-
-
-
-
-
+export const FilterMapping = {
+centers: {
+specFileName: 'center',
+apiName: 'registrationcenters'
+},
+devices: {
+specFileName: 'devices',
+apiName: 'devices'
+},
+machines: {
+  specFileName: 'machines',
+  apiName: 'machines'
+  },
+'blacklisted-words': {
+  apiName: 'blacklistedwords',
+  specFileName: 'blacklisted-words'
+},
+holiday: {
+  apiName: 'holidays',
+  specFileName: 'holiday-data'
+},
+'document-type': {
+  apiName: 'documenttypes',
+  specFileName: 'document-types'
+},
+location: {
+  apiName: 'locations',
+  specFileName: 'location-data'
+},
+'gender-type': {
+  apiName: 'gendertypes',
+  specFileName: 'gender-types'
+},
+title: {
+  apiName: 'title',
+  specFileName: 'titles'
+},
+templates: {
+  apiName: 'templates',
+  specFileName: 'templates'
+},
+'machine-type': {
+  apiName: 'machinetypes',
+  specFileName: 'machine-type'
+},
+'device-types': {
+  apiName: 'devicetypes',
+  specFileName: 'device-type'
+},
+'document-categories': {
+  apiName: 'documentcategories',
+  specFileName: 'document-category'
+},
+'machine-specs': {
+  apiName: 'machinespecifications',
+  specFileName: 'machine-specification'
+},
+'device-specs': {
+  apiName: 'devicespecifications',
+  specFileName: 'device-specification'
+},
+'center-type': {
+  apiName: 'registrationcentertypes',
+  specFileName: 'center-type'
+},
+'individual-type': {
+  apiName: 'individualtypes',
+  specFileName: 'individual-types'
+}
 };

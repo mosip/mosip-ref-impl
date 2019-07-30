@@ -8,7 +8,7 @@
         },
         "imagePath":"assets/images/filter.png",
         "actionListType": "action",
-        "actionURL": { "case": "holiday-type" },
+        "actionURL": { "case": "filter" },
         "redirectURL": "",
         "showIn": "Button",
         "validations": ""
@@ -93,5 +93,30 @@
       "pageSize": "10",
       "pageSizeList": [10, 20, 30, 40, 50]
     },
-    "filterColumns": []
+    "filterColumns": [
+      {
+        "filtername": "word",
+        "filterlabel": "Word",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "langCode",
+        "filterlabel": "Language",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "isActive",
+        "filterlabel": "Status",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      }
+    ]
 }

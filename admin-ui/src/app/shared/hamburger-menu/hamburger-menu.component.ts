@@ -1,6 +1,6 @@
 import { HeaderService } from 'src/app/core/services/header.service';
 import { LogoutService } from './../../core/services/logout.service';
-import { Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-hamburger-menu',
@@ -11,18 +11,27 @@ import { Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
 export class HamburgerComponent implements OnInit {
 
   @Input() data: any;
+  roleName: string;
+  roleNameSubstr: string;
+  userName: string;
 
   dataList: any[];
 
-  constructor(public headerService: HeaderService, private logoutService: LogoutService) { }
+  constructor(private headerService: HeaderService, private logoutService: LogoutService) { }
 
   ngOnInit() {
-    console.log('hfdasfdsf', this.data);
     if (this.data && this.data.menuList) {
       this.dataList = this.data.menuList;
-      console.log('ButtonName', this.dataList);
     }
-
+    if (this.headerService.getUsername()) {
+      this.userName = this.headerService.getUsername();
+    }
+    if (this.headerService.getRoles()) {
+      const roleNameSplit = this.headerService.getRoles().indexOf(',');
+      this.roleName = this.headerService.getRoles().substring(0, roleNameSplit);
+      this.roleNameSubstr = this.headerService.getRoles().substring(roleNameSplit + 1);
+      console.log('sfsfysafysaf', this.roleName, this.roleNameSubstr);
+    }
   }
 
   onItem() {

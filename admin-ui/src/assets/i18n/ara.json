@@ -39,6 +39,7 @@
         "city": "مدينة",
         "laa": "LAA",
         "postal-code": "الرمز البريدي",
+        "zone": "منطقة",
         "operational-details": "تفاصيل التشغيل",
         "holiday-zone": "منطقة عطلة",
         "working-hrs": "ساعات العمل",
@@ -103,6 +104,9 @@
             "postalCode": {
                 "required": "الرمز البريدي مطلوب"
             },
+            "zone": {
+                "required": "مطلوب منطقة عطلة"
+            },
             "holidayZone": {
                 "required": "مطلوب منطقة عطلة"
             },
@@ -163,5 +167,50 @@
         ],
         "buttonText": "حسنا",
         "title": "خطأ"
+    },
+    "devices": {
+        "header": "جهاز",
+        "name": "اسم الجهاز",
+        "serialNumber": "رقم سري",
+        "macAddress": "MAC عنوان",
+        "ipAddress": "IP عنوان",
+        "validity": "تاريخ صحيح",
+        "isActive": "نشط",
+        "zone": "منطقة",
+        "language": "عربى",
+        "errorMessages": {
+            "title": "خطأ",
+            "message": "لاتوجد بيانات",
+            "btnTxt": "حسنا"
+        }
+    },
+    "machines": {
+        "header": "آلة",
+        "name": "إسم الألة",
+        "machineSpecId": "معرف آلات الآلات",
+        "serialNumber": "رقم سري",
+        "macAddress": "MAC عنوان",
+        "ipAddress": "IP عنوان",
+        "validity": "تاريخ صحيح",
+        "isActive": "نشط",
+        "zone": "منطقة",
+        "language": "عربى",
+        "errorMessages": {
+            "title": "خطأ",
+            "message": "لاتوجد بيانات",
+            "btnTxt": "حسنا"
+        }
+    },
+    "masterData": {
+        "master-data": "البيانات الرئيسية",
+        "total-no": "المجموع لا",
+        "common": "مشترك",
+        "device-definition": "تعريف الجهاز",
+        "machine-definition": "تعريف الجهاز",
+        "document-definition": "تعريف المستند",
+        "doc-category-mapping": "وثيقة الفئة - نوع رسم الخرائط",
+        "category": "الفئة",
+        "mapped-documents": "المستندات المعينة",
+        "unmapped-documents": "المستندات غير المعينة"
     }
 }

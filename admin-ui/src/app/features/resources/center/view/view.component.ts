@@ -1,5 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { DataStorageService } from 'src/app/core/services/data-storage.service';
+import { Component, OnDestroy } from '@angular/core';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -7,19 +6,17 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import * as centerConfig from 'src/assets/entity-spec/center.json';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import Utils from '../../../../app.utils';
+
+
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit, OnChanges {
-  constructor(
-    private dataStroageService: DataStorageService,
-    private centerService: CenterService,
-    private appService: AppConfigService
-  ) {
-    this.getCenterConfigs();
-  }
+export class ViewComponent implements OnDestroy {
+
   displayedColumns = [];
   actionButtons = [];
   actionEllipsis = [];
@@ -29,31 +26,40 @@ export class ViewComponent implements OnInit, OnChanges {
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   centers = [];
-  ngOnInit() {
-    this.getRegistrationCenters();
-  }
-  ngOnChanges() {
+  subscribed: any;
+
+  constructor(
+    private centerService: CenterService,
+    private appService: AppConfigService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    this.getCenterConfigs();
+    this.subscribed = router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.getRegistrationCenters();
+      }
+    });
   }
 
   getCenterConfigs() {
-    this.displayedColumns = centerConfig.eng.columnsToDisplay;
+    this.displayedColumns = centerConfig.columnsToDisplay;
     console.log(this.displayedColumns);
-    this.actionButtons = centerConfig.eng.actionButtons.filter(
+    this.actionButtons = centerConfig.actionButtons.filter(
       value => value.showIn.toLowerCase() === 'ellipsis'
     );
-    this.actionEllipsis = centerConfig.eng.actionButtons.filter(
+    this.actionEllipsis = centerConfig.actionButtons.filter(
       value => value.showIn.toLowerCase() === 'button'
     );
-    this.paginatorOptions = centerConfig.eng.paginator;
+    this.paginatorOptions = centerConfig.paginator;
   }
 
   pageEvent(event: any) {
-    console.log(event);
-    if (event) {
-      this.pagination.pageFetch = event.pageSize;
-      this.pagination.pageStart = event.pageIndex;
-      this.getRegistrationCenters();
-    }
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.pagination.pageFetch = event.pageSize;
+    filters.pagination.pageStart = event.pageIndex;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl(`admin/resources/centers/view?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -68,16 +74,17 @@ export class ViewComponent implements OnInit, OnChanges {
       this.sortFilter.push(event);
     }
     console.log(this.sortFilter);
-    this.getRegistrationCenters();
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.sort = this.sortFilter;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl('admin/resources/centers/view?' + url);
   }
 
   getRegistrationCenters() {
     this.centers = [];
-    (this.centerRequest.filters = []),
-      (this.centerRequest.pagination = this.pagination);
-    (this.centerRequest.sort = this.sortFilter),
-      (this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode);
-    this.requestModel = new RequestModel(null, null, this.centerRequest);
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    this.sortFilter = filters.sort;
+    this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.centerService
       .getRegistrationCentersDetails(this.requestModel)
@@ -85,11 +92,18 @@ export class ViewComponent implements OnInit, OnChanges {
         console.log(response);
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalRecord;
-          this.centers = [...response.data];
+          this.paginatorOptions.pageIndex = filters.pagination.pageStart;
+          this.paginatorOptions.pageSize = filters.pagination.pageFetch;
+          console.log(this.paginatorOptions);
+          this.centers = response.data ? [...response.data] : [];
           console.log(this.centers);
         } else if (errors != null) {
           console.log(errors);
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.subscribed.unsubscribe();
   }
 }

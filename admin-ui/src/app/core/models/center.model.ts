@@ -19,6 +19,7 @@ export class CenterModel {
         public perKioskProcessTime: string,
         public timeZone: string,
         public workingHours: string,
+        public zoneCode: string,
         public id?: string,
         public isActive?: boolean,
         public numberOfKiosks?: number

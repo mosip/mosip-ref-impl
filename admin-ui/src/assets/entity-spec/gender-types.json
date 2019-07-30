@@ -1,19 +1,11 @@
 {
   "actionButtons": [
-    {
-      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-      "imagePath":"assets/images/filter.png",
-      "actionListType": "action",
-      "actionURL": { "case": "devices" },
-      "redirectURL": "",
-      "showIn": "Button",
-      "validations": ""
-    }
   ],
   "columnsToDisplay": [
     {
       "name": "code",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
       "sortOrder": "3",
       "showAsLink": "",
@@ -21,9 +13,10 @@
       "LinkURL": ""
     },
     {
-      "name": "name",
+      "name": "genderName",
       "showInListView": "true",
-      "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+      "showInSingleView": "true",
+      "label": { "eng": " Gender Name", "ara": "اسم", "fra": "prénom" },
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
@@ -32,6 +25,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as appConstants from 'src/app/app.constants';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -7,6 +7,7 @@ import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
+import Utils from 'src/app/app.utils';
 
 @Component({
   selector: 'app-list-view',
@@ -26,11 +27,21 @@ export class ListViewComponent implements OnInit {
   requestModel: RequestModel;
   masterData = [];
   mapping: any;
+
+  subscribed: any;
+
   constructor(
     private router: Router,
     private dataStorageService: DataStorageService,
-    private appService: AppConfigService
-  ) {}
+    private appService: AppConfigService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.subscribed = router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.ngOnInit();
+      }
+    });
+  }
 
   async ngOnInit() {
     console.log(this.router.url);
@@ -40,7 +51,7 @@ export class ListViewComponent implements OnInit {
 
   loadData() {
     return new Promise((resolve, reject) => {
-      const routeParts = this.router.url.split('/')[3];
+      const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
       this.headerName = appConstants.masterdataMapping[`${routeParts}`].headerName;
       console.log(this.mapping);
@@ -79,32 +90,35 @@ export class ListViewComponent implements OnInit {
       this.sortFilter.push(event);
     }
     console.log(this.sortFilter);
-    this.getMasterDataTypeValues();
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.sort = this.sortFilter;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl(`admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`);
   }
   pageEvent(event: any) {
-    console.log(event);
-    if (event) {
-      this.pagination.pageFetch = event.pageSize;
-      this.pagination.pageStart = event.pageIndex;
-      this.getMasterDataTypeValues();
-    }
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.pagination.pageFetch = event.pageSize;
+    filters.pagination.pageStart = event.pageIndex;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl(`admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`);
   }
 
   getMasterDataTypeValues() {
     return new Promise((resolve, reject) => {
-      const routeParts = this.router.url.split('/')[3];
+      const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
-      this.centerRequest.filters = [],
-      this.centerRequest.pagination = this.pagination;
-      this.centerRequest.sort = this.sortFilter,
-      this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
-      this.requestModel = new RequestModel(null, null, this.centerRequest);
+      const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+      this.sortFilter = filters.sort;
+      this.requestModel = new RequestModel(null, null, filters);
       console.log(JSON.stringify(this.requestModel));
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
         .subscribe(({response}) => {
           console.log(response);
           this.paginatorOptions.totalEntries = response.totalRecord;
+          this.paginatorOptions.pageIndex = filters.pagination.pageStart;
+          this.paginatorOptions.pageSize = filters.pagination.pageFetch;
+          console.log(this.paginatorOptions);
           this.masterData = [...response.data];
           console.log(this.masterData);
           resolve(true);

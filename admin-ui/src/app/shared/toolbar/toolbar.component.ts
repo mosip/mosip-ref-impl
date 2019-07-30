@@ -43,8 +43,7 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
     const dialogRef = this.dialog
       .open(DialogComponent, {
         data: action,
-        width: '700px',
-        height: '33em'
+        width: '700px'
       })
       .afterClosed()
       .subscribe(result => {

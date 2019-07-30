@@ -6,13 +6,16 @@ import { MachinesRoutingModule } from './machines-routing.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MachinesHeaderComponent } from './machines-header/machines-header.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     MachinesRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [ViewComponent, CreateComponent, MachinesHeaderComponent]
 })

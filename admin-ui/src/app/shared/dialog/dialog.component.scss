@@ -30,8 +30,7 @@ h5 {
   padding: 11px 0px;
 }
 .footer-button {
-  border: 1px solid black;
-  border-radius: 0;
+  border: 1px solid #FF4081;
   margin: 5px;
   text-transform: capitalize;
   font-family: sans-serif;
@@ -55,32 +54,6 @@ h5 {
 .flex-container > .mat-form-field {
   width: 50%;
   padding: 0px 10px;
-}
-.flex-container > .mat-form-field {
-  .mat-input-element {
-    color: black;
-  }
-  .mat-form-field-label {
-    color: black;
-    font-size: 12px;
-  }
-  .mat-form-field-underline {
-    background-color: slategray;
-  }
-}
-.flex-container > .mat-form-field.mat-focused {
-  .mat-form-field-label {
-    color: slategray;
-  }
-  .mat-form-field-underline {
-    background-color: slategray;
-  }
-  .mat-input-element {
-    color: black;
-  }
-  .mat-form-field-ripple {
-    background-color: slategray;
-  }
 }
 
 // Confirmation popup

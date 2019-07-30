@@ -6,6 +6,7 @@ export class CenterDropdown {
     public province: any = {},
     public laa: any = {},
     public postalCode: any = {},
+    public zone: any = {},
     public holidayZone: any = {},
     public workingHours: any = {},
     public noKiosk: any = {},

@@ -4,7 +4,7 @@
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
         "imagePath": "assets/images/filter.png",
         "actionListType": "action",
-        "actionURL": { "case": "devices" },
+        "actionURL": { "case": "filter" },
         "redirectURL": "",
         "showIn": "Button",
         "validations": ""
@@ -223,6 +223,36 @@
       "pageSize": "10",
       "pageSizeList": [10, 20, 30, 40, 50]
     },
-    "filterColumns": []
+    "filterColumns": [
+      {
+        "filtername": "name",
+        "filterlabel": "Name",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },{
+        "filtername": "moduleId",
+        "filterlabel": "Module Id",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },{
+        "filtername": "moduleName",
+        "filterlabel": "Module Name",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },{
+        "filtername": "isActive",
+        "filterlabel": "Status",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      }
+    ]
   }
   

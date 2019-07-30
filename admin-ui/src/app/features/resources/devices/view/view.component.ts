@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
@@ -6,17 +6,31 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import * as deviceConfig from 'src/assets/entity-spec/devices.json';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import Utils from 'src/app/app.utils';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent implements OnDestroy {
+
+
+  subscribed: any;
+
+
   constructor(
     private dataStroageService: DataStorageService,
-    private appService: AppConfigService
+    private appService: AppConfigService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.getDevicesConfigs();
+    this.subscribed = router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.getDevices();
+      }
+    });
   }
   displayedColumns = [];
   actionButtons = [];
@@ -27,9 +41,7 @@ export class ViewComponent implements OnInit {
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   devices = [];
-  ngOnInit() {
-    this.getDevices();
-  }
+
 
   getDevicesConfigs() {
     this.displayedColumns = deviceConfig.columnsToDisplay;
@@ -44,12 +56,11 @@ export class ViewComponent implements OnInit {
   }
 
   pageEvent(event: any) {
-    console.log(event);
-    if (event) {
-      this.pagination.pageFetch = event.pageSize;
-      this.pagination.pageStart = event.pageIndex;
-      this.getDevices();
-    }
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.pagination.pageFetch = event.pageSize;
+    filters.pagination.pageStart = event.pageIndex;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl(`admin/resources/devices/view?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -64,16 +75,17 @@ export class ViewComponent implements OnInit {
     this.sortFilter.push(event);
   }
     console.log(this.sortFilter);
-    this.getDevices();
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.sort = this.sortFilter;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl('admin/resources/devices/view?' + url);
   }
 
   getDevices() {
     this.devices = [];
-    (this.centerRequest.filters = []),
-      (this.centerRequest.pagination = this.pagination);
-    (this.centerRequest.sort = this.sortFilter),
-      (this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode);
-    this.requestModel = new RequestModel(null, null, this.centerRequest);
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    this.sortFilter = filters.sort;
+    this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.dataStroageService
       .getDevicesData(this.requestModel)
@@ -81,8 +93,15 @@ export class ViewComponent implements OnInit {
         console.log(response);
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalRecord;
+          this.paginatorOptions.pageIndex = filters.pagination.pageStart;
+          this.paginatorOptions.pageSize = filters.pagination.pageFetch;
+          console.log(this.paginatorOptions);
           this.devices = [...response.data];
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.subscribed.unsubscribe();
   }
 }

@@ -11,15 +11,13 @@ export class CenterFilterForm {
   province: string;
   holidayZone: string;
   laa: string;
-  from: string;
-  to: string;
   status: string;
   postalCode: string;
-  centerFilterGroup: FormGroup = null;
+  FilterGroup: FormGroup = null;
   constructor() {
     const builder = new FormBuilder();
-    this.centerFilterGroup = builder.group({
-      centerType: [''],
+    this.FilterGroup = builder.group({
+      centerTypeName: [''],
       region: [''],
       city: [''],
       province: [''],
@@ -28,7 +26,7 @@ export class CenterFilterForm {
       from: [''],
       to: [''],
       status: [''],
-      postalCode: ['']
+      postalcode: ['']
     });
   }
 }

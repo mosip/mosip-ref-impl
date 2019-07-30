@@ -2,8 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-mater-data-common-body',
-  templateUrl: './mater-data-common-body.component.html',
-  styleUrls: ['./mater-data-common-body.component.scss']
+  templateUrl: './mater-data-common-body.component.html'
 })
 export class MaterDataCommonBodyComponent implements OnInit {
 

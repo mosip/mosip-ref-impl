@@ -23,14 +23,55 @@
     outline: none;
     border: none;
     cursor: pointer;
+    div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 80px;
+    }
+    .tooltip {
+      display: inline-block;
+      .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #ff4081;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 54%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+    }
+    .tooltip .tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #ff4081 transparent transparent transparent;
+    }
+    .tooltip:hover {
+      .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
   }
 }
 .profile + * .cdk-overlay-pane > div.mat-menu-panel {
   margin-top: 21px !important;
 }
 .elipses + * .cdk-overlay-pane > div.mat-menu-panel {
-    .mat-menu-item {
-        line-height: 34px !important;
-        height: 34px !important;
-    }
+  .mat-menu-item {
+    line-height: 34px !important;
+    height: 34px !important;
+  }
 }

@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 
 @Component({
   selector: 'app-center-header',
   templateUrl: './center-header.component.html',
-  styleUrls: ['./center-header.component.scss']
+  encapsulation: ViewEncapsulation.None
 })
 export class CenterHeaderComponent implements OnInit {
   actionButtonElipses = new Array();

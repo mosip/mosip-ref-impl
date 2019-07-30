@@ -33,7 +33,7 @@
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
-      "actionURL": { "case": "devices" },
+      "actionURL":{ "case": "filter" },
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""

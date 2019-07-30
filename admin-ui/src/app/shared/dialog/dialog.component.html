@@ -1,120 +1,84 @@
 <!-- center filter -->
-<div *ngIf="input.case === 'center'" class="center-filter">
+<div class="filter" *ngIf="input.case === 'filter'">
   <h2 class="filter-heading">Add Filters</h2>
   <mat-divider></mat-divider>
-  <form [formGroup]="centerFilter.centerFilterGroup" (ngSubmit)="getCenterFilterValuesOnSubmit()">
+  <form [formGroup]="filterGroup" (ngSubmit)="getFilterValuesOnSubmit()">
     <div class="flex-container">
-      <mat-form-field>
-        <input matInput placeholder="Center Type" formControlName="centerType" [matAutocomplete]="cntrtype" />
-        <mat-autocomplete #cntrtype="matAutocomplete">
-          <mat-option *ngIf="Property; else cntrtypespinner"></mat-option>
-          <ng-template #cntrtypespinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <mat-form-field>
-        <input matInput placeholder="Status" formControlName="status" [matAutocomplete]="status" />
-        <mat-autocomplete #status="matAutocomplete">
-          <mat-option *ngIf="Property; else statusspinner"></mat-option>
-          <ng-template #statusspinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <mat-form-field>
-        <input matInput placeholder="Region" formControlName="region" [matAutocomplete]="region" />
-        <mat-autocomplete #region="matAutocomplete">
-          <mat-option *ngIf="Property; else regionspinner"></mat-option>
-          <ng-template #regionspinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Province" formControlName="province" [matAutocomplete]="province" />
-        <mat-autocomplete #province="matAutocomplete">
-          <mat-option *ngIf="Property; else provincespinner"></mat-option>
-          <ng-template #provincespinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="City" formControlName="city" [matAutocomplete]="city" />
-        <mat-autocomplete #city="matAutocomplete">
-          <mat-option *ngIf="Property; else cityspinner"></mat-option>
-          <ng-template #cityspinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="LAA" formControlName="laa" [matAutocomplete]="LAA" />
-        <mat-autocomplete #LAA="matAutocomplete">
-          <mat-option *ngIf="Property; else LAAspinner"></mat-option>
-          <ng-template #LAAspinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Postal Code" formControlName="postalCode" [matAutocomplete]="postal" />
-        <mat-autocomplete #postal="matAutocomplete">
-          <mat-option *ngIf="Property; else postalspinner"></mat-option>
-          <ng-template #postalspinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field><input matInput placeholder="Holiday Zone" formControlName="holidayZone"
-          [matAutocomplete]="holidayzone" />
-        <mat-autocomplete #holidayzone="matAutocomplete">
-          <mat-option *ngIf="Property; else holidayzonespinner"></mat-option>
-          <ng-template #holidayzonespinner>
-            <mat-option>
-              <mat-spinner class="spinner" [diameter]="30"></mat-spinner>
-            </mat-option>
-          </ng-template>
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
-    <div class="date-header">
-      <h5>Select Created Date Range</h5>
-    </div>
-    <div class="flex-container">
-      <mat-form-field>
-        <input matInput [matDatepicker]="frompicker" formControlName="from" placeholder="From" />
-        <mat-datepicker-toggle matSuffix [for]="frompicker"></mat-datepicker-toggle>
-        <mat-datepicker #frompicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [matDatepicker]="topicker" formControlName="to" placeholder="To" />
-        <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
-        <mat-datepicker #topicker></mat-datepicker>
-      </mat-form-field>
+      <ng-container *ngFor="let filter of FilterData">
+        <ng-container ngSwitch="{{ filter.dropdown }}">
+          <ng-container *ngSwitchCase="'false'">
+            <ng-container ngSwitch="{{ filter.autocomplete }}">
+              <mat-form-field *ngSwitchCase="'true'">
+                <input
+                  type="text"
+                  matInput
+                  placeholder="{{ filter.filterlabel }}"
+                  formControlName="{{ filter.filtername }}"
+                  (click)="getControlName(filter.filtername)"
+                  [matAutocomplete]="auto"
+                />
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of options" [value]="option">
+                    {{ option.fieldValue}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field *ngSwitchCase="'false'">
+                <input
+                  type="text"
+                  matInput
+                  placeholder="{{ filter.filterlabel }}"
+                  formControlName="{{ filter.filtername }}"
+                  (click)="getControlName(filter.filtername)"
+                />
+              </mat-form-field>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'true'">
+            <mat-form-field>
+              <mat-label>{{ filter.filterlabel }}</mat-label>
+              <mat-select
+                formControlName="{{ filter.filtername }}"
+                (click)="getControlName(filter.filtername)"
+              >
+              <ng-container *ngIf="options.length>0" >
+                <mat-option *ngFor="let option of options" [value]="option.fieldValue">
+                    {{ option.fieldValue}}
+                </mat-option>
+              </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+        </ng-container>
+      </ng-container>
     </div>
     <div class="footer">
-      <button type="reset" mat-button class="footer-button">Reset</button>
-      <button mat-button class="footer-button" (click)="onNoClick()">Cancel</button>
-      <button type="submit" mat-button class="footer-button" style="background-color: black; color:white;"
-        (click)="onNoClick()">
+      <button
+        type="reset"
+        mat-button
+        class="footer-button"
+        style="color: #FF4081; border: inherit"
+      >
+        <img
+          src="assets/images/refresh.png"
+          height="15px; width:14px;"
+        />&nbsp;Reset
+      </button>
+      <button
+        mat-button
+        class="footer-button"
+        (click)="onNoClick()"
+        style="color: #FF4081; background-color: white;"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        mat-button
+        class="footer-button"
+        style="background-color:#FF4081; color:white;"
+        (click)="onNoClick()"
+      >
         Apply
       </button>
     </div>
@@ -131,12 +95,21 @@
     </div>
   </div>
   <div mat-dialog-actions class="pop-up-footer">
-    <span><button mat-button [mat-dialog-close]="!confirm">
+    <span
+      ><button mat-button [mat-dialog-close]="!confirm">
         {{ input.noBtnTxt }}
-      </button></span>
-    <span><button type="button" mat-button [mat-dialog-close]="confirm" cdkFocusInitial>
+      </button></span
+    >
+    <span
+      ><button
+        type="button"
+        mat-button
+        [mat-dialog-close]="confirm"
+        cdkFocusInitial
+      >
         {{ input.yesBtnTxt }}
-      </button></span>
+      </button></span
+    >
   </div>
 </div>
 
@@ -149,13 +122,13 @@
     </div>
   </div>
   <div mat-dialog-actions class="pop-up-footer">
-    <span><button mat-button cdkFocusInitial (click)="onNoClick()">
+    <span
+      ><button mat-button cdkFocusInitial (click)="onNoClick()">
         {{ input.btnTxt }}
-      </button></span>
+      </button></span
+    >
   </div>
 </div>
-
-
 
 <!-- <div *ngIf="input.case === 'MESSAGE'" style="padding: 10px;">
   <h1 mat-dialog-title>{{ input.title }}</h1>
