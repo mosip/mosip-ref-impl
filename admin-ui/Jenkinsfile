@@ -4,7 +4,7 @@ node {
  def registryUrl = env.REGISTRY_URL
  def registryName = env.REGISTRY_NAME
  def registryCredentials = env.REGISTRY_CREDENTIALS
- k8DevContext = 'MOSIP-dev-Kubernetes'
+ k8DevContext = 'mosip-dev-cluster'
  def moduleName = 'admin-ui'
 
  stage('------- Checkout --------') {
