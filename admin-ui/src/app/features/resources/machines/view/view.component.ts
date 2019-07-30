@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
@@ -6,18 +6,32 @@ import { RequestModel } from 'src/app/core/models/request.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import * as machinesConfig from 'src/assets/entity-spec/machines.json';
 import { SortModel } from 'src/app/core/models/sort.model';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import Utils from 'src/app/app.utils';
 
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent implements OnDestroy {
+
+
+  subscribed: any;
+
+
   constructor(
     private dataStroageService: DataStorageService,
-    private appService: AppConfigService
+    private appService: AppConfigService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.getMachinesConfigs();
+    this.subscribed = router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.getMachines();
+      }
+    });
   }
   displayedColumns = [];
   actionButtons = [];
@@ -28,9 +42,7 @@ export class ViewComponent implements OnInit {
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
   machines = [];
-  ngOnInit() {
-    this.getMachines();
-  }
+
 
   getMachinesConfigs() {
     this.displayedColumns = machinesConfig.columnsToDisplay;
@@ -45,12 +57,11 @@ export class ViewComponent implements OnInit {
   }
 
   pageEvent(event: any) {
-    console.log(event);
-    if (event) {
-      this.pagination.pageFetch = event.pageSize;
-      this.pagination.pageStart = event.pageIndex;
-      this.getMachines();
-    }
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.pagination.pageFetch = event.pageSize;
+    filters.pagination.pageStart = event.pageIndex;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl(`admin/resources/machines/view?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -65,24 +76,33 @@ export class ViewComponent implements OnInit {
       this.sortFilter.push(event);
     }
     console.log(this.sortFilter);
-    this.getMachines();
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    filters.sort = this.sortFilter;
+    const url = Utils.convertFilterToUrl(filters);
+    this.router.navigateByUrl('admin/resources/machines/view?' + url);
   }
 
   getMachines() {
     this.machines = [];
-    this.centerRequest.filters = [],
-    this.centerRequest.pagination = this.pagination;
-    this.centerRequest.sort = this.sortFilter,
-    this.centerRequest.languageCode = this.appService.getConfig().primaryLangCode;
-    this.requestModel = new RequestModel(null, null, this.centerRequest);
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    this.sortFilter = filters.sort;
+    this.requestModel = new RequestModel(null, null, filters);
     console.log(this.requestModel);
     this.dataStroageService
       .getMachinesData(this.requestModel)
       .subscribe(({ response, errors }) => {
         if (response != null) {
+          console.log(response);
           this.paginatorOptions.totalEntries = response.totalRecord;
+          this.paginatorOptions.pageIndex = filters.pagination.pageStart;
+          this.paginatorOptions.pageSize = filters.pagination.pageFetch;
+          console.log(this.paginatorOptions);
           this.machines = [...response.data];
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.subscribed.unsubscribe();
   }
 }

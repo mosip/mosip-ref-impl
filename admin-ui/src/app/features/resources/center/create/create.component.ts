@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import Utils from '../../../../app.utils';
 import * as appConstants from '../../../../app.constants';
 import { ValidateLatLong, ValidateKiosk } from 'src/app/core/validators/center.validator';
 import { AppConfigService } from 'src/app/app-config.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { CenterModel } from 'src/app/core/models/center.model';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -22,7 +22,6 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class CreateComponent implements OnInit {
@@ -79,15 +78,26 @@ export class CreateComponent implements OnInit {
     this.getStubbedData();
     this.getProcessingTime();
     this.getTimeSlots();
+    this.getZoneData();
     this.translateService.getTranslation(this.primaryLang).subscribe(response => {
       this.popupMessages = response.center.popupMessages;
     });
   }
 
+  getZoneData() {
+    this.dataStorageService.getZoneData(this.primaryLang).subscribe(response => {
+      console.log(response);
+      this.dropDownValues.zone.primary = response.response;
+    });
+    this.dataStorageService.getZoneData(this.secondaryLang).subscribe(response => {
+      console.log(response);
+      this.dropDownValues.zone.secondary = response.response;
+    });
+  }
+
   onCreate() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '868px',
-      height: '365px',
+      width: '350px',
       data: {
         case: 'CONFIRMATION',
         title: this.popupMessages['create-edit'].title,
@@ -127,6 +137,7 @@ export class CreateComponent implements OnInit {
       '00:' + this.primaryForm.controls.processingTime.value + ':00',
       this.data[0].timeZone,
       this.primaryForm.controls.workingHours.value,
+      this.primaryForm.controls.zone.value,
       this.data[0].id,
       this.primaryForm.controls.isActive.value,
       this.primaryForm.controls.noKiosk.value
@@ -151,6 +162,7 @@ export class CreateComponent implements OnInit {
       '00:' + this.secondaryForm.controls.processingTime.value + ':00',
       this.data[1].timeZone,
       this.secondaryForm.controls.workingHours.value,
+      this.secondaryForm.controls.zone.value,
       this.data[1].id,
       this.secondaryForm.controls.isActive.value,
       this.secondaryForm.controls.noKiosk.value
@@ -163,8 +175,7 @@ export class CreateComponent implements OnInit {
       console.log(updateResponse);
       if (!updateResponse.errors) {
         this.dialog.open(DialogComponent, {
-          width: '868px',
-          height: '365px',
+          width: '350px',
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['update-success'].title,
@@ -176,8 +187,7 @@ export class CreateComponent implements OnInit {
         });
       } else {
         this.dialog.open(DialogComponent, {
-          width: '868px',
-          height: '365px',
+          width: '350px',
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['update-error'].title,
@@ -210,7 +220,8 @@ export class CreateComponent implements OnInit {
       this.primaryForm.controls.name.value,
       '00:' + this.primaryForm.controls.processingTime.value + ':00',
       '(GTM+01:00) CENTRAL EUROPEAN TIME',
-      this.primaryForm.controls.workingHours.value
+      this.primaryForm.controls.workingHours.value,
+      this.primaryForm.controls.zone.value
     );
     const secondaryObject = new CenterModel(
       this.secondaryForm.controls.addressLine1.value,
@@ -231,7 +242,8 @@ export class CreateComponent implements OnInit {
       this.secondaryForm.controls.name.value,
       '00:' + this.secondaryForm.controls.processingTime.value + ':00',
       '(GTM+01:00) CENTRAL EUROPEAN TIME',
-      this.secondaryForm.controls.workingHours.value
+      this.secondaryForm.controls.workingHours.value,
+      this.secondaryForm.controls.zone.value
     );
     delete primaryObject.id;
     delete secondaryObject.id;
@@ -307,11 +319,12 @@ export class CreateComponent implements OnInit {
     this.primaryForm.controls.addressLine1.setValue(this.data[0].addressLine1);
     this.primaryForm.controls.addressLine2.setValue(this.data[0].addressLine2);
     this.primaryForm.controls.addressLine3.setValue(this.data[0].addressLine3);
-    this.primaryForm.controls.region.setValue(this.data[0].region);
-    this.primaryForm.controls.province.setValue(this.data[0].province);
-    this.primaryForm.controls.city.setValue(this.data[0].city);
-    this.primaryForm.controls.laa.setValue(this.data[0].localAdminAuthority);
+    this.primaryForm.controls.region.setValue(this.data[0].regionCode);
+    this.primaryForm.controls.province.setValue(this.data[0].provinceCode);
+    this.primaryForm.controls.city.setValue(this.data[0].cityCode);
+    this.primaryForm.controls.laa.setValue(this.data[0].administrativeZoneCode);
     this.primaryForm.controls.postalCode.setValue(this.data[0].locationCode);
+    this.primaryForm.controls.zone.setValue(this.data[0].zoneCode);
     this.primaryForm.controls.holidayZone.setValue(this.data[0].holidayLocationCode);
     this.primaryForm.controls.workingHours.setValue(this.data[0].workingHours.split(':')[0]);
     this.primaryForm.controls.noKiosk.setValue(this.data[0].numberOfKiosks);
@@ -321,6 +334,7 @@ export class CreateComponent implements OnInit {
     this.primaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchStartTime));
     this.primaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchEndTime));
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
+    this.loadLocationDropDownsForUpdate(this.data[0]);
   }
 
   setSecondaryFormValues() {
@@ -333,11 +347,12 @@ export class CreateComponent implements OnInit {
     this.secondaryForm.controls.addressLine1.setValue(this.data[1].addressLine1);
     this.secondaryForm.controls.addressLine2.setValue(this.data[1].addressLine2);
     this.secondaryForm.controls.addressLine3.setValue(this.data[1].addressLine3);
-    this.secondaryForm.controls.region.setValue(this.data[1].region);
-    this.secondaryForm.controls.province.setValue(this.data[1].province);
-    this.secondaryForm.controls.city.setValue(this.data[1].city);
-    this.secondaryForm.controls.laa.setValue(this.data[1].localAdminAuthority);
+    this.secondaryForm.controls.region.setValue(this.data[1].regionCode);
+    this.secondaryForm.controls.province.setValue(this.data[1].provinceCode);
+    this.secondaryForm.controls.city.setValue(this.data[1].cityCode);
+    this.secondaryForm.controls.laa.setValue(this.data[1].administrativeZoneCode);
     this.secondaryForm.controls.postalCode.setValue(this.data[1].locationCode);
+    this.secondaryForm.controls.zone.setValue(this.data[1].zoneCode);
     this.secondaryForm.controls.holidayZone.setValue(this.data[1].holidayLocationCode);
     this.secondaryForm.controls.workingHours.setValue(this.data[1].workingHours.split(':')[0]);
     this.secondaryForm.controls.noKiosk.setValue(this.data[1].numberOfKiosks);
@@ -399,6 +414,7 @@ export class CreateComponent implements OnInit {
       city: ['', [Validators.required]],
       laa: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
+      zone: ['', [Validators.required]],
       holidayZone: ['', [Validators.required]],
       workingHours: [{ value: '', disabled: true }],
       noKiosk: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0), ValidateKiosk]],
@@ -416,13 +432,13 @@ export class CreateComponent implements OnInit {
 
   initializeSecondaryForm() {
     this.secondaryForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(128)]],
+      name: ['', [Validators.maxLength(128)]],
       centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],
       contactPhone: [{ value: '', disabled: true }],
       longitude: [{ value: '', disabled: true }],
       latitude: [{ value: '', disabled: true }],
-      addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
+      addressLine1: ['', [Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
       region: [{ value: '', disabled: true }],
@@ -430,6 +446,7 @@ export class CreateComponent implements OnInit {
       city: [{ value: '', disabled: true }],
       laa: [{ value: '', disabled: true }],
       postalCode: [{ value: '', disabled: true }],
+      zone: [{ value: '', disabled: true }],
       holidayZone: [{ value: '', disabled: true }],
       workingHours: [{ value: '', disabled: true }],
       noKiosk: [{ value: 0, disabled: true }],
@@ -533,6 +550,14 @@ export class CreateComponent implements OnInit {
 
   cancel() {
     this.location.back();
+  }
+
+  loadLocationDropDownsForUpdate(data: any) {
+    this.loadLocationData('MOR', 'region');
+    this.loadLocationData(data.regionCode, 'province');
+    this.loadLocationData(data.provinceCode, 'city');
+    this.loadLocationData(data.cityCode, 'laa');
+    this.loadLocationData(data.administrativeZoneCode, 'postalCode');
   }
 
   canDeactivate(): Observable<any> | boolean {

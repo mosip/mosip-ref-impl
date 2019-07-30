@@ -8,7 +8,7 @@
         },
         "imagePath":"assets/images/filter.png",
         "actionListType": "action",
-        "actionURL": { "case": "holiday-type" },
+        "actionURL": { "case": "filter" },
         "redirectURL": "",
         "showIn": "Button",
         "validations": ""
@@ -83,5 +83,28 @@
       "pageSize": "10",
       "pageSizeList": [10, 20, 30, 40, 50]
     },
-    "filterColumns": []
+    "filterColumns": [
+      {
+        "filtername": "holidayDate",
+        "filterlabel": "Holiday Date",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"true"
+      },{
+        "filtername": "holidayName",
+        "filterlabel": "Holiday Name",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },{
+        "filtername": "isActive",
+        "filterlabel": "Status",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      }
+    ]
 }

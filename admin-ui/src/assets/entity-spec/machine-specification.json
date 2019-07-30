@@ -4,7 +4,7 @@
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
-      "actionURL": { "case": "devices" },
+      "actionURL": { "case": "filter" },
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
@@ -146,5 +146,46 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": []
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": "Name",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker":"false"
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker":"false"
+    },
+    {
+      "filtername": "brand",
+      "filterlabel": "brand",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "fasle",
+      "datePicker":"false"
+    },
+    {
+      "filtername": "model",
+      "filterlabel": "Model",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "fasle",        
+      "datePicker":"false"
+    },
+    {
+      "filtername": "machineTypeName",
+      "filterlabel": "Machine Type",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",        
+      "datePicker":"false"
+    }
+  ]
 }

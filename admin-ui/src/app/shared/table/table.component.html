@@ -44,21 +44,23 @@
             width="35px;"
             *ngIf="item === 'name'"
             style="padding-right:15px;"
-          />{{ data[item] | status }}</span
+          />{{ data[item]  }}</span
         >
       </td>
-      <td class="mat-cell mat-header-cell">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
+      <td class="mat-cell mat-header-cell" *ngIf="buttonList.length>0" >
+        <button mat-icon-button [matMenuTriggerFor]="menu" (click)="ellipsisAction(data)">
           <mat-icon>more_vert</mat-icon>
         </button>
       </td>
       <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
         <button
           mat-menu-item
-          *ngFor="let button of buttonList"
+          *ngFor="let button of ellipsisList"
           (click)="selectedRow(data, i)"
         >
-          <span>{{ button.buttonName }}</span>
+        <span *ngIf="lang === 'eng'">{{ button.buttonName.eng }}</span>
+        <span *ngIf="lang === 'fra'">{{ button.buttonName.fra }}</span>
+        <span *ngIf="lang === 'ara'">{{ button.buttonName.ara }}</span>
         </button>
       </mat-menu>
     </tr>

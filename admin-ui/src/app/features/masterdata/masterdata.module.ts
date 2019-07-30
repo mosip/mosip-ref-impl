@@ -11,6 +11,7 @@ import { I18nModule } from '../../../app/i18n.module';
 import { ListViewComponent } from './list-view/list-view.component';
 import { SingleViewComponent } from './single-view/single-view.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DocumentCategoryMappingComponent } from './document-category-mapping/document-category-mapping.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MaterDataCommonBodyComponent,
     MaterDataCommonViewComponent,
     ListViewComponent,
-    SingleViewComponent
+    SingleViewComponent,
+    DocumentCategoryMappingComponent
   ],
   imports: [
     CommonModule,

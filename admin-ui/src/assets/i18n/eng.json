@@ -39,6 +39,7 @@
         "city": "City",
         "laa": "LAA",
         "postal-code": "Postal Code",
+        "zone": "Zone",
         "operational-details": "Operational Details",
         "holiday-zone": "Holiday Zone",
         "working-hrs": "Working Hours",
@@ -102,6 +103,9 @@
             },
             "postalCode": {
                 "required": "Postal Code is required"
+            },
+            "zone": {
+                "required": "Zone is required"
             },
             "holidayZone": {
                 "required": "Holiday Zone is required"
@@ -170,6 +174,43 @@
         "common": "Common",
         "device-definition": "Device Definition",
         "machine-definition": "Machine Definition",
-        "document-definition": "Document Definition"
+        "document-definition": "Document Definition",
+        "doc-category-mapping": "Doc Category - Type Mapping",
+        "category": "Category",
+        "mapped-documents": "Mapped Documents",
+        "unmapped-documents": "Unmapped Documents"
+    },
+    "devices": {
+        "header": "Device",
+        "name": "Device Name",
+        "serialNumber": "Serial Number",
+        "macAddress": "MAC Address",
+        "ipAddress": "IP Address",
+        "validity": "Valid Date Time",
+        "isActive": "Is Active",
+        "zone": "Zone",
+        "language": "English",
+        "errorMessages": {
+            "title": "Error",
+            "message": "No Data Found",
+            "btnTxt": "Ok"
+        }
+    },
+    "machines": {
+        "header": "Machine",
+        "name": "Machine Name",
+        "machineSpecId": "Machines Spec ID",
+        "serialNumber": "Serial Number",
+        "macAddress": "MAC Address",
+        "ipAddress": "IP Address",
+        "validity": "Valid Date Time",
+        "isActive": "Is Active",
+        "zone": "Zone",
+        "language": "English",
+        "errorMessages": {
+            "title": "Error",
+            "message": "No Data Found",
+            "btnTxt": "Ok"
+        }
     }
 }

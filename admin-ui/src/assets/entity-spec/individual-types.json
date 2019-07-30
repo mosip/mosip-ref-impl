@@ -1,14 +1,5 @@
 {
     "actionButtons": [
-      {
-        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-        "imagePath":"assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "devices" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      }
     ],
     "columnsToDisplay": [
       {

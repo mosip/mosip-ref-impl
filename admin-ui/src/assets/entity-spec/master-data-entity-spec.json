@@ -21,7 +21,7 @@
           "label": {
             "eng": "Gender",
             "ara": "جنس",
-            "fra": "le sexe"
+            "fra": "Le sexe"
           },
           "actionURL": "admin/masterdata/gender-type/view"
         },
@@ -125,7 +125,7 @@
             "ara": "فئة الوثيقة - نوع التعيين",
             "fra": "Catégorie de document - Mappage de types"
           },
-          "actionURL": "admin/masterdata/center-type/view"
+          "actionURL": "admin/masterdata/documentCategoryMapping"
         }
       ]
     }

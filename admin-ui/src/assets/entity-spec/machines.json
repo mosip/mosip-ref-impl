@@ -57,7 +57,7 @@
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
         "imagePath":"assets/images/filter.png",
         "actionListType": "action",
-        "actionURL": { "case": "machines" },
+        "actionURL": { "case": "filter" },
         "redirectURL": "",
         "showIn": "Button",
         "validations": ""
@@ -66,7 +66,7 @@
     "columnsToDisplay": [
       {
         "name": "name",
-        "showInListView": "True",
+        "showInListView": "true",
         "label": {
           "eng": "Machine Name",
           "ara": "اسم الجهاز",
@@ -160,5 +160,62 @@
       "pageSize": "10",
       "pageSizeList": [10, 20, 30, 40, 50]
     },
-    "filterColumns": []
+    "filterColumns": [
+      {
+        "filtername": "name",
+        "filterlabel": "Machine Name",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "isActive",
+        "filterlabel": "Status",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "macAddress",
+        "filterlabel": "MAC Address",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "serialNum",
+        "filterlabel": "Serial Number",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "mapStatus",
+        "filterlabel": "Map Status",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "false",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "machineTypeName",
+        "filterlabel": "Machine Type",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      },
+      {
+        "filtername": "id",
+        "filterlabel": "Machine Spec ID",
+        "filterType": "equals",
+        "autocomplete": "false",
+        "dropdown": "true",
+        "datePicker":"false"
+      }
+    ]
 }

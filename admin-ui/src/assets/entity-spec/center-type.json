@@ -4,7 +4,7 @@
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
       "imagePath":"assets/images/filter.png",
       "actionListType": "action",
-      "actionURL": { "case": "center-type" },
+      "actionURL": { "case": "filter" },
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
@@ -13,7 +13,7 @@
   "columnsToDisplay": [
     {
       "name": "code",
-      "showInListView": "True",
+      "showInListView": "true",
       "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
       "sortOrder": "3",
       "showAsLink": "",
@@ -32,7 +32,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
-      "label": "Status",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -40,7 +40,7 @@
     },
     {
       "name": "descr",
-      "showInListView": "",
+      "showInListView": "true",
       "label": { "eng": "Description", "ara": "وصف", "fra": "La description" },
       "sortOrder": "",
       "showAsLink": "",
@@ -49,7 +49,7 @@
     },
     {
       "name": "createdDateTime",
-      "showInListView": "",
+      "showInListView": "true",
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
@@ -105,5 +105,14 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": []
+  "filterColumns": [
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker":"false"
+    }
+  ]
 }

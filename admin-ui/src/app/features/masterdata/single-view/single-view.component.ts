@@ -46,7 +46,7 @@ export class SingleViewComponent implements OnDestroy {
     private router: Router,
     private translate: TranslateService
   ) {
-    this.subscribed = router.events.subscribe( event => {
+    this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.initializeComponent();
       }
@@ -58,8 +58,10 @@ export class SingleViewComponent implements OnDestroy {
     // tslint:disable-next-line:no-string-literal
     this.primaryLangCode = await this.appService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
-    this.secondaryLangCode = await this.appService.getConfig()['secondaryLangCode'];
-    this.translate.getTranslation(this.primaryLangCode).subscribe(response => this.popupMessages = response.singleView);
+    this.secondaryLangCode = await this.appService.getConfig().secondaryLangCode;
+    this.translate
+      .getTranslation(this.primaryLangCode)
+      .subscribe(response => (this.popupMessages = response.singleView));
     this.activatedRoute.params.subscribe(response => {
       this.id = response.id;
       this.masterdataType = response.type;
@@ -68,7 +70,7 @@ export class SingleViewComponent implements OnDestroy {
     this.loadData();
   }
 
- async loadData() {
+  async loadData() {
     this.dataStorageService
       .getSpecFileForMasterDataEntity(this.mapping.specFileName)
       .subscribe(response => {
@@ -94,48 +96,70 @@ export class SingleViewComponent implements OnDestroy {
 
   getData(language: string, isPrimary: boolean) {
     return new Promise((resolve, reject) => {
-    const filterModel = new FilterModel(this.mapping.idKey, 'equals', this.id);
-    this.fetchRequest.filters = [filterModel];
-    this.fetchRequest.languageCode = language;
-    this.fetchRequest.sort = [];
-    this.fetchRequest.pagination = {pageStart: 0, pageFetch: 10};
-    const request = new RequestModel(appConstants.registrationCenterCreateId, null, this.fetchRequest);
-    this.dataStorageService
-      .getMasterDataByTypeAndId(this.mapping.apiName, request)
-      .subscribe(response => {
-        if (response.response.data) {
-          this.data.push(response.response.data);
-          if (isPrimary) {
-           this.primaryData = response.response.data[0];
-          } else {
-           this.secondaryData = response.response.data[0];
+      const filterModel = new FilterModel(
+        this.mapping.idKey,
+        'equals',
+        this.id
+      );
+      this.fetchRequest.filters = [filterModel];
+      this.fetchRequest.languageCode = language;
+      this.fetchRequest.sort = [];
+      this.fetchRequest.pagination = { pageStart: 0, pageFetch: 10 };
+      const request = new RequestModel(
+        appConstants.registrationCenterCreateId,
+        null,
+        this.fetchRequest
+      );
+      this.dataStorageService
+        .getMasterDataByTypeAndId(this.mapping.apiName, request)
+        .subscribe(
+          response => {
+            if (response.response) {
+              if (response.response.data) {
+                this.data.push(response.response.data);
+                if (isPrimary) {
+                  this.primaryData = response.response.data[0];
+                } else {
+                  this.secondaryData = response.response.data[0];
+                }
+                resolve(true);
+              } else {
+                // tslint:disable-next-line:no-string-literal
+                this.displayMessage(this.popupMessages['errorMessages'][0]);
+              }
+            } else {
+              // tslint:disable-next-line:no-string-literal
+              this.displayMessage(this.popupMessages['errorMessages'][0]);
+            }
+          },
+          error => {
+            // tslint:disable-next-line:no-string-literal
+            this.displayMessage(this.popupMessages['errorMessages'][1]);
           }
-          resolve(true);
-        } else {
-          // tslint:disable-next-line:no-string-literal
-          this.displayMessage(this.popupMessages['errorMessages'][0]);
-        }
-      }, error => {
-        // tslint:disable-next-line:no-string-literal
-        this.displayMessage(this.popupMessages['errorMessages'][1]);
-      });
+        );
     });
   }
 
   displayMessage(message: string) {
-    this.dialog.open(DialogComponent, {
-      width: '868px',
-      height: '365px',
-      data: {
-        case: 'MESSAGE',
-        // tslint:disable-next-line:no-string-literal
-        title: this.popupMessages['title'],
-        message,
-        // tslint:disable-next-line:no-string-literal
-        btnTxt: this.popupMessages['buttonText']
-      },
-      disableClose: true
-    }).afterClosed().subscribe(() => this.router.navigateByUrl(`admin/masterdata/${this.masterdataType}/view`));
+    this.dialog
+      .open(DialogComponent, {
+        width: '350px',
+        data: {
+          case: 'MESSAGE',
+          // tslint:disable-next-line:no-string-literal
+          title: this.popupMessages['title'],
+          message,
+          // tslint:disable-next-line:no-string-literal
+          btnTxt: this.popupMessages['buttonText']
+        },
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe(() =>
+        this.router.navigateByUrl(
+          `admin/masterdata/${this.masterdataType}/view`
+        )
+      );
   }
 
   ngOnDestroy() {

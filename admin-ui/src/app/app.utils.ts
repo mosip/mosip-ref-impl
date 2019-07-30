@@ -1,4 +1,8 @@
 import { DatePipe } from '@angular/common';
+import { SortModel } from './core/models/sort.model';
+import { PaginationModel } from './core/models/pagination.model';
+import { FilterModel } from './core/models/filter.model';
+import { CenterRequest } from './core/models/centerRequest.model';
 
 export default class Utils {
   static getCurrentDate() {
@@ -47,6 +51,9 @@ export default class Utils {
   }
 
   static convertTime(time: string) {
+    if (time === '' || time === undefined || time === null) {
+      return '00:00:00';
+    }
     const d = this.getTimeInSeconds(time);
     const h = Math.floor(d / 3600) < 10 ? '0' + Math.floor(d / 3600) : Math.floor(d / 3600);
     const m = Math.floor(d % 3600 / 60) < 10 ? '0' + Math.floor(d % 3600 / 60) : Math.floor(d % 3600 / 60);
@@ -64,5 +71,103 @@ export default class Utils {
       minute: 'numeric'
     });
     return timeString12hr;
+  }
+
+  static convertFilter(queryParams: any, language: string): CenterRequest {
+    const filterFields = Object.keys(queryParams).filter(field => field !== 'sort' && field !== 'pagination');
+    const searchModel = new CenterRequest(
+      this.filterFactory(queryParams, filterFields),
+      this.sortFactory(queryParams.sort ? queryParams.sort : []),
+      this.paginationFactory(queryParams.pagination ? queryParams.pagination : ''),
+      language
+    );
+    return searchModel;
+  }
+
+  private static filterFactory(queryParams: any, filterFields: string[]): FilterModel[] {
+    const pattern = /[\\:](contains|equals|startsWith|between)$/;
+    const filters = [];
+    filterFields.forEach(field => {
+      if (pattern.test(queryParams[field])) {
+        const filterParts = queryParams[field].split(':');
+        switch (filterParts[1]) {
+          case 'between': {
+            if (/^.+[\\$].+/.test(filterParts[0])) {
+              const values = filterParts[0].split('$');
+              const filterModel = new FilterModel(field, filterParts[1], '', values[0], values[1]);
+              filters.push(filterModel);
+            }
+            break;
+          }
+          default: {
+            if (/^[0-9a-zA-Z]{1,}/.test(filterParts[0])) {
+              const filterModel = new FilterModel(field, filterParts[1], filterParts[0]);
+              filters.push(filterModel);
+            }
+            break;
+          }
+        }
+      }
+    });
+    return filters;
+  }
+
+  private static sortFactory(sortData: any): SortModel[] {
+    const pattern = /^[A|D][\\:][a-zA-Z0-9]{1,}$/;
+    const sortObjectArray = [];
+    if (typeof(sortData) === 'string') {
+      sortData = [sortData];
+    }
+    sortData.forEach((element: string) => {
+      if (pattern.test(element)) {
+        const sortObject = new SortModel();
+        const dataParts = element.split(':');
+        if (dataParts[0] === 'A') {
+          sortObject.sortType = 'ASC';
+        } else if (dataParts[0] === 'D') {
+          sortObject.sortType = 'DESC';
+        } else {
+          sortObject.sortType = '';
+        }
+        sortObject.sortField = dataParts[1] ? dataParts[1] : '';
+        sortObjectArray.push(sortObject);
+      }
+    });
+    return sortObjectArray;
+  }
+
+  private static paginationFactory(pageData: string): PaginationModel {
+    const pattern = /[s][0-9]{1,}[\\:][f][0-9]{1,}/;
+    const paginationModel = new PaginationModel();
+    if (pattern.test(pageData)) {
+      const pageDataParts = pageData.split(':');
+      if (pageDataParts[0].charAt(0) === 's' && pageDataParts[0].length > 1) {
+        if (!isNaN(Number(pageDataParts[0].substring(1)))) {
+          paginationModel.pageStart = Number(pageDataParts[0].substring(1));
+        }
+      }
+      if (pageDataParts[1].charAt(0) === 'f' && pageDataParts[1].length > 1) {
+        if (!isNaN(Number(pageDataParts[1].substring(1)))) {
+          paginationModel.pageFetch = Number(pageDataParts[1].substring(1));
+        }
+      }
+    }
+    return paginationModel;
+  }
+
+  static convertFilterToUrl(filterObject: CenterRequest): string {
+    let url = '';
+    url += `pagination=s${filterObject.pagination.pageStart}:f${filterObject.pagination.pageFetch}`;
+    filterObject.sort.forEach(element => {
+      url += `&sort=${element.sortType.toLowerCase() === 'asc' ? 'A' : 'D'}:${element.sortField}`;
+    });
+    filterObject.filters.forEach(filter => {
+      if (filter.type === 'between') {
+        url += `&${filter.columnName}=${filter.fromValue}$${filter.toValue}:${filter.type}`;
+      } else {
+        url += `&${filter.columnName}=${filter.value}:${filter.type}`;
+      }
+    });
+    return url;
   }
 }
