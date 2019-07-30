@@ -1,10 +1,10 @@
 node {
- def branch = '0.12.0_ADMIN'
+ def branch = '0.9.1'
  def dockerImagesTagVersion = 'NaV'  
  def registryUrl = env.REGISTRY_URL
  def registryName = env.REGISTRY_NAME
  def registryCredentials = env.REGISTRY_CREDENTIALS
- k8DevContext = 'MOSIP-Admin-Kubernetes'
+ k8DevContext = 'MOSIP-dev-Kubernetes'
  def moduleName = 'admin-ui'
 
  stage('------- Checkout --------') {
