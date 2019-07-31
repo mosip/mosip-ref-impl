@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material';
 import { FilesModel } from 'src/app/shared/models/demographic-model/files.model';
 import { LogService } from 'src/app/shared/logger/log.service';
 import Utils from 'src/app/app.util';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-file-upload',
@@ -66,6 +67,7 @@ export class FileUploadComponent implements OnInit {
   documentName: string;
   flag: boolean;
   zoom: number = 0.5;
+  primaryLang = localStorage.getItem('langCode');
 
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: '',
@@ -120,10 +122,16 @@ export class FileUploadComponent implements OnInit {
     this.loginId = this.registration.getLoginId();
     this.setApplicants();
     this.sameAs = this.registration.getSameAs();
-    this.dataStroage.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-      if (response['message']) this.fileUploadLanguagelabels = response['message'];
-      if (response['error']) this.errorlabels = response['error'];
-    });
+
+    let factory = new LanguageFactory(this.primaryLang);
+    let response = factory.getCurrentlanguage();
+    if (response['message']) this.fileUploadLanguagelabels = response['message'];
+    if (response['error']) this.errorlabels = response['error'];
+
+    // this.dataStroage.getSecondaryLanguageLabels(this.primaryLang).subscribe(response => {
+    //   if (response['message']) this.fileUploadLanguagelabels = response['message'];
+    //   if (response['error']) this.errorlabels = response['error'];
+    // });
 
     this.getApplicantTypeID();
     if (!this.users[0].files) {
@@ -139,7 +147,7 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   private initiateComponent() {
-    this.translate.use(localStorage.getItem('langCode'));
+    this.translate.use(this.primaryLang);
     this.isModify = localStorage.getItem('modifyDocument');
     if (this.registration.getUsers().length > 0) {
       this.users[0] = JSON.parse(JSON.stringify(this.registration.getUser(this.registration.getUsers().length - 1)));
@@ -261,7 +269,7 @@ export class FileUploadComponent implements OnInit {
 
     for (let applicant of allApplicants) {
       for (let name of applicant) {
-        if (name['demographicMetadata'].fullName[j].language != localStorage.getItem('langCode')) {
+        if (name['demographicMetadata'].fullName[j].language != this.primaryLang) {
           allApplicants[i].demographicMetadata.fullName.splice(j, 1);
         }
         j++;
@@ -305,7 +313,7 @@ export class FileUploadComponent implements OnInit {
 
     requestDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
     for (let language of this.users[0].request.demographicDetails.identity.residenceStatus) {
-      if (language.language === localStorage.getItem('langCode')) {
+      if (language.language === this.primaryLang) {
         requestDTO.value = language.value;
       }
     }
@@ -711,7 +719,7 @@ export class FileUploadComponent implements OnInit {
    */
   setJsonString() {
     this.documentUploadRequestBody.docCatCode = this.documentCategory;
-    this.documentUploadRequestBody.langCode = localStorage.getItem('langCode');
+    this.documentUploadRequestBody.langCode = this.primaryLang;
     this.documentUploadRequestBody.docTypCode = this.documentType;
     this.documentRequest = new RequestModel(appConstants.IDS.documentUpload, this.documentUploadRequestBody, {});
   }
@@ -780,7 +788,6 @@ export class FileUploadComponent implements OnInit {
       this.users[this.step].files.documentsMetaData.push(this.userFile[0]);
     }
     this.userFile = [];
-    // this.registration.updateUser(this.step, this.users[this.step]);
     this.registration.updateUser(this.registration.getUsers().length - 1, this.users[this.step]);
   }
 
