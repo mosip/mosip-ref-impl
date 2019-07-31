@@ -17,7 +17,7 @@ export class LogoutService {
     this.http.delete(`${config.baseUrl}authmanager/logout/user`,
     { observe: 'response'}).subscribe((res: HttpResponse<ResponseModel<LogoutResponse>>) => {
      if (res.body.response.status === 'Success') {
-       this.redirectService.redirect(window.location.origin + '/r2/admin-ui/');
+       this.redirectService.redirect(window.location.origin + '/admin-ui/');
     } else {
        window.alert(res.body.response.message);
      }
