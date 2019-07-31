@@ -55,11 +55,11 @@ export class LoginComponent implements OnInit {
     private regService: RegistrationService,
     private configService: ConfigService
   ) {
+    translate.setDefaultLang('fra');
     localStorage.clear();
   }
 
   ngOnInit() {
-    this.translate.use('fra');
     localStorage.setItem('langCode', 'fra');
     this.showSpinner = true;
     this.loadConfigs();
