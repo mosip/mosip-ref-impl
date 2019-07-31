@@ -38,7 +38,11 @@
             value="{{ 'documents.action_browse' | translate }}"
             type="button"
             onclick="document.getElementById('file').click();"
-            [disabled]="i != documentIndex || !enableBrowseButtonList[i] || (document.code === 'POA' && sameAsselected) ? true : false"
+            [disabled]="
+              i != documentIndex || !enableBrowseButtonList[i] || (document.code === 'POA' && sameAsselected)
+                ? true
+                : false
+            "
           />
         </span>
         <span *ngIf="document.code === 'POA'">
@@ -70,28 +74,23 @@
     </div>
     <div class="file-upload__body__2" *ngIf="this.users[0].files && fileIndex >= 0">
       <p>{{ fileName }}</p>
-      <iframe
-        *ngIf="fileUrl && (fileExtension == 'pdf' || fileExtension == 'PDF')"
-        class="file-uplaoad__body__2__preview"
-        [attr.src]="fileUrl"
-        type="application/pdf;Base64,"
-      ></iframe>
 
-      <img
-        *ngIf="
-          fileUrl &&
-          (fileExtension == 'jpg' || fileExtension == 'jpeg' || fileExtension == 'JPG' || fileExtension == 'JPEG')
-        "
-        class="file-uplaoad__body__2__preview"
-        [src]="fileUrl"
-        type="image/jpeg;Base64,"
-      />
-      <img
-        *ngIf="fileUrl && (fileExtension == 'png' || fileExtension == 'PNG')"
-        class="file-uplaoad__body__2__preview"
-        [src]="fileUrl"
-        type="image/png;Base64,"
-      />
+      <div *ngIf="!flag">
+        <pdf-viewer
+          class="file-uplaoad__body__2__preview pdf-viewer"
+          *ngIf="fileUrl && fileExtension.toLowerCase() == 'pdf'"
+          [src]="fileUrl"
+          [zoom]="zoom"
+        >
+        </pdf-viewer>
+      </div>
+      <div *ngIf="flag">
+        <img
+          *ngIf="fileUrl && fileExtension.toLowerCase() !== 'pdf'"
+          class="file-uplaoad__body__2__preview"
+          [src]="fileUrl"
+        />
+      </div>
 
       <div class="file-buttons" *ngIf="fileIndex >= 0">
         <button class="previousFile" [disabled]="fileIndex <= 0 ? true : false" (click)="previousFile(fileIndex)">

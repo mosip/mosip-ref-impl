@@ -439,7 +439,6 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         await this.getLocationImmediateHierearchy(language, parentLocationCode, element, currentLocationCode);
       }
     }
-
     this.dataIncomingSuccessful = true;
   }
 
