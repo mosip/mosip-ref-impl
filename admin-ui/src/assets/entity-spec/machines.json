@@ -165,9 +165,12 @@
         "filtername": "name",
         "filterlabel": "Machine Name",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machines",
+        "fieldName":"name",
+        "methodCallName":""
       },
       {
         "filtername": "isActive",
@@ -175,31 +178,43 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machines",
+        "fieldName":"isActive",
+        "methodCallName":""
       },
       {
         "filtername": "macAddress",
         "filterlabel": "MAC Address",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machines",
+        "fieldName":"macAddress",
+        "methodCallName":""
       },
       {
         "filtername": "serialNum",
         "filterlabel": "Serial Number",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machines",
+        "fieldName":"serialNum",
+        "methodCallName":""
       },
       {
         "filtername": "mapStatus",
         "filterlabel": "Map Status",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machines",
+        "fieldName":"mapStatus",
+        "methodCallName":""
       },
       {
         "filtername": "machineTypeName",
@@ -207,7 +222,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machinetypes",
+        "fieldName":"name",
+        "methodCallName":""
       },
       {
         "filtername": "id",
@@ -215,7 +233,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"machinespecifications",
+        "fieldName":"name",
+        "methodCallName":""
       }
     ]
 }

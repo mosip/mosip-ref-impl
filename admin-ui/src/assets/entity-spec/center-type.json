@@ -112,7 +112,10 @@
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"centertypes",
+      "fieldName":"isActive",
+      "methodCallName":""
     }
   ]
 }

@@ -8,8 +8,8 @@ import { PaginationModel } from 'src/app/core/models/pagination.model';
 import * as centerConfig from 'src/assets/entity-spec/center.json';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import Utils from '../../../../app.utils';
-
-
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -32,7 +32,8 @@ export class ViewComponent implements OnDestroy {
     private centerService: CenterService,
     private appService: AppConfigService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog,
   ) {
     this.getCenterConfigs();
     this.subscribed = router.events.subscribe(event => {
@@ -95,10 +96,40 @@ export class ViewComponent implements OnDestroy {
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
+          if (response.data !== null) {
           this.centers = response.data ? [...response.data] : [];
+          } else {
+            this.dialog
+            .open(DialogComponent, {
+               data: {
+                case: 'MESSAGE',
+                title: 'No Records Found',
+                message: 'No records present for the requested search',
+                btnTxt: 'Ok'
+               } ,
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dislog is closed');
+            });
+          }
           console.log(this.centers);
         } else if (errors != null) {
-          console.log(errors);
+          this.dialog
+            .open(DialogComponent, {
+               data: {
+                case: 'MESSAGE',
+                title: 'Technical Error',
+                message: 'A technical error has occurred. Please refresh your page to continue or try again later',
+                btnTxt: 'Ok'
+               } ,
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dislog is closed');
+            });
         }
       });
   }

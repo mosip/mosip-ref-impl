@@ -98,9 +98,12 @@
         "filtername": "word",
         "filterlabel": "Word",
         "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false"
+        "autocomplete": "true",
+        "dropdown": "",
+        "datePicker":"false",
+        "apiName":"blacklistedwords",
+        "fieldName":"word",
+        "methodCallName":""
       },
       {
         "filtername": "langCode",
@@ -108,7 +111,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"blacklistedwords",
+        "fieldName":"langCode",
+        "methodCallName":""
       },
       {
         "filtername": "isActive",
@@ -116,7 +122,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"blacklistedwords",
+        "fieldName":"isActive",
+        "methodCallName":""
       }
     ]
 }

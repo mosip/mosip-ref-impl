@@ -228,30 +228,42 @@
         "filtername": "name",
         "filterlabel": "Name",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"templates",
+        "fieldName":"name",
+        "methodCallName":""
       },{
         "filtername": "moduleId",
         "filterlabel": "Module Id",
         "filterType": "equals",
         "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false"
+        "dropdown": "true",
+        "datePicker":"false",
+        "apiName":"templates",
+        "fieldName":"moduleId",
+        "methodCallName":""
       },{
         "filtername": "moduleName",
         "filterlabel": "Module Name",
         "filterType": "equals",
         "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false"
+        "dropdown": "true",
+        "datePicker":"false",
+        "apiName":"templates",
+        "fieldName":"moduleName",
+        "methodCallName":""
       },{
         "filtername": "isActive",
         "filterlabel": "Status",
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"templates",
+        "fieldName":"isActive",
+        "methodCallName":""
       }
     ]
   }

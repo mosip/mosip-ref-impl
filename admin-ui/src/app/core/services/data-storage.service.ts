@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as appConstants from '../../app.constants';
 import { RequestModel } from '../models/request.model';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Injectable()
 export class DataStorageService {
-  private BASE_URL = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private appService: AppConfigService) {}
+
+  private BASE_URL = this.appService.getConfig().baseUrl;
 
   getCenterSpecificLabelsAndActions(): Observable<any> {
     return this.http.get('./assets/entity-spec/center.json');
@@ -19,6 +21,7 @@ export class DataStorageService {
     langCode: string
   ): Observable<any> {
     return this.http.get(
+      this.BASE_URL +
       appConstants.MASTERDATA_BASE_URL +
         'locations/immediatechildren/' +
         locationCode +
@@ -33,6 +36,7 @@ export class DataStorageService {
 
   createCenter(data: RequestModel): Observable<any> {
     return this.http.post(
+      this.BASE_URL +
       appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
       data
     );
@@ -40,18 +44,19 @@ export class DataStorageService {
 
   updateCenter(data: RequestModel): Observable<any> {
     return this.http.put(
+      this.BASE_URL +
       appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
       data
     );
   }
 
   getDevicesData(request: RequestModel): Observable<any> {
-    return this.http.post(appConstants.URL.devices, request);
+    return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
   }
 
   getMachinesData(request: RequestModel): Observable<any> {
     console.log(request);
-    return this.http.post(appConstants.URL.machines, request);
+    return this.http.post(this.BASE_URL + appConstants.URL.machines, request);
   }
 
   getMasterDataTypesList(): Observable<any> {
@@ -60,6 +65,7 @@ export class DataStorageService {
 
   getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {
     return this.http.post(
+      this.BASE_URL +
       appConstants.MASTERDATA_BASE_URL + type + '/search',
       data
     );
@@ -75,11 +81,12 @@ export class DataStorageService {
 
   getFiltersForAllMaterDataTypes(type: string, data: RequestModel): Observable<any> {
     return this.http.post(
+      this.BASE_URL +
       appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
       data
     );
   }
   getZoneData(langCode: string): Observable<any> {
-    return this.http.get(appConstants.MASTERDATA_BASE_URL + 'zones/leafs/' + langCode);
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/leafs/' + langCode);
   }
 }

@@ -28,11 +28,11 @@ import { AuthInterceptor } from './services/httpinterceptor';
   exports: [HeaderComponent, SideMenuComponent, HomeComponent, ParentComponent, MaterialModule, RouterModule],
   providers: [SideMenuService, DataStorageService, AuthService, LoginRedirectService, AuthguardService,
     CanDeactivateGuardService,
-     {
-       provide: HTTP_INTERCEPTORS,
-       useClass: AuthInterceptor,
-       multi: true
-     }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 })
 export class CoreModule { }

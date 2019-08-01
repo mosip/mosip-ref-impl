@@ -117,7 +117,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicetypes",
+        "fieldName":"name",
+        "methodCallName":""
       },
       {
         "filtername": "isActive",
@@ -125,7 +128,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicetypes",
+        "fieldName":"model",
+        "methodCallName":""
       }
     ]
   }

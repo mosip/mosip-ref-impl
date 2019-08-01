@@ -148,9 +148,12 @@
       "filtername": "name",
       "filterlabel": "Name",
       "filterType": "equals",
-      "autocomplete": "false",
+      "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"documenttypes",
+      "fieldName":"name",
+      "methodCallName":""
     },
     {
       "filtername": "isActive",
@@ -158,7 +161,10 @@
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",        
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"documenttypes",
+      "fieldName":"isActive",
+      "methodCallName":""
     }
   ]
 }

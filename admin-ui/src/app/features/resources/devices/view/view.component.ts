@@ -96,7 +96,9 @@ export class ViewComponent implements OnDestroy {
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
+          if(response.data != null) {
           this.devices = [...response.data];
+        }
         }
       });
   }
