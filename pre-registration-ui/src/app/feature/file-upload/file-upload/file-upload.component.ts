@@ -65,6 +65,7 @@ export class FileUploadComponent implements OnInit {
   start: boolean = false;
   browseDisabled: boolean = true;
   documentName: string;
+  proxyDocumentCode : string = '';
   flag: boolean;
   zoom: number = 0.5;
   primaryLang = localStorage.getItem('langCode');
@@ -819,6 +820,7 @@ export class FileUploadComponent implements OnInit {
               element => element.code === response['response']['docTypCode']
             );
             this.documentName = docList[0].name;
+            this.proxyDocumentCode = this.documentName;
             console.log('DOC NAME IN SAME AS', this.documentName);
           } else {
             this.sameAs = this.registration.getSameAs();
