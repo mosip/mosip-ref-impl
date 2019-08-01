@@ -269,3 +269,9 @@ templates: {
   specFileName: 'individual-types'
 }
 };
+
+export const keyboardMapping = {
+  eng: 'en',
+  fra: 'fr',
+  ara: 'ar'
+};

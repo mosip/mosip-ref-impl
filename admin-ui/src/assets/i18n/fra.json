@@ -130,7 +130,8 @@
                 "title": "Confirmation",
                 "message": "Cliquez sur oui pour créer / modifier le centre",
                 "yesBtnText": "Oui",
-                "noBtnText": "Non"
+                "noBtnText": "Non",
+                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
             },
             "update-success": {
                 "title": "Succès",

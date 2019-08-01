@@ -74,7 +74,6 @@ export class DocumentCategoryMappingComponent implements OnInit {
           unMappedDoc.splice(unMapDoc, 1);
           this.unMappedDocList = unMappedDoc;
           this.unMappedDocCount = this.unMappedDocList.length;
-          console.log('Splice', unMappedDoc);
         }
       }
     }
@@ -127,7 +126,6 @@ export class DocumentCategoryMappingComponent implements OnInit {
   }
 
   onAdd(unMappedItem: object, index: number) {
-    console.log('UN MAPPED Item', unMappedItem);
     if (unMappedItem && (index >= 0) ) {
       if (this.mappedDocList.indexOf(unMappedItem['name']) === -1) {
         this.mappedDocList.push(unMappedItem);

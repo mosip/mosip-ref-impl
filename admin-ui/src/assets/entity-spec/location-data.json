@@ -121,16 +121,6 @@
       "LinkURL": ""
     },
     {
-      "name": "region",
-      "showInListView": "true",
-      "showInSingleView": "false",
-      "label": { "eng": "Region", "ara": "المنطقه", "fra": "région" },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
       "name": "createdDateTime",
       "showInListView": "true",
       "showInSingleView": "false",

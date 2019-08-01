@@ -204,3 +204,39 @@ h3 {
     padding: 20px !important;
   }
 }
+
+@media (max-width: 840px) {
+  .mat-keyboard .mat-raised-button {
+    font-size: 12px;
+    line-height: 12px;
+    margin-left: 0px;
+    padding: 0;
+    height: 30px;
+  }
+
+mat-keyboard-container {
+  min-width: 100% !important;
+  padding: unset !important;
+  position: absolute !important;
+  bottom: 0% !important;
+}
+
+mat-keyboard-container mat-keyboard-key .mat-keyboard-key {
+  /* //padding: unset !important; */
+  padding: 0 0.485rem !important;
+}
+.mat-keyboard-col {
+  padding: 1px !important;
+}
+.mat-keyboard-wrapper {
+  padding: 0 !important;
+}
+
+}
+mat-keyboard-container {
+  min-width: 70% !important;
+  padding: unset !important;
+  position: absolute !important;
+  bottom: 0% !important;
+  margin-left: 20% !important;
+}

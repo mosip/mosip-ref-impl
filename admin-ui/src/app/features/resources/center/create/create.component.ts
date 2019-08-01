@@ -18,6 +18,8 @@ import { CenterService } from 'src/app/core/services/center.service';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { Observable } from 'rxjs';
+import { FilterRequest } from 'src/app/core/models/filter-request.model';
+import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
 
 @Component({
   selector: 'app-create',
@@ -42,20 +44,25 @@ export class CreateComponent implements OnInit {
   data = [];
   popupMessages: any;
 
+  primaryKeyboard: string;
+  secondaryKeyboard: string;
+
   constructor(private location: Location,
-              private translateService: TranslateService,
-              private dataStorageService: DataStorageService,
-              private dialog: MatDialog,
-              private formBuilder: FormBuilder,
-              private appConfigService: AppConfigService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private centerService: CenterService) {
+    private translateService: TranslateService,
+    private dataStorageService: DataStorageService,
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private appConfigService: AppConfigService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private centerService: CenterService) {
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
     this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
     translateService.use(this.primaryLang);
+    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
+    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
     this.loadLocationData('MOR', 'region');
   }
 
@@ -96,15 +103,27 @@ export class CreateComponent implements OnInit {
   }
 
   onCreate() {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
-      data: {
+    let data = {};
+    if (this.secondaryForm.controls.name.value === '' || this.secondaryForm.controls.addressLine1.value === '') {
+      data = {
+        case: 'CONFIRMATION',
+        title: this.popupMessages['create-edit'].title,
+        message: this.popupMessages['create-edit'].mandatorySecondaryFields,
+        yesBtnTxt: this.popupMessages['create-edit'].yesBtnText,
+        noBtnTxt: this.popupMessages['create-edit'].noBtnText
+      };
+    } else {
+      data = {
         case: 'CONFIRMATION',
         title: this.popupMessages['create-edit'].title,
         message: this.popupMessages['create-edit'].message,
         yesBtnTxt: this.popupMessages['create-edit'].yesBtnText,
         noBtnTxt: this.popupMessages['create-edit'].noBtnText
-      }
+      };
+    }
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      data
     });
     dialogRef.afterClosed().subscribe(response => {
       if (response && this.data.length === 0) {
@@ -339,29 +358,29 @@ export class CreateComponent implements OnInit {
 
   setSecondaryFormValues() {
     this.secondaryForm.controls.name.setValue(this.data[1].name);
-    this.secondaryForm.controls.centerTypeCode.setValue(this.data[1].centerTypeCode);
+    this.secondaryForm.controls.centerTypeCode.setValue(this.data[0].centerTypeCode);
     this.secondaryForm.controls.contactPerson.setValue(this.data[1].contactPerson);
     this.secondaryForm.controls.contactPhone.setValue(this.data[1].contactPhone);
-    this.secondaryForm.controls.longitude.setValue(this.data[1].longitude);
-    this.secondaryForm.controls.latitude.setValue(this.data[1].latitude);
+    this.secondaryForm.controls.longitude.setValue(this.data[0].longitude);
+    this.secondaryForm.controls.latitude.setValue(this.data[0].latitude);
     this.secondaryForm.controls.addressLine1.setValue(this.data[1].addressLine1);
     this.secondaryForm.controls.addressLine2.setValue(this.data[1].addressLine2);
     this.secondaryForm.controls.addressLine3.setValue(this.data[1].addressLine3);
-    this.secondaryForm.controls.region.setValue(this.data[1].regionCode);
-    this.secondaryForm.controls.province.setValue(this.data[1].provinceCode);
-    this.secondaryForm.controls.city.setValue(this.data[1].cityCode);
-    this.secondaryForm.controls.laa.setValue(this.data[1].administrativeZoneCode);
-    this.secondaryForm.controls.postalCode.setValue(this.data[1].locationCode);
-    this.secondaryForm.controls.zone.setValue(this.data[1].zoneCode);
-    this.secondaryForm.controls.holidayZone.setValue(this.data[1].holidayLocationCode);
-    this.secondaryForm.controls.workingHours.setValue(this.data[1].workingHours.split(':')[0]);
-    this.secondaryForm.controls.noKiosk.setValue(this.data[1].numberOfKiosks);
-    this.secondaryForm.controls.processingTime.setValue(Number(this.data[1].perKioskProcessTime.split(':')[1]));
-    this.secondaryForm.controls.startTime.setValue(Utils.convertTimeTo12Hours(this.data[1].centerStartTime));
-    this.secondaryForm.controls.endTime.setValue(Utils.convertTimeTo12Hours(this.data[1].centerEndTime));
-    this.secondaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[1].lunchStartTime));
-    this.secondaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[1].lunchEndTime));
-    this.secondaryForm.controls.isActive.setValue(this.data[1].isActive);
+    this.secondaryForm.controls.region.setValue(this.data[0].regionCode);
+    this.secondaryForm.controls.province.setValue(this.data[0].provinceCode);
+    this.secondaryForm.controls.city.setValue(this.data[0].cityCode);
+    this.secondaryForm.controls.laa.setValue(this.data[0].administrativeZoneCode);
+    this.secondaryForm.controls.postalCode.setValue(this.data[0].locationCode);
+    this.secondaryForm.controls.zone.setValue(this.data[0].zoneCode);
+    this.secondaryForm.controls.holidayZone.setValue(this.data[0].holidayLocationCode);
+    this.secondaryForm.controls.workingHours.setValue(this.data[0].workingHours.split(':')[0]);
+    this.secondaryForm.controls.noKiosk.setValue(this.data[0].numberOfKiosks);
+    this.secondaryForm.controls.processingTime.setValue(Number(this.data[0].perKioskProcessTime.split(':')[1]));
+    this.secondaryForm.controls.startTime.setValue(Utils.convertTimeTo12Hours(this.data[0].centerStartTime));
+    this.secondaryForm.controls.endTime.setValue(Utils.convertTimeTo12Hours(this.data[0].centerEndTime));
+    this.secondaryForm.controls.lunchStartTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchStartTime));
+    this.secondaryForm.controls.lunchEndTime.setValue(Utils.convertTimeTo12Hours(this.data[0].lunchEndTime));
+    this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
   initializeheader() {
@@ -471,8 +490,6 @@ export class CreateComponent implements OnInit {
   }
 
   submit() {
-    // console.log(this.primaryForm);
-    //  console.log(this.secondaryForm);
     if (!this.disableForms) {
       if (this.primaryForm.valid && this.secondaryForm.valid) {
         this.onCreate();
@@ -505,11 +522,24 @@ export class CreateComponent implements OnInit {
   }
 
   getStubbedData() {
+    this.getRegistrationCenterTypes();
     this.dataStorageService.getStubbedDataForDropdowns().subscribe(response => {
-      this.dropDownValues.centerTypeCode.primary = response[this.primaryLang].centerTypeCode;
-      this.dropDownValues.centerTypeCode.secondary = response[this.secondaryLang].centerTypeCode;
       this.dropDownValues.holidayZone.primary = response[this.primaryLang].holidayZone;
       this.dropDownValues.holidayZone.secondary = response[this.secondaryLang].holidayZone;
+    });
+  }
+
+  getRegistrationCenterTypes() {
+    const filterObject = new FilterValuesModel('name', 'unique', '');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let request = new RequestModel('', null, filterRequest);
+    this.dataStorageService.getFiltersForAllMaterDataTypes('registrationcentertypes', request).subscribe(response => {
+      this.dropDownValues.centerTypeCode.primary = response.response.filters;
+    });
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    request = new RequestModel('', null, filterRequest);
+    this.dataStorageService.getFiltersForAllMaterDataTypes('registrationcentertypes', request).subscribe(response => {
+      this.dropDownValues.centerTypeCode.secondary = response.response.filters;
     });
   }
 
@@ -558,6 +588,10 @@ export class CreateComponent implements OnInit {
     this.loadLocationData(data.provinceCode, 'city');
     this.loadLocationData(data.cityCode, 'laa');
     this.loadLocationData(data.administrativeZoneCode, 'postalCode');
+  }
+
+  scrollPage(element: HTMLElement) {
+    element.scrollIntoView({block: 'center', inline: 'nearest'});
   }
 
   canDeactivate(): Observable<any> | boolean {

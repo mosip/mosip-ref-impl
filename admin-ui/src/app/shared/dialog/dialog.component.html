@@ -14,12 +14,41 @@
                   matInput
                   placeholder="{{ filter.filterlabel }}"
                   formControlName="{{ filter.filtername }}"
-                  (click)="getControlName(filter.filtername)"
+                  (click)="
+                    getControlName(
+                      filter.filtername,
+                      filter.apiName,
+                      filter.fieldName,
+                      filterGroup.controls[filter.filtername].value
+                    )
+                  "
+                  (keyup)="
+                    getControlValues(
+                      filter.filtername,
+                      filter.apiName,
+                      filter.fieldName,
+                      filterGroup.controls[filter.filtername].value
+                    )
+                  "
                   [matAutocomplete]="auto"
                 />
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of options" [value]="option">
-                    {{ option.fieldValue}}
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+               
+                >
+                  <mat-option
+                    *ngIf="filterOptions[filter.filtername]?.length === 0"
+                  >
+                    <mat-spinner
+                      [diameter]="20"
+                      style="margin-left:43%;"
+                    ></mat-spinner>
+                  </mat-option>
+                  <mat-option
+                    *ngFor="let option of filterOptions[filter.filtername]"
+                    [value]="option.fieldValue"
+                  >
+                    {{ option.fieldValue }}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -29,7 +58,14 @@
                   matInput
                   placeholder="{{ filter.filterlabel }}"
                   formControlName="{{ filter.filtername }}"
-                  (click)="getControlName(filter.filtername)"
+                  ((click)="
+                    getControlName(
+                      filter.filtername,
+                      filter.apiName,
+                      filter.fieldName,
+                      filterGroup.controls[filter.filtername].value
+                    )
+                  "
                 />
               </mat-form-field>
             </ng-container>
@@ -39,13 +75,31 @@
               <mat-label>{{ filter.filterlabel }}</mat-label>
               <mat-select
                 formControlName="{{ filter.filtername }}"
-                (click)="getControlName(filter.filtername)"
+                (click)="
+                  getControlName(
+                    filter.filtername,
+                    filter.apiName,
+                    filter.fieldName,
+                    filterGroup.controls[filter.filtername].value
+                  )
+                "
               >
-              <ng-container *ngIf="options.length>0" >
-                <mat-option *ngFor="let option of options" [value]="option.fieldValue">
-                    {{ option.fieldValue}}
-                </mat-option>
-              </ng-container>
+                <ng-container>
+                  <mat-option
+                    *ngIf="filterOptions[filter.filtername]?.length === 0"
+                  >
+                    <mat-spinner
+                      [diameter]="20"
+                      style="margin-left:43%;"
+                    ></mat-spinner>
+                  </mat-option>
+                  <mat-option
+                    *ngFor="let option of filterOptions[filter.filtername]"
+                    [value]="option.fieldValue"
+                  >
+                    {{ option.fieldValue }}
+                  </mat-option>
+                </ng-container>
               </mat-select>
             </mat-form-field>
           </ng-container>

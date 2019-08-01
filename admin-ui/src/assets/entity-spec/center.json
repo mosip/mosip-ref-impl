@@ -180,7 +180,10 @@
       "fieldType": "input",
       "autocomplete": "false",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"registrationcenters",
+      "fieldName":"name",
+      "methodCallName":""
     },
     {
       "filtername": "centerTypeName",
@@ -189,7 +192,10 @@
       "fieldType": "mat-select",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"registrationcentertypes",
+      "fieldName":"name",
+      "methodCallName":""
     },
     {
       "filtername": "isActive",
@@ -198,7 +204,10 @@
       "fieldType": "input",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"registrationcenters",
+      "fieldName":"isActive",
+      "methodCallName":""
     },
     {
       "filtername": "region",
@@ -207,7 +216,11 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Region",
+      "methodCallName":""
+
     },
     {
       "filtername": "province",
@@ -216,7 +229,11 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Province",
+      "methodCallName":""
+
     },
     {
       "filtername": "city",
@@ -226,16 +243,24 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"City",
+      "methodCallName":""
+
     },
     {
-      "filtername": "zone",
+      "filtername": "Zone",
       "filterlabel": "Zone",
       "filterType": "between",
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"zone",
+      "fieldName":"Zone",
+      "methodCallName":""
+
     },
     {
       "filtername": "postalCode",
@@ -244,7 +269,11 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Postal Code",
+      "methodCallName":""
+
     }
   ]
 }

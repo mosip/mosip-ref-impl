@@ -130,7 +130,8 @@
                 "title": "Confirmation",
                 "message": "Click On yes To Create/Edit Center",
                 "yesBtnText": "Yes",
-                "noBtnText": "No"
+                "noBtnText": "No",
+                "mandatorySecondaryFields": "You have not filled data in secondary language. Center will be created in only primary language. Do you want to continue?"
             },
             "update-success": {
                 "title": "Success",
