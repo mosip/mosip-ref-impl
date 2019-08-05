@@ -151,9 +151,12 @@
         "filtername": "name",
         "filterlabel": "Name",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicespecifications",
+        "fieldName":"name",
+        "methodCallName":""
       },
       {
         "filtername": "isActive",
@@ -161,31 +164,43 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicespecifications",
+        "fieldName":"isActive",
+        "methodCallName":""
       },
       {
         "filtername": "brand",
         "filterlabel": "brand",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "fasle",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicespecifications",
+        "fieldName":"brand",
+        "methodCallName":""
       },
       {
         "filtername": "model",
         "filterlabel": "Model",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "fasle",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicespecifications",
+        "fieldName":"model",
+        "methodCallName":""
       },
       {
         "filtername": "deviceTypeName",
         "filterlabel": "Device Type",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicespecifications",
+        "fieldName":"name",
+        "methodCallName":""
       }
     ]
   }

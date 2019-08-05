@@ -31,6 +31,7 @@ export class TableComponent implements OnInit, OnChanges {
   sortTrackIndex: number;
   sortIconTrackerArray = new Array(15).fill(0);
   ellipsisList = [];
+  imageSource: string;
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
@@ -42,6 +43,10 @@ export class TableComponent implements OnInit, OnChanges {
     console.log(this.displayedColumns);
     this.sortStatusArray = [];
     this.lang = this.appConfig.getConfig().primaryLangCode;
+    const route = this.router.url.split('/')[3];
+    this.imageSource = appConstants.ListViewIdKeyMapping[`${route}`]['imagePath'];
+    console.log(this.imageSource);
+    
   }
 
   ngOnChanges(): void {
@@ -91,7 +96,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
   sortColumn(columnName: string, columnIndex: number) {
     console.log(this.sortIconTrackerArray);
-    const sortObject = this.sortData.filter(data => data.sortField === columnName);
+    const sortObject = this.sortData.filter(
+      data => data.sortField === columnName
+    );
     let sortModel = new SortModel();
     if (sortObject.length === 0) {
       sortModel.sortField = columnName;
@@ -113,23 +120,24 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   ellipsisAction(data) {
-    this.ellipsisList = this.buttonList;
     if (data.isActive === true) {
-     this.ellipsisList.filter(values => {
-      if (values.buttonName.eng === 'Activate') {
-        const index = this.ellipsisList.indexOf(values);
-        this.ellipsisList.splice(index, 1);
-      }
-     });
-   } else if (data.isActive === false) {
-    this.ellipsisList.filter(values => {
-      if (values.buttonName.eng === 'Deactivate') {
-        const index = this.ellipsisList.indexOf(values);
-        this.ellipsisList.splice(index, 1);
-      }
-    });
+      this.ellipsisList = this.buttonList;
+      this.ellipsisList.filter(values => {
+        if (values.buttonName.eng === 'Activate') {
+          const index = this.ellipsisList.indexOf(values);
+          this.ellipsisList.splice(index, 1);
+        }
+      });
+    } else if (data.isActive === false) {
+      this.ellipsisList = this.buttonList;
+      this.ellipsisList.filter(values => {
+        if (values.buttonName.eng === 'Deactivate') {
+          const index = this.ellipsisList.indexOf(values);
+          this.ellipsisList.splice(index, 1);
+        }
+      });
+    }
   }
-}
 
   tableStyle(index, columnValue, columnName) {
     const myTableStyles = {

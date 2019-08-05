@@ -164,8 +164,11 @@
         "filterlabel": "Device Name",
         "filterType": "between",
         "fieldType":"input",
-        "autocomplete": "false",
-        "dropdown":"false"
+        "autocomplete": "true",
+        "dropdown":"false",
+        "apiName":"devices",
+        "fieldName":"name",
+        "methodCallName":""
       },
       {
         "filtername": "isActive",
@@ -174,23 +177,32 @@
         "fieldType":"input",
         "autocomplete": "false",
         "dropdown":"true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devices",
+        "fieldName":"isActive",
+        "methodCallName":""
       },
       {
         "filtername": "macAddress",
         "filterlabel": "MAC Address",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devices",
+        "fieldName":"macAddress",
+        "methodCallName":""
       },
       {
         "filtername": "serialNum",
         "filterlabel": "Serial Number",
         "filterType": "equals",
-        "autocomplete": "false",
+        "autocomplete": "true",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devices",
+        "fieldName":"serialNum",
+        "methodCallName":""
       },
       {
         "filtername": "mapStatus",
@@ -198,15 +210,21 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "false",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devices",
+        "fieldName":"mapStatus",
+        "methodCallName":""
       },
       {
         "filtername": "deviceTypeName",
-        "filterlabel": "Machine Type",
+        "filterlabel": "Device Type",
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicetypes",
+        "fieldName":"name",
+        "methodCallName":""
       },
       {
         "filtername": "id",
@@ -214,7 +232,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"devicespecifications",
+        "fieldName":"id",
+        "methodCallName":""
       }
       
     ]

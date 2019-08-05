@@ -14,7 +14,7 @@
                   matInput
                   placeholder="{{ filter.filterlabel }}"
                   formControlName="{{ filter.filtername }}"
-                  (click)="
+                  (focus)="
                     getControlName(
                       filter.filtername,
                       filter.apiName,
@@ -32,10 +32,7 @@
                   "
                   [matAutocomplete]="auto"
                 />
-                <mat-autocomplete
-                  #auto="matAutocomplete"
-               
-                >
+                <mat-autocomplete #auto="matAutocomplete">
                   <mat-option
                     *ngIf="filterOptions[filter.filtername]?.length === 0"
                   >
@@ -52,23 +49,49 @@
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-              <mat-form-field *ngSwitchCase="'false'">
-                <input
-                  type="text"
-                  matInput
-                  placeholder="{{ filter.filterlabel }}"
-                  formControlName="{{ filter.filtername }}"
-                  ((click)="
-                    getControlName(
-                      filter.filtername,
-                      filter.apiName,
-                      filter.fieldName,
-                      filterGroup.controls[filter.filtername].value
-                    )
-                  "
-                />
-              </mat-form-field>
+              <ng-container *ngSwitchCase="'false'">
+            <ng-container ngSwitch="{{ filter.datePicker }}">
+                <mat-form-field *ngSwitchCase="'true'">
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      placeholder="{{ filter.filterlabel }}"
+                      formControlName="{{ filter.filtername }}"
+                      (focus)="
+                        getControlName(
+                          filter.filtername,
+                          filter.apiName,
+                          filter.fieldName,
+                          filterGroup.controls[filter.filtername].value
+                        )
+                      "
+        
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field *ngSwitchCase="'false'">
+                      <input
+                        type="text"
+                        matInput
+                        placeholder="{{ filter.filterlabel }}"
+                        formControlName="{{ filter.filtername }}"
+                        (focus)="
+                          getControlName(
+                            filter.filtername,
+                            filter.apiName,
+                            filter.fieldName,
+                            filterGroup.controls[filter.filtername].value
+                          )
+                        "
+                      />
+                    </mat-form-field>
             </ng-container>
+          </ng-container>
+          </ng-container>
           </ng-container>
           <ng-container *ngSwitchCase="'true'">
             <mat-form-field>

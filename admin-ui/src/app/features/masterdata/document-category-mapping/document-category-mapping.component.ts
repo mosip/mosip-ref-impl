@@ -55,6 +55,9 @@ export class DocumentCategoryMappingComponent implements OnInit {
               this.subtractingMappedDocFromUnMappedDoc(mappedDoc.response.documents, this.unMappedDoc);
               this.showSpinner = false;
               console.log('List', this.mappedDocList);
+            } else {
+              this.mappedDocList = [];
+              this.unMappedDoc = [];
             }
           });
         });

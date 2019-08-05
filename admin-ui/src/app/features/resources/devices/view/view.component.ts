@@ -8,6 +8,9 @@ import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import * as deviceConfig from 'src/assets/entity-spec/devices.json';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import Utils from 'src/app/app.utils';
+import { MatDialog } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -17,15 +20,21 @@ export class ViewComponent implements OnDestroy {
 
 
   subscribed: any;
-
+  errorMessages: any;
 
   constructor(
     private dataStroageService: DataStorageService,
     private appService: AppConfigService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    private translateService: TranslateService
   ) {
     this.getDevicesConfigs();
+    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+      console.log(response);
+      this.errorMessages = response.errorPopup;
+    });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.getDevices();
@@ -96,12 +105,41 @@ export class ViewComponent implements OnDestroy {
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
+          if (response.data != null) {
           this.devices = [...response.data];
+        } else {
+          this.dialog
+          .open(DialogComponent, {
+             data: {
+              case: 'MESSAGE',
+              title: this.errorMessages.noData.title,
+              message: this.errorMessages.noData.message,
+              btnTxt: this.errorMessages.noData.btnTxt
+             } ,
+            width: '700px'
+          });
         }
+      } else if (response === null) {
+        this.dialog
+          .open(DialogComponent, {
+             data: {
+              case: 'MESSAGE',
+              title: this.errorMessages.technicalError.title,
+              message: this.errorMessages.technicalError.message,
+              btnTxt: this.errorMessages.technicalError.btnTxt
+             } ,
+            width: '700px'
+          })
+          .afterClosed()
+          .subscribe(result => {
+            console.log('dialog is closed from view component');
+          });
+      }
+
       });
   }
-
-  ngOnDestroy() {
+// tslint:disable-next-line:align
+ngOnDestroy() {
     this.subscribed.unsubscribe();
   }
 }

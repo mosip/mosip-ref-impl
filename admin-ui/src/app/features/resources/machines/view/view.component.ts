@@ -8,6 +8,9 @@ import * as machinesConfig from 'src/assets/entity-spec/machines.json';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import Utils from 'src/app/app.utils';
+import { MatDialog } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-view',
@@ -18,15 +21,21 @@ export class ViewComponent implements OnDestroy {
 
 
   subscribed: any;
-
+  errorMessages: any;
 
   constructor(
     private dataStroageService: DataStorageService,
     private appService: AppConfigService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    private translateService: TranslateService
   ) {
     this.getMachinesConfigs();
+    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+      console.log(response);
+      this.errorMessages = response.errorPopup;
+    });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.getMachines();
@@ -92,12 +101,43 @@ export class ViewComponent implements OnDestroy {
       .getMachinesData(this.requestModel)
       .subscribe(({ response, errors }) => {
         if (response != null) {
-          console.log(response);
           this.paginatorOptions.totalEntries = response.totalRecord;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
-          this.machines = [...response.data];
+          if (response.data !== null) {
+            this.machines = response.data ? [...response.data] : [];
+          } else {
+            this.dialog
+            .open(DialogComponent, {
+               data: {
+                case: 'MESSAGE',
+                title: this.errorMessages.noData.title,
+                message: this.errorMessages.noData.message,
+                btnTxt: this.errorMessages.noData.btnTxt
+               } ,
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dislog is closed');
+            });
+          }
+        } else if(response === null) {
+          this.dialog
+            .open(DialogComponent, {
+               data: {
+                case: 'MESSAGE',
+                title: this.errorMessages.technicalError.title,
+                message: this.errorMessages.technicalError.message,
+                btnTxt: this.errorMessages.technicalError.btnTxt
+               } ,
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dialog is closed from view component');
+            });
         }
       });
   }

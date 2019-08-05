@@ -59,7 +59,7 @@
   "columnsToDisplay": [
     {
       "name": "name",
-      "showInListView": "True",
+      "showInListView": "true",
       "label": { "eng": "Name", "ara": "اسم المركز", "fra": "Nom du centre" },
       "sortOrder": "3",
       "showAsLink": "",

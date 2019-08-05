@@ -49,15 +49,17 @@ export class DialogComponent implements OnInit {
   async ngOnInit() {
     this.input = this.data;
     console.log(this.input);
-    this.existingFilters = Utils.convertFilter(
-      this.activatedRoute.snapshot.queryParams,
-      this.config.getConfig().primaryLangCode
-    ).filters;
-    await this.getFilterMappings();
+    if (this.input.case === 'filter') {
+      this.existingFilters = Utils.convertFilter(
+        this.activatedRoute.snapshot.queryParams,
+        this.config.getConfig().primaryLangCode
+      ).filters;
+      await this.getFilterMappings();
+    }
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialog.closeAll();
   }
   getFilterMappings() {
     return new Promise((resolve, reject) => {
@@ -93,7 +95,12 @@ export class DialogComponent implements OnInit {
         if (values.autocomplete === 'false' && values.dropdown === 'false') {
           this.filterOptions[values.filtername] = [];
         } else {
-             this.getFilterValues(values.fieldName, filterOption[0].value, values.apiName, filterOption[0].columnName);
+          this.getFilterValues(
+            values.fieldName,
+            filterOption[0].value,
+            values.apiName,
+            filterOption[0].columnName
+          );
         }
       }
     });
@@ -103,29 +110,56 @@ export class DialogComponent implements OnInit {
     console.log(this.filterGroup);
     Object.keys(this.filterGroup.controls).forEach(key => {
       const filter = this.FilterData.filter(data => data.filtername === key);
-      if (this.filterGroup.controls[key].value && this.filterGroup.controls[key].value !== '') {
+      if (
+        this.filterGroup.controls[key].value &&
+        this.filterGroup.controls[key].value !== ''
+      ) {
         let filterType = '';
-        if (filter[0].dropdown === 'false' && filter[0].autocomplete === 'false') {
-          console.log(typeof(this.filterGroup.controls[key].value), this.filterGroup.controls[key].value);
-          if (this.filterGroup.controls[key].value.toString().charAt(0) === '*') {
+        if (
+          filter[0].dropdown === 'false' &&
+          filter[0].autocomplete === 'false'
+        ) {
+          console.log(
+            typeof this.filterGroup.controls[key].value,
+            this.filterGroup.controls[key].value
+          );
+          if (
+            this.filterGroup.controls[key].value.toString().charAt(0) === '*'
+          ) {
             filterType = 'startsWith';
           } else {
             filterType = 'contains';
           }
-        } else if (filter[0].dropdown === 'false' && filter[0].autocomplete === 'true') {
-          if (this.filterGroup.controls[key].value.toString().charAt(0) === '*') {
+        } else if (
+          filter[0].dropdown === 'false' &&
+          filter[0].autocomplete === 'true'
+        ) {
+          if (
+            this.filterGroup.controls[key].value.toString().charAt(0) === '*'
+          ) {
             filterType = 'startsWith';
           } else {
             filterType = 'contains';
           }
-        }  else if (filter[0].dropdown === 'true' && filter[0].autocomplete === 'false') {
+        } else if (
+          filter[0].dropdown === 'true' &&
+          filter[0].autocomplete === 'false'
+        ) {
           filterType = 'equals';
         }
-        const filterObject = new FilterModel(key, filterType, this.filterGroup.controls[key].value);
+        const filterObject = new FilterModel(
+          key,
+          filterType,
+          // tslint:disable-next-line:max-line-length
+          this.filterGroup.controls[key].value.indexOf('*') === -1 ? this.filterGroup.controls[key].value : this.filterGroup.controls[key].value.replace(/\*/g, '')
+        );
         this.existingFilters.push(filterObject);
       }
     });
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.config.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(
+      this.activatedRoute.snapshot.queryParams,
+      this.config.getConfig().primaryLangCode
+    );
     filters.filters = this.existingFilters;
     const url = Utils.convertFilterToUrl(filters);
     this.router.navigateByUrl(this.router.url.split('?')[0] + '?' + url);
@@ -199,7 +233,5 @@ export class DialogComponent implements OnInit {
         console.log(response);
       });
   }
-  displayFn(subject) {
-    return subject ? subject.fieldValue : undefined;
-  }
+
 }

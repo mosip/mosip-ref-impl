@@ -7,6 +7,7 @@ export class HeaderService {
 
   private Username = '';
   private roles = '';
+  private zone = '';
 
   constructor() { }
 
@@ -26,5 +27,13 @@ export class HeaderService {
     const x = this.roles.split(',');
     x.splice(x.length - 1, 1);
     return x.join(', ').replace(/_/g, ' ');
+  }
+
+  setZone(zone: string) {
+    this.zone = zone;
+  }
+
+  getZone(): string {
+    return this.zone;
   }
 }

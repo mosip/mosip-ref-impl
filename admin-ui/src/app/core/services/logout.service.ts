@@ -3,27 +3,43 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ResponseModel } from './../models/response.model';
 import { LogoutResponse } from './../models/logoutresponse';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpResponse,
+  HttpErrorResponse
+} from '@angular/common/http';
 import * as config from 'src/assets/config.json';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogoutService {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private redirectService: LoginRedirectService,
+    private appService: AppConfigService
+  ) {}
 
-  constructor(private http: HttpClient, private router: Router, private redirectService: LoginRedirectService) { }
-
-   logout() {
-    this.http.delete(`${config.baseUrl}authmanager/logout/user`,
-    { observe: 'response'}).subscribe((res: HttpResponse<ResponseModel<LogoutResponse>>) => {
-     if (res.body.response.status === 'Success') {
-       this.redirectService.redirect(window.location.origin + '/admin-ui/');
-    } else {
-       window.alert(res.body.response.message);
-     }
-    },
-    (error: HttpErrorResponse) => {
-      window.alert(error.message);
-    });
-   }
+  logout() {
+    this.http
+      .delete(`${this.appService.getConfig().baseUrl}authmanager/logout/user`, {
+        observe: 'response'
+      })
+      .subscribe(
+        (res: HttpResponse<ResponseModel<LogoutResponse>>) => {
+          if (res.body.response.status === 'Success') {
+            this.redirectService.redirect(
+              window.location.origin + '/admin-ui/'
+            );
+          } else {
+            window.alert(res.body.response.message);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          window.alert(error.message);
+        }
+      );
+  }
 }

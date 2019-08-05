@@ -5,6 +5,7 @@
       {
         "name": "code",
         "showInListView": "true",
+        "showInSingleView": "true",
         "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
         "sortOrder": "3",
         "showAsLink": "",
@@ -14,6 +15,7 @@
       {
         "name": "name",
         "showInListView": "true",
+        "showInSingleView": "true",
         "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
         "sortOrder": "",
         "showAsLink": "",
@@ -23,6 +25,7 @@
       {
         "name": "isActive",
         "showInListView": "true",
+        "showInSingleView": "true",
         "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
         "sortOrder": "",
         "showAsLink": "false",
@@ -57,6 +60,7 @@
       },
       {
         "name": "updatedBy",
+        "showInSingleView": "true",
         "showInListView": "false",
         "label": {
           "eng": "Updated By",

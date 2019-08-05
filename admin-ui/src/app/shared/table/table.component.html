@@ -35,14 +35,14 @@
         *ngFor="let item of columnsOfTableData; let i = index"
         class="mat-cell  "
         (click)="getTableRowData(data, i, item)"
-        [ngClass]="{ 'text-alignment': item === 'name' }"
+        [ngClass]="{ 'text-alignment': item === 'name' && imageSource}"
       >
         <span class="flex-display" [ngStyle]="tableStyle(i, data[item], item)"
-          ><img
-            src="assets/images/center-name-icon.png"
+          ><img 
+            src="{{imageSource}}"
             height="20px;"
             width="35px;"
-            *ngIf="item === 'name'"
+            *ngIf="item === 'name'&& imageSource"
             style="padding-right:15px;"
           />{{ data[item]  }}</span
         >

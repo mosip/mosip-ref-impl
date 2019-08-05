@@ -213,5 +213,17 @@
             "message": "No Data Found",
             "btnTxt": "Ok"
         }
+    },
+    "errorPopup": {
+        "noData": {
+            "title": "No Records Found",
+            "message": "No records present for the requested search",
+            "btnTxt": "Ok"
+        },
+        "technicalError": {
+            "title": "Technical Error",
+            "message": "A technical error has occurred. Please refresh your page to continue or try again later",
+            "btnTxt": "Ok"
+        }
     }
 }

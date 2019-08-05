@@ -48,14 +48,14 @@ export class CreateComponent implements OnInit {
   secondaryKeyboard: string;
 
   constructor(private location: Location,
-    private translateService: TranslateService,
-    private dataStorageService: DataStorageService,
-    private dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private appConfigService: AppConfigService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private centerService: CenterService) {
+              private translateService: TranslateService,
+              private dataStorageService: DataStorageService,
+              private dialog: MatDialog,
+              private formBuilder: FormBuilder,
+              private appConfigService: AppConfigService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private centerService: CenterService) {
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
@@ -276,7 +276,7 @@ export class CreateComponent implements OnInit {
     console.log(request);
     this.dataStorageService.createCenter(request).subscribe(createResponse => {
       console.log(createResponse);
-      if (!createResponse.error) {
+      if (!createResponse.errors) {
         this.dialog.open(DialogComponent, {
           width: '350px',
           data: {

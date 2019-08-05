@@ -8,15 +8,15 @@ import { PaginationModel } from 'src/app/core/models/pagination.model';
 import * as centerConfig from 'src/assets/entity-spec/center.json';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import Utils from '../../../../app.utils';
-
-
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { MatDialog } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
 export class ViewComponent implements OnDestroy {
-
   displayedColumns = [];
   actionButtons = [];
   actionEllipsis = [];
@@ -27,14 +27,21 @@ export class ViewComponent implements OnDestroy {
   requestModel: RequestModel;
   centers = [];
   subscribed: any;
+  errorMessages: any;
 
   constructor(
     private centerService: CenterService,
     private appService: AppConfigService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog,
+    private translateService: TranslateService
   ) {
     this.getCenterConfigs();
+    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+      console.log(response);
+      this.errorMessages = response.errorPopup;
+    });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.getRegistrationCenters();
@@ -55,7 +62,10 @@ export class ViewComponent implements OnDestroy {
   }
 
   pageEvent(event: any) {
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(
+      this.activatedRoute.snapshot.queryParams,
+      this.appService.getConfig().primaryLangCode
+    );
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
@@ -74,7 +84,10 @@ export class ViewComponent implements OnDestroy {
       this.sortFilter.push(event);
     }
     console.log(this.sortFilter);
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(
+      this.activatedRoute.snapshot.queryParams,
+      this.appService.getConfig().primaryLangCode
+    );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
     this.router.navigateByUrl('admin/resources/centers/view?' + url);
@@ -82,7 +95,10 @@ export class ViewComponent implements OnDestroy {
 
   getRegistrationCenters() {
     this.centers = [];
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(
+      this.activatedRoute.snapshot.queryParams,
+      this.appService.getConfig().primaryLangCode
+    );
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
@@ -95,10 +111,39 @@ export class ViewComponent implements OnDestroy {
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
-          this.centers = response.data ? [...response.data] : [];
-          console.log(this.centers);
-        } else if (errors != null) {
-          console.log(errors);
+          if (response.data !== null) {
+            this.centers = response.data ? [...response.data] : [];
+          } else {
+            this.dialog
+            .open(DialogComponent, {
+               data: {
+                case: 'MESSAGE',
+                title: this.errorMessages.noData.title,
+                message: this.errorMessages.noData.message,
+                btnTxt: this.errorMessages.noData.btnTxt
+               } ,
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dislog is closed');
+            });
+          }
+        } else if(response === null) {
+          this.dialog
+            .open(DialogComponent, {
+               data: {
+                case: 'MESSAGE',
+                title: this.errorMessages.technicalError.title,
+                message: this.errorMessages.technicalError.message,
+                btnTxt: this.errorMessages.technicalError.btnTxt
+               } ,
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dialog is closed from view component');
+            });
         }
       });
   }

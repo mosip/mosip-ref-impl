@@ -1,7 +1,7 @@
 {
-    "primaryLangCode": "fra",
+    "primaryLangCode": "eng",
     "secondaryLangCode": "ara",
-    "baseUrl": "https://dev.mosip.io/v1/",
+    "baseUrl": "https://dev.mosip.io/r2/v1/",
     "adminUrl":"/admin-ui/"
 
 } 

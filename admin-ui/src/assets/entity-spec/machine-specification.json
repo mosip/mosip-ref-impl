@@ -23,6 +23,7 @@
     {
       "name": "name",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
       "sortOrder": "",
       "showAsLink": "",
@@ -32,6 +33,7 @@
     {
         "name": "brand",
         "showInListView": "true",
+        "showInSingleView": "false",
         "label": { "eng": "Brand", "ara": "علامة تجارية", "fra": "Marque" },
         "sortOrder": "",
         "showAsLink": "",
@@ -41,6 +43,7 @@
       {
         "name": "model",
         "showInListView": "true",
+        "showInSingleView": "false",
         "label": { "eng": "Model", "ara": "نموذج", "fra": "Modèle" },
         "sortOrder": "",
         "showAsLink": "",
@@ -151,9 +154,12 @@
       "filtername": "name",
       "filterlabel": "Name",
       "filterType": "equals",
-      "autocomplete": "false",
+      "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"machinetypes",
+      "fieldName":"name",
+      "methodCallName":""
     },
     {
       "filtername": "isActive",
@@ -161,31 +167,43 @@
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"machinetypes",
+      "fieldName":"isActive",
+      "methodCallName":""
     },
     {
       "filtername": "brand",
       "filterlabel": "brand",
       "filterType": "equals",
-      "autocomplete": "false",
+      "autocomplete": "true",
       "dropdown": "fasle",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"machinetypes",
+      "fieldName":"brand",
+      "methodCallName":""
     },
     {
       "filtername": "model",
       "filterlabel": "Model",
       "filterType": "equals",
-      "autocomplete": "false",
+      "autocomplete": "true",
       "dropdown": "fasle",        
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"machinetypes",
+      "fieldName":"model",
+      "methodCallName":""
     },
     {
       "filtername": "machineTypeName",
       "filterlabel": "Machine Type",
       "filterType": "equals",
-      "autocomplete": "false",
+      "autocomplete": "true",
       "dropdown": "false",        
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"machinetypes",
+      "fieldName":"name",
+      "methodCallName":""
     }
   ]
 }

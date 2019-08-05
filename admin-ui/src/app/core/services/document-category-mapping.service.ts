@@ -14,27 +14,29 @@ import { URL } from 'src/app/app.constants';
 export class DocumentCategoryMappingService {
 
   primaryLang: any;
+  private BASE_URL: string;
 
   constructor(private http: HttpClient, private appConfigService: AppConfigService) {
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
+    this.BASE_URL = appConfigService.getConfig().baseUrl;
   }
 
   currentMappedDocList = new BehaviorSubject(null);
 
   getAllDocumentCotegory(): Observable<any> {
-    return this.http.get(URL.documentCategories).pipe(map(response => {
+    return this.http.get(this.BASE_URL + URL.documentCategories).pipe(map(response => {
       return response;
     }));
   }
 
   getMappedDoc(code: string, lang: string): Observable<any> {
-    return this.http.get(URL.mappedDocUrl + code + '/' + lang).pipe(map(response => {
+    return this.http.get(this.BASE_URL + URL.mappedDocUrl + code + '/' + lang).pipe(map(response => {
       return response;
     }));
   }
 
   getUnMappeddoc(): Observable<any> {
-    return this.http.get(URL.unMappedDocUrl + this.primaryLang).pipe(map(response => {
+    return this.http.get(this.BASE_URL + URL.unMappedDocUrl + this.primaryLang).pipe(map(response => {
       return response;
     }));
   }

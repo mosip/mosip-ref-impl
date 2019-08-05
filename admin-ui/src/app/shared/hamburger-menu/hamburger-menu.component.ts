@@ -27,10 +27,9 @@ export class HamburgerComponent implements OnInit {
       this.userName = this.headerService.getUsername();
     }
     if (this.headerService.getRoles()) {
+      this.roleNameSubstr = this.headerService.getRoles();
       const roleNameSplit = this.headerService.getRoles().indexOf(',');
       this.roleName = this.headerService.getRoles().substring(0, roleNameSplit);
-      this.roleNameSubstr = this.headerService.getRoles().substring(roleNameSplit + 1);
-      console.log('sfsfysafysaf', this.roleName, this.roleNameSubstr);
     }
   }
 

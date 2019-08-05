@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as appConstants from 'src/app/app.constants';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
@@ -8,13 +8,16 @@ import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import Utils from 'src/app/app.utils';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-view',
   templateUrl: './list-view.component.html',
   styleUrls: ['./list-view.component.scss']
 })
-export class ListViewComponent implements OnInit {
+export class ListViewComponent implements OnInit, OnDestroy {
 
   headerName: string;
   displayedColumns = [];
@@ -27,15 +30,21 @@ export class ListViewComponent implements OnInit {
   requestModel: RequestModel;
   masterData = [];
   mapping: any;
-
+  errorMessages: any;
   subscribed: any;
 
   constructor(
     private router: Router,
     private dataStorageService: DataStorageService,
     private appService: AppConfigService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    private translateService: TranslateService
   ) {
+    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+      console.log(response);
+      this.errorMessages = response.errorPopup;
+    });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.ngOnInit();
@@ -105,6 +114,7 @@ export class ListViewComponent implements OnInit {
 
   getMasterDataTypeValues() {
     return new Promise((resolve, reject) => {
+      this.masterData = [];
       const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
       const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
@@ -114,15 +124,52 @@ export class ListViewComponent implements OnInit {
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
         .subscribe(({response}) => {
-          console.log(response);
-          this.paginatorOptions.totalEntries = response.totalRecord;
-          this.paginatorOptions.pageIndex = filters.pagination.pageStart;
-          this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
-          this.masterData = [...response.data];
-          console.log(this.masterData);
-          resolve(true);
+          if (response != null) {
+            this.paginatorOptions.totalEntries = response.totalRecord;
+            this.paginatorOptions.pageIndex = filters.pagination.pageStart;
+            this.paginatorOptions.pageSize = filters.pagination.pageFetch;
+            console.log(this.paginatorOptions);
+            if (response.data !== null) {
+              this.masterData = response.data ? [...response.data] : [];
+              console.log(this.masterData);
+            } else {
+              this.dialog
+              .open(DialogComponent, {
+                 data: {
+                  case: 'MESSAGE',
+                  title: this.errorMessages.noData.title,
+                  message: this.errorMessages.noData.message,
+                  btnTxt: this.errorMessages.noData.btnTxt
+                 } ,
+                width: '700px'
+              })
+              .afterClosed()
+              .subscribe(result => {
+                console.log('dislog is closed');
+              });
+            }
+          } else if (response === null) {
+            this.dialog
+              .open(DialogComponent, {
+                 data: {
+                  case: 'MESSAGE',
+                  title: this.errorMessages.technicalError.title,
+                  message: this.errorMessages.technicalError.message,
+                  btnTxt: this.errorMessages.technicalError.btnTxt
+                 } ,
+                width: '700px'
+              })
+              .afterClosed()
+              .subscribe(result => {
+                console.log('dialog is closed from view component');
+              });
+          }
         });
+      resolve(true);
     });
+  }
+  ngOnDestroy() {
+    this.subscribed.unsubscribe();
   }
 }

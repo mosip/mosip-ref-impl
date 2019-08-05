@@ -214,5 +214,17 @@
         "mapped-documents": "Documents mappés",
         "unmapped-documents": "Documents non mappés"
         
+    },
+    "errorPopup": {
+        "noData": {
+            "title": "Aucun enregistrement trouvé",
+            "message": "Aucun enregistrement présent pour la recherche demandée",
+            "btnTxt": "D'accord"
+        },
+        "technicalError": {
+            "title": "Erreur technique",
+            "message": "Une erreur technique est survenue. Veuillez actualiser votre page pour continuer ou réessayer plus tard.",
+            "btnTxt": "D'accord"
+        }
     }
 }

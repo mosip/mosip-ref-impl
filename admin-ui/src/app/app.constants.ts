@@ -4,12 +4,12 @@ export const VERSION = '1.0';
 export const BASE_URL = config.baseUrl;
 export const IDS = 'dummy';
 export const URL = {
-  centers: `${config.baseUrl}masterdata/registrationcenters/search`,
-  devices: `${config.baseUrl}masterdata/devices/search`,
-  machines: `${config.baseUrl}masterdata/machines/search`,
-  documentCategories: `${config.baseUrl}masterdata/documentcategories`,
-  mappedDocUrl: `${config.baseUrl}masterdata/documenttypes/`,
-  unMappedDocUrl: `${config.baseUrl}masterdata/documenttypes/`
+  centers: `masterdata/registrationcenters/search`,
+  devices: `masterdata/devices/search`,
+  machines: `masterdata/machines/search`,
+  documentCategories: `masterdata/documentcategories`,
+  mappedDocUrl: `masterdata/documenttypes/`,
+  unMappedDocUrl: `masterdata/documenttypes/`
 };
 export const navItems = [
   {
@@ -53,7 +53,7 @@ export const navItems = [
   }
 ];
 
-export const MASTERDATA_BASE_URL = `${config.baseUrl}masterdata/`;
+export const MASTERDATA_BASE_URL = `masterdata/`;
 export const processingTimeStart = 15;
 export const processingTimeEnd = 45;
 export const processingTimeInterval = 5;
@@ -77,7 +77,7 @@ export const masterdataMapping = {
     specFileName: 'holiday-data',
     name: 'Holiday',
     nameKey: 'holidayName',
-    idKey: '',
+    idKey: 'holidayId',
     headerName: 'Holidays'
   },
   'document-type': {
@@ -181,7 +181,7 @@ export const masterdataMapping = {
 
 export const ListViewIdKeyMapping = {
 
-  centers: { idKey: 'id' },
+  centers: { idKey: 'id', imagePath: 'assets/images/center-name-icon.png'},
   devices: { idKey: 'id' },
   machines: { idKey: 'id' },
   'machine-type': {idKey: 'code'},
@@ -196,7 +196,8 @@ export const ListViewIdKeyMapping = {
    'document-categories': {idKey: 'code'},
    'individual-type': {idKey: 'code'},
    'gender-type': {idKey: 'code'},
-   'center-type': {idKey: 'code'}
+   'center-type': {idKey: 'code'},
+   holiday: {idKey: 'holidayId'}
 };
 
 export const FilterMapping = {

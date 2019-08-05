@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { CookieService } from 'ngx-cookie-service';
-import * as config from 'src/assets/config.json';
+import { AppConfigService } from 'src/app/app-config.service';
+
 
 @Injectable()
 export class LoginRedirectService {
 
-  constructor(private cookie: CookieService) { }
+  constructor(private cookie: CookieService, private appService: AppConfigService) { }
 
   redirect(url: string) {
     const stateParam = uuid();
     this.cookie.set('state', stateParam, undefined, '/');
    // console.log('returning false login redirect' + stateParam);
-    window.location.href = `${config.baseUrl}authmanager/login/` + btoa(url);
+    window.location.href = `${this.appService.getConfig().baseUrl}authmanager/login/` + btoa(url);
   }
 }

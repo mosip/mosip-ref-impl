@@ -129,7 +129,10 @@
         "filterType": "equals",
         "autocomplete": "false",
         "dropdown": "true",
-        "datePicker":"false"
+        "datePicker":"false",
+        "apiName":"registrationcentertypes",
+        "fieldName":"isActive",
+        "methodCallName":""
       }
     ]
   }

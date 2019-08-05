@@ -14,6 +14,7 @@
     {
       "name": "code",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
       "sortOrder": "3",
       "showAsLink": "",
@@ -32,6 +33,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",
@@ -41,6 +43,7 @@
     {
       "name": "descr",
       "showInListView": "true",
+      "showInSingleView": "true",
       "label": { "eng": "Description", "ara": "وصف", "fra": "La description" },
       "sortOrder": "",
       "showAsLink": "",
@@ -112,7 +115,10 @@
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false"
+      "datePicker":"false",
+      "apiName":"registrationcentertypes",
+      "fieldName":"isActive",
+      "methodCallName":""
     }
   ]
 }
