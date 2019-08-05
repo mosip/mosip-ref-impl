@@ -38,7 +38,7 @@ export class ViewComponent implements OnDestroy {
     private translateService: TranslateService
   ) {
     this.getCenterConfigs();
-    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+    this.translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
       console.log(response);
       this.errorMessages = response.errorPopup;
     });

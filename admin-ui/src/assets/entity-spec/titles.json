@@ -130,7 +130,7 @@
         "autocomplete": "false",
         "dropdown": "true",
         "datePicker":"false",
-        "apiName":"registrationcentertypes",
+        "apiName":"titles",
         "fieldName":"isActive",
         "methodCallName":""
       }
