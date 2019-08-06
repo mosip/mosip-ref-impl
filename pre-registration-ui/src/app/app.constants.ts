@@ -89,7 +89,7 @@ export const CONFIG_KEYS = {
   mosip_kernel_otp_default_length: 'mosip.kernel.otp.default-length',
   preregistration_recommended_centers_locCode: 'preregistration.recommended.centers.locCode',
   preregistration_availability_noOfDays: 'preregistration.availability.noOfDays',
-  mosip_regex_CNIE: 'mosip.id.validation.identity.CNIENumber',
+  mosip_regex_referenceIdentityNumber: 'mosip.id.validation.identity.referenceIdentityNumber',
   mosip_regex_postalCode: 'mosip.id.validation.identity.postalCode',
   mosip_regex_DOB: 'mosip.id.validation.identity.dateOfBirth',
   mosip_default_dob_day: 'mosip.default.dob.day',
@@ -166,14 +166,7 @@ export const notificationDtoKeys = {
   file: 'attachment'
 };
 
-export const previewFields = [
-  'region',
-  'province',
-  'city',
-  'localAdministrativeAuthority',
-  'gender',
-  'residenceStatus'
-];
+export const previewFields = ['region', 'province', 'city', 'zone', 'gender', 'residenceStatus'];
 
 export const DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY = 'file';
 export const DOCUMENT_UPLOAD_REQUEST_DTO_KEY = 'Document request';

@@ -1,8 +1,8 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import * as appConstants from '../../../app.constants';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ViewChild } from '@angular/core';
 import { FileModel } from 'src/app/shared/models/demographic-model/file.model';
 import { UserModel } from 'src/app/shared/models/demographic-model/user.modal';
@@ -16,6 +16,8 @@ import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
 import { MatDialog } from '@angular/material';
 import { FilesModel } from 'src/app/shared/models/demographic-model/files.model';
 import { LogService } from 'src/app/shared/logger/log.service';
+import Utils from 'src/app/app.util';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-file-upload',
@@ -34,7 +36,7 @@ export class FileUploadComponent implements OnInit {
   isModify: any;
   fileName: string = '';
   fileByteArray;
-  fileUrl;
+  fileUrl: SafeResourceUrl;
   applicantPreRegId: string;
   file: FileModel = new FileModel();
   userFile: FileModel[] = [this.file];
@@ -57,12 +59,16 @@ export class FileUploadComponent implements OnInit {
   fileIndex: number = -1;
   fileUploadLanguagelabels: any;
   errorlabels: any;
-  fileExtension: string = '';
+  fileExtension: string = 'pdf';
   sameAs: string;
   disableNavigation: boolean = false;
   start: boolean = false;
   browseDisabled: boolean = true;
   documentName: string;
+  proxyDocumentCode : string = '';
+  flag: boolean;
+  zoom: number = 0.5;
+  primaryLang = localStorage.getItem('langCode');
 
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: '',
@@ -117,10 +123,16 @@ export class FileUploadComponent implements OnInit {
     this.loginId = this.registration.getLoginId();
     this.setApplicants();
     this.sameAs = this.registration.getSameAs();
-    this.dataStroage.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-      if (response['message']) this.fileUploadLanguagelabels = response['message'];
-      if (response['error']) this.errorlabels = response['error'];
-    });
+
+    let factory = new LanguageFactory(this.primaryLang);
+    let response = factory.getCurrentlanguage();
+    if (response['message']) this.fileUploadLanguagelabels = response['message'];
+    if (response['error']) this.errorlabels = response['error'];
+
+    // this.dataStroage.getSecondaryLanguageLabels(this.primaryLang).subscribe(response => {
+    //   if (response['message']) this.fileUploadLanguagelabels = response['message'];
+    //   if (response['error']) this.errorlabels = response['error'];
+    // });
 
     this.getApplicantTypeID();
     if (!this.users[0].files) {
@@ -136,7 +148,7 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   private initiateComponent() {
-    this.translate.use(localStorage.getItem('langCode'));
+    this.translate.use(this.primaryLang);
     this.isModify = localStorage.getItem('modifyDocument');
     if (this.registration.getUsers().length > 0) {
       this.users[0] = JSON.parse(JSON.stringify(this.registration.getUser(this.registration.getUsers().length - 1)));
@@ -258,7 +270,7 @@ export class FileUploadComponent implements OnInit {
 
     for (let applicant of allApplicants) {
       for (let name of applicant) {
-        if (name['demographicMetadata'].fullName[j].language != localStorage.getItem('langCode')) {
+        if (name['demographicMetadata'].fullName[j].language != this.primaryLang) {
           allApplicants[i].demographicMetadata.fullName.splice(j, 1);
         }
         j++;
@@ -302,7 +314,7 @@ export class FileUploadComponent implements OnInit {
 
     requestDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
     for (let language of this.users[0].request.demographicDetails.identity.residenceStatus) {
-      if (language.language === localStorage.getItem('langCode')) {
+      if (language.language === this.primaryLang) {
         requestDTO.value = language.value;
       }
     }
@@ -419,16 +431,6 @@ export class FileUploadComponent implements OnInit {
       }
       i++;
     }
-    // for (let applicant of this.activeUsers) {
-    //   if (applicant.files) {
-    //     for (let file of applicant.files.documentsMetaData) {
-    //       if (file.docCatCode === 'POA') {
-    //         tempApplicants.push(this.applicants[i]);
-    //       }
-    //     }
-    //   }
-    //   i++;
-    // }
     this.applicants = JSON.parse(JSON.stringify(tempApplicants));
   }
 
@@ -540,19 +542,13 @@ export class FileUploadComponent implements OnInit {
         if (this.fileByteArray) {
           switch (this.fileExtension) {
             case 'pdf':
-              this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-                'data:application/pdf;base64,' + this.fileByteArray
-              );
+              this.flag = false;
+              this.fileUrl = 'data:application/pdf;base64,' + this.fileByteArray;
               break;
-            case 'jpg':
-            case 'jpeg':
+            default:
+              this.flag = true;
               this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
                 'data:image/jpeg;base64,' + this.fileByteArray
-              );
-              break;
-            case 'png':
-              this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-                'data:image/png;base64,' + this.fileByteArray
               );
               break;
           }
@@ -582,17 +578,9 @@ export class FileUploadComponent implements OnInit {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  handleFileInput(event) {
-    let notSelectedFile: number;
-    if (this.fileUrl) {
-      this.users[0].files.documentsMetaData.filter((data, i) => {
-        if (data.docName !== event.target.files[0].name) {
-          notSelectedFile = i;
-          this.viewFileByIndex(notSelectedFile);
-        }
-      });
-    }
-    const extensionRegex = new RegExp('(?:pdf|jpg|png|jpeg)');
+  handleFileInput(event: any) {
+    const extensionRegex = new RegExp('(?:' + this.allowedFilesHtml.replace(/,/g, '|') + ')');
+    const oldFileExtension = this.fileExtension;
     this.fileExtension = event.target.files[0].name.substring(event.target.files[0].name.indexOf('.') + 1);
     this.fileExtension = this.fileExtension.toLowerCase();
     let allowedFileUploaded: Boolean = false;
@@ -611,18 +599,6 @@ export class FileUploadComponent implements OnInit {
         ) {
           this.getBase64(event.target.files[0]).then(data => {
             this.fileByteArray = data;
-            switch (this.fileExtension) {
-              case 'pdf':
-                this.fileByteArray = this.fileByteArray.replace('data:application/pdf;base64,', '');
-                break;
-              case 'jpg':
-              case 'jpeg':
-                this.fileByteArray = this.fileByteArray.replace('data:image/jpeg;base64,', '');
-                break;
-              case 'png':
-                this.fileByteArray = this.fileByteArray.replace('data:image/png;base64,', '');
-                break;
-            }
           });
           this.setJsonString();
           this.sendFile(event);
@@ -640,9 +616,11 @@ export class FileUploadComponent implements OnInit {
         );
         this.disableNavigation = false;
       }
+      this.fileExtension = oldFileExtension;
     }
 
     if (!allowedFileUploaded) {
+      this.fileExtension = oldFileExtension;
       this.displayMessage(
         this.fileUploadLanguagelabels.uploadDocuments.error,
         this.fileUploadLanguagelabels.uploadDocuments.msg3
@@ -742,7 +720,7 @@ export class FileUploadComponent implements OnInit {
    */
   setJsonString() {
     this.documentUploadRequestBody.docCatCode = this.documentCategory;
-    this.documentUploadRequestBody.langCode = localStorage.getItem('langCode');
+    this.documentUploadRequestBody.langCode = this.primaryLang;
     this.documentUploadRequestBody.docTypCode = this.documentType;
     this.documentRequest = new RequestModel(appConstants.IDS.documentUpload, this.documentUploadRequestBody, {});
   }
@@ -811,7 +789,6 @@ export class FileUploadComponent implements OnInit {
       this.users[this.step].files.documentsMetaData.push(this.userFile[0]);
     }
     this.userFile = [];
-    // this.registration.updateUser(this.step, this.users[this.step]);
     this.registration.updateUser(this.registration.getUsers().length - 1, this.users[this.step]);
   }
 
@@ -843,6 +820,7 @@ export class FileUploadComponent implements OnInit {
               element => element.code === response['response']['docTypCode']
             );
             this.documentName = docList[0].name;
+            this.proxyDocumentCode = this.documentName;
             console.log('DOC NAME IN SAME AS', this.documentName);
           } else {
             this.sameAs = this.registration.getSameAs();
@@ -900,10 +878,7 @@ export class FileUploadComponent implements OnInit {
    */
   onBack() {
     this.registration.changeMessage({ modifyUser: 'true' });
-    const arr = this.router.url.split('/');
-    arr.pop();
-    arr.push('demographic');
-    const url = arr.join('/');
+    let url = Utils.getURL(this.router.url, 'demographic');
     this.router.navigateByUrl(url);
   }
 
@@ -914,11 +889,7 @@ export class FileUploadComponent implements OnInit {
    */
   onNext() {
     localStorage.setItem('modifyDocument', 'false');
-    const arr = this.router.url.split('/');
-    arr.pop();
-    arr.push('summary');
-    arr.push('preview');
-    const url = arr.join('/');
+    let url = Utils.getURL(this.router.url, 'summary/preview');
     this.router.navigateByUrl(url);
   }
 
@@ -967,6 +938,7 @@ export class FileUploadComponent implements OnInit {
     };
     this.openDialog(messageObj, '250px');
   }
+
   /**
    *@description method to open dialog box to show the error message
    *

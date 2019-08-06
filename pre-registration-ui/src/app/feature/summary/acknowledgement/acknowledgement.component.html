@@ -4,8 +4,8 @@
 </div>
 
 <div id="print-section" *ngIf="!showSpinner">
-  <div *ngFor="let user of usersInfo">
-    <mat-card [ngClass]="usersInfo.length === 1 ? 'ack-container' : 'ack-container bottom-margin'">
+  <div class="print-section-inner-div" *ngFor="let user of usersInfo">
+    <mat-card  [ngClass]="usersInfo.length === 1 ? 'ack-container' : 'ack-container bottom-margin'">
       <mat-card-header class="ack__header-container">
         <div class="ack__header">
           <p>{{ 'acknowledgement.title' | translate }}</p>
@@ -93,7 +93,7 @@
           </div>
         </div>
       </mat-card-content>
-      <mat-card-footer id="guidelines-container" class="ack__guidelines-container">
+      <mat-card-footer id="guidelines-container" style ="page-break-after : always" class="ack__guidelines-container">
         <h4>{{ 'acknowledgement.container_guideline' | translate }}</h4>
         <ul *ngIf="guidelines.length !== 0" class="ack__guidelines">
           <li *ngFor="let guideline of guidelines">
@@ -102,7 +102,8 @@
         </ul>
       </mat-card-footer>
     </mat-card>
-  <div class="html2pdf__page-break"></div>
+  <div *ngIf="usersInfo.length > 5" class="html2pdf__page-break"></div>
+  <div class="pagebreak"> </div>
   </div>
 </div>
 <div>
@@ -124,8 +125,10 @@
       mat-button
       [printStyle]="{
         '#message-container': { display: 'none' },
-        '#body-container': { display: 'flex', 'flex-wrap': 'wrap', width: '100%' },
-        '#table-container table tr td': { padding: '10px' }
+        '#body-container': { display: 'flex', 'flex-wrap': 'wrap', width: '100%' , 'min-height' : '1000px', 'page-break-after':'always' },
+        '#table-container table tr td': { padding: '10px' },
+        '#guidelines-container' : { 'page-break-after':'always' }
+
       }"
       printSectionId="print-section"
       ngxPrint

@@ -31,11 +31,11 @@ class MockService {
           region: [{ value: 'value', langugae: 'ara' }],
           province: [{ value: 'value', langugae: 'ara' }],
           city: [{ value: 'value', langugae: 'ara' }],
-          localAdministrativeAuthority: [{ value: 'value', langugae: 'ara' }],
+          zone: [{ value: 'value', langugae: 'ara' }],
           postalCode: 'value',
           phone: 'value',
           email: 'value',
-          CNIENumber: 'value'
+          referenceIdentityNumber: 'value'
         }
       }
     }
@@ -115,11 +115,11 @@ describe('Demographic Component', () => {
               region: [{ value: 'value', langugae: 'ara' }, { value: 'value', langugae: 'ara' }],
               province: [{ value: 'value', langugae: 'ara' }, { value: 'value', langugae: 'ara' }],
               city: [{ value: 'value', langugae: 'ara' }, { value: 'value', langugae: 'ara' }],
-              localAdministrativeAuthority: [{ value: 'value', langugae: 'ara' }, { value: 'value', langugae: 'ara' }],
+              zone: [{ value: 'value', langugae: 'ara' }, { value: 'value', langugae: 'ara' }],
               postalCode: 'value',
               phone: 'value',
               email: 'value',
-              CNIENumber: 'value'
+              referenceIdentityNumber: 'value'
             }
           }
         }
@@ -172,7 +172,7 @@ describe('Demographic Component', () => {
   });
 
   it('component should be truthy on ngdestroy', () => {
-    component.ngOnDestroy();
+    // component.ngOnDestroy();
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });

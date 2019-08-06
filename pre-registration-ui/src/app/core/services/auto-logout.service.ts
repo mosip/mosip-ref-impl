@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { UserIdleService, UserIdleConfig } from 'angular-user-idle';
 import { AuthService } from 'src/app/auth/auth.service';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
-import { BehaviorSubject, merge, fromEvent, timer } from 'rxjs';
-import { DataStorageService } from 'src/app/core/services/data-storage.service';
+import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from 'src/app/core/services/config.service';
 import * as appConstants from 'src/app/app.constants';
+import LanguageFactory from 'src/assets/i18n';
 
 /**
  * @description This class is responsible for auto logging out user when he is inactive for a
@@ -39,8 +39,7 @@ export class AutoLogoutService {
     private userIdle: UserIdleService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private configservice: ConfigService,
-    private dataStroage: DataStorageService
+    private configservice: ConfigService
   ) {}
 
   /**
@@ -61,9 +60,12 @@ export class AutoLogoutService {
       ));
 
     this.primaryLang = langCode;
-    this.dataStroage.getSecondaryLanguageLabels(this.primaryLang).subscribe(response => {
-      this.secondaryLanguagelabels = response['autologout'];
-    });
+    let factory = new LanguageFactory(this.primaryLang);
+    let response = factory.getCurrentlanguage();
+    this.secondaryLanguagelabels = response['autologout'];
+    // this.dataStroage.getSecondaryLanguageLabels(this.primaryLang).subscribe(response => {
+    //   this.secondaryLanguagelabels = response['autologout'];
+    // });
   }
 
   setisActive(value: boolean) {
@@ -113,7 +115,7 @@ export class AutoLogoutService {
           }
         }
       },
-      err => {},
+      () => {},
       () => {}
     );
 

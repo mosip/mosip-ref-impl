@@ -73,9 +73,9 @@
                 <td>{{ previewData.city[0].name }}</td>
               </tr>
               <tr>
-                <td>{{ 'preview.label_local_administrative_authority' | translate }}</td>
+                <td>{{ 'preview.label_zone' | translate }}</td>
                 <td>:</td>
-                <td>{{ previewData.localAdministrativeAuthority[0].name }}</td>
+                <td>{{ previewData.zone[0].name }}</td>
               </tr>
               <tr>
                 <td>{{ 'preview.label_mob_num' | translate }}</td>
@@ -90,7 +90,7 @@
               <tr>
                 <td>{{ 'preview.label_pin' | translate }}</td>
                 <td>:</td>
-                <td>{{ previewData.CNIENumber }}</td>
+                <td>{{ previewData.referenceIdentityNumber }}</td>
               </tr>
             </table>
           </div>
@@ -165,9 +165,9 @@
                 <td>{{ previewData.city[1].name }}</td>
               </tr>
               <tr>
-                <td>{{ secondaryLanguagelabels.label_local_administrative_authority }}</td>
+                <td>{{ secondaryLanguagelabels.label_zone }}</td>
                 <td>:</td>
-                <td>{{ previewData.localAdministrativeAuthority[1].name }}</td>
+                <td>{{ previewData.zone[1].name }}</td>
               </tr>
               <tr>
                 <td>{{ secondaryLanguagelabels.label_mob_num }}</td>
@@ -182,7 +182,7 @@
               <tr>
                 <td>{{ secondaryLanguagelabels.label_pin }}</td>
                 <td>:</td>
-                <td>{{ previewData.CNIENumber }}</td>
+                <td>{{ previewData.referenceIdentityNumber }}</td>
               </tr>
             </table>
           </div>
@@ -221,19 +221,17 @@
   </mat-card>
 </div>
 
-
-  <mat-card class="center-selection__button-container">
-    <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
-    <span class="spacer"></span>
-    <button
-      matTooltip="{{ 'helpText.add_applicant' | translate }}"
-      (click)="navigateDashboard()"
-      class="user-book_later-btn"
-    >
-      {{ 'preview.action_add_applicant' | translate }}
-    </button>
-    <button (click)="navigateNext()" class="user-continue-btn">
-      {{ 'preview.action_continue' | translate }}
-    </button>
-  </mat-card>
-
+<mat-card class="center-selection__button-container">
+  <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
+  <span class="spacer"></span>
+  <button
+    matTooltip="{{ 'helpText.add_applicant' | translate }}"
+    (click)="navigateDashboard()"
+    class="user-book_later-btn"
+  >
+    {{ 'preview.action_add_applicant' | translate }}
+  </button>
+  <button (click)="navigateNext()" class="user-continue-btn">
+    {{ 'preview.action_continue' | translate }}
+  </button>
+</mat-card>
