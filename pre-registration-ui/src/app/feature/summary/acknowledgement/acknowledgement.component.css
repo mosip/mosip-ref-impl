@@ -2,6 +2,12 @@
   margin: 20px 2vw;
   padding: 0 0 50px 0;
 }
+.ack__guidelines li:last-child{
+    display: none;
+}
+
+
+
 .spinner-loading-data {
   margin-left: 43%;
   margin-top: 10%;
@@ -167,3 +173,25 @@ table tr td {
     margin-right: 20px;
   }
 }
+
+
+@media print {
+  .print-section-inner-div {
+      display: block;
+      page-break-after: always;
+  }
+  #guidelines-container {
+    clear:both;
+    page-break-after : always;
+  }
+  .pagebreak{
+    display: block;
+    page-break-after: always;
+  }
+  h4 { 
+    page-break-after: always;
+  }
+}
+
+
+

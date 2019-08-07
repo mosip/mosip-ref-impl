@@ -55,8 +55,8 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   agePattern: string;
   MOBILE_PATTERN: string;
   MOBILE_LENGTH: string;
-  CNIE_PATTERN: string;
-  CNIE_LENGTH: string;
+  REFERENCE_IDENTITY_NUMBER_PATTERN: string;
+  REFERENCE_IDENTITY_NUMBER_PATTERN_LENGTH: string;
   EMAIL_PATTERN: string;
   EMAIL_LENGTH: string;
   DOB_PATTERN: string;
@@ -124,13 +124,10 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   cities_in_primary_lang: CodeValueModal[] = [];
   cities_in_secondary_lang: CodeValueModal[] = [];
   cities: CodeValueModal[][] = [this.cities_in_primary_lang, this.cities_in_secondary_lang];
-  localAdministrativeAuthorities_in_primary_lang: CodeValueModal[] = [];
-  localAdministrativeAuthorities_in_secondary_lang: CodeValueModal[] = [];
-  localAdministrativeAuthorities: CodeValueModal[][] = [
-    this.localAdministrativeAuthorities_in_primary_lang,
-    this.localAdministrativeAuthorities_in_secondary_lang
-  ];
-  locations = [this.regions, this.provinces, this.cities, this.localAdministrativeAuthorities];
+  zones_in_primary_lang: CodeValueModal[] = [];
+  zones_in_secondary_lang: CodeValueModal[] = [];
+  zones: CodeValueModal[][] = [this.zones_in_primary_lang, this.zones_in_secondary_lang];
+  locations = [this.regions, this.provinces, this.cities, this.zones];
   selectedLocationCode = [];
   codeValue: CodeValueModal[] = [];
 
@@ -146,11 +143,11 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     region: 'region',
     province: 'province',
     city: 'city',
-    localAdministrativeAuthority: 'localAdministrativeAuthority',
+    zone: 'zone',
     email: 'email',
     postalCode: 'postalCode',
     phone: 'phone',
-    CNIENumber: 'CNIENumber',
+    referenceIdentityNumber: 'referenceIdentityNumber',
 
     age: 'age',
     date: 'date',
@@ -224,7 +221,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
    */
   setConfig() {
     this.MOBILE_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_phone];
-    this.CNIE_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_CNIE];
+    this.REFERENCE_IDENTITY_NUMBER_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_referenceIdentityNumber];
     this.EMAIL_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_email];
     this.POSTALCODE_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_postalCode];
     this.DOB_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_DOB];
@@ -363,10 +360,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       [this.formControlNames.region]: new FormControl(this.formControlValues.region, Validators.required),
       [this.formControlNames.province]: new FormControl(this.formControlValues.province, Validators.required),
       [this.formControlNames.city]: new FormControl(this.formControlValues.city, Validators.required),
-      [this.formControlNames.localAdministrativeAuthority]: new FormControl(
-        this.formControlValues.localAdministrativeAuthority,
-        Validators.required
-      ),
+      [this.formControlNames.zone]: new FormControl(this.formControlValues.zone, Validators.required),
       [this.formControlNames.email]: new FormControl(this.formControlValues.email, [
         Validators.pattern(this.EMAIL_PATTERN)
       ]),
@@ -377,9 +371,9 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       [this.formControlNames.phone]: new FormControl(this.formControlValues.phone, [
         Validators.pattern(this.MOBILE_PATTERN)
       ]),
-      [this.formControlNames.CNIENumber]: new FormControl(this.formControlValues.CNIENumber, [
+      [this.formControlNames.referenceIdentityNumber]: new FormControl(this.formControlValues.referenceIdentityNumber, [
         Validators.required,
-        Validators.pattern(this.CNIE_PATTERN)
+        Validators.pattern(this.REFERENCE_IDENTITY_NUMBER_PATTERN)
       ])
     });
 
@@ -423,7 +417,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       this.formControlValues.region,
       this.formControlValues.province,
       this.formControlValues.city,
-      this.formControlValues.localAdministrativeAuthority
+      this.formControlValues.zone
     ];
     if (!this.dataModification) {
       this.locations = [this.regions];
@@ -439,7 +433,6 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         await this.getLocationImmediateHierearchy(language, parentLocationCode, element, currentLocationCode);
       }
     }
-
     this.dataIncomingSuccessful = true;
   }
 
@@ -492,11 +485,11 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         region: '',
         province: '',
         city: '',
-        localAdministrativeAuthority: '',
+        zone: '',
         email: '',
         postalCode: '',
         phone: '',
-        CNIENumber: '',
+        referenceIdentityNumber: '',
 
         fullNameSecondary: '',
         addressLine1Secondary: '',
@@ -528,12 +521,11 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         region: this.user.request.demographicDetails.identity.region[index].value,
         province: this.user.request.demographicDetails.identity.province[index].value,
         city: this.user.request.demographicDetails.identity.city[index].value,
-        localAdministrativeAuthority: this.user.request.demographicDetails.identity.localAdministrativeAuthority[0]
-          .value,
+        zone: this.user.request.demographicDetails.identity.zone[0].value,
         email: this.user.request.demographicDetails.identity.email,
         postalCode: this.user.request.demographicDetails.identity.postalCode,
         phone: this.user.request.demographicDetails.identity.phone,
-        CNIENumber: this.user.request.demographicDetails.identity.CNIENumber.toString(),
+        referenceIdentityNumber: this.user.request.demographicDetails.identity.referenceIdentityNumber.toString(),
 
         fullNameSecondary: this.user.request.demographicDetails.identity.fullName[secondaryIndex].value,
         addressLine1Secondary: this.user.request.demographicDetails.identity.addressLine1[secondaryIndex].value,
@@ -979,6 +971,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
               this.loggerService.error(JSON.stringify(response));
               let message = '';
               if (
+                response[appConstants.NESTED_ERROR] &&
                 response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] === appConstants.ERROR_CODES.invalidPin
               ) {
                 message = this.formValidation(response);

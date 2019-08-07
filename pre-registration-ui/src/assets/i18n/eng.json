@@ -46,7 +46,7 @@
     "documents": {
       "name": "Upload Documents",
       "list": {
-        "line1": "On the Upload Documents page, select the document (e.g. Passport, CNIE, etc.) from the document drop-down list per applicable Document Category.",
+        "line1": "On the Upload Documents page, select the document (e.g. Passport, Reference Identity Number, etc.) from the document drop-down list per applicable Document Category.",
         "line2": "Click Browse to open a pop-up window to search the folder on your computer or removable drive where you have saved the scanned document.",
         "line3": "Select the file that you want to upload.",
         "line4": "When uploaded successfully, the document will appear on the right side. Verify that you have uploaded the correct document.",
@@ -304,11 +304,11 @@
     "label_region": "Region",
     "label_province": "Province",
     "label_city": "City",
-    "label_local_administrative_authority": "Local Administrative Authority",
+    "label_zone": "Zone",
     "label_mob_num": "Mobile Number",
     "label_postalCode": "Postal Code",
     "label_email_id": "Email ID",
-    "label_pin": "CNIE/EC",
+    "label_pin": "Reference Identity Number",
     "action_back": "BACK",
     "action_continue": "CONTINUE",
     "action_preview": "PREVIEW",
@@ -335,11 +335,11 @@
       "region_required": "Please select a Region",
       "province_required": "Please select a Province",
       "city_required": "Please select a city",
-      "admin_required": "Please select local AdministrativeAuthority",
+      "admin_required": "Please select zone",
       "postal_code_required": "Please enter valid postalCode",
       "mobile_required": "Please enter valid mobile number",
       "email_required": "Please enter valid email id",
-      "pin_required": "Please enter valid CNIE"
+      "pin_required": "Please enter valid Reference Identity Number"
     }
   },
   "documents": {
@@ -383,11 +383,11 @@
     "label_region": "Region",
     "label_province": "Province",
     "label_city": "City",
-    "label_local_administrative_authority": "Local Administrative Autority",
+    "label_zone": "Zone",
     "label_mob_num": "Moblie Number",
     "label_alt_mob_num": "Alternative Moblie Number",
     "label_email_id": "Email ID",
-    "label_pin": "CNIE/EC",
+    "label_pin": "Reference Identity Number",
     "title_document": "Documents Uploaded",
     "text_not_uploaded": "Not Uploaded",
     "action_modify": "modify",
@@ -576,7 +576,7 @@
     "email": "Entered Email is invalid",
     "phone": "Entered phone is invalid",
     "dateOfBirth": "Entered date of birth is invalid",
-    "CNIENumber": "Entered CNIE Number is invalid",
+    "referenceIdentityNumber": "Entered Reference Identity Number is invalid",
     "tokenExpiredLogout": "You have been logged out due to inactivity.",
     "slotNotAvailable": "Appointment booking/re-booking cannot be done as the requested slot is not available. Please select another slot or try again later",
     "errorLabel": "ERROR"
