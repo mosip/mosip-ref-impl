@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStorageService } from '../services/data-storage.service';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-faq',
@@ -7,19 +8,21 @@ import { DataStorageService } from '../services/data-storage.service';
   styleUrls: ['./faq.component.css']
 })
 export class FaqComponent implements OnInit {
-
   langCode = '';
   data = [];
   answerTranslation = '';
 
-  constructor(private dataStorageService: DataStorageService) { }
+  constructor(private dataStorageService: DataStorageService) {}
 
   ngOnInit() {
     this.langCode = localStorage.getItem('langCode');
-    this.dataStorageService.getSecondaryLanguageLabels(this.langCode).subscribe(response => {
-      this.data = response['faq']['questions'];
-      this.answerTranslation = response['faq']['answer'];
-    })
+    let factory = new LanguageFactory(this.langCode);
+    let response = factory.getCurrentlanguage();
+    this.data = response['faq']['questions'];
+    this.answerTranslation = response['faq']['answer'];
+    // this.dataStorageService.getSecondaryLanguageLabels(this.langCode).subscribe(response => {
+    //   this.data = response['faq']['questions'];
+    //   this.answerTranslation = response['faq']['answer'];
+    // })
   }
-
 }

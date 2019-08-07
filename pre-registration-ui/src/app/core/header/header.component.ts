@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, OnChanges } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { DataStorageService } from '../services/data-storage.service';
 import { MatDialog } from '@angular/material';
 import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
 import { Subscription } from 'rxjs';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private translate: TranslateService,
     private router: Router,
-    private dataService: DataStorageService,
     private dialog: MatDialog
   ) {
     this.translate.use(localStorage.getItem('langCode'));
@@ -50,22 +49,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   showMessage() {
-    this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-      const secondaryLanguagelabels = response['login']['logout_msg'];
-      localStorage.removeItem('loggedOutLang');
-      localStorage.removeItem('loggedOut');
-      const data = {
-        case: 'MESSAGE',
-        message: secondaryLanguagelabels
-      };
-      this.dialog
-        .open(DialougComponent, {
-          width: '350px',
-          data: data
-        })
-        .afterClosed()
-        .subscribe(() => this.authService.onLogout());
-    });
+    let factory = new LanguageFactory(localStorage.getItem('langCode'));
+    let response = factory.getCurrentlanguage();
+    const secondaryLanguagelabels = response['login']['logout_msg'];
+    localStorage.removeItem('loggedOutLang');
+    localStorage.removeItem('loggedOut');
+    const data = {
+      case: 'MESSAGE',
+      message: secondaryLanguagelabels
+    };
+    this.dialog
+      .open(DialougComponent, {
+        width: '350px',
+        data: data
+      })
+      .afterClosed()
+      .subscribe(() => this.authService.onLogout());
   }
 
   ngOnDestroy() {

@@ -28,7 +28,7 @@
     },
     {
       "name": "holidayDesc",
-      "showInListView": "true",
+      "showInListView": "false",
       "showInSingleView": "true",
       "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
       "sortOrder": "",
@@ -46,6 +46,16 @@
       "LinkURL": ""
     },
     {
+      "name": "name",
+      "showInSingleView": "true",
+      "showInListView": "true",
+      "label": { "eng": "Location", "ara": "موقع", "fra": "Emplacement" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
       "name": "isActive",
       "showInListView": "true",
       "showInSingleView": "true",
@@ -58,7 +68,7 @@
     {
       "name": "createdDateTime",
       "showInSingleView": "true",
-      "showInListView": "true",
+      "showInListView": "false",
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
@@ -69,16 +79,7 @@
       "linkType": "",
       "LinkURL": ""
     },
-    {
-      "name": "names",
-      "showInSingleView": "true",
-      "showInListView": "true",
-      "label": { "eng": "Location", "ara": "موقع", "fra": "Emplacement" },
-      "sortOrder": "",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
-    },
+    
     {
       "name": "updatedBy",
       "showInListView": "false",

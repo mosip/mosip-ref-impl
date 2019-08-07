@@ -13,11 +13,11 @@ export interface FormControlModal {
   region: string;
   province: string;
   city: string;
-  localAdministrativeAuthority: string;
+  zone: string;
   email: string;
   postalCode: string;
   phone: string;
-  CNIENumber: string;
+  referenceIdentityNumber: string;
 
   fullNameSecondary: string;
   addressLine1Secondary: string;

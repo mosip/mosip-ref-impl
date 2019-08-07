@@ -13,6 +13,7 @@ import Utils from 'src/app/app.util';
 import { ConfigService } from 'src/app/core/services/config.service';
 import * as appConstants from './../../../app.constants';
 import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-center-selection',
@@ -67,9 +68,12 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   }
 
   getErrorLabels() {
-    this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-      this.errorlabels = response['error'];
-    });
+    let factory = new LanguageFactory(localStorage.getItem('langCode'));
+    let response = factory.getCurrentlanguage();
+    this.errorlabels = response['error'];
+
+    // this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
+    // });
   }
 
   getRecommendedCenters() {

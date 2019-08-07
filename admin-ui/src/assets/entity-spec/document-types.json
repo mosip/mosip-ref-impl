@@ -37,19 +37,6 @@
         "redirectURL": "",
         "showIn": "Button",
         "validations": ""
-      },
-      {
-        "buttonName": {
-          "eng": "Add Document Type",
-          "ara": "إضافة نوع المستند",
-          "fra": "Ajouter un type de document"
-        },
-        "imagePath":"assets/images/add-icon.png",
-        "actionListType": "redirect",
-        "actionURL": "",
-        "redirectURL": "admin/resources/centers/create",
-        "showIn": "Button",
-        "validations": ""
       }
   ],
   "columnsToDisplay": [
@@ -148,7 +135,7 @@
       "filtername": "name",
       "filterlabel": "Name",
       "filterType": "equals",
-      "autocomplete": "true",
+      "autocomplete": "false",
       "dropdown": "false",
       "datePicker":"false",
       "apiName":"documenttypes",

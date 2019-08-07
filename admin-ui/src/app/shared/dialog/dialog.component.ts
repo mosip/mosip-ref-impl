@@ -95,13 +95,17 @@ export class DialogComponent implements OnInit {
         if (values.autocomplete === 'false' && values.dropdown === 'false') {
           this.filterOptions[values.filtername] = [];
         } else {
+          if (!(filterOption[0].columnName.toLowerCase() === 'zone')) {
           this.getFilterValues(
             values.fieldName,
             filterOption[0].value,
             values.apiName,
             filterOption[0].columnName
           );
+        } else {
+          this.getZoneFilterValues();
         }
+      }
       }
     });
   }
@@ -124,19 +128,24 @@ export class DialogComponent implements OnInit {
             this.filterGroup.controls[key].value
           );
           if (
-            this.filterGroup.controls[key].value.toString().charAt(0) === '*'
+            this.filterGroup.controls[key].value.toString().endsWith('*') &&
+            this.filterGroup.controls[key].value.toString().startsWith('*')
           ) {
-            filterType = 'startsWith';
-          } else {
             filterType = 'contains';
+          } else if (this.filterGroup.controls[key].value.toString().endsWith('*')) {
+            filterType = 'startsWith';
+          } else if (
+            this.filterGroup.controls[key].value.toString().includes('*')
+          ) {
+            filterType = 'contains';
+          } else {
+            filterType = 'equals';
           }
         } else if (
           filter[0].dropdown === 'false' &&
           filter[0].autocomplete === 'true'
         ) {
-          if (
-            this.filterGroup.controls[key].value.toString().charAt(0) === '*'
-          ) {
+          if (this.filterGroup.controls[key].value.toString().endsWith('*')) {
             filterType = 'startsWith';
           } else {
             filterType = 'contains';
@@ -151,7 +160,9 @@ export class DialogComponent implements OnInit {
           key,
           filterType,
           // tslint:disable-next-line:max-line-length
-          this.filterGroup.controls[key].value.indexOf('*') === -1 ? this.filterGroup.controls[key].value : this.filterGroup.controls[key].value.replace(/\*/g, '')
+          this.filterGroup.controls[key].value.indexOf('*') === -1
+            ? this.filterGroup.controls[key].value
+            : this.filterGroup.controls[key].value.replace(/\*/g, '')
         );
         this.existingFilters.push(filterObject);
       }
@@ -165,26 +176,41 @@ export class DialogComponent implements OnInit {
     this.router.navigateByUrl(this.router.url.split('?')[0] + '?' + url);
   }
 
-  getControlName(
-    controlName: string,
-    type: string,
-    fieldName: string,
-    value: string
-  ) {
-    if (fieldName.toLowerCase() === 'zone') {
-      this.getZoneFilterValues();
+  getControlName(filter: any, value: string) {
+    console.log(filter);
+    if (filter.fieldName.toLowerCase() === 'zone') {
+      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
+        this.getZoneFilterValues();
+      }
     } else {
-      console.log(type);
-      this.getFilterValues(fieldName, value, type, controlName);
+      console.log(filter.apiName);
+      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
+        this.getFilterValues(
+          filter.fieldName,
+          value,
+          filter.apiName,
+          filter.filtername
+        );
+      }
     }
   }
 
-  getControlValues(controlName, type, fieldName, value) {
-    if (fieldName.toLowerCase() === 'zone') {
-      this.getZoneFilterValues();
+  getControlValues(filter: any, value: string) {
+    if (filter.fieldName.toLowerCase() === 'zone') {
+      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
+        this.getZoneFilterValues();
+      }
     } else {
-      console.log(type);
-      this.getFilterValues(fieldName, value, type, controlName);
+      console.log(filter.apiName);
+      console.log(filter.fieldName);
+      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
+        this.getFilterValues(
+          filter.fieldName,
+          value,
+          filter.apiName,
+          filter.filtername
+        );
+      }
     }
   }
 
@@ -233,5 +259,4 @@ export class DialogComponent implements OnInit {
         console.log(response);
       });
   }
-
 }

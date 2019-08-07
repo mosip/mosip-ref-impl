@@ -47,10 +47,11 @@ export class HeaderComponent implements OnInit {
       this.dataService
       .getLoggedInUserZone(
         this.headerService.getUsername(),
-        this.appConfigService.getConfig().primaryLangCode
+        this.appConfigService.getConfig()['primaryLangCode']
       )
       .subscribe(response => {
         if (response.response) {
+          console.log(response.response.zoneName);
           this.zone = response.response.zoneName;
         }
       });

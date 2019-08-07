@@ -228,14 +228,7 @@
             <mat-form-field>
               <mat-select
                 disableOptionCentering
-                (selectionChange)="
-                  onLocationSelect(
-                    $event,
-                    localAdministrativeAuthorities,
-                    cities,
-                    formControlNames.localAdministrativeAuthority
-                  )
-                "
+                (selectionChange)="onLocationSelect($event, zones, cities, formControlNames.zone)"
                 placeholder="{{ 'demographic.label_city' | translate }}"
                 [formControlName]="formControlNames.city"
                 #city
@@ -251,16 +244,14 @@
             <mat-form-field>
               <mat-select
                 disableOptionCentering
-                (selectionChange)="onLocationSelect($event, null, localAdministrativeAuthorities)"
-                placeholder="{{ 'demographic.label_local_administrative_authority' | translate }}"
-                [formControlName]="formControlNames.localAdministrativeAuthority"
+                (selectionChange)="onLocationSelect($event, null, zones)"
+                placeholder="{{ 'demographic.label_zone' | translate }}"
+                [formControlName]="formControlNames.zone"
                 #authority
               >
-                <mat-option
-                  *ngFor="let localAdministrativeAuthoritie of localAdministrativeAuthorities_in_primary_lang"
-                  [value]="localAdministrativeAuthoritie.valueCode"
-                  >{{ localAdministrativeAuthoritie.valueName }}</mat-option
-                >
+                <mat-option *ngFor="let zone of zones_in_primary_lang" [value]="zone.valueCode">{{
+                  zone.valueName
+                }}</mat-option>
               </mat-select>
               <mat-error *ngIf="!authority.invalid">{{
                 'demographic.validation.admin_required' | translate
@@ -314,11 +305,11 @@
             <mat-form-field>
               <input
                 #pin
-                maxlength="{{ CNIE_LENGTH }}"
+                maxlength="{{ REFERENCE_IDENTITY_NUMBER_PATTERN_LENGTH }}"
                 matInput
                 type="text"
                 placeholder="{{ 'demographic.label_pin' | translate }}"
-                [formControlName]="formControlNames.CNIENumber"
+                [formControlName]="formControlNames.referenceIdentityNumber"
               />
               <mat-error *ngIf="!pin.invalid">{{ 'demographic.validation.pin_required' | translate }}</mat-error>
             </mat-form-field>
@@ -541,15 +532,13 @@
               <mat-select
                 disableOptionCentering
                 [disabled]="true"
-                [placeholder]="secondaryLanguagelabels.label_local_administrative_authority"
-                [value]="userForm.get(formControlNames.localAdministrativeAuthority).value"
-                name="t_localAdministrativeAuthority"
+                [placeholder]="secondaryLanguagelabels.label_zone"
+                [value]="userForm.get(formControlNames.zone).value"
+                name="t_zone"
               >
-                <mat-option
-                  *ngFor="let LAA of localAdministrativeAuthorities_in_secondary_lang"
-                  [value]="LAA.valueCode"
-                  >{{ LAA.valueName }}</mat-option
-                >
+                <mat-option *ngFor="let zone of zones_in_secondary_lang" [value]="zone.valueCode">{{
+                  zone.valueName
+                }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -594,7 +583,7 @@
                 matInput
                 type="text"
                 [placeholder]="secondaryLanguagelabels.label_pin"
-                [value]="userForm.get(formControlNames.CNIENumber).value"
+                [value]="userForm.get(formControlNames.referenceIdentityNumber).value"
               />
             </mat-form-field>
           </div>
