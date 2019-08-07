@@ -95,13 +95,17 @@ export class DialogComponent implements OnInit {
         if (values.autocomplete === 'false' && values.dropdown === 'false') {
           this.filterOptions[values.filtername] = [];
         } else {
+          if (!(filterOption[0].columnName.toLowerCase() === 'zone')) {
           this.getFilterValues(
             values.fieldName,
             filterOption[0].value,
             values.apiName,
             filterOption[0].columnName
           );
+        } else {
+          this.getZoneFilterValues();
         }
+      }
       }
     });
   }
@@ -198,6 +202,7 @@ export class DialogComponent implements OnInit {
       }
     } else {
       console.log(filter.apiName);
+      console.log(filter.fieldName);
       if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
         this.getFilterValues(
           filter.fieldName,
