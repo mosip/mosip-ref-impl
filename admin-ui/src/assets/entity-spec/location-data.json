@@ -33,7 +33,7 @@
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
-      "actionURL":{ "case": "filter" },
+      "actionURL": { "case": "filter" },
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
@@ -54,61 +54,72 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "code",
+      "name": "postalCode",
       "showInListView": "true",
       "showInSingleView": "true",
       "label": {
-        "eng": "Code",
+        "eng": "Postal Code",
         "ara": "رمز",
-        "fra": "Code"
+        "fra": "code postal"
       },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey":"id"
+      "idKey": "id"
     },
     {
-      "name": "name",
+      "name": "zone",
       "showInListView": "true",
       "showInSingleView": "true",
       "label": {
-        "eng": "Name",
-        "ara": "اسم",
-        "fra": "prénom"
+        "eng": "Zone",
+        "ara": "منطقة",
+        "fra": "Zone"
       },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey":"id"
+      "idKey": "id"
     },
 
     {
-      "name": "hierarchyName",
+      "name": "city",
       "showInListView": "true",
       "showInSingleView": "true",
       "label": {
-        "eng": "Hierarchy Name",
-        "ara": "اسم التسلسل الهرمي",
-        "fra": "Nom de la hiérarchie"
+        "eng": "City",
+        "ara": "مدينة",
+        "fra": "ville"
       },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey":"code"
+      "idKey": "code"
     },
     {
-      "name": "parentLocCode",
+      "name": "region",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Parent Location Code", "ara": "رمز موقع الوالد", "fra": "Code d'emplacement parent" },
+      "label": { "eng": "Region", "ara": "منطقة", "fra": "Région" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey":"code"
+      "idKey": "code"
+    },
+    {
+      "name": "province",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Province", "ara": "المحافظة", "fra": "Province" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey": "code"
     },
     {
       "name": "isActive",
@@ -122,7 +133,7 @@
     },
     {
       "name": "createdDateTime",
-      "showInListView": "true",
+      "showInListView": "false",
       "showInSingleView": "false",
       "label": {
         "eng": "Created Time",
@@ -182,5 +193,79 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": []
+  "filterColumns": [
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "registrationcenters",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "region",
+      "filterlabel": "Region",
+      "filterType": "between",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Region",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "province",
+      "filterlabel": "Province",
+      "filterType": "between",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Province",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "city",
+      "filterlabel": "City",
+      "uiField": "string",
+      "filterType": "between",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "City",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "Zone",
+      "filterlabel": "Zone",
+      "filterType": "between",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "zone",
+      "fieldName": "Zone",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "postalCode",
+      "filterlabel": "Pin Code",
+      "filterType": "between",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Postal Code",
+      "methodCallName": ""
+    }
+  ]
 }
