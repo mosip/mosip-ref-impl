@@ -6,8 +6,12 @@
     <span>
       <button class="menu-button" [matMenuTriggerFor]="menu">
         <div class="mat-caption">{{userName}}</div>
-        <div class="zone-text tooltip">{{roleName}}
-          <span class="tooltiptext">{{roleNameSubstr}}</span>
+        <div class="zone-text">{{roleName}}
+          <div class="tool-tip-wraper">
+            <div class="tooltiptext">
+                {{roleNameSubstr}}
+            </div>
+          </div>
         </div>
       </button>
     </span>
