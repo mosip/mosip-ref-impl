@@ -94,6 +94,6 @@ export class DataStorageService {
     let params = new HttpParams();
     params = params.append('userID', userId);
     params = params.append('langCode', langCode);
-    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/username', {params});
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/zonename', {params});
   }
 }
