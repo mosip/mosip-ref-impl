@@ -115,7 +115,7 @@
         "filtername": "name",
         "filterlabel": "Name",
         "filterType": "equals",
-        "autocomplete": "true",
+        "autocomplete": "false",
         "dropdown": "false",
         "datePicker":"false",
         "apiName":"devicetypes",

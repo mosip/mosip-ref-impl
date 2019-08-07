@@ -16,17 +16,13 @@
                   formControlName="{{ filter.filtername }}"
                   (focus)="
                     getControlName(
-                      filter.filtername,
-                      filter.apiName,
-                      filter.fieldName,
+                      filter,
                       filterGroup.controls[filter.filtername].value
                     )
                   "
                   (keyup)="
                     getControlValues(
-                      filter.filtername,
-                      filter.apiName,
-                      filter.fieldName,
+                      filter,
                       filterGroup.controls[filter.filtername].value
                     )
                   "
@@ -50,8 +46,8 @@
                 </mat-autocomplete>
               </mat-form-field>
               <ng-container *ngSwitchCase="'false'">
-            <ng-container ngSwitch="{{ filter.datePicker }}">
-                <mat-form-field *ngSwitchCase="'true'">
+                <ng-container ngSwitch="{{ filter.datePicker }}">
+                  <mat-form-field *ngSwitchCase="'true'">
                     <input
                       matInput
                       [matDatepicker]="picker"
@@ -59,13 +55,10 @@
                       formControlName="{{ filter.filtername }}"
                       (focus)="
                         getControlName(
-                          filter.filtername,
-                          filter.apiName,
-                          filter.fieldName,
+                          filter,
                           filterGroup.controls[filter.filtername].value
                         )
                       "
-        
                     />
                     <mat-datepicker-toggle
                       matSuffix
@@ -74,24 +67,28 @@
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="'false'">
-                      <input
-                        type="text"
-                        matInput
-                        placeholder="{{ filter.filterlabel }}"
-                        formControlName="{{ filter.filtername }}"
-                        (focus)="
-                          getControlName(
-                            filter.filtername,
-                            filter.apiName,
-                            filter.fieldName,
-                            filterGroup.controls[filter.filtername].value
-                          )
-                        "
-                      />
-                    </mat-form-field>
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="{{ filter.filterlabel }}"
+                      formControlName="{{ filter.filtername }}"
+                      (focus)="
+                        getControlName(
+                          filter,
+                          filterGroup.controls[filter.filtername].value
+                        )
+                      "
+                      (keyup)="
+                        getControlValues(
+                          filter,
+                          filterGroup.controls[filter.filtername].value
+                        )
+                      "
+                    />
+                  </mat-form-field>
+                </ng-container>
+              </ng-container>
             </ng-container>
-          </ng-container>
-          </ng-container>
           </ng-container>
           <ng-container *ngSwitchCase="'true'">
             <mat-form-field>
@@ -100,9 +97,7 @@
                 formControlName="{{ filter.filtername }}"
                 (click)="
                   getControlName(
-                    filter.filtername,
-                    filter.apiName,
-                    filter.fieldName,
+                    filter,
                     filterGroup.controls[filter.filtername].value
                   )
                 "

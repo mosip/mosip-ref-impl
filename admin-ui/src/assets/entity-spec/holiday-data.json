@@ -70,7 +70,7 @@
       "LinkURL": ""
     },
     {
-      "name": "names",
+      "name": "name",
       "showInSingleView": "true",
       "showInListView": "true",
       "label": { "eng": "Location", "ara": "موقع", "fra": "Emplacement" },
