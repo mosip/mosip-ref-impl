@@ -65,7 +65,7 @@ export class FileUploadComponent implements OnInit {
   start: boolean = false;
   browseDisabled: boolean = true;
   documentName: string;
-  proxyDocumentCode : string = '';
+  proxyDocumentCode: string = '';
   flag: boolean;
   zoom: number = 0.5;
   primaryLang = localStorage.getItem('langCode');
@@ -128,11 +128,6 @@ export class FileUploadComponent implements OnInit {
     let response = factory.getCurrentlanguage();
     if (response['message']) this.fileUploadLanguagelabels = response['message'];
     if (response['error']) this.errorlabels = response['error'];
-
-    // this.dataStroage.getSecondaryLanguageLabels(this.primaryLang).subscribe(response => {
-    //   if (response['message']) this.fileUploadLanguagelabels = response['message'];
-    //   if (response['error']) this.errorlabels = response['error'];
-    // });
 
     this.getApplicantTypeID();
     if (!this.users[0].files) {
@@ -340,7 +335,7 @@ export class FileUploadComponent implements OnInit {
 
     await this.dataStroage.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
       response => {
-        if (response['errors'] == null) {
+        if (response[appConstants.RESPONSE]) {
           this.getDocumentCategories(response['response'].applicantType.applicantTypeCode);
           this.setApplicantType(response);
         } else {
@@ -370,7 +365,7 @@ export class FileUploadComponent implements OnInit {
   async getDocumentCategories(applicantcode) {
     await this.dataStroage.getDocumentCategories(applicantcode).subscribe(
       res => {
-        if (res['errors'] == null) {
+        if (res[appConstants.RESPONSE]) {
           this.LOD = res['response'].documentCategories;
           this.enableBrowseButtonList = new Array(this.LOD.length).fill(false);
           this.registration.setDocumentCategories(res['response'].documentCategories);
@@ -392,7 +387,7 @@ export class FileUploadComponent implements OnInit {
   async getAllApplicants() {
     await this.dataStroage.getUsers(this.loginId).subscribe(
       response => {
-        if (response['errors'] == null) {
+        if (response[appConstants.RESPONSE]) {
           this.bookingService.addApplicants(response['response']['basicDetails']);
         } else {
           this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
@@ -521,7 +516,7 @@ export class FileUploadComponent implements OnInit {
     this.disableNavigation = true;
     this.dataStroage.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
       res => {
-        if (!res['errors']) {
+        if (res[appConstants.RESPONSE]) {
           this.setByteArray(res['response'].document);
         } else {
           this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
@@ -737,7 +732,7 @@ export class FileUploadComponent implements OnInit {
 
     this.dataStroage.sendFile(this.formData, this.users[0].preRegId).subscribe(
       response => {
-        if (response['response'] !== null) {
+        if (response[appConstants.RESPONSE]) {
           this.updateUsers(response);
         } else {
           this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
@@ -811,7 +806,7 @@ export class FileUploadComponent implements OnInit {
     } else {
       this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
         response => {
-          if (response['errors'] == null) {
+          if (response[appConstants.RESPONSE]) {
             this.registration.setSameAs(event.value);
             this.removePOADocument();
             this.updateUsers(response);
