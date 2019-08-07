@@ -816,7 +816,6 @@ export class FileUploadComponent implements OnInit {
             );
             this.documentName = docList[0].name;
             this.proxyDocumentCode = this.documentName;
-            console.log('DOC NAME IN SAME AS', this.documentName);
           } else {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
