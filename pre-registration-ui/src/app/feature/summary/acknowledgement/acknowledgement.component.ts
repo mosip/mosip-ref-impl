@@ -9,6 +9,7 @@ import { NotificationDtoModel } from 'src/app/shared/models/notification-model/n
 import Utils from 'src/app/app.util';
 import * as appConstants from '../../../app.constants';
 import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-acknowledgement',
@@ -76,12 +77,11 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         );
       }
       this.formatDateTime();
-
       await this.qrCodeForUser();
+      let factory = new LanguageFactory(this.secondaryLang);
+      let response = factory.getCurrentlanguage();
+      this.secondaryLanguagelabels = response['acknowledgement'];
 
-      this.dataStorageService.getSecondaryLanguageLabels(this.secondaryLang).subscribe(response => {
-        this.secondaryLanguagelabels = response['acknowledgement'];
-      });
       await this.getTemplate();
       this.showSpinner = false;
       resolve(true);

@@ -199,8 +199,8 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
     this.dataService.getAvailabilityData(id).subscribe(
       response => {
         this.spinner = false;
-        if (response['response']) {
-          this.formatJson(response['response'].centerDetails);
+        if (response[appConstants.RESPONSE]) {
+          this.formatJson(response[appConstants.RESPONSE].centerDetails);
         } else if (response[appConstants.NESTED_ERROR]) {
           this.displayMessage('Error', this.errorlabels.error, '');
         }
@@ -293,7 +293,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
   bookingOperation(request) {
     this.dataService.makeBooking(request).subscribe(
       response => {
-        if (!response['errors']) {
+        if (response[appConstants.RESPONSE]) {
           const data = {
             case: 'MESSAGE',
             title: this.secondaryLanguagelabels.title_success,
