@@ -250,7 +250,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     return new Promise((resolve, reject) => {
       this.dataStorageService.getGuidelineTemplate('consent').subscribe(
         response => {
-          if (!response[appConstants.NESTED_ERROR]) this.consentMessage = response['response']['templates'][0].fileText;
+          if (response[appConstants.RESPONSE]) this.consentMessage = response['response']['templates'][0].fileText;
           else this.onError(this.errorlabels.error, '');
           resolve(true);
         },
@@ -546,11 +546,11 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     return new Promise(resolve => {
       this.dataStorageService.getGenderDetails().subscribe(
         response => {
-          if (response[appConstants.NESTED_ERROR]) {
-            this.onError(this.errorlabels.error, '');
-          } else {
+          if (response[appConstants.RESPONSE]) {
             this.genders = response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.genderTypes];
             resolve(true);
+          } else {
+            this.onError(this.errorlabels.error, '');
           }
         },
         error => {
@@ -572,12 +572,12 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     return new Promise(resolve => {
       this.dataStorageService.getResidentDetails().subscribe(
         response => {
-          if (response[appConstants.NESTED_ERROR]) {
-            this.onError(this.errorlabels.error, '');
-          } else {
+          if (response[appConstants.RESPONSE]) {
             this.residenceStatus =
               response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.residentTypes];
             resolve(true);
+          } else {
+            this.onError(this.errorlabels.error, '');
           }
         },
         error => {
@@ -711,9 +711,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     return new Promise(resolve => {
       this.dataStorageService.getLocationImmediateHierearchy(languageCode, parentLocationCode).subscribe(
         response => {
-          if (response[appConstants.NESTED_ERROR]) {
-            this.onError(this.errorlabels.error, '');
-          } else {
+          if (response[appConstants.RESPONSE]) {
             response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations].forEach(element => {
               let codeValueModal: CodeValueModal = {
                 valueCode: element.code,
@@ -726,6 +724,8 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
               }
             });
             return resolve(true);
+          } else {
+            this.onError(this.errorlabels.error, '');
           }
         },
         error => {
@@ -892,7 +892,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
 
       this.dataStorageService.getTransliteration(request).subscribe(
         response => {
-          if (!response[appConstants.NESTED_ERROR])
+          if (response[appConstants.RESPONSE])
             this.transUserForm.controls[toControl].patchValue(response[appConstants.RESPONSE].to_field_value);
           else {
             this.onError(this.errorlabels.error, '');
