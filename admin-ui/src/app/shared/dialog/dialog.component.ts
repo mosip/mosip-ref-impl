@@ -167,7 +167,10 @@ export class DialogComponent implements OnInit {
             .toISOString()
             .substring(0, 10);
           // tslint:disable-next-line:radix
-          const monthDate = parseInt(date.split('-')[2]) + 1;
+          let monthDate = (parseInt(date.split('-')[2]) + 1).toString();
+          if (monthDate.toString().length === 1 ) {
+             monthDate = 0 + monthDate.toString();
+          }
           this.momentDate = date.substring(0, 8) + monthDate;
           console.log(this.momentDate);
         }
