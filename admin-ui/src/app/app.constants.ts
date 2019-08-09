@@ -69,7 +69,7 @@ export const masterdataMapping = {
     specFileName: 'blacklisted-words',
     name: 'Black Listed Word',
     nameKey: '',
-    idKey: '',
+    idKey: 'word',
     headerName: 'Blacklisted Words'
   },
   holiday: {

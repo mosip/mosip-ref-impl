@@ -121,9 +121,12 @@ export class ViewComponent implements OnDestroy {
             .afterClosed()
             .subscribe(result => {
               console.log('dislog is closed');
+              this.router.navigateByUrl(
+                `admin/resources/machines/view`
+              );
             });
           }
-        } else if(response === null) {
+        } else if (response === null) {
           this.dialog
             .open(DialogComponent, {
                data: {

@@ -117,6 +117,10 @@ export class ViewComponent implements OnDestroy {
               btnTxt: this.errorMessages.noData.btnTxt
              } ,
             width: '700px'
+          }).afterClosed().subscribe( result => {
+            this.router.navigateByUrl(
+              `admin/resources/devices/view`
+            );
           });
         }
       } else if (response === null) {

@@ -33,6 +33,7 @@ export class DialogComponent implements OnInit {
   filterModel: FilterValuesModel;
   requestModel: RequestModel;
   options = [];
+  momentDate: any;
 
   filterOptions: any = {};
 
@@ -96,16 +97,16 @@ export class DialogComponent implements OnInit {
           this.filterOptions[values.filtername] = [];
         } else {
           if (!(filterOption[0].columnName.toLowerCase() === 'zone')) {
-          this.getFilterValues(
-            values.fieldName,
-            filterOption[0].value,
-            values.apiName,
-            filterOption[0].columnName
-          );
-        } else {
-          this.getZoneFilterValues();
+            this.getFilterValues(
+              values.fieldName,
+              filterOption[0].value,
+              values.apiName,
+              filterOption[0].columnName
+            );
+          } else {
+            this.getZoneFilterValues();
+          }
         }
-      }
       }
     });
   }
@@ -132,7 +133,9 @@ export class DialogComponent implements OnInit {
             this.filterGroup.controls[key].value.toString().startsWith('*')
           ) {
             filterType = 'contains';
-          } else if (this.filterGroup.controls[key].value.toString().endsWith('*')) {
+          } else if (
+            this.filterGroup.controls[key].value.toString().endsWith('*')
+          ) {
             filterType = 'startsWith';
           } else if (
             this.filterGroup.controls[key].value.toString().includes('*')
@@ -156,15 +159,36 @@ export class DialogComponent implements OnInit {
         ) {
           filterType = 'equals';
         }
-        const filterObject = new FilterModel(
-          key,
-          filterType,
-          // tslint:disable-next-line:max-line-length
-          this.filterGroup.controls[key].value.indexOf('*') === -1
-            ? this.filterGroup.controls[key].value
-            : this.filterGroup.controls[key].value.replace(/\*/g, '')
-        );
-        this.existingFilters.push(filterObject);
+        if (this.filterGroup.controls['holidayDate']) {
+          console.log(this.filterGroup.controls['holidayDate'].value);
+          const date = new Date(
+            this.filterGroup.controls['holidayDate'].value
+          )
+            .toISOString()
+            .substring(0, 10);
+          // tslint:disable-next-line:radix
+          const monthDate = parseInt(date.split('-')[2]) + 1;
+          this.momentDate = date.substring(0, 8) + monthDate;
+          console.log(this.momentDate);
+        }
+        if (!(key === 'holidayDate')) {
+          const filterObject = new FilterModel(
+            key,
+            filterType,
+            // tslint:disable-next-line:max-line-length
+            this.filterGroup.controls[key].value.toString().indexOf('*') === -1
+              ? this.filterGroup.controls[key].value
+              : this.filterGroup.controls[key].value.replace(/\*/g, '')
+          );
+          this.existingFilters.push(filterObject);
+        } else {
+          const filterObject = new FilterModel(
+            key,
+            filterType,
+            this.momentDate
+          );
+          this.existingFilters.push(filterObject);
+        }
       }
     });
     const filters = Utils.convertFilter(
