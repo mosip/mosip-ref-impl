@@ -21,13 +21,21 @@
 }
 
 .bottom-margin {
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 }
 
 .ack__guidelines {
   padding-right: 10%;
   word-break: break-word;
+  page-break-after: always;
 }
+.ack__guidelines  :last-child {
+  page-break-after: avoid;
+}
+.inner-guideline-content {
+  padding: 2px !important;
+}
+
 
 .ack__guidelines li {
   list-style-type: none;

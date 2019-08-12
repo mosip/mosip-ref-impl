@@ -5,7 +5,7 @@
 
 <div id="print-section" *ngIf="!showSpinner">
   <div class="print-section-inner-div" *ngFor="let user of usersInfo">
-    <mat-card  [ngClass]="usersInfo.length === 1 ? 'ack-container' : 'ack-container bottom-margin'">
+    <mat-card class ="ack-container">
       <mat-card-header class="ack__header-container">
         <div class="ack__header">
           <p>{{ 'acknowledgement.title' | translate }}</p>
@@ -95,14 +95,19 @@
       </mat-card-content>
       <mat-card-footer id="guidelines-container"  class="ack__guidelines-container">
         <h4>{{ 'acknowledgement.container_guideline' | translate }}</h4>
-        <ul *ngIf="guidelines.length !== 0" class="ack__guidelines">
-          <li *ngFor="let guideline of guidelines">
-            {{ guideline }}
-          </li>
-        </ul>
+        <table  *ngIf="guidelines.length !== 0" class="ack__guidelines">
+          <tr *ngFor="let guideline of guidelines">
+           <td class = "inner-guideline-content"> {{ guideline }}</td>
+          </tr>
+        </table>
       </mat-card-footer>
+  
+
     </mat-card>
-  <div class="html2pdf__page-break"></div>
+
+  
+    
+  
   </div>
 </div>
 <div>
