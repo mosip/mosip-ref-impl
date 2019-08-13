@@ -165,7 +165,7 @@
         "filtername": "name",
         "filterlabel": "Machine Name",
         "filterType": "equals",
-        "autocomplete": "true",
+        "autocomplete": "false",
         "dropdown": "false",
         "datePicker":"false",
         "apiName":"machines",

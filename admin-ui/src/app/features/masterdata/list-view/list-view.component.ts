@@ -147,6 +147,9 @@ export class ListViewComponent implements OnInit, OnDestroy {
               .afterClosed()
               .subscribe(result => {
                 console.log('dislog is closed');
+                this.router.navigateByUrl(
+                  `admin/masterdata/${this.activatedRoute.snapshot.params.type}/view`
+                );
               });
             }
           } else if (response === null) {

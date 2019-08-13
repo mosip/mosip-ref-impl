@@ -95,7 +95,7 @@
               <mat-label>{{ filter.filterlabel }}</mat-label>
               <mat-select
                 formControlName="{{ filter.filtername }}"
-                (click)="
+                (focus)="
                   getControlName(
                     filter,
                     filterGroup.controls[filter.filtername].value

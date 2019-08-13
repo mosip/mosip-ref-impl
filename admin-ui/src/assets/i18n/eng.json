@@ -131,7 +131,7 @@
                 "message": "Click On yes To Create/Edit Center",
                 "yesBtnText": "Yes",
                 "noBtnText": "No",
-                "mandatorySecondaryFields": "You have not filled data in secondary language. Center will be created in only primary language. Do you want to continue?"
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
             },
             "update-success": {
                 "title": "Success",
