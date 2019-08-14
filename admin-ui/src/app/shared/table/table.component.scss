@@ -91,3 +91,15 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
   display: inline-flex;
   align-items: center;
 }
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  box-shadow: inset 0 0 3px;
+  background-color: rgb(228, 228, 228);
+}
+::-webkit-scrollbar-track{
+  border-radius: 15px;
+  background-color: rgb(228, 228, 228);
+}
