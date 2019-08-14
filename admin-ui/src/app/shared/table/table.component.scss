@@ -97,9 +97,9 @@ th.mat-header-cell:last-child, td.mat-cell:last-child, td.mat-footer-cell:last-c
 ::-webkit-scrollbar-thumb {
   border-radius: 12px;
   box-shadow: inset 0 0 3px;
-  background-color: rgb(228, 228, 228);
+  background: #ccc;
 }
 ::-webkit-scrollbar-track{
   border-radius: 15px;
-  background-color: rgb(228, 228, 228);
+  box-shadow: inset 0 0 5px grey;
 }
