@@ -148,31 +148,43 @@ export class DialogComponent implements OnInit {
           filter[0].dropdown === 'false' &&
           filter[0].autocomplete === 'true'
         ) {
-          if (this.filterGroup.controls[key].value.toString().endsWith('*')) {
-            filterType = 'startsWith';
-          } else {
+          if (
+            this.filterGroup.controls[key].value.toString().endsWith('*') &&
+            this.filterGroup.controls[key].value.toString().startsWith('*')
+          ) {
             filterType = 'contains';
+          } else if (
+            this.filterGroup.controls[key].value.toString().endsWith('*')
+          ) {
+            filterType = 'startsWith';
+          } else if (
+            this.filterGroup.controls[key].value.toString().includes('*')
+          ) {
+            filterType = 'contains';
+          } else {
+            filterType = 'equals';
           }
         } else if (
           filter[0].dropdown === 'true' &&
           filter[0].autocomplete === 'false'
         ) {
           filterType = 'equals';
-        }
-        if (this.filterGroup.controls['holidayDate']) {
-          console.log(this.filterGroup.controls['holidayDate'].value);
-          const date = new Date(
-            this.filterGroup.controls['holidayDate'].value
-          )
-            .toISOString()
-            .substring(0, 10);
-          // tslint:disable-next-line:radix
-          let monthDate = (parseInt(date.split('-')[2]) + 1).toString();
-          if (monthDate.toString().length === 1 ) {
-             monthDate = 0 + monthDate.toString();
+        } else if (filter[0].datePicker === 'true') {
+          if (this.filterGroup.controls['holidayDate']) {
+            console.log(this.filterGroup.controls['holidayDate'].value);
+            const date = new Date(
+              this.filterGroup.controls['holidayDate'].value
+            )
+              .toISOString()
+              .substring(0, 10);
+            // tslint:disable-next-line:radix
+            let monthDate = (parseInt(date.split('-')[2]) + 1).toString();
+            if (monthDate.toString().length === 1) {
+              monthDate = 0 + monthDate.toString();
+            }
+            this.momentDate = date.substring(0, 8) + monthDate;
+            console.log(this.momentDate);
           }
-          this.momentDate = date.substring(0, 8) + monthDate;
-          console.log(this.momentDate);
         }
         if (!(key === 'holidayDate')) {
           const filterObject = new FilterModel(
