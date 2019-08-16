@@ -77,8 +77,12 @@ export class SingleViewComponent implements OnDestroy {
         this.specFileData = response.columnsToDisplay;
         console.log(this.specFileData);
       });
-    await this.getData(this.primaryLangCode, true);
-    await this.getData(this.secondaryLangCode, false);
+    if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
+      await this.getData(this.primaryLangCode, true);
+    } else {
+      await this.getData(this.primaryLangCode, true);
+      await this.getData(this.secondaryLangCode, false);
+    }
     console.log(this.primaryData, this.secondaryData);
     this.setHeaderData();
   }

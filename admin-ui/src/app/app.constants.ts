@@ -36,7 +36,7 @@ export const navItems = [
       {
         displayName: 'menuItems.item2.subItem3',
         icon: null,
-        route: 'resources/users'
+        route: '/admin/resources/users'
       },
       {
         displayName: 'menuItems.item2.subItem4',
@@ -68,7 +68,7 @@ export const masterdataMapping = {
     apiName: 'blacklistedwords',
     specFileName: 'blacklisted-words',
     name: 'Black Listed Word',
-    nameKey: '',
+    nameKey: 'word',
     idKey: 'word',
     headerName: 'Blacklisted Words'
   },

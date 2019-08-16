@@ -53,9 +53,30 @@ export class ListViewComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    console.log(this.router.url);
+    const routeParts = this.activatedRoute.snapshot.params.type;
     await this.loadData();
-    await this.getMasterDataTypeValues();
+    if (routeParts.toLowerCase() === 'blacklisted-words') {
+      await this.loadBlacklistedWords();
+    } else {
+      await this.getMasterDataTypeValues(this.appService.getConfig().primaryLangCode);
+    }
+  }
+
+  loadBlacklistedWords() {
+    return new Promise(async (resolve, reject) => {
+      const data = [];
+      await this.getMasterDataTypeValues(this.appService.getConfig().primaryLangCode).then(response => {
+        data.push(...response['data']);
+        console.log(response);
+      });
+      await this.getMasterDataTypeValues(this.appService.getConfig().secondaryLangCode).then(response => {
+        data.push(...response['data']);
+        console.log(response);
+      });
+      this.masterData = data;
+      console.log(this.masterData);
+      resolve(true);
+    });
   }
 
   loadData() {
@@ -112,12 +133,12 @@ export class ListViewComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(`admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`);
   }
 
-  getMasterDataTypeValues() {
+  getMasterDataTypeValues(language: string) {
     return new Promise((resolve, reject) => {
       this.masterData = [];
       const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
-      const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+      const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, language);
       this.sortFilter = filters.sort;
       this.requestModel = new RequestModel(null, null, filters);
       console.log(JSON.stringify(this.requestModel));
@@ -168,8 +189,8 @@ export class ListViewComponent implements OnInit, OnDestroy {
                 console.log('dialog is closed from view component');
               });
           }
+          resolve(response);
         });
-      resolve(true);
     });
   }
   ngOnDestroy() {

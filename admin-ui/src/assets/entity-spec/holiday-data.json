@@ -102,9 +102,20 @@
   },
   "filterColumns": [
     {
-      "filtername": "holidayDate",
-      "filterlabel": "Holiday Date",
-      "filterType": "equals",
+      "filtername": "holidayDateFrom",
+      "filterlabel": "Holiday Date From",
+      "filterType": "between",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "true",
+      "apiName": "holidays",
+      "fieldName": "holidayDate",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "holidayDateTo",
+      "filterlabel": "Holiday Date To",
+      "filterType": "between",
       "autocomplete": "false",
       "dropdown": "false",
       "datePicker": "true",

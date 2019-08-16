@@ -109,18 +109,90 @@ export class DialogComponent implements OnInit {
         }
       }
     });
+    console.log(this.filterGroup.controls);
+    this.settingUpBetweenFilters(filterNames);
   }
+
+  settingUpBetweenFilters(filterNames: any) {
+    this.existingFilters.forEach((filters: FilterModel) => {
+      if (filters.type === 'between') {
+        const formFields = filterNames.filter(filterName => filterName.fieldName === filters.columnName);
+        this.filterGroup.controls[formFields[0].filtername].setValue(filters.fromValue);
+        this.filterGroup.controls[formFields[1].filtername].setValue(filters.toValue);
+      }
+    });
+  }
+
+  convertDate(dateString: string) {
+    console.log(dateString);
+    const date = new Date(dateString);
+    let returnDate = date.getFullYear() + '-';
+    returnDate += Number(date.getMonth() + 1) < 10 ? '0' + Number(date.getMonth() + 1) : Number(date.getMonth() + 1) < 10;
+    returnDate += '-';
+    returnDate += Number(date.getDate()) < 10 ? '0' + Number(date.getDate()) : Number(date.getDate());
+    return returnDate;
+  }
+
+  createBetweenFilter(filterDetails: any) {
+    console.log(filterDetails);
+    const existingFilter = this.existingFilters.filter(filters => filters.columnName === filterDetails.fieldName);
+    if (existingFilter.length > 0) {
+      const index = this.existingFilters.indexOf(existingFilter[0]);
+      if (filterDetails.filterlabel.indexOf('From') >= 0) {
+        if (filterDetails.datePicker === 'true') {
+          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          console.log(this.momentDate);
+          this.existingFilters[index].fromValue = this.momentDate;
+        } else {
+          this.existingFilters[index].fromValue = this.filterGroup.controls[filterDetails.filtername].value;
+        }
+      } else if (filterDetails.filterlabel.indexOf('To') >= 0) {
+        if (filterDetails.datePicker === 'true') {
+          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          console.log(this.momentDate);
+          this.existingFilters[index].toValue = this.momentDate;
+        } else {
+          this.existingFilters[index].toValue = this.filterGroup.controls[filterDetails.filtername].value;
+        }
+      }
+    } else {
+      const filterModel = new FilterModel(filterDetails.fieldName, 'between');
+      if (filterDetails.filterlabel.indexOf('From') >= 0) {
+        if (filterDetails.datePicker === 'true') {
+          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          console.log(this.momentDate);
+          filterModel.fromValue = this.momentDate;
+        } else {
+          filterModel.fromValue = this.filterGroup.controls[filterDetails.filtername].value;
+        }
+      } else if (filterDetails.filterlabel.indexOf('To') >= 0) {
+        if (filterDetails.datePicker === 'true') {
+          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          console.log(this.momentDate);
+          filterModel.toValue = this.momentDate;
+        } else {
+          filterModel.toValue = this.filterGroup.controls[filterDetails.filtername].value;
+        }
+      }
+      this.existingFilters.push(filterModel);
+    }
+  }
+
   getFilterValuesOnSubmit() {
     this.existingFilters = [];
-    console.log(this.filterGroup);
     Object.keys(this.filterGroup.controls).forEach(key => {
       const filter = this.FilterData.filter(data => data.filtername === key);
+      let flag = false;
+      console.log(filter);
       if (
         this.filterGroup.controls[key].value &&
         this.filterGroup.controls[key].value !== ''
       ) {
         let filterType = '';
-        if (
+        if (filter[0].filterType === 'between') {
+          this.createBetweenFilter(filter[0]);
+          flag = true;
+        } else if (
           filter[0].dropdown === 'false' &&
           filter[0].autocomplete === 'false'
         ) {
@@ -159,22 +231,7 @@ export class DialogComponent implements OnInit {
         ) {
           filterType = 'equals';
         }
-        if (this.filterGroup.controls['holidayDate']) {
-          console.log(this.filterGroup.controls['holidayDate'].value);
-          const date = new Date(
-            this.filterGroup.controls['holidayDate'].value
-          )
-            .toISOString()
-            .substring(0, 10);
-          // tslint:disable-next-line:radix
-          let monthDate = (parseInt(date.split('-')[2]) + 1).toString();
-          if (monthDate.toString().length === 1 ) {
-             monthDate = 0 + monthDate.toString();
-          }
-          this.momentDate = date.substring(0, 8) + monthDate;
-          console.log(this.momentDate);
-        }
-        if (!(key === 'holidayDate')) {
+        if (!flag) {
           const filterObject = new FilterModel(
             key,
             filterType,
@@ -182,13 +239,6 @@ export class DialogComponent implements OnInit {
             this.filterGroup.controls[key].value.toString().indexOf('*') === -1
               ? this.filterGroup.controls[key].value
               : this.filterGroup.controls[key].value.replace(/\*/g, '')
-          );
-          this.existingFilters.push(filterObject);
-        } else {
-          const filterObject = new FilterModel(
-            key,
-            filterType,
-            this.momentDate
           );
           this.existingFilters.push(filterObject);
         }

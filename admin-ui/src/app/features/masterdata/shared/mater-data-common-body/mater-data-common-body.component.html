@@ -14,7 +14,7 @@
 
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
 
-            <div class="secondary-form">
+            <div *ngIf="secondaryData" class="secondary-form">
                 <strong class="title">{{ languageNames[secondaryLang] }}</strong>
                 <hr />
                 <br /><br />

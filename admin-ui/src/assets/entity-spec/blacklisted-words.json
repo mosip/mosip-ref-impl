@@ -19,6 +19,7 @@
           {
             "name": "word",
             "showInListView": "true",
+            "showInSingleView": "true",
             "label": { "eng": " Blacklisted Words", "ara": "اسم", "fra": "prénom" },
             "sortOrder": "",
             "showAsLink": "",
@@ -28,6 +29,7 @@
           {
             "name": "description",
             "showInListView": "true",
+            "showInSingleView": "true",
             "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
             "sortOrder": "",
             "showAsLink": "",
