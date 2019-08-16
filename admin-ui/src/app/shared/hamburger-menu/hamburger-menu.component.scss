@@ -20,7 +20,7 @@
     border: none;
     cursor: pointer;
     .zone-text {
-      font-size: 14px;
+      font-size: 10px;
       text-align: left;
       color: #ffffff;
       position: relative;
@@ -33,7 +33,7 @@
     .tool-tip-wraper {
       border-radius: 6px;
       position: absolute;
-      top: -40px;
+      top: -23px;
       left: 0;
       text-align: right;
       visibility: hidden;
@@ -50,16 +50,6 @@
         white-space: pre-line;
         word-break: break-word;
       }
-    }
-    .tool-tip-wraper .tooltiptext::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: #ff4081 transparent transparent transparent;
     }
   }
 }

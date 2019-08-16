@@ -20,7 +20,7 @@ export class HamburgerComponent implements OnInit {
   constructor(private headerService: HeaderService, private logoutService: LogoutService) { }
 
   ngOnInit() {
-    if (this.data && this.data.menuList) {
+    if (this.data !== null && this.data.menuList) {
       this.dataList = this.data.menuList;
     }
     if (this.headerService.getUsername()) {
@@ -28,8 +28,12 @@ export class HamburgerComponent implements OnInit {
     }
     if (this.headerService.getRoles()) {
       this.roleNameSubstr = this.headerService.getRoles();
-      const roleNameSplit = this.headerService.getRoles().indexOf(',');
-      this.roleName = this.headerService.getRoles().substring(0, roleNameSplit);
+      if (this.roleNameSubstr.indexOf(',') !== -1) {
+        const roleNameSplit = this.headerService.getRoles().indexOf(',');
+        this.roleName = this.headerService.getRoles().substring(0, roleNameSplit);
+      } else {
+        this.roleName = this.headerService.getRoles();
+      }
     }
   }
 

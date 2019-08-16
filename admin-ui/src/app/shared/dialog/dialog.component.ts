@@ -220,10 +220,21 @@ export class DialogComponent implements OnInit {
           filter[0].dropdown === 'false' &&
           filter[0].autocomplete === 'true'
         ) {
-          if (this.filterGroup.controls[key].value.toString().endsWith('*')) {
-            filterType = 'startsWith';
-          } else {
+          if (
+            this.filterGroup.controls[key].value.toString().endsWith('*') &&
+            this.filterGroup.controls[key].value.toString().startsWith('*')
+          ) {
             filterType = 'contains';
+          } else if (
+            this.filterGroup.controls[key].value.toString().endsWith('*')
+          ) {
+            filterType = 'startsWith';
+          } else if (
+            this.filterGroup.controls[key].value.toString().includes('*')
+          ) {
+            filterType = 'contains';
+          } else {
+            filterType = 'equals';
           }
         } else if (
           filter[0].dropdown === 'true' &&
