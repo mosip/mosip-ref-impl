@@ -298,8 +298,8 @@ export class CreateComponent implements OnInit {
           data: {
             case: 'MESSAGE',
             title: this.popupMessages['create-error'].title,
-            message: this.popupMessages['create-error'].title,
-            btnTxt: this.popupMessages['create-error'].title
+            message: this.popupMessages['create-error'].message,
+            btnTxt: this.popupMessages['create-error'].btnTxt
           }
         });
       }
