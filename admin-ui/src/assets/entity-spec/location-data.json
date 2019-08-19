@@ -37,19 +37,6 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
-    },
-    {
-      "buttonName": {
-        "eng": "Add Location",
-        "ara": "أضف الموقع",
-        "fra": "Ajouter un emplacement"
-      },
-      "imagePath": "assets/images/add-icon.png",
-      "actionListType": "redirect",
-      "actionURL": "",
-      "redirectURL": "admin/resources/centers/create",
-      "showIn": "Button",
-      "validations": ""
     }
   ],
   "columnsToDisplay": [

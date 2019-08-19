@@ -41,19 +41,6 @@
         "validations": ""
       },
       {
-        "buttonName": {
-          "eng": "Create Devices",
-          "ara": "إضافة آلة",
-          "fra": "Ajouter le deivce"
-        },
-        "imagePath":"assets/images/add-icon.png",
-        "actionListType": "redirect",
-        "actionURL": "",
-        "redirectURL": "admin/resources/devices/create",
-        "showIn": "Button",
-        "validations": ""
-      },
-      {
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
         "imagePath":"assets/images/filter.png",
         "actionListType": "action",
@@ -162,7 +149,7 @@
       {
         "filtername": "name",
         "filterlabel": "Device Name",
-        "filterType": "between",
+        "filterType": "contains",
         "fieldType":"input",
         "autocomplete": "false",
         "dropdown":"false",

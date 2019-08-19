@@ -41,19 +41,6 @@
         "validations": ""
       },
       {
-        "buttonName": {
-          "eng": "Create Machine",
-          "ara": "إضافة آلة" ,
-          "fra": "Ajouter le machine"
-        },
-        "imagePath":"assets/images/add-icon.png",
-        "actionListType": "redirect",
-        "actionURL": "",
-        "redirectURL": "admin/resources/machines/create",
-        "showIn": "Button",
-        "validations": ""
-      },
-      {
         "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
         "imagePath":"assets/images/filter.png",
         "actionListType": "action",

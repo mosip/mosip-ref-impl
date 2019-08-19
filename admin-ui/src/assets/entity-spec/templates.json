@@ -54,21 +54,7 @@
         "LinkURL": ""
       },
       {
-        "name": "fileFormat",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Template Format",
-          "ara": "تنسيق القالب",
-          "fra": "Modèle de format"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "fileFormat",
+        "name": "fileFormatCode",
         "showInListView": "false",
         "showInSingleView": "true",
         "label": {
@@ -96,7 +82,7 @@
         "LinkURL": ""
       },
       {
-        "name": "template",
+        "name": "templateTypeCode",
         "showInListView": "false",
         "showInSingleView": "true",
         "label": {
@@ -138,7 +124,7 @@
         "LinkURL": ""
       },
       {
-        "name": "templateTypeName",
+        "name": "fileText",
         "showInListView": "false",
         "showInSingleView": "true",
         "label": {

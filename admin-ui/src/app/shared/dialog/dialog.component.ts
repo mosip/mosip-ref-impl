@@ -138,7 +138,7 @@ export class DialogComponent implements OnInit {
     const existingFilter = this.existingFilters.filter(filters => filters.columnName === filterDetails.fieldName);
     if (existingFilter.length > 0) {
       const index = this.existingFilters.indexOf(existingFilter[0]);
-      if (filterDetails.filterlabel.indexOf('From') >= 0) {
+      if (filterDetails.filtername.indexOf('From') >= 0) {
         if (filterDetails.datePicker === 'true') {
           this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
           console.log(this.momentDate);
@@ -146,7 +146,7 @@ export class DialogComponent implements OnInit {
         } else {
           this.existingFilters[index].fromValue = this.filterGroup.controls[filterDetails.filtername].value;
         }
-      } else if (filterDetails.filterlabel.indexOf('To') >= 0) {
+      } else if (filterDetails.filtername.indexOf('To') >= 0) {
         if (filterDetails.datePicker === 'true') {
           this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
           console.log(this.momentDate);
