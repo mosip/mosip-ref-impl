@@ -161,7 +161,7 @@
       {
         "filtername": "isActive",
         "filterlabel": "Status",
-        "filterType": "between",
+        "filterType": "contains",
         "fieldType":"input",
         "autocomplete": "false",
         "dropdown":"true",

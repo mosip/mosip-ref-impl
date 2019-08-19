@@ -196,7 +196,7 @@
     {
       "filtername": "region",
       "filterlabel": "Region",
-      "filterType": "between",
+      "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
@@ -208,7 +208,7 @@
     {
       "filtername": "province",
       "filterlabel": "Province",
-      "filterType": "between",
+      "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
@@ -221,7 +221,7 @@
       "filtername": "city",
       "filterlabel": "City",
       "uiField": "string",
-      "filterType": "between",
+      "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
@@ -233,7 +233,7 @@
     {
       "filtername": "Zone",
       "filterlabel": "Zone",
-      "filterType": "between",
+      "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
@@ -245,7 +245,7 @@
     {
       "filtername": "postalCode",
       "filterlabel": "Pin Code",
-      "filterType": "between",
+      "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
