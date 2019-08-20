@@ -35,6 +35,17 @@
     },
     {
       "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
         "eng": "Create Center",
         "ara": "إضافة مركز",
         "fra": "Ajouter le centre"
@@ -131,9 +142,9 @@
       "name": "contactPhone",
       "showInListView": "",
       "label": {
-        "eng": "Contant Phone",
+        "eng": "Contact Phone",
         "ara": "هاتف مُتَكَون",
-        "fra": "Téléphone Contant"
+        "fra": "Téléphone Contact"
       },
       "sortOrder": "",
       "showAsLink": "",

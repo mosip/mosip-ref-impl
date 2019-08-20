@@ -155,9 +155,9 @@
             },
             "navigation-popup": {
                 "title": "Confirmation",
-                "message": "You have unsaved data. Moving away from the page will lose the data. Do you want to Continue?",
-                "yesBtnTxt": "Yes",
-                "noBtnTxt": "No"
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
             }
         }
     },

@@ -4,10 +4,9 @@ import {
   Input,
   OnChanges,
   Output,
-  EventEmitter,
-  ViewEncapsulation
+  EventEmitter
 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import * as appConstants from 'src/app/app.constants';
@@ -34,7 +33,6 @@ export class TableComponent implements OnInit, OnChanges {
   imageSource: string;
   constructor(
     private router: Router,
-    private activateRoute: ActivatedRoute,
     private appConfig: AppConfigService
   ) {}
   ngOnInit(): void {
@@ -46,7 +44,6 @@ export class TableComponent implements OnInit, OnChanges {
     const route = this.router.url.split('/')[3];
     this.imageSource = appConstants.ListViewIdKeyMapping[`${route}`]['imagePath'];
     console.log(this.imageSource);
-    
   }
 
   ngOnChanges(): void {

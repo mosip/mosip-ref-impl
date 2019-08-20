@@ -155,9 +155,9 @@
             },
             "navigation-popup": {
                 "title": "Confirmation",
-                "message": "Vous avez des données non sauvegardées. S'éloigner de la page perdra les données. Voulez-vous continuer?",
-                "yesBtnTxt": "Oui",
-                "noBtnTxt": "Non"
+                "message": "Êtes-vous sûr de vouloir quitter cette page? Toutes les données non sauvegardées seront perdues.",
+                "yesBtnTxt": "Laisser",
+                "noBtnTxt": "Rester"
             }
         }
     },

@@ -20,7 +20,7 @@
       </p>
       <p class="small-text">{{'center.updated-by'|translate}}:&nbsp;<span>{{headerData.updatedBy}}</span></p>
     </div>
-    <div class="elipses">
+    <div *ngIf="headerData.name !== '-'" class="elipses">
       <app-hamburger-menu [data]="elipses"></app-hamburger-menu>
     </div>
   </mat-card>

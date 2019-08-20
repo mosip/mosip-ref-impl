@@ -22,8 +22,8 @@ export class CenterHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.dataSerice.getCenterSpecificLabelsAndActions().subscribe(data => {
-      if (data && data.eng && data.eng.actionButtons) {
-        for (const list of data.eng.actionButtons) {
+      if (data && data.actionButtons) {
+        for (const list of data.actionButtons) {
           this.actionButtonElipses.push(list);
         }
       }
