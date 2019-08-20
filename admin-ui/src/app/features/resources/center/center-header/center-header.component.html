@@ -21,7 +21,17 @@
       <p class="small-text">{{'center.updated-by'|translate}}:&nbsp;<span>{{headerData.updatedBy}}</span></p>
     </div>
     <div *ngIf="headerData.name !== '-'" class="elipses">
-      <app-hamburger-menu [data]="elipses"></app-hamburger-menu>
+      <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+        <button
+          mat-menu-item
+          *ngFor="let button of elipses.menuList"
+          (click)="selectedRow(data, i)"
+        >
+        <span *ngIf="lang === 'eng'">{{ button.buttonName.eng }}</span>
+        <span *ngIf="lang === 'fra'">{{ button.buttonName.fra }}</span>
+        <span *ngIf="lang === 'ara'">{{ button.buttonName.ara }}</span>
+        </button>
+      </mat-menu>
     </div>
   </mat-card>
 </div>

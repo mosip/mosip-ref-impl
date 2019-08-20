@@ -306,14 +306,14 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  getData(params: any) {
+  async getData(params: any) {
     const filter = new FilterModel('id', 'equals', params.id);
     this.centerRequest.filters = [filter];
     this.centerRequest.languageCode = this.primaryLang;
     this.centerRequest.sort = [];
     this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
     let request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
-    this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
+    await this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
       if (response.response.data) {
         this.data[0] = response.response.data[0];
         this.initializeheader();
