@@ -158,6 +158,11 @@
                 "message": "Êtes-vous sûr de vouloir quitter cette page? Toutes les données non sauvegardées seront perdues.",
                 "yesBtnTxt": "Laisser",
                 "noBtnTxt": "Rester"
+            },
+            "no-data": {
+                "title": "Erreur",
+                "message": "Aucun Enregistrement Trouvé",
+                "btnTxt": "D'accord"
             }
         }
     },

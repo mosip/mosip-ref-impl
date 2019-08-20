@@ -314,18 +314,42 @@ export class CreateComponent implements OnInit {
     this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
     let request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
     this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
-      console.log(response.response.data[0]);
-      this.data[0] = response.response.data[0];
-      this.initializeheader();
-      this.setPrimaryFormValues();
-    });
+      if (response.response.data) {
+        this.data[0] = response.response.data[0];
+        this.initializeheader();
+        this.setPrimaryFormValues();
+      } else {
+        this.showErrorPopup();
+      }
+    }, error => this.showErrorPopup());
     this.centerRequest.languageCode = this.secondaryLang;
     request = new RequestModel(appConstants.registrationCenterCreateId, null, this.centerRequest);
     this.centerService.getRegistrationCentersDetails(request).subscribe(response => {
-      console.log(response.response.data[0]);
-      this.data[1] = response.response.data[0];
+      this.data[1] = response.response.data ? response.response.data[0] : {};
       this.setSecondaryFormValues();
     });
+  }
+
+  showErrorPopup() {
+    this.dialog
+      .open(DialogComponent, {
+        width: '350px',
+        data: {
+          case: 'MESSAGE',
+          // tslint:disable-next-line:no-string-literal
+          title: this.popupMessages['no-data']['title'],
+          message: this.popupMessages['no-data']['message'],
+          // tslint:disable-next-line:no-string-literal
+          btnTxt: this.popupMessages['no-data']['btnTxt']
+        },
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe(() =>
+        this.router.navigateByUrl(
+          `admin/resources/centers/view`
+        )
+      );
   }
 
   setPrimaryFormValues() {
@@ -357,15 +381,15 @@ export class CreateComponent implements OnInit {
   }
 
   setSecondaryFormValues() {
-    this.secondaryForm.controls.name.setValue(this.data[1].name);
+    this.secondaryForm.controls.name.setValue(this.data[1].name ? this.data[1].name : '');
     this.secondaryForm.controls.centerTypeCode.setValue(this.data[0].centerTypeCode);
-    this.secondaryForm.controls.contactPerson.setValue(this.data[1].contactPerson);
-    this.secondaryForm.controls.contactPhone.setValue(this.data[1].contactPhone);
+    this.secondaryForm.controls.contactPerson.setValue(this.data[1].contactPerson ? this.data[1].contactPerson : '');
+    this.secondaryForm.controls.contactPhone.setValue(this.data[0].contactPhone);
     this.secondaryForm.controls.longitude.setValue(this.data[0].longitude);
     this.secondaryForm.controls.latitude.setValue(this.data[0].latitude);
-    this.secondaryForm.controls.addressLine1.setValue(this.data[1].addressLine1);
-    this.secondaryForm.controls.addressLine2.setValue(this.data[1].addressLine2);
-    this.secondaryForm.controls.addressLine3.setValue(this.data[1].addressLine3);
+    this.secondaryForm.controls.addressLine1.setValue(this.data[1].addressLine1 ? this.data[1].addressLine1 : '');
+    this.secondaryForm.controls.addressLine2.setValue(this.data[1].addressLine2 ? this.data[1].addressLine2 : '');
+    this.secondaryForm.controls.addressLine3.setValue(this.data[1].addressLine3 ? this.data[1].addressLine3 : '');
     this.secondaryForm.controls.region.setValue(this.data[0].regionCode);
     this.secondaryForm.controls.province.setValue(this.data[0].provinceCode);
     this.secondaryForm.controls.city.setValue(this.data[0].cityCode);

@@ -130,7 +130,7 @@
         "autocomplete": "false",
         "dropdown": "true",
         "datePicker":"false",
-        "apiName":"titles",
+        "apiName":"title",
         "fieldName":"isActive",
         "methodCallName":""
       }

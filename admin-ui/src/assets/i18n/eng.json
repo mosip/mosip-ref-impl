@@ -158,6 +158,11 @@
                 "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
                 "yesBtnTxt": "Leave",
                 "noBtnTxt": "Stay"
+            },
+            "no-data": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
             }
         }
     },
