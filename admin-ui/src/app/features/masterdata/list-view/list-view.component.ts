@@ -75,6 +75,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
       });
       this.masterData = data;
       console.log(this.masterData);
+      this.paginatorOptions.totalEntries = this.masterData.length;
       resolve(true);
     });
   }

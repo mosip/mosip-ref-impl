@@ -39,4 +39,10 @@ export class CenterHeaderComponent implements OnInit {
       }
     });
   }
+
+
+  selectedRow(data: any, index: number) {
+    console.log(data + index);
+  }
+
 }

@@ -78,6 +78,8 @@ export class SingleViewComponent implements OnDestroy {
         console.log(this.specFileData);
       });
     if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
+      this.primaryLangCode = this.id.split('$')[1];
+      this.id = this.id.split('$')[0];
       await this.getData(this.primaryLangCode, true);
     } else {
       await this.getData(this.primaryLangCode, true);

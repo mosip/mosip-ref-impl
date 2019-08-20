@@ -74,7 +74,6 @@ export class TableComponent implements OnInit, OnChanges {
 
   selectedRow(data: any, index: number) {
     console.log(data + index);
-    this.router.navigate(['404']);
   }
   getTableRowData(data: any, index: number, columnName: string) {
     const routeIndex = this.router.url.lastIndexOf('/');
@@ -84,11 +83,17 @@ export class TableComponent implements OnInit, OnChanges {
     console.log(id);
     console.log(this.currentRoute);
     if (index === 0) {
-      // tslint:disable-next-line:no-string-literal
-      this.router.navigate([
-        `${this.currentRoute}/single-view`,
-        data[id.idKey]
-      ]);
+      if (currentRouteType.toLowerCase() === 'blacklisted-words') {
+        this.router.navigate([
+          `${this.currentRoute}/single-view`,
+          data[id.idKey] + '$' + data.langCode
+        ]);
+      } else {
+        this.router.navigate([
+          `${this.currentRoute}/single-view`,
+          data[id.idKey]
+        ]);
+      }
     }
   }
   sortColumn(columnName: string, columnIndex: number) {

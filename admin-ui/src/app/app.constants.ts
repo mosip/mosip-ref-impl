@@ -173,7 +173,7 @@ export const masterdataMapping = {
     specFileName: 'individual-types',
     name: 'Individual Type',
     nameKey: 'name',
-    idKey: 'id',
+    idKey: 'code',
     headerName: 'Individual Type'
   }
 
