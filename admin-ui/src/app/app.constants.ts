@@ -149,7 +149,7 @@ export const masterdataMapping = {
     specFileName: 'machine-specification',
     name: 'Machine Specification',
     nameKey: 'name',
-    idKey: 'id',
+    idKey: 'name',
     headerName: 'Machine Specification'
   },
   'device-specs': {
@@ -191,7 +191,7 @@ export const ListViewIdKeyMapping = {
   'document-type': {idKey: 'code'},
    location: {idKey: 'postalCode'},
    'device-specs': {idKey: 'id'},
-   'machine-specs': {idKey: 'id'},
+   'machine-specs': {idKey: 'name'},
    'device-types': {idKey: 'code'},
    'document-categories': {idKey: 'code'},
    'individual-type': {idKey: 'code'},
