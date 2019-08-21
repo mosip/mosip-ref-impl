@@ -15,12 +15,6 @@ export class CenterHeaderComponent implements OnInit {
 
   @Input() headerData: HeaderModel;
 
-
-  elipses = {
-    type: 'elipses',
-    menuList: this.actionButtonElipses
-  };
-
   constructor(private dataSerice: DataStorageService, private appService: AppConfigService) {
     this.lang = appService.getConfig()['primaryLangCode'];
    }
@@ -41,8 +35,8 @@ export class CenterHeaderComponent implements OnInit {
   }
 
 
-  selectedRow(data: any, index: number) {
-    console.log(data + index);
+  selectedRow(index: number) {
+    console.log(index, this.actionButtonElipses[index]);
   }
 
 }

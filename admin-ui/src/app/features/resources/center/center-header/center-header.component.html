@@ -22,13 +22,13 @@
     </div>
     <div *ngIf="headerData.name !== '-'" class="elipses">
       <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
+          <mat-icon style="color: white">more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
         <button
           mat-menu-item
-          *ngFor="let button of elipses.menuList; let i = index;"
-          (click)="selectedRow(button, i)"
+          *ngFor="let button of actionButtonElipses; let i = index;"
+          (click)="selectedRow(i)"
         >
         <span *ngIf="lang === 'eng'">{{ button.buttonName.eng }}</span>
         <span *ngIf="lang === 'fra'">{{ button.buttonName.fra }}</span>

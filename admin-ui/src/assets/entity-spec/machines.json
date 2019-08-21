@@ -213,17 +213,6 @@
         "apiName":"machinetypes",
         "fieldName":"name",
         "methodCallName":""
-      },
-      {
-        "filtername": "id",
-        "filterlabel": "Machine Spec ID",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"machinespecifications",
-        "fieldName":"name",
-        "methodCallName":""
       }
     ]
 }

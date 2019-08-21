@@ -55,7 +55,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const routeParts = this.activatedRoute.snapshot.params.type;
     await this.loadData();
-    if (routeParts.toLowerCase() === 'blacklisted-words') {
+    if (routeParts.toLowerCase() === 'blacklisted-words' && Object.entries(this.activatedRoute.snapshot.queryParams).length === 0) {
       await this.loadBlacklistedWords();
     } else {
       await this.getMasterDataTypeValues(this.appService.getConfig().primaryLangCode);
@@ -66,12 +66,16 @@ export class ListViewComponent implements OnInit, OnDestroy {
     return new Promise(async (resolve, reject) => {
       const data = [];
       await this.getMasterDataTypeValues(this.appService.getConfig().primaryLangCode).then(response => {
-        data.push(...response['data']);
-        console.log(response);
+        if (response['data']) {
+          data.push(...response['data']);
+          console.log(response);
+        }
       });
       await this.getMasterDataTypeValues(this.appService.getConfig().secondaryLangCode).then(response => {
-        data.push(...response['data']);
-        console.log(response);
+        if (response['data']) {
+          data.push(...response['data']);
+          console.log(response);
+        }
       });
       this.masterData = data;
       console.log(this.masterData);

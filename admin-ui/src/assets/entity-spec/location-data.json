@@ -189,7 +189,7 @@
       "autocomplete": "false",
       "dropdown": "true",
       "datePicker": "false",
-      "apiName": "registrationcenters",
+      "apiName": "locations",
       "fieldName": "isActive",
       "methodCallName": ""
     },
@@ -238,7 +238,7 @@
       "autocomplete": "true",
       "dropdown": "false",
       "datePicker": "false",
-      "apiName": "zone",
+      "apiName": "locations",
       "fieldName": "Zone",
       "methodCallName": ""
     },

@@ -93,7 +93,7 @@ export const masterdataMapping = {
     specFileName: 'location-data',
     name: 'Location',
     nameKey: 'name',
-    idKey: 'code',
+    idKey: 'postalCode',
     headerName: 'Location'
   },
   'gender-type': {
@@ -189,7 +189,7 @@ export const ListViewIdKeyMapping = {
   title: {idKey: 'code'},
   'blacklisted-words': {idKey: 'word'},
   'document-type': {idKey: 'code'},
-   location: {idKey: 'code'},
+   location: {idKey: 'postalCode'},
    'device-specs': {idKey: 'id'},
    'machine-specs': {idKey: 'id'},
    'device-types': {idKey: 'code'},

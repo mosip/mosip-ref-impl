@@ -96,16 +96,12 @@ export class DialogComponent implements OnInit {
         if (values.autocomplete === 'false' && values.dropdown === 'false') {
           this.filterOptions[values.filtername] = [];
         } else {
-          if (!(filterOption[0].columnName.toLowerCase() === 'zone')) {
             this.getFilterValues(
               values.fieldName,
               filterOption[0].value,
               values.apiName,
               filterOption[0].columnName
             );
-          } else {
-            this.getZoneFilterValues();
-          }
         }
       }
     });
@@ -266,13 +262,7 @@ export class DialogComponent implements OnInit {
 
   getControlName(filter: any, value: string) {
     console.log(filter);
-    if (filter.fieldName.toLowerCase() === 'zone') {
-      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
-        this.getZoneFilterValues();
-      }
-    } else {
-      console.log(filter.apiName);
-      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
+    if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
         this.getFilterValues(
           filter.fieldName,
           value,
@@ -280,26 +270,6 @@ export class DialogComponent implements OnInit {
           filter.filtername
         );
       }
-    }
-  }
-
-  getControlValues(filter: any, value: string) {
-    if (filter.fieldName.toLowerCase() === 'zone') {
-      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
-        this.getZoneFilterValues();
-      }
-    } else {
-      console.log(filter.apiName);
-      console.log(filter.fieldName);
-      if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
-        this.getFilterValues(
-          filter.fieldName,
-          value,
-          filter.apiName,
-          filter.filtername
-        );
-      }
-    }
   }
 
   getFilterValues(
@@ -329,22 +299,6 @@ export class DialogComponent implements OnInit {
         console.log(response);
         this.filterOptions[controlName] = [...response.response.filters];
         console.log(this.filterOptions);
-      });
-  }
-
-  getZoneFilterValues() {
-    this.options = [];
-    this.filterOptions['Zone'] = [];
-    this.dataStorageService
-      .getZoneData(this.config.getConfig().primaryLangCode)
-      .subscribe(response => {
-        response.response.forEach(element => {
-          const zoneObject = {
-            fieldValue: element.name
-          };
-          this.filterOptions['Zone'].push(zoneObject);
-        });
-        console.log(response);
       });
   }
 }
