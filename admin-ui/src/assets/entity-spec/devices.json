@@ -215,7 +215,7 @@
         "methodCallName":""
       },
       {
-        "filtername": "id",
+        "filtername": "deviceSpecId",
         "filterlabel": "Device Spec ID",
         "filterType": "equals",
         "autocomplete": "false",
