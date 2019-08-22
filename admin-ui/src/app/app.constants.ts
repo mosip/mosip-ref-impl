@@ -70,7 +70,7 @@ export const masterdataMapping = {
     name: 'Black Listed Word',
     nameKey: 'word',
     idKey: 'word',
-    headerName: 'Blacklisted Words'
+    headerName: 'Black Listed Words'
   },
   holiday: {
     apiName: 'holidays',
