@@ -14,6 +14,7 @@
     {
       "name": "id",
       "showInListView": "false",
+      "showInSingleView": "true",
       "label": { "eng": "Machine Spec ID", "ara": "معرف الجهاز المواصفات", "fra": "ID de spécification" },
       "sortOrder": "3",
       "showAsLink": "",
@@ -33,7 +34,7 @@
     {
         "name": "brand",
         "showInListView": "true",
-        "showInSingleView": "false",
+        "showInSingleView": "true",
         "label": { "eng": "Brand", "ara": "علامة تجارية", "fra": "Marque" },
         "sortOrder": "",
         "showAsLink": "",
@@ -43,7 +44,7 @@
       {
         "name": "model",
         "showInListView": "true",
-        "showInSingleView": "false",
+        "showInSingleView": "true",
         "label": { "eng": "Model", "ara": "نموذج", "fra": "Modèle" },
         "sortOrder": "",
         "showAsLink": "",
@@ -53,6 +54,7 @@
       {
         "name": "machineTypeName",
         "showInListView": "true",
+        "showInSingleView": "true",
         "label": { "eng": "Machine Type", "ara": "نوع الجهاز", "fra": "Type de machine" },
         "sortOrder": "",
         "showAsLink": "",
@@ -62,6 +64,7 @@
       {
         "name": "minDriverVersion",
         "showInListView": "false",
+        "showInSingleView": "true",
         "label": { "eng": "Minimum Driver Version", "ara": "الحد الأدنى لإصدار برنامج التشغيل ", "fra": "Minimum Driver Version" },
         "sortOrder": "",
         "showAsLink": "",
@@ -71,6 +74,7 @@
       {
         "name": "description",
         "showInListView": "false",
+        "showInSingleView": "true",
         "label": { "eng": "Description", "ara": " وصف", "fra": "La description" },
         "sortOrder": "",
         "showAsLink": "",
