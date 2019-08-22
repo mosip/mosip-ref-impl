@@ -62,7 +62,7 @@
         "LinkURL": ""
       },
       {
-        "name": "minDriverVersion",
+        "name": "minDriverversion",
         "showInListView": "false",
         "showInSingleView": "true",
         "label": { "eng": "Minimum Driver Version", "ara": "الحد الأدنى لإصدار برنامج التشغيل ", "fra": "Minimum Driver Version" },
