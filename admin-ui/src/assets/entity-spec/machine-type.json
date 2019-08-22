@@ -46,6 +46,7 @@
       {
         "name": "description",
         "showInListView": "true",
+        "showInSingleView": "true",
         "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
         "sortOrder": "",
         "showAsLink": "",

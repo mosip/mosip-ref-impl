@@ -209,7 +209,7 @@ export class CreateComponent implements OnInit {
     console.log(request);
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
       console.log(updateResponse);
-      if (updateResponse.errors.length === 0) {
+      if (!updateResponse.errors || updateResponse.errors.length === 0) {
         this.dialog
           .open(DialogComponent, {
             width: '350px',
