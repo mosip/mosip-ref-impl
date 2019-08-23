@@ -269,7 +269,7 @@
       "dropdown": "false",
       "datePicker":"false",
       "apiName":"locations",
-      "fieldName":"Zone",
+      "fieldName":"zone",
       "methodCallName":""
 
     },

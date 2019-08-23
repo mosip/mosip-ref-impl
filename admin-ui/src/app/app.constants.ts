@@ -67,10 +67,10 @@ export const masterdataMapping = {
   'blacklisted-words': {
     apiName: 'blacklistedwords',
     specFileName: 'blacklisted-words',
-    name: 'Black Listed Word',
+    name: 'Blacklisted Word',
     nameKey: 'word',
     idKey: 'word',
-    headerName: 'Black Listed Words'
+    headerName: 'Blacklisted Words'
   },
   holiday: {
     apiName: 'holidays',
