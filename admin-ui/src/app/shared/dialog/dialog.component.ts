@@ -283,7 +283,7 @@ export class DialogComponent implements OnInit {
     this.filterModel = new FilterValuesModel(
       columnName,
       'unique',
-      value === undefined ? '' : value
+      value === undefined || value === null ? '' : value
     );
     this.filters = [this.filterModel];
     this.filtersRequest = new FilterRequest(
