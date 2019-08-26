@@ -83,7 +83,7 @@ export class DialogComponent implements OnInit {
     console.log(filterNames, this.existingFilters, this.filterOptions);
     filterNames.forEach(values => {
       const filterOption = this.existingFilters.filter(
-        (filter: FilterModel) => filter.columnName === values.filtername
+        (filter: FilterModel) => filter.columnName.toLowerCase() === values.filtername.toLowerCase()
       );
       if (filterOption.length === 0) {
         this.filterGroup.addControl(values.filtername, new FormControl(''));
