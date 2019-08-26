@@ -240,9 +240,8 @@ export class DialogComponent implements OnInit {
         }
         if (!flag) {
           const filterObject = new FilterModel(
-            key,
+            key === 'Zone' && this.routeParts === 'centers' ? key.toLowerCase() : key,
             filterType,
-            // tslint:disable-next-line:max-line-length
             this.filterGroup.controls[key].value.toString().indexOf('*') === -1
               ? this.filterGroup.controls[key].value
               : this.filterGroup.controls[key].value.replace(/\*/g, '')

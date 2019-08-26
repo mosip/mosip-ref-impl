@@ -261,7 +261,7 @@
 
     },
     {
-      "filtername": "zone",
+      "filtername": "Zone",
       "filterlabel": "Zone",
       "filterType": "contains",
       "fieldType": "input",
