@@ -231,5 +231,10 @@
             "message": "Une erreur technique est survenue. Veuillez actualiser votre page pour continuer ou réessayer plus tard.",
             "btnTxt": "D'accord"
         }
+    },
+    "validationMessages": {
+        "required": "Les champs De et À sont obligatoires si 1 est sélectionné",
+        "range": "De ne peut pas être plus grand que To",
+        "invalid": "Entrée invalide. S'il vous plaît entrer correctement"
     }
 }

@@ -230,5 +230,10 @@
             "message": "A technical error has occurred. Please refresh your page to continue or try again later",
             "btnTxt": "Ok"
         }
+    },
+    "validationMessages": {
+        "required": "Both From and To Fields are mandatory if 1 is selected",
+        "range": "From cannot be greater than To",
+        "invalid": "Invalid Input. Please input correctly"
     }
 }

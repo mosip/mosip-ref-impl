@@ -35,6 +35,10 @@ export class DialogComponent implements OnInit {
   options = [];
   momentDate: any;
 
+  requiredError = false;
+  rangeError = false;
+  fieldName = '';
+
   filterOptions: any = {};
 
   constructor(
@@ -62,6 +66,7 @@ export class DialogComponent implements OnInit {
   onNoClick(): void {
     this.dialog.closeAll();
   }
+
   getFilterMappings() {
     return new Promise((resolve, reject) => {
       this.routeParts = this.router.url.split('/')[3];
@@ -174,7 +179,41 @@ export class DialogComponent implements OnInit {
     }
   }
 
-  getFilterValuesOnSubmit() {
+  validateBetweenFilter(filterModel: FilterModel[], isDate: boolean[]) {
+    console.log('validate called');
+    console.log(filterModel);
+    return new Promise((resolve, reject) => {
+      filterModel.forEach(filter => {
+        if ((filter.fromValue === '' || filter.fromValue === undefined || filter.fromValue === null) ||
+            (filter.toValue === '' || filter.toValue === undefined || filter.toValue === null)) {
+              this.requiredError = true;
+              this.fieldName = filter.columnName;
+        } else {
+          this.requiredError = false;
+        }
+        if (isDate[filterModel.indexOf(filter)]) {
+          const fromDate = new Date(filter.fromValue);
+          const toDate = new Date(filter.toValue);
+          if (fromDate > toDate) {
+            this.rangeError = true;
+            this.fieldName = filter.columnName;
+          } else {
+            this.rangeError = false;
+          }
+        } else {
+          if (filter.fromValue > filter.toValue) {
+            this.rangeError = true;
+            this.fieldName = filter.columnName;
+          } else {
+            this.rangeError = false;
+          }
+        }
+      });
+      resolve(true);
+    });
+  }
+
+  async getFilterValuesOnSubmit() {
     this.existingFilters = [];
     Object.keys(this.filterGroup.controls).forEach(key => {
       const filter = this.FilterData.filter(data => data.filtername === key);
@@ -250,13 +289,34 @@ export class DialogComponent implements OnInit {
         }
       }
     });
-    const filters = Utils.convertFilter(
-      this.activatedRoute.snapshot.queryParams,
-      this.config.getConfig().primaryLangCode
-    );
-    filters.filters = this.existingFilters;
-    const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(this.router.url.split('?')[0] + '?' + url);
+    console.log(this.existingFilters);
+    const betweenFilter = this.existingFilters.filter((item: FilterModel) => item.type === 'between');
+    if (betweenFilter.length > 0) {
+      const isDate = [];
+      betweenFilter.forEach(f => {
+      const temp = this.FilterData.filter(data => data.fieldName === f.columnName);
+      if (temp[0]['datePicker'] === 'true') {
+        isDate.push(true);
+      } else {
+        isDate.push(false);
+      }
+    });
+      await this.validateBetweenFilter(betweenFilter, isDate);
+    } else {
+      this.requiredError = false;
+      this.rangeError = false;
+    }
+    console.log(this.requiredError, this.filterGroup.valid, this.rangeError);
+    if (!this.requiredError && !this.rangeError && this.filterGroup.valid) {
+      const filters = Utils.convertFilter(
+        this.activatedRoute.snapshot.queryParams,
+        this.config.getConfig().primaryLangCode
+      );
+      filters.filters = this.existingFilters;
+      const url = Utils.convertFilterToUrl(filters);
+      this.onNoClick();
+      this.router.navigateByUrl(this.router.url.split('?')[0] + '?' + url);
+    }
   }
 
   getControlName(filter: any, value: string) {

@@ -123,6 +123,9 @@
           </ng-container>
         </ng-container>
       </ng-container>
+      <mat-error *ngIf="requiredError">&nbsp; {{fieldName}}: {{'validationMessages.required' | translate}}</mat-error>
+      <mat-error *ngIf="rangeError">&nbsp; {{fieldName}}: {{'validationMessages.range' | translate}}</mat-error>
+      <mat-error *ngIf="!filterGroup.valid">&nbsp; {{'validationMessages.invalid' | translate}}</mat-error>
     </div>
     <div class="footer">
       <button
@@ -149,7 +152,6 @@
         mat-button
         class="footer-button"
         style="background-color:#FF4081; color:white;"
-        (click)="onNoClick()"
       >
         Apply
       </button>
