@@ -12,16 +12,18 @@ import { TranslateService } from '@ngx-translate/core';
 import Utils from 'src/app/app.util';
 import { ConfigService } from 'src/app/core/services/config.service';
 import * as appConstants from './../../../app.constants';
+import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-center-selection',
   templateUrl: './center-selection.component.html',
   styleUrls: ['./center-selection.component.css']
 })
-export class CenterSelectionComponent implements OnInit {
+export class CenterSelectionComponent extends BookingDeactivateGuardService implements OnInit {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
-
+  canDeactivateFlag = true;
   locationTypes = [];
 
   locationType = null;
@@ -41,7 +43,7 @@ export class CenterSelectionComponent implements OnInit {
   users: UserModel[];
 
   constructor(
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private service: BookingService,
     private dataService: DataStorageService,
     private router: Router,
@@ -50,6 +52,7 @@ export class CenterSelectionComponent implements OnInit {
     private translate: TranslateService,
     private configService: ConfigService
   ) {
+    super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
   }
 
@@ -57,7 +60,7 @@ export class CenterSelectionComponent implements OnInit {
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
     this.dataService.getLocationTypeData().subscribe(response => {
-      this.locationTypes = response['response']['locations'];
+      this.locationTypes = response[appConstants.RESPONSE]['locations'];
     });
     this.users = this.service.getNameList();
     this.getRecommendedCenters();
@@ -65,9 +68,12 @@ export class CenterSelectionComponent implements OnInit {
   }
 
   getErrorLabels() {
-    this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-      this.errorlabels = response['error'];
-    });
+    let factory = new LanguageFactory(localStorage.getItem('langCode'));
+    let response = factory.getCurrentlanguage();
+    this.errorlabels = response['error'];
+
+    // this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
+    // });
   }
 
   getRecommendedCenters() {
@@ -83,7 +89,7 @@ export class CenterSelectionComponent implements OnInit {
         pincodes
       )
       .subscribe(response => {
-        if (!response['errors']) this.displayResults(response['response']);
+        if (response[appConstants.RESPONSE]) this.displayResults(response['response']);
       });
   }
 
@@ -119,14 +125,14 @@ export class CenterSelectionComponent implements OnInit {
         .getRegistrationCentersByName(this.locationType.locationHierarchylevel, this.searchText)
         .subscribe(
           response => {
-            if (!response['errors']) {
-              this.displayResults(response['response']);
+            if (response[appConstants.RESPONSE]) {
+              this.displayResults(response[appConstants.RESPONSE]);
             } else {
               this.showMessage = true;
               this.selectedCentre = null;
             }
           },
-          (error) => {
+          error => {
             this.showMessage = true;
             this.displayMessageError('Error', this.errorlabels.error, error);
           }
@@ -155,15 +161,18 @@ export class CenterSelectionComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(position => {
         this.dataService.getNearbyRegistrationCenters(position.coords).subscribe(
           response => {
-            if (response['errors'].length === 0 && response['response']['registrationCenters'].length !== 0) {
-              this.displayResults(response['response']);
+            if (
+              response[appConstants.NESTED_ERROR].length === 0 &&
+              response[appConstants.RESPONSE]['registrationCenters'].length !== 0
+            ) {
+              this.displayResults(response[appConstants.RESPONSE]);
             } else {
               this.showMessage = true;
             }
           },
-          (error) => {
+          error => {
             this.showMessage = true;
-            this.displayMessageError('Error', this.errorlabels.error , error);
+            this.displayMessageError('Error', this.errorlabels.error, error);
           }
         );
       });
@@ -203,10 +212,12 @@ export class CenterSelectionComponent implements OnInit {
     this.users.forEach(user => {
       this.service.updateRegistrationCenterData(user.preRegId, this.selectedCentre);
     });
+    this.canDeactivateFlag = false;
     this.router.navigate(['../pick-time'], { relativeTo: this.route });
   }
 
   routeDashboard() {
+    this.canDeactivateFlag = false;
     const url = Utils.getURL(this.router.url, 'dashboard', 3);
     this.router.navigateByUrl(url);
   }
@@ -218,6 +229,7 @@ export class CenterSelectionComponent implements OnInit {
     } else {
       url = Utils.getURL(this.router.url, 'summary/preview', 2);
     }
+    this.canDeactivateFlag = false;
     this.router.navigateByUrl(url);
   }
 
@@ -229,12 +241,14 @@ export class CenterSelectionComponent implements OnInit {
       this.dispatchCenterCoordinatesList();
     }
   }
-  displayMessageError(title: string, message: string , error: any) {
-    if(error && error[appConstants.ERROR] && (error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode === appConstants.ERROR_CODES.tokenExpired))
-    {
-        message = this.errorlabels.tokenExpiredLogout;
-        title = '';
-
+  displayMessageError(title: string, message: string, error: any) {
+    if (
+      error &&
+      error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode === appConstants.ERROR_CODES.tokenExpired
+    ) {
+      message = this.errorlabels.tokenExpiredLogout;
+      title = '';
     }
     const messageObj = {
       case: 'MESSAGE',

@@ -1,6 +1,6 @@
 {
   "name": "pre-registration",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -33,6 +33,7 @@
     "html2pdf.js": "^0.9.1",
     "material-icons": "^0.2.3",
     "moment": "^2.23.0",
+    "ng2-pdf-viewer": "^5.3.3",
     "ngx-print": "^1.1.4",
     "ngx7-material-keyboard": "^0.1.2",
     "ol": "^5.3.0",

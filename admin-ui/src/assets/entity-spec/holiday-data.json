@@ -1,0 +1,149 @@
+{
+  "actionButtons": [
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    
+    {
+      "name": "holidayName",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Holiday Name",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "holidayDesc",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "holidayDate",
+      "showInListView": "true",
+      "label": { "eng": "Holiday Date", "ara": "تاريخ", "fra": "date" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "name",
+      "showInSingleView": "true",
+      "showInListView": "true",
+      "label": { "eng": "Location", "ara": "موقع", "fra": "Emplacement" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInSingleView": "true",
+      "showInListView": "false",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    
+    {
+      "name": "updatedBy",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "holidayDateFrom",
+      "filterlabel": "Holiday Date From",
+      "filterType": "between",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "true",
+      "apiName": "holidays",
+      "fieldName": "holidayDate",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "holidayDateTo",
+      "filterlabel": "Holiday Date To",
+      "filterType": "between",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "true",
+      "apiName": "holidays",
+      "fieldName": "holidayDate",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "holidayName",
+      "filterlabel": "Holiday Name",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "holidays",
+      "fieldName": "holidayName",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "holidays",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    }
+  ]
+}

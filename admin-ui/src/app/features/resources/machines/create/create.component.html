@@ -1,3 +1,111 @@
-<p>
-  create works!
-</p>
+<mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>
+<div *ngIf="(primaryData && secondaryData && !showSpinner)" id="flex-single-view">
+  <h3>{{ 'machines.header' | translate }}</h3>
+  <div class="flex-container">
+    <div class="flex-header">
+      <app-machines-header *ngIf="headerObject" [headerData]="headerObject"></app-machines-header>
+    </div>
+    <div class="flex-body">
+        <mat-card>
+            <mat-card-content class="forms-container">
+                <div class="primary-form" [formGroup]="primaryForm">
+                    <strong class="title">{{ 'machines.language' | translate }}</strong>
+                    <hr />
+                    <br /><br />
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.name' | translate }}" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.serialNumber' | translate }}" formControlName="serialNumber">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.macAddress' | translate }}" formControlName="macAddress">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.ipAddress' | translate }}" formControlName="ipAddress">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.validity' | translate }}" formControlName="validity">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.isActive' | translate }}" formControlName="isActive">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                        <mat-form-field>
+                            <input matInput placeholder="{{ 'machines.zone' | translate }}" formControlName="zone">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form1">
+                      <mat-form-field>
+                          <input matInput placeholder="{{ 'machines.machineSpecId' | translate }}" formControlName="machineSpecId">
+                      </mat-form-field>
+                  </div>
+                </div>
+    
+                <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+    
+                <div class="secondary-form" *ngIf="secondaryLanguageLabels" [formGroup]="secondaryForm">
+                    <strong class="title">{{secondaryLanguageLabels.language}}</strong>
+                    <hr />
+                    <br /><br />
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.name}}" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.serialNumber}}" formControlName="serialNumber">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.macAddress}}" formControlName="macAddress">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.ipAddress}}" formControlName="ipAddress">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.validity}}" formControlName="validity">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.isActive}}" formControlName="isActive">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                        <mat-form-field>
+                            <input matInput placeholder="{{secondaryLanguageLabels.zone}}" formControlName="zone">
+                        </mat-form-field>
+                    </div>
+                    <div class="mat-form2">
+                      <mat-form-field>
+                          <input matInput placeholder="{{secondaryLanguageLabels.machineSpecId}}" formControlName="machineSpecId">
+                      </mat-form-field>
+                  </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions class="action-buttons">
+                 <!-- <button mat-raised-button>{{ 'center.create' | translate }}</button> -->
+            </mat-card-actions>
+        </mat-card>
+    </div>
+  </div>
+</div>

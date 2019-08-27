@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { CenterHeaderComponent } from './center-header/center-header.component';
 import { I18nModule } from '../../../../app/i18n.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatKeyboardModule } from 'ngx7-material-keyboard';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MaterialModule,
     I18nModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatKeyboardModule
   ],
   declarations: [CreateComponent, ViewComponent, CenterHeaderComponent]
 })

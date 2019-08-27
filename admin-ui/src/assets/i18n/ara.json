@@ -9,6 +9,9 @@
             "subItem2": "الأجهزة",
             "subItem3": "المستخدمين",
             "subItem4": "آلات"
+        },
+        "item3": {
+            "title": "البيانات الرئيسية"
         }
     },
     "center": {
@@ -34,8 +37,9 @@
         "region": "منطقة",
         "province": "المحافظة",
         "city": "مدينة",
-        "laa": "LAA",
+        "laa": "منطقة",
         "postal-code": "الرمز البريدي",
+        "zone": "منطقة إدارية",
         "operational-details": "تفاصيل التشغيل",
         "holiday-zone": "منطقة عطلة",
         "working-hrs": "ساعات العمل",
@@ -100,6 +104,9 @@
             "postalCode": {
                 "required": "الرمز البريدي مطلوب"
             },
+            "zone": {
+                "required": "مطلوب منطقة عطلة"
+            },
             "holidayZone": {
                 "required": "مطلوب منطقة عطلة"
             },
@@ -123,7 +130,8 @@
                 "title": "التأكيد",
                 "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
                 "yesBtnText": "نعم فعلا",
-                "noBtnText": "لا"
+                "noBtnText": "لا",
+                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
             },
             "update-success": {
                 "title": "نجاح",
@@ -147,10 +155,85 @@
             },
             "navigation-popup": {
                 "title": "التأكيد",
-                "message": "لديك بيانات غير محفوظة. الابتعاد عن الصفحة سيفقد البيانات. هل تريد الاستمرار؟",
-                "yesBtnTxt": "نعم فعل",
-                "noBtnTxt": "لا"
+                "message": "هل أنت متأكد أنك تريد التنقل بعيدًا عن هذه الصفحة؟ سيتم فقد أي بيانات غير محفوظة.",
+                "yesBtnTxt": "غادر",
+                "noBtnTxt": "البقاء"
+            },
+            "no-data": {
+                "title": "خطأ",
+                "message": "لا يوجد سجلات",
+                "btnTxt": "حسنا"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "لا يوجد سجلات",
+            "لقد حدث خطأ فني"
+        ],
+        "buttonText": "حسنا",
+        "title": "خطأ"
+    },
+    "devices": {
+        "header": "جهاز",
+        "name": "اسم الجهاز",
+        "serialNumber": "رقم سري",
+        "macAddress": "MAC عنوان",
+        "ipAddress": "IP عنوان",
+        "validity": "تاريخ صحيح",
+        "isActive": "نشط",
+        "zone": "منطقة",
+        "language": "عربى",
+        "errorMessages": {
+            "title": "خطأ",
+            "message": "لاتوجد بيانات",
+            "btnTxt": "حسنا"
+        }
+    },
+    "machines": {
+        "header": "آلة",
+        "name": "إسم الألة",
+        "machineSpecId": "معرف آلات الآلات",
+        "serialNumber": "رقم سري",
+        "macAddress": "MAC عنوان",
+        "ipAddress": "IP عنوان",
+        "validity": "تاريخ صحيح",
+        "isActive": "نشط",
+        "zone": "منطقة",
+        "language": "عربى",
+        "errorMessages": {
+            "title": "خطأ",
+            "message": "لاتوجد بيانات",
+            "btnTxt": "حسنا"
+        }
+    },
+    "masterData": {
+        "master-data": "البيانات الرئيسية",
+        "total-no": "المجموع لا",
+        "common": "مشترك",
+        "device-definition": "تعريف الجهاز",
+        "machine-definition": "تعريف الجهاز",
+        "document-definition": "تعريف المستند",
+        "doc-category-mapping": "وثيقة الفئة - نوع رسم الخرائط",
+        "category": "الفئة",
+        "mapped-documents": "المستندات المعينة",
+        "unmapped-documents": "المستندات غير المعينة"
+    },
+    "errorPopup": {
+        "noData": {
+            "title": "لا توجد سجلات",
+            "message": "لا توجد سجلات للبحث المطلوب",
+            "btnTxt": "حسنا"
+        },
+        "technicalError": {
+            "title": "خطأ تقني",
+            "message": "لقد حدث خطأ فني. يرجى تحديث صفحتك للمتابعة أو المحاولة مرة أخرى لاحقًا",
+            "btnTxt": "حسنا"
+        }
+    },
+    "validationMessages": {
+        "required": "كلا من و إلى الحقول إلزامي إذا تم تحديد 1",
+        "range": "من لا يمكن أن يكون أكبر من إلى",
+        "invalid": "مدخل غير صالح. يرجى إدخال صحيح"
     }
 }

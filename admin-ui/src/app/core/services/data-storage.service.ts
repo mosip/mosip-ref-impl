@@ -1,30 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as appConstants from '../../app.constants';
 import { RequestModel } from '../models/request.model';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Injectable()
 export class DataStorageService {
 
-  BASE_URL = '';
+  constructor(private http: HttpClient, private appService: AppConfigService) {}
 
-  constructor(private http: HttpClient) {}
-
-  getLanguageSpecificLabels(langCode: string): Observable<any> {
-    return this.http.get(`./assets/i18n/${langCode}.json`);
-  }
+  private BASE_URL = this.appService.getConfig().baseUrl;
 
   getCenterSpecificLabelsAndActions(): Observable<any> {
-    return this.http.get('./assets/entity-spec/center-entity-spec.json');
+    return this.http.get('./assets/entity-spec/center.json');
   }
 
-  getCentersData(): Observable<any> {
-    return this.http.get('./assets/data/centers-data.json');
-  }
-
-  getImmediateChildren(locationCode: string, langCode: string): Observable<any>  {
-    return this.http.get(appConstants.MASTERDATA_BASE_URL + 'locations/immediatechildren/' + locationCode + '/' + langCode);
+  getImmediateChildren(
+    locationCode: string,
+    langCode: string
+  ): Observable<any> {
+    return this.http.get(
+      this.BASE_URL +
+      appConstants.MASTERDATA_BASE_URL +
+        'locations/immediatechildren/' +
+        locationCode +
+        '/' +
+        langCode
+    );
   }
 
   getStubbedDataForDropdowns(): Observable<any> {
@@ -32,10 +35,65 @@ export class DataStorageService {
   }
 
   createCenter(data: RequestModel): Observable<any> {
-    return this.http.post(appConstants.MASTERDATA_BASE_URL + 'registrationcenters', data);
+    return this.http.post(
+      this.BASE_URL +
+      appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
+      data
+    );
   }
 
   updateCenter(data: RequestModel): Observable<any> {
-    return this.http.put(appConstants.MASTERDATA_BASE_URL + 'registrationcenters', data);
+    return this.http.put(
+      this.BASE_URL +
+      appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
+      data
+    );
+  }
+
+  getDevicesData(request: RequestModel): Observable<any> {
+    return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
+  }
+
+  getMachinesData(request: RequestModel): Observable<any> {
+    console.log(request);
+    return this.http.post(this.BASE_URL + appConstants.URL.machines, request);
+  }
+
+  getMasterDataTypesList(): Observable<any> {
+    return this.http.get('./assets/entity-spec/master-data-entity-spec.json');
+  }
+
+  getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {
+    return this.http.post(
+      this.BASE_URL +
+      appConstants.MASTERDATA_BASE_URL + type + '/search',
+      data
+    );
+  }
+
+  getSpecFileForMasterDataEntity(filename: string): Observable<any> {
+    return this.http.get(`./assets/entity-spec/${filename}.json`);
+  }
+
+  getFiltersForListView(filename: string): Observable<any> {
+    return this.http.get(`./assets/entity-spec/${filename}.json`);
+  }
+
+  getFiltersForAllMaterDataTypes(type: string, data: RequestModel): Observable<any> {
+    return this.http.post(
+      this.BASE_URL +
+      appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
+      data
+    );
+  }
+  getZoneData(langCode: string): Observable<any> {
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/leafs/' + langCode);
+  }
+
+  getLoggedInUserZone(userId: string, langCode: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('userID', userId);
+    params = params.append('langCode', langCode);
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/zonename', {params});
   }
 }

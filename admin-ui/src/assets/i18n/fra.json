@@ -9,6 +9,9 @@
             "subItem2": "Dispositifs",
             "subItem3": "Utilisateurs",
             "subItem4": "Machines"
+        },
+        "item3": {
+            "title": "DONNÉES DE BASE"
         }
     },
     "center": {
@@ -34,8 +37,9 @@
         "region": "Région",
         "province": "Province",
         "city": "Ville",
-        "laa": "LAA",
+        "laa": "Zone",
         "postal-code": "code postal",
+        "zone": "Zone Administrative",
         "operational-details": "Détails opérationnels",
         "holiday-zone": "Zone de vacances",
         "working-hrs": "Heures de travail",
@@ -100,6 +104,9 @@
             "postalCode": {
                 "required": "Code postal requis"
             },
+            "zone": {
+                "required": "Zone est nécessaire"
+            },
             "holidayZone": {
                 "required": "Zone de vacances est nécessaire"
             },
@@ -123,7 +130,8 @@
                 "title": "Confirmation",
                 "message": "Cliquez sur oui pour créer / modifier le centre",
                 "yesBtnText": "Oui",
-                "noBtnText": "Non"
+                "noBtnText": "Non",
+                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
             },
             "update-success": {
                 "title": "Succès",
@@ -147,10 +155,86 @@
             },
             "navigation-popup": {
                 "title": "Confirmation",
-                "message": "Vous avez des données non sauvegardées. S'éloigner de la page perdra les données. Voulez-vous continuer?",
-                "yesBtnTxt": "Oui",
-                "noBtnTxt": "Non"
+                "message": "Êtes-vous sûr de vouloir quitter cette page? Toutes les données non sauvegardées seront perdues.",
+                "yesBtnTxt": "Laisser",
+                "noBtnTxt": "Rester"
+            },
+            "no-data": {
+                "title": "Erreur",
+                "message": "Aucun Enregistrement Trouvé",
+                "btnTxt": "D'accord"
             }
         }
+    },
+    "singleView": {
+        "errorMessages" : [
+            "Aucun Enregistrement Trouvé",
+            "Une erreur technique est survenue"
+        ],
+        "buttonText": "D'accord",
+        "title": "Erreur"
+    },
+    "devices": {
+        "header": "Dispositif",
+        "name": "Nom de l'appareil",
+        "serialNumber": "Numéro de série",
+        "macAddress": "MAC Adresse",
+        "ipAddress": "IP Adresse",
+        "validity": "Date valide heure",
+        "isActive": "C'est actif",
+        "zone": "Zone",
+        "language": "French",
+        "errorMessages": {
+            "title": "Erreur",
+            "message": "Aucune donnée disponible",
+            "btnTxt": "D'accord"
+        }
+    },
+    "machines": {
+        "header": "Machine",
+        "name": "Nom de la machine",
+        "machineSpecId": "Identifiant de machine",
+        "serialNumber": "Numéro de série",
+        "macAddress": "MAC Adresse",
+        "ipAddress": "IP Adresse",
+        "validity": "Date valide heure",
+        "isActive": "C'est actif",
+        "zone": "Zone",
+        "language": "French",
+        "errorMessages": {
+            "title": "Erreur",
+            "message": "Aucune donnée disponible",
+            "btnTxt": "D'accord"
+        }
+    },
+    "masterData": {
+        "master-data": "Données de base",
+        "total-no": "Total non",
+        "common": "Commune",
+        "device-definition": "Définition de l'appareil",
+        "machine-definition": "Définition de la machine",
+        "document-definition": "Définition du document",
+        "doc-category-mapping": "Catégorie de document - Mappage de types",
+        "category": "Catégorie",
+        "mapped-documents": "Documents mappés",
+        "unmapped-documents": "Documents non mappés"
+        
+    },
+    "errorPopup": {
+        "noData": {
+            "title": "Aucun enregistrement trouvé",
+            "message": "Aucun enregistrement présent pour la recherche demandée",
+            "btnTxt": "D'accord"
+        },
+        "technicalError": {
+            "title": "Erreur technique",
+            "message": "Une erreur technique est survenue. Veuillez actualiser votre page pour continuer ou réessayer plus tard.",
+            "btnTxt": "D'accord"
+        }
+    },
+    "validationMessages": {
+        "required": "Les champs De et À sont obligatoires si 1 est sélectionné",
+        "range": "De ne peut pas être plus grand que To",
+        "invalid": "Entrée invalide. S'il vous plaît entrer correctement"
     }
 }

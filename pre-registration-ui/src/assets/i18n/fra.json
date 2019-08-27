@@ -46,7 +46,7 @@
     "documents": {
       "name": "Télécharger des documents",
       "list": {
-        "line1": "Sur la page Télécharger des documents, sélectionnez le document (par exemple, Passeport, CNIE, etc.) dans la liste déroulante des documents par catégorie de documents applicable.",
+        "line1": "Sur la page Télécharger des documents, sélectionnez le document (par exemple, Passeport, Numéro d'identité de référence, etc.) dans la liste déroulante des documents par catégorie de documents applicable.",
         "line2": "Cliquez sur Parcourir pour ouvrir une fenêtre contextuelle afin de rechercher le dossier sur votre ordinateur ou lecteur amovible sur lequel vous avez enregistré le document numérisé.",
         "line3": "Sélectionnez le fichier que vous souhaitez télécharger.",
         "line4": "Une fois téléchargé avec succès, le document apparaîtra sur le côté droit. Vérifiez que vous avez téléchargé le document correct.",
@@ -306,12 +306,12 @@
     "label_region": "Région",
     "label_province": "Province",
     "label_city": "Ville",
-    "label_local_administrative_authority": "Autorité administrative locale",
+    "label_zone": "Zone",
     "label_mob_num": "Numéro de portable",
     "label_postalCode": "code postal",
     "label_alt_mob_num": "Numéro de téléphone alternatif (facultatif)",
     "label_email_id": "Identifiant Email",
-    "label_pin": "CNIE/EC",
+    "label_pin": "Numéro d'identité de référence",
     "action_back": "RETOUR",
     "action_continue": "CONTINUER",
     "action_preview": "APERÇU",
@@ -338,11 +338,11 @@
       "region_required": "Veuillez sélectionner une région",
       "province_required": "Veuillez sélectionner une province",
       "city_required": "Veuillez sélectionner une ville",
-      "admin_required": "Veuillez sélectionner l'autorité administrative locale",
+      "admin_required": "Veuillez sélectionner zone",
       "postal_code_required": "Veuillez entrer un code postal valide",
       "mobile_required": "Veuillez entrer un numéro de téléphone valide",
       "email_required": "S'il vous plaît entrer email id valide",
-      "pin_required": "S'il vous plaît entrer CNIE valide"
+      "pin_required": "Veuillez entrer un numéro d’identité de référence valide"
     }
   },
   "documents": {
@@ -386,11 +386,11 @@
     "label_region": "Région",
     "label_province": "Province",
     "label_city": "Ville",
-    "label_local_administrative_authority": "Autorité administrative locale",
+    "label_zone": "Zone",
     "label_mob_num": "Numéro de portable",
     "label_alt_mob_num": "Numéro de téléphone alternatif (facultatif)",
     "label_email_id": "Identifiant Email",
-    "label_pin": "CNIE/EC",
+    "label_pin": "Numéro d'identité de référence",
     "title_document": "Documents téléchargés",
     "text_not_uploaded": "Non téléchargé",
     "action_modify": "modifier",
@@ -530,7 +530,8 @@
     "action_dismiss": "D'accord",
     "action_add": "Ajouter",
     "action_close": "Fermer",
-    "action_add_to_slot": "Ajouter à la fente"
+    "action_add_to_slot": "Ajouter à la fente",
+    "navigation_alert": "Are you sure you would like to navigate away as data entered will not be saved. Please confirm(FRA)"
   },
   "centerSelection": {
     "title": " Rendez-vous du livre ",
@@ -579,7 +580,7 @@
     "email": "Le courriel entré est invalide",
     "phone": "Le téléphone entré est invalide",
     "dateOfBirth": "Date de naissance entrée est invalide",
-    "CNIENumber": "Le numéro CNIE entré est invalide",
+    "referenceIdentityNumber": "Le numéro d'identité de référence entré est invalide",
     "tokenExpiredLogout": "Vous avez été déconnecté pour cause d'inactivité.",
     "slotNotAvailable": "La réservation / re-réservation de rendez-vous ne peut être effectuée car le créneau demandé n'est pas disponible. Veuillez sélectionner un autre emplacement ou réessayer plus tard",
     "errorLabel": "ERREUR"

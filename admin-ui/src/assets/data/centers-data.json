@@ -1,98 +1,34 @@
-[
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    },
-    {
-        "id": "10001",
-        "name": "Center A Ben Mansour",
-        "NumberOfUsers": 22,
-        "NumberOfMachines": 22,
-        "NumberOfDevices": 22,
-        "contactPhone": "779517433",
-        "contactPerson": "John Doe",
-        "isActive": "ACTIVE",
-        "createdTime": 2019,
-        "cntrtyp_name": "REGULAR"
-    }
-]
+{
+  "eng": {
+    "id": 2000001,
+    "locationCode": "KTA",
+    "holidayDate": "2019-01-01",
+    "holidayDay": "2",
+    "holidayMonth": "1",
+    "holidayYear": "2019",
+    "holidayName": "New Year's Day",
+    "holidayDesc": "National Holiday",
+    "langCode": "eng",
+    "isActive": true,
+    "createdBy": "superadmin",
+    "createdDateTime": "2019-06-14T09:27:16.937Z",
+    "updatedBy": null,
+    "updatedDateTime": null
+  },
+  "ara": {
+    "id": 2000025,
+    "locationCode": "KTA",
+    "holidayDate": "2019-01-01",
+    "holidayDay": "2",
+    "holidayMonth": "1",
+    "holidayYear": "2019",
+    "holidayName": "الميلادية رأس السنة",
+    "holidayDesc": "عيد وطني",
+    "langCode": "ara",
+    "isActive": true,
+    "createdBy": "superadmin",
+    "createdDateTime": "2019-06-14T09:27:16.937Z",
+    "updatedBy": null,
+    "updatedDateTime": null
+  }
+}

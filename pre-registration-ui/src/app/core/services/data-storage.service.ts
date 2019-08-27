@@ -112,7 +112,7 @@ export class DataStorageService {
     return this.httpClient.put(url, obj);
   }
 
-  sendFile(formdata: FormData, preRegId) {
+  sendFile(formdata: FormData, preRegId: string) {
     return this.httpClient.post(
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.post_document + preRegId,
       formdata

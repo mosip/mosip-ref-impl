@@ -3,8 +3,8 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { ParentComponent } from './core/parent/parent.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { HomeComponent } from './core/home/home.component';
-import { AuthguardService } from './core/services/authguard.service';
 import { ErrorComponent } from './shared/error/error.component';
+import { AuthguardService } from './core/services/authguard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'admin', pathMatch: 'full' },
@@ -14,16 +14,17 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'resources', loadChildren: () => import('./features/resources/resources.module').then(m => m.ResourcesModule) }
+      { path: 'resources', loadChildren: () => import('./features/resources/resources.module').then(m => m.ResourcesModule) },
+      { path: 'masterdata', loadChildren: () => import('./features/masterdata/masterdata.module').then(m => m.MasterdataModule)}
     ], canActivateChild : [AuthguardService]
-    },
+  },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
   { path: '404', component: NotFoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules})],
+  imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

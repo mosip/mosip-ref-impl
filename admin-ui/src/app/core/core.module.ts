@@ -13,8 +13,8 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthService } from './services/authservice.service';
 import { LoginRedirectService } from './services/loginredirect.service';
 import { AuthguardService } from './services/authguard.service';
-import { AuthInterceptor } from './services/httpinterceptor';
 import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
+import { AuthInterceptor } from './services/httpinterceptor';
 
 @NgModule({
   imports: [

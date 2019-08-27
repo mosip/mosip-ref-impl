@@ -1,19 +1,40 @@
 <!--Center Header  -->
 <div class="card">
   <mat-card>
-    <div class="profile-img">
-      <img src="../../../../../assets/images/logo-final.png" alt="img">
+    <div class="item1">
+      <div class="profile-img">
+        <img src="./assets/images/icon_center.svg" alt="img">
+      </div>
     </div>
-    <div class="center-details">
-      <h3>{{'center.center-name'|translate}}:&nbsp;<span>{{data.name}}</span></h3>
-      <p>{{'center.center-id'|translate}}:&nbsp; <span>{{data.id}}</span></p>
-      <p class="small-text">{{'center.status'|translate}}:&nbsp; <span>{{data.isActive}}</span></p>
+    <div class="item2">
+      <h3>{{'center.center-name'|translate}}:&nbsp;<span>{{headerData.name}}</span></h3>
+      <p>{{'center.center-id'|translate}}:&nbsp; <span>{{headerData.id}}</span></p>
+      <p class="small-text">{{'center.status'|translate}}:&nbsp; <span>{{headerData.isActive | status}}</span></p>
     </div>
-    <div class="center-details1">
-      <p class="small-text">{{'center.created-on'|translate}}:&nbsp;<span>{{data.createdOn}}</span></p>
-      <p class="small-text">{{'center.created-by'|translate}}:&nbsp;<span>{{data.createdBy}}</span></p>
-      <p class="small-text">{{'center.updated-on'|translate}}:&nbsp;<span>{{data.updatedOn}}</span></p>
-      <p class="small-text">{{'center.updated-by'|translate}}:&nbsp;<span>{{data.updatedBy}}</span></p>
+    <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+    <div class="item3">
+      <p class="small-text">{{'center.created-on'|translate}}:&nbsp;<span>{{headerData.createdOn | formatDate}}</span>
+      </p>
+      <p class="small-text">{{'center.created-by'|translate}}:&nbsp;<span>{{headerData.createdBy}}</span></p>
+      <p class="small-text">{{'center.updated-on'|translate}}:&nbsp;<span>{{headerData.updatedOn | formatDate}}</span>
+      </p>
+      <p class="small-text">{{'center.updated-by'|translate}}:&nbsp;<span>{{headerData.updatedBy}}</span></p>
+    </div>
+    <div *ngIf="headerData.name !== '-'" class="elipses">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon style="color: white">more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+        <button
+          mat-menu-item
+          *ngFor="let button of actionButtonElipses; let i = index;"
+          (click)="selectedRow(i)"
+        >
+        <span *ngIf="lang === 'eng'">{{ button.buttonName.eng }}</span>
+        <span *ngIf="lang === 'fra'">{{ button.buttonName.fra }}</span>
+        <span *ngIf="lang === 'ara'">{{ button.buttonName.ara }}</span>
+        </button>
+      </mat-menu>
     </div>
   </mat-card>
 </div>

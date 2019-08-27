@@ -5,14 +5,20 @@ import { CreateComponent } from './create/create.component';
 import { MachinesRoutingModule } from './machines-routing.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MachinesHeaderComponent } from './machines-header/machines-header.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     MachinesRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  declarations: [ViewComponent, CreateComponent]
+  declarations: [ViewComponent, CreateComponent, MachinesHeaderComponent],
+  providers: [StatusPipe]
 })
 export class MachinesModule { }

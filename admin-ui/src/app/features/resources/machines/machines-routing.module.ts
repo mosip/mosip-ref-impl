@@ -6,8 +6,8 @@ import { ViewComponent } from './view/view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'view', pathMatch: 'full' },
-  { path: 'create', component: CreateComponent },
   { path: 'view', component: ViewComponent },
+  { path: 'single-view/:id', component: CreateComponent }
 ];
 
 @NgModule({

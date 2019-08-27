@@ -20,10 +20,10 @@ export class IdentityModel {
     public region: AttributeModel[],
     public province: AttributeModel[],
     public city: AttributeModel[],
-    public localAdministrativeAuthority: AttributeModel[],
+    public zone: AttributeModel[],
     public postalCode: string,
     public phone: string,
     public email: string,
-    public CNIENumber: string
+    public referenceIdentityNumber: string
   ) {}
 }

@@ -1,0 +1,14 @@
+.display{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    margin-left: 150px;
+    margin-top: 250px;
+}
+
+@media(max-width: 500px) {
+    .display {
+        margin-left: 50px;
+    }
+}

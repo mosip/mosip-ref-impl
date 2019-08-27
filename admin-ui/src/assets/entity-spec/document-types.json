@@ -1,0 +1,157 @@
+{
+  "actionButtons": [
+    {
+        "buttonName": {
+          "eng": "Activate",
+          "ara": "تنشيط",
+          "fra": "déclencher"
+        },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": {
+          "eng": "Deactivate",
+          "ara": "الغاء تنشيط",
+          "fra": "désactiver"
+        },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+        "actionURL": "",
+        "redirectURL": "",
+        "showIn": "Ellipsis",
+        "validations": ""
+      },
+      {
+        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+        "imagePath":"assets/images/filter.png",
+        "actionListType": "action",
+        "actionURL": { "case": "filter" },
+        "redirectURL": "",
+        "showIn": "Button",
+        "validations": ""
+      }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "code",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "name",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label":{ "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "description",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Description", "ara": "وصف", "fra": "La description" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+        "name": "createdBy",
+        "showInListView": "false",
+        "showInSingleView": "false",
+        "label": { "eng": "Created By", "ara": "تم إنشاؤه من قبل", "fra": "Créé par" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "updatedBy",
+        "showInListView": "false",
+        "showInSingleView": "false",
+        "label": { "eng": "Updated By", "ara": "تم التحديث بواسطة", "fra": "Mise à jour par" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      },
+      {
+        "name": "updatedDateTime",
+        "showInListView": "false",
+        "showInSingleView": "false",
+        "label": { "eng": "Updated Time", "ara": "وقت التحديث", "fra": "Temps mis à jour" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""
+      }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": "Name",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"documenttypes",
+      "fieldName":"name",
+      "methodCallName":""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",        
+      "datePicker":"false",
+      "apiName":"documenttypes",
+      "fieldName":"isActive",
+      "methodCallName":""
+    }
+  ]
+}

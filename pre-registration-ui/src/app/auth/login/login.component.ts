@@ -55,11 +55,11 @@ export class LoginComponent implements OnInit {
     private regService: RegistrationService,
     private configService: ConfigService
   ) {
+    translate.setDefaultLang('fra');
     localStorage.clear();
   }
 
   ngOnInit() {
-    this.translate.use('fra');
     localStorage.setItem('langCode', 'fra');
     this.showSpinner = true;
     this.loadConfigs();
@@ -69,9 +69,6 @@ export class LoginComponent implements OnInit {
   }
 
   loadValidationMessages() {
-    // this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-    //   this.validationMessages = response['login'];
-    // });
     let factory = new LanguageFactory(localStorage.getItem('langCode'));
     let response = factory.getCurrentlanguage();
     this.validationMessages = response['login'];
@@ -290,17 +287,6 @@ export class LoginComponent implements OnInit {
       width: '350px',
       data: message
     });
-
-    // this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-    //   const message = {
-    //     case: 'MESSAGE',
-    //     message: response['message']['login']['msg3']
-    //   };
-    //   const dialogRef = this.dialog.open(DialougComponent, {
-    //     width: '350px',
-    //     data: message
-    //   });
-    // });
   }
 
   showErrorMessage() {
@@ -315,15 +301,5 @@ export class LoginComponent implements OnInit {
       width: '350px',
       data: message
     });
-    // this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-    //   const message = {
-    //     case: 'MESSAGE',
-    //     message: response['error']['error']
-    //   };
-    //   const dialogRef = this.dialog.open(DialougComponent, {
-    //     width: '350px',
-    //     data: message
-    //   });
-    // });
   }
 }

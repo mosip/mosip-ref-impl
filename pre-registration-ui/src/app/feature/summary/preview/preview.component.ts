@@ -6,6 +6,7 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { TranslateService } from '@ngx-translate/core';
 import Utils from 'src/app/app.util';
 import * as appConstants from '../../../app.constants';
+import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-preview',
@@ -100,19 +101,29 @@ export class PreviewComponent implements OnInit {
   }
 
   getSecondaryLanguageLabels() {
-    this.dataStorageService
-      .getSecondaryLanguageLabels(localStorage.getItem('secondaryLangCode'))
-      .subscribe(response => {
-        this.secondaryLanguagelabels = response['preview'];
-        this.residentTypeMapping.secondary = response['residentTypesMapping'];
-      });
+    let factory = new LanguageFactory(localStorage.getItem('secondaryLangCode'));
+    let response = factory.getCurrentlanguage();
+    this.secondaryLanguagelabels = response['preview'];
+    this.residentTypeMapping.secondary = response['residentTypesMapping'];
+
+    // this.dataStorageService
+    //   .getSecondaryLanguageLabels(localStorage.getItem('secondaryLangCode'))
+    //   .subscribe(response => {
+    //     this.secondaryLanguagelabels = response['preview'];
+    //     this.residentTypeMapping.secondary = response['residentTypesMapping'];
+    //   });
   }
 
   getPrimaryLanguageData() {
-    this.dataStorageService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-      this.sameAs = response['sameAs'];
-      this.residentTypeMapping.primary = response['residentTypesMapping'];
-    });
+    let factory = new LanguageFactory(localStorage.getItem('langCode'));
+    let response = factory.getCurrentlanguage();
+    this.sameAs = response['sameAs'];
+    this.residentTypeMapping.primary = response['residentTypesMapping'];
+
+    //   this.dataStorageService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
+    //     this.sameAs = response['sameAs'];
+    //     this.residentTypeMapping.primary = response['residentTypesMapping'];
+    //   });
   }
 
   calculateAge() {

@@ -25,6 +25,7 @@ import { MatKeyboardService, MatKeyboardRef, MatKeyboardComponent } from 'ngx7-m
 import { RouterExtService } from 'src/app/shared/router/router-ext.service';
 import { LogService } from 'src/app/shared/logger/log.service';
 import LanguageFactory from 'src/assets/i18n';
+import { FormDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service';
 // import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
@@ -41,7 +42,7 @@ import LanguageFactory from 'src/assets/i18n';
   templateUrl: './demographic.component.html',
   styleUrls: ['./demographic.component.css']
 })
-export class DemographicComponent implements OnInit {
+export class DemographicComponent extends FormDeactivateGuardService implements OnInit {
   textDir = localStorage.getItem('dir');
   secTextDir = localStorage.getItem('secondaryDir');
   primaryLang = localStorage.getItem('langCode');
@@ -54,8 +55,8 @@ export class DemographicComponent implements OnInit {
   agePattern: string;
   MOBILE_PATTERN: string;
   MOBILE_LENGTH: string;
-  CNIE_PATTERN: string;
-  CNIE_LENGTH: string;
+  REFERENCE_IDENTITY_NUMBER_PATTERN: string;
+  REFERENCE_IDENTITY_NUMBER_PATTERN_LENGTH: string;
   EMAIL_PATTERN: string;
   EMAIL_LENGTH: string;
   DOB_PATTERN: string;
@@ -75,6 +76,7 @@ export class DemographicComponent implements OnInit {
   dataModification: boolean;
   showPreviewButton = false;
   dataIncomingSuccessful = false;
+  canDeactivateFlag = true;
 
   step: number = 0;
   id: number;
@@ -122,13 +124,10 @@ export class DemographicComponent implements OnInit {
   cities_in_primary_lang: CodeValueModal[] = [];
   cities_in_secondary_lang: CodeValueModal[] = [];
   cities: CodeValueModal[][] = [this.cities_in_primary_lang, this.cities_in_secondary_lang];
-  localAdministrativeAuthorities_in_primary_lang: CodeValueModal[] = [];
-  localAdministrativeAuthorities_in_secondary_lang: CodeValueModal[] = [];
-  localAdministrativeAuthorities: CodeValueModal[][] = [
-    this.localAdministrativeAuthorities_in_primary_lang,
-    this.localAdministrativeAuthorities_in_secondary_lang
-  ];
-  locations = [this.regions, this.provinces, this.cities, this.localAdministrativeAuthorities];
+  zones_in_primary_lang: CodeValueModal[] = [];
+  zones_in_secondary_lang: CodeValueModal[] = [];
+  zones: CodeValueModal[][] = [this.zones_in_primary_lang, this.zones_in_secondary_lang];
+  locations = [this.regions, this.provinces, this.cities, this.zones];
   selectedLocationCode = [];
   codeValue: CodeValueModal[] = [];
 
@@ -144,11 +143,11 @@ export class DemographicComponent implements OnInit {
     region: 'region',
     province: 'province',
     city: 'city',
-    localAdministrativeAuthority: 'localAdministrativeAuthority',
+    zone: 'zone',
     email: 'email',
     postalCode: 'postalCode',
     phone: 'phone',
-    CNIENumber: 'CNIENumber',
+    referenceIdentityNumber: 'referenceIdentityNumber',
 
     age: 'age',
     date: 'date',
@@ -178,11 +177,12 @@ export class DemographicComponent implements OnInit {
     private bookingService: BookingService,
     private configService: ConfigService,
     private translate: TranslateService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private matKeyboardService: MatKeyboardService,
     private routerService: RouterExtService,
     private loggerService: LogService // private errorService: ErrorService
   ) {
+    super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
     this.regService.getMessage().subscribe(message => (this.message = message));
   }
@@ -221,7 +221,7 @@ export class DemographicComponent implements OnInit {
    */
   setConfig() {
     this.MOBILE_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_phone];
-    this.CNIE_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_CNIE];
+    this.REFERENCE_IDENTITY_NUMBER_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_referenceIdentityNumber];
     this.EMAIL_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_email];
     this.POSTALCODE_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_postalCode];
     this.DOB_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_DOB];
@@ -250,7 +250,7 @@ export class DemographicComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getGuidelineTemplate('consent').subscribe(
         response => {
-          if (!response[appConstants.NESTED_ERROR]) this.consentMessage = response['response']['templates'][0].fileText;
+          if (response[appConstants.RESPONSE]) this.consentMessage = response['response']['templates'][0].fileText;
           else this.onError(this.errorlabels.error, '');
           resolve(true);
         },
@@ -360,10 +360,7 @@ export class DemographicComponent implements OnInit {
       [this.formControlNames.region]: new FormControl(this.formControlValues.region, Validators.required),
       [this.formControlNames.province]: new FormControl(this.formControlValues.province, Validators.required),
       [this.formControlNames.city]: new FormControl(this.formControlValues.city, Validators.required),
-      [this.formControlNames.localAdministrativeAuthority]: new FormControl(
-        this.formControlValues.localAdministrativeAuthority,
-        Validators.required
-      ),
+      [this.formControlNames.zone]: new FormControl(this.formControlValues.zone, Validators.required),
       [this.formControlNames.email]: new FormControl(this.formControlValues.email, [
         Validators.pattern(this.EMAIL_PATTERN)
       ]),
@@ -374,9 +371,9 @@ export class DemographicComponent implements OnInit {
       [this.formControlNames.phone]: new FormControl(this.formControlValues.phone, [
         Validators.pattern(this.MOBILE_PATTERN)
       ]),
-      [this.formControlNames.CNIENumber]: new FormControl(this.formControlValues.CNIENumber, [
+      [this.formControlNames.referenceIdentityNumber]: new FormControl(this.formControlValues.referenceIdentityNumber, [
         Validators.required,
-        Validators.pattern(this.CNIE_PATTERN)
+        Validators.pattern(this.REFERENCE_IDENTITY_NUMBER_PATTERN)
       ])
     });
 
@@ -420,7 +417,7 @@ export class DemographicComponent implements OnInit {
       this.formControlValues.region,
       this.formControlValues.province,
       this.formControlValues.city,
-      this.formControlValues.localAdministrativeAuthority
+      this.formControlValues.zone
     ];
     if (!this.dataModification) {
       this.locations = [this.regions];
@@ -436,7 +433,6 @@ export class DemographicComponent implements OnInit {
         await this.getLocationImmediateHierearchy(language, parentLocationCode, element, currentLocationCode);
       }
     }
-
     this.dataIncomingSuccessful = true;
   }
 
@@ -489,11 +485,11 @@ export class DemographicComponent implements OnInit {
         region: '',
         province: '',
         city: '',
-        localAdministrativeAuthority: '',
+        zone: '',
         email: '',
         postalCode: '',
         phone: '',
-        CNIENumber: '',
+        referenceIdentityNumber: '',
 
         fullNameSecondary: '',
         addressLine1Secondary: '',
@@ -525,12 +521,11 @@ export class DemographicComponent implements OnInit {
         region: this.user.request.demographicDetails.identity.region[index].value,
         province: this.user.request.demographicDetails.identity.province[index].value,
         city: this.user.request.demographicDetails.identity.city[index].value,
-        localAdministrativeAuthority: this.user.request.demographicDetails.identity.localAdministrativeAuthority[0]
-          .value,
+        zone: this.user.request.demographicDetails.identity.zone[0].value,
         email: this.user.request.demographicDetails.identity.email,
         postalCode: this.user.request.demographicDetails.identity.postalCode,
         phone: this.user.request.demographicDetails.identity.phone,
-        CNIENumber: this.user.request.demographicDetails.identity.CNIENumber.toString(),
+        referenceIdentityNumber: this.user.request.demographicDetails.identity.referenceIdentityNumber.toString(),
 
         fullNameSecondary: this.user.request.demographicDetails.identity.fullName[secondaryIndex].value,
         addressLine1Secondary: this.user.request.demographicDetails.identity.addressLine1[secondaryIndex].value,
@@ -551,11 +546,11 @@ export class DemographicComponent implements OnInit {
     return new Promise(resolve => {
       this.dataStorageService.getGenderDetails().subscribe(
         response => {
-          if (response[appConstants.NESTED_ERROR]) {
-            this.onError(this.errorlabels.error, '');
-          } else {
+          if (response[appConstants.RESPONSE]) {
             this.genders = response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.genderTypes];
             resolve(true);
+          } else {
+            this.onError(this.errorlabels.error, '');
           }
         },
         error => {
@@ -577,12 +572,12 @@ export class DemographicComponent implements OnInit {
     return new Promise(resolve => {
       this.dataStorageService.getResidentDetails().subscribe(
         response => {
-          if (response[appConstants.NESTED_ERROR]) {
-            this.onError(this.errorlabels.error, '');
-          } else {
+          if (response[appConstants.RESPONSE]) {
             this.residenceStatus =
               response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.residentTypes];
             resolve(true);
+          } else {
+            this.onError(this.errorlabels.error, '');
           }
         },
         error => {
@@ -716,9 +711,7 @@ export class DemographicComponent implements OnInit {
     return new Promise(resolve => {
       this.dataStorageService.getLocationImmediateHierearchy(languageCode, parentLocationCode).subscribe(
         response => {
-          if (response[appConstants.NESTED_ERROR]) {
-            this.onError(this.errorlabels.error, '');
-          } else {
+          if (response[appConstants.RESPONSE]) {
             response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations].forEach(element => {
               let codeValueModal: CodeValueModal = {
                 valueCode: element.code,
@@ -731,6 +724,8 @@ export class DemographicComponent implements OnInit {
               }
             });
             return resolve(true);
+          } else {
+            this.onError(this.errorlabels.error, '');
           }
         },
         error => {
@@ -897,7 +892,7 @@ export class DemographicComponent implements OnInit {
 
       this.dataStorageService.getTransliteration(request).subscribe(
         response => {
-          if (!response[appConstants.NESTED_ERROR])
+          if (response[appConstants.RESPONSE])
             this.transUserForm.controls[toControl].patchValue(response[appConstants.RESPONSE].to_field_value);
           else {
             this.onError(this.errorlabels.error, '');
@@ -976,6 +971,7 @@ export class DemographicComponent implements OnInit {
               this.loggerService.error(JSON.stringify(response));
               let message = '';
               if (
+                response[appConstants.NESTED_ERROR] &&
                 response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] === appConstants.ERROR_CODES.invalidPin
               ) {
                 message = this.formValidation(response);
@@ -1052,6 +1048,7 @@ export class DemographicComponent implements OnInit {
    * @memberof DemographicComponent
    */
   onSubmission() {
+    this.canDeactivateFlag = false;
     this.loggerService.info('regService.getUsers', this.regService.getUsers());
     this.checked = true;
     this.dataUploadComplete = true;
@@ -1244,6 +1241,7 @@ export class DemographicComponent implements OnInit {
       this._keyboardRef.instance.attachControl(control);
     }
   }
+
   scrollUp(ele: HTMLElement) {
     ele.scrollIntoView({ behavior: 'smooth' });
   }

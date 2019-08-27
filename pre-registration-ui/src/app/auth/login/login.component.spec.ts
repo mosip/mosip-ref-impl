@@ -25,7 +25,7 @@ describe('LoginComponent', () => {
     'mosip.kernel.sms.number.length': '10',
     'mosip.login.mode': 'email,mobile',
     'mosip.primary-language': 'ara',
-    'mosip.regex.CNIE': '^([0-9]{10,30})$',
+    'mosip.regex.referenceIdentityNumber': '^([0-9]{10,30})$',
     'mosip.regex.DOB': '^d{4}/([0]d|1[0-2])/([0-2]d|3[01])$',
     'mosip.regex.email': '^[w-+]+(.[w]+)*@[w-]+(.[w]+)*(.[a-z]{2,})$',
     'mosip.regex.phone': '^([6-9]{1})([0-9]{9})$',

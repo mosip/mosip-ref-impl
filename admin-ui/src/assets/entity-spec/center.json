@@ -1,0 +1,290 @@
+{
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Decommission",
+        "ara": "وقف التشغيل",
+        "fra": "mettre hors service"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Create Center",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/centers/create",
+      "showIn": "Button",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "name",
+      "showInListView": "true",
+      "label": { "eng": "Name", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "centerTypeName",
+      "showInListView": "true",
+      "label": {
+        "eng": "Center Type",
+        "ara": "نوع المركز",
+        "fra": "Type de centre"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "users",
+      "showInListView": "",
+      "label": {
+        "eng": "No. of Users",
+        "ara": "عدد المستخدمين",
+        "fra": "Nombre d'utilisateurs"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "devices",
+      "showInListView": "",
+      "label": {
+        "eng": "No. of Devices",
+        "ara": "عدد الأجهزة",
+        "fra": "Nombre d'appareils"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "machines",
+      "showInListView": "",
+      "label": {
+        "eng": "No. of Machines",
+        "ara": "عدد الآلات",
+        "fra": "Nombre de machines"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "contactPhone",
+      "showInListView": "",
+      "label": {
+        "eng": "Contact Phone",
+        "ara": "هاتف مُتَكَون",
+        "fra": "Téléphone Contact"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "contactPerson",
+      "showInListView": "",
+      "label": {
+        "eng": "Contact Person",
+        "ara": "الشخص المسؤول",
+        "fra": "Personne-ressource"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": "Center Name",
+      "filterType": "equals",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"registrationcenters",
+      "fieldName":"name",
+      "methodCallName":""
+    },
+    {
+      "filtername": "centerTypeName",
+      "filterlabel": "Center Type",
+      "filterType": "contains",
+      "fieldType": "mat-select",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker":"false",
+      "apiName":"registrationcentertypes",
+      "fieldName":"name",
+      "methodCallName":""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker":"false",
+      "apiName":"registrationcenters",
+      "fieldName":"isActive",
+      "methodCallName":""
+    },
+    {
+      "filtername": "region",
+      "filterlabel": "Region",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Region",
+      "methodCallName":""
+
+    },
+    {
+      "filtername": "province",
+      "filterlabel": "Province",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Province",
+      "methodCallName":""
+
+    },
+    {
+      "filtername": "city",
+      "filterlabel": "City",
+      "uiField": "string",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"City",
+      "methodCallName":""
+
+    },
+    {
+      "filtername": "Zone",
+      "filterlabel": "Zone",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Zone",
+      "methodCallName":""
+
+    },
+    {
+      "filtername": "postalCode",
+      "filterlabel": "Pin Code",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker":"false",
+      "apiName":"locations",
+      "fieldName":"Postal Code",
+      "methodCallName":""
+
+    }
+  ]
+}

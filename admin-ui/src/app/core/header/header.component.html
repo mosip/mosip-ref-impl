@@ -5,10 +5,11 @@
         </button>
   </div>
   <div class="mosip-logo">
-    <span><img src="assets/images/logo-final.png" width="50" height="50" alt="Logo"></span>
+    <span><img src="./assets/images/logo-final.png" width="50" height="54" alt="Logo"></span>&nbsp;
+    <span [ngStyle]="{'display' : (screenResize > 840) ? 'inline-block' : 'none'}"><b>MOSIP</b></span>
   </div>
   <div class="zone">
-    <h6>Zone</h6>
+    <h6>{{zone}}</h6>
   </div>
   <div class="profile">
     <app-hamburger-menu [data]="profile"></app-hamburger-menu>
