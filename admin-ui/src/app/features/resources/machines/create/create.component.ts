@@ -12,6 +12,7 @@ import { HeaderModel } from 'src/app/core/models/header.model';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
 
 @Component({
   selector: 'app-create',
@@ -45,7 +46,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     private appService: AppConfigService,
     private dataService: DataStorageService,
     private translateService: TranslateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private statusPipe: StatusPipe
   ) {
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appService.getConfig()['primaryLangCode'];
@@ -167,7 +169,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.primaryForm.controls.validity.setValue(
       this.primaryData.validityDateTime
     );
-    this.primaryForm.controls.isActive.setValue(this.primaryData.isActive);
+    this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
     this.primaryForm.controls.zone.setValue(this.primaryData.zone);
     this.primaryForm.controls.machineSpecId.setValue(this.primaryData.machineSpecId);
   }
@@ -186,7 +188,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.secondaryForm.controls.validity.setValue(
       this.secondaryData.validityDateTime
     );
-    this.secondaryForm.controls.isActive.setValue(this.secondaryData.isActive);
+    this.secondaryForm.controls.isActive.setValue(this.statusPipe.transform(this.secondaryData.isActive));
     this.secondaryForm.controls.zone.setValue(this.secondaryData.zone);
     this.secondaryForm.controls.machineSpecId.setValue(this.secondaryData.machineSpecId);
   }

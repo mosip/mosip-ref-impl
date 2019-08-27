@@ -274,7 +274,7 @@
               <mat-select formControlName="isActive"
                 (selectionChange)="copyDataToSecondaryForm('isActive', primary.isActive.value)">
                 <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
-                  {{data}}
+                  {{data | status}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -464,7 +464,7 @@
               <mat-label>{{ secondaryLanguageLabels['isActive'] }}</mat-label>
               <mat-select formControlName="isActive">
                 <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
-                  {{data}}
+                  {{data | status}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

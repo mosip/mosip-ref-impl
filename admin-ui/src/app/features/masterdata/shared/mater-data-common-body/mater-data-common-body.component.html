@@ -7,7 +7,7 @@
                 <br /><br />
                 <div *ngFor="let field of fields" class="mat-form1">
                     <mat-form-field *ngIf="field.showInSingleView === 'true'">
-                        <input matInput disabled placeholder="{{ field.label[primaryLang] }}" [value]="primaryData[field.name]">
+                        <input matInput disabled placeholder="{{ field.label[primaryLang] }}" [value]="primaryData[field.name] | status">
                     </mat-form-field>
                 </div>
             </div>
@@ -20,7 +20,7 @@
                 <br /><br />
                 <div *ngFor="let field of fields" class="mat-form2">
                         <mat-form-field *ngIf="field.showInSingleView === 'true'">
-                            <input matInput disabled placeholder="{{ field.label[secondaryLang] }}" [value]="secondaryData[field.name]">
+                            <input matInput disabled placeholder="{{ field.label[secondaryLang] }}" [value]="secondaryData[field.name] | status">
                         </mat-form-field>
                 </div>
             </div>

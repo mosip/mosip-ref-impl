@@ -41,7 +41,7 @@
                     *ngFor="let option of filterOptions[filter.filtername]"
                     [value]="option.fieldValue"
                   >
-                    {{ option.fieldValue }}
+                    {{ option.fieldValue | status }}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -115,7 +115,7 @@
                     *ngFor="let option of filterOptions[filter.filtername]"
                     [value]="option.fieldValue"
                   >
-                    {{ option.fieldValue }}
+                    {{ option.fieldValue | status }}
                   </mat-option>
                 </ng-container>
               </mat-select>

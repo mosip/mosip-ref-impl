@@ -44,7 +44,7 @@
             width="35px;"
             *ngIf="item === 'name'&& imageSource"
             style="padding-right:15px;"
-          />{{ data[item]  }}</span
+          />{{ data[item] | status  }}</span
         >
       </td>
       <td class="mat-cell mat-header-cell" *ngIf="buttonList.length>0" >
