@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { DevicesHeaderComponent } from './devices-header/devices-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [CreateComponent, ViewComponent, DevicesHeaderComponent]
+  declarations: [CreateComponent, ViewComponent, DevicesHeaderComponent],
+  providers: [StatusPipe]
 })
 export class DevicesModule { }

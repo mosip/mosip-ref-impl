@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MachinesHeaderComponent } from './machines-header/machines-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [ViewComponent, CreateComponent, MachinesHeaderComponent]
+  declarations: [ViewComponent, CreateComponent, MachinesHeaderComponent],
+  providers: [StatusPipe]
 })
 export class MachinesModule { }
