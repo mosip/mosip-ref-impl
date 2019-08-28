@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-center-header',
@@ -15,7 +16,9 @@ export class CenterHeaderComponent implements OnInit {
 
   @Input() headerData: HeaderModel;
 
-  constructor(private dataSerice: DataStorageService, private appService: AppConfigService) {
+  constructor(private dataSerice: DataStorageService,
+              private appService: AppConfigService,
+              private commonService: CommonService) {
     this.lang = appService.getConfig()['primaryLangCode'];
    }
 
@@ -35,8 +38,10 @@ export class CenterHeaderComponent implements OnInit {
   }
 
 
-  selectedRow(index: number) {
-    console.log(index, this.actionButtonElipses[index]);
+  selectedRow(id: string, specData: any) {
+    if (specData.callBackFunction && specData.callBackFunction !== '') {
+      this.commonService[specData.callBackFunction](id, specData.redirectURL);
+    }
   }
 
 }

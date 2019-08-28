@@ -12,6 +12,9 @@
         },
         "item3": {
             "title": "DONNÉES DE BASE"
+        },
+        "item4": {
+            "title": "STATUT DE PAQUET"
         }
     },
     "center": {

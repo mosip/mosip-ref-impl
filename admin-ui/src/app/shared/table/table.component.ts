@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import * as appConstants from 'src/app/app.constants';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-table',
@@ -33,7 +34,8 @@ export class TableComponent implements OnInit, OnChanges {
   imageSource: string;
   constructor(
     private router: Router,
-    private appConfig: AppConfigService
+    private appConfig: AppConfigService,
+    private commonService: CommonService
   ) {}
   ngOnInit(): void {
     this.tableData = [...this.data];
@@ -72,9 +74,15 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
-  selectedRow(data: any, index: number) {
-    console.log(data + index);
+  selectedRow(data: any, specData: any) {
+    console.log(data, specData);
+    const currentRouteType = this.router.url.split('/')[3];
+    const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    if (specData.callBackFunction && specData.callBackFunction !== '') {
+      this.commonService[specData.callBackFunction](data[id.idKey], specData.redirectURL);
+    }
   }
+
   getTableRowData(data: any, index: number, columnName: string) {
     const routeIndex = this.router.url.lastIndexOf('/');
     this.currentRoute = this.router.url.slice(0, routeIndex);

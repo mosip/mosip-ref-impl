@@ -35,14 +35,15 @@
     },
     {
       "buttonName": {
-        "eng": "Edit",
+        "eng": "View",
         "ara": "تصحيح",
         "fra": "modifier"
       },
       "actionURL": "",
-      "redirectURL": "",
+      "redirectURL": "/admin/resources/centers/single-view/$id",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "centerView"
     },
     {
       "buttonName": {

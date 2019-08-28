@@ -15,7 +15,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'resources', loadChildren: () => import('./features/resources/resources.module').then(m => m.ResourcesModule) },
-      { path: 'masterdata', loadChildren: () => import('./features/masterdata/masterdata.module').then(m => m.MasterdataModule)}
+      { path: 'masterdata', loadChildren: () => import('./features/masterdata/masterdata.module').then(m => m.MasterdataModule)},
+      { path: 'packet-status', loadChildren: () => import('./features/packet-status/packet-status.module').then(m => m.PacketStatusModule)}
     ], canActivateChild : [AuthguardService]
   },
   { path: 'error', component: ErrorComponent },
