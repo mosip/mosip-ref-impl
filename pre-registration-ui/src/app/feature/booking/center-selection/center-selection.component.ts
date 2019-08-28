@@ -71,9 +71,6 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     let factory = new LanguageFactory(localStorage.getItem('langCode'));
     let response = factory.getCurrentlanguage();
     this.errorlabels = response['error'];
-
-    // this.dataService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-    // });
   }
 
   getRecommendedCenters() {

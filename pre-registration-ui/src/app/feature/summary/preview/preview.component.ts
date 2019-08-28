@@ -105,13 +105,6 @@ export class PreviewComponent implements OnInit {
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response['preview'];
     this.residentTypeMapping.secondary = response['residentTypesMapping'];
-
-    // this.dataStorageService
-    //   .getSecondaryLanguageLabels(localStorage.getItem('secondaryLangCode'))
-    //   .subscribe(response => {
-    //     this.secondaryLanguagelabels = response['preview'];
-    //     this.residentTypeMapping.secondary = response['residentTypesMapping'];
-    //   });
   }
 
   getPrimaryLanguageData() {
@@ -119,11 +112,6 @@ export class PreviewComponent implements OnInit {
     let response = factory.getCurrentlanguage();
     this.sameAs = response['sameAs'];
     this.residentTypeMapping.primary = response['residentTypesMapping'];
-
-    //   this.dataStorageService.getSecondaryLanguageLabels(localStorage.getItem('langCode')).subscribe(response => {
-    //     this.sameAs = response['sameAs'];
-    //     this.residentTypeMapping.primary = response['residentTypesMapping'];
-    //   });
   }
 
   calculateAge() {

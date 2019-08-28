@@ -5,7 +5,7 @@
 
 <div id="print-section" *ngIf="!showSpinner">
   <div class="print-section-inner-div" *ngFor="let user of usersInfo">
-    <mat-card  [ngClass]="usersInfo.length === 1 ? 'ack-container' : 'ack-container bottom-margin'">
+    <mat-card class ="ack-container">
       <mat-card-header class="ack__header-container">
         <div class="ack__header">
           <p>{{ 'acknowledgement.title' | translate }}</p>
@@ -93,17 +93,21 @@
           </div>
         </div>
       </mat-card-content>
-      <mat-card-footer id="guidelines-container" style ="page-break-after : always" class="ack__guidelines-container">
+      <mat-card-footer id="guidelines-container"  class="ack__guidelines-container">
         <h4>{{ 'acknowledgement.container_guideline' | translate }}</h4>
-        <ul *ngIf="guidelines.length !== 0" class="ack__guidelines">
-          <li *ngFor="let guideline of guidelines">
-            {{ guideline }}
-          </li>
-        </ul>
+        <table  *ngIf="guidelines.length !== 0" class="ack__guidelines">
+          <tr *ngFor="let guideline of guidelines">
+           <td class = "inner-guideline-content"> {{ guideline }}</td>
+          </tr>
+        </table>
       </mat-card-footer>
+  
+
     </mat-card>
-  <div *ngIf="usersInfo.length > 5" class="html2pdf__page-break"></div>
-  <div class="pagebreak"> </div>
+
+  
+    
+  
   </div>
 </div>
 <div>
@@ -125,9 +129,10 @@
       mat-button
       [printStyle]="{
         '#message-container': { display: 'none' },
-        '#body-container': { display: 'flex', 'flex-wrap': 'wrap', width: '100%' , 'min-height' : '1000px', 'page-break-after':'always' },
+        '#body-container': { display: 'flex', 'flex-wrap': 'wrap', width: '100%'  },
         '#table-container table tr td': { padding: '10px' },
-        '#guidelines-container' : { 'page-break-after':'always' }
+        '#print-section' : {'page-break-after' : 'always'},
+        '.print-section-inner-div' : {'page-break-after': 'always'}
 
       }"
       printSectionId="print-section"
@@ -137,4 +142,5 @@
       {{ 'acknowledgement.action_print' | translate }}
     </button>
   </mat-card>
+  
 </div>
