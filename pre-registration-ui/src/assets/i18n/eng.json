@@ -326,7 +326,7 @@
       "name_required": "Please enter valid name",
       "age_validation": "Age should be less than 150",
       "gender_validation": "Please select gender",
-      "nationality_validation": "Please select nationality",
+      "nationality_validation": "Please select Residence Status",
       "DOB_validation": "Enter Valid date of birth or age",
       "date_required": "Enter 2 numeric digits for date",
       "month_required": "Enter 2 numeric digits for month",

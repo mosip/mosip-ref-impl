@@ -45,6 +45,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.usersInfo = this.bookingService.getNameList();
 
     this.opt = {
+      margin: [0, 0.5, 0.5, 0],
       filename: this.usersInfo[0].preRegId + '.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 1 },
@@ -166,6 +167,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   download() {
+    window.scroll(0, 0);
     const element = document.getElementById('print-section');
     html2pdf(element, this.opt);
   }

@@ -6,8 +6,6 @@
     display: none;
 }
 
-
-
 .spinner-loading-data {
   margin-left: 43%;
   margin-top: 10%;
@@ -23,13 +21,21 @@
 }
 
 .bottom-margin {
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 }
 
 .ack__guidelines {
   padding-right: 10%;
   word-break: break-word;
+  page-break-after: always;
 }
+.ack__guidelines  :last-child {
+  page-break-after: avoid;
+}
+.inner-guideline-content {
+  padding: 2px !important;
+}
+
 
 .ack__guidelines li {
   list-style-type: none;
@@ -143,6 +149,7 @@ table tr td {
   table-layout: fixed;
 }
 
+
 @media (max-width: 500px) {
   .ack-container {
     margin: 5px;
@@ -171,25 +178,6 @@ table tr td {
     font-size: 10px;
     padding: 0px 2px;
     margin-right: 20px;
-  }
-}
-
-
-@media print {
-  .print-section-inner-div {
-      display: block;
-      page-break-after: always;
-  }
-  #guidelines-container {
-    clear:both;
-    page-break-after : always;
-  }
-  .pagebreak{
-    display: block;
-    page-break-after: always;
-  }
-  h4 { 
-    page-break-after: always;
   }
 }
 

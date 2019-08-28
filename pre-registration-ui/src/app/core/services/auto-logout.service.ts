@@ -63,9 +63,6 @@ export class AutoLogoutService {
     let factory = new LanguageFactory(this.primaryLang);
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response['autologout'];
-    // this.dataStroage.getSecondaryLanguageLabels(this.primaryLang).subscribe(response => {
-    //   this.secondaryLanguagelabels = response['autologout'];
-    // });
   }
 
   setisActive(value: boolean) {
