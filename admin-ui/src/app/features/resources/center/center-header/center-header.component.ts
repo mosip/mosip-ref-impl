@@ -34,6 +34,9 @@ export class CenterHeaderComponent implements OnInit {
         const index = this.actionButtonElipses.indexOf(object[0]);
         this.actionButtonElipses.splice(index, 1);
       }
+      const viewOption = this.actionButtonElipses.filter(item => item.buttonName.eng === 'View');
+      const viewIndex = this.actionButtonElipses.indexOf(viewOption[0]);
+      this.actionButtonElipses.splice(viewIndex, 1);
     });
   }
 
