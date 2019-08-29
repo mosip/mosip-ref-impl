@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import * as appConstants from '../../../app.constants';
@@ -18,13 +18,14 @@ import { FilesModel } from 'src/app/shared/models/demographic-model/files.model'
 import { LogService } from 'src/app/shared/logger/log.service';
 import Utils from 'src/app/app.util';
 import LanguageFactory from 'src/assets/i18n';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnDestroy {
   @ViewChild('fileUpload')
   fileInputVariable: ElementRef;
   fileDocCatCode = '';
@@ -99,6 +100,7 @@ export class FileUploadComponent implements OnInit {
     },
     preRegistrationId: ''
   };
+  subscriptions: Subscription[] = [];
 
   constructor(
     private registration: RegistrationService,
@@ -333,7 +335,7 @@ export class FileUploadComponent implements OnInit {
 
     DOCUMENT_CATEGORY_DTO = new RequestModel(appConstants.IDS.applicantTypeId, requestArray, {});
 
-    await this.dataStroage.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
+    const subs = await this.dataStroage.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.getDocumentCategories(response['response'].applicantType.applicantTypeCode);
@@ -346,6 +348,7 @@ export class FileUploadComponent implements OnInit {
         this.displayMessage('Error', this.errorlabels.error, error);
       }
     );
+    this.subscriptions.push(subs);
   }
   /**
    *@description method to set applicant type.
@@ -363,7 +366,7 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   async getDocumentCategories(applicantcode) {
-    await this.dataStroage.getDocumentCategories(applicantcode).subscribe(
+    const subs = await this.dataStroage.getDocumentCategories(applicantcode).subscribe(
       res => {
         if (res[appConstants.RESPONSE]) {
           this.LOD = res['response'].documentCategories;
@@ -377,6 +380,7 @@ export class FileUploadComponent implements OnInit {
         this.displayMessage('Error', this.errorlabels.error, error);
       }
     );
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -385,7 +389,7 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   async getAllApplicants() {
-    await this.dataStroage.getUsers(this.loginId).subscribe(
+    const subs = await this.dataStroage.getUsers(this.loginId).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.bookingService.addApplicants(response['response']['basicDetails']);
@@ -400,6 +404,7 @@ export class FileUploadComponent implements OnInit {
         this.setApplicants();
       }
     );
+    this.subscriptions.push(subs);
   }
   /**
    *@description method to set the applicants array  used in same as options aray
@@ -514,7 +519,7 @@ export class FileUploadComponent implements OnInit {
   viewFile(fileMeta: FileModel) {
     this.fileIndex = 0;
     this.disableNavigation = true;
-    this.dataStroage.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
+    const subs = this.dataStroage.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
       res => {
         if (res[appConstants.RESPONSE]) {
           this.setByteArray(res['response'].document);
@@ -555,6 +560,7 @@ export class FileUploadComponent implements OnInit {
       },
       () => {}
     );
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -730,7 +736,7 @@ export class FileUploadComponent implements OnInit {
     this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DTO_KEY, JSON.stringify(this.documentRequest));
     this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY, event.target.files.item(0));
 
-    this.dataStroage.sendFile(this.formData, this.users[0].preRegId).subscribe(
+    const subs = this.dataStroage.sendFile(this.formData, this.users[0].preRegId).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.updateUsers(response);
@@ -751,6 +757,7 @@ export class FileUploadComponent implements OnInit {
       }
     );
     this.formData = new FormData();
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -802,12 +809,24 @@ export class FileUploadComponent implements OnInit {
   sameAsChange(event, fileMetadata) {
     this.disableNavigation = true;
     if (event.value == '') {
-      this.sameAsselected = false;
       let arr = fileMetadata.filter(ent => ent.docCatCode === 'POA');
-      this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(res => console.log(res));
-      this.removePOADocument();
+      const subs = this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(
+        res => {
+          this.sameAsselected = false;
+          this.registration.setSameAs(event.value);
+          this.removePOADocument();
+        },
+        err => {
+          this.displayMessage(
+            this.fileUploadLanguagelabels.uploadDocuments.error,
+            this.fileUploadLanguagelabels.uploadDocuments.msg9,
+            err
+          );
+        }
+      );
+      this.subscriptions.push(subs);
     } else {
-      this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
+      const subs = this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
         response => {
           if (response[appConstants.RESPONSE]) {
             this.registration.setSameAs(event.value);
@@ -836,6 +855,7 @@ export class FileUploadComponent implements OnInit {
           );
         }
       );
+      this.subscriptions.push(subs);
       this.sameAsselected = true;
     }
     this.disableNavigation = false;
@@ -950,6 +970,10 @@ export class FileUploadComponent implements OnInit {
       data: data
     });
     return dialogRef;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
 

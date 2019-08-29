@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { MatDialog, MatCheckboxChange } from '@angular/material';
@@ -21,6 +21,7 @@ import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
 import { FilesModel } from 'src/app/shared/models/demographic-model/files.model';
 import { LogService } from 'src/app/shared/logger/log.service';
 import LanguageFactory from 'src/assets/i18n';
+import { Subscription } from 'rxjs';
 // import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
@@ -31,13 +32,14 @@ import LanguageFactory from 'src/assets/i18n';
  * @export
  * @class DashBoardComponent
  * @implements {OnInit}
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-registration',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashBoardComponent implements OnInit {
+export class DashBoardComponent implements OnInit, OnDestroy {
   userFile: FileModel[] = [];
   file: FileModel = new FileModel();
   userFiles: FilesModel = new FilesModel(this.userFile);
@@ -58,6 +60,7 @@ export class DashBoardComponent implements OnInit {
   users: Applicant[] = [];
   selectedUsers: Applicant[] = [];
   titleOnError = '';
+  subscriptions: Subscription[] = [];
 
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -94,7 +97,8 @@ export class DashBoardComponent implements OnInit {
   ngOnInit() {
     this.loginId = this.regService.getLoginId();
     this.initUsers();
-    this.autoLogout.currentMessageAutoLogout.subscribe(message => (this.message = message));
+    const subs = this.autoLogout.currentMessageAutoLogout.subscribe(message => (this.message = message));
+    this.subscriptions.push(subs);
     if (!this.message['timerFired']) {
       this.autoLogout.getValues(this.primaryLangCode);
       this.autoLogout.setValues();
@@ -129,7 +133,7 @@ export class DashBoardComponent implements OnInit {
    * @memberof DashBoardComponent
    */
   getUsers() {
-    this.dataStorageService.getUsers(this.loginId).subscribe(
+    const sub = this.dataStorageService.getUsers(this.loginId).subscribe(
       (applicants: any) => {
         this.loggerService.info('applicants in dashboard', applicants);
         if (
@@ -172,6 +176,7 @@ export class DashBoardComponent implements OnInit {
         this.isFetched = true;
       }
     );
+    this.subscriptions.push(sub);
   }
 
   /**
@@ -343,7 +348,7 @@ export class DashBoardComponent implements OnInit {
     return dialogRef;
   }
 
-   removeApplicant(preRegId: string) {
+  removeApplicant(preRegId: string) {
     let x: number = -1;
     for (let i of this.allApplicants) {
       x++;
@@ -355,15 +360,15 @@ export class DashBoardComponent implements OnInit {
     this.bookingService.addApplicants(this.allApplicants);
   }
 
-    deletePreregistration(element: any) {
-    this.dataStorageService.deleteRegistration(element.applicationID).subscribe(
-       response => {
+  deletePreregistration(element: any) {
+    const subs = this.dataStorageService.deleteRegistration(element.applicationID).subscribe(
+      response => {
         if (!response['errors']) {
-         this.removeApplicant(element.applicationID);
+          this.removeApplicant(element.applicationID);
           let index = this.users.indexOf(element);
           this.users.splice(index, 1);
           index = this.selectedUsers.indexOf(element);
-           this.selectedUsers.splice(index, 1);
+          this.selectedUsers.splice(index, 1);
           if (this.users.length == 0) {
             this.onNewApplication();
             localStorage.setItem('newApplicant', 'true');
@@ -387,11 +392,12 @@ export class DashBoardComponent implements OnInit {
         );
       }
     );
+    this.subscriptions.push(subs);
   }
 
   cancelAppointment(element: any) {
     element.regDto.pre_registration_id = element.applicationID;
-    this.dataStorageService
+    const subs = this.dataStorageService
       .cancelAppointment(new RequestModel(appConstants.IDS.booking, element.regDto), element.applicationID)
       .subscribe(
         response => {
@@ -418,12 +424,13 @@ export class DashBoardComponent implements OnInit {
           );
         }
       );
+    this.subscriptions.push(subs);
   }
 
   onDelete(element) {
     let data = this.radioButtonsStatus(element.status);
     let dialogRef = this.openDialog(data, `460px`);
-    dialogRef.afterClosed().subscribe(selectedOption => {
+    const subs = dialogRef.afterClosed().subscribe(selectedOption => {
       if (selectedOption && Number(selectedOption) === 1) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe(confirm => {
@@ -440,6 +447,7 @@ export class DashBoardComponent implements OnInit {
         });
       }
     });
+    this.subscriptions.push(subs);
   }
 
   displayMessage(title: string, message: string) {
@@ -462,7 +470,7 @@ export class DashBoardComponent implements OnInit {
     const preId = user.applicationID;
     this.regService.changeMessage({ modifyUser: 'true' });
     this.disableModifyDataButton = true;
-    this.dataStorageService.getUserDocuments(preId).subscribe(
+    const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
       response => this.setUserFiles(response),
       error => {
         this.loggerService.error('dashboard error', error);
@@ -481,6 +489,7 @@ export class DashBoardComponent implements OnInit {
         );
       }
     );
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -510,7 +519,7 @@ export class DashBoardComponent implements OnInit {
     if (event && event.checked) {
       this.selectedUsers.push(user);
     } else {
-      this.selectedUsers.splice(this.selectedUsers.indexOf(user),1);
+      this.selectedUsers.splice(this.selectedUsers.indexOf(user), 1);
     }
     if (this.selectedUsers.length > 0) {
       this.disableModifyAppointmentButton = false;
@@ -652,5 +661,9 @@ export class DashBoardComponent implements OnInit {
         data: body
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
