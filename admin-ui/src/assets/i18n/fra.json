@@ -239,5 +239,13 @@
         "required": "Les champs De et À sont obligatoires si 1 est sélectionné",
         "range": "De ne peut pas être plus grand que To",
         "invalid": "Entrée invalide. S'il vous plaît entrer correctement"
+    },
+    "packet-status": {
+        "header": "Etat du paquet",
+        "text": "S'il vous plaît entrer l'ID d'enregistrement pour vérifier l'état du paquet",
+        "error": "ID d'enregistrement non valide entré",
+        "id": "ID d'enregistrement",
+        "status": "Statut",
+        "viewMore": "Afficher plus"
     }
 }
