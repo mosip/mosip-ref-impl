@@ -253,8 +253,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       this.subscriptions.push(
         this.dataStorageService.getGuidelineTemplate('consent').subscribe(
           response => {
-            if (response[appConstants.RESPONSE])
-              this.consentMessage = response['response']['templates'][0].fileText.split('\n');
+            if (response[appConstants.RESPONSE]) this.consentMessage = response['response']['templates'][0].fileText;
             else this.onError(this.errorlabels.error, '');
             resolve(true);
           },
