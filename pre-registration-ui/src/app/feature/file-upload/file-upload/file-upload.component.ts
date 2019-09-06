@@ -26,6 +26,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
+  selected = [];
   @ViewChild('fileUpload')
   fileInputVariable: ElementRef;
   fileDocCatCode = '';
@@ -66,7 +67,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   start: boolean = false;
   browseDisabled: boolean = true;
   documentName: string;
-  proxyDocumentCode: string = '';
   flag: boolean;
   zoom: number = 0.5;
   primaryLang = localStorage.getItem('langCode');
@@ -125,6 +125,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.loginId = this.registration.getLoginId();
     this.setApplicants();
     this.sameAs = this.registration.getSameAs();
+    if (this.sameAs === '') {
+      this.sameAsselected = false;
+    } else {
+      this.sameAsselected = true;
+    }
 
     let factory = new LanguageFactory(this.primaryLang);
     let response = factory.getCurrentlanguage();
@@ -152,6 +157,32 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.activeUsers = JSON.parse(JSON.stringify(this.registration.getUsers()));
     }
     this.loggerService.info('active users', this.activeUsers);
+  }
+
+  onModification() {
+    if (
+      this.users[0].files &&
+      this.users[0].files.documentsMetaData[0].docCatCode &&
+      this.users[0].files.documentsMetaData[0].docCatCode !== ''
+    ) {
+      for (let index = 0; index < this.users[0].files.documentsMetaData.length; index++) {
+        const fileMetadata = this.users[0].files.documentsMetaData;
+        let arr = [];
+        let indice: number;
+        let indexLOD: number;
+        this.LOD.filter((ele, i) => {
+          if (ele.code === fileMetadata[index].docCatCode) {
+            indice = index;
+            indexLOD = i;
+            arr.push(ele);
+          }
+        });
+        if (arr.length > 0) {
+          let temp = arr[0].documentTypes.filter(ele => ele.code === fileMetadata[indice].docTypCode);
+          this.LOD[indexLOD].selectedDocName = temp[0].code;
+        }
+      }
+    } else return;
   }
 
   /**
@@ -372,6 +403,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.LOD = res['response'].documentCategories;
           this.enableBrowseButtonList = new Array(this.LOD.length).fill(false);
           this.registration.setDocumentCategories(res['response'].documentCategories);
+          this.onModification();
         } else {
           this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
         }
@@ -815,6 +847,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.sameAsselected = false;
           this.registration.setSameAs(event.value);
           this.removePOADocument();
+          let index: number;
+          this.LOD.filter((ele, i) => {
+            if (ele.code === 'POA') index = i;
+          });
+          this.LOD[index].selectedDocName = '';
         },
         err => {
           this.displayMessage(
@@ -832,12 +869,19 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.registration.setSameAs(event.value);
             this.removePOADocument();
             this.updateUsers(response);
-            let poaTypes = this.LOD.filter(ele => ele.code === 'POA');
+            let index: number;
+            let poaTypes = [];
+            this.LOD.filter((ele, i) => {
+              if (ele.code === 'POA') {
+                index = i;
+                poaTypes.push(ele);
+              }
+            });
             let docList = poaTypes[0].documentTypes.filter(
               element => element.code === response['response']['docTypCode']
             );
-            this.documentName = docList[0].name;
-            this.proxyDocumentCode = this.documentName;
+            this.documentName = docList[0].code;
+            this.LOD[index].selectedDocName = this.documentName;
           } else {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
@@ -972,6 +1016,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     return dialogRef;
   }
 
+  changeStatus(event, index: number) {
+    this.LOD[index].selectedDocName = event.value;
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -995,6 +1043,7 @@ export interface DocumentCategory {
   langCode: string;
   name: string;
   documentTypes?: DocumentCategory[];
+  selectedDocName?: string;
 }
 
 export interface Applicants {

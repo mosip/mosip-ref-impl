@@ -10,7 +10,6 @@
   <div class="file-upload__body">
     <div class="file-upload__body__1">
       <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
-        <!-- <mat-form-field *ngIf="!(sameAsselected && document.code === 'POA')" class="file-upload__input"> -->
         <mat-form-field class="file-upload__input">
           <mat-select
             #ref
@@ -27,13 +26,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <!-- <mat-form-field *ngIf="sameAsselected && document.code === 'POA'" class="file-upload__input">
-          <mat-select #ref placeholder="{{ proxyDocumentCode }}" [disabled]="true">
-            <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
-              {{ ValidDocument.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <span class="file-upload__button">
           <input
             #fileUpload
@@ -55,11 +47,6 @@
               document.selectedDocName === ''
             "
           />
-          <!-- [disabled]="
-              i != documentIndex || !enableBrowseButtonList[i] || (document.code === 'POA' && sameAsselected)
-                ? true
-                : false
-            " -->
         </span>
         <span *ngIf="document.code === 'POA'">
           <span *ngIf="allApplicants.length > 1"> {{ 'documents.OR' | translate }}</span>
