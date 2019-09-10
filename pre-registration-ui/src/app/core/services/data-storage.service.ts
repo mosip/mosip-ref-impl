@@ -208,11 +208,13 @@ export class DataStorageService {
     return this.httpClient.get(url);
   }
 
-  deleteFile(documentId) {
+  deleteFile(documentId, preRegId) {
     return this.httpClient.delete(this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.document, {
       observe: 'body',
       responseType: 'json',
-      params: new HttpParams().append(appConstants.PARAMS_KEYS.deleteFile, documentId)
+      params: new HttpParams()
+        .append(appConstants.PARAMS_KEYS.deleteFile, documentId)
+        .append(appConstants.PARAMS_KEYS.preRegistrationId, preRegId)
     });
   }
 

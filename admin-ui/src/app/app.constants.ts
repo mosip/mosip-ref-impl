@@ -46,6 +46,12 @@ export const navItems = [
     ]
   },
   {
+    displayName: 'menuItems.item4.title',
+    icon: './assets/images/id-card.svg',
+    route: '/admin/packet-status',
+    children: null
+  },
+  {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/masterdata',

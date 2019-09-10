@@ -10,7 +10,7 @@
   <div class="file-upload__body">
     <div class="file-upload__body__1">
       <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
-        <mat-form-field *ngIf= "!(sameAsselected && document.code === 'POA')" class="file-upload__input">
+        <mat-form-field *ngIf="!(sameAsselected && document.code === 'POA')" class="file-upload__input">
           <mat-select
             disableOptionCentering
             placeholder="{{ document.code }}"
@@ -23,11 +23,8 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field *ngIf="sameAsselected  && document.code === 'POA'" class="file-upload__input">
-          <mat-select
-             placeholder="{{proxyDocumentCode}}"
-            [disabled]="true"
-          >
+        <mat-form-field *ngIf="sameAsselected && document.code === 'POA'" class="file-upload__input">
+          <mat-select placeholder="{{ proxyDocumentCode }}" [disabled]="true">
             <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
               {{ ValidDocument.name }}
             </mat-option>
@@ -59,7 +56,11 @@
           <span *ngIf="allApplicants.length > 1"> {{ 'documents.OR' | translate }}</span>
           <span *ngIf="allApplicants.length > 1">
             <mat-form-field class="file-upload__or">
-              <mat-select placeholder="Same as" (selectionChange)="sameAsChange($event)" [(value)]="sameAs">
+              <mat-select
+                placeholder="Same as"
+                (selectionChange)="sameAsChange($event, users[0].files.documentsMetaData)"
+                [(value)]="sameAs"
+              >
                 <mat-option *ngFor="let applicant of allApplicants" value="{{ applicant.preRegistrationId }}">
                   {{ applicant.demographicMetadata.fullName[0].value }}
                 </mat-option>

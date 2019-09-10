@@ -799,10 +799,13 @@ export class FileUploadComponent implements OnInit {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  sameAsChange(event) {
+  sameAsChange(event, fileMetadata) {
     this.disableNavigation = true;
     if (event.value == '') {
       this.sameAsselected = false;
+      let arr = fileMetadata.filter(ent => ent.docCatCode === 'POA');
+      this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(res => console.log(res));
+      this.removePOADocument();
     } else {
       this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
         response => {

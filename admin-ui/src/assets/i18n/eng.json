@@ -12,6 +12,9 @@
         },
         "item3": {
             "title": "MASTER DATA"
+        },
+        "item4": {
+            "title": "PACKET STATUS"
         }
     },
     "center": {
@@ -235,5 +238,13 @@
         "required": "Both From and To Fields are mandatory if 1 is selected",
         "range": "From cannot be greater than To",
         "invalid": "Invalid Input. Please input correctly"
+    },
+    "packet-status": {
+        "header": "Packet Status",
+        "text": "Please enter Registration ID to check Packet Status",
+        "error": "Invalid Registration ID Entered",
+        "id": "Registration ID",
+        "status": "Status",
+        "viewMore": "View More"
     }
 }

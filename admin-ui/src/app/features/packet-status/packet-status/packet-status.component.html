@@ -1,0 +1,46 @@
+<div class="packet-status__container">
+    <p class="packet-status__header-text">{{'packet-status.header' | translate}}</p>
+    <mat-card>
+            {{'packet-status.text' | translate}}
+        <br><br>
+        <mat-form-field class="packet-status__input-placer">
+            <input matInput placeholder="Enter ID" [(ngModel)]="id" />
+        </mat-form-field>
+        <img src="./assets/images/search.png" (click)="search()" alt="search" class="packet-status__image-placer" height="20px" width="20px">
+        <mat-error style="margin-left: 30px" *ngIf="error">{{'packet-status.error' | translate}}</mat-error>
+    </mat-card>
+    <mat-card *ngIf="showDetails">
+        <div class="packet-status__details-container">
+            <div><img src="./assets/images/Packet_Status.png" alt="" height="100px" width="100px"></div>
+            <div>
+                <table>
+                    <tr>
+                        <td>{{'packet-status.id' | translate}}</td><td><strong>99877655433211</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{{'packet-status.status' | translate}}</td><td><strong>In Progress</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr (click)="viewMore()">
+                        <td>{{'packet-status.viewMore' | translate}}</td><td>
+                            <i *ngIf="!showTimeline" class="material-icons">keyboard_arrow_down</i>
+                            <i *ngIf="showTimeline" class="material-icons">keyboard_arrow_up</i>
+                        </td>
+                    </tr>
+                </table>
+                <ul *ngIf="showTimeline">
+                    <li *ngFor="let item of data" [ngClass]="item.status !== 'Incomplete' ? 'complete' : ''">
+                        <i [ngClass]="item.status === 'In Progress' ? 'dot hollow-dot' : item.status !== 'Incomplete' ? 'milestone-complete dot' : 'dot incomplete-hollow' "></i>
+                        <h3>{{item.stageName}}</h3>
+                        <p *ngIf="item.status !== 'Incomplete'">
+                            {{item.status}}, {{item.date}} {{item.time}}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </mat-card>
+</div>

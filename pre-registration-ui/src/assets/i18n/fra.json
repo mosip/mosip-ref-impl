@@ -329,7 +329,7 @@
       "name_required": "Le nom complet est requis",
       "age_validation": "L'âge devrait être inférieur à 150",
       "gender_validation": "S'il vous plaît sélectionner le sexe",
-      "nationality_validation": "Veuillez choisir une nationalité",
+      "nationality_validation": "Veuillez sélectionner le statut de résidence",
       "DOB_validation": "Entrez la date de naissance ou l'âge valide",
       "date_required": "Entrez 2 chiffres pour la date",
       "month_required": "Entrez 2 chiffres pour le mois",

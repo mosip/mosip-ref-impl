@@ -20,9 +20,5 @@ export class FaqComponent implements OnInit {
     let response = factory.getCurrentlanguage();
     this.data = response['faq']['questions'];
     this.answerTranslation = response['faq']['answer'];
-    // this.dataStorageService.getSecondaryLanguageLabels(this.langCode).subscribe(response => {
-    //   this.data = response['faq']['questions'];
-    //   this.answerTranslation = response['faq']['answer'];
-    // })
   }
 }
