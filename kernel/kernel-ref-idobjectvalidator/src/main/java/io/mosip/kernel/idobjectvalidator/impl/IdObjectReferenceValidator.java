@@ -3,6 +3,8 @@ package io.mosip.kernel.idobjectvalidator.impl;
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant.DOB_FORMAT;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant.IDENTITY_DOB_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant.IDENTITY_REFERENCE_IDENTITY_NUMBER_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant.REFERENCE_IDENTITY_NUMBER_REGEX;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -30,7 +33,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -58,11 +60,10 @@ import io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant;
 import net.minidev.json.JSONArray;
 
 /**
- * The Class IdObjectMasterDataValidator.
+ * The Class IdObjectReferenceValidator.
  *
  * @author Manoj SP
  */
-@Component("masterdata")
 @Lazy
 @RefreshScope
 public class IdObjectReferenceValidator implements IdObjectValidator {
@@ -153,6 +154,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			String identityString = mapper.writeValueAsString(identityObject);
 			List<ServiceError> errorList = new ArrayList<>();
 			validateDateOfBirth(identityString, errorList);
+			validateReferenceIdentityNumber(identityString, errorList);
 			validateLanguage(identityString, errorList);
 			validateGender(identityString, errorList);
 			validateRegion(identityString, errorList);
@@ -348,6 +350,28 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 					convertToPath(String.valueOf(pathList.get(0))));
 			errorList.removeIf(serviceError -> serviceError.getMessage().equals(errorMessage));
 			errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), errorMessage));
+		}
+	}
+	
+	/**
+	 * Validate Reference Identity Number.
+	 *
+	 * @param identity the identity
+	 * @param errorList the error list
+	 */
+	private void validateReferenceIdentityNumber(String identity, List<ServiceError> errorList) {
+		Pattern pattern = Pattern.compile(REFERENCE_IDENTITY_NUMBER_REGEX.getValue());
+		JsonPath jsonPath = JsonPath.compile(IDENTITY_REFERENCE_IDENTITY_NUMBER_PATH.getValue());
+		JSONArray pathList = jsonPath.read(identity, 
+				Configuration.defaultConfiguration()
+				.addOptions(
+						Option.SUPPRESS_EXCEPTIONS, 
+						Option.AS_PATH_LIST));
+		CharSequence data = jsonPath.read(identity,
+				Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
+		if (Objects.nonNull(data) && !pattern.matcher(data).matches()) {
+			errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), String
+					.format(INVALID_INPUT_PARAMETER.getMessage(), convertToPath(String.valueOf(pathList.get(0))))));
 		}
 	}
 	
