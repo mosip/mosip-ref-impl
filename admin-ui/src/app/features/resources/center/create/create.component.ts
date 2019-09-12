@@ -47,6 +47,8 @@ export class CreateComponent implements OnInit {
   data = [];
   popupMessages: any;
 
+  selectedField: HTMLElement;
+
   private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren('keyboardRef', { read: ElementRef })
   private attachToElementMesOne: any;
@@ -746,6 +748,7 @@ export class CreateComponent implements OnInit {
 
   scrollPage(element: HTMLElement, type: string, formControlName: string, index: number) {
     element.scrollIntoView({ block: 'center', inline: 'nearest' });
+    this.selectedField = element;
     if (this.keyboardRef) {
       this.keyboardRef.instance.setInputInstance(this.attachToElementMesOne._results[index]);
       if (type === 'primary') {
@@ -766,6 +769,9 @@ export class CreateComponent implements OnInit {
         this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
       } else if (type === 'secondary') {
         this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
+      }
+      if (this.selectedField) {
+        this.selectedField.focus();
       }
     }
   }
