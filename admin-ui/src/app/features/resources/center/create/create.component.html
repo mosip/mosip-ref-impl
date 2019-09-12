@@ -11,11 +11,12 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="primaryForm" class="primary-form">
             <span><strong>{{ 'center.language' | translate }}</strong></span>
+            <span matTooltip="{{'center.keyboard-tooltip' | translate}}" (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
             <hr />
             <br /><br />
             <h3>{{ 'center.center-details' | translate }}</h3>
             <mat-form-field>
-              <input [matKeyboard]="primaryKeyboard" #name (focus)="scrollPage(name)" formControlName="name" matInput placeholder="{{ 'center.registration-center-name' | translate }}">
+              <input #keyboardRef #name (focus)="scrollPage(name, 'primary', 'name', 0)" formControlName="name" matInput placeholder="{{ 'center.registration-center-name' | translate }}">
               <mat-error *ngIf="primary.name.touched && primary.name.hasError('required')">
                 {{ 'center.validationMessages.name.required' | translate }}
               </mat-error>
@@ -36,7 +37,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="primaryKeyboard" #contactPerson (focus)="scrollPage(contactPerson)" formControlName="contactPerson" matInput placeholder="{{ 'center.contact-person' | translate }}">
+              <input #keyboardRef #contactPerson (focus)="scrollPage(contactPerson, 'primary', 'contactPerson', 1)" formControlName="contactPerson" matInput placeholder="{{ 'center.contact-person' | translate }}">
               <mat-error *ngIf="primary.contactPerson.touched && primary.contactPerson.hasError('maxlength')">
                 {{ 'center.validationMessages.contactPerson.max-length' | translate }}
               </mat-error>
@@ -80,7 +81,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="primaryKeyboard" #addressline1 (focus)="scrollPage(addressline1)" formControlName="addressLine1" matInput placeholder="{{ 'center.address1' | translate }}">
+              <input #keyboardRef #addressline1 (focus)="scrollPage(addressline1, 'primary', 'addressLine1', 2)" formControlName="addressLine1" matInput placeholder="{{ 'center.address1' | translate }}">
               <mat-error *ngIf="primary.addressLine1.touched && primary.addressLine1.hasError('required')">
                 {{ 'center.validationMessages.addressLine1.required' | translate }}
               </mat-error>
@@ -89,13 +90,13 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="primaryKeyboard" #addressline2 (focus)="scrollPage(addressline2)" formControlName="addressLine2" matInput placeholder="{{ 'center.address2' | translate }}">
+              <input #keyboardRef #addressline2 (focus)="scrollPage(addressline2, 'primary', 'addressLine2', 3)" formControlName="addressLine2" matInput placeholder="{{ 'center.address2' | translate }}">
               <mat-error *ngIf="primary.addressLine2.touched && primary.addressLine2.hasError('maxlength')">
                 {{ 'center.validationMessages.addressLine2.max-length' | translate }}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="primaryKeyboard" #addressline3 (focus)="scrollPage(addressline3)" formControlName="addressLine3" matInput placeholder="{{ 'center.address3' | translate }}">
+              <input #keyboardRef #addressline3 (focus)="scrollPage(addressline3, 'primary', 'addressLine3', 4)" formControlName="addressLine3" matInput placeholder="{{ 'center.address3' | translate }}">
               <mat-error *ngIf="primary.addressLine3.touched && primary.addressLine3.hasError('maxlength')">
                 {{ 'center.validationMessages.addressLine3.max-length' | translate }}
               </mat-error>
@@ -283,11 +284,12 @@
           <div *ngIf="secondaryLanguageLabels && secondaryLang" [formGroup]="secondaryForm"
             [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
             <span><strong>{{secondaryLanguageLabels['language']}}</strong></span>
+            <span matTooltip="{{secondaryLanguageLabels['keyboard-tooltip']}}" (click)="openKeyboard('secondary')" style="float: left; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
             <hr />
             <br /><br />
             <h3>{{secondaryLanguageLabels['center-details']}}</h3>
             <mat-form-field>
-              <input [matKeyboard]="secondaryKeyboard" #nameSecondary (focus)="scrollPage(nameSecondary)" formControlName="name" matInput
+              <input #keyboardRef #nameSecondary (focus)="scrollPage(nameSecondary, 'secondary', 'name', 5)" formControlName="name" matInput
                 placeholder="{{secondaryLanguageLabels['registration-center-name']}}">
               <mat-error *ngIf="secondary.name.touched && secondary.name.hasError('required')">
                 {{ secondaryLanguageLabels['validationMessages']['name']['required'] }}
@@ -305,7 +307,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="secondaryKeyboard" #contactPersonSecondary (focus)="scrollPage(contactPersonSecondary)" formControlName="contactPerson" matInput
+              <input #keyboardRef #contactPersonSecondary (focus)="scrollPage(contactPersonSecondary, 'secondary', 'contactPerson', 6)" formControlName="contactPerson" matInput
                 placeholder="{{secondaryLanguageLabels['contact-person']}}">
               <mat-error *ngIf="secondary.contactPerson.touched && secondary.contactPerson.hasError('maxlength')">
                 {{ secondaryLanguageLabels['validationMessages']['contactPerson']['max-length'] }}
@@ -324,7 +326,7 @@
               <input formControlName="latitude" matInput placeholder="{{secondaryLanguageLabels['latitude']}}">
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="secondaryKeyboard" #addressline1secondary (focus)="scrollPage(addressline1secondary)" formControlName="addressLine1" matInput placeholder="{{secondaryLanguageLabels['address1']}}">
+              <input #keyboardRef #addressline1secondary (focus)="scrollPage(addressline1secondary, 'secondary', 'addressLine1', 7)" formControlName="addressLine1" matInput placeholder="{{secondaryLanguageLabels['address1']}}">
               <mat-error *ngIf="secondary.addressLine1.touched && secondary.addressLine1.hasError('required')">
                 {{ secondaryLanguageLabels['validationMessages']['addressLine1']['required'] }}
               </mat-error>
@@ -333,13 +335,13 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="secondaryKeyboard" #addressline2secondary (focus)="scrollPage(addressline2secondary)" formControlName="addressLine2" matInput placeholder="{{secondaryLanguageLabels['address2']}}">
+              <input #keyboardRef #addressline2secondary (focus)="scrollPage(addressline2secondary, 'secondary', 'addressLine2', 8)" formControlName="addressLine2" matInput placeholder="{{secondaryLanguageLabels['address2']}}">
               <mat-error *ngIf="secondary.addressLine2.touched && secondary.addressLine2.hasError('maxlength')">
                 {{ secondaryLanguageLabels['validationMessages']['addressLine2']['max-length'] }}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input [matKeyboard]="secondaryKeyboard" #addressline3secondary (focus)="scrollPage(addressline3secondary)" formControlName="addressLine3" matInput placeholder="{{secondaryLanguageLabels['address3']}}">
+              <input #keyboardRef #addressline3secondary (focus)="scrollPage(addressline3secondary, 'secondary', 'addressLine3', 9)" formControlName="addressLine3" matInput placeholder="{{secondaryLanguageLabels['address3']}}">
               <mat-error *ngIf="secondary.addressLine3.touched && secondary.addressLine3.hasError('maxlength')">
                 {{ secondaryLanguageLabels['validationMessages']['addressLine3']['max-length'] }}
               </mat-error>

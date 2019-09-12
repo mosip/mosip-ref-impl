@@ -21,6 +21,8 @@ export class ViewComponent implements OnDestroy {
 
   subscribed: any;
   errorMessages: any;
+  noData = false;
+  filtersApplied = false;
 
   constructor(
     private dataStroageService: DataStorageService,
@@ -92,7 +94,12 @@ export class ViewComponent implements OnDestroy {
 
   getDevices() {
     this.devices = [];
+    this.noData = false;
+    this.filtersApplied = false;
     const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    if (filters.filters.length > 0) {
+      this.filtersApplied = true;
+    }
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
@@ -106,24 +113,25 @@ export class ViewComponent implements OnDestroy {
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
           console.log(this.paginatorOptions);
           if (response.data != null) {
-          this.devices = [...response.data];
-        } else {
-          this.dialog
-          .open(DialogComponent, {
-             data: {
-              case: 'MESSAGE',
-              title: this.errorMessages.noData.title,
-              message: this.errorMessages.noData.message,
-              btnTxt: this.errorMessages.noData.btnTxt
-             } ,
-            width: '700px'
-          }).afterClosed().subscribe( result => {
-            this.router.navigateByUrl(
-              `admin/resources/devices/view`
-            );
-          });
-        }
-      } else if (response === null) {
+            this.devices = [...response.data];
+          } else {
+            this.noData = true;
+        //   this.dialog
+        //   .open(DialogComponent, {
+        //      data: {
+        //       case: 'MESSAGE',
+        //       title: this.errorMessages.noData.title,
+        //       message: this.errorMessages.noData.message,
+        //       btnTxt: this.errorMessages.noData.btnTxt
+        //      } ,
+        //     width: '700px'
+        //   }).afterClosed().subscribe( result => {
+        //     this.router.navigateByUrl(
+        //       `admin/resources/devices/view`
+        //     );
+        //   });
+         }
+      } else {
         this.dialog
           .open(DialogComponent, {
              data: {

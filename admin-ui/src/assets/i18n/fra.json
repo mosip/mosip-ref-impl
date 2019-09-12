@@ -29,14 +29,14 @@
         "center-details": "Détails du centre",
         "registration-center-name": "Nom du centre d'inscription",
         "registration-center-type": "Type de centre d'inscription",
-        "contact-person": "Contact",
-        "contact-number": "Numéro de contact",
+        "contact-person": "Contact - optionnel",
+        "contact-number": "Numéro de contact - optionnel",
         "location-details": "Détails de l'emplacement",
         "longitude": "Longitude",
         "latitude": "Latitude",
         "address1": "Adresse Ligne 1",
-        "address2": "Adresse Ligne 2",
-        "address3": "Adresse Ligne 3",
+        "address2": "Adresse Ligne 2 - optionnel",
+        "address3": "Adresse Ligne 3 - optionnel",
         "region": "Région",
         "province": "Province",
         "city": "Ville",
@@ -45,17 +45,18 @@
         "zone": "Zone Administrative",
         "operational-details": "Détails opérationnels",
         "holiday-zone": "Zone de vacances",
-        "working-hrs": "Heures de travail",
+        "working-hrs": "Heures de travail - optionnel",
         "no-kiosk": "Nombre de kiosque",
         "per-kiosk-process-time": "Temps de traitement par kiosque (minutes)",
         "start-time": "Heure de début",
         "end-time": "Heure de fin",
-        "lunch-start-time": "L'heure du déjeuner",
-        "lunch-end-time": "Heure de fin du déjeuner",
+        "lunch-start-time": "L'heure du déjeuner - optionnel",
+        "lunch-end-time": "Heure de fin du déjeuner - optionnel",
         "edit": "modifier",
         "create": "Créer",
         "cancel": "Annuler",
         "language": "French",
+        "keyboard-tooltip": "Cliquez pour clavier virtuel (French)",
         "isActive": "C'est actif",
         "update": "mettre à jour",
         "validationMessages": {
@@ -162,7 +163,7 @@
                 "yesBtnTxt": "Laisser",
                 "noBtnTxt": "Rester"
             },
-            "no-data": {
+            "noData": {
                 "title": "Erreur",
                 "message": "Aucun Enregistrement Trouvé",
                 "btnTxt": "D'accord"
@@ -236,9 +237,9 @@
         }
     },
     "validationMessages": {
-        "required": "Les champs De et À sont obligatoires si 1 est sélectionné",
-        "range": "De ne peut pas être plus grand que To",
-        "invalid": "Entrée invalide. S'il vous plaît entrer correctement"
+        "required": "Veuillez renseigner les champs \"À\" et \"De\" pour filtrer selon la plage de dates",
+        "range": "La date de fin ne peut pas être antérieure à la date de début",
+        "invalid": "Veuillez sélectionner une valeur valide pour Date"
     },
     "packet-status": {
         "header": "Etat du paquet",
@@ -247,5 +248,14 @@
         "id": "ID d'enregistrement",
         "status": "Statut",
         "viewMore": "Afficher plus"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": "Centre mis hors service avec succès",
+            "success-title": "Succès",
+            "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / ordinateurs / appareils) y sont toujours mappées.\nVeuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
+            "error-title": "Erreur",
+            "btnTxt": "D'accord"
+        }
     }
 }

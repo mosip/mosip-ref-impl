@@ -22,6 +22,8 @@ export class ViewComponent implements OnDestroy {
 
   subscribed: any;
   errorMessages: any;
+  noData = false;
+  filtersApplied = false;
 
   constructor(
     private dataStroageService: DataStorageService,
@@ -93,7 +95,12 @@ export class ViewComponent implements OnDestroy {
 
   getMachines() {
     this.machines = [];
+    this.noData = false;
+    this.filtersApplied = false;
     const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    if (filters.filters.length > 0) {
+      this.filtersApplied = true;
+    }
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
     console.log(this.requestModel);
@@ -107,26 +114,27 @@ export class ViewComponent implements OnDestroy {
           console.log(this.paginatorOptions);
           if (response.data !== null) {
             this.machines = response.data ? [...response.data] : [];
-          } else {
-            this.dialog
-            .open(DialogComponent, {
-               data: {
-                case: 'MESSAGE',
-                title: this.errorMessages.noData.title,
-                message: this.errorMessages.noData.message,
-                btnTxt: this.errorMessages.noData.btnTxt
-               } ,
-              width: '700px'
-            })
-            .afterClosed()
-            .subscribe(result => {
-              console.log('dislog is closed');
-              this.router.navigateByUrl(
-                `admin/resources/machines/view`
-              );
-            });
-          }
-        } else if (response === null) {
+           } else {
+             this.noData = true;
+          //   this.dialog
+          //   .open(DialogComponent, {
+          //      data: {
+          //       case: 'MESSAGE',
+          //       title: this.errorMessages.noData.title,
+          //       message: this.errorMessages.noData.message,
+          //       btnTxt: this.errorMessages.noData.btnTxt
+          //      } ,
+          //     width: '700px'
+          //   })
+          //   .afterClosed()
+          //   .subscribe(result => {
+          //     console.log('dislog is closed');
+          //     this.router.navigateByUrl(
+          //       `admin/resources/machines/view`
+          //     );
+          //   });
+           }
+        } else {
           this.dialog
             .open(DialogComponent, {
                data: {

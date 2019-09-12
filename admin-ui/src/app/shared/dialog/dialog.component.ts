@@ -94,9 +94,17 @@ export class DialogComponent implements OnInit {
         this.filterGroup.addControl(values.filtername, new FormControl(''));
         this.filterOptions[values.filtername] = [];
       } else {
+        let value = '';
+        if (filterOption[0].type === 'startsWith') {
+          value = filterOption[0].value + '*';
+        } else if (filterOption[0].type === 'contains') {
+          value = '*' + filterOption[0].value;
+        } else {
+          value = filterOption[0].value;
+        }
         this.filterGroup.addControl(
           values.filtername,
-          new FormControl(filterOption[0].value)
+          new FormControl(value)
         );
         if (values.autocomplete === 'false' && values.dropdown === 'false') {
           this.filterOptions[values.filtername] = [];

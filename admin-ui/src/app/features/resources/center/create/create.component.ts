@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ElementRef, ViewChildren } from '@angular/core';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,6 +23,7 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
+import { MatKeyboardRef, MatKeyboardComponent, MatKeyboardService } from 'ngx7-material-keyboard';
 
 @Component({
   selector: 'app-create',
@@ -46,8 +47,14 @@ export class CreateComponent implements OnInit {
   data = [];
   popupMessages: any;
 
+  private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
+  @ViewChildren('keyboardRef', { read: ElementRef })
+  private attachToElementMesOne: any;
+
   primaryKeyboard: string;
   secondaryKeyboard: string;
+
+  keyboardType: string;
 
   constructor(
     private location: Location,
@@ -58,7 +65,8 @@ export class CreateComponent implements OnInit {
     private appConfigService: AppConfigService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private centerService: CenterService
+    private centerService: CenterService,
+    private keyboardService: MatKeyboardService
   ) {
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
@@ -379,10 +387,10 @@ export class CreateComponent implements OnInit {
         data: {
           case: 'MESSAGE',
           // tslint:disable-next-line:no-string-literal
-          title: this.popupMessages['no-data']['title'],
-          message: this.popupMessages['no-data']['message'],
+          title: this.popupMessages['noData']['title'],
+          message: this.popupMessages['noData']['message'],
           // tslint:disable-next-line:no-string-literal
-          btnTxt: this.popupMessages['no-data']['btnTxt']
+          btnTxt: this.popupMessages['noData']['btnTxt']
         },
         disableClose: true
       })
@@ -576,13 +584,13 @@ export class CreateComponent implements OnInit {
 
   initializeSecondaryForm() {
     this.secondaryForm = this.formBuilder.group({
-      name: ['', [Validators.maxLength(128)]],
+      name: ['', [Validators.required, Validators.maxLength(128)]],
       centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],
       contactPhone: [{ value: '', disabled: true }],
       longitude: [{ value: '', disabled: true }],
       latitude: [{ value: '', disabled: true }],
-      addressLine1: ['', [Validators.maxLength(256)]],
+      addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
       region: [{ value: '', disabled: true }],
@@ -616,7 +624,12 @@ export class CreateComponent implements OnInit {
 
   submit() {
     if (!this.disableForms) {
-      if (this.primaryForm.valid && this.secondaryForm.valid) {
+      if (this.primaryForm.valid) {
+        for (const i in this.secondaryForm.controls) {
+          if (this.secondaryForm.controls[i]) {
+            this.secondaryForm.controls[i].markAsTouched();
+          }
+        }
         this.onCreate();
       } else {
         for (const i in this.primaryForm.controls) {
@@ -731,11 +744,36 @@ export class CreateComponent implements OnInit {
     this.loadLocationData(data.administrativeZoneCode, 'postalCode');
   }
 
-  scrollPage(element: HTMLElement) {
+  scrollPage(element: HTMLElement, type: string, formControlName: string, index: number) {
     element.scrollIntoView({ block: 'center', inline: 'nearest' });
+    if (this.keyboardRef) {
+      this.keyboardRef.instance.setInputInstance(this.attachToElementMesOne._results[index]);
+      if (type === 'primary') {
+        this.keyboardRef.instance.attachControl(this.primaryForm.controls[formControlName]);
+      } else if (type === 'secondary') {
+        this.keyboardRef.instance.attachControl(this.secondaryForm.controls[formControlName]);
+      }
+    }
+  }
+
+  openKeyboard(type: string) {
+    if (this.keyboardService.isOpened && this.keyboardType === type) {
+      this.keyboardService.dismiss();
+      this.keyboardRef = undefined;
+    } else {
+      this.keyboardType = type;
+      if (type === 'primary') {
+        this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
+      } else if (type === 'secondary') {
+        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
+      }
+    }
   }
 
   canDeactivate(): Observable<any> | boolean {
+    if (this.keyboardService.isOpened) {
+      this.keyboardService.dismiss();
+    }
     if (
       (this.primaryForm.touched || this.secondaryForm.touched) &&
       !this.createUpdate

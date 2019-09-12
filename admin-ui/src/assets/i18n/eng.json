@@ -29,14 +29,14 @@
         "center-details": "Center Details",
         "registration-center-name": "Registration Center Name",
         "registration-center-type": "Registration Center Type",
-        "contact-person": "Contact Person",
-        "contact-number": "Contact Number",
+        "contact-person": "Contact Person - Optional",
+        "contact-number": "Contact Number - Optional",
         "location-details": "Location Details",
         "longitude": "Longitude",
         "latitude": "Latitude",
         "address1": "Address Line 1",
-        "address2": "Address Line 2",
-        "address3": "Address Line 3",
+        "address2": "Address Line 2 - Optional",
+        "address3": "Address Line 3 - Optional",
         "region": "Region",
         "province": "Province",
         "city": "City",
@@ -45,17 +45,18 @@
         "zone": "Administrative Zone",
         "operational-details": "Operational Details",
         "holiday-zone": "Holiday Zone",
-        "working-hrs": "Working Hours",
+        "working-hrs": "Working Hours - Optional",
         "no-kiosk": "No.Kiosk",
         "per-kiosk-process-time": "Per Kiosk Process Time(minutes)",
         "start-time": "Start Time",
         "end-time": "End Time",
-        "lunch-start-time": "Lunch Start time",
-        "lunch-end-time": "Lunch End Time",
+        "lunch-start-time": "Lunch Start time - Optional",
+        "lunch-end-time": "Lunch End Time - Optional",
         "edit": "Edit",
         "create": "Create",
         "cancel": "Cancel",
         "language": "English",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
         "isActive": "Is Active",
         "update": "Update",
         "validationMessages": {
@@ -162,7 +163,7 @@
                 "yesBtnTxt": "Leave",
                 "noBtnTxt": "Stay"
             },
-            "no-data": {
+            "noData": {
                 "title": "Error",
                 "message": "No Data Found",
                 "btnTxt": "Ok"
@@ -235,9 +236,9 @@
         }
     },
     "validationMessages": {
-        "required": "Both From and To Fields are mandatory if 1 is selected",
-        "range": "From cannot be greater than To",
-        "invalid": "Invalid Input. Please input correctly"
+        "required": "Please fill both the ‘To’ and ‘From’ field to filter by the date range",
+        "range": "’To’ date cannot be before ‘From’ date'",
+        "invalid": "Please select a valid value for Date"
     },
     "packet-status": {
         "header": "Packet Status",
@@ -246,5 +247,14 @@
         "id": "Registration ID",
         "status": "Status",
         "viewMore": "View More"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": "Center Decommissioned Successfully",
+            "success-title": "Success",
+            "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\nPlease un-map these resources before decommission the Center",
+            "error-title": "Error",
+            "btnTxt": "Ok"
+        }
     }
 }

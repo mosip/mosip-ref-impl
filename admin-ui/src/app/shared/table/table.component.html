@@ -1,4 +1,4 @@
-<div class="container mat-elevation-z8" *ngIf="data.length > 0; else nodata">
+<div class="container mat-elevation-z8">
   <table class="mat-table">
     <tr class="mat-row sticky-header">
       <th
@@ -65,9 +65,10 @@
       </mat-menu>
     </tr>
   </table>
+  <p *ngIf="noDataFlag" style="text-align: center">{{'center.popupMessages.noData.message' | translate}}</p>
 </div>
-<ng-template #nodata>
-  <div style="display: flex; justify-content: center;">
+<!-- <ng-template #nodata> -->
+  <div *ngIf="!noDataFlag && !(tableData.length > 0)" style="display: flex; justify-content: center;">
     <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
   </div>
-</ng-template>
+<!-- </ng-template> -->

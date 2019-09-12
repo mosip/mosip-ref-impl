@@ -12,6 +12,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   @Input() buttonList: any;
   @Input() paginationOptions: any;
+  @Input() filtersAppliedFlag: boolean;
   @Output() pageEvent = new EventEmitter();
   lang: string;
 

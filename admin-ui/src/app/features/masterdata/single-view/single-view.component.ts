@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import * as appConstants from '../../../app.constants';
@@ -55,9 +55,7 @@ export class SingleViewComponent implements OnDestroy {
 
   async initializeComponent() {
     this.showSpinner = true;
-    // tslint:disable-next-line:no-string-literal
     this.primaryLangCode = await this.appService.getConfig()['primaryLangCode'];
-    // tslint:disable-next-line:no-string-literal
     this.secondaryLangCode = await this.appService.getConfig().secondaryLangCode;
     this.translate
       .getTranslation(this.primaryLangCode)
@@ -130,16 +128,13 @@ export class SingleViewComponent implements OnDestroy {
                 }
                 resolve(true);
               } else {
-                // tslint:disable-next-line:no-string-literal
                 this.displayMessage(this.popupMessages['errorMessages'][0]);
               }
             } else {
-              // tslint:disable-next-line:no-string-literal
               this.displayMessage(this.popupMessages['errorMessages'][0]);
             }
           },
           error => {
-            // tslint:disable-next-line:no-string-literal
             this.displayMessage(this.popupMessages['errorMessages'][1]);
           }
         );
@@ -152,10 +147,8 @@ export class SingleViewComponent implements OnDestroy {
         width: '350px',
         data: {
           case: 'MESSAGE',
-          // tslint:disable-next-line:no-string-literal
           title: this.popupMessages['title'],
           message,
-          // tslint:disable-next-line:no-string-literal
           btnTxt: this.popupMessages['buttonText']
         },
         disableClose: true
