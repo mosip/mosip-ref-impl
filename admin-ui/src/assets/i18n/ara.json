@@ -29,14 +29,14 @@
         "center-details": "تفاصيل المركز",
         "registration-center-name": "اسم مركز التسجيل",
         "registration-center-type": "نوع مركز التسجيل",
-        "contact-person": "الشخص الذي يمكن الاتصال به",
-        "contact-number": "رقم الاتصال",
+        "contact-person": "الشخص الذي يمكن الاتصال به - اختياري",
+        "contact-number": "رقم الاتصال - اختياري",
         "location-details": "تفاصيل الموقع",
         "longitude": "خط الطول",
         "latitude": "خط العرض",
         "address1": "سطر العنوان 1",
-        "address2": "سطر العنوان 2",
-        "address3": "سطر العنوان 3",
+        "address2": "سطر العنوان 2 - اختياري",
+        "address3": "سطر العنوان 3 - اختياري",
         "region": "منطقة",
         "province": "المحافظة",
         "city": "مدينة",
@@ -45,17 +45,18 @@
         "zone": "منطقة إدارية",
         "operational-details": "تفاصيل التشغيل",
         "holiday-zone": "منطقة عطلة",
-        "working-hrs": "ساعات العمل",
+        "working-hrs": "ساعات العمل - اختياري",
         "no-kiosk": "رقم كشك",
         "per-kiosk-process-time": "لكل كشك وقت العملية (بالدقائق)",
         "start-time": "وقت البدء",
         "end-time": "وقت النهاية",
-        "lunch-start-time": "وقت بدء الغداء",
-        "lunch-end-time": "وقت انتهاء الغداء",
+        "lunch-start-time": "وقت بدء الغداء - اختياري",
+        "lunch-end-time": "وقت انتهاء الغداء - اختياري",
         "edit": "تصحيح",
         "create": "خلق",
         "cancel": "إلغاء",
         "language": "عربى",
+        "keyboard-tooltip": "انقر للحصول على لوحة المفاتيح الافتراضية (العربية)",
         "isActive": "نشط",
         "update": "تحديث",
         "validationMessages": {
@@ -162,7 +163,7 @@
                 "yesBtnTxt": "غادر",
                 "noBtnTxt": "البقاء"
             },
-            "no-data": {
+            "noData": {
                 "title": "خطأ",
                 "message": "لا يوجد سجلات",
                 "btnTxt": "حسنا"
@@ -235,9 +236,9 @@
         }
     },
     "validationMessages": {
-        "required": "كلا من و إلى الحقول إلزامي إذا تم تحديد 1",
-        "range": "من لا يمكن أن يكون أكبر من إلى",
-        "invalid": "مدخل غير صالح. يرجى إدخال صحيح"
+        "required": "يرجى ملء حقل \"إلى\" و \"من\" للتصفية حسب النطاق الزمني",
+        "range": "\"إلى\" لا يمكن أن يكون التاريخ قبل \"من\" التاريخ",
+        "invalid": "يرجى تحديد قيمة صالحة للتاريخ"
     },
     "packet-status": {
         "header": "حالة الحزمة",
@@ -246,5 +247,14 @@
         "id": "معرف تسجيل",
         "status": "الحالة",
         "viewMore": "عرض المزيد"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": "تم إيقاف المركز بنجاح",
+            "success-title": "نجاح",
+            "error-message": "لا يمكن إيقاف تشغيل المركز نظرًا لأن بعض الموارد (المستخدمون / الأجهزة / الأجهزة) لا تزال قيد التعيين إليه. يُرجى إلغاء تعيين هذه الموارد قبل إلغاء إيقاف تشغيل المركز",
+            "error-title": "خطأ",
+            "btnTxt": "حسنا"
+        }
     }
 }

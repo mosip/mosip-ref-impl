@@ -11,6 +11,7 @@ import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import * as appConstants from 'src/app/app.constants';
 import { CommonService } from 'src/app/core/services/common.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-table',
@@ -22,6 +23,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() displayedColumns: [];
   @Input() buttonList: [];
   @Input() sortData: SortModel[];
+  @Input() noDataFlag: boolean;
   @Output() sort = new EventEmitter();
   tableData = [];
   columnsOfTableData = [];
@@ -32,11 +34,15 @@ export class TableComponent implements OnInit, OnChanges {
   sortIconTrackerArray = new Array(15).fill(0);
   ellipsisList = [];
   imageSource: string;
+
   constructor(
     private router: Router,
     private appConfig: AppConfigService,
-    private commonService: CommonService
-  ) {}
+    private commonService: CommonService,
+    private translate: TranslateService
+  ) {
+   translate.use(appConfig.getConfig().primaryLangCode);
+  }
   ngOnInit(): void {
     this.tableData = [...this.data];
     console.log(this.tableData);
@@ -52,7 +58,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.tableData = [...this.data];
     this.columnsOfTableData = [];
     this.displayedColumns.forEach(column => {
-      // tslint:disable-next-line:no-string-literal
       this.columnsOfTableData.push(column['name']);
     });
     this.setSortDirection();

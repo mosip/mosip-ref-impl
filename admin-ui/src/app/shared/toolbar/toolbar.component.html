@@ -15,6 +15,9 @@
         <span *ngIf="lang === 'eng'">{{ button.buttonName['eng']}}</span>
         <span *ngIf="lang === 'fra'">{{ button.buttonName['fra']}}</span>
         <span *ngIf="lang === 'ara'">{{ button.buttonName['ara']}}</span>
+        <span *ngIf="button.buttonName.eng === 'Filter' && filtersAppliedFlag">
+          <i class="material-icons filter-placer">fiber_manual_record</i>
+        </span>
       </button>
       <span style="flex: 1 1 auto;"></span>
       <mat-paginator

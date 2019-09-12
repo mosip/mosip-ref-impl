@@ -28,6 +28,8 @@ export class ViewComponent implements OnDestroy {
   centers = [];
   subscribed: any;
   errorMessages: any;
+  noData = false;
+  filtersApplied = false;
 
   constructor(
     private centerService: CenterService,
@@ -95,10 +97,15 @@ export class ViewComponent implements OnDestroy {
 
   getRegistrationCenters() {
     this.centers = [];
+    this.noData = false;
+    this.filtersApplied = false;
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
       this.appService.getConfig().primaryLangCode
     );
+    if (filters.filters.length > 0) {
+      this.filtersApplied = true;
+    }
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
@@ -114,25 +121,26 @@ export class ViewComponent implements OnDestroy {
           if (response.data !== null) {
             this.centers = response.data ? [...response.data] : [];
           } else {
-            this.dialog
-            .open(DialogComponent, {
-               data: {
-                case: 'MESSAGE',
-                title: this.errorMessages.noData.title,
-                message: this.errorMessages.noData.message,
-                btnTxt: this.errorMessages.noData.btnTxt
-               } ,
-              width: '700px'
-            })
-            .afterClosed()
-            .subscribe(result => {
-              console.log('dislog is closed');
-              this.router.navigateByUrl(
-                `admin/resources/centers/view`
-              );
-            });
+            this.noData = true;
+          //   this.dialog
+          //   .open(DialogComponent, {
+          //      data: {
+          //       case: 'MESSAGE',
+          //       title: this.errorMessages.noData.title,
+          //       message: this.errorMessages.noData.message,
+          //       btnTxt: this.errorMessages.noData.btnTxt
+          //      } ,
+          //     width: '700px'
+          //   })
+          //   .afterClosed()
+          //   .subscribe(result => {
+          //     console.log('dislog is closed');
+          //     this.router.navigateByUrl(
+          //       `admin/resources/centers/view`
+          //     );
+          //   });
           }
-        } else if (response === null) {
+        } else {
           this.dialog
             .open(DialogComponent, {
                data: {
