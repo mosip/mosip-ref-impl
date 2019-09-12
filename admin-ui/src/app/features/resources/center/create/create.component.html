@@ -11,7 +11,7 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="primaryForm" class="primary-form">
             <span><strong>{{ 'center.language' | translate }}</strong></span>
-            <span matTooltip="{{'center.keyboard-tooltip' | translate}}" (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
+            <span *ngIf="!disableForms" matTooltip="{{'center.keyboard-tooltip' | translate}}" (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
             <hr />
             <br /><br />
             <h3>{{ 'center.center-details' | translate }}</h3>
@@ -284,7 +284,7 @@
           <div *ngIf="secondaryLanguageLabels && secondaryLang" [formGroup]="secondaryForm"
             [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
             <span><strong>{{secondaryLanguageLabels['language']}}</strong></span>
-            <span matTooltip="{{secondaryLanguageLabels['keyboard-tooltip']}}" (click)="openKeyboard('secondary')" style="float: left; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
+            <span *ngIf="!disableForms" matTooltip="{{secondaryLanguageLabels['keyboard-tooltip']}}" (click)="openKeyboard('secondary')" style="float: left; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
             <hr />
             <br /><br />
             <h3>{{secondaryLanguageLabels['center-details']}}</h3>
