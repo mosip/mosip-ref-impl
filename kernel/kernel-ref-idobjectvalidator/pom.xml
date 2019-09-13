@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
-		<artifactId>kernel-phil-parent</artifactId>
+		<artifactId>kernel-ref-parent</artifactId>
 		<version>0.9.1</version>
 	</parent>
 	
