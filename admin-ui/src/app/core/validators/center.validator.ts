@@ -2,11 +2,18 @@ import { FormControl } from '@angular/forms';
 
 
 export function ValidateLatLong(control: FormControl) {
+    const y = isNaN(control.value);
     const x = control.value ? control.value.toString().split('.')[1] ? control.value.toString().split('.')[1].length : 0 : 0;
-    if (x < 4) {
-        return {
-            invalidLatLong: true
-        };
+    if (x < 4 || y) {
+        if (y) {
+            return {
+                invalidNumber: true
+            };
+        } else {
+            return {
+                invalidLatLong: true
+            };
+        }
     } else {
         return null;
     }
