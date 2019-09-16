@@ -89,7 +89,10 @@
     </mat-card>
     <mat-card class="time-selection__names-container">
       <div>
-        <div *ngIf="availabilityData[selectedTile] !== undefined" class="time-selection__name-list-header">
+        <div
+          *ngIf="availabilityData[selectedTile] !== undefined && selectedCard !== undefined"
+          class="time-selection__name-list-header"
+        >
           <span class="time-selection__names-header-date-text">{{ availabilityData[selectedTile].displayDate }}</span
           >, <span class="time-selection__names-header-date-text">{{ availabilityData[selectedTile].displayDay }}</span>
           <br />
@@ -99,7 +102,7 @@
           >,
           <span class="time-selection__names-header-day-text">{{ 'timeSelection.text_morning' | translate }}</span>
         </div>
-        <div *ngIf="availabilityData[selectedTile] !== undefined">
+        <div *ngIf="availabilityData[selectedTile] !== undefined && selectedCard !== undefined">
           <table class="time-selection__name-list">
             <tr
               class="time-selection__name-list-item"
