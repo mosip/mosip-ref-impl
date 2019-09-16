@@ -113,7 +113,9 @@
   </div>
   <h3 class="consent-popup-subtitle" mat-dialog-title>{{ input.subtitle }}</h3>
   <div mat-dialog-content class="consentpopup-content">
-    <p>{{ input.message }}</p>
+    <div *ngFor="let message of input.message">
+      <div>{{ message }}</div>
+    </div>
   </div>
   <mat-checkbox (change)="onSelectCheckbox()" class="checkbox-accept">
     {{ input.checkCondition }}
