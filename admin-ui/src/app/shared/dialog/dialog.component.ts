@@ -332,7 +332,7 @@ export class DialogComponent implements OnInit {
     if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
         this.getFilterValues(
           filter.fieldName,
-          value,
+          filter.dropdown === 'true' ? undefined : value,
           filter.apiName,
           filter.filtername
         );

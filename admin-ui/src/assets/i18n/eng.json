@@ -76,12 +76,14 @@
             "longitude": {
                 "required": "Longitude is required",
                 "max-length": "Exceeded max length (32)",
-                "validLatLong": "Atleast 4 digits after decimal is mandatory"
+                "validLatLong": "Atleast 4 digits after decimal is mandatory",
+                "validNumber": "Please enter digits only"
             },
             "latitude": {
                 "required": "Longitude is required",
                 "max-length": "Exceeded max length (32)",
-                "validLatLong": "Atleast 4 digits after decimal is mandatory"
+                "validLatLong": "Atleast 4 digits after decimal is mandatory",
+                "validNumber": "Please enter digits only"
             },
             "addressLine1": {
                 "required": "Address Line 1 is required",

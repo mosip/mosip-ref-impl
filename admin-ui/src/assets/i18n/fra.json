@@ -76,12 +76,14 @@
             "longitude": {
                 "required": "La longitude est obligatoire",
                 "max-length": "Longueur maxi dépassée (32)",
-                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire",
+                "validNumber": "S'il vous plaît entrer uniquement des chiffres"
             },
             "latitude": {
                 "required": "La longitude est obligatoire",
                 "max-length": "Longueur maxi dépassée (32)",
-                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire",
+                "validNumber": "S'il vous plaît entrer uniquement des chiffres"
             },
             "addressLine1": {
                 "required": "La ligne d'adresse 1 est obligatoire",
