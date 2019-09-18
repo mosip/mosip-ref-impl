@@ -9,7 +9,8 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "activateCenter"
     },
     {
       "buttonName": {
@@ -20,7 +21,8 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
     },
     {
       "buttonName": {
