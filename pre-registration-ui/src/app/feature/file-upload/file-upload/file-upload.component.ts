@@ -606,12 +606,22 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * dynamic assigning of idSS
+   *
+   * @param {*} i
+   * @memberof FileUploadComponent
+   */
+  clickOnButton(i) {
+    document.getElementById('file_' + i).click();
+  }
+
+  /**
    *@description method gets called when a file has been uploaded from the html.
    *
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  handleFileInput(event: any) {
+  handleFileInput(event: any, docName: string, docCode: string) {
     const extensionRegex = new RegExp('(?:' + this.allowedFilesHtml.replace(/,/g, '|') + ')');
     const oldFileExtension = this.fileExtension;
     this.fileExtension = event.target.files[0].name.substring(event.target.files[0].name.indexOf('.') + 1);
@@ -633,7 +643,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.getBase64(event.target.files[0]).then(data => {
             this.fileByteArray = data;
           });
-          this.setJsonString();
+          if (!this.documentType && !this.documentCategory) {
+            this.setJsonString(docName, docCode);
+          }
           this.sendFile(event);
         } else {
           this.displayMessage(
@@ -713,6 +725,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     };
 
     this.documentIndex = index;
+    this.setJsonString(this.documentType, this.documentCategory);
   }
 
   /**
@@ -751,11 +764,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  setJsonString() {
-    this.documentUploadRequestBody.docCatCode = this.documentCategory;
+  setJsonString(docName: string, docCode: string) {
+    this.documentUploadRequestBody.docCatCode = docCode;
     this.documentUploadRequestBody.langCode = this.primaryLang;
-    this.documentUploadRequestBody.docTypCode = this.documentType;
+    this.documentUploadRequestBody.docTypCode = docName;
     this.documentRequest = new RequestModel(appConstants.IDS.documentUpload, this.documentUploadRequestBody, {});
+    this.documentCategory = null;
+    this.documentType = null;
   }
 
   /**
@@ -844,16 +859,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       let arr = fileMetadata.filter(ent => ent.docCatCode === 'POA');
       const subs = this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(
         res => {
-          this.sameAsselected = false;
-          this.registration.setSameAs(event.value);
-          this.removePOADocument();
-          let index: number;
-          this.LOD.filter((ele, i) => {
-            if (ele.code === 'POA') index = i;
-          });
-          this.LOD[index].selectedDocName = '';
+          if (res[appConstants.RESPONSE]) {
+            this.sameAsselected = false;
+            this.registration.setSameAs(event.value);
+            this.removePOADocument();
+            let index: number;
+            this.LOD.filter((ele, i) => {
+              if (ele.code === 'POA') index = i;
+            });
+            this.LOD[index].selectedDocName = '';
+          }
+          this.disableNavigation = false;
         },
         err => {
+          this.disableNavigation = false;
           this.displayMessage(
             this.fileUploadLanguagelabels.uploadDocuments.error,
             this.fileUploadLanguagelabels.uploadDocuments.msg9,
@@ -901,8 +920,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       );
       this.subscriptions.push(subs);
       this.sameAsselected = true;
+      this.disableNavigation = false;
     }
-    this.disableNavigation = false;
   }
 
   /**
