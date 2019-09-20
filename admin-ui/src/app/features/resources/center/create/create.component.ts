@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewEncapsulation, ElementRef, ViewChildren } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ElementRef,
+  ViewChildren
+} from '@angular/core';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +29,11 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
-import { MatKeyboardRef, MatKeyboardComponent, MatKeyboardService } from 'ngx7-material-keyboard';
+import {
+  MatKeyboardRef,
+  MatKeyboardComponent,
+  MatKeyboardService
+} from 'ngx7-material-keyboard';
 
 @Component({
   selector: 'app-create',
@@ -231,28 +241,41 @@ export class CreateComponent implements OnInit {
           null,
           secondaryObject
         );
-        this.dataStorageService.updateCenter(secondaryRequest).subscribe(secondaryResponse => {
-          if (!secondaryResponse.errors || secondaryResponse.errors.length === 0) {
-            this.showMessage('update-success').afterClosed().subscribe(() => {
-            this.router.navigateByUrl('admin/resources/centers/view');
+        this.dataStorageService
+          .updateCenter(secondaryRequest)
+          .subscribe(secondaryResponse => {
+            if (
+              !secondaryResponse.errors ||
+              secondaryResponse.errors.length === 0
+            ) {
+              this.showMessage('update-success')
+                .afterClosed()
+                .subscribe(() => {
+                  this.router.navigateByUrl('admin/resources/centers/view');
+                });
+            } else {
+              this.showMessage('update-error');
+            }
           });
-          } else {
-            this.showMessage('update-error');
-          }
-        });
       } else {
         this.showMessage('update-error');
       }
     });
   }
 
-  showMessage(type: string) {
+  showMessage(type: string, data?: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
-        message: this.popupMessages[type].message,
+        message:
+          type === 'create-success'
+            ? this.popupMessages[type].message[0] +
+              data.id +
+              this.popupMessages[type].message[1] +
+              data.name
+            : this.popupMessages[type].message,
         btnTxt: this.popupMessages[type].btnTxt
       }
     });
@@ -315,31 +338,37 @@ export class CreateComponent implements OnInit {
       primaryObject
     );
     console.log(primaryRequest);
-    this.dataStorageService.createCenter(primaryRequest).subscribe(createResponse => {
-      console.log(createResponse);
-      if (!createResponse.errors) {
-        secondaryObject.id = createResponse.response.id;
-        secondaryObject.isActive = false;
-        const secondaryRequest = new RequestModel(
-          appConstants.registrationCenterCreateId,
-          null,
-          secondaryObject
-        );
-        this.dataStorageService.createCenter(secondaryRequest).subscribe(secondaryResponse => {
-          if (!secondaryResponse.errors) {
-            this.showMessage('create-success').afterClosed().subscribe(() => {
-            this.primaryForm.reset();
-            this.secondaryForm.reset();
-            this.router.navigateByUrl('admin/resources/centers/view');
-          });
+    this.dataStorageService
+      .createCenter(primaryRequest)
+      .subscribe(createResponse => {
+        console.log(createResponse);
+        if (!createResponse.errors) {
+          secondaryObject.id = createResponse.response.id;
+          secondaryObject.isActive = false;
+          const secondaryRequest = new RequestModel(
+            appConstants.registrationCenterCreateId,
+            null,
+            secondaryObject
+          );
+          this.dataStorageService
+            .createCenter(secondaryRequest)
+            .subscribe(secondaryResponse => {
+              if (!secondaryResponse.errors) {
+                this.showMessage('create-success', secondaryResponse.response)
+                  .afterClosed()
+                  .subscribe(() => {
+                    this.primaryForm.reset();
+                    this.secondaryForm.reset();
+                    this.router.navigateByUrl('admin/resources/centers/view');
+                  });
+              } else {
+                this.showMessage('create-error');
+              }
+            });
         } else {
           this.showMessage('create-error');
         }
-        });
-      } else {
-        this.showMessage('create-error');
-      }
-    });
+      });
   }
 
   async getData(params: any) {
@@ -745,15 +774,26 @@ export class CreateComponent implements OnInit {
     this.loadLocationData(data.administrativeZoneCode, 'postalCode');
   }
 
-  scrollPage(element: HTMLElement, type: string, formControlName: string, index: number) {
+  scrollPage(
+    element: HTMLElement,
+    type: string,
+    formControlName: string,
+    index: number
+  ) {
     element.scrollIntoView({ block: 'center', inline: 'nearest' });
     this.selectedField = element;
     if (this.keyboardRef) {
-      this.keyboardRef.instance.setInputInstance(this.attachToElementMesOne._results[index]);
+      this.keyboardRef.instance.setInputInstance(
+        this.attachToElementMesOne._results[index]
+      );
       if (type === 'primary') {
-        this.keyboardRef.instance.attachControl(this.primaryForm.controls[formControlName]);
+        this.keyboardRef.instance.attachControl(
+          this.primaryForm.controls[formControlName]
+        );
       } else if (type === 'secondary') {
-        this.keyboardRef.instance.attachControl(this.secondaryForm.controls[formControlName]);
+        this.keyboardRef.instance.attachControl(
+          this.secondaryForm.controls[formControlName]
+        );
       }
     }
   }
