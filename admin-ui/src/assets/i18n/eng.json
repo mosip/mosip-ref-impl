@@ -257,6 +257,20 @@
             "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\nPlease un-map these resources before decommission the Center",
             "error-title": "Error",
             "btnTxt": "Ok"
+        },
+        "activate": {
+            "success-message": "Center Activated Successfully",
+            "success-title": "Success",
+            "error-message": "Center Could not be Activated",
+            "error-title": "Error",
+            "btnTxt": "Ok"
+        },
+        "deactivate": {
+            "success-message": "Center Deactivated Successfully",
+            "success-title": "Success",
+            "error-message": "Center Could not be Deactivated",
+            "error-title": "Error",
+            "btnTxt": "Ok"
         }
     }
 }

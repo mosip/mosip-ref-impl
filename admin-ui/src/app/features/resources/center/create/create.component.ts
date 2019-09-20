@@ -13,7 +13,7 @@ import {
   ValidateKiosk
 } from 'src/app/core/validators/center.validator';
 import { AppConfigService } from 'src/app/app-config.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { CenterModel } from 'src/app/core/models/center.model';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -57,6 +57,7 @@ export class CreateComponent implements OnInit {
   secondaryKeyboard: string;
 
   keyboardType: string;
+  subscribed: any;
 
   constructor(
     private location: Location,
@@ -70,6 +71,11 @@ export class CreateComponent implements OnInit {
     private centerService: CenterService,
     private keyboardService: MatKeyboardService
   ) {
+    this.subscribed = router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.ngOnInit();
+      }
+    });
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
@@ -214,38 +220,43 @@ export class CreateComponent implements OnInit {
     const request = new RequestModel(
       appConstants.registrationCenterCreateId,
       null,
-      [primaryObject, secondaryObject]
+      primaryObject
     );
     console.log(request);
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
       console.log(updateResponse);
       if (!updateResponse.errors || updateResponse.errors.length === 0) {
-        this.dialog
-          .open(DialogComponent, {
-            width: '350px',
-            data: {
-              case: 'MESSAGE',
-              title: this.popupMessages['update-success'].title,
-              message: this.popupMessages['update-success'].message,
-              btnTxt: this.popupMessages['update-success'].btnTxt
-            }
-          })
-          .afterClosed()
-          .subscribe(() => {
+        const secondaryRequest = new RequestModel(
+          appConstants.registrationCenterCreateId,
+          null,
+          secondaryObject
+        );
+        this.dataStorageService.updateCenter(secondaryRequest).subscribe(secondaryResponse => {
+          if (!secondaryResponse.errors || secondaryResponse.errors.length === 0) {
+            this.showMessage('update-success').afterClosed().subscribe(() => {
             this.router.navigateByUrl('admin/resources/centers/view');
           });
-      } else {
-        this.dialog.open(DialogComponent, {
-          width: '350px',
-          data: {
-            case: 'MESSAGE',
-            title: this.popupMessages['update-error'].title,
-            message: this.popupMessages['update-error'].message,
-            btnTxt: this.popupMessages['update-error'].btnTxt
+          } else {
+            this.showMessage('update-error');
           }
         });
+      } else {
+        this.showMessage('update-error');
       }
     });
+  }
+
+  showMessage(type: string) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: {
+        case: 'MESSAGE',
+        title: this.popupMessages[type].title,
+        message: this.popupMessages[type].message,
+        btnTxt: this.popupMessages[type].btnTxt
+      }
+    });
+    return dialogRef;
   }
 
   saveData() {
@@ -260,7 +271,7 @@ export class CreateComponent implements OnInit {
       this.primaryForm.controls.contactPerson.value,
       this.primaryForm.controls.contactPhone.value,
       this.primaryForm.controls.holidayZone.value,
-      this.primaryLang,
+      '',
       this.primaryForm.controls.latitude.value,
       this.primaryForm.controls.postalCode.value,
       this.primaryForm.controls.longitude.value,
@@ -295,50 +306,39 @@ export class CreateComponent implements OnInit {
       this.secondaryForm.controls.zone.value
     );
     delete primaryObject.id;
-    delete secondaryObject.id;
+  //  delete secondaryObject.id;
     delete primaryObject.isActive;
     delete secondaryObject.isActive;
     delete primaryObject.numberOfKiosks;
     delete secondaryObject.numberOfKiosks;
-    const request = new RequestModel(
+    const primaryRequest = new RequestModel(
       appConstants.registrationCenterCreateId,
       null,
-      [primaryObject, secondaryObject]
+      primaryObject
     );
-    console.log(request);
-    this.dataStorageService.createCenter(request).subscribe(createResponse => {
+    console.log(primaryRequest);
+    this.dataStorageService.createCenter(primaryRequest).subscribe(createResponse => {
       console.log(createResponse);
       if (!createResponse.errors) {
-        this.dialog
-          .open(DialogComponent, {
-            width: '350px',
-            data: {
-              case: 'MESSAGE',
-              title: this.popupMessages['create-success'].title,
-              message:
-                this.popupMessages['create-success'].message[0] +
-                createResponse.response.registrationCenters[0].id +
-                this.popupMessages['create-success'].message[1] +
-                createResponse.response.registrationCenters[0].name,
-              btnTxt: this.popupMessages['create-success'].btnTxt
-            }
-          })
-          .afterClosed()
-          .subscribe(() => {
+        secondaryObject.id = createResponse.response.id;
+        const secondaryRequest = new RequestModel(
+          appConstants.registrationCenterCreateId,
+          null,
+          secondaryObject
+        );
+        this.dataStorageService.createCenter(secondaryRequest).subscribe(secondaryResponse => {
+          if (!secondaryResponse.errors) {
+            this.showMessage('create-success').afterClosed().subscribe(() => {
             this.primaryForm.reset();
             this.secondaryForm.reset();
             this.router.navigateByUrl('admin/resources/centers/view');
           });
-      } else {
-        this.dialog.open(DialogComponent, {
-          width: '350px',
-          data: {
-            case: 'MESSAGE',
-            title: this.popupMessages['create-error'].title,
-            message: this.popupMessages['create-error'].message,
-            btnTxt: this.popupMessages['create-error'].btnTxt
-          }
+        } else {
+          this.showMessage('create-error');
+        }
         });
+      } else {
+        this.showMessage('create-error');
       }
     });
   }
@@ -780,6 +780,7 @@ export class CreateComponent implements OnInit {
     if (this.keyboardService.isOpened) {
       this.keyboardService.dismiss();
     }
+    this.subscribed.unsubscribe();
     if (
       (this.primaryForm.touched || this.secondaryForm.touched) &&
       !this.createUpdate

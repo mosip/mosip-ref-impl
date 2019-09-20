@@ -258,6 +258,20 @@
             "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / ordinateurs / appareils) y sont toujours mappées.\nVeuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
             "error-title": "Erreur",
             "btnTxt": "D'accord"
+        },
+        "activate": {
+            "success-message": "Centre activé avec succès",
+            "success-title": "Succès",
+            "error-message": "Le centre n'a pas pu être activé",
+            "error-title": "Erreur",
+            "btnTxt": "D'accord"
+        },
+        "deactivate": {
+            "success-message": "Centre désactivé avec succès",
+            "success-title": "Succès",
+            "error-message": "Le centre n'a pas pu être désactivé",
+            "error-title": "Erreur",
+            "btnTxt": "D'accord"
         }
     }
 }
