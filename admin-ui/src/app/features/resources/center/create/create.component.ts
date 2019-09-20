@@ -271,7 +271,7 @@ export class CreateComponent implements OnInit {
       this.primaryForm.controls.contactPerson.value,
       this.primaryForm.controls.contactPhone.value,
       this.primaryForm.controls.holidayZone.value,
-      '',
+      this.primaryLang,
       this.primaryForm.controls.latitude.value,
       this.primaryForm.controls.postalCode.value,
       this.primaryForm.controls.longitude.value,
@@ -281,7 +281,9 @@ export class CreateComponent implements OnInit {
       '00:' + this.primaryForm.controls.processingTime.value + ':00',
       '(GTM+01:00) CENTRAL EUROPEAN TIME',
       this.primaryForm.controls.workingHours.value,
-      this.primaryForm.controls.zone.value
+      this.primaryForm.controls.zone.value,
+      '',
+      false
     );
     const secondaryObject = new CenterModel(
       this.secondaryForm.controls.addressLine1.value,
@@ -305,10 +307,6 @@ export class CreateComponent implements OnInit {
       this.secondaryForm.controls.workingHours.value,
       this.secondaryForm.controls.zone.value
     );
-    delete primaryObject.id;
-  //  delete secondaryObject.id;
-    delete primaryObject.isActive;
-    delete secondaryObject.isActive;
     delete primaryObject.numberOfKiosks;
     delete secondaryObject.numberOfKiosks;
     const primaryRequest = new RequestModel(
@@ -321,6 +319,7 @@ export class CreateComponent implements OnInit {
       console.log(createResponse);
       if (!createResponse.errors) {
         secondaryObject.id = createResponse.response.id;
+        secondaryObject.isActive = false;
         const secondaryRequest = new RequestModel(
           appConstants.registrationCenterCreateId,
           null,
