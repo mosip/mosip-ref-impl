@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DialougComponent } from '../../../shared/dialoug/dialoug.component';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
@@ -14,13 +14,14 @@ import { ConfigService } from 'src/app/core/services/config.service';
 import * as appConstants from './../../../app.constants';
 import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
 import LanguageFactory from 'src/assets/i18n';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-center-selection',
   templateUrl: './center-selection.component.html',
   styleUrls: ['./center-selection.component.css']
 })
-export class CenterSelectionComponent extends BookingDeactivateGuardService implements OnInit {
+export class CenterSelectionComponent extends BookingDeactivateGuardService implements OnInit, OnDestroy {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
   canDeactivateFlag = true;
@@ -41,6 +42,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   searchTextFlag = false;
   displayMessage = 'Showing nearby registration centers';
   users: UserModel[];
+  subscriptions: Subscription[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -59,9 +61,10 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   ngOnInit() {
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
-    this.dataService.getLocationTypeData().subscribe(response => {
+    const subs = this.dataService.getLocationTypeData().subscribe(response => {
       this.locationTypes = response[appConstants.RESPONSE]['locations'];
     });
+    this.subscriptions.push(subs);
     this.users = this.service.getNameList();
     this.getRecommendedCenters();
     this.getErrorLabels();
@@ -79,7 +82,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     this.users.forEach(user => {
       pincodes.push(user['postalCode']);
     });
-    this.dataService
+    const subs = this.dataService
       .recommendedCenters(
         localStorage.getItem('langCode'),
         this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode),
@@ -88,6 +91,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
       .subscribe(response => {
         if (response[appConstants.RESPONSE]) this.displayResults(response['response']);
       });
+    this.subscriptions.push(subs);
   }
 
   setSearchClick(flag: boolean) {
@@ -118,7 +122,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     this.REGISTRATION_CENTRES = [];
     if (this.locationType !== null && this.searchText !== null) {
       this.showMap = false;
-      this.dataService
+      const subs = this.dataService
         .getRegistrationCentersByName(this.locationType.locationHierarchylevel, this.searchText)
         .subscribe(
           response => {
@@ -134,6 +138,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
             this.displayMessageError('Error', this.errorlabels.error, error);
           }
         );
+      this.subscriptions.push(subs);
     }
   }
 
@@ -156,7 +161,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     if (navigator.geolocation) {
       this.showMap = false;
       navigator.geolocation.getCurrentPosition(position => {
-        this.dataService.getNearbyRegistrationCenters(position.coords).subscribe(
+        const subs = this.dataService.getNearbyRegistrationCenters(position.coords).subscribe(
           response => {
             if (
               response[appConstants.NESTED_ERROR].length === 0 &&
@@ -172,6 +177,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
             this.displayMessageError('Error', this.errorlabels.error, error);
           }
         );
+        this.subscriptions.push(subs);
       });
     } else {
     }
@@ -260,5 +266,9 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
       data: data
     });
     return dialogRef;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

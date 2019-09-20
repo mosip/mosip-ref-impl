@@ -72,7 +72,8 @@ export const ERROR_CODES = {
   userBlocked: 'PRG_PAM_LGN_013',
   invalidPin: 'KER-IOV-004',
   tokenExpired: 'KER-ATH-401',
-  slotNotAvailable: 'PRG_BOOK_RCI_002'
+  slotNotAvailable: 'PRG_BOOK_RCI_002',
+  timeExpired: 'PRG_BOOK_RCI_026'
 };
 
 export const CONFIG_KEYS = {

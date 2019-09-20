@@ -18,9 +18,9 @@
             disableOptionCentering
             placeholder="{{ document.code }}"
             (selectionChange)="selectChange($event, i)"
-            (openedChange)="openedChange(i, $event)"
             [disabled]="document.code === 'POA' && sameAsselected ? true : false"
           >
+            <!-- (openedChange)="openedChange(i, $event)" -->
             <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
               {{ ValidDocument.name }}
             </mat-option>
@@ -30,17 +30,17 @@
           <input
             #fileUpload
             type="file"
-            id="file"
+            id="file_{{ i }}"
             (click)="fileUpload.value = null"
             value=""
-            (change)="handleFileInput($event)"
+            (change)="handleFileInput($event, document.selectedDocName, document.code)"
             style="display: none;"
           />
           <input
             class="browseInput"
             value="{{ 'documents.action_browse' | translate }}"
             type="button"
-            onclick="document.getElementById('file').click();"
+            (click)="clickOnButton(i)"
             [disabled]="
               (document.code === 'POA' && sameAsselected) ||
               !document.selectedDocName ||
