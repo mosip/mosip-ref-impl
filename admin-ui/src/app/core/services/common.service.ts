@@ -82,8 +82,13 @@ export class CommonService {
     this.dataService
       .decommissionCenter(data[idKey])
       .subscribe(response => {
-        if (response['errors'] !== null && response['errors'].length === 0) {
+        if (!response['errors']) {
           this.createMessage('success', 'decommission');
+          if (this.router.url.indexOf('single-view') >= 0) {
+            this.router.navigateByUrl('admin/resources/centers/view');
+          } else {
+            this.router.navigateByUrl(this.router.url);
+          }
         } else {
           this.createMessage('error', 'decommission');
         }
@@ -94,12 +99,14 @@ export class CommonService {
 
   activateCenter(data: any, url: string, idKey: string) {
     data.isActive = true;
+    delete data.centerTypeName;
     console.log(data);
     this.updateCenter('activate', data);
   }
 
   deactivateCenter(data: any, url: string, idKey: string) {
     data.isActive = false;
+    delete data.centerTypeName;
     console.log(data);
     this.updateCenter('deactivate', data);
   }
