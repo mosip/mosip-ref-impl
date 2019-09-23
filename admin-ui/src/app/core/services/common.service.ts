@@ -137,6 +137,6 @@ export class CommonService {
     const centerObject = this.mapDataToObject(data);
     centerObject.isActive = false;
     console.log(centerObject);
-    this.updateCenter('activate', centerObject);
+    this.updateCenter('deactivate', centerObject);
   }
 }

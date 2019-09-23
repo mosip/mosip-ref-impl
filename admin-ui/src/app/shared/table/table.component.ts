@@ -136,7 +136,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ellipsisAction(data) {
     if (data.isActive === true) {
-      this.ellipsisList = this.buttonList;
+      this.ellipsisList = [...this.buttonList];
       this.ellipsisList.filter(values => {
         if (values.buttonName.eng === 'Activate') {
           const index = this.ellipsisList.indexOf(values);
@@ -144,7 +144,7 @@ export class TableComponent implements OnInit, OnChanges {
         }
       });
     } else if (data.isActive === false) {
-      this.ellipsisList = this.buttonList;
+      this.ellipsisList = [...this.buttonList];
       this.ellipsisList.filter(values => {
         if (values.buttonName.eng === 'Deactivate') {
           const index = this.ellipsisList.indexOf(values);
