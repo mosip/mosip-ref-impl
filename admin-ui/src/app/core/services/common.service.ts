@@ -73,6 +73,35 @@ export class CommonService {
     }, error => this.createMessage('error', callingFunction));
   }
 
+  private mapDataToObject(data: any): CenterModel {
+    const primaryObject = new CenterModel(
+      data.addressLine1,
+      data.addressLine2,
+      data.addressLine3,
+      data.centerEndTime,
+      data.centerStartTime,
+      data.centerTypeCode,
+      data.contactPerson,
+      data.contactPhone,
+      data.holidayLocationCode,
+      this.appService.getConfig().primaryLangCode,
+      data.latitude,
+      data.postalCode,
+      data.longitude,
+      data.lunchEndTime,
+      data.lunchStartTime,
+      data.name,
+      data.perKioskProcessTime,
+      data.timeZone,
+      data.workingHours,
+      data.zoneCode,
+      data.id,
+      data.isActive,
+      data.numberOfKiosks
+    );
+    return primaryObject;
+  }
+
   centerView(data: any, url: string, idKey: string) {
     url = url.replace('$id', data[idKey]);
     this.router.navigateByUrl(url);
@@ -98,16 +127,16 @@ export class CommonService {
   }
 
   activateCenter(data: any, url: string, idKey: string) {
-    data.isActive = true;
-    delete data.centerTypeName;
-    console.log(data);
-    this.updateCenter('activate', data);
+    const centerObject = this.mapDataToObject(data);
+    centerObject.isActive = true;
+    console.log(centerObject);
+    this.updateCenter('activate', centerObject);
   }
 
   deactivateCenter(data: any, url: string, idKey: string) {
-    data.isActive = false;
-    delete data.centerTypeName;
-    console.log(data);
-    this.updateCenter('deactivate', data);
+    const centerObject = this.mapDataToObject(data);
+    centerObject.isActive = false;
+    console.log(centerObject);
+    this.updateCenter('activate', centerObject);
   }
 }

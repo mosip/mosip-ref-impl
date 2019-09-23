@@ -39,6 +39,8 @@ export class DialogComponent implements OnInit {
   rangeError = false;
   fieldName = '';
 
+  cancelApplied = false;
+
   filterOptions: any = {};
 
   constructor(
@@ -64,6 +66,7 @@ export class DialogComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.cancelApplied = true;
     this.dialog.closeAll();
   }
 
@@ -315,7 +318,7 @@ export class DialogComponent implements OnInit {
       this.rangeError = false;
     }
     console.log(this.requiredError, this.filterGroup.valid, this.rangeError);
-    if (!this.requiredError && !this.rangeError && this.filterGroup.valid) {
+    if (!this.requiredError && !this.rangeError && this.filterGroup.valid && !this.cancelApplied) {
       const filters = Utils.convertFilter(
         this.activatedRoute.snapshot.queryParams,
         this.config.getConfig().primaryLangCode
