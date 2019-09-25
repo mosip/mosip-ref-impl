@@ -41,12 +41,26 @@ export class CommonService {
     });
   }
 
-  private createMessage(type: string, listItem: string) {
+  private confirmationPopup(type: string, data: any) {
+    const obj = {
+      case: 'CONFIRMATION',
+      title: this.actionMessages[type]['confirmation-title'],
+      message: this.actionMessages[type]['confirmation-message'][0] + data + this.actionMessages[type]['confirmation-message'][1],
+      yesBtnTxt: this.actionMessages[type]['yesBtnTxt'],
+      noBtnTxt: this.actionMessages[type]['noBtnTxt']
+    };
+    return this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: obj
+    });
+  }
+
+  private createMessage(type: string, listItem: string, data?: any) {
     let obj = {};
     if (type === 'success') {
       obj = {
         title: this.actionMessages[listItem]['success-title'],
-        message: this.actionMessages[listItem]['success-message'],
+        message: this.actionMessages[listItem]['success-message'][0] + data + this.actionMessages[listItem]['success-message'][0],
         btnTxt: this.actionMessages[listItem]['btnTxt']
       };
     } else if (type === 'error') {
@@ -68,7 +82,7 @@ export class CommonService {
     this.dataService.updateCenter(request).subscribe(
       response => {
         if (!response.errors || response.errors.length === 0) {
-          this.createMessage('success', callingFunction);
+          this.createMessage('success', callingFunction, request.request.name);
           this.router.navigateByUrl(this.router.url);
         } else {
           this.createMessage('error', callingFunction);
@@ -134,23 +148,30 @@ export class CommonService {
         ]
       });
     }
-    this.dataService.decommissionCenter(data[idKey]).subscribe(
-      response => {
-        if (!response['errors']) {
-          this.createMessage('success', 'decommission');
-          if (this.router.url.indexOf('single-view') >= 0) {
-            this.router.navigateByUrl('admin/resources/centers/view');
-          } else {
-            this.router.navigateByUrl(this.router.url);
+    this.confirmationPopup('decommission', data.name).afterClosed().subscribe(res => {
+      if (res) {
+        this.auditService.audit(18, 'ADM-098', 'decommission');
+        this.dataService.decommissionCenter(data[idKey]).subscribe(
+          response => {
+            if (!response['errors']) {
+              this.createMessage('success', 'decommission', data.name);
+              if (this.router.url.indexOf('single-view') >= 0) {
+                this.router.navigateByUrl('admin/resources/centers/view');
+              } else {
+                this.router.navigateByUrl(this.router.url);
+              }
+            } else {
+              this.createMessage('error', 'decommission');
+            }
+          },
+          error => {
+            this.createMessage('error', 'decommission');
           }
-        } else {
-          this.createMessage('error', 'decommission');
-        }
-      },
-      error => {
-        this.createMessage('error', 'decommission');
+        );
+      } else {
+        this.auditService.audit(19, 'ADM-099', 'decommission');
       }
-    );
+    });
   }
 
   activateCenter(data: any, url: string, idKey: string) {
@@ -169,10 +190,17 @@ export class CommonService {
         ]
       });
     }
-    const centerObject = this.mapDataToObject(data);
-    centerObject.isActive = true;
-    console.log(centerObject);
-    this.updateCenter('activate', centerObject);
+    this.confirmationPopup('activate', data.name).afterClosed().subscribe(res => {
+      if (res) {
+        this.auditService.audit(18, 'ADM-100', 'activate');
+        const centerObject = this.mapDataToObject(data);
+        centerObject.isActive = true;
+        console.log(centerObject);
+        this.updateCenter('activate', centerObject);
+      } else {
+        this.auditService.audit(19, 'ADM-101', 'activate');
+      }
+    });
   }
 
   deactivateCenter(data: any, url: string, idKey: string) {
@@ -192,9 +220,16 @@ export class CommonService {
         ]
       });
     }
-    const centerObject = this.mapDataToObject(data);
-    centerObject.isActive = false;
-    console.log(centerObject);
-    this.updateCenter('deactivate', centerObject);
+    this.confirmationPopup('deactivate', data.name).afterClosed().subscribe(res => {
+      if (res) {
+        this.auditService.audit(18, 'ADM-102', 'deactivate');
+        const centerObject = this.mapDataToObject(data);
+        centerObject.isActive = false;
+        console.log(centerObject);
+        this.updateCenter('deactivate', centerObject);
+      } else {
+        this.auditService.audit(19, 'ADM-103', 'deactivate');
+      }
+    });
   }
 }

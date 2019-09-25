@@ -252,25 +252,37 @@
     },
     "actionMessages" : {
         "decommission": {
-            "success-message": "Center Decommissioned Successfully",
+            "success-message": ["The Registration Center ", " is Decommissioned successfully"],
             "success-title": "Success",
             "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\nPlease un-map these resources before decommission the Center",
             "error-title": "Error",
-            "btnTxt": "Ok"
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Decommission the Registration Center ", "? \n You cannot undo this action once you click on Confirm."],
+            "confirmation-title": "Confirmation"
         },
         "activate": {
-            "success-message": "Center Activated Successfully",
+            "success-message": ["Registration Center ", " is Activated Successfully"],
             "success-title": "Success",
             "error-message": "Center Could not be Activated",
             "error-title": "Error",
-            "btnTxt": "Ok"
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Activate the Registration Center ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
+            "confirmation-title": "Confirmation"
         },
         "deactivate": {
-            "success-message": "Center Deactivated Successfully",
+            "success-message": ["Registration Center ", " is Deactivated Successfully"],
             "success-title": "Success",
             "error-message": "Center Could not be Deactivated",
             "error-title": "Error",
-            "btnTxt": "Ok"
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
+            "confirmation-title": "Confirmation"
         }
     }
 }

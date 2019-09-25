@@ -73,6 +73,10 @@ export class DialogComponent implements OnInit {
     this.dialog.closeAll();
   }
 
+  dismiss(): void {
+    this.dialog.closeAll();
+  }
+
   getFilterMappings() {
     return new Promise((resolve, reject) => {
       this.routeParts = this.router.url.split('/')[3];
@@ -228,7 +232,6 @@ export class DialogComponent implements OnInit {
   }
 
   async getFilterValuesOnSubmit() {
-    this.auditService.audit(12, 'ADM-092', this.routeParts);
     this.existingFilters = [];
     Object.keys(this.filterGroup.controls).forEach(key => {
       const filter = this.FilterData.filter(data => data.filtername === key);
@@ -323,6 +326,7 @@ export class DialogComponent implements OnInit {
     }
     console.log(this.requiredError, this.filterGroup.valid, this.rangeError);
     if (!this.requiredError && !this.rangeError && this.filterGroup.valid && !this.cancelApplied) {
+      this.auditService.audit(12, 'ADM-092', this.routeParts);
       const filters = Utils.convertFilter(
         this.activatedRoute.snapshot.queryParams,
         this.config.getConfig().primaryLangCode
