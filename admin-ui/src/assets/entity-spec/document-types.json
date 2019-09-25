@@ -1,43 +1,44 @@
 {
+  "auditEventIds": ["ADM-032", "ADM-054"],
   "actionButtons": [
     {
-        "buttonName": {
-          "eng": "Activate",
-          "ara": "تنشيط",
-          "fra": "déclencher"
-        },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
       },
-      {
-        "buttonName": {
-          "eng": "Deactivate",
-          "ara": "الغاء تنشيط",
-          "fra": "désactiver"
-        },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
       },
-      {
-        "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
-      },
-      {
-        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-        "imagePath":"assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "filter" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      }
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
   ],
   "columnsToDisplay": [
     {
@@ -64,7 +65,7 @@
       "name": "isActive",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label":{ "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -95,35 +96,47 @@
       "LinkURL": ""
     },
     {
-        "name": "createdBy",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": { "eng": "Created By", "ara": "تم إنشاؤه من قبل", "fra": "Créé par" },
-        "sortOrder": "3",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
+      "name": "createdBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created By",
+        "ara": "تم إنشاؤه من قبل",
+        "fra": "Créé par"
       },
-      {
-        "name": "updatedBy",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": { "eng": "Updated By", "ara": "تم التحديث بواسطة", "fra": "Mise à jour par" },
-        "sortOrder": "3",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par"
       },
-      {
-        "name": "updatedDateTime",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": { "eng": "Updated Time", "ara": "وقت التحديث", "fra": "Temps mis à jour" },
-        "sortOrder": "3",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      }
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedDateTime",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated Time",
+        "ara": "وقت التحديث",
+        "fra": "Temps mis à jour"
+      },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
   ],
   "paginator": {
     "totalEntries": null,
@@ -137,21 +150,21 @@
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"documenttypes",
-      "fieldName":"name",
-      "methodCallName":""
+      "datePicker": "false",
+      "apiName": "documenttypes",
+      "fieldName": "name",
+      "methodCallName": ""
     },
     {
       "filtername": "isActive",
       "filterlabel": "Status",
       "filterType": "equals",
       "autocomplete": "false",
-      "dropdown": "true",        
-      "datePicker":"false",
-      "apiName":"documenttypes",
-      "fieldName":"isActive",
-      "methodCallName":""
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "documenttypes",
+      "fieldName": "isActive",
+      "methodCallName": ""
     }
   ]
 }

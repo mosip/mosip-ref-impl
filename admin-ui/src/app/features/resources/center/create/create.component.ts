@@ -34,13 +34,15 @@ import {
   MatKeyboardComponent,
   MatKeyboardService
 } from 'ngx7-material-keyboard';
+import { AuditService } from 'src/app/core/services/audit.service';
+import * as centerSpecFile from '../../../../../assets/entity-spec/center.json';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent {
   secondaryLanguageLabels: any;
   primaryLang: string;
   secondaryLang: string;
@@ -79,11 +81,12 @@ export class CreateComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private centerService: CenterService,
-    private keyboardService: MatKeyboardService
+    private keyboardService: MatKeyboardService,
+    private auditService: AuditService
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.ngOnInit();
+        this.initializeComponent();
       }
     });
     // tslint:disable-next-line:no-string-literal
@@ -96,13 +99,15 @@ export class CreateComponent implements OnInit {
     this.loadLocationData('MOR', 'region');
   }
 
-  async ngOnInit() {
+  initializeComponent() {
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
+        this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers');
         this.disableForms = true;
         this.getData(params);
       } else {
+        this.auditService.audit(16, 'ADM-096');
         this.initializeheader();
       }
     });
@@ -654,6 +659,7 @@ export class CreateComponent implements OnInit {
 
   submit() {
     if (!this.disableForms) {
+      this.auditService.audit(17, 'ADM-097');
       if (this.primaryForm.valid) {
         for (const i in this.secondaryForm.controls) {
           if (this.secondaryForm.controls[i]) {

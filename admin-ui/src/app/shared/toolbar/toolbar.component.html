@@ -29,7 +29,7 @@
         (page)="onPaginateChange($event)"
       >
       </mat-paginator>
-      <button mat-icon-button>
+      <button (click)="export()" mat-icon-button>
         <mat-icon>save_alt</mat-icon>
       </button>
     </div>

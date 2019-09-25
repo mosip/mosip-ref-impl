@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'src/app/app-config.service';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-packet-status',
@@ -8,7 +9,6 @@ import { AppConfigService } from 'src/app/app-config.service';
   styleUrls: ['./packet-status.component.scss']
 })
 export class PacketStatusComponent implements OnInit {
-
   data = [
     {
       stageName: 'Virus Scan',
@@ -90,11 +90,16 @@ export class PacketStatusComponent implements OnInit {
   id = '';
   error = false;
 
-  constructor(private translate: TranslateService, private appService: AppConfigService) {
+  constructor(
+    private translate: TranslateService,
+    private appService: AppConfigService,
+    private auditService: AuditService
+  ) {
     translate.use(appService.getConfig().primaryLangCode);
-   }
+  }
 
   ngOnInit() {
+    this.auditService.audit(5, 'ADM-045');
   }
 
   search() {

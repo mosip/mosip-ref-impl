@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
@@ -11,15 +11,24 @@ import Utils from 'src/app/app.utils';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnDestroy {
+export class ViewComponent implements OnInit, OnDestroy {
 
-
+  displayedColumns = [];
+  actionButtons = [];
+  actionEllipsis = [];
+  paginatorOptions: any;
+  sortFilter = [];
+  pagination = new PaginationModel();
+  centerRequest = {} as CenterRequest;
+  requestModel: RequestModel;
+  machines = [];
   subscribed: any;
   errorMessages: any;
   noData = false;
@@ -31,7 +40,8 @@ export class ViewComponent implements OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private auditService: AuditService
   ) {
     this.getMachinesConfigs();
     translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
@@ -44,16 +54,10 @@ export class ViewComponent implements OnDestroy {
       }
     });
   }
-  displayedColumns = [];
-  actionButtons = [];
-  actionEllipsis = [];
-  paginatorOptions: any;
-  sortFilter = [];
-  pagination = new PaginationModel();
-  centerRequest = {} as CenterRequest;
-  requestModel: RequestModel;
-  machines = [];
 
+  ngOnInit() {
+    this.auditService.audit(3, machinesConfig.auditEventIds[0], 'machines');
+  }
 
   getMachinesConfigs() {
     this.displayedColumns = machinesConfig.columnsToDisplay;

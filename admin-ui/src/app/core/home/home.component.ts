@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuditService } from '../services/audit.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auditService: AuditService) { }
 
   ngOnInit() {
+    this.auditService.audit(6, 'ADM-046');
   }
 
 }

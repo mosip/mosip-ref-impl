@@ -1,134 +1,134 @@
 {
-    "actionButtons": [
-      {
-        "buttonName": {
-          "eng": "Filter",
-          "fra": "filtre",
-          "ara": "تصفيه"
-        },
-        "imagePath":"assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "filter" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      }
-    ],
-    "columnsToDisplay": [
-       
-          {
-            "name": "word",
-            "showInListView": "true",
-            "showInSingleView": "true",
-            "label": { "eng": " Blacklisted Words", "ara": "اسم", "fra": "prénom" },
-            "sortOrder": "",
-            "showAsLink": "",
-            "linkType": "",
-            "LinkURL": ""
-          },
-          {
-            "name": "description",
-            "showInListView": "true",
-            "showInSingleView": "true",
-            "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
-            "sortOrder": "",
-            "showAsLink": "",
-            "linkType": "",
-            "LinkURL": ""
-          },
-          {
-            "name": "langCode",
-            "showInListView": "true",
-            "label": { "eng": "Language", "ara": "حاله", "fra": "Language" },
-            "sortOrder": "",
-            "showAsLink": "false",
-            "linkType": "",
-            "LinkURL": ""
-          },
-          {
-            "name": "isActive",
-            "showInListView": "true",
-            "showInSingleView": "true",
-            "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
-            "sortOrder": "",
-            "showAsLink": "false",
-            "linkType": "",
-            "LinkURL": ""
-          },
-          {
-            "name": "isDeleted",
-            "showInListView": "false",
-            "label": { "eng": "Deleted", "ara": "حاله", "fra": "statut" },
-            "sortOrder": "",
-            "showAsLink": "false",
-            "linkType": "",
-            "LinkURL": ""
-          },
-          {
-            "name": "createdBy",
-            "showInListView": "false",
-            "label": {
-              "eng": "Created By",
-              "ara": "تم إنشاؤه من قبل",
-              "fra": "Créé par"
-            },
-            "sortOrder": "",
-            "showAsLink": "",
-            "linkType": "",
-            "LinkURL": ""
-          },
-          {
-            "name": "updatedBy",
-            "showInListView": "false",
-            "label": {
-              "eng": "Updated By",
-              "ara": "تم التحديث بواسطة",
-              "fra": "Mise à jour par"
-            },
-            "sortOrder": "",
-            "showAsLink": "",
-            "linkType": "",
-            "LinkURL": ""
-          }     
-    ],
-    "paginator": {
-      "totalEntries": null,
-      "pageSize": "10",
-      "pageSizeList": [10, 20, 30, 40, 50]
+  "auditEventIds": ["ADM-025", "ADM-047"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Filter",
+        "fra": "filtre",
+        "ara": "تصفيه"
+      },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "word",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": " Blacklisted Words", "ara": "اسم", "fra": "prénom" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
     },
-    "filterColumns": [
-      {
-        "filtername": "word",
-        "filterlabel": "Word",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false",
-        "apiName":"blacklistedwords",
-        "fieldName":"word",
-        "methodCallName":""
+    {
+      "name": "description",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "langCode",
+      "showInListView": "true",
+      "label": { "eng": "Language", "ara": "حاله", "fra": "Language" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isDeleted",
+      "showInListView": "false",
+      "label": { "eng": "Deleted", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdBy",
+      "showInListView": "false",
+      "label": {
+        "eng": "Created By",
+        "ara": "تم إنشاؤه من قبل",
+        "fra": "Créé par"
       },
-      {
-        "filtername": "langCode",
-        "filterlabel": "Language",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"blacklistedwords",
-        "fieldName":"langCode",
-        "methodCallName":""
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedBy",
+      "showInListView": "false",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par"
       },
-      {
-        "filtername": "isActive",
-        "filterlabel": "Status",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"blacklistedwords",
-        "fieldName":"isActive",
-        "methodCallName":""
-      }
-    ]
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "word",
+      "filterlabel": "Word",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "blacklistedwords",
+      "fieldName": "word",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "langCode",
+      "filterlabel": "Language",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "blacklistedwords",
+      "fieldName": "langCode",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "blacklistedwords",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    }
+  ]
 }

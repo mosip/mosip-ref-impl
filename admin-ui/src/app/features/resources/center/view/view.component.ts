@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -11,12 +11,13 @@ import Utils from '../../../../app.utils';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnDestroy {
+export class ViewComponent implements OnInit, OnDestroy {
   displayedColumns = [];
   actionButtons = [];
   actionEllipsis = [];
@@ -37,7 +38,8 @@ export class ViewComponent implements OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private auditService: AuditService
   ) {
     this.getCenterConfigs();
     this.translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
@@ -49,6 +51,10 @@ export class ViewComponent implements OnDestroy {
         this.getRegistrationCenters();
       }
     });
+  }
+
+  ngOnInit() {
+    this.auditService.audit(3, centerConfig.auditEventIds[0], 'centers');
   }
 
   getCenterConfigs() {

@@ -1,4 +1,5 @@
 {
+  "auditEventIds": ["ADM-027", "ADM-049"],
   "actionButtons": [
     {
       "buttonName": {
@@ -195,10 +196,10 @@
       "fieldType": "input",
       "autocomplete": "false",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"registrationcenters",
-      "fieldName":"name",
-      "methodCallName":""
+      "datePicker": "false",
+      "apiName": "registrationcenters",
+      "fieldName": "name",
+      "methodCallName": ""
     },
     {
       "filtername": "centerTypeName",
@@ -207,10 +208,10 @@
       "fieldType": "mat-select",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false",
-      "apiName":"registrationcentertypes",
-      "fieldName":"name",
-      "methodCallName":""
+      "datePicker": "false",
+      "apiName": "registrationcentertypes",
+      "fieldName": "name",
+      "methodCallName": ""
     },
     {
       "filtername": "isActive",
@@ -219,10 +220,10 @@
       "fieldType": "input",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false",
-      "apiName":"registrationcenters",
-      "fieldName":"isActive",
-      "methodCallName":""
+      "datePicker": "false",
+      "apiName": "registrationcenters",
+      "fieldName": "isActive",
+      "methodCallName": ""
     },
     {
       "filtername": "region",
@@ -231,11 +232,10 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"locations",
-      "fieldName":"Region",
-      "methodCallName":""
-
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Region",
+      "methodCallName": ""
     },
     {
       "filtername": "province",
@@ -244,11 +244,10 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"locations",
-      "fieldName":"Province",
-      "methodCallName":""
-
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Province",
+      "methodCallName": ""
     },
     {
       "filtername": "city",
@@ -258,11 +257,10 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"locations",
-      "fieldName":"City",
-      "methodCallName":""
-
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "City",
+      "methodCallName": ""
     },
     {
       "filtername": "Zone",
@@ -271,11 +269,10 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"locations",
-      "fieldName":"Zone",
-      "methodCallName":""
-
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Zone",
+      "methodCallName": ""
     },
     {
       "filtername": "postalCode",
@@ -284,11 +281,10 @@
       "fieldType": "input",
       "autocomplete": "true",
       "dropdown": "false",
-      "datePicker":"false",
-      "apiName":"locations",
-      "fieldName":"Postal Code",
-      "methodCallName":""
-
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Postal Code",
+      "methodCallName": ""
     }
   ]
 }
