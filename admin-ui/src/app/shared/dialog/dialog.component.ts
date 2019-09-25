@@ -14,6 +14,7 @@ import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import Utils from 'src/app/app.utils';
 import { FilterModel } from 'src/app/core/models/filter.model';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-dialog',
@@ -50,7 +51,8 @@ export class DialogComponent implements OnInit {
     private router: Router,
     private dataStorageService: DataStorageService,
     private config: AppConfigService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private auditService: AuditService
   ) {}
 
   async ngOnInit() {
@@ -66,6 +68,7 @@ export class DialogComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.auditService.audit(11, 'ADM-091', this.routeParts);
     this.cancelApplied = true;
     this.dialog.closeAll();
   }
@@ -225,6 +228,7 @@ export class DialogComponent implements OnInit {
   }
 
   async getFilterValuesOnSubmit() {
+    this.auditService.audit(12, 'ADM-092', this.routeParts);
     this.existingFilters = [];
     Object.keys(this.filterGroup.controls).forEach(key => {
       const filter = this.FilterData.filter(data => data.filtername === key);
@@ -325,7 +329,7 @@ export class DialogComponent implements OnInit {
       );
       filters.filters = this.existingFilters;
       const url = Utils.convertFilterToUrl(filters);
-      this.onNoClick();
+      this.dialog.closeAll();
       this.router.navigateByUrl(this.router.url.split('?')[0] + '?' + url);
     }
   }

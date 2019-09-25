@@ -8,13 +8,12 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { RequestModel } from '../models/request.model';
 import * as appConstants from '../../app.constants';
 import { CenterModel } from '../models/center.model';
+import { AuditService } from './audit.service';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class CommonService {
-
   actionMessages: any;
 
   constructor(
@@ -22,9 +21,12 @@ export class CommonService {
     private dataService: DataStorageService,
     private dialog: MatDialog,
     private appService: AppConfigService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private auditService: AuditService
   ) {
-      translate.getTranslation(appService.getConfig().primaryLangCode).subscribe(result => {
+    translate
+      .getTranslation(appService.getConfig().primaryLangCode)
+      .subscribe(result => {
         this.actionMessages = result.actionMessages;
       });
   }
@@ -63,14 +65,17 @@ export class CommonService {
       null,
       data
     );
-    this.dataService.updateCenter(request).subscribe(response => {
-      if (!response.errors || response.errors.length === 0) {
-        this.createMessage('success', callingFunction);
-        this.router.navigateByUrl(this.router.url);
-      } else {
-        this.createMessage('error', callingFunction);
-      }
-    }, error => this.createMessage('error', callingFunction));
+    this.dataService.updateCenter(request).subscribe(
+      response => {
+        if (!response.errors || response.errors.length === 0) {
+          this.createMessage('success', callingFunction);
+          this.router.navigateByUrl(this.router.url);
+        } else {
+          this.createMessage('error', callingFunction);
+        }
+      },
+      error => this.createMessage('error', callingFunction)
+    );
   }
 
   private mapDataToObject(data: any): CenterModel {
@@ -103,14 +108,34 @@ export class CommonService {
   }
 
   centerView(data: any, url: string, idKey: string) {
+    this.auditService.audit(9, 'ADM-084', {
+      buttonName: 'view',
+      masterdataName: this.router.url.split('/')[
+        this.router.url.split('/').length - 2
+      ]
+    });
     url = url.replace('$id', data[idKey]);
     this.router.navigateByUrl(url);
   }
 
   decommissionCenter(data: any, url: string, idKey: string) {
-    this.dataService
-      .decommissionCenter(data[idKey])
-      .subscribe(response => {
+    if (this.router.url.indexOf('single-view') >= 0) {
+      this.auditService.audit(10, 'ADM-085', {
+        buttonName: 'decommission',
+        masterdataName: this.router.url.split('/')[
+          this.router.url.split('/').length - 3
+        ]
+      });
+    } else {
+      this.auditService.audit(9, 'ADM-088', {
+        buttonName: 'decommission',
+        masterdataName: this.router.url.split('/')[
+          this.router.url.split('/').length - 2
+        ]
+      });
+    }
+    this.dataService.decommissionCenter(data[idKey]).subscribe(
+      response => {
         if (!response['errors']) {
           this.createMessage('success', 'decommission');
           if (this.router.url.indexOf('single-view') >= 0) {
@@ -121,12 +146,29 @@ export class CommonService {
         } else {
           this.createMessage('error', 'decommission');
         }
-      }, error => {
+      },
+      error => {
         this.createMessage('error', 'decommission');
-      });
+      }
+    );
   }
 
   activateCenter(data: any, url: string, idKey: string) {
+    if (this.router.url.indexOf('single-view') >= 0) {
+      this.auditService.audit(10, 'ADM-086', {
+        buttonName: 'activate',
+        masterdataName: this.router.url.split('/')[
+          this.router.url.split('/').length - 3
+        ]
+      });
+    } else {
+      this.auditService.audit(9, 'ADM-089', {
+        buttonName: 'activate',
+        masterdataName: this.router.url.split('/')[
+          this.router.url.split('/').length - 2
+        ]
+      });
+    }
     const centerObject = this.mapDataToObject(data);
     centerObject.isActive = true;
     console.log(centerObject);
@@ -134,9 +176,25 @@ export class CommonService {
   }
 
   deactivateCenter(data: any, url: string, idKey: string) {
+    if (this.router.url.indexOf('single-view') >= 0) {
+      console.log(this.router.url.split('/'));
+      this.auditService.audit(10, 'ADM-087', {
+        buttonName: 'deactivate',
+        masterdataName: this.router.url.split('/')[
+          this.router.url.split('/').length - 3
+        ]
+      });
+    } else {
+      this.auditService.audit(9, 'ADM-090', {
+        buttonName: 'deactivate',
+        masterdataName: this.router.url.split('/')[
+          this.router.url.split('/').length - 2
+        ]
+      });
+    }
     const centerObject = this.mapDataToObject(data);
     centerObject.isActive = false;
     console.log(centerObject);
-    this.updateCenter('activate', centerObject);
+    this.updateCenter('deactivate', centerObject);
   }
 }

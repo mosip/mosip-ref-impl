@@ -1,256 +1,259 @@
 {
-    "actionButtons": [
-      {
-        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-        "imagePath": "assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "filter" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      }
-    ],
-    "columnsToDisplay": [
-      {
-        "name": "id",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Template ID",
-          "ara": "معرف القالب",
-          "fra": "ID de modèle"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
+  "auditEventIds": ["ADM-040", "ADM-062"],
+  "actionButtons": [
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "id",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Template ID",
+        "ara": "معرف القالب",
+        "fra": "ID de modèle"
       },
-      {
-        "name": "name",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Name",
-          "ara": "اسم",
-          "fra": "nom"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "description",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Description",
-          "ara": "وصف",
-          "fra": "décrire"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "fileFormatCode",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Template Format",
-          "ara": "تنسيق القالب",
-          "fra": "Modèle de format"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "model",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Model",
-          "ara": "نموذج",
-          "fra": "forme"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "templateTypeCode",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Template",
-          "ara": "قالب",
-          "fra": "format"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "moduleId",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Module Id",
-          "ara": "معرف الوحدة النمطية",
-          "fra": "ID module"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "moduleName",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Module Name",
-          "ara": "اسم الوحدة النمطية",
-          "fra": "Nom du module"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "fileText",
-        "showInListView": "false",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Scenario",
-          "ara": "السيناريو",
-          "fra": "scénario"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "isActive",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "createdDateTime",
-        "showInListView": "true",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Created Time",
-          "ara": "الوقت الذي تم إنشاؤه",
-          "fra": "Temps créé"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "createdBy",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Created By",
-          "ara": "تم إنشاؤه من قبل",
-          "fra": "Créé par"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "updatedBy",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Updated By",
-          "ara": "تم التحديث بواسطة",
-          "fra": "Mise à jour par"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "updatedDateTime",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Updated Time",
-          "ara": "وقت التحديث",
-          "fra": "Temps mis à jour"
-        },
-        "sortOrder": "3",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      }
-    ],
-    "paginator": {
-      "totalEntries": null,
-      "pageSize": "10",
-      "pageSizeList": [10, 20, 30, 40, 50]
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
     },
-    "filterColumns": [
-      {
-        "filtername": "name",
-        "filterlabel": "Name",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false",
-        "apiName":"templates",
-        "fieldName":"name",
-        "methodCallName":""
-      },{
-        "filtername": "moduleId",
-        "filterlabel": "Module Id",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"templates",
-        "fieldName":"moduleId",
-        "methodCallName":""
-      },{
-        "filtername": "moduleName",
-        "filterlabel": "Module Name",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"templates",
-        "fieldName":"moduleName",
-        "methodCallName":""
-      },{
-        "filtername": "isActive",
-        "filterlabel": "Status",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"templates",
-        "fieldName":"isActive",
-        "methodCallName":""
-      }
-    ]
-  }
-  
+    {
+      "name": "name",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "nom"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "description",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Description",
+        "ara": "وصف",
+        "fra": "décrire"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "fileFormatCode",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Template Format",
+        "ara": "تنسيق القالب",
+        "fra": "Modèle de format"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "model",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Model",
+        "ara": "نموذج",
+        "fra": "forme"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "templateTypeCode",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Template",
+        "ara": "قالب",
+        "fra": "format"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "moduleId",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Module Id",
+        "ara": "معرف الوحدة النمطية",
+        "fra": "ID module"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "moduleName",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Module Name",
+        "ara": "اسم الوحدة النمطية",
+        "fra": "Nom du module"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "fileText",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Scenario",
+        "ara": "السيناريو",
+        "fra": "scénario"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created By",
+        "ara": "تم إنشاؤه من قبل",
+        "fra": "Créé par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedDateTime",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated Time",
+        "ara": "وقت التحديث",
+        "fra": "Temps mis à jour"
+      },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": "Name",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "templates",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "moduleId",
+      "filterlabel": "Module Id",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "templates",
+      "fieldName": "moduleId",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "moduleName",
+      "filterlabel": "Module Name",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "templates",
+      "fieldName": "moduleName",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "templates",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    }
+  ]
+}

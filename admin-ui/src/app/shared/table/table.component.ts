@@ -12,6 +12,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 import * as appConstants from 'src/app/app.constants';
 import { CommonService } from 'src/app/core/services/common.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-table',
@@ -39,7 +40,8 @@ export class TableComponent implements OnInit, OnChanges {
     private router: Router,
     private appConfig: AppConfigService,
     private commonService: CommonService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private auditService: AuditService
   ) {
    translate.use(appConfig.getConfig().primaryLangCode);
   }
@@ -93,6 +95,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.currentRoute = this.router.url.slice(0, routeIndex);
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    this.auditService.audit(7, id.auditEventId, currentRouteType);
     console.log(id);
     console.log(this.currentRoute);
     if (index === 0) {
@@ -110,6 +113,10 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
   sortColumn(columnName: string, columnIndex: number) {
+    this.auditService.audit(13, 'ADM-093', {
+      masterdataName: this.router.url.split('/')[3],
+      columnName
+    });
     console.log(this.sortIconTrackerArray);
     const sortObject = this.sortData.filter(
       data => data.sortField === columnName
@@ -136,7 +143,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ellipsisAction(data) {
     if (data.isActive === true) {
-      this.ellipsisList = this.buttonList;
+      this.ellipsisList = [...this.buttonList];
       this.ellipsisList.filter(values => {
         if (values.buttonName.eng === 'Activate') {
           const index = this.ellipsisList.indexOf(values);
@@ -144,7 +151,7 @@ export class TableComponent implements OnInit, OnChanges {
         }
       });
     } else if (data.isActive === false) {
-      this.ellipsisList = this.buttonList;
+      this.ellipsisList = [...this.buttonList];
       this.ellipsisList.filter(values => {
         if (values.buttonName.eng === 'Deactivate') {
           const index = this.ellipsisList.indexOf(values);

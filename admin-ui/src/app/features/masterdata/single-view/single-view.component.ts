@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-single-view',
@@ -44,7 +45,8 @@ export class SingleViewComponent implements OnDestroy {
     private dialog: MatDialog,
     private location: Location,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private auditService: AuditService
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -74,6 +76,7 @@ export class SingleViewComponent implements OnDestroy {
       .subscribe(response => {
         this.specFileData = response.columnsToDisplay;
         console.log(this.specFileData);
+        this.auditService.audit(8, response.auditEventIds[1], this.masterdataType);
       });
     if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
       this.primaryLangCode = this.id.split('$')[1];

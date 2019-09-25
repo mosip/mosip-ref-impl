@@ -16,7 +16,8 @@ export const navItems = [
     displayName: 'menuItems.item1.title',
     icon: './assets/images/home.svg',
     route: '/admin/home',
-    children: null
+    children: null,
+    auditEventId: 'ADM-002'
   },
   {
     displayName: 'menuItems.item2.title',
@@ -27,35 +28,42 @@ export const navItems = [
         displayName: 'menuItems.item2.subItem1',
         icon: null,
         route: '/admin/resources/centers',
+        auditEventId: 'ADM-004'
       },
       {
         displayName: 'menuItems.item2.subItem2',
         icon: null,
         route: '/admin/resources/devices',
+        auditEventId: 'ADM-005'
       },
       {
         displayName: 'menuItems.item2.subItem3',
         icon: null,
-        route: '/admin/resources/users'
+        route: '/admin/resources/users',
+        auditEventId: 'ADM-006'
       },
       {
         displayName: 'menuItems.item2.subItem4',
         icon: null,
-        route: '/admin/resources/machines'
+        route: '/admin/resources/machines',
+        auditEventId: 'ADM-007'
       }
-    ]
+    ],
+    auditEventId: 'ADM-003'
   },
   {
     displayName: 'menuItems.item4.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/packet-status',
-    children: null
+    children: null,
+    auditEventId: 'ADM-008'
   },
   {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/masterdata',
-    children: null
+    children: null,
+    auditEventId: 'ADM-009'
   }
 ];
 
@@ -182,99 +190,97 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Individual Type'
   }
-
 };
 
 export const ListViewIdKeyMapping = {
-
-  centers: { idKey: 'id', imagePath: 'assets/images/center-name-icon.png'},
-  devices: { idKey: 'id' },
-  machines: { idKey: 'id' },
-  'machine-type': {idKey: 'code'},
-  templates: {idKey: 'id'},
-  title: {idKey: 'code'},
-  'blacklisted-words': {idKey: 'word'},
-  'document-type': {idKey: 'code'},
-   location: {idKey: 'postalCode'},
-   'device-specs': {idKey: 'id'},
-   'machine-specs': {idKey: 'id'},
-   'device-types': {idKey: 'code'},
-   'document-categories': {idKey: 'code'},
-   'individual-type': {idKey: 'code'},
-   'gender-type': {idKey: 'code'},
-   'center-type': {idKey: 'code'},
-   holiday: {idKey: 'holidayId'}
+  centers: { idKey: 'id', imagePath: 'assets/images/center-name-icon.png', auditEventId: 'ADM-064' },
+  devices: { idKey: 'id', auditEventId: 'ADM-065' },
+  machines: { idKey: 'id', auditEventId: 'ADM-066' },
+  'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
+  templates: { idKey: 'id', auditEventId: 'ADM-068' },
+  title: { idKey: 'code', auditEventId: 'ADM-069' },
+  'blacklisted-words': { idKey: 'word', auditEventId: 'ADM-070' },
+  'document-type': { idKey: 'code', auditEventId: 'ADM-071' },
+  location: { idKey: 'postalCode', auditEventId: 'ADM-072' },
+  'device-specs': { idKey: 'id', auditEventId: 'ADM-073' },
+  'machine-specs': { idKey: 'id', auditEventId: 'ADM-074' },
+  'device-types': { idKey: 'code', auditEventId: 'ADM-075' },
+  'document-categories': { idKey: 'code', auditEventId: 'ADM-076' },
+  'individual-type': { idKey: 'code', auditEventId: 'ADM-077' },
+  'gender-type': { idKey: 'code', auditEventId: 'ADM-078' },
+  'center-type': { idKey: 'code', auditEventId: 'ADM-079' },
+  holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' }
 };
 
 export const FilterMapping = {
-centers: {
-specFileName: 'center',
-apiName: 'registrationcenters'
-},
-devices: {
-specFileName: 'devices',
-apiName: 'devices'
-},
-machines: {
-  specFileName: 'machines',
-  apiName: 'machines'
+  centers: {
+    specFileName: 'center',
+    apiName: 'registrationcenters'
   },
-'blacklisted-words': {
-  apiName: 'blacklistedwords',
-  specFileName: 'blacklisted-words'
-},
-holiday: {
-  apiName: 'holidays',
-  specFileName: 'holiday-data'
-},
-'document-type': {
-  apiName: 'documenttypes',
-  specFileName: 'document-types'
-},
-location: {
-  apiName: 'locations',
-  specFileName: 'location-data'
-},
-'gender-type': {
-  apiName: 'gendertypes',
-  specFileName: 'gender-types'
-},
-title: {
-  apiName: 'title',
-  specFileName: 'titles'
-},
-templates: {
-  apiName: 'templates',
-  specFileName: 'templates'
-},
-'machine-type': {
-  apiName: 'machinetypes',
-  specFileName: 'machine-type'
-},
-'device-types': {
-  apiName: 'devicetypes',
-  specFileName: 'device-type'
-},
-'document-categories': {
-  apiName: 'documentcategories',
-  specFileName: 'document-category'
-},
-'machine-specs': {
-  apiName: 'machinespecifications',
-  specFileName: 'machine-specification'
-},
-'device-specs': {
-  apiName: 'devicespecifications',
-  specFileName: 'device-specification'
-},
-'center-type': {
-  apiName: 'registrationcentertypes',
-  specFileName: 'center-type'
-},
-'individual-type': {
-  apiName: 'individualtypes',
-  specFileName: 'individual-types'
-}
+  devices: {
+    specFileName: 'devices',
+    apiName: 'devices'
+  },
+  machines: {
+    specFileName: 'machines',
+    apiName: 'machines'
+  },
+  'blacklisted-words': {
+    apiName: 'blacklistedwords',
+    specFileName: 'blacklisted-words'
+  },
+  holiday: {
+    apiName: 'holidays',
+    specFileName: 'holiday-data'
+  },
+  'document-type': {
+    apiName: 'documenttypes',
+    specFileName: 'document-types'
+  },
+  location: {
+    apiName: 'locations',
+    specFileName: 'location-data'
+  },
+  'gender-type': {
+    apiName: 'gendertypes',
+    specFileName: 'gender-types'
+  },
+  title: {
+    apiName: 'title',
+    specFileName: 'titles'
+  },
+  templates: {
+    apiName: 'templates',
+    specFileName: 'templates'
+  },
+  'machine-type': {
+    apiName: 'machinetypes',
+    specFileName: 'machine-type'
+  },
+  'device-types': {
+    apiName: 'devicetypes',
+    specFileName: 'device-type'
+  },
+  'document-categories': {
+    apiName: 'documentcategories',
+    specFileName: 'document-category'
+  },
+  'machine-specs': {
+    apiName: 'machinespecifications',
+    specFileName: 'machine-specification'
+  },
+  'device-specs': {
+    apiName: 'devicespecifications',
+    specFileName: 'device-specification'
+  },
+  'center-type': {
+    apiName: 'registrationcentertypes',
+    specFileName: 'center-type'
+  },
+  'individual-type': {
+    apiName: 'individualtypes',
+    specFileName: 'individual-types'
+  }
 };
 
 export const keyboardMapping = {

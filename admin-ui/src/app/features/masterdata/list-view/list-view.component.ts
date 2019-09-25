@@ -11,6 +11,7 @@ import Utils from 'src/app/app.utils';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-list-view',
@@ -18,7 +19,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./list-view.component.scss']
 })
 export class ListViewComponent implements OnDestroy {
-
   headerName: string;
   displayedColumns = [];
   actionButtons = [];
@@ -34,6 +34,8 @@ export class ListViewComponent implements OnDestroy {
   subscribed: any;
   noData = false;
   filtersApplied = false;
+  masterDataType: string;
+  auditEventId: string[];
 
   constructor(
     private router: Router,
@@ -41,12 +43,15 @@ export class ListViewComponent implements OnDestroy {
     private appService: AppConfigService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private auditService: AuditService
   ) {
-    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
-      console.log(response);
-      this.errorMessages = response.errorPopup;
-    });
+    translateService
+      .getTranslation(appService.getConfig().primaryLangCode)
+      .subscribe(response => {
+        console.log(response);
+        this.errorMessages = response.errorPopup;
+      });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.initializeComponent();
@@ -55,25 +60,37 @@ export class ListViewComponent implements OnDestroy {
   }
 
   async initializeComponent() {
-    const routeParts = this.activatedRoute.snapshot.params.type;
     await this.loadData();
-    if (routeParts.toLowerCase() === 'blacklisted-words' && Object.entries(this.activatedRoute.snapshot.queryParams).length === 0) {
+    if (this.activatedRoute.snapshot.params.type !== this.masterDataType) {
+      this.masterDataType = this.activatedRoute.snapshot.params.type;
+      this.auditService.audit(3, this.auditEventId[0], this.masterDataType);
+    }
+    if (
+      this.masterDataType.toLowerCase() === 'blacklisted-words' &&
+      Object.entries(this.activatedRoute.snapshot.queryParams).length === 0
+    ) {
       await this.loadBlacklistedWords();
     } else {
-      await this.getMasterDataTypeValues(this.appService.getConfig().primaryLangCode);
+      await this.getMasterDataTypeValues(
+        this.appService.getConfig().primaryLangCode
+      );
     }
   }
 
   loadBlacklistedWords() {
     return new Promise(async (resolve, reject) => {
       const data = [];
-      await this.getMasterDataTypeValues(this.appService.getConfig().primaryLangCode).then(response => {
+      await this.getMasterDataTypeValues(
+        this.appService.getConfig().primaryLangCode
+      ).then(response => {
         if (response['data']) {
           data.push(...response['data']);
           console.log(response);
         }
       });
-      await this.getMasterDataTypeValues(this.appService.getConfig().secondaryLangCode).then(response => {
+      await this.getMasterDataTypeValues(
+        this.appService.getConfig().secondaryLangCode
+      ).then(response => {
         if (response['data']) {
           data.push(...response['data']);
           console.log(response);
@@ -90,7 +107,8 @@ export class ListViewComponent implements OnDestroy {
     return new Promise((resolve, reject) => {
       const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
-      this.headerName = appConstants.masterdataMapping[`${routeParts}`].headerName;
+      this.headerName =
+        appConstants.masterdataMapping[`${routeParts}`].headerName;
       console.log(this.mapping);
       this.dataStorageService
         .getSpecFileForMasterDataEntity(this.mapping.specFileName)
@@ -110,6 +128,7 @@ export class ListViewComponent implements OnDestroy {
           console.log(this.actionEllipsis);
           this.paginatorOptions = response.paginator;
           console.log(this.paginatorOptions);
+          this.auditEventId = response.auditEventIds;
           resolve(true);
         });
     });
@@ -127,17 +146,27 @@ export class ListViewComponent implements OnDestroy {
       this.sortFilter.push(event);
     }
     console.log(this.sortFilter);
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(
+      this.activatedRoute.snapshot.queryParams,
+      this.appService.getConfig().primaryLangCode
+    );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`);
+    this.router.navigateByUrl(
+      `admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`
+    );
   }
   pageEvent(event: any) {
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(
+      this.activatedRoute.snapshot.queryParams,
+      this.appService.getConfig().primaryLangCode
+    );
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`);
+    this.router.navigateByUrl(
+      `admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`
+    );
   }
 
   getMasterDataTypeValues(language: string) {
@@ -147,7 +176,10 @@ export class ListViewComponent implements OnDestroy {
       this.filtersApplied = false;
       const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
-      const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, language);
+      const filters = Utils.convertFilter(
+        this.activatedRoute.snapshot.queryParams,
+        language
+      );
       if (filters.filters.length > 0) {
         this.filtersApplied = true;
       }
@@ -156,7 +188,7 @@ export class ListViewComponent implements OnDestroy {
       console.log(JSON.stringify(this.requestModel));
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
-        .subscribe(({response}) => {
+        .subscribe(({ response }) => {
           console.log(this.paginatorOptions);
           if (response != null) {
             this.paginatorOptions.totalEntries = response.totalRecord;
@@ -189,12 +221,12 @@ export class ListViewComponent implements OnDestroy {
           } else {
             this.dialog
               .open(DialogComponent, {
-                 data: {
+                data: {
                   case: 'MESSAGE',
                   title: this.errorMessages.technicalError.title,
                   message: this.errorMessages.technicalError.message,
                   btnTxt: this.errorMessages.technicalError.btnTxt
-                 } ,
+                },
                 width: '700px'
               })
               .afterClosed()
