@@ -253,25 +253,37 @@
     },
     "actionMessages" : {
         "decommission": {
-            "success-message": "Centre mis hors service avec succès",
+            "success-message": ["Le centre d'inscription ", " est déclassé avec succès"],
             "success-title": "Succès",
-            "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / ordinateurs / appareils) y sont toujours mappées.\nVeuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
+            "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
             "error-title": "Erreur",
-            "btnTxt": "D'accord"
+            "btnTxt": "D'accord",
+            "yesBtnTxt": "Oui",
+            "noBtnTxt": "Non",
+            "confirmation-message": ["Voulez-vous mettre le centre d'inscription hors service ", "? \n Vous ne pouvez pas annuler cette action une fois que vous avez cliqué sur Confirmer."],
+            "confirmation-title": "Confirmation"
         },
         "activate": {
-            "success-message": "Centre activé avec succès",
+            "success-message": ["centre d'inscription ", " est activé avec succès"],
             "success-title": "Succès",
             "error-message": "Le centre n'a pas pu être activé",
             "error-title": "Erreur",
-            "btnTxt": "D'accord"
+            "btnTxt": "D'accord",
+            "yesBtnTxt": "Oui",
+            "noBtnTxt": "Non",
+            "confirmation-message": ["Voulez-vous activer le centre d'inscription ", "? \n Vous pouvez le désactiver plus tard si vous le souhaitez. Jusque-là, il sera défini comme actif"],
+            "confirmation-title": "Confirmation"
         },
         "deactivate": {
-            "success-message": "Centre désactivé avec succès",
+            "success-message": ["centre d'inscription ", " est désactivé avec succès"],
             "success-title": "Succès",
             "error-message": "Le centre n'a pas pu être désactivé",
             "error-title": "Erreur",
-            "btnTxt": "D'accord"
+            "btnTxt": "D'accord",
+            "yesBtnTxt": "Oui",
+            "noBtnTxt": "Non",
+            "confirmation-message": ["Voulez-vous désactiver le centre d'inscription ", " ? \n Vous pouvez l'activer plus tard si vous le souhaitez. Jusque-là, il sera défini comme inactif"],
+            "confirmation-title": "Confirmation"
         }
     }
 }

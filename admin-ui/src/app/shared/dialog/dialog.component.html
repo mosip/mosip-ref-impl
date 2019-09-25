@@ -165,7 +165,7 @@
   <div class="pop-up-header">
     <b mat-dialog-title>{{ input.title }}</b>
     <div mat-dialog-content>
-      <p>{{ input.message }}</p>
+      <p style="white-space: pre-line">{{ input.message }}</p>
     </div>
   </div>
   <div mat-dialog-actions class="pop-up-footer">
@@ -197,7 +197,7 @@
   </div>
   <div mat-dialog-actions class="pop-up-footer">
     <span
-      ><button mat-button cdkFocusInitial (click)="onNoClick()">
+      ><button mat-button cdkFocusInitial (click)="dismiss()">
         {{ input.btnTxt }}
       </button></span
     >

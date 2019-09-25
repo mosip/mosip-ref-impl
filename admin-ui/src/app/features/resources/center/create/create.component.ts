@@ -173,9 +173,15 @@ export class CreateComponent {
     });
     dialogRef.afterClosed().subscribe(response => {
       if (response && this.data.length === 0) {
+        this.auditService.audit(18, 'ADM-104', 'create');
         this.saveData();
       } else if (response && this.data.length !== 0) {
+        this.auditService.audit(18, 'ADM-105', 'edit');
         this.updateData();
+      } else if (!response && this.data.length === 0) {
+        this.auditService.audit(19, 'ADM-106', 'create');
+      } else if (!response && this.data.length !== 0) {
+        this.auditService.audit(19, 'ADM-107', 'edit');
       }
     });
   }
