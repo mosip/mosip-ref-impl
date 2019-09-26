@@ -259,7 +259,7 @@
             "btnTxt": "Ok",
             "yesBtnTxt": "Yes",
             "noBtnTxt": "No",
-            "confirmation-message": ["Do you want to Decommission the Registration Center ", "? \n You cannot undo this action once you click on Confirm."],
+            "confirmation-message": ["Do you want to Decommission the Registration Center ", " ? \n You cannot undo this action once you click on Confirm."],
             "confirmation-title": "Confirmation"
         },
         "activate": {

@@ -412,6 +412,12 @@ export class CreateComponent {
                 ? secondaryResponse.response.data[0]
                 : {};
               this.setSecondaryFormValues();
+              if (this.activatedRoute.snapshot.queryParams.editable === 'true') {
+                this.disableForms = false;
+                this.primaryForm.enable();
+                this.primaryForm.controls.noKiosk.enable();
+                this.primaryForm.controls.isActive.enable();
+              }
             });
         } else {
           this.showErrorPopup();
