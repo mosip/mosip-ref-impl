@@ -231,10 +231,10 @@ export class CreateComponent {
       Utils.convertTime(this.secondaryForm.controls.lunchStartTime.value),
       this.secondaryForm.controls.name.value,
       '00:' + this.secondaryForm.controls.processingTime.value + ':00',
-      this.data[1].timeZone,
+      this.data[0].timeZone,
       this.secondaryForm.controls.workingHours.value,
       this.secondaryForm.controls.zone.value,
-      this.data[1].id,
+      this.data[0].id,
       this.secondaryForm.controls.isActive.value,
       this.secondaryForm.controls.noKiosk.value
     );
@@ -247,27 +247,34 @@ export class CreateComponent {
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
       console.log(updateResponse);
       if (!updateResponse.errors || updateResponse.errors.length === 0) {
-        const secondaryRequest = new RequestModel(
-          appConstants.registrationCenterCreateId,
-          null,
-          secondaryObject
-        );
-        this.dataStorageService
-          .updateCenter(secondaryRequest)
-          .subscribe(secondaryResponse => {
-            if (
-              !secondaryResponse.errors ||
-              secondaryResponse.errors.length === 0
-            ) {
-              this.showMessage('update-success')
-                .afterClosed()
-                .subscribe(() => {
-                  this.router.navigateByUrl('admin/resources/centers/view');
-                });
-            } else {
-              this.showMessage('update-error');
-            }
-          });
+        if (
+          this.secondaryForm.controls.name.value !== '' &&
+          this.secondaryForm.controls.addressLine1.value !== ''
+        ) {
+          const secondaryRequest = new RequestModel(
+            appConstants.registrationCenterCreateId,
+            null,
+            secondaryObject
+          );
+          this.dataStorageService
+            .updateCenter(secondaryRequest)
+            .subscribe(secondaryResponse => {
+              if (
+                !secondaryResponse.errors ||
+                secondaryResponse.errors.length === 0
+              ) {
+                this.showMessage('update-success')
+                  .afterClosed()
+                  .subscribe(() => {
+                    this.router.navigateByUrl('admin/resources/centers/view');
+                  });
+              } else {
+                this.showMessage('update-error');
+              }
+            });
+        } else {
+          this.showMessage('update-success');
+        }
       } else {
         this.showMessage('update-error');
       }
@@ -354,28 +361,35 @@ export class CreateComponent {
       .subscribe(createResponse => {
         console.log(createResponse);
         if (!createResponse.errors) {
-          secondaryObject.id = createResponse.response.id;
-          secondaryObject.isActive = false;
-          const secondaryRequest = new RequestModel(
-            appConstants.registrationCenterCreateId,
-            null,
-            secondaryObject
-          );
-          this.dataStorageService
-            .createCenter(secondaryRequest)
-            .subscribe(secondaryResponse => {
-              if (!secondaryResponse.errors) {
-                this.showMessage('create-success', secondaryResponse.response)
-                  .afterClosed()
-                  .subscribe(() => {
-                    this.primaryForm.reset();
-                    this.secondaryForm.reset();
-                    this.router.navigateByUrl('admin/resources/centers/view');
-                  });
-              } else {
-                this.showMessage('create-error');
-              }
-            });
+          if (
+            this.secondaryForm.controls.name.value !== '' &&
+            this.secondaryForm.controls.addressLine1.value !== ''
+          ) {
+            secondaryObject.id = createResponse.response.id;
+            secondaryObject.isActive = false;
+            const secondaryRequest = new RequestModel(
+              appConstants.registrationCenterCreateId,
+              null,
+              secondaryObject
+            );
+            this.dataStorageService
+              .createCenter(secondaryRequest)
+              .subscribe(secondaryResponse => {
+                if (!secondaryResponse.errors) {
+                  this.showMessage('create-success', secondaryResponse.response)
+                    .afterClosed()
+                    .subscribe(() => {
+                      this.primaryForm.reset();
+                      this.secondaryForm.reset();
+                      this.router.navigateByUrl('admin/resources/centers/view');
+                    });
+                } else {
+                  this.showMessage('create-error');
+                }
+              });
+          } else {
+            this.showMessage('create-success', createResponse.response);
+          }
         } else {
           this.showMessage('create-error');
         }
@@ -412,7 +426,9 @@ export class CreateComponent {
                 ? secondaryResponse.response.data[0]
                 : {};
               this.setSecondaryFormValues();
-              if (this.activatedRoute.snapshot.queryParams.editable === 'true') {
+              if (
+                this.activatedRoute.snapshot.queryParams.editable === 'true'
+              ) {
                 this.disableForms = false;
                 this.primaryForm.enable();
                 this.primaryForm.controls.noKiosk.enable();
