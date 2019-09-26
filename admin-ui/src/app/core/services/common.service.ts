@@ -60,7 +60,7 @@ export class CommonService {
     if (type === 'success') {
       obj = {
         title: this.actionMessages[listItem]['success-title'],
-        message: this.actionMessages[listItem]['success-message'][0] + data + this.actionMessages[listItem]['success-message'][0],
+        message: this.actionMessages[listItem]['success-message'][0] + data + this.actionMessages[listItem]['success-message'][1],
         btnTxt: this.actionMessages[listItem]['btnTxt']
       };
     } else if (type === 'error') {
@@ -121,15 +121,15 @@ export class CommonService {
     return primaryObject;
   }
 
-  centerView(data: any, url: string, idKey: string) {
+  centerEdit(data: any, url: string, idKey: string) {
     this.auditService.audit(9, 'ADM-084', {
-      buttonName: 'view',
+      buttonName: 'edit',
       masterdataName: this.router.url.split('/')[
         this.router.url.split('/').length - 2
       ]
     });
     url = url.replace('$id', data[idKey]);
-    this.router.navigateByUrl(url);
+    this.router.navigateByUrl(url + '?editable=true');
   }
 
   decommissionCenter(data: any, url: string, idKey: string) {

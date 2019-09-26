@@ -39,7 +39,7 @@
     },
     {
       "buttonName": {
-        "eng": "View",
+        "eng": "Edit",
         "ara": "تصحيح",
         "fra": "modifier"
       },
@@ -47,7 +47,7 @@
       "redirectURL": "/admin/resources/centers/single-view/$id",
       "showIn": "Ellipsis",
       "validations": "",
-      "callBackFunction": "centerView"
+      "callBackFunction": "centerEdit"
     },
     {
       "buttonName": {
