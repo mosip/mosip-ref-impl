@@ -247,10 +247,7 @@ export class CreateComponent {
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
       console.log(updateResponse);
       if (!updateResponse.errors || updateResponse.errors.length === 0) {
-        if (
-          this.secondaryForm.controls.name.value !== '' &&
-          this.secondaryForm.controls.addressLine1.value !== ''
-        ) {
+        if (this.secondaryForm.valid) {
           const secondaryRequest = new RequestModel(
             appConstants.registrationCenterCreateId,
             null,
@@ -361,10 +358,7 @@ export class CreateComponent {
       .subscribe(createResponse => {
         console.log(createResponse);
         if (!createResponse.errors) {
-          if (
-            this.secondaryForm.controls.name.value !== '' &&
-            this.secondaryForm.controls.addressLine1.value !== ''
-          ) {
+          if (this.secondaryForm.valid) {
             secondaryObject.id = createResponse.response.id;
             secondaryObject.isActive = false;
             const secondaryRequest = new RequestModel(
