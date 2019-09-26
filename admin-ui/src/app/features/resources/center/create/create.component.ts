@@ -354,14 +354,16 @@ export class CreateComponent {
       .subscribe(createResponse => {
         console.log(createResponse);
         if (!createResponse.errors) {
-          secondaryObject.id = createResponse.response.id;
-          secondaryObject.isActive = false;
-          const secondaryRequest = new RequestModel(
+          if (this.secondaryForm.controls.name.value !== '' &&
+          this.secondaryForm.controls.addressLine1.value !== '') {
+            secondaryObject.id = createResponse.response.id;
+            secondaryObject.isActive = false;
+            const secondaryRequest = new RequestModel(
             appConstants.registrationCenterCreateId,
             null,
             secondaryObject
           );
-          this.dataStorageService
+            this.dataStorageService
             .createCenter(secondaryRequest)
             .subscribe(secondaryResponse => {
               if (!secondaryResponse.errors) {
@@ -376,6 +378,9 @@ export class CreateComponent {
                 this.showMessage('create-error');
               }
             });
+          } else {
+            this.showMessage('create-success', createResponse.response);
+          }
         } else {
           this.showMessage('create-error');
         }
