@@ -65,10 +65,7 @@ export class ListViewComponent implements OnDestroy {
       this.masterDataType = this.activatedRoute.snapshot.params.type;
       this.auditService.audit(3, this.auditEventId[0], this.masterDataType);
     }
-    if (
-      this.masterDataType.toLowerCase() === 'blacklisted-words' &&
-      Object.entries(this.activatedRoute.snapshot.queryParams).length === 0
-    ) {
+    if (this.masterDataType.toLowerCase() === 'blacklisted-words') {
       await this.loadBlacklistedWords();
     } else {
       await this.getMasterDataTypeValues(
@@ -80,17 +77,7 @@ export class ListViewComponent implements OnDestroy {
   loadBlacklistedWords() {
     return new Promise(async (resolve, reject) => {
       const data = [];
-      await this.getMasterDataTypeValues(
-        this.appService.getConfig().primaryLangCode
-      ).then(response => {
-        if (response['data']) {
-          data.push(...response['data']);
-          console.log(response);
-        }
-      });
-      await this.getMasterDataTypeValues(
-        this.appService.getConfig().secondaryLangCode
-      ).then(response => {
+      await this.getMasterDataTypeValues('all').then(response => {
         if (response['data']) {
           data.push(...response['data']);
           console.log(response);
