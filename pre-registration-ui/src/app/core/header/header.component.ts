@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';

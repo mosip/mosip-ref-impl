@@ -1,22 +1,23 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Injector } from '@angular/core';
-import smoothscroll from 'smoothscroll-polyfill';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DialougComponent } from '../../../shared/dialoug/dialoug.component';
-import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { Router } from '@angular/router';
-import { BookingModel } from '../center-selection/booking.model';
+import smoothscroll from 'smoothscroll-polyfill';
 
+import { BookingModel } from '../center-selection/booking.model';
 import { NameList } from 'src/app/shared/models/demographic-model/name-list.modal';
+import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
 import { BookingService } from '../booking.service';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DataStorageService } from 'src/app/core/services/data-storage.service';
+import { ConfigService } from 'src/app/core/services/config.service';
+import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
+
+import LanguageFactory from 'src/assets/i18n';
 import Utils from 'src/app/app.util';
 import * as appConstants from '../../../app.constants';
-import { ConfigService } from 'src/app/core/services/config.service';
-import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
-import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
-import LanguageFactory from 'src/assets/i18n';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-time-selection',
@@ -306,7 +307,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
             title: this.secondaryLanguagelabels.title_success,
             message: this.secondaryLanguagelabels.msg_success
           };
-          const dialogRef = this.dialog
+          this.dialog
             .open(DialougComponent, {
               width: '350px',
               data: data

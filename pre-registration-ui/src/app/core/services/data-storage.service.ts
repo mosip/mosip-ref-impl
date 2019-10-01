@@ -231,7 +231,7 @@ export class DataStorageService {
       appConstants.PARAMS_KEYS.POA +
       '&sourcePreId=' +
       sourceId;
-    const params = new URLSearchParams().set(appConstants.PARAMS_KEYS.catCode, appConstants.PARAMS_KEYS.POA);
+    // const params = new URLSearchParams().set(appConstants.PARAMS_KEYS.catCode, appConstants.PARAMS_KEYS.POA);
     // params.set(appConstants.PARAMS_KEYS.sourcePrId, sourceId);
 
     return this.httpClient.put(url, {
