@@ -29,6 +29,7 @@
         </div>
         <span class="spacer"></span>
         <button
+          type="button"
           matTooltip="{{ 'helpText.magnifying_glass' | translate }}"
           mat-icon-button
           class="search-btn"
@@ -82,7 +83,7 @@
               >
                 <img src="assets\search_grey.png" />
               </button>
-              <button mat-icon-button class="search-cancel-btn" (click)="setSearchClick(true)">
+              <button mat-icon-button class="search-cancel-btn" type="button" (click)="setSearchClick(true)">
                 <img src="assets\close.png" />
               </button>
             </mat-card>
@@ -173,7 +174,7 @@
     </div>
 
     <div class="map" *ngIf="showMap">
-      <app-map style = "width:100%; height:35%;" [mapProvider]="mapProvider"></app-map>
+      <app-map style="width:100%; height:35%;" [mapProvider]="mapProvider"></app-map>
     </div>
   </div>
 

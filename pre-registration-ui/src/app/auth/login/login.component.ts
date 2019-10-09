@@ -283,7 +283,7 @@ export class LoginComponent implements OnInit {
       case: 'MESSAGE',
       message: otpmessage
     };
-    const dialogRef = this.dialog.open(DialougComponent, {
+    this.dialog.open(DialougComponent, {
       width: '350px',
       data: message
     });
@@ -297,7 +297,7 @@ export class LoginComponent implements OnInit {
       case: 'MESSAGE',
       message: errormessage
     };
-    const dialogRef = this.dialog.open(DialougComponent, {
+    this.dialog.open(DialougComponent, {
       width: '350px',
       data: message
     });
