@@ -63,13 +63,13 @@
               <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('required')">
                 {{ 'center.validationMessages.longitude.required' | translate }}
               </mat-error>
-              <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('maxlength')">
+              <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('maxlength') && !primary.longitude.hasError('required')">
                 {{ 'center.validationMessages.longitude.max-length' | translate }}
               </mat-error>
-              <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('invalidLatLong')">
+              <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('invalidLatLong') && !primary.longitude.hasError('required')">
                 {{ 'center.validationMessages.longitude.validLatLong' | translate }}
               </mat-error>
-              <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('invalidNumber')">
+              <mat-error *ngIf="primary.longitude.touched && primary.longitude.hasError('invalidNumber') && !primary.longitude.hasError('required')">
                 {{ 'center.validationMessages.longitude.validNumber' | translate }}
               </mat-error>
             </mat-form-field>
@@ -82,13 +82,13 @@
               <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('required')">
                 {{ 'center.validationMessages.latitude.required' | translate }}
               </mat-error>
-              <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('maxlength')">
+              <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('maxlength') && !primary.latitude.hasError('required')">
                 {{ 'center.validationMessages.latitude.max-length' | translate }}
               </mat-error>
-              <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('invalidLatLong')">
+              <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('invalidLatLong') && !primary.latitude.hasError('required')">
                 {{ 'center.validationMessages.latitude.validLatLong' | translate }}
               </mat-error>
-              <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('invalidNumber')">
+              <mat-error *ngIf="primary.latitude.touched && primary.latitude.hasError('invalidNumber') && !primary.latitude.hasError('required')">
                 {{ 'center.validationMessages.latitude.validNumber' | translate }}
               </mat-error>
             </mat-form-field>
