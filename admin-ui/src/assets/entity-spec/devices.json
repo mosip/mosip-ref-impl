@@ -209,17 +209,6 @@
       "apiName": "devicetypes",
       "fieldName": "name",
       "methodCallName": ""
-    },
-    {
-      "filtername": "deviceSpecId",
-      "filterlabel": "Device Spec ID",
-      "filterType": "equals",
-      "autocomplete": "false",
-      "dropdown": "true",
-      "datePicker": "false",
-      "apiName": "devicespecifications",
-      "fieldName": "id",
-      "methodCallName": ""
     }
   ]
 }

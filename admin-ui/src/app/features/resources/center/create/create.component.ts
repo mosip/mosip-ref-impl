@@ -580,11 +580,24 @@ export class CreateComponent {
     this.location.back();
   }
 
+  resetLocationFields(fieldName: string) {
+    const locationFields = ['region', 'province', 'city', 'laa', 'postalCode', 'zone'];
+    const index = locationFields.indexOf(fieldName);
+    for (let i = index; i < locationFields.length; i++) {
+      this.primaryForm.controls[locationFields[i]].setValue('');
+      this.secondaryForm.controls[locationFields[i]].setValue('');
+      this.primaryForm.controls[locationFields[i]].markAsUntouched();
+      this.secondaryForm.controls[locationFields[i]].markAsUntouched();
+    }
+  }
+
   loadLocationData(locationCode: string, fieldName: string) {
+    if (fieldName !== 'region') {
+      this.resetLocationFields(fieldName);
+    }
     this.dataStorageService
       .getImmediateChildren(locationCode, this.primaryLang)
       .subscribe(response => {
-        // tslint:disable-next-line:no-string-literal
         this.dropDownValues[fieldName].primary =
           response['response']['locations'];
         console.log(this.dropDownValues);
@@ -592,7 +605,6 @@ export class CreateComponent {
     this.dataStorageService
       .getImmediateChildren(locationCode, this.secondaryLang)
       .subscribe(response => {
-        // tslint:disable-next-line:no-string-literal
         this.dropDownValues[fieldName].secondary =
           response['response']['locations'];
       });
