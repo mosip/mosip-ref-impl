@@ -153,7 +153,7 @@ export class DialogComponent implements OnInit {
     returnDate +=
       Number(date.getMonth() + 1) < 10
         ? '0' + Number(date.getMonth() + 1)
-        : Number(date.getMonth() + 1) < 10;
+        : Number(date.getMonth() + 1);
     returnDate += '-';
     returnDate +=
       Number(date.getDate()) < 10

@@ -164,6 +164,16 @@ export class SingleViewComponent implements OnDestroy {
       );
   }
 
+  changePage(location: string) {
+    if (location === 'home') {
+      this.router.navigateByUrl('admin/masterdata/home');
+    } else if (location === 'list') {
+      this.router.navigateByUrl(
+        `admin/masterdata/${this.masterdataType}/view`
+      );
+    }
+  }
+
   ngOnDestroy() {
     this.subscribed.unsubscribe();
   }
