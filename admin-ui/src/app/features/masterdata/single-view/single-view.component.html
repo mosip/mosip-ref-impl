@@ -1,3 +1,9 @@
+<span class="breadcrumb">
+        <a (click)="changePage('home')">Masterdata Types &nbsp;&nbsp;</a> / 
+        <a (click)="changePage('list')">&nbsp;&nbsp; {{mapping.name}} &nbsp;&nbsp;</a> / 
+        &nbsp;&nbsp; Detail View
+</span>
+<br><br>
 <app-mater-data-common-view
         *ngIf="mapping && headerData && specFileData && !showSpinner"
         [masterDataName]="mapping.name"

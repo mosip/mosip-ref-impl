@@ -225,6 +225,11 @@ export class ListViewComponent implements OnDestroy {
         });
     });
   }
+
+  changePage() {
+    this.router.navigateByUrl('admin/masterdata/home');
+  }
+
   ngOnDestroy() {
     this.subscribed.unsubscribe();
   }
