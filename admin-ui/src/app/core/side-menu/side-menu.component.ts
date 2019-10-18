@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { SideMenuService } from '../services/side-menu.service';
 import { NavItem } from '../../core/nav-item';
 import { AuditService } from '../services/audit.service';
+import { RolesService } from '../services/roles.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -31,7 +32,8 @@ export class SideMenuComponent implements OnInit {
     private sideMenuService: SideMenuService,
     private router: Router,
     private location: Location,
-    private auditService: AuditService
+    private auditService: AuditService,
+    public rolesService: RolesService
   ) {
     router.events.subscribe(() => {
       this.locationUrl = location.path();

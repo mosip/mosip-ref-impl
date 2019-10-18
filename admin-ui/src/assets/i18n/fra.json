@@ -236,6 +236,11 @@
             "title": "Erreur technique",
             "message": "Une erreur technique est survenue. Veuillez actualiser votre page pour continuer ou réessayer plus tard.",
             "btnTxt": "D'accord"
+        },
+        "unauthorized": {
+            "title": "Erreur d'autorisation",
+            "message": "Vous n'êtes pas autorisé à visiter cette page",
+            "btnTxt": "D'accord"
         }
     },
     "validationMessages": {

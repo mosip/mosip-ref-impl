@@ -17,7 +17,8 @@ export const navItems = [
     icon: './assets/images/home.svg',
     route: '/admin/home',
     children: null,
-    auditEventId: 'ADM-002'
+    auditEventId: 'ADM-002',
+    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   },
   {
     displayName: 'menuItems.item2.title',
@@ -28,42 +29,49 @@ export const navItems = [
         displayName: 'menuItems.item2.subItem1',
         icon: null,
         route: '/admin/resources/centers',
-        auditEventId: 'ADM-004'
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
         displayName: 'menuItems.item2.subItem2',
         icon: null,
         route: '/admin/resources/devices',
-        auditEventId: 'ADM-005'
+        auditEventId: 'ADM-005',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
         displayName: 'menuItems.item2.subItem3',
         icon: null,
         route: '/admin/resources/users',
-        auditEventId: 'ADM-006'
+        auditEventId: 'ADM-006',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
         displayName: 'menuItems.item2.subItem4',
         icon: null,
         route: '/admin/resources/machines',
-        auditEventId: 'ADM-007'
+        auditEventId: 'ADM-007',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       }
     ],
-    auditEventId: 'ADM-003'
+    auditEventId: 'ADM-003',
+    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   },
   {
     displayName: 'menuItems.item4.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/packet-status',
     children: null,
-    auditEventId: 'ADM-008'
+    auditEventId: 'ADM-008',
+    roles: ['ZONAL_ADMIN']
   },
   {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/masterdata',
     children: null,
-    auditEventId: 'ADM-009'
+    auditEventId: 'ADM-009',
+    roles: ['GLOBAL_ADMIN']
   }
 ];
 

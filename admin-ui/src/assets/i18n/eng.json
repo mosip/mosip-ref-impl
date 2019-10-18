@@ -235,6 +235,11 @@
             "title": "Technical Error",
             "message": "A technical error has occurred. Please refresh your page to continue or try again later",
             "btnTxt": "Ok"
+        },
+        "unauthorized": {
+            "title": "Authorization Error",
+            "message": "You are not authorised to visit this page",
+            "btnTxt": "Ok"
         }
     },
     "validationMessages": {

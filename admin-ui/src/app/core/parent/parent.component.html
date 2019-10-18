@@ -6,7 +6,7 @@
     <mat-sidenav #appDrawer [opened]="screenWidth > 840" [mode]="(screenWidth > 840) ? 'side' : 'over'">
       <mat-nav-list>
         <div *ngFor="let item of navItems; let i = index">
-          <app-side-menu [index]="i" [screenResize]="screenWidth" [item]="item"></app-side-menu>
+          <app-side-menu *ngIf="rolesService.checkRole(item)" [index]="i" [screenResize]="screenWidth" [item]="item"></app-side-menu>
         </div>
       </mat-nav-list>
     </mat-sidenav>

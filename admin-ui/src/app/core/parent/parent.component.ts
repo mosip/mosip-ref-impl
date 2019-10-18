@@ -6,6 +6,7 @@ import { NavItem } from '../../core/nav-item';
 import * as cloneObject from 'lodash/cloneDeep';
 import * as appConstants from '../../app.constants';
 import { AppConfigService } from 'src/app/app-config.service';
+import { RolesService } from '../services/roles.service';
 
 
 
@@ -28,7 +29,8 @@ export class ParentComponent implements OnInit, AfterViewInit {
 
   constructor(private sideMenuService: SideMenuService,
               private translateService: TranslateService,
-              private appConfigService: AppConfigService) {
+              private appConfigService: AppConfigService,
+              public rolesService: RolesService) {
     this.screenWidth = window.innerWidth;
     window.onresize = () => {
       return this.screenWidth = window.innerWidth;
@@ -36,9 +38,7 @@ export class ParentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // tslint:disable-next-line:no-string-literal
     this.primaryLang = this.appConfigService.getConfig()['primaryLangCode'];
-    // tslint:disable-next-line:no-string-literal
     this.secondaryLang = this.appConfigService.getConfig()['secondaryLangCode'];
     this.translateService.use(this.primaryLang);
     this.navItems = cloneObject(appConstants.navItems);
