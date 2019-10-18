@@ -29,6 +29,10 @@ export class HeaderService {
     return x.join(', ').replace(/_/g, ' ');
   }
 
+  getRoleCodes(): string {
+    return this.roles;
+  }
+
   setZone(zone: string) {
     this.zone = zone;
   }

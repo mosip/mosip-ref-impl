@@ -7,7 +7,7 @@
     </a>
     <ul>
       <ng-container *ngFor="let subItem of item?.children;let i=index">
-        <li><a mat-list-item [routerLink]="[subItem?.route]" routerLinkActive="list-item-active"
+        <li *ngIf="rolesService.checkRole(subItem)"><a mat-list-item [routerLink]="[subItem?.route]" routerLinkActive="list-item-active"
             (click)="onItemSelected(subItem)" class="menu-list-item">
             <span class="menu-list-text padding-left">{{subItem?.displayName | translate }}</span>
           </a>
