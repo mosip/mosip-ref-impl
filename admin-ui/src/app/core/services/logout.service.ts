@@ -1,5 +1,5 @@
 import { LoginRedirectService } from './loginredirect.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ResponseModel } from './../models/response.model';
 import { LogoutResponse } from './../models/logoutresponse';
 import { Injectable } from '@angular/core';
@@ -8,7 +8,6 @@ import {
   HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
-import * as config from 'src/assets/config.json';
 import { AppConfigService } from 'src/app/app-config.service';
 
 @Injectable({
