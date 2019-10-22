@@ -425,6 +425,8 @@ export class CreateComponent {
               ) {
                 this.disableForms = false;
                 this.primaryForm.enable();
+                this.initializeSecondaryForm();
+                this.setSecondaryFormValues();
                 this.primaryForm.controls.noKiosk.enable();
                 this.primaryForm.controls.isActive.enable();
               }
@@ -592,7 +594,7 @@ export class CreateComponent {
   }
 
   loadLocationData(locationCode: string, fieldName: string) {
-    if (fieldName !== 'region') {
+    if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
     }
     this.dataStorageService
@@ -712,9 +714,7 @@ export class CreateComponent {
     } else {
       this.disableForms = false;
       this.primaryForm.enable();
-      this.initializePrimaryForm();
       this.initializeSecondaryForm();
-      this.setPrimaryFormValues();
       this.setSecondaryFormValues();
       this.primaryForm.controls.noKiosk.enable();
       this.primaryForm.controls.isActive.enable();
