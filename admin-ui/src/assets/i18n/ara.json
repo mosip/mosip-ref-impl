@@ -61,7 +61,7 @@
         "update": "تحديث",
         "validationMessages": {
             "name": {
-                "required": "مطلوب اسم",
+                "required": "اسم المركز مطلوب",
                 "max-length": "تجاوز الحد الأقصى للطول (128)"
             },
             "centerTypeCode": {
@@ -105,13 +105,13 @@
                 "required": "المدينة مطلوبة"
             },
             "laa": {
-                "required": "LAA مطلوب"
+                "required": "مطلوب المنطقة"
             },
             "postalCode": {
                 "required": "الرمز البريدي مطلوب"
             },
             "zone": {
-                "required": "مطلوب منطقة عطلة"
+                "required": "مطلوب منطقة إدارية"
             },
             "holidayZone": {
                 "required": "مطلوب منطقة عطلة"
