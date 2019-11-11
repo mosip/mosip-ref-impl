@@ -61,7 +61,7 @@
         "update": "mettre à jour",
         "validationMessages": {
             "name": {
-                "required": "Le nom est requis",
+                "required": "Le nom du centre est requis",
                 "max-length": "Longueur maximale dépassée (128)"
             },
             "centerTypeCode": {
@@ -105,13 +105,13 @@
                 "required": "Ville est obligatoire"
             },
             "laa": {
-                "required": "LAA est nécessaire"
+                "required": "La zone est requise"
             },
             "postalCode": {
                 "required": "Code postal requis"
             },
             "zone": {
-                "required": "Zone est nécessaire"
+                "required": "La zone administrative est obligatoire"
             },
             "holidayZone": {
                 "required": "Zone de vacances est nécessaire"

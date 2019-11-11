@@ -61,7 +61,7 @@
         "update": "Update",
         "validationMessages": {
             "name": {
-                "required": "Name is required",
+                "required": "Center Name is required",
                 "max-length": "Exceeded max length (128)"
             },
             "centerTypeCode": {
@@ -105,13 +105,13 @@
                 "required": "City is required"
             },
             "laa": {
-                "required": "LAA is required"
+                "required": "Zone is required"
             },
             "postalCode": {
                 "required": "Postal Code is required"
             },
             "zone": {
-                "required": "Zone is required"
+                "required": "Administrative Zone is required"
             },
             "holidayZone": {
                 "required": "Holiday Zone is required"
