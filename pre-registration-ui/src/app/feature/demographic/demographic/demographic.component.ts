@@ -901,6 +901,11 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         to_field_value: ''
       };
 
+      if (this.primaryLang === this.secondaryLang) {
+        this.transUserForm.controls[toControl].patchValue(fromControl.value);
+        return;
+      }
+
       this.subscriptions.push(
         this.dataStorageService.getTransliteration(request).subscribe(
           response => {

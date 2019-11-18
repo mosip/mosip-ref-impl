@@ -2,7 +2,7 @@
   <h1 mat-dialog-title>{{ 'dialog.content_applicant' | translate }}</h1>
   <div mat-dialog-content>
     <table class="table-container">
-      <tr>
+      <tr *ngIf="input.notificationTypes.includes('EMAIL')">
         <td><i class="material-icons">email</i></td>
         <td>
           <mat-form-field>
@@ -18,7 +18,7 @@
           </mat-form-field>
         </td>
       </tr>
-      <tr>
+      <tr *ngIf="input.notificationTypes.includes('SMS')">
         <td><i class="material-icons">chat</i></td>
         <td>
           <mat-form-field>
