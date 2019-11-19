@@ -370,7 +370,7 @@ export class CreateComponent {
               .createCenter(secondaryRequest)
               .subscribe(secondaryResponse => {
                 if (!secondaryResponse.errors) {
-                  this.showMessage('create-success', secondaryResponse.response)
+                  this.showMessage('create-success', createResponse.response)
                     .afterClosed()
                     .subscribe(() => {
                       this.primaryForm.reset();
