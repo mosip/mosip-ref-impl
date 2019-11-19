@@ -47,7 +47,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.usersInfo = this.bookingService.getNameList();
     let notificationTypes = this.configService
       .getConfigByKey(appConstants.CONFIG_KEYS.mosip_notification_type)
-      .split('\\|');
+      .split('|');
     this.notificationTypes = notificationTypes.map(item => item.toUpperCase());
     this.opt = {
       margin: [0, 0.5, 0.5, 0],
