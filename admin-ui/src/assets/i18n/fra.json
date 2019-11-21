@@ -169,6 +169,11 @@
                 "title": "Erreur",
                 "message": "Aucun Enregistrement Trouvé",
                 "btnTxt": "D'accord"
+            },
+            "lunchTimeValidation": {
+                "title": "Erreur",
+                "message": "Veuillez sélectionner les horaires du centre avant de choisir les horaires du déjeuner",
+                "btnTxt": "D'accord"
             }
         }
     },

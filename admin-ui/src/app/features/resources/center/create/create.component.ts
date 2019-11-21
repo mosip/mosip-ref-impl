@@ -770,8 +770,6 @@ export class CreateComponent {
     const slots = Utils.getTimeSlots(appConstants.timeSlotsInterval);
     this.dropDownValues.startTime = slots;
     this.dropDownValues.endTime = slots;
-    this.dropDownValues.lunchEndTime = slots;
-    this.dropDownValues.lunchStartTime = slots;
     this.allSlots = slots;
   }
 
@@ -785,6 +783,12 @@ export class CreateComponent {
         Utils.getTimeInSeconds(this.primaryForm.controls.startTime.value);
       this.primaryForm.controls.workingHours.setValue(x / 3600);
       this.secondaryForm.controls.workingHours.setValue(x / 3600);
+      this.primaryForm.controls.lunchStartTime.setValue('');
+      this.primaryForm.controls.lunchEndTime.setValue('');
+      this.secondaryForm.controls.lunchStartTime.setValue('');
+      this.secondaryForm.controls.lunchEndTime.setValue('');
+      this.dropDownValues.lunchStartTime = [];
+      this.dropDownValues.lunchEndTime = [];
     }
   }
 
@@ -799,6 +803,41 @@ export class CreateComponent {
       this.dropDownValues[targetField] = x.splice(index + 1);
     } else if (action === 'less') {
       this.dropDownValues[targetField] = x.splice(0, index + 1);
+    }
+  }
+
+  validateAndLoadLunchTime(fieldName: string) {
+    if (this.primaryForm.controls.startTime.valid && this.primaryForm.controls.endTime.valid) {
+      if (fieldName === 'lunchStartTime') {
+        const x = [...this.allSlots];
+        const startIndex = x.indexOf(this.primaryForm.controls.startTime.value) + 1;
+        if (this.primaryForm.controls.lunchEndTime.value !== '') {
+          const endIndex = x.indexOf(this.primaryForm.controls.lunchEndTime.value);
+          this.dropDownValues.lunchStartTime = x.slice(startIndex, endIndex);
+        } else {
+          const endIndex = x.indexOf(this.primaryForm.controls.endTime.value);
+          this.dropDownValues.lunchStartTime = x.slice(startIndex, endIndex);
+        }
+      } else if (fieldName === 'lunchEndTime') {
+        const x = [...this.allSlots];
+        const endIndex = x.indexOf(this.primaryForm.controls.endTime.value);
+        if (this.primaryForm.controls.lunchStartTime.value !== '') {
+          const startIndex = x.indexOf(this.primaryForm.controls.lunchStartTime.value) + 1;
+          this.dropDownValues.lunchEndTime = x.slice(startIndex, endIndex);
+        } else {
+          const startIndex = x.indexOf(this.primaryForm.controls.startTime.value) + 1;
+          this.dropDownValues.lunchEndTime = x.slice(startIndex, endIndex);
+        }
+      }
+    } else {
+      this.dialog.open(DialogComponent, {
+        data: {
+          case: 'MESSAGE',
+          title: this.popupMessages.lunchTimeValidation.title,
+          message: this.popupMessages.lunchTimeValidation.message,
+          btnTxt: this.popupMessages.lunchTimeValidation.btnTxt
+        }
+      });
     }
   }
 

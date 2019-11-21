@@ -266,7 +266,8 @@
               <mat-form-field class="left-sizing">
                 <mat-label>{{ 'center.lunch-start-time' | translate }}</mat-label>
                 <mat-select formControlName="lunchStartTime"
-                  (selectionChange)="copyDataToSecondaryForm('lunchStartTime', primary.lunchStartTime.value); updateTimeSlotDropdownOptions('lunchStartTime', 'lunchEndTime', 'more')">
+                  (click)="validateAndLoadLunchTime('lunchStartTime')"
+                  (selectionChange)="copyDataToSecondaryForm('lunchStartTime', primary.lunchStartTime.value);">
                   <mat-option *ngFor="let data of dropDownValues.lunchStartTime" [value]="data">
                     {{data}}
                   </mat-option>
@@ -275,7 +276,8 @@
               <mat-form-field class="right-sizing">
                 <mat-label>{{ 'center.lunch-end-time' | translate }}</mat-label>
                 <mat-select formControlName="lunchEndTime"
-                  (selectionChange)="copyDataToSecondaryForm('lunchEndTime', primary.lunchEndTime.value); updateTimeSlotDropdownOptions('lunchEndTime', 'lunchStartTime', 'less')">
+                  (click)="validateAndLoadLunchTime('lunchEndTime')"
+                  (selectionChange)="copyDataToSecondaryForm('lunchEndTime', primary.lunchEndTime.value);">
                   <mat-option *ngFor="let data of dropDownValues.lunchEndTime" [value]="data">
                     {{data}}
                   </mat-option>
