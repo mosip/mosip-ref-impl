@@ -59,6 +59,9 @@
         "keyboard-tooltip": "انقر للحصول على لوحة المفاتيح الافتراضية (العربية)",
         "isActive": "نشط",
         "update": "تحديث",
+        "workingDays": "أيام العمل",
+        "holidays": "عطلات استثنائية",
+        "add-button": "إضافة",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",
@@ -169,6 +172,23 @@
                 "title": "خطأ",
                 "message": "لا يوجد سجلات",
                 "btnTxt": "حسنا"
+            },
+            "holiday-create": {
+                "title": "خلق عطلة استثنائية",
+                "yesBtnTxt": "خلق",
+                "noBtnTxt": "إلغاء",
+                "date-placeholder": "اختر تاريخ العطلة",
+                "name-placeholder": "اسم عطلة",
+                "desc-placeholder": "وصف عطلة (اختياري)",
+                "date-error": "يرجى تحديد تاريخ",
+                "name-error": "الرجاء إدخال اسم عطلة",
+                "message-primary": "في اللغة الأساسية:",
+                "message-secondary": "في اللغة الثانوية: (اختياري)"
+            },
+            "holiday-edit": {
+                "title":"تحرير عطلة استثنائية",
+                "yesBtnTxt": "تصحيح",
+                "noBtnTxt": "إلغاء"
             }
         }
     },

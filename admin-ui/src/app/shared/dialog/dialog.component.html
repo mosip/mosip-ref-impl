@@ -204,14 +204,71 @@
   </div>
 </div>
 
-<!-- <div *ngIf="input.case === 'MESSAGE'" style="padding: 10px;">
-  <h1 mat-dialog-title>{{ input.title }}</h1>
-  <div mat-dialog-content>
-    <p>{{ input.message }}</p>
+<!-- Holiday -->
+
+<div class="pop-up" [formGroup]="holidayForm" *ngIf="input.case === 'HOLIDAY'">
+  <div class="pop-up-header">
+    <b mat-dialog-title>{{ input.title }}</b>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <input matInput readonly formControlName="holidayDate" [matDatepicker]="picker" placeholder="{{'center.popupMessages.holiday-create.date-placeholder' | translate}}">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="f.holidayDate.touched && f.holidayDate.hasError('required')">{{'center.popupMessages.holiday-create.date-error' | translate}}</mat-error>
+      </mat-form-field>
+      <p><strong>{{'center.popupMessages.holiday-create.message-primary' | translate}}</strong></p>
+      <table class="table-spacer">
+        <tr>
+        <td>
+          <mat-form-field>
+            <input matInput placeholder="{{'center.popupMessages.holiday-create.name-placeholder' | translate}}" formControlName="holidayNamePrimary">
+            <mat-error *ngIf="f.holidayNamePrimary.touched && f.holidayNamePrimary.hasError('required')">Please enter a holiday name</mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+              <input matInput placeholder="{{'center.popupMessages.holiday-create.desc-placeholder' | translate}}" formControlName="holidayDescPrimary">
+          </mat-form-field>
+        </td>
+        </tr>
+      </table>
+      <p><strong>{{'center.popupMessages.holiday-create.message-secondary' | translate}}</strong></p>
+      <table class="table-spacer">
+          <tr>
+          <td>
+            <mat-form-field>
+              <input matInput placeholder="{{'center.popupMessages.holiday-create.name-placeholder' | translate}}" formControlName="holidayNameSecondary">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+                <input matInput placeholder="{{'center.popupMessages.holiday-create.desc-placeholder' | translate}}" formControlName="holidayDescSecondary">
+            </mat-form-field>
+          </td>
+          </tr>
+        </table>
+    </div>
   </div>
-  <div mat-dialog-actions>
-    <span><button mat-button cdkFocusInitial (click)="onNoClick()">
-        {{ input.btnTxt }}
-      </button></span>
+  <div mat-dialog-actions class="pop-up-footer">
+    <span
+      ><button mat-button [mat-dialog-close]="">
+        {{ input.noBtnTxt }}
+      </button></span
+    >
+    <span
+      ><button
+        type="button"
+        mat-button
+        [mat-dialog-close]="holidayForm"
+        cdkFocusInitial
+        [disabled]="!holidayForm.valid"
+        [ngStyle]="{ 
+          'background-color': !holidayForm.valid ? '' : '#FF4081',
+          'color': !holidayForm.valid ? '' : '#FFF'
+       }"
+      >
+        {{ input.yesBtnTxt }}
+      </button></span
+    >
   </div>
-</div> -->
+</div>

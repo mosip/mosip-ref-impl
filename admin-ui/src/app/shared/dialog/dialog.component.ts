@@ -7,7 +7,7 @@ import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as appConstants from '../../app.constants';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
@@ -44,6 +44,8 @@ export class DialogComponent implements OnInit {
 
   filterOptions: any = {};
 
+  holidayForm: FormGroup;
+
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -52,7 +54,8 @@ export class DialogComponent implements OnInit {
     private dataStorageService: DataStorageService,
     private config: AppConfigService,
     private activatedRoute: ActivatedRoute,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private formBuilder: FormBuilder
   ) {}
 
   async ngOnInit() {
@@ -65,6 +68,33 @@ export class DialogComponent implements OnInit {
       ).filters;
       await this.getFilterMappings();
     }
+    if (this.input.case === 'HOLIDAY') {
+      this.initializeForm();
+    }
+  }
+
+  initializeForm() {
+    if (this.input.holidayData) {
+      this.holidayForm = this.formBuilder.group({
+        holidayDate: [Utils.createDateObject(this.input.holidayData[0].holidayDate), [Validators.required]],
+        holidayNamePrimary: [this.input.holidayData[0].holidayName, [Validators.required]],
+        holidayDescPrimary: [this.input.holidayData[0].holidayDescription],
+        holidayNameSecondary: [this.input.holidayData[1].holidayName],
+        holidayDescSecondary: [this.input.holidayData[1].holidayDescription]
+      });
+    } else {
+      this.holidayForm = this.formBuilder.group({
+        holidayDate: ['', [Validators.required]],
+        holidayNamePrimary: ['', [Validators.required]],
+        holidayDescPrimary: [''],
+        holidayNameSecondary: [''],
+        holidayDescSecondary: ['']
+      });
+    }
+  }
+
+  get f() {
+    return this.holidayForm.controls;
   }
 
   onNoClick(): void {

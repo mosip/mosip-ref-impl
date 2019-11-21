@@ -296,3 +296,18 @@ export const keyboardMapping = {
   fra: 'fr',
   ara: 'ar'
 };
+
+export const days = {
+  eng: [{ name:'Monday', code: 'MON' },{ name: 'Tuesday', code: 'TUE'}, 
+        { name: 'Wednesday', code: 'WED'},{ name: 'Thursday', code: 'THU'}, 
+        { name: 'Friday', code: 'FRI'},{ name: 'Saturday', code: 'SAT'},
+        { name: 'Sunday', code: 'SUN'}],
+  fra: [{ name:'Lundi', code: 'MON' },{ name: 'Mardi', code: 'TUE'}, 
+        { name: 'Mercredi', code: 'WED'},{ name: 'Jeudi', code: 'THU'}, 
+        { name: 'Vendredi', code: 'FRI'},{ name: 'samedi', code: 'SAT'},
+        { name: 'dimanche', code: 'SUN'}],
+  ara: [{ name:'الإثنين', code: 'MON' },{ name: 'الثلاثاء', code: 'TUE'}, 
+        { name: 'الأربعاء', code: 'WED'},{ name: 'الخميس', code: 'THU'}, 
+        { name: 'يوم الجمعة', code: 'FRI'},{ name: 'يوم السبت', code: 'SAT'},
+        { name: 'الأحد', code: 'SUN'}]
+}

@@ -36,6 +36,7 @@ import {
 } from 'ngx7-material-keyboard';
 import { AuditService } from 'src/app/core/services/audit.service';
 import * as centerSpecFile from '../../../../../assets/entity-spec/center.json';
+import { HolidayModel } from 'src/app/core/models/holiday-model';
 
 @Component({
   selector: 'app-create',
@@ -71,6 +72,9 @@ export class CreateComponent {
   keyboardType: string;
   subscribed: any;
 
+  days = [];
+  secondaryDays = [];
+
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -100,6 +104,8 @@ export class CreateComponent {
   }
 
   initializeComponent() {
+    this.days = appConstants.days[this.primaryLang];
+    this.secondaryDays = appConstants.days[this.secondaryLang];
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
@@ -209,6 +215,8 @@ export class CreateComponent {
       this.data[0].timeZone,
       this.primaryForm.controls.workingHours.value,
       this.primaryForm.controls.zone.value,
+      this.primaryForm.controls.workingDays.value,
+      this.primaryForm.controls.exceptionalHolidays.value,
       this.data[0].id,
       this.primaryForm.controls.isActive.value,
       this.primaryForm.controls.noKiosk.value
@@ -234,6 +242,8 @@ export class CreateComponent {
       this.data[0].timeZone,
       this.secondaryForm.controls.workingHours.value,
       this.secondaryForm.controls.zone.value,
+      this.secondaryForm.controls.workingDays.value,
+      this.secondaryForm.controls.exceptionalHolidays.value,
       this.data[0].id,
       this.secondaryForm.controls.isActive.value,
       this.secondaryForm.controls.noKiosk.value
@@ -320,6 +330,8 @@ export class CreateComponent {
       '(GTM+01:00) CENTRAL EUROPEAN TIME',
       this.primaryForm.controls.workingHours.value,
       this.primaryForm.controls.zone.value,
+      this.primaryForm.controls.workingDays.value,
+      this.primaryForm.controls.exceptionalHolidays.value,
       '',
       false
     );
@@ -343,7 +355,9 @@ export class CreateComponent {
       '00:' + this.secondaryForm.controls.processingTime.value + ':00',
       '(GTM+01:00) CENTRAL EUROPEAN TIME',
       this.secondaryForm.controls.workingHours.value,
-      this.secondaryForm.controls.zone.value
+      this.secondaryForm.controls.zone.value,
+      this.secondaryForm.controls.workingDays.value,
+      this.secondaryForm.controls.exceptionalHolidays.value
     );
     delete primaryObject.numberOfKiosks;
     delete secondaryObject.numberOfKiosks;
@@ -501,6 +515,10 @@ export class CreateComponent {
     this.primaryForm.controls.lunchEndTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
     );
+    // temporary code
+    this.primaryForm.controls.workingDays.setValue(this.data[0].workingDays ? this.data[0].workingDays : ['MON', 'TUE']);
+    this.primaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidays ? this.data[0].exceptionalHolidays : []);
+    //
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
     this.loadLocationDropDownsForUpdate(this.data[0]);
   }
@@ -559,6 +577,10 @@ export class CreateComponent {
     this.secondaryForm.controls.lunchEndTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
     );
+    // temporary code
+    this.secondaryForm.controls.workingDays.setValue(this.data[0].workingDays ? this.data[0].workingDays : ['MON', 'TUE']);
+    this.secondaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidays ? this.data[0].exceptionalHolidays : []);
+    //
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
@@ -646,6 +668,8 @@ export class CreateComponent {
       endTime: ['', [Validators.required]],
       lunchStartTime: [''],
       lunchEndTime: [''],
+      workingDays: [[], [Validators.required]],
+      exceptionalHolidays: [[]],
       isActive: [{ value: false, disabled: true }]
     });
     if (this.disableForms) {
@@ -678,6 +702,8 @@ export class CreateComponent {
       endTime: [{ value: '', disabled: true }],
       lunchStartTime: [{ value: '', disabled: true }],
       lunchEndTime: [{ value: '', disabled: true }],
+      workingDays: [{ value: [], disabled: true}],
+      exceptionalHolidays: [[]],
       isActive: [{ value: false, disabled: true }]
     });
     if (this.disableForms) {
@@ -853,6 +879,88 @@ export class CreateComponent {
         this.selectedField.focus();
       }
     }
+  }
+
+  createExceptionalHoliday() {
+    this.dialog.open(DialogComponent, {
+      width: '450px',
+      data: {
+        case: 'HOLIDAY',
+        title: this.popupMessages['holiday-create'].title,
+        yesBtnTxt: this.popupMessages['holiday-create'].yesBtnTxt,
+        noBtnTxt: this.popupMessages['holiday-create'].noBtnTxt
+      }
+    }).afterClosed().subscribe(response => {
+      if (response) {
+      const primaryHoliday = new HolidayModel();
+      const secondaryHoliday = new HolidayModel();
+      primaryHoliday.holidayDate = Utils.formatDate(response.controls.holidayDate.value);
+      secondaryHoliday.holidayDate = Utils.formatDate(response.controls.holidayDate.value);
+      primaryHoliday.holidayName = response.controls.holidayNamePrimary.value;
+      secondaryHoliday.holidayName = response.controls.holidayNameSecondary.value;
+      primaryHoliday.holidayDescription = response.controls.holidayDescPrimary.value;
+      secondaryHoliday.holidayDescription = response.controls.holidayDescSecondary.value;
+      const existingHoliday = this.primaryForm.controls.exceptionalHolidays.value
+      .filter(holiday => holiday.holidayDate === primaryHoliday.holidayDate);
+      if (existingHoliday.length === 0) {
+        let existingHolidays = this.primaryForm.controls.exceptionalHolidays.value;
+        existingHolidays.push(primaryHoliday);
+        this.primaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+        existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
+        existingHolidays.push(secondaryHoliday);
+        this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+      } else {
+        const index = this.primaryForm.controls.exceptionalHolidays.value.indexOf(existingHoliday[0]);
+        let existingHolidays = this.primaryForm.controls.exceptionalHolidays.value;
+        existingHolidays[index] = primaryHoliday;
+        this.primaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+        existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
+        existingHolidays[index] = secondaryHoliday;
+        this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+      }
+    }
+    });
+
+  }
+
+  deleteHoliday(i: number) {
+    let existingHolidays = this.primaryForm.controls.exceptionalHolidays.value;
+    existingHolidays.splice(i, 1);
+    this.primaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+    existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
+    existingHolidays.splice(i, 1);
+    this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+  }
+
+  editExceptionalHoliday(index: number) {
+    this.dialog.open(DialogComponent, {
+      width: '450px',
+      data: {
+        case: 'HOLIDAY',
+        title: this.popupMessages['holiday-edit'].title,
+        yesBtnTxt: this.popupMessages['holiday-edit'].yesBtnTxt,
+        noBtnTxt: this.popupMessages['holiday-edit'].noBtnTxt,
+        holidayData: [this.primaryForm.controls.exceptionalHolidays.value[index],
+        this.secondaryForm.controls.exceptionalHolidays.value[index]]
+      }
+    }).afterClosed().subscribe(response => {
+      if (response) {
+        const primaryHoliday = new HolidayModel();
+        const secondaryHoliday = new HolidayModel();
+        primaryHoliday.holidayDate = Utils.formatDate(response.controls.holidayDate.value);
+        secondaryHoliday.holidayDate = Utils.formatDate(response.controls.holidayDate.value);
+        primaryHoliday.holidayName = response.controls.holidayNamePrimary.value;
+        secondaryHoliday.holidayName = response.controls.holidayNameSecondary.value;
+        primaryHoliday.holidayDescription = response.controls.holidayDescPrimary.value;
+        secondaryHoliday.holidayDescription = response.controls.holidayDescSecondary.value;
+        let existingHolidays = this.primaryForm.controls.exceptionalHolidays.value;
+        existingHolidays[index] = primaryHoliday;
+        this.primaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+        existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
+        existingHolidays[index] = secondaryHoliday;
+        this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+      }
+    });
   }
 
   canDeactivate(): Observable<any> | boolean {

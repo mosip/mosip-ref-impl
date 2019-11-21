@@ -1,3 +1,5 @@
+import { HolidayModel } from './holiday-model';
+
 export class CenterModel {
     constructor(
         public addressLine1: string,
@@ -20,6 +22,8 @@ export class CenterModel {
         public timeZone: string,
         public workingHours: string,
         public zoneCode: string,
+        public workingDays: string[],
+        public exceptionalHolidays: HolidayModel[],
         public id?: string,
         public isActive?: boolean,
         public numberOfKiosks?: number

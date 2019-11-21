@@ -59,6 +59,9 @@
         "keyboard-tooltip": "Cliquez pour clavier virtuel (French)",
         "isActive": "C'est actif",
         "update": "mettre à jour",
+        "workingDays": "jours de travail",
+        "holidays": "Vacances exceptionnelles",
+        "add-button": "Ajouter",
         "validationMessages": {
             "name": {
                 "required": "Le nom du centre est requis",
@@ -169,6 +172,23 @@
                 "title": "Erreur",
                 "message": "Aucun Enregistrement Trouvé",
                 "btnTxt": "D'accord"
+            },
+            "holiday-create": {
+                "title": "Créer des vacances exceptionnelles",
+                "yesBtnTxt": "Créer",
+                "noBtnTxt": "Annuler",
+                "date-placeholder": "Sélectionnez la date de vacances",
+                "name-placeholder": "Nom de vacances",
+                "desc-placeholder": "Description de vacances (facultatif)",
+                "date-error": "Veuillez choisir une date",
+                "name-error": "S'il vous plaît entrer un nom de vacances",
+                "message-primary": "En langue principale:",
+                "message-secondary": "En langue secondaire: (facultatif)"
+            },
+            "holiday-edit": {
+                "title":"Modifier les vacances exceptionnelles",
+                "yesBtnTxt": "modifier",
+                "noBtnTxt": "Annuler"
             }
         }
     },

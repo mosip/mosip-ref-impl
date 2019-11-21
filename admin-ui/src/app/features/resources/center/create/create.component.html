@@ -282,6 +282,32 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <br />
+              <mat-label>{{'center.workingDays' | translate}}</mat-label>
+              <mat-selection-list formControlName="workingDays"
+              (selectionChange)="copyDataToSecondaryForm('workingDays', primary.workingDays.value)">
+                <div style="display: flex; flex-wrap: wrap; margin-left: -15px;">
+                  <mat-list-option style="background-color: white" [checkboxPosition]="before" *ngFor="let day of days" [value]="day.code">
+                    {{day.name}}
+                  </mat-list-option>
+                </div>
+              </mat-selection-list>
+              <mat-error *ngIf="primary.workingDays.touched && primary.workingDays.hasError('required')">Please select atleast one day</mat-error>  
+            <br />
+              <mat-label>{{'center.holidays' | translate}}</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <button *ngIf="!disableForms" mat-raised-button (click)="createExceptionalHoliday()">{{'center.add-button' | translate}}</button>
+              <div style="display: flex; flex-wrap: wrap;">
+                <div style="height: 38px;width: 130px;background-color: #FF4081;color: white;padding: 10px;margin: 15px;cursor: pointer;" *ngFor="let data of primary.exceptionalHolidays.value; let i = index;">
+                  <span matTooltip="{{data.holidayName}}" [matTooltipPosition]="'above'" (click)="editExceptionalHoliday(i)">{{data.holidayDate}}</span>
+                  <div style="position: absolute;
+                  margin-left: 102px;
+                  margin-top: -26px;
+                  cursor: pointer;"
+                  (click)="deleteHoliday(i)">X</div>
+                </div>
+              </div>
+            <br />        
+            <br />
             <mat-form-field>
               <mat-label>{{ 'center.isActive' | translate }}</mat-label>
               <mat-select formControlName="isActive"
@@ -474,6 +500,35 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <br />
+              <mat-label>{{secondaryLanguageLabels['workingDays']}}</mat-label>
+              <mat-selection-list formControlName="workingDays">
+                <div [ngStyle]="{ 
+                  'direction': secondaryLang === 'ara' ? 'rtl' : 'ltr',
+                  'display': 'flex',
+                  'flex-wrap': 'wrap',
+                  'margin-right': secondaryLang === 'ara' ? '-10px' : '0',
+                  'margin-left': secondaryLang === 'ara' ? '0' : '-15px'
+                 }">
+                  <mat-list-option [checkboxPosition]="before" style="background-color: white" *ngFor="let day of secondaryDays" [value]="day.code">
+                    {{day.name}}
+                  </mat-list-option>
+                </div>
+              </mat-selection-list>  
+            <br />
+            <mat-label>{{secondaryLanguageLabels['holidays']}}</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <div style="display: flex; flex-wrap: wrap;">
+                <div style="height: 38px;width: 130px;background-color: #FF4081;color: white;padding: 10px;margin: 32px 15px 15px 15px;cursor: pointer;" *ngFor="let data of secondary.exceptionalHolidays.value; let i = index;">
+                  <span matTooltip="{{data.holidayName}}" [matTooltipPosition]="'above'" (click)="editExceptionalHoliday(i)">{{data.holidayDate}}</span>
+                  <div [ngStyle]="{'position': 'absolute',
+                  'margin-left': secondaryLang === 'ara' ? '0px' : '102px',
+                  'margin-top': '-26px',
+                  'cursor': 'pointer'}"
+                  (click)="deleteHoliday(i)">X</div>
+                </div>
+              </div>
+              <br />
+              <br />  
             <mat-form-field>
               <mat-label>{{ secondaryLanguageLabels['isActive'] }}</mat-label>
               <mat-select formControlName="isActive">
