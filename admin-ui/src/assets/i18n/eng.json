@@ -169,6 +169,11 @@
                 "title": "Error",
                 "message": "No Data Found",
                 "btnTxt": "Ok"
+            },
+            "lunchTimeValidation": {
+                "title": "Error",
+                "message": "Please select center timings before selecting lunch timings",
+                "btnTxt": "Ok"
             }
         }
     },
