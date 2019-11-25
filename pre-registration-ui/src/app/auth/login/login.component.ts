@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
   primaryLangFromConfig = '';
   primaryLang = '';
   secondaryLangFromConfig = '';
+  defaultLangCode = appConstants.DEFAULT_LANG_CODE;
   secondaryLang = '';
   showSendOTP = true;
   showResend = false;
@@ -110,6 +111,15 @@ export class LoginComponent implements OnInit {
   loadLanguagesWithConfig() {
     this.primaryLangFromConfig = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.mosip_primary_language);
     this.secondaryLangFromConfig = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.mosip_secondary_language);
+
+    // default secondary language if any of the primary or secondary langugae is not present
+    this.primaryLangFromConfig === ''
+      ? (this.primaryLangFromConfig = this.defaultLangCode)
+      : this.primaryLangFromConfig;
+    this.secondaryLangFromConfig === ''
+      ? (this.secondaryLangFromConfig = this.defaultLangCode)
+      : this.secondaryLangFromConfig;
+
     this.primaryLang = this.primaryLangFromConfig;
     this.secondaryLang = this.secondaryLangFromConfig;
 
