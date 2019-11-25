@@ -136,12 +136,24 @@ export class CreateComponent {
       .subscribe(response => {
         console.log(response);
         this.dropDownValues.zone.primary = response.response;
+        if (this.dropDownValues.zone.primary.length === 1) {
+          this.primaryForm.controls.zone.setValue(
+            this.dropDownValues.zone.primary[0].code
+          );
+          this.primaryForm.controls.zone.disable();
+        }
       });
     this.dataStorageService
       .getZoneData(this.secondaryLang)
       .subscribe(response => {
         console.log(response);
         this.dropDownValues.zone.secondary = response.response;
+        if (this.dropDownValues.zone.secondary.length === 1) {
+          this.secondaryForm.controls.zone.setValue(
+            this.dropDownValues.zone.secondary[0].code
+          );
+          this.secondaryForm.controls.zone.disable();
+        }
       });
   }
 
