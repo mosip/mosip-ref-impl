@@ -683,7 +683,7 @@ public class IdaController {
 		request.setData(Base64.encodeBase64URLSafeString(data.getBytes(StandardCharsets.UTF_8)));
 		String publicKeyId = env.getProperty("publicKeyId", "PARTNER");
 		request.setReferenceId(publicKeyId);
-		String utcTime = DateUtils.getUTCCurrentDateTimeString();
+		String utcTime = DateUtils.formatToISOString(DateUtils.getUTCCurrentDateTime());
 		request.setTimeStamp(utcTime);
 		Map<String, String> uriParams = new HashMap<>();
 		uriParams.put("appId", "IDA");
