@@ -62,7 +62,8 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
       .open(DialogComponent, {
         data: action,
         width: '700px',
-        autoFocus: false    
+        autoFocus: false,
+        disableClose: true
       })
       .afterClosed()
       .subscribe(result => {

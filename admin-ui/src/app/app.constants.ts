@@ -130,7 +130,7 @@ export const masterdataMapping = {
     apiName: 'title',
     specFileName: 'titles',
     name: 'Title',
-    nameKey: 'name',
+    nameKey: 'titleName',
     idKey: 'code',
     headerName: 'Title'
   },
