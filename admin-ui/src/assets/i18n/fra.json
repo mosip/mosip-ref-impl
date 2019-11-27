@@ -268,8 +268,8 @@
             "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
             "error-title": "Erreur",
             "btnTxt": "D'accord",
-            "yesBtnTxt": "Oui",
-            "noBtnTxt": "Non",
+            "yesBtnTxt": "confirmer",
+            "noBtnTxt": "Annuler",
             "confirmation-message": ["Voulez-vous mettre le centre d'inscription hors service ", "? \n Vous ne pouvez pas annuler cette action une fois que vous avez cliqué sur Confirmer."],
             "confirmation-title": "Confirmation"
         },

@@ -165,19 +165,30 @@ export class CreateComponent {
     ) {
       data = {
         case: 'CONFIRMATION',
-        title: this.popupMessages['create-edit'].title,
-        message: this.popupMessages['create-edit'].mandatorySecondaryFields,
-        yesBtnTxt: this.popupMessages['create-edit'].yesBtnText,
-        noBtnTxt: this.popupMessages['create-edit'].noBtnText
+        title: this.popupMessages['create'].title,
+        message: this.popupMessages['create'].mandatorySecondaryFields,
+        yesBtnTxt: this.popupMessages['create'].yesBtnText,
+        noBtnTxt: this.popupMessages['create'].noBtnText
       };
     } else {
-      data = {
-        case: 'CONFIRMATION',
-        title: this.popupMessages['create-edit'].title,
-        message: this.popupMessages['create-edit'].message,
-        yesBtnTxt: this.popupMessages['create-edit'].yesBtnText,
-        noBtnTxt: this.popupMessages['create-edit'].noBtnText
-      };
+      if (this.data.length === 0) {
+        const zone = this.dropDownValues.zone.primary.filter(z => z.code === this.primaryForm.controls.zone.value);
+        data = {
+          case: 'CONFIRMATION',
+          title: this.popupMessages['create'].title,
+          message: this.popupMessages['create'].message[0] + zone[0].name + this.popupMessages['create'].message[1],
+          yesBtnTxt: this.popupMessages['create'].yesBtnText,
+          noBtnTxt: this.popupMessages['create'].noBtnText
+        };
+      } else {
+        data = {
+          case: 'CONFIRMATION',
+          title: this.popupMessages['edit'].title,
+          message: this.popupMessages['edit'].message,
+          yesBtnTxt: this.popupMessages['edit'].yesBtnText,
+          noBtnTxt: this.popupMessages['edit'].noBtnText
+        };
+      }
     }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
