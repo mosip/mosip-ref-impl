@@ -303,7 +303,7 @@
               </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
               <button [disabled]="disableForms" mat-raised-button (click)="createExceptionalHoliday()">{{'center.add-button' | translate}}</button>
               <div style="display: flex; flex-wrap: wrap;">
-                <div style="height: 38px;width: 130px;border: 1px solid #FF4081;border-radius: 30px;padding: 10px;margin-right: 15px;cursor: pointer;" *ngFor="let data of primary.exceptionalHolidays.value; let i = index;">
+                <div style="height: 38px;width: 130px;border: 1px solid #FF4081;border-radius: 30px;padding: 10px;margin: 15px;cursor: pointer;" *ngFor="let data of primary.exceptionalHolidays.value; let i = index;">
                   <span>{{data.exceptionHolidayDate}}</span>
                   <div style="position: absolute;
                   margin-left: 90px;
@@ -525,8 +525,7 @@
               </mat-selection-list>  
             <br />
             <mat-label>{{secondaryLanguageLabels['holidays']}}</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
-            <br /><br /><br /><br />
-            <div *ngIf="primary.exceptionalHolidays.value.length === 0"><br /></div>
+            <br /><br /><br /><br /><br />
             <div style="display: flex; flex-wrap: wrap;">
               <div style="height: 38px;width: 130px;border: 1px solid #FF4081;border-radius: 30px;padding: 10px;margin: 15px;cursor: pointer;" *ngFor="let data of primary.exceptionalHolidays.value; let i = index;">
                 <span>{{data.exceptionHolidayDate}}</span>

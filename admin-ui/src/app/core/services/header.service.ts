@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class HeaderService {
 
   private Username = '';
-  private roles = 'ZONAL_ADMIN,GLOBAL_ADMIN,';
+  private roles = '';
   private zone = '';
 
   constructor() { }
