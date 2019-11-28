@@ -201,7 +201,11 @@ export const masterdataMapping = {
 };
 
 export const ListViewIdKeyMapping = {
-  centers: { idKey: 'id', imagePath: 'assets/images/center-name-icon.png', auditEventId: 'ADM-064' },
+  centers: {
+    idKey: 'id',
+    imagePath: 'assets/images/center-name-icon.png',
+    auditEventId: 'ADM-064'
+  },
   devices: { idKey: 'id', auditEventId: 'ADM-065' },
   machines: { idKey: 'id', auditEventId: 'ADM-066' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
@@ -298,16 +302,31 @@ export const keyboardMapping = {
 };
 
 export const days = {
-  eng: [{ name:'Monday', code: 'MON' },{ name: 'Tuesday', code: 'TUE'}, 
-        { name: 'Wednesday', code: 'WED'},{ name: 'Thursday', code: 'THU'}, 
-        { name: 'Friday', code: 'FRI'},{ name: 'Saturday', code: 'SAT'},
-        { name: 'Sunday', code: 'SUN'}],
-  fra: [{ name:'Lundi', code: 'MON' },{ name: 'Mardi', code: 'TUE'}, 
-        { name: 'Mercredi', code: 'WED'},{ name: 'Jeudi', code: 'THU'}, 
-        { name: 'Vendredi', code: 'FRI'},{ name: 'samedi', code: 'SAT'},
-        { name: 'dimanche', code: 'SUN'}],
-  ara: [{ name:'الإثنين', code: 'MON' },{ name: 'الثلاثاء', code: 'TUE'}, 
-        { name: 'الأربعاء', code: 'WED'},{ name: 'الخميس', code: 'THU'}, 
-        { name: 'يوم الجمعة', code: 'FRI'},{ name: 'يوم السبت', code: 'SAT'},
-        { name: 'الأحد', code: 'SUN'}]
-}
+  eng: [
+    { name: 'Monday', code: 'mon' },
+    { name: 'Tuesday', code: 'tue' },
+    { name: 'Wednesday', code: 'wed' },
+    { name: 'Thursday', code: 'thu' },
+    { name: 'Friday', code: 'fri' },
+    { name: 'Saturday', code: 'sat' },
+    { name: 'Sunday', code: 'sun' }
+  ],
+  fra: [
+    { name: 'Lundi', code: 'mon' },
+    { name: 'Mardi', code: 'tue' },
+    { name: 'Mercredi', code: 'wed' },
+    { name: 'Jeudi', code: 'thu' },
+    { name: 'Vendredi', code: 'fri' },
+    { name: 'samedi', code: 'sat' },
+    { name: 'dimanche', code: 'sun' }
+  ],
+  ara: [
+    { name: 'الإثنين', code: 'mon' },
+    { name: 'الثلاثاء', code: 'tue' },
+    { name: 'الأربعاء', code: 'wed' },
+    { name: 'الخميس', code: 'thu' },
+    { name: 'يوم الجمعة', code: 'fri' },
+    { name: 'يوم السبت', code: 'sat' },
+    { name: 'الأحد', code: 'sun' }
+  ]
+};

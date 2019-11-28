@@ -172,23 +172,6 @@
                 "title": "Error",
                 "message": "No Data Found",
                 "btnTxt": "Ok"
-            },
-            "holiday-create": {
-                "title": "Create Exceptional Holiday",
-                "yesBtnTxt": "Create",
-                "noBtnTxt": "Cancel",
-                "date-placeholder": "Select Holiday Date",
-                "name-placeholder": "Holiday Name",
-                "desc-placeholder": "Holiday Description (Optional)",
-                "date-error": "Please select a date",
-                "name-error": "Please enter a holiday name",
-                "message-primary": "In Primary Language:",
-                "message-secondary": "In Secondary Language: (Optional)"
-            },
-            "holiday-edit": {
-                "title":"Edit Exceptional Holiday",
-                "yesBtnTxt": "Edit",
-                "noBtnTxt": "Cancel"
             }
         }
     },

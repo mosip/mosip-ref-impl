@@ -22,10 +22,10 @@ export class CenterModel {
         public timeZone: string,
         public workingHours: string,
         public zoneCode: string,
-        public workingDays: string[],
-        public exceptionalHolidays: HolidayModel[],
         public id?: string,
         public isActive?: boolean,
-        public numberOfKiosks?: number
+        public numberOfKiosks?: number,
+        public workingNonWorkingDays?: any,
+        public exceptionalHolidayDto?: HolidayModel[],
     ) {}
 }

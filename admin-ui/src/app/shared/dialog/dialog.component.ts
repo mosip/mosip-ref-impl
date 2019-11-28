@@ -54,8 +54,7 @@ export class DialogComponent implements OnInit {
     private dataStorageService: DataStorageService,
     private config: AppConfigService,
     private activatedRoute: ActivatedRoute,
-    private auditService: AuditService,
-    private formBuilder: FormBuilder
+    private auditService: AuditService
   ) {}
 
   async ngOnInit() {
@@ -67,29 +66,6 @@ export class DialogComponent implements OnInit {
         this.config.getConfig().primaryLangCode
       ).filters;
       await this.getFilterMappings();
-    }
-    if (this.input.case === 'HOLIDAY') {
-      this.initializeForm();
-    }
-  }
-
-  initializeForm() {
-    if (this.input.holidayData) {
-      this.holidayForm = this.formBuilder.group({
-        holidayDate: [Utils.createDateObject(this.input.holidayData[0].holidayDate), [Validators.required]],
-        holidayNamePrimary: [this.input.holidayData[0].holidayName, [Validators.required]],
-        holidayDescPrimary: [this.input.holidayData[0].holidayDescription],
-        holidayNameSecondary: [this.input.holidayData[1].holidayName],
-        holidayDescSecondary: [this.input.holidayData[1].holidayDescription]
-      });
-    } else {
-      this.holidayForm = this.formBuilder.group({
-        holidayDate: ['', [Validators.required]],
-        holidayNamePrimary: ['', [Validators.required]],
-        holidayDescPrimary: [''],
-        holidayNameSecondary: [''],
-        holidayDescSecondary: ['']
-      });
     }
   }
 

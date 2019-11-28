@@ -1,9 +1,8 @@
 export class HolidayModel {
-    
-    public holidayDate: string;
 
     constructor(
-        public holidayName?: string,
-        public holidayDescription?: string
+        public exceptionHolidayDate: string,
+        public exceptionHolidayName: string = '',
+        public exceptionHolidayReson: string = ''
     ) {}
 }

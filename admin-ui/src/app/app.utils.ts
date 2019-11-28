@@ -8,7 +8,7 @@ export default class Utils {
 
   static formatDate(date: Date) {
     const pipe = new DatePipe('en-US');
-    const formattedDate = pipe.transform(date, 'dd-MM-yyyy');
+    const formattedDate = pipe.transform(date, 'yyyy-MM-dd');
     return formattedDate;
   }
 
