@@ -11,14 +11,14 @@ export abstract class FormDeactivateGuardService extends UnloadDeactivateGuardSe
   abstract get canDeactivateFlag(): boolean;
 
   constructor(dialoug: MatDialog) {
-    super();
+    super(dialoug);
   }
 
   flag: boolean;
   canDeactivate(): boolean {
     if (!this.canDeactivateFlag) {
       return true;
-    } else {
+    } else if (this.userForm) {
       (<any>Object).values(this.userForm.controls).forEach((element: FormControl) => {
         let tempFlag = element.value !== '' ? true : false;
         if (tempFlag) {

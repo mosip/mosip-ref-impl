@@ -26,6 +26,7 @@ import { RouterExtService } from 'src/app/shared/router/router-ext.service';
 import { LogService } from 'src/app/shared/logger/log.service';
 import LanguageFactory from 'src/assets/i18n';
 import { FormDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service';
+import { Subscription } from 'rxjs';
 // import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
@@ -42,7 +43,7 @@ import { FormDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/
   templateUrl: './demographic.component.html',
   styleUrls: ['./demographic.component.css']
 })
-export class DemographicComponent extends FormDeactivateGuardService implements OnInit {
+export class DemographicComponent extends FormDeactivateGuardService implements OnInit, OnDestroy {
   textDir = localStorage.getItem('dir');
   secTextDir = localStorage.getItem('secondaryDir');
   primaryLang = localStorage.getItem('langCode');
@@ -130,6 +131,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   locations = [this.regions, this.provinces, this.cities, this.zones];
   selectedLocationCode = [];
   codeValue: CodeValueModal[] = [];
+  subscriptions: Subscription[] = [];
 
   formControlValues: FormControlModal;
   formControlNames: FormControlModal = {
@@ -184,7 +186,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   ) {
     super(dialog);
     this.translate.use(localStorage.getItem('langCode'));
-    this.regService.getMessage().subscribe(message => (this.message = message));
+    this.subscriptions.push(this.regService.getMessage().subscribe(message => (this.message = message)));
   }
 
   /**
@@ -248,15 +250,18 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
 
   private getConsentMessage() {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getGuidelineTemplate('consent').subscribe(
-        response => {
-          if (response[appConstants.RESPONSE]) this.consentMessage = response['response']['templates'][0].fileText;
-          else this.onError(this.errorlabels.error, '');
-          resolve(true);
-        },
-        error => {
-          this.onError(this.errorlabels.error, error);
-        }
+      this.subscriptions.push(
+        this.dataStorageService.getGuidelineTemplate('consent').subscribe(
+          response => {
+            if (response[appConstants.RESPONSE])
+              this.consentMessage = response['response']['templates'][0].fileText.split('\n');
+            else this.onError(this.errorlabels.error, '');
+            resolve(true);
+          },
+          error => {
+            this.onError(this.errorlabels.error, error);
+          }
+        )
       );
     });
   }
@@ -544,19 +549,21 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
    */
   private getGenderDetails() {
     return new Promise(resolve => {
-      this.dataStorageService.getGenderDetails().subscribe(
-        response => {
-          if (response[appConstants.RESPONSE]) {
-            this.genders = response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.genderTypes];
-            resolve(true);
-          } else {
-            this.onError(this.errorlabels.error, '');
+      this.subscriptions.push(
+        this.dataStorageService.getGenderDetails().subscribe(
+          response => {
+            if (response[appConstants.RESPONSE]) {
+              this.genders = response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.genderTypes];
+              resolve(true);
+            } else {
+              this.onError(this.errorlabels.error, '');
+            }
+          },
+          error => {
+            this.loggerService.error('Unable to fetch gender');
+            this.onError(this.errorlabels.error, error);
           }
-        },
-        error => {
-          this.loggerService.error('Unable to fetch gender');
-          this.onError(this.errorlabels.error, error);
-        }
+        )
       );
     });
   }
@@ -570,20 +577,22 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
    */
   private getResidentDetails() {
     return new Promise(resolve => {
-      this.dataStorageService.getResidentDetails().subscribe(
-        response => {
-          if (response[appConstants.RESPONSE]) {
-            this.residenceStatus =
-              response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.residentTypes];
-            resolve(true);
-          } else {
-            this.onError(this.errorlabels.error, '');
+      this.subscriptions.push(
+        this.dataStorageService.getResidentDetails().subscribe(
+          response => {
+            if (response[appConstants.RESPONSE]) {
+              this.residenceStatus =
+                response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.residentTypes];
+              resolve(true);
+            } else {
+              this.onError(this.errorlabels.error, '');
+            }
+          },
+          error => {
+            this.loggerService.error('Unable to fetch Resident types');
+            this.onError(this.errorlabels.error, error);
           }
-        },
-        error => {
-          this.loggerService.error('Unable to fetch Resident types');
-          this.onError(this.errorlabels.error, error);
-        }
+        )
       );
     });
   }
@@ -709,29 +718,31 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   ) {
     childLocations.length = 0;
     return new Promise(resolve => {
-      this.dataStorageService.getLocationImmediateHierearchy(languageCode, parentLocationCode).subscribe(
-        response => {
-          if (response[appConstants.RESPONSE]) {
-            response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations].forEach(element => {
-              let codeValueModal: CodeValueModal = {
-                valueCode: element.code,
-                valueName: element.name,
-                languageCode: languageCode
-              };
-              childLocations.push(codeValueModal);
-              if (currentLocationCode && codeValueModal.valueCode === currentLocationCode) {
-                this.addCodeValue(codeValueModal);
-              }
-            });
-            return resolve(true);
-          } else {
-            this.onError(this.errorlabels.error, '');
+      this.subscriptions.push(
+        this.dataStorageService.getLocationImmediateHierearchy(languageCode, parentLocationCode).subscribe(
+          response => {
+            if (response[appConstants.RESPONSE]) {
+              response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations].forEach(element => {
+                let codeValueModal: CodeValueModal = {
+                  valueCode: element.code,
+                  valueName: element.name,
+                  languageCode: languageCode
+                };
+                childLocations.push(codeValueModal);
+                if (currentLocationCode && codeValueModal.valueCode === currentLocationCode) {
+                  this.addCodeValue(codeValueModal);
+                }
+              });
+              return resolve(true);
+            } else {
+              this.onError(this.errorlabels.error, '');
+            }
+          },
+          error => {
+            this.onError(this.errorlabels.error, error);
+            this.loggerService.error('Unable to fetch Below Hierearchy');
           }
-        },
-        error => {
-          this.onError(this.errorlabels.error, error);
-          this.loggerService.error('Unable to fetch Below Hierearchy');
-        }
+        )
       );
     });
   }
@@ -890,18 +901,25 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         to_field_value: ''
       };
 
-      this.dataStorageService.getTransliteration(request).subscribe(
-        response => {
-          if (response[appConstants.RESPONSE])
-            this.transUserForm.controls[toControl].patchValue(response[appConstants.RESPONSE].to_field_value);
-          else {
-            this.onError(this.errorlabels.error, '');
+      if (this.primaryLang === this.secondaryLang) {
+        this.transUserForm.controls[toControl].patchValue(fromControl.value);
+        return;
+      }
+
+      this.subscriptions.push(
+        this.dataStorageService.getTransliteration(request).subscribe(
+          response => {
+            if (response[appConstants.RESPONSE])
+              this.transUserForm.controls[toControl].patchValue(response[appConstants.RESPONSE].to_field_value);
+            else {
+              this.onError(this.errorlabels.error, '');
+            }
+          },
+          error => {
+            this.onError(this.errorlabels.error, error);
+            this.loggerService.error(error);
           }
-        },
-        error => {
-          this.onError(this.errorlabels.error, error);
-          this.loggerService.error(error);
-        }
+        )
       );
     } else {
       this.transUserForm.controls[toControl].patchValue('');
@@ -937,56 +955,62 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       this.dataUploadComplete = false;
       if (this.dataModification) {
         let preRegistrationId = this.user.preRegId;
-        this.dataStorageService.updateUser(request, preRegistrationId).subscribe(
-          response => {
-            if (
-              (response[appConstants.NESTED_ERROR] === null && response[appConstants.RESPONSE] === null) ||
-              response[appConstants.NESTED_ERROR] !== null
-            ) {
-              let message = '';
+        this.subscriptions.push(
+          this.dataStorageService.updateUser(request, preRegistrationId).subscribe(
+            response => {
               if (
-                response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] === appConstants.ERROR_CODES.invalidPin
+                (response[appConstants.NESTED_ERROR] === null && response[appConstants.RESPONSE] === null) ||
+                response[appConstants.NESTED_ERROR] !== null
               ) {
-                message = this.formValidation(response);
-              } else message = this.errorlabels.error;
-              this.onError(message, '');
-              return;
-            } else {
-              this.onModification(responseJSON);
+                let message = '';
+                if (
+                  response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
+                  appConstants.ERROR_CODES.invalidPin
+                ) {
+                  message = this.formValidation(response);
+                } else message = this.errorlabels.error;
+                this.onError(message, '');
+                return;
+              } else {
+                this.onModification(responseJSON);
+              }
+              this.onSubmission();
+            },
+            error => {
+              this.loggerService.error(error);
+              this.onError(this.errorlabels.error, error);
             }
-            this.onSubmission();
-          },
-          error => {
-            this.loggerService.error(error);
-            this.onError(this.errorlabels.error, error);
-          }
+          )
         );
       } else {
-        this.dataStorageService.addUser(request).subscribe(
-          response => {
-            if (
-              (response[appConstants.NESTED_ERROR] === null && response[appConstants.RESPONSE] === null) ||
-              response[appConstants.NESTED_ERROR] !== null
-            ) {
-              this.loggerService.error(JSON.stringify(response));
-              let message = '';
+        this.subscriptions.push(
+          this.dataStorageService.addUser(request).subscribe(
+            response => {
               if (
-                response[appConstants.NESTED_ERROR] &&
-                response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] === appConstants.ERROR_CODES.invalidPin
+                (response[appConstants.NESTED_ERROR] === null && response[appConstants.RESPONSE] === null) ||
+                response[appConstants.NESTED_ERROR] !== null
               ) {
-                message = this.formValidation(response);
-              } else message = this.errorlabels.error;
-              this.onError(message, '');
-              return;
-            } else {
-              this.onAddition(response, responseJSON);
+                this.loggerService.error(JSON.stringify(response));
+                let message = '';
+                if (
+                  response[appConstants.NESTED_ERROR] &&
+                  response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
+                    appConstants.ERROR_CODES.invalidPin
+                ) {
+                  message = this.formValidation(response);
+                } else message = this.errorlabels.error;
+                this.onError(message, '');
+                return;
+              } else {
+                this.onAddition(response, responseJSON);
+              }
+              this.onSubmission();
+            },
+            error => {
+              this.loggerService.error(error);
+              this.onError(this.errorlabels.error, error);
             }
-            this.onSubmission();
-          },
-          error => {
-            this.loggerService.error(error);
-            this.onError(this.errorlabels.error, error);
-          }
+          )
         );
       }
     }
@@ -1195,6 +1219,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     if (
       error &&
       error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
       error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode === appConstants.ERROR_CODES.tokenExpired
     ) {
       message = this.errorlabels.tokenExpiredLogout;
@@ -1252,5 +1277,9 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     if (this.matKeyboardService.isOpened) {
       this.matKeyboardService.dismiss();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

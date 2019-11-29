@@ -6,6 +6,7 @@ export const NESTED_ERROR = 'errors';
 export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
+export const DEFAULT_LANG_CODE = 'eng';
 
 export const IDS = {
   newUser: 'mosip.pre-registration.demographic.create',
@@ -72,10 +73,12 @@ export const ERROR_CODES = {
   userBlocked: 'PRG_PAM_LGN_013',
   invalidPin: 'KER-IOV-004',
   tokenExpired: 'KER-ATH-401',
-  slotNotAvailable: 'PRG_BOOK_RCI_002'
+  slotNotAvailable: 'PRG_BOOK_RCI_002',
+  timeExpired: 'PRG_BOOK_RCI_026'
 };
 
 export const CONFIG_KEYS = {
+  mosip_notification_type: 'mosip.notificationtype',
   mosip_country_code: 'mosip.country.code',
   preregistration_nearby_centers: 'preregistration.nearby.centers',
   preregistration_timespan_rebook: 'preregistration.timespan.rebook',

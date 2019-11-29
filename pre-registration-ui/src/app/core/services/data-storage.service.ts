@@ -209,13 +209,12 @@ export class DataStorageService {
   }
 
   deleteFile(documentId, preRegId) {
-    return this.httpClient.delete(this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.document, {
-      observe: 'body',
-      responseType: 'json',
-      params: new HttpParams()
-        .append(appConstants.PARAMS_KEYS.deleteFile, documentId)
-        .append(appConstants.PARAMS_KEYS.preRegistrationId, preRegId)
-    });
+    return this.httpClient.delete(
+      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.post_document + documentId,
+      {
+        params: new HttpParams().append(appConstants.PARAMS_KEYS.preRegistrationId, preRegId)
+      }
+    );
   }
 
   getSecondaryLanguageLabels(langCode: string) {
@@ -232,7 +231,7 @@ export class DataStorageService {
       appConstants.PARAMS_KEYS.POA +
       '&sourcePreId=' +
       sourceId;
-    const params = new URLSearchParams().set(appConstants.PARAMS_KEYS.catCode, appConstants.PARAMS_KEYS.POA);
+    // const params = new URLSearchParams().set(appConstants.PARAMS_KEYS.catCode, appConstants.PARAMS_KEYS.POA);
     // params.set(appConstants.PARAMS_KEYS.sourcePrId, sourceId);
 
     return this.httpClient.put(url, {

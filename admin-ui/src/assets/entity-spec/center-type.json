@@ -1,8 +1,9 @@
 {
+  "auditEventIds": ["ADM-026", "ADM-048"],
   "actionButtons": [
     {
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-      "imagePath":"assets/images/filter.png",
+      "imagePath": "assets/images/filter.png",
       "actionListType": "action",
       "actionURL": { "case": "filter" },
       "redirectURL": "",
@@ -115,10 +116,10 @@
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
-      "datePicker":"false",
-      "apiName":"registrationcentertypes",
-      "fieldName":"isActive",
-      "methodCallName":""
+      "datePicker": "false",
+      "apiName": "registrationcentertypes",
+      "fieldName": "isActive",
+      "methodCallName": ""
     }
   ]
 }

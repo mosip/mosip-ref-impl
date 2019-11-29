@@ -583,6 +583,8 @@
     "referenceIdentityNumber": "Le numéro d'identité de référence entré est invalide",
     "tokenExpiredLogout": "Vous avez été déconnecté pour cause d'inactivité.",
     "slotNotAvailable": "La réservation / re-réservation de rendez-vous ne peut être effectuée car le créneau demandé n'est pas disponible. Veuillez sélectionner un autre emplacement ou réessayer plus tard",
+    "timeExpired_1": "Un rendez-vous ne peut être replanifié dans ",
+    "timeExpired_2": " heures de réservation",
     "errorLabel": "ERREUR"
   },
   "residentTypesMapping": {

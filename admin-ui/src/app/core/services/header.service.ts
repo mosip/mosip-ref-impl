@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class HeaderService {
 
   private Username = '';
-  private roles = '';
+  private roles = 'ZONAL_ADMIN,GLOBAL_ADMIN,';
   private zone = '';
 
   constructor() { }
@@ -27,6 +27,10 @@ export class HeaderService {
     const x = this.roles.split(',');
     x.splice(x.length - 1, 1);
     return x.join(', ').replace(/_/g, ' ');
+  }
+
+  getRoleCodes(): string {
+    return this.roles;
   }
 
   setZone(zone: string) {

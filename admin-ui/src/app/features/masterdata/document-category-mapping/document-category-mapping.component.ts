@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { AppConfigService } from 'src/app/app-config.service';
 import { DocumentCategoryMappingService } from 'src/app/core/services/document-category-mapping.service';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-document-category-mapping',
@@ -24,13 +25,15 @@ export class DocumentCategoryMappingComponent implements OnInit {
   showSpinner = false;
 
   constructor(private translateService: TranslateService,
-    private appConfigService: AppConfigService,
-    private docCategoryMapping: DocumentCategoryMappingService) {
+              private appConfigService: AppConfigService,
+              private docCategoryMapping: DocumentCategoryMappingService,
+              private auditService: AuditService) {
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     translateService.use(this.primaryLang);
   }
 
   ngOnInit() {
+    this.auditService.audit(3, 'ADM-044', 'Document Category Type Mapping');
     this.getDocCategory();
     this.getUnMappedDoc();
   }

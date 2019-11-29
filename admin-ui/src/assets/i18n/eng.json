@@ -29,14 +29,14 @@
         "center-details": "Center Details",
         "registration-center-name": "Registration Center Name",
         "registration-center-type": "Registration Center Type",
-        "contact-person": "Contact Person",
-        "contact-number": "Contact Number",
+        "contact-person": "Contact Person - Optional",
+        "contact-number": "Contact Number - Optional",
         "location-details": "Location Details",
         "longitude": "Longitude",
         "latitude": "Latitude",
         "address1": "Address Line 1",
-        "address2": "Address Line 2",
-        "address3": "Address Line 3",
+        "address2": "Address Line 2 - Optional",
+        "address3": "Address Line 3 - Optional",
         "region": "Region",
         "province": "Province",
         "city": "City",
@@ -45,22 +45,23 @@
         "zone": "Administrative Zone",
         "operational-details": "Operational Details",
         "holiday-zone": "Holiday Zone",
-        "working-hrs": "Working Hours",
+        "working-hrs": "Working Hours - Optional",
         "no-kiosk": "No.Kiosk",
         "per-kiosk-process-time": "Per Kiosk Process Time(minutes)",
         "start-time": "Start Time",
         "end-time": "End Time",
-        "lunch-start-time": "Lunch Start time",
-        "lunch-end-time": "Lunch End Time",
+        "lunch-start-time": "Lunch Start time - Optional",
+        "lunch-end-time": "Lunch End Time - Optional",
         "edit": "Edit",
         "create": "Create",
         "cancel": "Cancel",
         "language": "English",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
         "isActive": "Is Active",
         "update": "Update",
         "validationMessages": {
             "name": {
-                "required": "Name is required",
+                "required": "Center Name is required",
                 "max-length": "Exceeded max length (128)"
             },
             "centerTypeCode": {
@@ -75,12 +76,14 @@
             "longitude": {
                 "required": "Longitude is required",
                 "max-length": "Exceeded max length (32)",
-                "validLatLong": "Atleast 4 digits after decimal is mandatory"
+                "validLatLong": "Atleast 4 digits after decimal is mandatory",
+                "validNumber": "Please enter digits only"
             },
             "latitude": {
                 "required": "Longitude is required",
                 "max-length": "Exceeded max length (32)",
-                "validLatLong": "Atleast 4 digits after decimal is mandatory"
+                "validLatLong": "Atleast 4 digits after decimal is mandatory",
+                "validNumber": "Please enter digits only"
             },
             "addressLine1": {
                 "required": "Address Line 1 is required",
@@ -102,13 +105,13 @@
                 "required": "City is required"
             },
             "laa": {
-                "required": "LAA is required"
+                "required": "Zone is required"
             },
             "postalCode": {
                 "required": "Postal Code is required"
             },
             "zone": {
-                "required": "Zone is required"
+                "required": "Administrative Zone is required"
             },
             "holidayZone": {
                 "required": "Holiday Zone is required"
@@ -129,11 +132,18 @@
             }
         },
         "popupMessages": {
-            "create-edit": {
+            "create": {
                 "title": "Confirmation",
-                "message": "Click On yes To Create/Edit Center",
+                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
                 "yesBtnText": "Yes",
                 "noBtnText": "No",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a Registration Center. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
                 "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
             },
             "update-success": {
@@ -162,9 +172,14 @@
                 "yesBtnTxt": "Leave",
                 "noBtnTxt": "Stay"
             },
-            "no-data": {
+            "noData": {
                 "title": "Error",
                 "message": "No Data Found",
+                "btnTxt": "Ok"
+            },
+            "lunchTimeValidation": {
+                "title": "Error",
+                "message": "Please select center timings before selecting lunch timings",
                 "btnTxt": "Ok"
             }
         }
@@ -232,12 +247,17 @@
             "title": "Technical Error",
             "message": "A technical error has occurred. Please refresh your page to continue or try again later",
             "btnTxt": "Ok"
+        },
+        "unauthorized": {
+            "title": "Authorization Error",
+            "message": "You are not authorised to visit this page",
+            "btnTxt": "Ok"
         }
     },
     "validationMessages": {
-        "required": "Both From and To Fields are mandatory if 1 is selected",
-        "range": "From cannot be greater than To",
-        "invalid": "Invalid Input. Please input correctly"
+        "required": "Please fill both the ‘To’ and ‘From’ field to filter by the date range",
+        "range": "’To’ date cannot be before ‘From’ date'",
+        "invalid": "Please select a valid value for Date"
     },
     "packet-status": {
         "header": "Packet Status",
@@ -246,5 +266,40 @@
         "id": "Registration ID",
         "status": "Status",
         "viewMore": "View More"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": ["The Registration Center ", " is Decommissioned successfully"],
+            "success-title": "Success",
+            "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\nPlease un-map these resources before decommission the Center",
+            "error-title": "Error",
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to Decommission the Registration Center ", " ? \n You cannot undo this action once you click on Confirm."],
+            "confirmation-title": "Confirmation"
+        },
+        "activate": {
+            "success-message": ["Registration Center ", " is Activated Successfully"],
+            "success-title": "Success",
+            "error-message": "Center Could not be Activated",
+            "error-title": "Error",
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Activate the Registration Center ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
+            "confirmation-title": "Confirmation"
+        },
+        "deactivate": {
+            "success-message": ["Registration Center ", " is Deactivated Successfully"],
+            "success-title": "Success",
+            "error-message": "Center Could not be Deactivated",
+            "error-title": "Error",
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
+            "confirmation-title": "Confirmation"
+        }
     }
 }

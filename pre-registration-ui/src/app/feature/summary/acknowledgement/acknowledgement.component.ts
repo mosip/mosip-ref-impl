@@ -10,6 +10,8 @@ import Utils from 'src/app/app.util';
 import * as appConstants from '../../../app.constants';
 import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
 import LanguageFactory from 'src/assets/i18n';
+import { Subscription } from 'rxjs';
+import { ConfigService } from 'src/app/core/services/config.service';
 
 @Component({
   selector: 'app-acknowledgement',
@@ -21,31 +23,34 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   secondaryLang = localStorage.getItem('secondaryLangCode');
   usersInfo = [];
   secondaryLanguageRegistrationCenter: any;
-
   guidelines = [];
-
   opt = {};
-
   fileBlob: Blob;
   showSpinner: boolean = true;
   notificationRequest = new FormData();
   bookingDataPrimary = '';
   bookingDataSecondary = '';
+  subscriptions: Subscription[] = [];
+  notificationTypes: string[];
 
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private dataStorageService: DataStorageService
+    private dataStorageService: DataStorageService,
+    private configService: ConfigService
   ) {
     this.translate.use(localStorage.getItem('langCode'));
   }
 
   async ngOnInit() {
     this.usersInfo = this.bookingService.getNameList();
-
+    let notificationTypes = this.configService
+      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_notification_type)
+      .split('|');
+    this.notificationTypes = notificationTypes.map(item => item.toUpperCase());
     this.opt = {
-      margin: [0, 0.5, 0.5, 0],
+      margin: [0, 0.5, 0.5, 0],
       filename: this.usersInfo[0].preRegId + '.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 1 },
@@ -141,33 +146,40 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   async getRegistrationCenterInSecondaryLanguage(centerId: string, langCode: string) {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getRegistrationCenterByIdAndLangCode(centerId, langCode).subscribe(response => {
-        this.secondaryLanguageRegistrationCenter = response['response']['registrationCenters'][0];
-        resolve(true);
-      });
+      const subs = this.dataStorageService
+        .getRegistrationCenterByIdAndLangCode(centerId, langCode)
+        .subscribe(response => {
+          this.secondaryLanguageRegistrationCenter = response['response']['registrationCenters'][0];
+          resolve(true);
+        });
+      this.subscriptions.push(subs);
     });
   }
 
   async getRegistrationCenterInPrimaryLanguage(centerId: string, langCode: string) {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getRegistrationCenterByIdAndLangCode(centerId, langCode).subscribe(response => {
-        this.usersInfo[0].registrationCenter = response['response']['registrationCenters'][0];
-        resolve(true);
-      });
+      const subs = this.dataStorageService
+        .getRegistrationCenterByIdAndLangCode(centerId, langCode)
+        .subscribe(response => {
+          this.usersInfo[0].registrationCenter = response['response']['registrationCenters'][0];
+          resolve(true);
+        });
+      this.subscriptions.push(subs);
     });
   }
 
   getTemplate() {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getGuidelineTemplate('Onscreen-Acknowledgement').subscribe(response => {
+      const subs = this.dataStorageService.getGuidelineTemplate('Onscreen-Acknowledgement').subscribe(response => {
         this.guidelines = response['response']['templates'][0].fileText.split('\n');
         resolve(true);
       });
+      this.subscriptions.push(subs);
     });
   }
 
   download() {
-    window.scroll(0, 0);
+    window.scroll(0, 0);
     const element = document.getElementById('print-section');
     html2pdf(element, this.opt);
   }
@@ -205,9 +217,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   sendAcknowledgement() {
     const data = {
-      case: 'APPLICANTS'
+      case: 'APPLICANTS',
+      notificationTypes: this.notificationTypes
     };
-    const dialogRef = this.dialog
+    const subs = this.dialog
       .open(DialougComponent, {
         width: '350px',
         data: data
@@ -218,13 +231,14 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           this.sendNotification(applicantNumber, true);
         }
       });
+    this.subscriptions.push(subs);
   }
 
   async generateQRCode(name) {
     const index = this.usersInfo.indexOf(name);
     if (!this.usersInfo[index].qrCodeBlob) {
       return new Promise((resolve, reject) => {
-        this.dataStorageService.generateQRCode(name).subscribe(response => {
+        const subs = this.dataStorageService.generateQRCode(name.preRegId).subscribe(response => {
           this.usersInfo[index].qrCodeBlob = response['response'].qrcode;
           resolve(true);
         });
@@ -249,7 +263,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.notificationRequest.append(appConstants.notificationDtoKeys.notificationDto, JSON.stringify(model).trim());
       this.notificationRequest.append(appConstants.notificationDtoKeys.langCode, localStorage.getItem('langCode'));
       this.notificationRequest.append(appConstants.notificationDtoKeys.file, this.fileBlob, `${user.preRegId}.pdf`);
-      this.dataStorageService.sendNotification(this.notificationRequest).subscribe(response => {});
+      const subs = this.dataStorageService.sendNotification(this.notificationRequest).subscribe(response => {});
+      this.subscriptions.push(subs);
       this.notificationRequest = new FormData();
     });
   }
@@ -259,5 +274,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.usersInfo.forEach(user => {
       this.bookingService.addNameList(user);
     });
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

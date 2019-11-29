@@ -1,4 +1,3 @@
-import { RequestModel } from './request.modal';
 import { CodeValueModal } from './code.value.modal';
 import { ResponseModel } from './response.model';
 import { FilesModel } from './files.model';

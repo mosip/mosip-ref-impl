@@ -7,7 +7,8 @@
             "ara": "نوع المركز",
             "fra": "Type de centre"
           },
-          "actionURL": "admin/masterdata/center-type/view"
+          "actionURL": "admin/masterdata/center-type/view",
+          "auditEventId": "ADM-010"
         },
         {
           "label": {
@@ -15,7 +16,8 @@
             "ara": "كلمات في القائمة السوداء",
             "fra": "Mots sur la liste noire"
           },
-          "actionURL": "admin/masterdata/blacklisted-words/view"
+          "actionURL": "admin/masterdata/blacklisted-words/view",
+          "auditEventId": "ADM-011"
         },
         {
           "label": {
@@ -23,7 +25,8 @@
             "ara": "جنس",
             "fra": "Le sexe"
           },
-          "actionURL": "admin/masterdata/gender-type/view"
+          "actionURL": "admin/masterdata/gender-type/view",
+          "auditEventId": "ADM-012"
         },
         {
           "label": {
@@ -31,7 +34,8 @@
             "ara": "نوع الفردية",
             "fra": "Type individuel"
           },
-          "actionURL": "admin/masterdata/individual-type/view"
+          "actionURL": "admin/masterdata/individual-type/view",
+          "auditEventId": "ADM-013"
         },
         {
           "label": {
@@ -39,7 +43,8 @@
             "ara": "قائمة عطلة",
             "fra": "Liste de vacances"
           },
-          "actionURL": "admin/masterdata/holiday/view"
+          "actionURL": "admin/masterdata/holiday/view",
+          "auditEventId": "ADM-014"
         },
         {
           "label": {
@@ -47,7 +52,8 @@
             "ara": "بيانات الموقع",
             "fra": "Données de localisation"
           },
-          "actionURL": "admin/masterdata/location/view"
+          "actionURL": "admin/masterdata/location/view",
+          "auditEventId": "ADM-015"
         },
         {
           "label": {
@@ -55,7 +61,8 @@
             "ara": "قوالب",
             "fra": "Modèles"
           },
-          "actionURL": "admin/masterdata/templates/view"
+          "actionURL": "admin/masterdata/templates/view",
+          "auditEventId": "ADM-016"
         },
         {
           "label": {
@@ -63,7 +70,8 @@
             "ara": "العناوين",
             "fra": "Les titres"
           },
-          "actionURL": "admin/masterdata/title/view"
+          "actionURL": "admin/masterdata/title/view",
+          "auditEventId": "ADM-017"
         }
       ],
       "deviceDefinition": [
@@ -73,7 +81,8 @@
             "ara": "مواصفات الجهاز",
             "fra": "Spécifications de l'appareil"
           },
-          "actionURL": "admin/masterdata/device-specs/view"
+          "actionURL": "admin/masterdata/device-specs/view",
+          "auditEventId": "ADM-018"
         },
         {
           "label": {
@@ -81,7 +90,8 @@
             "ara": "أنواع الأجهزة",
             "fra": "Types de périphériques"
           },
-          "actionURL": "admin/masterdata/device-types/view"
+          "actionURL": "admin/masterdata/device-types/view",
+          "auditEventId": "ADM-019"
         }
       ],
       "machineDefinition": [
@@ -91,7 +101,8 @@
             "ara": "المواصفات الجهاز",
             "fra": "Spécifications de la machine"
           },
-          "actionURL": "admin/masterdata/machine-specs/view"
+          "actionURL": "admin/masterdata/machine-specs/view",
+          "auditEventId": "ADM-020"
         },
         {
           "label": {
@@ -99,7 +110,8 @@
             "ara": "أنواع الآلات",
             "fra": "Types de machines"
           },
-          "actionURL": "admin/masterdata/machine-type/view"
+          "actionURL": "admin/masterdata/machine-type/view",
+          "auditEventId": "ADM-021"
         }
       ],
       "documentDefinition": [
@@ -109,7 +121,8 @@
             "ara": "أنواع المستندات",
             "fra": "Types de documents"
           },
-          "actionURL": "admin/masterdata/document-type/view"
+          "actionURL": "admin/masterdata/document-type/view",
+          "auditEventId": "ADM-022"
         },
         {
           "label": {
@@ -117,7 +130,8 @@
             "ara": "فئات المستندات",
             "fra": "Catégories de document"
           },
-          "actionURL": "admin/masterdata/document-categories/view"
+          "actionURL": "admin/masterdata/document-categories/view",
+          "auditEventId": "ADM-023"
         },
         {
           "label": {
@@ -125,7 +139,8 @@
             "ara": "فئة الوثيقة - نوع التعيين",
             "fra": "Catégorie de document - Mappage de types"
           },
-          "actionURL": "admin/masterdata/documentCategoryMapping"
+          "actionURL": "admin/masterdata/documentCategoryMapping",
+          "auditEventId": "ADM-024"
         }
       ]
     }

@@ -14,6 +14,7 @@ import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import Utils from 'src/app/app.utils';
 import { FilterModel } from 'src/app/core/models/filter.model';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-dialog',
@@ -39,6 +40,8 @@ export class DialogComponent implements OnInit {
   rangeError = false;
   fieldName = '';
 
+  cancelApplied = false;
+
   filterOptions: any = {};
 
   constructor(
@@ -48,7 +51,8 @@ export class DialogComponent implements OnInit {
     private router: Router,
     private dataStorageService: DataStorageService,
     private config: AppConfigService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private auditService: AuditService
   ) {}
 
   async ngOnInit() {
@@ -64,6 +68,12 @@ export class DialogComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.auditService.audit(11, 'ADM-091', this.routeParts);
+    this.cancelApplied = true;
+    this.dialog.closeAll();
+  }
+
+  dismiss(): void {
     this.dialog.closeAll();
   }
 
@@ -88,25 +98,31 @@ export class DialogComponent implements OnInit {
     console.log(filterNames, this.existingFilters, this.filterOptions);
     filterNames.forEach(values => {
       const filterOption = this.existingFilters.filter(
-        (filter: FilterModel) => filter.columnName.toLowerCase() === values.filtername.toLowerCase()
+        (filter: FilterModel) =>
+          filter.columnName.toLowerCase() === values.filtername.toLowerCase()
       );
       if (filterOption.length === 0) {
         this.filterGroup.addControl(values.filtername, new FormControl(''));
         this.filterOptions[values.filtername] = [];
       } else {
-        this.filterGroup.addControl(
-          values.filtername,
-          new FormControl(filterOption[0].value)
-        );
+        let value = '';
+        if (filterOption[0].type === 'startsWith') {
+          value = filterOption[0].value + '*';
+        } else if (filterOption[0].type === 'contains') {
+          value = '*' + filterOption[0].value;
+        } else {
+          value = filterOption[0].value;
+        }
+        this.filterGroup.addControl(values.filtername, new FormControl(value));
         if (values.autocomplete === 'false' && values.dropdown === 'false') {
           this.filterOptions[values.filtername] = [];
         } else {
-            this.getFilterValues(
-              values.fieldName,
-              filterOption[0].value,
-              values.apiName,
-              filterOption[0].columnName
-            );
+          this.getFilterValues(
+            values.fieldName,
+            filterOption[0].value,
+            values.apiName,
+            filterOption[0].columnName
+          );
         }
       }
     });
@@ -117,9 +133,15 @@ export class DialogComponent implements OnInit {
   settingUpBetweenFilters(filterNames: any) {
     this.existingFilters.forEach((filters: FilterModel) => {
       if (filters.type === 'between') {
-        const formFields = filterNames.filter(filterName => filterName.fieldName === filters.columnName);
-        this.filterGroup.controls[formFields[0].filtername].setValue(filters.fromValue);
-        this.filterGroup.controls[formFields[1].filtername].setValue(filters.toValue);
+        const formFields = filterNames.filter(
+          filterName => filterName.fieldName === filters.columnName
+        );
+        this.filterGroup.controls[formFields[0].filtername].setValue(
+          filters.fromValue
+        );
+        this.filterGroup.controls[formFields[1].filtername].setValue(
+          filters.toValue
+        );
       }
     });
   }
@@ -128,51 +150,75 @@ export class DialogComponent implements OnInit {
     console.log(dateString);
     const date = new Date(dateString);
     let returnDate = date.getFullYear() + '-';
-    returnDate += Number(date.getMonth() + 1) < 10 ? '0' + Number(date.getMonth() + 1) : Number(date.getMonth() + 1) < 10;
+    returnDate +=
+      Number(date.getMonth() + 1) < 10
+        ? '0' + Number(date.getMonth() + 1)
+        : Number(date.getMonth() + 1);
     returnDate += '-';
-    returnDate += Number(date.getDate()) < 10 ? '0' + Number(date.getDate()) : Number(date.getDate());
+    returnDate +=
+      Number(date.getDate()) < 10
+        ? '0' + Number(date.getDate())
+        : Number(date.getDate());
     return returnDate;
   }
 
   createBetweenFilter(filterDetails: any) {
     console.log(filterDetails);
-    const existingFilter = this.existingFilters.filter(filters => filters.columnName === filterDetails.fieldName);
+    const existingFilter = this.existingFilters.filter(
+      filters => filters.columnName === filterDetails.fieldName
+    );
     if (existingFilter.length > 0) {
       const index = this.existingFilters.indexOf(existingFilter[0]);
       if (filterDetails.filtername.indexOf('From') >= 0) {
         if (filterDetails.datePicker === 'true') {
-          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          this.momentDate = this.convertDate(
+            this.filterGroup.controls[filterDetails.filtername].value
+          );
           console.log(this.momentDate);
           this.existingFilters[index].fromValue = this.momentDate;
         } else {
-          this.existingFilters[index].fromValue = this.filterGroup.controls[filterDetails.filtername].value;
+          this.existingFilters[index].fromValue = this.filterGroup.controls[
+            filterDetails.filtername
+          ].value;
         }
       } else if (filterDetails.filtername.indexOf('To') >= 0) {
         if (filterDetails.datePicker === 'true') {
-          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          this.momentDate = this.convertDate(
+            this.filterGroup.controls[filterDetails.filtername].value
+          );
           console.log(this.momentDate);
           this.existingFilters[index].toValue = this.momentDate;
         } else {
-          this.existingFilters[index].toValue = this.filterGroup.controls[filterDetails.filtername].value;
+          this.existingFilters[index].toValue = this.filterGroup.controls[
+            filterDetails.filtername
+          ].value;
         }
       }
     } else {
       const filterModel = new FilterModel(filterDetails.fieldName, 'between');
       if (filterDetails.filterlabel.indexOf('From') >= 0) {
         if (filterDetails.datePicker === 'true') {
-          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          this.momentDate = this.convertDate(
+            this.filterGroup.controls[filterDetails.filtername].value
+          );
           console.log(this.momentDate);
           filterModel.fromValue = this.momentDate;
         } else {
-          filterModel.fromValue = this.filterGroup.controls[filterDetails.filtername].value;
+          filterModel.fromValue = this.filterGroup.controls[
+            filterDetails.filtername
+          ].value;
         }
       } else if (filterDetails.filterlabel.indexOf('To') >= 0) {
         if (filterDetails.datePicker === 'true') {
-          this.momentDate = this.convertDate(this.filterGroup.controls[filterDetails.filtername].value);
+          this.momentDate = this.convertDate(
+            this.filterGroup.controls[filterDetails.filtername].value
+          );
           console.log(this.momentDate);
           filterModel.toValue = this.momentDate;
         } else {
-          filterModel.toValue = this.filterGroup.controls[filterDetails.filtername].value;
+          filterModel.toValue = this.filterGroup.controls[
+            filterDetails.filtername
+          ].value;
         }
       }
       this.existingFilters.push(filterModel);
@@ -184,10 +230,16 @@ export class DialogComponent implements OnInit {
     console.log(filterModel);
     return new Promise((resolve, reject) => {
       filterModel.forEach(filter => {
-        if ((filter.fromValue === '' || filter.fromValue === undefined || filter.fromValue === null) ||
-            (filter.toValue === '' || filter.toValue === undefined || filter.toValue === null)) {
-              this.requiredError = true;
-              this.fieldName = filter.columnName;
+        if (
+          filter.fromValue === '' ||
+          filter.fromValue === undefined ||
+          filter.fromValue === null ||
+          (filter.toValue === '' ||
+            filter.toValue === undefined ||
+            filter.toValue === null)
+        ) {
+          this.requiredError = true;
+          this.fieldName = filter.columnName;
         } else {
           this.requiredError = false;
         }
@@ -279,7 +331,9 @@ export class DialogComponent implements OnInit {
         }
         if (!flag) {
           const filterObject = new FilterModel(
-            key === 'Zone' && this.routeParts === 'centers' ? key.toLowerCase() : key,
+            key === 'Zone' && this.routeParts === 'centers'
+              ? key.toLowerCase()
+              : key,
             filterType,
             this.filterGroup.controls[key].value.toString().indexOf('*') === -1
               ? this.filterGroup.controls[key].value
@@ -290,31 +344,41 @@ export class DialogComponent implements OnInit {
       }
     });
     console.log(this.existingFilters);
-    const betweenFilter = this.existingFilters.filter((item: FilterModel) => item.type === 'between');
+    const betweenFilter = this.existingFilters.filter(
+      (item: FilterModel) => item.type === 'between'
+    );
     if (betweenFilter.length > 0) {
       const isDate = [];
       betweenFilter.forEach(f => {
-      const temp = this.FilterData.filter(data => data.fieldName === f.columnName);
-      if (temp[0]['datePicker'] === 'true') {
-        isDate.push(true);
-      } else {
-        isDate.push(false);
-      }
-    });
+        const temp = this.FilterData.filter(
+          data => data.fieldName === f.columnName
+        );
+        if (temp[0]['datePicker'] === 'true') {
+          isDate.push(true);
+        } else {
+          isDate.push(false);
+        }
+      });
       await this.validateBetweenFilter(betweenFilter, isDate);
     } else {
       this.requiredError = false;
       this.rangeError = false;
     }
     console.log(this.requiredError, this.filterGroup.valid, this.rangeError);
-    if (!this.requiredError && !this.rangeError && this.filterGroup.valid) {
+    if (
+      !this.requiredError &&
+      !this.rangeError &&
+      this.filterGroup.valid &&
+      !this.cancelApplied
+    ) {
+      this.auditService.audit(12, 'ADM-092', this.routeParts);
       const filters = Utils.convertFilter(
         this.activatedRoute.snapshot.queryParams,
         this.config.getConfig().primaryLangCode
       );
       filters.filters = this.existingFilters;
       const url = Utils.convertFilterToUrl(filters);
-      this.onNoClick();
+      this.dialog.closeAll();
       this.router.navigateByUrl(this.router.url.split('?')[0] + '?' + url);
     }
   }
@@ -322,13 +386,13 @@ export class DialogComponent implements OnInit {
   getControlName(filter: any, value: string) {
     console.log(filter);
     if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
-        this.getFilterValues(
-          filter.fieldName,
-          value,
-          filter.apiName,
-          filter.filtername
-        );
-      }
+      this.getFilterValues(
+        filter.fieldName,
+        filter.dropdown === 'true' ? undefined : value,
+        filter.apiName,
+        filter.filtername
+      );
+    }
   }
 
   getFilterValues(
@@ -348,7 +412,9 @@ export class DialogComponent implements OnInit {
     this.filters = [this.filterModel];
     this.filtersRequest = new FilterRequest(
       this.filters,
-      this.config.getConfig().primaryLangCode
+      this.routeParts === 'blacklisted-words'
+        ? 'all'
+        : this.config.getConfig().primaryLangCode
     );
     this.requestModel = new RequestModel('', null, this.filtersRequest);
     console.log(this.requestModel);

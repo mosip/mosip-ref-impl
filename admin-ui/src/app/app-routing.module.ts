@@ -14,9 +14,27 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'resources', loadChildren: () => import('./features/resources/resources.module').then(m => m.ResourcesModule) },
-      { path: 'masterdata', loadChildren: () => import('./features/masterdata/masterdata.module').then(m => m.MasterdataModule)},
-      { path: 'packet-status', loadChildren: () => import('./features/packet-status/packet-status.module').then(m => m.PacketStatusModule)}
+      {
+        path: 'resources',
+        loadChildren: () =>
+          import('./features/resources/resources.module').then(
+            m => m.ResourcesModule
+          )
+      },
+      {
+        path: 'masterdata',
+        loadChildren: () =>
+          import('./features/masterdata/masterdata.module').then(
+            m => m.MasterdataModule
+          )
+      },
+      {
+        path: 'packet-status',
+        loadChildren: () =>
+          import('./features/packet-status/packet-status.module').then(
+            m => m.PacketStatusModule
+          )
+      }
     ], canActivateChild : [AuthguardService]
   },
   { path: 'error', component: ErrorComponent },
@@ -25,7 +43,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: false })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      preloadingStrategy: PreloadAllModules,
+      enableTracing: false,
+      onSameUrlNavigation: 'reload'
+    })
+  ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

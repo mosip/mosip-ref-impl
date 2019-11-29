@@ -1,9 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { SideMenuService } from '../services/side-menu.service';
 import { NavItem } from '../../core/nav-item';
+import { AuditService } from '../services/audit.service';
+import { RolesService } from '../services/roles.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -12,7 +21,6 @@ import { NavItem } from '../../core/nav-item';
   encapsulation: ViewEncapsulation.None
 })
 export class SideMenuComponent implements OnInit {
-
   @Input() item: NavItem;
   @Input() index: number;
   @Input() depth: number;
@@ -20,22 +28,28 @@ export class SideMenuComponent implements OnInit {
   @Output() closeNav = new EventEmitter<any>();
   locationUrl: any;
 
-  constructor(private sideMenuService: SideMenuService, private router: Router, private location: Location) {
+  constructor(
+    private sideMenuService: SideMenuService,
+    private router: Router,
+    private location: Location,
+    private auditService: AuditService,
+    public rolesService: RolesService
+  ) {
     router.events.subscribe(() => {
       this.locationUrl = location.path();
-    //  console.log('location', this.locationUrl);
     });
   }
 
   ngOnInit() {
-  //  console.log('afsgfasgfdgsa', this.item);
     if (this.depth === undefined) {
       this.depth = 0;
     }
   }
 
-  onItemSelected(item) {
+  onItemSelected(item: any) {
     console.log('item', item);
+    const itemName = item.route.split('/')[item.route.split('/').length - 1];
+    this.auditService.audit(1, item.auditEventId, itemName);
     if (this.screenResize < 840) {
       this.sideMenuService.closeNav();
       this.router.navigate([item.route]);

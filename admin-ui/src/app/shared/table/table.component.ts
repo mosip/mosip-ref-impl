@@ -11,6 +11,8 @@ import { SortModel } from 'src/app/core/models/sort.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import * as appConstants from 'src/app/app.constants';
 import { CommonService } from 'src/app/core/services/common.service';
+import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-table',
@@ -22,6 +24,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() displayedColumns: [];
   @Input() buttonList: [];
   @Input() sortData: SortModel[];
+  @Input() noDataFlag: boolean;
   @Output() sort = new EventEmitter();
   tableData = [];
   columnsOfTableData = [];
@@ -32,11 +35,16 @@ export class TableComponent implements OnInit, OnChanges {
   sortIconTrackerArray = new Array(15).fill(0);
   ellipsisList = [];
   imageSource: string;
+
   constructor(
     private router: Router,
     private appConfig: AppConfigService,
-    private commonService: CommonService
-  ) {}
+    private commonService: CommonService,
+    private translate: TranslateService,
+    private auditService: AuditService
+  ) {
+   translate.use(appConfig.getConfig().primaryLangCode);
+  }
   ngOnInit(): void {
     this.tableData = [...this.data];
     console.log(this.tableData);
@@ -52,7 +60,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.tableData = [...this.data];
     this.columnsOfTableData = [];
     this.displayedColumns.forEach(column => {
-      // tslint:disable-next-line:no-string-literal
       this.columnsOfTableData.push(column['name']);
     });
     this.setSortDirection();
@@ -79,7 +86,7 @@ export class TableComponent implements OnInit, OnChanges {
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     if (specData.callBackFunction && specData.callBackFunction !== '') {
-      this.commonService[specData.callBackFunction](data[id.idKey], specData.redirectURL);
+      this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
     }
   }
 
@@ -88,6 +95,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.currentRoute = this.router.url.slice(0, routeIndex);
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    this.auditService.audit(7, id.auditEventId, currentRouteType);
     console.log(id);
     console.log(this.currentRoute);
     if (index === 0) {
@@ -105,6 +113,10 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
   sortColumn(columnName: string, columnIndex: number) {
+    this.auditService.audit(13, 'ADM-093', {
+      masterdataName: this.router.url.split('/')[3],
+      columnName
+    });
     console.log(this.sortIconTrackerArray);
     const sortObject = this.sortData.filter(
       data => data.sortField === columnName
@@ -131,7 +143,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ellipsisAction(data) {
     if (data.isActive === true) {
-      this.ellipsisList = this.buttonList;
+      this.ellipsisList = [...this.buttonList];
       this.ellipsisList.filter(values => {
         if (values.buttonName.eng === 'Activate') {
           const index = this.ellipsisList.indexOf(values);
@@ -139,7 +151,7 @@ export class TableComponent implements OnInit, OnChanges {
         }
       });
     } else if (data.isActive === false) {
-      this.ellipsisList = this.buttonList;
+      this.ellipsisList = [...this.buttonList];
       this.ellipsisList.filter(values => {
         if (values.buttonName.eng === 'Deactivate') {
           const index = this.ellipsisList.indexOf(values);

@@ -29,14 +29,14 @@
         "center-details": "تفاصيل المركز",
         "registration-center-name": "اسم مركز التسجيل",
         "registration-center-type": "نوع مركز التسجيل",
-        "contact-person": "الشخص الذي يمكن الاتصال به",
-        "contact-number": "رقم الاتصال",
+        "contact-person": "الشخص الذي يمكن الاتصال به - اختياري",
+        "contact-number": "رقم الاتصال - اختياري",
         "location-details": "تفاصيل الموقع",
         "longitude": "خط الطول",
         "latitude": "خط العرض",
         "address1": "سطر العنوان 1",
-        "address2": "سطر العنوان 2",
-        "address3": "سطر العنوان 3",
+        "address2": "سطر العنوان 2 - اختياري",
+        "address3": "سطر العنوان 3 - اختياري",
         "region": "منطقة",
         "province": "المحافظة",
         "city": "مدينة",
@@ -45,22 +45,23 @@
         "zone": "منطقة إدارية",
         "operational-details": "تفاصيل التشغيل",
         "holiday-zone": "منطقة عطلة",
-        "working-hrs": "ساعات العمل",
+        "working-hrs": "ساعات العمل - اختياري",
         "no-kiosk": "رقم كشك",
         "per-kiosk-process-time": "لكل كشك وقت العملية (بالدقائق)",
         "start-time": "وقت البدء",
         "end-time": "وقت النهاية",
-        "lunch-start-time": "وقت بدء الغداء",
-        "lunch-end-time": "وقت انتهاء الغداء",
+        "lunch-start-time": "وقت بدء الغداء - اختياري",
+        "lunch-end-time": "وقت انتهاء الغداء - اختياري",
         "edit": "تصحيح",
         "create": "خلق",
         "cancel": "إلغاء",
         "language": "عربى",
+        "keyboard-tooltip": "انقر للحصول على لوحة المفاتيح الافتراضية (العربية)",
         "isActive": "نشط",
         "update": "تحديث",
         "validationMessages": {
             "name": {
-                "required": "مطلوب اسم",
+                "required": "اسم المركز مطلوب",
                 "max-length": "تجاوز الحد الأقصى للطول (128)"
             },
             "centerTypeCode": {
@@ -75,12 +76,14 @@
             "longitude": {
                 "required": "خط الطول مطلوب",
                 "max-length": "تجاوز الحد الأقصى للطول (32)",
-                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي"
+                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي",
+                "validNumber": "الرجاء إدخال الأرقام فقط"
             },
             "latitude": {
                 "required": "خط الطول مطلوب",
                 "max-length": "تجاوز الحد الأقصى للطول (32)",
-                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي"
+                "validLatLong": "أتلست 4 أرقام بعد العشرية إلزامي",
+                "validNumber": "الرجاء إدخال الأرقام فقط"
             },
             "addressLine1": {
                 "required": "سطر العنوان 1 مطلوب",
@@ -102,13 +105,13 @@
                 "required": "المدينة مطلوبة"
             },
             "laa": {
-                "required": "LAA مطلوب"
+                "required": "مطلوب المنطقة"
             },
             "postalCode": {
                 "required": "الرمز البريدي مطلوب"
             },
             "zone": {
-                "required": "مطلوب منطقة عطلة"
+                "required": "مطلوب منطقة إدارية"
             },
             "holidayZone": {
                 "required": "مطلوب منطقة عطلة"
@@ -162,9 +165,14 @@
                 "yesBtnTxt": "غادر",
                 "noBtnTxt": "البقاء"
             },
-            "no-data": {
+            "noData": {
                 "title": "خطأ",
                 "message": "لا يوجد سجلات",
+                "btnTxt": "حسنا"
+            },
+            "lunchTimeValidation": {
+                "title": "خطأ",
+                "message": "يرجى تحديد توقيت المركز قبل اختيار توقيت الغداء",
                 "btnTxt": "حسنا"
             }
         }
@@ -232,12 +240,17 @@
             "title": "خطأ تقني",
             "message": "لقد حدث خطأ فني. يرجى تحديث صفحتك للمتابعة أو المحاولة مرة أخرى لاحقًا",
             "btnTxt": "حسنا"
+        },
+        "unauthorized": {
+            "title": "خطأ التخويل",
+            "message": "غير مصرح لك بزيارة هذه الصفحة",
+            "btnTxt": "حسنا"
         }
     },
     "validationMessages": {
-        "required": "كلا من و إلى الحقول إلزامي إذا تم تحديد 1",
-        "range": "من لا يمكن أن يكون أكبر من إلى",
-        "invalid": "مدخل غير صالح. يرجى إدخال صحيح"
+        "required": "يرجى ملء حقل \"إلى\" و \"من\" للتصفية حسب النطاق الزمني",
+        "range": "\"إلى\" لا يمكن أن يكون التاريخ قبل \"من\" التاريخ",
+        "invalid": "يرجى تحديد قيمة صالحة للتاريخ"
     },
     "packet-status": {
         "header": "حالة الحزمة",
@@ -246,5 +259,40 @@
         "id": "معرف تسجيل",
         "status": "الحالة",
         "viewMore": "عرض المزيد"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": ["مركز التسجيل ", " تم إيقاف التشغيل بنجاح"],
+            "success-title": "نجاح",
+            "error-message": "لا يمكن إيقاف تشغيل المركز نظرًا لأن بعض الموارد (المستخدمون / الأجهزة / الأجهزة) لا تزال قيد التعيين إليه. \n الرجاء إلغاء تعيين هذه الموارد قبل إيقاف تشغيل المركز",
+            "error-title": "خطأ",
+            "btnTxt": "حسنا",
+            "yesBtnTxt": "تؤكد",
+            "noBtnTxt": "إلغاء",
+            "confirmation-message": ["هل ترغب في إيقاف تشغيل مركز التسجيل", "? \n لا يمكنك التراجع عن هذا الإجراء بمجرد النقر فوق \"تأكيد\"."],
+            "confirmation-title": "التأكيد"
+        },
+        "activate": {
+            "success-message": ["مركز التسجيل ", " تم تفعيله بنجاح"],
+            "success-title": "نجاح",
+            "error-message": "لا يمكن تنشيط المركز",
+            "error-title": "خطأ",
+            "btnTxt": "حسنا",
+            "yesBtnTxt": "نعم",
+            "noBtnTxt": "لا",
+            "confirmation-message": ["هل تريد تفعيل مركز التسجيل", "? \n يمكنك إلغاء تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه نشط"],
+            "confirmation-title": "التأكيد"
+        },
+        "deactivate": {
+            "success-message": ["مركز التسجيل ", " تم إلغاء تنشيطه بنجاح"],
+            "success-title": "نجاح",
+            "error-message": "لا يمكن إلغاء تنشيط المركز",
+            "error-title": "خطأ",
+            "btnTxt": "حسنا",
+            "yesBtnTxt": "نعم",
+            "noBtnTxt": "لا",
+            "confirmation-message": ["هل تريد إلغاء تنشيط مركز التسجيل", " ? \n يمكنك تفعيلها في وقت لاحق إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
+            "confirmation-title": "التأكيد"
+        }
     }
 }

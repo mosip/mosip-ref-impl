@@ -5,7 +5,7 @@
 
 <div id="print-section" *ngIf="!showSpinner">
   <div class="print-section-inner-div" *ngFor="let user of usersInfo">
-    <mat-card class ="ack-container">
+    <mat-card class="ack-container">
       <mat-card-header class="ack__header-container">
         <div class="ack__header">
           <p>{{ 'acknowledgement.title' | translate }}</p>
@@ -93,21 +93,15 @@
           </div>
         </div>
       </mat-card-content>
-      <mat-card-footer id="guidelines-container"  class="ack__guidelines-container">
+      <mat-card-footer id="guidelines-container" class="ack__guidelines-container">
         <h4>{{ 'acknowledgement.container_guideline' | translate }}</h4>
-        <table  *ngIf="guidelines.length !== 0" class="ack__guidelines">
+        <table *ngIf="guidelines.length !== 0" class="ack__guidelines">
           <tr *ngFor="let guideline of guidelines">
-           <td class = "inner-guideline-content"> {{ guideline }}</td>
+            <td class="inner-guideline-content">{{ guideline }}</td>
           </tr>
         </table>
       </mat-card-footer>
-  
-
     </mat-card>
-
-  
-    
-  
   </div>
 </div>
 <div>
@@ -115,6 +109,7 @@
     <!-- <button mat-button (click)="navigateBack()" class="user-back-btn">{{'preview.action_back'| translate}}</button> -->
     <span class="spacer"></span>
     <button
+      *ngIf="notificationTypes.length > 0 && notificationTypes[0] !== ''"
       matTooltip="{{ 'helpText.send_email/sms' | translate }}"
       mat-button
       (click)="sendAcknowledgement()"
@@ -129,11 +124,10 @@
       mat-button
       [printStyle]="{
         '#message-container': { display: 'none' },
-        '#body-container': { display: 'flex', 'flex-wrap': 'wrap', width: '100%'  },
+        '#body-container': { display: 'flex', 'flex-wrap': 'wrap', width: '100%' },
         '#table-container table tr td': { padding: '10px' },
-        '#print-section' : {'page-break-after' : 'always'},
-        '.print-section-inner-div' : {'page-break-after': 'always'}
-
+        '#print-section': { 'page-break-after': 'always' },
+        '.print-section-inner-div': { 'page-break-after': 'always' }
       }"
       printSectionId="print-section"
       ngxPrint
@@ -142,5 +136,4 @@
       {{ 'acknowledgement.action_print' | translate }}
     </button>
   </mat-card>
-  
 </div>

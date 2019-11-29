@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import * as appConstants from '../../../app.constants';
@@ -18,13 +18,15 @@ import { FilesModel } from 'src/app/shared/models/demographic-model/files.model'
 import { LogService } from 'src/app/shared/logger/log.service';
 import Utils from 'src/app/app.util';
 import LanguageFactory from 'src/assets/i18n';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnDestroy {
+  selected = [];
   @ViewChild('fileUpload')
   fileInputVariable: ElementRef;
   fileDocCatCode = '';
@@ -65,7 +67,6 @@ export class FileUploadComponent implements OnInit {
   start: boolean = false;
   browseDisabled: boolean = true;
   documentName: string;
-  proxyDocumentCode: string = '';
   flag: boolean;
   zoom: number = 0.5;
   primaryLang = localStorage.getItem('langCode');
@@ -99,6 +100,7 @@ export class FileUploadComponent implements OnInit {
     },
     preRegistrationId: ''
   };
+  subscriptions: Subscription[] = [];
 
   constructor(
     private registration: RegistrationService,
@@ -123,6 +125,11 @@ export class FileUploadComponent implements OnInit {
     this.loginId = this.registration.getLoginId();
     this.setApplicants();
     this.sameAs = this.registration.getSameAs();
+    if (this.sameAs === '') {
+      this.sameAsselected = false;
+    } else {
+      this.sameAsselected = true;
+    }
 
     let factory = new LanguageFactory(this.primaryLang);
     let response = factory.getCurrentlanguage();
@@ -150,6 +157,32 @@ export class FileUploadComponent implements OnInit {
       this.activeUsers = JSON.parse(JSON.stringify(this.registration.getUsers()));
     }
     this.loggerService.info('active users', this.activeUsers);
+  }
+
+  onModification() {
+    if (
+      this.users[0].files &&
+      this.users[0].files.documentsMetaData[0].docCatCode &&
+      this.users[0].files.documentsMetaData[0].docCatCode !== ''
+    ) {
+      for (let index = 0; index < this.users[0].files.documentsMetaData.length; index++) {
+        const fileMetadata = this.users[0].files.documentsMetaData;
+        let arr = [];
+        let indice: number;
+        let indexLOD: number;
+        this.LOD.filter((ele, i) => {
+          if (ele.code === fileMetadata[index].docCatCode) {
+            indice = index;
+            indexLOD = i;
+            arr.push(ele);
+          }
+        });
+        if (arr.length > 0) {
+          let temp = arr[0].documentTypes.filter(ele => ele.code === fileMetadata[indice].docTypCode);
+          this.LOD[indexLOD].selectedDocName = temp[0].code;
+        }
+      }
+    } else return;
   }
 
   /**
@@ -333,7 +366,7 @@ export class FileUploadComponent implements OnInit {
 
     DOCUMENT_CATEGORY_DTO = new RequestModel(appConstants.IDS.applicantTypeId, requestArray, {});
 
-    await this.dataStroage.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
+    const subs = await this.dataStroage.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.getDocumentCategories(response['response'].applicantType.applicantTypeCode);
@@ -346,6 +379,7 @@ export class FileUploadComponent implements OnInit {
         this.displayMessage('Error', this.errorlabels.error, error);
       }
     );
+    this.subscriptions.push(subs);
   }
   /**
    *@description method to set applicant type.
@@ -363,12 +397,13 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   async getDocumentCategories(applicantcode) {
-    await this.dataStroage.getDocumentCategories(applicantcode).subscribe(
+    const subs = await this.dataStroage.getDocumentCategories(applicantcode).subscribe(
       res => {
         if (res[appConstants.RESPONSE]) {
           this.LOD = res['response'].documentCategories;
           this.enableBrowseButtonList = new Array(this.LOD.length).fill(false);
           this.registration.setDocumentCategories(res['response'].documentCategories);
+          this.onModification();
         } else {
           this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
         }
@@ -377,6 +412,7 @@ export class FileUploadComponent implements OnInit {
         this.displayMessage('Error', this.errorlabels.error, error);
       }
     );
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -385,7 +421,7 @@ export class FileUploadComponent implements OnInit {
    * @memberof FileUploadComponent
    */
   async getAllApplicants() {
-    await this.dataStroage.getUsers(this.loginId).subscribe(
+    const subs = await this.dataStroage.getUsers(this.loginId).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.bookingService.addApplicants(response['response']['basicDetails']);
@@ -400,6 +436,7 @@ export class FileUploadComponent implements OnInit {
         this.setApplicants();
       }
     );
+    this.subscriptions.push(subs);
   }
   /**
    *@description method to set the applicants array  used in same as options aray
@@ -514,7 +551,7 @@ export class FileUploadComponent implements OnInit {
   viewFile(fileMeta: FileModel) {
     this.fileIndex = 0;
     this.disableNavigation = true;
-    this.dataStroage.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
+    const subs = this.dataStroage.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
       res => {
         if (res[appConstants.RESPONSE]) {
           this.setByteArray(res['response'].document);
@@ -555,6 +592,7 @@ export class FileUploadComponent implements OnInit {
       },
       () => {}
     );
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -568,12 +606,22 @@ export class FileUploadComponent implements OnInit {
   }
 
   /**
+   * dynamic assigning of idSS
+   *
+   * @param {*} i
+   * @memberof FileUploadComponent
+   */
+  clickOnButton(i) {
+    document.getElementById('file_' + i).click();
+  }
+
+  /**
    *@description method gets called when a file has been uploaded from the html.
    *
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  handleFileInput(event: any) {
+  handleFileInput(event: any, docName: string, docCode: string) {
     const extensionRegex = new RegExp('(?:' + this.allowedFilesHtml.replace(/,/g, '|') + ')');
     const oldFileExtension = this.fileExtension;
     this.fileExtension = event.target.files[0].name.substring(event.target.files[0].name.indexOf('.') + 1);
@@ -595,7 +643,9 @@ export class FileUploadComponent implements OnInit {
           this.getBase64(event.target.files[0]).then(data => {
             this.fileByteArray = data;
           });
-          this.setJsonString();
+          if (!this.documentType && !this.documentCategory) {
+            this.setJsonString(docName, docCode);
+          }
           this.sendFile(event);
         } else {
           this.displayMessage(
@@ -675,6 +725,7 @@ export class FileUploadComponent implements OnInit {
     };
 
     this.documentIndex = index;
+    this.setJsonString(this.documentType, this.documentCategory);
   }
 
   /**
@@ -713,11 +764,13 @@ export class FileUploadComponent implements OnInit {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  setJsonString() {
-    this.documentUploadRequestBody.docCatCode = this.documentCategory;
+  setJsonString(docName: string, docCode: string) {
+    this.documentUploadRequestBody.docCatCode = docCode;
     this.documentUploadRequestBody.langCode = this.primaryLang;
-    this.documentUploadRequestBody.docTypCode = this.documentType;
+    this.documentUploadRequestBody.docTypCode = docName;
     this.documentRequest = new RequestModel(appConstants.IDS.documentUpload, this.documentUploadRequestBody, {});
+    this.documentCategory = null;
+    this.documentType = null;
   }
 
   /**
@@ -730,7 +783,7 @@ export class FileUploadComponent implements OnInit {
     this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DTO_KEY, JSON.stringify(this.documentRequest));
     this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY, event.target.files.item(0));
 
-    this.dataStroage.sendFile(this.formData, this.users[0].preRegId).subscribe(
+    const subs = this.dataStroage.sendFile(this.formData, this.users[0].preRegId).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.updateUsers(response);
@@ -751,6 +804,7 @@ export class FileUploadComponent implements OnInit {
       }
     );
     this.formData = new FormData();
+    this.subscriptions.push(subs);
   }
 
   /**
@@ -802,23 +856,51 @@ export class FileUploadComponent implements OnInit {
   sameAsChange(event, fileMetadata) {
     this.disableNavigation = true;
     if (event.value == '') {
-      this.sameAsselected = false;
       let arr = fileMetadata.filter(ent => ent.docCatCode === 'POA');
-      this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(res => console.log(res));
-      this.removePOADocument();
+      const subs = this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(
+        res => {
+          if (res[appConstants.RESPONSE]) {
+            this.sameAsselected = false;
+            this.registration.setSameAs(event.value);
+            this.removePOADocument();
+            let index: number;
+            this.LOD.filter((ele, i) => {
+              if (ele.code === 'POA') index = i;
+            });
+            this.LOD[index].selectedDocName = '';
+          }
+          this.disableNavigation = false;
+        },
+        err => {
+          this.disableNavigation = false;
+          this.displayMessage(
+            this.fileUploadLanguagelabels.uploadDocuments.error,
+            this.fileUploadLanguagelabels.uploadDocuments.msg9,
+            err
+          );
+        }
+      );
+      this.subscriptions.push(subs);
     } else {
-      this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
+      const subs = this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
         response => {
           if (response[appConstants.RESPONSE]) {
             this.registration.setSameAs(event.value);
             this.removePOADocument();
             this.updateUsers(response);
-            let poaTypes = this.LOD.filter(ele => ele.code === 'POA');
+            let index: number;
+            let poaTypes = [];
+            this.LOD.filter((ele, i) => {
+              if (ele.code === 'POA') {
+                index = i;
+                poaTypes.push(ele);
+              }
+            });
             let docList = poaTypes[0].documentTypes.filter(
               element => element.code === response['response']['docTypCode']
             );
-            this.documentName = docList[0].name;
-            this.proxyDocumentCode = this.documentName;
+            this.documentName = docList[0].code;
+            this.LOD[index].selectedDocName = this.documentName;
           } else {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
@@ -836,9 +918,10 @@ export class FileUploadComponent implements OnInit {
           );
         }
       );
+      this.subscriptions.push(subs);
       this.sameAsselected = true;
+      this.disableNavigation = false;
     }
-    this.disableNavigation = false;
   }
 
   /**
@@ -951,6 +1034,14 @@ export class FileUploadComponent implements OnInit {
     });
     return dialogRef;
   }
+
+  changeStatus(event, index: number) {
+    this.LOD[index].selectedDocName = event.value;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 }
 
 export interface DocumentUploadRequestDTO {
@@ -971,6 +1062,7 @@ export interface DocumentCategory {
   langCode: string;
   name: string;
   documentTypes?: DocumentCategory[];
+  selectedDocName?: string;
 }
 
 export interface Applicants {

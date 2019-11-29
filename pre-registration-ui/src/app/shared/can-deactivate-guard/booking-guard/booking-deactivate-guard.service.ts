@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material';
 export abstract class BookingDeactivateGuardService extends UnloadDeactivateGuardService {
   abstract get canDeactivateFlag(): boolean;
   constructor(dialog: MatDialog) {
-    super();
+    super(dialog);
   }
   canDeactivate(): boolean {
     if (!this.canDeactivateFlag) return true;
