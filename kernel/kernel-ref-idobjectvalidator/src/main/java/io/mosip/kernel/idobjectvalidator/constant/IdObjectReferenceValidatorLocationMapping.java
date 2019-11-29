@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author Manoj SP
+ * The Enum IdObjectReferenceValidatorLocationMapping.
  *
+ * @author Manoj SP
  */
 public enum IdObjectReferenceValidatorLocationMapping {
 	
@@ -27,19 +28,40 @@ public enum IdObjectReferenceValidatorLocationMapping {
 	
 	private final String level;
 	
+	/**
+	 * Instantiates a new id object reference validator location mapping.
+	 *
+	 * @param hierarchyName the hierarchy name
+	 * @param level the level
+	 */
 	IdObjectReferenceValidatorLocationMapping(String hierarchyName, String level) {
 		this.hierarchyName = hierarchyName;
 		this.level = level;
 	}
 
+	/**
+	 * Gets the hierarchy name.
+	 *
+	 * @return the hierarchy name
+	 */
 	public String getHierarchyName() {
 		return hierarchyName;
 	}
 
+	/**
+	 * Gets the level.
+	 *
+	 * @return the level
+	 */
 	public String getLevel() {
 		return level;
 	}
 	
+	/**
+	 * Gets the all mapping.
+	 *
+	 * @return the all mapping
+	 */
 	public static Map<String, String> getAllMapping() {
 		return Arrays.stream(values()).parallel()
 				.collect(Collectors.toMap(IdObjectReferenceValidatorLocationMapping::getLevel,
