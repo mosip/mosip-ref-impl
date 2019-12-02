@@ -511,7 +511,7 @@ public class IdaController {
 		otpRequestDTO.setIndividualId(idValue.getText());
 		otpRequestDTO.setIndividualIdType(idTypebox.getValue());
 		otpRequestDTO.setOtpChannel(Collections.singletonList("email"));
-		otpRequestDTO.setRequestTime(getUTCCurrentDateTimeString());
+		otpRequestDTO.setRequestTime(getUTCCurrentDateTimeISOString());
 		otpRequestDTO.setTransactionID(getTransactionID());
 		otpRequestDTO.setVersion("1.0");
 
@@ -566,7 +566,7 @@ public class IdaController {
 		authRequestDTO.setIndividualIdType(idTypebox.getValue());
 
 		RequestDTO requestDTO = new RequestDTO();
-		requestDTO.setTimestamp(getUTCCurrentDateTimeString());
+		requestDTO.setTimestamp(getUTCCurrentDateTimeISOString());
 
 		if (isOtpAuthType()) {
 			requestDTO.setOtp(otpValue.getText());
@@ -595,7 +595,7 @@ public class IdaController {
 		authRequestDTO.setRequest(requestDTO);
 
 		authRequestDTO.setTransactionID(getTransactionID());
-		authRequestDTO.setRequestTime(getUTCCurrentDateTimeString());
+		authRequestDTO.setRequestTime(getUTCCurrentDateTimeISOString());
 		authRequestDTO.setConsentObtained(true);
 		authRequestDTO.setId(getAuthRequestId());
 		authRequestDTO.setVersion("1.0");
@@ -689,7 +689,7 @@ public class IdaController {
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(
 						env.getProperty("ida.publickey.url", getBaseUrl() + "/v1/keymanager/publickey/IDA"))
-				.queryParam("timeStamp", DateUtils.getUTCCurrentDateTimeString())
+				.queryParam("timeStamp", getUTCCurrentDateTimeISOString())
 				.queryParam("referenceId", publicKeyId);
 		ResponseEntity<Map> response = restTemplate.exchange(builder.build(uriParams), HttpMethod.GET, null, Map.class);
 		return (String) ((Map<String, Object>) response.getBody().get("response")).get("publicKey");
@@ -766,7 +766,7 @@ public class IdaController {
 		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 	}
 
-	public static String getUTCCurrentDateTimeString() {
+	public static String getUTCCurrentDateTimeISOString() {
 		return DateUtils.formatToISOString(DateUtils.getUTCCurrentDateTime());
 	}
 
