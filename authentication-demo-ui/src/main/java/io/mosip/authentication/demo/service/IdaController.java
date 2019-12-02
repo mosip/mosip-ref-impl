@@ -11,7 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.spec.X509EncodedKeySpec;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -768,7 +767,7 @@ public class IdaController {
 	}
 
 	public static String getUTCCurrentDateTimeString() {
-		return OffsetDateTime.now().toInstant().toString();
+		return DateUtils.formatToISOString(DateUtils.getUTCCurrentDateTime());
 	}
 
 	public static String getTransactionID() {
