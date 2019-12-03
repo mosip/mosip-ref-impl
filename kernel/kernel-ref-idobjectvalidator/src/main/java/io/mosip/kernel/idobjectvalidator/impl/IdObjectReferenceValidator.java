@@ -17,6 +17,7 @@ import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValida
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_REGION_VALUE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_ZONE_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_ZONE_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.LOCATION_NA;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_CATEGORIES_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_TYPES_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_GENDERTYPES_URI;
@@ -77,6 +78,7 @@ import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectIOException;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectValidationFailedException;
 import io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator;
 import io.mosip.kernel.core.util.DateUtils;
+import io.mosip.kernel.core.util.StringUtils;
 import io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorDocumentMapping;
 import net.minidev.json.JSONArray;
 
@@ -148,6 +150,16 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	/** The location details. */
 	private Map<String, SetValuedMap<String, String>> locationDetails;
 	
+	private SetValuedMap<String, String> regionMap;
+	
+	private SetValuedMap<String, String> provinceMap;
+	
+	private SetValuedMap<String, String> cityMap;
+	
+	private SetValuedMap<String, String> zoneMap;
+	
+	private SetValuedMap<String, String> postalCodeMap;
+	
 	/**
 	 * Load data.
 	 * @throws IdObjectIOException 
@@ -161,6 +173,11 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		loadLocationDetails();
 		loadDocCategories();
 		loadDocTypes();
+		loadRegion();
+		loadProvince();
+		loadCity();
+		loadZone();
+		loadPostalCode();
 	}
 	
 	/* (non-Javadoc)
@@ -179,7 +196,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			validateProvince(identityString, errorList);
 			validateCity(identityString, errorList);
 			validatePostalCode(identityString, errorList);
-			validateZone(identityString, errorList);
+			validateZone(identityString, errorList); 
 			validateDocuments(identityString, errorList);
 			if (errorList.isEmpty()) {
 				return true;
@@ -320,13 +337,60 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				SetValuedMap<String, String> locations = new HashSetValuedHashMap<>(response.size());
 				IntStream.range(0, response.size())
 				.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-				.forEach(index -> 
+				.forEach(index -> {
 					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(CODE)))
-				);
+							String.valueOf(response.get(index).get(CODE)));
+					if (StringUtils.isNotBlank(env.getProperty(LOCATION_NA))) {
+						locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
+								StringUtils.trim(env.getProperty(LOCATION_NA)));
+					}
+				});
 				locationDetails.put(hierarchyName, locations);
 			}
 		});
+	}
+	
+	private void loadRegion() {
+		regionMap = new HashSetValuedHashMap<>();
+		Set<String> regionNameList = locationHierarchyDetails.get(REGION.getLevel());
+		Optional.ofNullable(regionNameList).orElse(Collections.emptySet()).stream()
+				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
+						.ifPresent(regionMap::putAll));
+	}
+	
+	private void loadProvince() {
+		provinceMap = new HashSetValuedHashMap<>();
+		Set<String> provinceNameList = locationHierarchyDetails
+				.get(PROVINCE.getLevel());
+		Optional.ofNullable(provinceNameList).orElse(Collections.emptySet()).stream()
+				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
+						.ifPresent(provinceMap::putAll));
+	}
+	
+	private void loadCity() {
+		cityMap = new HashSetValuedHashMap<>();
+		Set<String> cityNameList = locationHierarchyDetails.get(CITY.getLevel());
+		Optional.ofNullable(cityNameList).orElse(Collections.emptySet()).stream()
+				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
+						.ifPresent(cityMap::putAll));
+	}
+	
+	private void loadZone() {
+		zoneMap = new HashSetValuedHashMap<>();
+		Set<String> zoneList = locationHierarchyDetails
+				.get(ZONE.getLevel());
+		Optional.ofNullable(zoneList).orElse(Collections.emptySet()).stream()
+				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
+						.ifPresent(zoneMap::putAll));
+	}
+	
+	private void loadPostalCode() {
+		postalCodeMap = new HashSetValuedHashMap<>();
+		Set<String> postalCodeNameList = locationHierarchyDetails
+				.get(POSTAL_CODE.getLevel());
+		Optional.ofNullable(postalCodeNameList).orElse(Collections.emptySet()).stream()
+				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
+						.ifPresent(postalCodeMap::putAll));
 	}
 	
 	/**
@@ -376,7 +440,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		JSONArray pathList = jsonPath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, String> dataMap = IntStream.range(0, pathList.size())
 				.boxed()
-				
 				.collect(
 						Collectors.toMap(i -> String.valueOf(pathList.get(i)), i -> JsonPath
 								.compile(String.valueOf(pathList.get(i))).read(identityString, READ_OPTIONS)));
@@ -423,11 +486,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateRegion(String identityString, List<ServiceError> errorList) {
-		SetValuedMap<String, String> regionMap = new HashSetValuedHashMap<>();
-		Set<String> regionNameList = locationHierarchyDetails.get(REGION.getLevel());
-		Optional.ofNullable(regionNameList).orElse(Collections.emptySet()).stream()
-				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
-						.ifPresent(regionMap::putAll));
 		JsonPath langPath = JsonPath.compile(IDENTITY_REGION_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
 		JsonPath valuePath = JsonPath.compile(IDENTITY_REGION_VALUE_PATH);
@@ -457,12 +515,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateProvince(String identityString, List<ServiceError> errorList) {
-		SetValuedMap<String, String> provinceMap = new HashSetValuedHashMap<>();
-		Set<String> provinceNameList = locationHierarchyDetails
-				.get(PROVINCE.getLevel());
-		Optional.ofNullable(provinceNameList).orElse(Collections.emptySet()).stream()
-				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
-						.ifPresent(provinceMap::putAll));
 		JsonPath langPath = JsonPath.compile(IDENTITY_PROVINCE_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
 		JsonPath valuePath = JsonPath.compile(IDENTITY_PROVINCE_VALUE_PATH);
@@ -492,11 +544,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateCity(String identityString, List<ServiceError> errorList) {
-		SetValuedMap<String, String> cityMap = new HashSetValuedHashMap<>();
-		Set<String> cityNameList = locationHierarchyDetails.get(CITY.getLevel());
-		Optional.ofNullable(cityNameList).orElse(Collections.emptySet()).stream()
-				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
-						.ifPresent(cityMap::putAll));
 		JsonPath langPath = JsonPath.compile(IDENTITY_CITY_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
 		JsonPath valuePath = JsonPath.compile(IDENTITY_CITY_VALUE_PATH);
@@ -526,12 +573,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateZone(String identityString, List<ServiceError> errorList) {
-		SetValuedMap<String, String> zoneMap = new HashSetValuedHashMap<>();
-		Set<String> zoneList = locationHierarchyDetails
-				.get(ZONE.getLevel());
-		Optional.ofNullable(zoneList).orElse(Collections.emptySet()).stream()
-				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
-						.ifPresent(zoneMap::putAll));
 		JsonPath langPath = JsonPath
 				.compile(IDENTITY_ZONE_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
@@ -564,12 +605,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validatePostalCode(String identityString, List<ServiceError> errorList) {
-		SetValuedMap<String, String> postalCodeMap = new HashSetValuedHashMap<>();
-		Set<String> postalCodeNameList = locationHierarchyDetails
-				.get(POSTAL_CODE.getLevel());
-		Optional.ofNullable(postalCodeNameList).orElse(Collections.emptySet()).stream()
-				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
-						.ifPresent(postalCodeMap::putAll));
 		JsonPath jsonPath = JsonPath.compile(IDENTITY_POSTAL_CODE_PATH);
 		String value = jsonPath.read(identityString, READ_OPTIONS);
 		if (Objects.nonNull(value) && !postalCodeMap.values().contains(value)) {
