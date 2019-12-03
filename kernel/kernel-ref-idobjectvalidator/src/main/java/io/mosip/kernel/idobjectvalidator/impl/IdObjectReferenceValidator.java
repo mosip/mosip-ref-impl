@@ -91,24 +91,34 @@ import net.minidev.json.JSONArray;
 @RefreshScope
 public class IdObjectReferenceValidator implements IdObjectValidator {
 	
+	/** The Constant LOCATIONS. */
 	private static final String LOCATIONS = "locations";
 
+	/** The Constant LOCATION_HIERARCHY_NAME. */
 	private static final String LOCATION_HIERARCHY_NAME = "locationHierarchyName";
 
+	/** The Constant LOCATION_HIERARCHYLEVEL. */
 	private static final String LOCATION_HIERARCHYLEVEL = "locationHierarchylevel";
 
+	/** The Constant DOCUMENTS. */
 	private static final String DOCUMENTS = "documents";
 
+	/** The Constant DOCUMENTCATEGORIES. */
 	private static final String DOCUMENTCATEGORIES = "documentcategories";
 
+	/** The Constant LANG_CODE. */
 	private static final String LANG_CODE = "langCode";
 
+	/** The Constant GENDER_TYPE. */
 	private static final String GENDER_TYPE = "genderType";
 
+	/** The Constant CODE. */
 	private static final String CODE = "code";
 
+	/** The Constant IS_ACTIVE. */
 	private static final String IS_ACTIVE = "isActive";
 
+	/** The env. */
 	@Autowired
 	private Environment env;
 	
@@ -150,19 +160,23 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	/** The location details. */
 	private Map<String, SetValuedMap<String, String>> locationDetails;
 	
+	/** The region map. */
 	private SetValuedMap<String, String> regionMap;
 	
+	/** The province map. */
 	private SetValuedMap<String, String> provinceMap;
 	
+	/** The city map. */
 	private SetValuedMap<String, String> cityMap;
 	
+	/** The zone map. */
 	private SetValuedMap<String, String> zoneMap;
 	
+	/** The postal code map. */
 	private SetValuedMap<String, String> postalCodeMap;
 	
 	/**
 	 * Load data.
-	 * @throws IdObjectIOException 
 	 */
 	@PostConstruct
 	public void loadData() {
@@ -350,6 +364,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		});
 	}
 	
+	/**
+	 * Load region.
+	 */
 	private void loadRegion() {
 		regionMap = new HashSetValuedHashMap<>();
 		Set<String> regionNameList = locationHierarchyDetails.get(REGION.getLevel());
@@ -358,6 +375,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						.ifPresent(regionMap::putAll));
 	}
 	
+	/**
+	 * Load province.
+	 */
 	private void loadProvince() {
 		provinceMap = new HashSetValuedHashMap<>();
 		Set<String> provinceNameList = locationHierarchyDetails
@@ -367,6 +387,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						.ifPresent(provinceMap::putAll));
 	}
 	
+	/**
+	 * Load city.
+	 */
 	private void loadCity() {
 		cityMap = new HashSetValuedHashMap<>();
 		Set<String> cityNameList = locationHierarchyDetails.get(CITY.getLevel());
@@ -375,6 +398,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						.ifPresent(cityMap::putAll));
 	}
 	
+	/**
+	 * Load zone.
+	 */
 	private void loadZone() {
 		zoneMap = new HashSetValuedHashMap<>();
 		Set<String> zoneList = locationHierarchyDetails
@@ -384,6 +410,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						.ifPresent(zoneMap::putAll));
 	}
 	
+	/**
+	 * Load postal code.
+	 */
 	private void loadPostalCode() {
 		postalCodeMap = new HashSetValuedHashMap<>();
 		Set<String> postalCodeNameList = locationHierarchyDetails
