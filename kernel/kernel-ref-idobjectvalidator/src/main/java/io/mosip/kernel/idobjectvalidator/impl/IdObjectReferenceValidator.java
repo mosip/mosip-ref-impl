@@ -1,8 +1,35 @@
 package io.mosip.kernel.idobjectvalidator.impl;
 
+import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.ID_OBJECT_PARSING_FAILED;
+import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.ID_OBJECT_VALIDATION_FAILED;
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant.DOB_FORMAT;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant.IDENTITY_DOB_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOB_FORMAT;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_CITY_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_CITY_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_DOB_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_GENDER_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_GENDER_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_POSTAL_CODE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_PROVINCE_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_PROVINCE_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_REGION_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_REGION_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_ZONE_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_ZONE_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_CATEGORIES_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_TYPES_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_GENDERTYPES_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LANGUAGE_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATIONS_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATIONS_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATION_HIERARCHY_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorLocationMapping.CITY;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorLocationMapping.POSTAL_CODE;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorLocationMapping.PROVINCE;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorLocationMapping.REGION;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorLocationMapping.ZONE;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -45,15 +72,12 @@ import com.jayway.jsonpath.Option;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.exception.ServiceError;
 import io.mosip.kernel.core.http.ResponseWrapper;
-import io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorDocumentMapping;
-import io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant;
-import io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorLocationMapping;
 import io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorSupportedOperations;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectIOException;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectValidationFailedException;
 import io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator;
 import io.mosip.kernel.core.util.DateUtils;
-import io.mosip.kernel.idobjectvalidator.constant.IdObjectValidatorConstant;
+import io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorDocumentMapping;
 import net.minidev.json.JSONArray;
 
 /**
@@ -70,8 +94,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private static final String LOCATION_HIERARCHY_NAME = "locationHierarchyName";
 
 	private static final String LOCATION_HIERARCHYLEVEL = "locationHierarchylevel";
-
-	private static final String NAME = "name";
 
 	private static final String DOCUMENTS = "documents";
 
@@ -163,11 +185,11 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				return true;
 			} else {
 				throw new IdObjectValidationFailedException(
-						IdObjectValidatorErrorConstant.ID_OBJECT_VALIDATION_FAILED, errorList);
+						ID_OBJECT_VALIDATION_FAILED, errorList);
 			}
 		} catch (JsonProcessingException e) {
 			ExceptionUtils.logRootCause(e);
-			throw new IdObjectIOException(IdObjectValidatorErrorConstant.ID_OBJECT_PARSING_FAILED, e);
+			throw new IdObjectIOException(ID_OBJECT_PARSING_FAILED, e);
 		}
 	}
 	
@@ -177,8 +199,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	@SuppressWarnings("unchecked")
 	private void loadLanguages() {
 		ObjectNode responseBody = restTemplate.getForObject(
-				env.getProperty(IdObjectValidatorConstant.MASTERDATA_LANGUAGE_URI.getValue()), ObjectNode.class);
-		JsonPath jsonPath = JsonPath.compile(IdObjectValidatorConstant.MASTERDATA_LANGUAGE_PATH.getValue());
+				env.getProperty(MASTERDATA_LANGUAGE_URI), ObjectNode.class);
+		JsonPath jsonPath = JsonPath.compile(MASTERDATA_LANGUAGE_PATH);
 		JSONArray response = jsonPath.read(responseBody.toString(), READ_LIST_OPTIONS);
 		languageList = Optional
 				.ofNullable(response)
@@ -197,7 +219,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	@SuppressWarnings("unchecked")
 	private void loadGenderTypes() {
 		ResponseWrapper<LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>> responseBody = restTemplate
-				.getForObject(env.getProperty(IdObjectValidatorConstant.MASTERDATA_GENDERTYPES_URI.getValue()),
+				.getForObject(env.getProperty(MASTERDATA_GENDERTYPES_URI),
 						ResponseWrapper.class);
 		if (Objects.isNull(responseBody.getErrors()) || responseBody.getErrors().isEmpty()) {
 			ArrayList<LinkedHashMap<String, Object>> response = responseBody.getResponse().get(GENDER_TYPE);
@@ -205,12 +227,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			IntStream.range(0, response.size())
 					.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
 					.forEach(index -> 
-					{
 						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(CODE)));
-						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
-								String.valueOf(response.get(index).get("genderName")));
-					});
+							String.valueOf(response.get(index).get(CODE)))
+					);
 		}
 	}
 	
@@ -220,7 +239,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	@SuppressWarnings("unchecked")
 	private void loadDocCategories() {
 		ResponseWrapper<LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>> responseBody = restTemplate
-				.getForObject(env.getProperty(IdObjectValidatorConstant.MASTERDATA_DOCUMENT_CATEGORIES_URI.getValue()),
+				.getForObject(env.getProperty(MASTERDATA_DOCUMENT_CATEGORIES_URI),
 						ResponseWrapper.class);
 		if (Objects.isNull(responseBody.getErrors()) || responseBody.getErrors().isEmpty()) {
 			ArrayList<LinkedHashMap<String, Object>> response = responseBody.getResponse().get(DOCUMENTCATEGORIES);
@@ -243,7 +262,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			docCatMap.keySet().stream().forEach(langCode ->
 			docCatMap.get(langCode).stream().forEach(docCat -> {
 				String uri = UriComponentsBuilder
-						.fromUriString(env.getProperty(IdObjectValidatorConstant.MASTERDATA_DOCUMENT_TYPES_URI.getValue()))
+						.fromUriString(env.getProperty(MASTERDATA_DOCUMENT_TYPES_URI))
 						.buildAndExpand(docCat, langCode).toUriString();
 					ResponseWrapper<LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>> responseBody = restTemplate
 							.getForObject(uri, ResponseWrapper.class);
@@ -251,10 +270,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						ArrayList<LinkedHashMap<String, Object>> response = responseBody.getResponse().get(DOCUMENTS);
 						IntStream.range(0, response.size())
 							.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-							.forEach(index -> {
-								docTypeMap.put(docCat, String.valueOf(response.get(index).get(NAME)));
-								docTypeMap.put(docCat, String.valueOf(response.get(index).get("code")));
-							});
+							.forEach(index -> 
+								docTypeMap.put(docCat, String.valueOf(response.get(index).get(CODE)))
+							);
 					}
 				})
 			);
@@ -270,13 +288,13 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		locationDetails = new LinkedHashMap<>();
 		languageList.stream().forEach(langCode -> {
 			String uri = UriComponentsBuilder
-					.fromUriString(env.getProperty(IdObjectValidatorConstant.MASTERDATA_LOCATIONS_URI.getValue()))
+					.fromUriString(env.getProperty(MASTERDATA_LOCATIONS_URI))
 					.buildAndExpand(langCode).toUriString();
 			ResponseWrapper<ObjectNode> responseBody = restTemplate
 					.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<ObjectNode>>() {
 					}).getBody();
 			if (Objects.isNull(responseBody.getErrors()) || responseBody.getErrors().isEmpty()) {
-				JsonPath jsonPath = JsonPath.compile(IdObjectValidatorConstant.MASTERDATA_LOCATIONS_PATH.getValue());
+				JsonPath jsonPath = JsonPath.compile(MASTERDATA_LOCATIONS_PATH);
 				JSONArray response = jsonPath.read(responseBody.getResponse().toString(), READ_LIST_OPTIONS);
 				response.stream()
 					.map(obj -> ((LinkedHashMap<String, Object>) obj))
@@ -293,7 +311,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		locationHierarchyNames.stream().forEach(hierarchyName -> {
 			String uri = UriComponentsBuilder
 					.fromUriString(
-							env.getProperty(IdObjectValidatorConstant.MASTERDATA_LOCATION_HIERARCHY_URI.getValue()))
+							env.getProperty(MASTERDATA_LOCATION_HIERARCHY_URI))
 					.buildAndExpand(hierarchyName).toUriString();
 			ResponseWrapper<LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>> responseBody = restTemplate
 					.getForObject(uri, ResponseWrapper.class);
@@ -302,12 +320,10 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				SetValuedMap<String, String> locations = new HashSetValuedHashMap<>(response.size());
 				IntStream.range(0, response.size())
 				.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-				.forEach(index -> {
+				.forEach(index -> 
 					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
-						String.valueOf(response.get(index).get(NAME)));
-					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get("code")));
-				});
+							String.valueOf(response.get(index).get(CODE)))
+				);
 				locationDetails.put(hierarchyName, locations);
 			}
 		});
@@ -320,7 +336,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateDateOfBirth(String identity, List<ServiceError> errorList) {
-		JsonPath jsonPath = JsonPath.compile(IDENTITY_DOB_PATH.getValue());
+		JsonPath jsonPath = JsonPath.compile(IDENTITY_DOB_PATH);
 		JSONArray pathList = jsonPath.read(identity, 
 				Configuration.defaultConfiguration()
 				.addOptions(
@@ -332,7 +348,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			if (Objects.nonNull(data)
 					&& LocalDate
 							.parse(data,
-									DateTimeFormatter.ofPattern(DOB_FORMAT.getValue())
+									DateTimeFormatter.ofPattern(DOB_FORMAT)
 											.withResolverStyle(ResolverStyle.STRICT))
 							.isAfter(DateUtils.getUTCCurrentDateTime().toLocalDate())) {
 				String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
@@ -356,7 +372,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateLanguage(String identityString, List<ServiceError> errorList) {
-		JsonPath jsonPath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_LANGUAGE_PATH.getValue());
+		JsonPath jsonPath = JsonPath.compile(IDENTITY_LANGUAGE_PATH);
 		JSONArray pathList = jsonPath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, String> dataMap = IntStream.range(0, pathList.size())
 				.boxed()
@@ -366,8 +382,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 								.compile(String.valueOf(pathList.get(i))).read(identityString, READ_OPTIONS)));
 		dataMap.entrySet().stream().filter(entry -> !languageList.contains(entry.getValue()))
 				.forEach(entry -> errorList
-						.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-								String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
+						.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+								String.format(INVALID_INPUT_PARAMETER.getMessage(),
 										convertToPath(entry.getKey())))));
 	}
 
@@ -378,9 +394,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateGender(String identityString, List<ServiceError> errorList) {
-		JsonPath genderLangPath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_GENDER_LANGUAGE_PATH.getValue());
+		JsonPath genderLangPath = JsonPath.compile(IDENTITY_GENDER_LANGUAGE_PATH);
 		List<String> genderLangPathList = genderLangPath.read(identityString, PATH_LIST_OPTIONS);
-		JsonPath genderValuePath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_GENDER_VALUE_PATH.getValue());
+		JsonPath genderValuePath = JsonPath.compile(IDENTITY_GENDER_VALUE_PATH);
 		List<String> genderValuePathList = genderValuePath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, Map.Entry<String, String>> dataMap = IntStream.range(0, genderLangPathList.size())
 			.filter(index -> languageList
@@ -395,8 +411,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				return genderMap.containsKey(lang) && !genderMap.get(lang).contains(entry.getValue().getValue());
 			})
 			.forEach(entry -> errorList
-					.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-							String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
+					.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+							String.format(INVALID_INPUT_PARAMETER.getMessage(),
 									convertToPath(entry.getValue().getKey())))));
 	}
 	
@@ -408,13 +424,13 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 */
 	private void validateRegion(String identityString, List<ServiceError> errorList) {
 		SetValuedMap<String, String> regionMap = new HashSetValuedHashMap<>();
-		Set<String> regionNameList = locationHierarchyDetails.get(IdObjectValidatorLocationMapping.REGION.getLevel());
+		Set<String> regionNameList = locationHierarchyDetails.get(REGION.getLevel());
 		Optional.ofNullable(regionNameList).orElse(Collections.emptySet()).stream()
 				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
 						.ifPresent(regionMap::putAll));
-		JsonPath langPath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_REGION_LANGUAGE_PATH.getValue());
+		JsonPath langPath = JsonPath.compile(IDENTITY_REGION_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
-		JsonPath valuePath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_REGION_VALUE_PATH.getValue());
+		JsonPath valuePath = JsonPath.compile(IDENTITY_REGION_VALUE_PATH);
 		List<String> valuePathList = valuePath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, Map.Entry<String, String>> dataMap = IntStream.range(0, langPathList.size())
 			.filter(index -> languageList
@@ -429,8 +445,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				return regionMap.containsKey(lang) && !regionMap.get(lang).contains(entry.getValue().getValue());
 			})
 			.forEach(entry -> errorList
-					.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-							String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
+					.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+							String.format(INVALID_INPUT_PARAMETER.getMessage(),
 									convertToPath(entry.getValue().getKey())))));
 	}
 	
@@ -443,13 +459,13 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void validateProvince(String identityString, List<ServiceError> errorList) {
 		SetValuedMap<String, String> provinceMap = new HashSetValuedHashMap<>();
 		Set<String> provinceNameList = locationHierarchyDetails
-				.get(IdObjectValidatorLocationMapping.PROVINCE.getLevel());
+				.get(PROVINCE.getLevel());
 		Optional.ofNullable(provinceNameList).orElse(Collections.emptySet()).stream()
 				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
 						.ifPresent(provinceMap::putAll));
-		JsonPath langPath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_PROVINCE_LANGUAGE_PATH.getValue());
+		JsonPath langPath = JsonPath.compile(IDENTITY_PROVINCE_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
-		JsonPath valuePath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_PROVINCE_VALUE_PATH.getValue());
+		JsonPath valuePath = JsonPath.compile(IDENTITY_PROVINCE_VALUE_PATH);
 		List<String> valuePathList = valuePath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, Map.Entry<String, String>> dataMap = IntStream.range(0, langPathList.size())
 			.filter(index -> languageList
@@ -464,8 +480,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				return provinceMap.containsKey(lang) && !provinceMap.get(lang).contains(entry.getValue().getValue());
 			})
 			.forEach(entry -> errorList
-					.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-							String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
+					.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+							String.format(INVALID_INPUT_PARAMETER.getMessage(),
 									convertToPath(entry.getValue().getKey())))));
 	}
 	
@@ -477,13 +493,13 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 */
 	private void validateCity(String identityString, List<ServiceError> errorList) {
 		SetValuedMap<String, String> cityMap = new HashSetValuedHashMap<>();
-		Set<String> cityNameList = locationHierarchyDetails.get(IdObjectValidatorLocationMapping.CITY.getLevel());
+		Set<String> cityNameList = locationHierarchyDetails.get(CITY.getLevel());
 		Optional.ofNullable(cityNameList).orElse(Collections.emptySet()).stream()
 				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
 						.ifPresent(cityMap::putAll));
-		JsonPath langPath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_CITY_LANGUAGE_PATH.getValue());
+		JsonPath langPath = JsonPath.compile(IDENTITY_CITY_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
-		JsonPath valuePath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_CITY_VALUE_PATH.getValue());
+		JsonPath valuePath = JsonPath.compile(IDENTITY_CITY_VALUE_PATH);
 		List<String> valuePathList = valuePath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, Map.Entry<String, String>> dataMap = IntStream.range(0, langPathList.size())
 			.filter(index -> languageList
@@ -498,8 +514,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				return cityMap.containsKey(lang) && !cityMap.get(lang).contains(entry.getValue().getValue());
 			})
 			.forEach(entry -> errorList
-					.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-							String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
+					.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+							String.format(INVALID_INPUT_PARAMETER.getMessage(),
 									convertToPath(entry.getValue().getKey())))));
 	}
 	
@@ -512,15 +528,15 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void validateZone(String identityString, List<ServiceError> errorList) {
 		SetValuedMap<String, String> zoneMap = new HashSetValuedHashMap<>();
 		Set<String> zoneList = locationHierarchyDetails
-				.get(IdObjectValidatorLocationMapping.ZONE.getLevel());
+				.get(ZONE.getLevel());
 		Optional.ofNullable(zoneList).orElse(Collections.emptySet()).stream()
 				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
 						.ifPresent(zoneMap::putAll));
 		JsonPath langPath = JsonPath
-				.compile(IdObjectValidatorConstant.IDENTITY_ZONE_LANGUAGE_PATH.getValue());
+				.compile(IDENTITY_ZONE_LANGUAGE_PATH);
 		List<String> langPathList = langPath.read(identityString, PATH_LIST_OPTIONS);
 		JsonPath valuePath = JsonPath
-				.compile(IdObjectValidatorConstant.IDENTITY_ZONE_VALUE_PATH.getValue());
+				.compile(IDENTITY_ZONE_VALUE_PATH);
 		List<String> valuePathList = valuePath.read(identityString, PATH_LIST_OPTIONS);
 		Map<String, Map.Entry<String, String>> dataMap = IntStream.range(0, langPathList.size())
 			.filter(index -> languageList
@@ -536,8 +552,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 							&& !zoneMap.get(lang).contains(entry.getValue().getValue());
 			})
 			.forEach(entry -> errorList
-					.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-							String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
+					.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+							String.format(INVALID_INPUT_PARAMETER.getMessage(),
 									convertToPath(entry.getValue().getKey())))));
 	}
 	
@@ -550,16 +566,15 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void validatePostalCode(String identityString, List<ServiceError> errorList) {
 		SetValuedMap<String, String> postalCodeMap = new HashSetValuedHashMap<>();
 		Set<String> postalCodeNameList = locationHierarchyDetails
-				.get(IdObjectValidatorLocationMapping.POSTAL_CODE.getLevel());
+				.get(POSTAL_CODE.getLevel());
 		Optional.ofNullable(postalCodeNameList).orElse(Collections.emptySet()).stream()
 				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
 						.ifPresent(postalCodeMap::putAll));
-		JsonPath jsonPath = JsonPath.compile(IdObjectValidatorConstant.IDENTITY_POSTAL_CODE_PATH.getValue());
+		JsonPath jsonPath = JsonPath.compile(IDENTITY_POSTAL_CODE_PATH);
 		String value = jsonPath.read(identityString, READ_OPTIONS);
 		if (Objects.nonNull(value) && !postalCodeMap.values().contains(value)) {
-			errorList.add(new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-					String.format(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
-							convertToPath(jsonPath.getPath()))));
+			errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+					String.format(INVALID_INPUT_PARAMETER.getMessage(), convertToPath(jsonPath.getPath()))));
 		}
 	}
 	
@@ -570,16 +585,13 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @param errorList the error list
 	 */
 	private void validateDocuments(String identityString, List<ServiceError> errorList) {
-		IdObjectValidatorDocumentMapping.getAllMapping().entrySet().stream()
+		IdObjectReferenceValidatorDocumentMapping.getAllMapping().entrySet().stream()
 				.filter(entry -> docTypeMap.containsKey(entry.getKey())).forEach(entry -> {
 					JsonPath jsonPath = JsonPath.compile("identity." + entry.getValue() + ".type");
 					Object value = jsonPath.read(identityString, READ_OPTIONS);
 					if (Objects.nonNull(value) && !docTypeMap.get(entry.getKey()).contains(value)) {
-						errorList.add(
-								new ServiceError(IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getErrorCode(),
-										String.format(
-												IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER.getMessage(),
-												convertToPath(jsonPath.getPath()))));
+						errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), String
+								.format(INVALID_INPUT_PARAMETER.getMessage(), convertToPath(jsonPath.getPath()))));
 					}
 				});
 	}
