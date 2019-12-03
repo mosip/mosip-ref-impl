@@ -283,7 +283,7 @@ export class CreateComponent {
                 !secondaryResponse.errors ||
                 secondaryResponse.errors.length === 0
               ) {
-                this.showMessage('update-success')
+                this.showMessage('update-success', primaryObject)
                   .afterClosed()
                   .subscribe(() => {
                     this.router.navigateByUrl('admin/resources/centers/view');
