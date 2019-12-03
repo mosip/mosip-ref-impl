@@ -57,7 +57,7 @@
         "cancel": "Cancel",
         "language": "English",
         "keyboard-tooltip": "Click for Virtual Keyboard (English)",
-        "isActive": "Is Active",
+        "isActive": "Status",
         "update": "Update",
         "workingDays": "Working Days",
         "holidays": "Exceptional Holidays",
@@ -202,7 +202,7 @@
         "macAddress": "MAC Address",
         "ipAddress": "IP Address",
         "validity": "Valid Date Time",
-        "isActive": "Is Active",
+        "isActive": "Status",
         "zone": "Zone",
         "language": "English",
         "errorMessages": {
@@ -219,7 +219,7 @@
         "macAddress": "MAC Address",
         "ipAddress": "IP Address",
         "validity": "Valid Date Time",
-        "isActive": "Is Active",
+        "isActive": "Status",
         "zone": "Zone",
         "language": "English",
         "errorMessages": {
