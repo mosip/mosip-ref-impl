@@ -148,7 +148,7 @@
             },
             "update-success": {
                 "title": "Success",
-                "message": "Center is updated Successfully",
+                "message": ["Center details are updated successfully. \n Center ID: ", " \n Center Name: "],
                 "btnTxt": "Ok"
             },
             "update-error": {

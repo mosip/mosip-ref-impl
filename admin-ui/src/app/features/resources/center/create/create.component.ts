@@ -308,7 +308,7 @@ export class CreateComponent {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
         message:
-          type === 'create-success'
+          type === 'create-success' || type === 'update-success'
             ? this.popupMessages[type].message[0] +
               data.id +
               this.popupMessages[type].message[1] +
