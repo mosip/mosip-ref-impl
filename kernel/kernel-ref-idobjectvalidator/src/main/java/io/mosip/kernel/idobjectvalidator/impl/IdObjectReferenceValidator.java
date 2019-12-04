@@ -89,11 +89,15 @@ import net.minidev.json.JSONArray;
 @RefreshScope
 public class IdObjectReferenceValidator implements IdObjectValidator {
 	
+	private static final String GENDER_NAME = "genderName";
+
 	private static final String LOCATIONS = "locations";
 
 	private static final String LOCATION_HIERARCHY_NAME = "locationHierarchyName";
 
 	private static final String LOCATION_HIERARCHYLEVEL = "locationHierarchylevel";
+
+	private static final String NAME = "name";
 
 	private static final String DOCUMENTS = "documents";
 
@@ -228,7 +232,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 					.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
 					.forEach(index -> 
 						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(CODE)))
+							String.valueOf(response.get(index).get(GENDER_NAME)))
 					);
 		}
 	}
@@ -322,7 +326,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
 				.forEach(index -> 
 					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(CODE)))
+							String.valueOf(response.get(index).get(NAME)))
 				);
 				locationDetails.put(hierarchyName, locations);
 			}
