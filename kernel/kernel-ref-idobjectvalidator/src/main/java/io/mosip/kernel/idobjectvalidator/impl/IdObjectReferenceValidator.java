@@ -230,10 +230,12 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			genderMap = new HashSetValuedHashMap<>(response.size());
 			IntStream.range(0, response.size())
 					.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-					.forEach(index -> 
+					.forEach(index -> {
 						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(GENDER_NAME)))
-					);
+							String.valueOf(response.get(index).get(GENDER_NAME)));
+						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
+								String.valueOf(response.get(index).get(CODE)));
+					});
 		}
 	}
 	
