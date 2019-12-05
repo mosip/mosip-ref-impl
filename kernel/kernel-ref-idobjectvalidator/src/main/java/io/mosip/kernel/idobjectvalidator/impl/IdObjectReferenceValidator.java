@@ -276,9 +276,10 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						ArrayList<LinkedHashMap<String, Object>> response = responseBody.getResponse().get(DOCUMENTS);
 						IntStream.range(0, response.size())
 							.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-							.forEach(index -> 
-								docTypeMap.put(docCat, String.valueOf(response.get(index).get(CODE)))
-							);
+							.forEach(index -> {
+								docTypeMap.put(docCat, String.valueOf(response.get(index).get(NAME)));
+								docTypeMap.put(docCat, String.valueOf(response.get(index).get(CODE)));
+							});
 					}
 				})
 			);
@@ -326,10 +327,12 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				SetValuedMap<String, String> locations = new HashSetValuedHashMap<>(response.size());
 				IntStream.range(0, response.size())
 				.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-				.forEach(index -> 
+				.forEach(index -> {
 					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(NAME)))
-				);
+						String.valueOf(response.get(index).get(NAME)));
+					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
+							String.valueOf(response.get(index).get(CODE)));
+				});
 				locationDetails.put(hierarchyName, locations);
 			}
 		});
