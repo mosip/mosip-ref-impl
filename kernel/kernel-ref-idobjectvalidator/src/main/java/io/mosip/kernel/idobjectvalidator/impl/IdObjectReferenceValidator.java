@@ -326,10 +326,12 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				SetValuedMap<String, String> locations = new HashSetValuedHashMap<>(response.size());
 				IntStream.range(0, response.size())
 				.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-				.forEach(index -> 
+				.forEach(index -> {
 					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(NAME)))
-				);
+						String.valueOf(response.get(index).get(NAME)));
+					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
+							String.valueOf(response.get(index).get(CODE)));
+				});
 				locationDetails.put(hierarchyName, locations);
 			}
 		});
