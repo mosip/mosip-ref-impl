@@ -91,7 +91,8 @@ import net.minidev.json.JSONArray;
 @RefreshScope
 public class IdObjectReferenceValidator implements IdObjectValidator {
 	
-	/** The Constant LOCATIONS. */
+	private static final String GENDER_NAME = "genderName";
+
 	private static final String LOCATIONS = "locations";
 
 	/** The Constant LOCATION_HIERARCHY_NAME. */
@@ -100,7 +101,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	/** The Constant LOCATION_HIERARCHYLEVEL. */
 	private static final String LOCATION_HIERARCHYLEVEL = "locationHierarchylevel";
 
-	/** The Constant DOCUMENTS. */
+	private static final String NAME = "name";
+
 	private static final String DOCUMENTS = "documents";
 
 	/** The Constant DOCUMENTCATEGORIES. */
@@ -210,7 +212,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			validateProvince(identityString, errorList);
 			validateCity(identityString, errorList);
 			validatePostalCode(identityString, errorList);
-			validateZone(identityString, errorList); 
+			validateZone(identityString, errorList);
 			validateDocuments(identityString, errorList);
 			if (errorList.isEmpty()) {
 				return true;
@@ -257,10 +259,12 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			genderMap = new HashSetValuedHashMap<>(response.size());
 			IntStream.range(0, response.size())
 					.filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-					.forEach(index -> 
+					.forEach(index -> {
 						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
-							String.valueOf(response.get(index).get(CODE)))
-					);
+							String.valueOf(response.get(index).get(GENDER_NAME)));
+						genderMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
+								String.valueOf(response.get(index).get(CODE)));
+					});
 		}
 	}
 	
@@ -354,6 +358,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				.forEach(index -> {
 					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
 							String.valueOf(response.get(index).get(CODE)));
+					locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
+							String.valueOf(response.get(index).get(NAME)));
 					if (StringUtils.isNotBlank(env.getProperty(LOCATION_NA))) {
 						locations.put(String.valueOf(response.get(index).get(LANG_CODE)),
 								StringUtils.trim(env.getProperty(LOCATION_NA)));
