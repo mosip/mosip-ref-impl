@@ -30,6 +30,7 @@ public class IdObjectReferenceValidatorConstant {
 	public static final String MASTERDATA_DOCUMENT_TYPES_URI = "mosip.kernel.idobjectvalidator.masterdata.documenttypes.rest.uri";
 	public static final String MASTERDATA_LOCATIONS_URI = "mosip.kernel.idobjectvalidator.masterdata.locations.rest.uri";
 	public static final String MASTERDATA_LOCATION_HIERARCHY_URI = "mosip.kernel.idobjectvalidator.masterdata.locationhierarchy.rest.uri";
+	public static final String LOCATION_NA = "mosip.kernel.idobjectvalidator.masterdata.locations.locationNotAvailable";
 	public static final String DOB_FORMAT = "uuuu/MM/dd";
 	public static final String IDENTITY_DOB_PATH = "identity.dateOfBirth";
 }
