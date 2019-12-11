@@ -570,7 +570,7 @@ export class CreateComponent {
     this.primaryForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
       this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
     this.primaryForm.controls.exceptionalHolidays.setValue(
-      this.data[0].exceptionalHolidayPutPostDto ? this.data[0].exceptionalHolidayPutPostDto : []);
+      this.data[0].exceptionalHolidayPutPostDto ? [...this.data[0].exceptionalHolidayPutPostDto] : []);
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
     this.loadLocationDropDownsForUpdate(this.data[0]);
   }
@@ -632,7 +632,7 @@ export class CreateComponent {
     this.secondaryForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
       this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
     this.secondaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidayPutPostDto ?
-       this.data[0].exceptionalHolidayPutPostDto : []);
+       [...this.data[0].exceptionalHolidayPutPostDto] : []);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
