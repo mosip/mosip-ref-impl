@@ -4,13 +4,15 @@ import { PacketStatusComponent } from './packet-status/packet-status.component';
 import { PacketStatusRoutingModule } from './packet-status-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     PacketStatusRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    MaterialModule
   ],
   declarations: [PacketStatusComponent]
 })

@@ -15,7 +15,7 @@
             <div>
                 <table>
                     <tr>
-                        <td>{{'packet-status.id' | translate}}</td><td><strong>99877655433211</strong></td>
+                        <td>{{'packet-status.id' | translate}}</td><td><strong>{{data[0].registrationId}}</strong></td>
                     </tr>
                     <tr>
                         <td>{{'packet-status.status' | translate}}</td><td><strong>In Progress</strong></td>
@@ -33,11 +33,10 @@
                 </table>
                 <ul *ngIf="showTimeline">
                     <li *ngFor="let item of data" [ngClass]="item.status !== 'Incomplete' ? 'complete' : ''">
-                        <i [ngClass]="item.status === 'In Progress' ? 'dot hollow-dot' : item.status !== 'Incomplete' ? 'milestone-complete dot' : 'dot incomplete-hollow' "></i>
-                        <h3>{{item.stageName}}</h3>
+                        <i [ngClass]="item.status === 'IN_PROGRESS' ? 'dot hollow-dot' : item.status !== 'SUCCESS' ? 'milestone-complete dot' : 'dot incomplete-hollow' "></i>
+                        <h3>{{item.transactionTypeCode.replace("_", " ")}}</h3>
                         <p *ngIf="item.status !== 'Incomplete'">
-                            {{item.status}}, {{item.date}} {{item.time}}
-                        </p>
+                            {{item.statusComment}},   {{item.createdDateTimes | date:'medium':'+0530'}}                        </p>
                     </li>
                 </ul>
             </div>

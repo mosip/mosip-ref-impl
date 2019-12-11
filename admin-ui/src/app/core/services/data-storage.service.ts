@@ -113,4 +113,9 @@ export class DataStorageService {
       {}
     );
   }
+
+  getPacketStatus(registrationId: string) {
+    const params = new HttpParams().set('rid', registrationId);
+    return this.http.get(this.BASE_URL + 'admin/packetStatusUpdate', {params});
+  }
 }
