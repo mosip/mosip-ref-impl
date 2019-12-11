@@ -26,6 +26,6 @@ export class CenterModel {
         public isActive?: boolean,
         public numberOfKiosks?: number,
         public workingNonWorkingDays?: any,
-        public exceptionalHolidayDto?: HolidayModel[],
+        public exceptionalHolidayPutPostDto?: HolidayModel[],
     ) {}
 }
