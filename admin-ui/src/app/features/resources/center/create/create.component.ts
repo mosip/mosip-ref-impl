@@ -388,7 +388,7 @@ export class CreateComponent {
     delete primaryObject.numberOfKiosks;
     delete secondaryObject.numberOfKiosks;
     if (this.primaryForm.controls.exceptionalHolidays.value.length === 0) {
-      delete primaryObject.exceptionalHolidayDto;
+      delete primaryObject.exceptionalHolidayPutPostDto;
     }
     const primaryRequest = new RequestModel(
       appConstants.registrationCenterCreateId,
@@ -544,11 +544,10 @@ export class CreateComponent {
     this.primaryForm.controls.lunchEndTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
     );
-    // temporary code
     this.primaryForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
       this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
-    this.primaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidayDto ? this.data[0].exceptionalHolidayDto : []);
-    //
+    this.primaryForm.controls.exceptionalHolidays.setValue(
+      this.data[0].exceptionalHolidayPutPostDto ? this.data[0].exceptionalHolidayPutPostDto : []);
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
     this.loadLocationDropDownsForUpdate(this.data[0]);
   }
@@ -607,11 +606,10 @@ export class CreateComponent {
     this.secondaryForm.controls.lunchEndTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
     );
-    // temporary code
     this.secondaryForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
       this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
-    this.secondaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidayDto ? this.data[0].exceptionalHolidayDto : []);
-    //
+    this.secondaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidayPutPostDto ?
+       this.data[0].exceptionalHolidayPutPostDto : []);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
