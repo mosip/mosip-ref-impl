@@ -1,5 +1,9 @@
 @import "../../_theme.scss";
 
+.table-spacer > tr > td {
+  padding: 5px;
+}
+
 .flex-container {
   display: flex;
   flex-direction: row;

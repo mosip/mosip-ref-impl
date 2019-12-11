@@ -59,6 +59,9 @@
         "keyboard-tooltip": "انقر للحصول على لوحة المفاتيح الافتراضية (العربية)",
         "isActive": "نشط",
         "update": "تحديث",
+        "workingDays": "أيام العمل",
+        "holidays": "عطلات استثنائية",
+        "add-button": "إضافة",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",
