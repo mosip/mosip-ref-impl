@@ -64,3 +64,14 @@
     border-radius: 10px;
   }
 }
+
+.breadcrumb {
+  font-size: 12.5px;
+  position: absolute;
+  margin-top: 20px;
+}
+
+.breadcrumb > a {
+  text-decoration: none;
+  cursor: pointer;
+}

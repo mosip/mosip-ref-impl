@@ -253,6 +253,13 @@ export const masterdataMapping = {
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Individual Type'
+  },
+  documentCategoryMapping: {
+    name: {
+      eng: 'Document Category - Type Mapping',
+      ara: 'فئة الوثيقة - نوع التعيين',
+      fra: 'Catégorie de document - Mappage de types'
+    }
   }
 };
 
