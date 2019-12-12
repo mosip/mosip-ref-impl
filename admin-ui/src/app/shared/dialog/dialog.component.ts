@@ -7,7 +7,7 @@ import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as appConstants from '../../app.constants';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
@@ -44,6 +44,8 @@ export class DialogComponent implements OnInit {
 
   filterOptions: any = {};
 
+  holidayForm: FormGroup;
+
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -65,6 +67,10 @@ export class DialogComponent implements OnInit {
       ).filters;
       await this.getFilterMappings();
     }
+  }
+
+  get f() {
+    return this.holidayForm.controls;
   }
 
   onNoClick(): void {

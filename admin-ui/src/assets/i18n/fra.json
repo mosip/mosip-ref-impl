@@ -59,6 +59,9 @@
         "keyboard-tooltip": "Cliquez pour clavier virtuel (French)",
         "isActive": "C'est actif",
         "update": "mettre à jour",
+        "workingDays": "jours de travail",
+        "holidays": "Vacances exceptionnelles",
+        "add-button": "Ajouter",
         "validationMessages": {
             "name": {
                 "required": "Le nom du centre est requis",

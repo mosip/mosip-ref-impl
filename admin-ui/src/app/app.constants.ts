@@ -201,7 +201,11 @@ export const masterdataMapping = {
 };
 
 export const ListViewIdKeyMapping = {
-  centers: { idKey: 'id', imagePath: 'assets/images/center-name-icon.png', auditEventId: 'ADM-064' },
+  centers: {
+    idKey: 'id',
+    imagePath: 'assets/images/center-name-icon.png',
+    auditEventId: 'ADM-064'
+  },
   devices: { idKey: 'id', auditEventId: 'ADM-065' },
   machines: { idKey: 'id', auditEventId: 'ADM-066' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
@@ -295,4 +299,34 @@ export const keyboardMapping = {
   eng: 'en',
   fra: 'fr',
   ara: 'ar'
+};
+
+export const days = {
+  eng: [
+    { name: 'Monday', code: 'mon' },
+    { name: 'Tuesday', code: 'tue' },
+    { name: 'Wednesday', code: 'wed' },
+    { name: 'Thursday', code: 'thu' },
+    { name: 'Friday', code: 'fri' },
+    { name: 'Saturday', code: 'sat' },
+    { name: 'Sunday', code: 'sun' }
+  ],
+  fra: [
+    { name: 'Lundi', code: 'mon' },
+    { name: 'Mardi', code: 'tue' },
+    { name: 'Mercredi', code: 'wed' },
+    { name: 'Jeudi', code: 'thu' },
+    { name: 'Vendredi', code: 'fri' },
+    { name: 'samedi', code: 'sat' },
+    { name: 'dimanche', code: 'sun' }
+  ],
+  ara: [
+    { name: 'الإثنين', code: 'mon' },
+    { name: 'الثلاثاء', code: 'tue' },
+    { name: 'الأربعاء', code: 'wed' },
+    { name: 'الخميس', code: 'thu' },
+    { name: 'يوم الجمعة', code: 'fri' },
+    { name: 'يوم السبت', code: 'sat' },
+    { name: 'الأحد', code: 'sun' }
+  ]
 };
