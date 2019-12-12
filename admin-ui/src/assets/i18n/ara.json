@@ -228,7 +228,8 @@
         "doc-category-mapping": "وثيقة الفئة - نوع رسم الخرائط",
         "category": "الفئة",
         "mapped-documents": "المستندات المعينة",
-        "unmapped-documents": "المستندات غير المعينة"
+        "unmapped-documents": "المستندات غير المعينة",
+        "masterDataTypes": "أنواع البيانات الرئيسية"
     },
     "errorPopup": {
         "noData": {
@@ -294,5 +295,8 @@
             "confirmation-message": ["هل تريد إلغاء تنشيط مركز التسجيل", " ? \n يمكنك تفعيلها في وقت لاحق إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
             "confirmation-title": "التأكيد"
         }
+    },
+    "detailView":{
+        "detail":"عرض التفاصيل"
     }
 }
