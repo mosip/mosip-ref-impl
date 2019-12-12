@@ -67,6 +67,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   defaultDay: string;
   defaultMonth: string;
   FULLNAME_PATTERN: string;
+  defaultLocation: string;
 
   ageOrDobPref = '';
   showDate = false;
@@ -78,6 +79,8 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   showPreviewButton = false;
   dataIncomingSuccessful = false;
   canDeactivateFlag = true;
+  hierarchyAvailable = true;
+  isConsentMessage = false;
 
   step: number = 0;
   id: number;
@@ -198,7 +201,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     this.initialization();
     this.config = this.configService.getConfig();
     this.setConfig();
-    await this.getPrimaryLabels();
+    this.getPrimaryLabels();
     await this.getConsentMessage();
     this.initForm();
 
@@ -212,7 +215,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         !previousURL.includes('demographic') ||
         (previousURL.includes('demographic') && this.configService.navigationType !== 'popstate')
       )
-        this.consentDeclaration();
+        if (this.isConsentMessage) this.consentDeclaration();
     }
   }
 
@@ -232,6 +235,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
     this.ADDRESS_PATTERN = this.config[appConstants.CONFIG_KEYS.preregistration_address_length];
     this.FULLNAME_PATTERN = this.config[appConstants.CONFIG_KEYS.preregistration_fullname_length];
     this.agePattern = this.config[appConstants.CONFIG_KEYS.mosip_id_validation_identity_age];
+    this.defaultLocation = this.config[appConstants.CONFIG_KEYS.mosip_default_location];
   }
 
   /**
@@ -253,18 +257,21 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       this.subscriptions.push(
         this.dataStorageService.getGuidelineTemplate('consent').subscribe(
           response => {
-            if (response[appConstants.RESPONSE])
+            this.isConsentMessage = true;
+            if (response && response[appConstants.RESPONSE])
               this.consentMessage = response['response']['templates'][0].fileText.split('\n');
-            else this.onError(this.errorlabels.error, '');
+            else if (response[appConstants.NESTED_ERROR]) this.onError(this.errorlabels.error, '');
             resolve(true);
           },
           error => {
+            this.isConsentMessage = false;
             this.onError(this.errorlabels.error, error);
           }
         )
       );
     });
   }
+
   /**
    * @description This method do the basic initialization,
    * if user is opt for updation or creating the new applicaton
@@ -554,6 +561,8 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
           response => {
             if (response[appConstants.RESPONSE]) {
               this.genders = response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.genderTypes];
+              // change the formControlValue here as the language will be value change it to code
+              // this.formControlValues.gender = getCodeFromValue();
               resolve(true);
             } else {
               this.onError(this.errorlabels.error, '');
@@ -583,6 +592,8 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
             if (response[appConstants.RESPONSE]) {
               this.residenceStatus =
                 response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.residentTypes];
+              // change the formControlValue here as the language will be value change it to code
+              // this.formControlValues.residenceStatus = getCodeFromValue();
               resolve(true);
             } else {
               this.onError(this.errorlabels.error, '');
@@ -718,6 +729,10 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   ) {
     childLocations.length = 0;
     return new Promise(resolve => {
+      if (!this.hierarchyAvailable) {
+        this.onLocationNotAvailable(childLocations, this.defaultLocation, this.defaultLocation, languageCode);
+        return resolve(true);
+      }
       this.subscriptions.push(
         this.dataStorageService.getLocationImmediateHierearchy(languageCode, parentLocationCode).subscribe(
           response => {
@@ -731,8 +746,20 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
                 childLocations.push(codeValueModal);
                 if (currentLocationCode && codeValueModal.valueCode === currentLocationCode) {
                   this.addCodeValue(codeValueModal);
+                  // change the formControlValue here as the language will be value change it to code
+                  // this.formControlValues[currentLocationCode] = codeValueModal.valueCode
                 }
               });
+              return resolve(true);
+            }
+            // if no location hiererchy available
+            else if (
+              response[appConstants.NESTED_ERROR] &&
+              response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
+                appConstants.ERROR_CODES.noLocationAvailable
+            ) {
+              this.hierarchyAvailable = false;
+              this.onLocationNotAvailable(childLocations, this.defaultLocation, this.defaultLocation, languageCode);
               return resolve(true);
             } else {
               this.onError(this.errorlabels.error, '');
@@ -745,6 +772,21 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         )
       );
     });
+  }
+
+  private onLocationNotAvailable(
+    childLocations: CodeValueModal[],
+    valueCode: string,
+    valueName: string,
+    languageCode: string
+  ) {
+    let codeValueModal: CodeValueModal = {
+      valueCode: valueCode,
+      valueName: valueName,
+      languageCode: languageCode
+    };
+    childLocations.push(codeValueModal);
+    this.addCodeValue(codeValueModal);
   }
 
   /**
@@ -795,7 +837,10 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         item.code !== value;
       })
     );
-    this.secondaryResidenceStatusTemp.splice(entity.findIndex(item => item.code !== value), 1);
+    this.secondaryResidenceStatusTemp.splice(
+      entity.findIndex(item => item.code !== value),
+      1
+    );
     console.log('enityt1', this.secondaryResidenceStatusTemp);
     console.log('enityt2', entity);
   }
