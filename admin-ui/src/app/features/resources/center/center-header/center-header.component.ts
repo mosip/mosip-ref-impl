@@ -1,4 +1,10 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewEncapsulation,
+  OnChanges
+} from '@angular/core';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
@@ -11,7 +17,7 @@ import * as appConstants from '../../../../app.constants';
   templateUrl: './center-header.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class CenterHeaderComponent implements OnInit {
+export class CenterHeaderComponent implements OnInit, OnChanges {
   actionButtonElipses = new Array();
 
   lang: string;
@@ -27,7 +33,9 @@ export class CenterHeaderComponent implements OnInit {
     this.lang = appService.getConfig()['primaryLangCode'];
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnChanges(): void {
     this.dataSerice.getCenterSpecificLabelsAndActions().subscribe(data => {
       this.actionButtonElipses = data.actionButtons.filter(
         item => item.showIn === 'Ellipsis'
