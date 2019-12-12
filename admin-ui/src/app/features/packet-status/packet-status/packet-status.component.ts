@@ -136,8 +136,6 @@ export class PacketStatusComponent implements OnInit {
             });
         }
       });
-      this.error = false;
-      this.showDetails = true;
     }
   }
 
