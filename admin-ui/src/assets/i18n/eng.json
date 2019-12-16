@@ -190,7 +190,7 @@
         "device-definition": "Device Definition",
         "machine-definition": "Machine Definition",
         "document-definition": "Document Definition",
-        "doc-category-mapping": "Doc Category - Type Mapping",
+        "doc-category-mapping": "Document Category - Type Mapping",
         "category": "Category",
         "mapped-documents": "Mapped Documents",
         "unmapped-documents": "Unmapped Documents"
