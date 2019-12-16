@@ -770,6 +770,11 @@ public class IdaController {
 		return DateUtils.formatToISOString(DateUtils.getUTCCurrentDateTime());
 	}
 
+	/**
+	 * Gets the transaction ID.
+	 *
+	 * @return the transaction ID
+	 */
 	public static String getTransactionID() {
 		return "1234567890";
 	}
