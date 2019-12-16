@@ -16,5 +16,9 @@ export class AuditModel {
         public actionTimeStamp: string = Utils.getCurrentDate(),
         public applicationId: string = '10009',
         public applicationName: string = 'Admin Portal',
+        public hostName: string = '',
+        public hostIp: string = '',
+        public idType: string = 'ADMIN',
+        public id: string = 'NO_ID'
     ) {}
 }

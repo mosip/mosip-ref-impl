@@ -176,11 +176,11 @@ export class AuditService {
       }
     }
     console.log(auditObject);
-  //  this.postAuditLog(auditObject);
+    this.postAuditLog(auditObject);
   }
 
   private postAuditLog(auditObject: AuditModel) {
     const request = new RequestModel('', null, auditObject);
-    this.http.post(this.appService.getConfig().baseUrl + 'auditmanager/audits', request);
+    this.http.post(this.appService.getConfig().baseUrl + 'admin/auditmanager/log', request);
   }
 }
