@@ -717,8 +717,8 @@ public class IdaController {
 
 	private String generateAuthToken() {
 		ObjectNode requestBody = mapper.createObjectNode();
-		requestBody.put("clientId", "ida_app_user");
-		requestBody.put("secretKey", "5debb60adbfcf8feea4a6ed6160092ec");
+		requestBody.put("clientId", env.getProperty("clientId", "ida"));
+		requestBody.put("secretKey", env.getProperty("secretKey", "bad25866-e6a5-4f93-831a-08923ea6eee0"));
 		requestBody.put("appId", "ida");
 		RequestWrapper<ObjectNode> request = new RequestWrapper<>();
 		request.setRequesttime(DateUtils.getUTCCurrentDateTime());
