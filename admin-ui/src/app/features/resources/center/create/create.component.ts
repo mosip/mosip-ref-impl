@@ -294,7 +294,7 @@ export class CreateComponent {
                 !secondaryResponse.errors ||
                 secondaryResponse.errors.length === 0
               ) {
-                this.showMessage('update-success')
+                this.showMessage('update-success', primaryObject)
                   .afterClosed()
                   .subscribe(() => {
                     this.router.navigateByUrl('admin/resources/centers/view');
@@ -319,7 +319,7 @@ export class CreateComponent {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
         message:
-          type === 'create-success'
+          type === 'create-success' || type === 'update-success'
             ? this.popupMessages[type].message[0] +
               data.id +
               this.popupMessages[type].message[1] +

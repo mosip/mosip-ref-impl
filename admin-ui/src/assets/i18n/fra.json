@@ -144,7 +144,7 @@
             },
             "update-success": {
                 "title": "Succès",
-                "message": "Le centre est mis à jour avec succès",
+                "message": ["Les détails du centre sont mis à jour avec succès. \n ID du centre: ", " \n Nom du centre: "],
                 "btnTxt": "D'accord"
             },
             "update-error": {
