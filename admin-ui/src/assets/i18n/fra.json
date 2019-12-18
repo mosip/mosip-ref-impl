@@ -231,7 +231,8 @@
         "doc-category-mapping": "Catégorie de document - Mappage de types",
         "category": "Catégorie",
         "mapped-documents": "Documents mappés",
-        "unmapped-documents": "Documents non mappés"
+        "unmapped-documents": "Documents non mappés",
+        "masterDataTypes": "Types de données maîtres"
         
     },
     "errorPopup": {
@@ -298,5 +299,8 @@
             "confirmation-message": ["Voulez-vous désactiver le centre d'inscription ", " ? \n Vous pouvez l'activer plus tard si vous le souhaitez. Jusque-là, il sera défini comme inactif"],
             "confirmation-title": "Confirmation"
         }
+    },
+    "detailView":{
+        "detail":"vue détaillée"
     }
 }

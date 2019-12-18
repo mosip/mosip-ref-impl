@@ -205,7 +205,8 @@
         "doc-category-mapping": "Doc Category - Type Mapping",
         "category": "Category",
         "mapped-documents": "Mapped Documents",
-        "unmapped-documents": "Unmapped Documents"
+        "unmapped-documents": "Unmapped Documents",
+        "masterDataTypes": "Masterdata Types"
     },
     "devices": {
         "header": "Device",
@@ -304,5 +305,8 @@
             "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
             "confirmation-title": "Confirmation"
         }
+    },
+    "detailView":{
+        "detail":"Detail View"
     }
 }

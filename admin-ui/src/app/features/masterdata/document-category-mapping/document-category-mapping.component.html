@@ -1,4 +1,9 @@
 <mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>
+<span class="breadcrumb" *ngIf="(allDocCategoryList && mappedDocList && unMappedDocList && !showSpinner)">
+    <a (click)="changePage('home')">{{'masterData.masterDataTypes' | translate}} &nbsp;&nbsp;</a> / 
+    <a (click)="changePage('list')">&nbsp;&nbsp; {{ mapping.name[primaryLang] }} &nbsp;&nbsp;</a> 
+</span>
+<br><br>
 <div *ngIf="(allDocCategoryList && mappedDocList && unMappedDocList && !showSpinner)" id="flex-single-view">
     <h3>{{'masterData.doc-category-mapping'|translate}}</h3>
     <div id="flex-container">

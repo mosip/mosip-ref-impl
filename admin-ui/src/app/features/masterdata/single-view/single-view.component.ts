@@ -28,7 +28,7 @@ export class SingleViewComponent implements OnDestroy {
   secondaryData: any;
   headerData: HeaderModel;
   showSpinner = true;
-
+  primaryLang: string;
   subscribed: any;
   masterdataType: string;
 
@@ -59,6 +59,8 @@ export class SingleViewComponent implements OnDestroy {
     this.showSpinner = true;
     this.primaryLangCode = await this.appService.getConfig()['primaryLangCode'];
     this.secondaryLangCode = await this.appService.getConfig().secondaryLangCode;
+    this.primaryLang = await this.appService.getConfig()['primaryLangCode'];
+    this.translate.use(this.primaryLang);
     this.translate
       .getTranslation(this.primaryLangCode)
       .subscribe(response => (this.popupMessages = response.singleView));

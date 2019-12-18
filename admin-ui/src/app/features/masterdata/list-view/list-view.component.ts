@@ -36,6 +36,7 @@ export class ListViewComponent implements OnDestroy {
   filtersApplied = false;
   masterDataType: string;
   auditEventId: string[];
+  primaryLang: string;
 
   constructor(
     private router: Router,
@@ -46,6 +47,8 @@ export class ListViewComponent implements OnDestroy {
     private translateService: TranslateService,
     private auditService: AuditService
   ) {
+    this.primaryLang = appService.getConfig().primaryLangCode;
+    this.translateService.use(this.primaryLang);
     translateService
       .getTranslation(appService.getConfig().primaryLangCode)
       .subscribe(response => {
