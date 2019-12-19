@@ -7,7 +7,6 @@ import { AppConfigService } from 'src/app/app-config.service';
 
 @Injectable()
 export class DataStorageService {
-
   constructor(private http: HttpClient, private appService: AppConfigService) {}
 
   private BASE_URL = this.appService.getConfig().baseUrl;
@@ -22,7 +21,7 @@ export class DataStorageService {
   ): Observable<any> {
     return this.http.get(
       this.BASE_URL +
-      appConstants.MASTERDATA_BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
         'locations/immediatechildren/' +
         locationCode +
         '/' +
@@ -36,16 +35,14 @@ export class DataStorageService {
 
   createCenter(data: RequestModel): Observable<any> {
     return this.http.post(
-      this.BASE_URL +
-      appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
       data
     );
   }
 
   updateCenter(data: RequestModel): Observable<any> {
     return this.http.put(
-      this.BASE_URL +
-      appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'registrationcenters',
       data
     );
   }
@@ -65,8 +62,7 @@ export class DataStorageService {
 
   getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {
     return this.http.post(
-      this.BASE_URL +
-      appConstants.MASTERDATA_BASE_URL + type + '/search',
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/search',
       data
     );
   }
@@ -79,21 +75,47 @@ export class DataStorageService {
     return this.http.get(`./assets/entity-spec/${filename}.json`);
   }
 
-  getFiltersForAllMaterDataTypes(type: string, data: RequestModel): Observable<any> {
+  getFiltersForAllMaterDataTypes(
+    type: string,
+    data: RequestModel
+  ): Observable<any> {
     return this.http.post(
-      this.BASE_URL +
-      appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
       data
     );
   }
   getZoneData(langCode: string): Observable<any> {
-    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/leafs/' + langCode);
+    return this.http.get(
+      this.BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
+        'zones/leafs/' +
+        langCode
+    );
   }
 
   getLoggedInUserZone(userId: string, langCode: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('userID', userId);
     params = params.append('langCode', langCode);
-    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/zonename', {params});
+    return this.http.get(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zones/zonename',
+      { params }
+    );
+  }
+
+  decommissionCenter(centerId: string) {
+    return this.http.put(
+      this.BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
+        'registrationcenters/' +
+        'decommission/' +
+        centerId,
+      {}
+    );
+  }
+
+  getPacketStatus(registrationId: string) {
+    const params = new HttpParams().set('rid', registrationId);
+    return this.http.get(this.BASE_URL + 'admin/packetStatusUpdate', {params});
   }
 }

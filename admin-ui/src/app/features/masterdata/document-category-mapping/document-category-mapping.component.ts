@@ -3,7 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { AppConfigService } from 'src/app/app-config.service';
 import { DocumentCategoryMappingService } from 'src/app/core/services/document-category-mapping.service';
-
+import { AuditService } from 'src/app/core/services/audit.service';
+import * as appConstants from '../../../app.constants';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-document-category-mapping',
   templateUrl: './document-category-mapping.component.html',
@@ -18,19 +20,23 @@ export class DocumentCategoryMappingComponent implements OnInit {
   mappedDocList: any[];
   unMappedDoc: any[];
   unMappedDocList: any[];
-
+  mapping: any;
   mappedDocCount: number;
   unMappedDocCount: number;
   showSpinner = false;
 
   constructor(private translateService: TranslateService,
-    private appConfigService: AppConfigService,
-    private docCategoryMapping: DocumentCategoryMappingService) {
+              private appConfigService: AppConfigService,
+              private docCategoryMapping: DocumentCategoryMappingService,
+              private router: Router,
+              private auditService: AuditService) {
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     translateService.use(this.primaryLang);
   }
 
   ngOnInit() {
+    this.mapping = appConstants.masterdataMapping['documentCategoryMapping'];
+    this.auditService.audit(3, 'ADM-044', 'Document Category Type Mapping');
     this.getDocCategory();
     this.getUnMappedDoc();
   }
@@ -136,6 +142,15 @@ export class DocumentCategoryMappingComponent implements OnInit {
         this.unMappedDocList.splice(index, 1);
         this.unMappedDocCount = this.unMappedDocList.length;
       }
+    }
+  }
+  changePage(location: string) {
+    if (location === 'home') {
+      this.router.navigateByUrl('admin/masterdata/home');
+    } else if (location === 'list') {
+      this.router.navigateByUrl(
+        'admin/masterdata/documentCategoryMapping'
+      );
     }
   }
 }

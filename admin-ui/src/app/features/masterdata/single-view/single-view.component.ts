@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import * as appConstants from '../../../app.constants';
@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-single-view',
@@ -27,7 +28,7 @@ export class SingleViewComponent implements OnDestroy {
   secondaryData: any;
   headerData: HeaderModel;
   showSpinner = true;
-
+  primaryLang: string;
   subscribed: any;
   masterdataType: string;
 
@@ -44,7 +45,8 @@ export class SingleViewComponent implements OnDestroy {
     private dialog: MatDialog,
     private location: Location,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private auditService: AuditService
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -55,10 +57,10 @@ export class SingleViewComponent implements OnDestroy {
 
   async initializeComponent() {
     this.showSpinner = true;
-    // tslint:disable-next-line:no-string-literal
     this.primaryLangCode = await this.appService.getConfig()['primaryLangCode'];
-    // tslint:disable-next-line:no-string-literal
     this.secondaryLangCode = await this.appService.getConfig().secondaryLangCode;
+    this.primaryLang = await this.appService.getConfig()['primaryLangCode'];
+    this.translate.use(this.primaryLang);
     this.translate
       .getTranslation(this.primaryLangCode)
       .subscribe(response => (this.popupMessages = response.singleView));
@@ -76,6 +78,7 @@ export class SingleViewComponent implements OnDestroy {
       .subscribe(response => {
         this.specFileData = response.columnsToDisplay;
         console.log(this.specFileData);
+        this.auditService.audit(8, response.auditEventIds[1], this.masterdataType);
       });
     if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
       this.primaryLangCode = this.id.split('$')[1];
@@ -130,16 +133,13 @@ export class SingleViewComponent implements OnDestroy {
                 }
                 resolve(true);
               } else {
-                // tslint:disable-next-line:no-string-literal
                 this.displayMessage(this.popupMessages['errorMessages'][0]);
               }
             } else {
-              // tslint:disable-next-line:no-string-literal
               this.displayMessage(this.popupMessages['errorMessages'][0]);
             }
           },
           error => {
-            // tslint:disable-next-line:no-string-literal
             this.displayMessage(this.popupMessages['errorMessages'][1]);
           }
         );
@@ -152,10 +152,8 @@ export class SingleViewComponent implements OnDestroy {
         width: '350px',
         data: {
           case: 'MESSAGE',
-          // tslint:disable-next-line:no-string-literal
           title: this.popupMessages['title'],
           message,
-          // tslint:disable-next-line:no-string-literal
           btnTxt: this.popupMessages['buttonText']
         },
         disableClose: true
@@ -166,6 +164,16 @@ export class SingleViewComponent implements OnDestroy {
           `admin/masterdata/${this.masterdataType}/view`
         )
       );
+  }
+
+  changePage(location: string) {
+    if (location === 'home') {
+      this.router.navigateByUrl('admin/masterdata/home');
+    } else if (location === 'list') {
+      this.router.navigateByUrl(
+        `admin/masterdata/${this.masterdataType}/view`
+      );
+    }
   }
 
   ngOnDestroy() {

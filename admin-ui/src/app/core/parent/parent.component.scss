@@ -2,6 +2,12 @@
 @import "../../breakpoints";
 
 #parent-component {
+  
+  ::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+  }
+  
   .mat-sidenav {
     width: 211px;
     @media (max-width: 600px) {

@@ -1,5 +1,6 @@
-<ng-container *ngIf="masterData.length > 0;else nodata ">
-<span><h3>{{headerName}}</h3></span>
+<span class="breadcrumb"><a (click)="changePage()">{{'masterData.masterDataTypes' | translate}}</a>&nbsp;&nbsp; / &nbsp;&nbsp;{{mapping.name[primaryLang]}}</span>
+<ng-container>
+<span><p class="header">{{mapping.name[primaryLang]}}</p></span>
 <mat-card class="mat-elevation-z8">
     <app-toolbar
       *ngIf="
@@ -7,6 +8,7 @@
       "
       [buttonList]="actionEllipsis"
       [paginationOptions]="paginatorOptions"
+      [filtersAppliedFlag]="filtersApplied"
       (pageEvent)="pageEvent($event)"
     ></app-toolbar>
     <app-table
@@ -15,8 +17,9 @@
       [displayedColumns]="displayedColumns"
       [buttonList]="actionButtons"
       [sortData]="sortFilter"
+      [noDataFlag]="noData"
       (sort)="getSortColumn($event)"
     ></app-table>
   </mat-card>
 </ng-container>
-<ng-template #nodata><mat-spinner class="spinner-placer"></mat-spinner></ng-template>
+<!-- <ng-template #nodata><mat-spinner class="spinner-placer"></mat-spinner></ng-template> -->

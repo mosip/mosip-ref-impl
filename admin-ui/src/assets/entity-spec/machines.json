@@ -1,218 +1,212 @@
 {
-    "actionButtons": [
-      {
-        "buttonName": {
-          "eng": "Activate",
-          "ara": "تنشيط",
-          "fra": "déclencher"
-        },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
+  "auditEventIds": ["ADM-039", "ADM-061"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
       },
-      {
-        "buttonName": {
-          "eng": "Deactivate",
-          "ara": "الغاء تنشيط",
-          "fra": "désactiver"
-        },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
-      },
-      {
-        "buttonName": {
-          "eng": "Decommission",
-          "ara": "وقف التشغيل",
-          "fra": "mettre hors service"
-        },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
-      },
-      {
-        "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
-        "actionURL": "",
-        "redirectURL": "",
-        "showIn": "Ellipsis",
-        "validations": ""
-      },
-      {
-        "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
-        "imagePath":"assets/images/filter.png",
-        "actionListType": "action",
-        "actionURL": { "case": "filter" },
-        "redirectURL": "",
-        "showIn": "Button",
-        "validations": ""
-      }
-    ],
-    "columnsToDisplay": [
-      {
-        "name": "name",
-        "showInListView": "true",
-        "label": {
-          "eng": "Machine Name",
-          "ara": "اسم الجهاز",
-          "fra": "Nom de la machine"
-        },
-        "sortOrder": "3",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-   
-      },
-      {
-        "name": "machineTypeName",
-        "showInListView": "true",
-        "label": {
-          "eng": "Machine Type",
-          "ara": "نوع الجهاز",
-          "fra": "Type de machine"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      
-      },
-      {
-        "name": "isActive",
-        "showInListView": "true",
-        "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      
-      },
-      {
-        "name": "macAddress",
-        "showInListView": "",
-        "label": { "eng": "Mac Address", "ara": "عنوان", "fra": "Mac Adresse" },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-     
-      },
-      {
-        "name": "serialNum",
-        "showInListView": "",
-        "label": {
-          "eng": "Serial Number",
-          "ara": "الرقم التسلسلي",
-          "fra": "numéro"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-    
-      },
-      {
-        "name": "mapStatus",
-        "showInListView": "",
-        "label": {
-          "eng": "Map Status",
-          "ara": "تعيين الحالة",
-          "fra": "Attribuer un statut"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-    
-      },
-      {
-        "name": "createdDateTime",
-        "showInListView": "",
-        "label": {
-          "eng": "Created Time",
-          "ara": "الوقت الذي تم إنشاؤه",
-          "fra": "Temps créé"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-     
-      }
-    ],
-    "paginator": {
-      "totalEntries": null,
-      "pageSize": "10",
-      "pageSizeList": [10, 20, 30, 40, 50]
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
     },
-    "filterColumns": [
-      {
-        "filtername": "name",
-        "filterlabel": "Machine Name",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false",
-        "apiName":"machines",
-        "fieldName":"name",
-        "methodCallName":""
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
       },
-      {
-        "filtername": "isActive",
-        "filterlabel": "Status",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"machines",
-        "fieldName":"isActive",
-        "methodCallName":""
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Decommission",
+        "ara": "وقف التشغيل",
+        "fra": "mettre hors service"
       },
-      {
-        "filtername": "macAddress",
-        "filterlabel": "MAC Address",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false",
-        "apiName":"machines",
-        "fieldName":"macAddress",
-        "methodCallName":""
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "name",
+      "showInListView": "true",
+      "label": {
+        "eng": "Machine Name",
+        "ara": "اسم الجهاز",
+        "fra": "Nom de la machine"
       },
-      {
-        "filtername": "serialNum",
-        "filterlabel": "Serial Number",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "false",
-        "datePicker":"false",
-        "apiName":"machines",
-        "fieldName":"serialNum",
-        "methodCallName":""
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "machineTypeName",
+      "showInListView": "true",
+      "label": {
+        "eng": "Machine Type",
+        "ara": "نوع الجهاز",
+        "fra": "Type de machine"
       },
-      {
-        "filtername": "mapStatus",
-        "filterlabel": "Map Status",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"machines",
-        "fieldName":"mapStatus",
-        "methodCallName":""
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "macAddress",
+      "showInListView": "",
+      "label": { "eng": "Mac Address", "ara": "عنوان", "fra": "Mac Adresse" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "serialNum",
+      "showInListView": "",
+      "label": {
+        "eng": "Serial Number",
+        "ara": "الرقم التسلسلي",
+        "fra": "numéro"
       },
-      {
-        "filtername": "machineTypeName",
-        "filterlabel": "Machine Type",
-        "filterType": "equals",
-        "autocomplete": "false",
-        "dropdown": "true",
-        "datePicker":"false",
-        "apiName":"machinetypes",
-        "fieldName":"name",
-        "methodCallName":""
-      }
-    ]
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "mapStatus",
+      "showInListView": "",
+      "label": {
+        "eng": "Map Status",
+        "ara": "تعيين الحالة",
+        "fra": "Attribuer un statut"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": "Machine Name",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "machines",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "machines",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "macAddress",
+      "filterlabel": "MAC Address",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "machines",
+      "fieldName": "macAddress",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "serialNum",
+      "filterlabel": "Serial Number",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "machines",
+      "fieldName": "serialNum",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "mapStatus",
+      "filterlabel": "Map Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "machines",
+      "fieldName": "mapStatus",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "machineTypeName",
+      "filterlabel": "Machine Type",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "machinetypes",
+      "fieldName": "name",
+      "methodCallName": ""
+    }
+  ]
 }

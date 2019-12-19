@@ -10,21 +10,17 @@
   <div class="file-upload__body">
     <div class="file-upload__body__1">
       <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
-        <mat-form-field *ngIf="!(sameAsselected && document.code === 'POA')" class="file-upload__input">
+        <mat-form-field class="file-upload__input">
           <mat-select
+            #ref
+            (selectionChange)="changeStatus(ref, i)"
+            [(value)]="document.selectedDocName"
             disableOptionCentering
             placeholder="{{ document.code }}"
             (selectionChange)="selectChange($event, i)"
-            (openedChange)="openedChange(i, $event)"
             [disabled]="document.code === 'POA' && sameAsselected ? true : false"
           >
-            <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
-              {{ ValidDocument.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field *ngIf="sameAsselected && document.code === 'POA'" class="file-upload__input">
-          <mat-select placeholder="{{ proxyDocumentCode }}" [disabled]="true">
+            <!-- (openedChange)="openedChange(i, $event)" -->
             <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
               {{ ValidDocument.name }}
             </mat-option>
@@ -34,21 +30,21 @@
           <input
             #fileUpload
             type="file"
-            id="file"
+            id="file_{{ i }}"
             (click)="fileUpload.value = null"
             value=""
-            (change)="handleFileInput($event)"
+            (change)="handleFileInput($event, document.selectedDocName, document.code)"
             style="display: none;"
           />
           <input
             class="browseInput"
             value="{{ 'documents.action_browse' | translate }}"
             type="button"
-            onclick="document.getElementById('file').click();"
+            (click)="clickOnButton(i)"
             [disabled]="
-              i != documentIndex || !enableBrowseButtonList[i] || (document.code === 'POA' && sameAsselected)
-                ? true
-                : false
+              (document.code === 'POA' && sameAsselected) ||
+              !document.selectedDocName ||
+              document.selectedDocName === ''
             "
           />
         </span>

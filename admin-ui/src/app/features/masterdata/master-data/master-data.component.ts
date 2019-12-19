@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class MasterDataComponent implements OnInit {
   constructor(private dataService: DataStorageService,
               private router: Router,
               private appConfigService: AppConfigService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private auditService: AuditService) {
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
@@ -34,6 +36,7 @@ export class MasterDataComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.auditService.audit(4, 'ADM-043');
     this.dataService.getMasterDataTypesList().subscribe(data => {
       console.log('Master Data', data);
       this.masterDataCommonList = data.masterDatatList.common;
@@ -44,6 +47,7 @@ export class MasterDataComponent implements OnInit {
   }
 
   onList(item: any) {
+    this.auditService.audit(2, item.auditEventId, item.label[this.primaryLang]);
     console.log('Single Item', item.actionURL);
     this.router.navigateByUrl(item.actionURL);
   }

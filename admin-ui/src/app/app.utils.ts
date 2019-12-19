@@ -5,6 +5,20 @@ import { FilterModel } from './core/models/filter.model';
 import { CenterRequest } from './core/models/centerRequest.model';
 
 export default class Utils {
+
+  static formatDate(date: Date) {
+    const pipe = new DatePipe('en-US');
+    const formattedDate = pipe.transform(date, 'yyyy-MM-dd');
+    return formattedDate;
+  }
+
+  static createDateObject(date: string) {
+    let dateParts = date.split('-');
+    dateParts = dateParts.reverse();
+    return new Date(dateParts.join('-'));
+  }
+
+
   static getCurrentDate() {
     const now = new Date();
     const pipe = new DatePipe('en-US');

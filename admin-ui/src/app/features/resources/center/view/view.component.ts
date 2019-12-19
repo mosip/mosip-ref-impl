@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { CenterService } from 'src/app/core/services/center.service';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -11,12 +11,13 @@ import Utils from '../../../../app.utils';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { AuditService } from 'src/app/core/services/audit.service';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnDestroy {
+export class ViewComponent implements OnInit, OnDestroy {
   displayedColumns = [];
   actionButtons = [];
   actionEllipsis = [];
@@ -28,6 +29,8 @@ export class ViewComponent implements OnDestroy {
   centers = [];
   subscribed: any;
   errorMessages: any;
+  noData = false;
+  filtersApplied = false;
 
   constructor(
     private centerService: CenterService,
@@ -35,7 +38,8 @@ export class ViewComponent implements OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private auditService: AuditService
   ) {
     this.getCenterConfigs();
     this.translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
@@ -47,6 +51,10 @@ export class ViewComponent implements OnDestroy {
         this.getRegistrationCenters();
       }
     });
+  }
+
+  ngOnInit() {
+    this.auditService.audit(3, centerConfig.auditEventIds[0], 'centers');
   }
 
   getCenterConfigs() {
@@ -95,10 +103,15 @@ export class ViewComponent implements OnDestroy {
 
   getRegistrationCenters() {
     this.centers = [];
+    this.noData = false;
+    this.filtersApplied = false;
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
       this.appService.getConfig().primaryLangCode
     );
+    if (filters.filters.length > 0) {
+      this.filtersApplied = true;
+    }
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
@@ -114,25 +127,26 @@ export class ViewComponent implements OnDestroy {
           if (response.data !== null) {
             this.centers = response.data ? [...response.data] : [];
           } else {
-            this.dialog
-            .open(DialogComponent, {
-               data: {
-                case: 'MESSAGE',
-                title: this.errorMessages.noData.title,
-                message: this.errorMessages.noData.message,
-                btnTxt: this.errorMessages.noData.btnTxt
-               } ,
-              width: '700px'
-            })
-            .afterClosed()
-            .subscribe(result => {
-              console.log('dislog is closed');
-              this.router.navigateByUrl(
-                `admin/resources/centers/view`
-              );
-            });
+            this.noData = true;
+          //   this.dialog
+          //   .open(DialogComponent, {
+          //      data: {
+          //       case: 'MESSAGE',
+          //       title: this.errorMessages.noData.title,
+          //       message: this.errorMessages.noData.message,
+          //       btnTxt: this.errorMessages.noData.btnTxt
+          //      } ,
+          //     width: '700px'
+          //   })
+          //   .afterClosed()
+          //   .subscribe(result => {
+          //     console.log('dislog is closed');
+          //     this.router.navigateByUrl(
+          //       `admin/resources/centers/view`
+          //     );
+          //   });
           }
-        } else if (response === null) {
+        } else {
           this.dialog
             .open(DialogComponent, {
                data: {

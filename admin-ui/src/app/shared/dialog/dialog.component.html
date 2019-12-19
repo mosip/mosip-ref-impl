@@ -165,7 +165,7 @@
   <div class="pop-up-header">
     <b mat-dialog-title>{{ input.title }}</b>
     <div mat-dialog-content>
-      <p>{{ input.message }}</p>
+      <p style="white-space: pre-line">{{ input.message }}</p>
     </div>
   </div>
   <div mat-dialog-actions class="pop-up-footer">
@@ -197,21 +197,9 @@
   </div>
   <div mat-dialog-actions class="pop-up-footer">
     <span
-      ><button mat-button cdkFocusInitial (click)="onNoClick()">
+      ><button mat-button cdkFocusInitial (click)="dismiss()">
         {{ input.btnTxt }}
       </button></span
     >
   </div>
 </div>
-
-<!-- <div *ngIf="input.case === 'MESSAGE'" style="padding: 10px;">
-  <h1 mat-dialog-title>{{ input.title }}</h1>
-  <div mat-dialog-content>
-    <p>{{ input.message }}</p>
-  </div>
-  <div mat-dialog-actions>
-    <span><button mat-button cdkFocusInitial (click)="onNoClick()">
-        {{ input.btnTxt }}
-      </button></span>
-  </div>
-</div> -->

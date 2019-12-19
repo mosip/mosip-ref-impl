@@ -29,14 +29,14 @@
         "center-details": "Détails du centre",
         "registration-center-name": "Nom du centre d'inscription",
         "registration-center-type": "Type de centre d'inscription",
-        "contact-person": "Contact",
-        "contact-number": "Numéro de contact",
+        "contact-person": "Contact - optionnel",
+        "contact-number": "Numéro de contact - optionnel",
         "location-details": "Détails de l'emplacement",
         "longitude": "Longitude",
         "latitude": "Latitude",
         "address1": "Adresse Ligne 1",
-        "address2": "Adresse Ligne 2",
-        "address3": "Adresse Ligne 3",
+        "address2": "Adresse Ligne 2 - optionnel",
+        "address3": "Adresse Ligne 3 - optionnel",
         "region": "Région",
         "province": "Province",
         "city": "Ville",
@@ -45,22 +45,26 @@
         "zone": "Zone Administrative",
         "operational-details": "Détails opérationnels",
         "holiday-zone": "Zone de vacances",
-        "working-hrs": "Heures de travail",
+        "working-hrs": "Heures de travail - optionnel",
         "no-kiosk": "Nombre de kiosque",
         "per-kiosk-process-time": "Temps de traitement par kiosque (minutes)",
         "start-time": "Heure de début",
         "end-time": "Heure de fin",
-        "lunch-start-time": "L'heure du déjeuner",
-        "lunch-end-time": "Heure de fin du déjeuner",
+        "lunch-start-time": "L'heure du déjeuner - optionnel",
+        "lunch-end-time": "Heure de fin du déjeuner - optionnel",
         "edit": "modifier",
         "create": "Créer",
         "cancel": "Annuler",
         "language": "French",
+        "keyboard-tooltip": "Cliquez pour clavier virtuel (French)",
         "isActive": "C'est actif",
         "update": "mettre à jour",
+        "workingDays": "jours de travail",
+        "holidays": "Vacances exceptionnelles",
+        "add-button": "Ajouter",
         "validationMessages": {
             "name": {
-                "required": "Le nom est requis",
+                "required": "Le nom du centre est requis",
                 "max-length": "Longueur maximale dépassée (128)"
             },
             "centerTypeCode": {
@@ -75,12 +79,14 @@
             "longitude": {
                 "required": "La longitude est obligatoire",
                 "max-length": "Longueur maxi dépassée (32)",
-                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire",
+                "validNumber": "S'il vous plaît entrer uniquement des chiffres"
             },
             "latitude": {
                 "required": "La longitude est obligatoire",
                 "max-length": "Longueur maxi dépassée (32)",
-                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire"
+                "validLatLong": "Au moins 4 chiffres après la décimale est obligatoire",
+                "validNumber": "S'il vous plaît entrer uniquement des chiffres"
             },
             "addressLine1": {
                 "required": "La ligne d'adresse 1 est obligatoire",
@@ -102,13 +108,13 @@
                 "required": "Ville est obligatoire"
             },
             "laa": {
-                "required": "LAA est nécessaire"
+                "required": "La zone est requise"
             },
             "postalCode": {
                 "required": "Code postal requis"
             },
             "zone": {
-                "required": "Zone est nécessaire"
+                "required": "La zone administrative est obligatoire"
             },
             "holidayZone": {
                 "required": "Zone de vacances est nécessaire"
@@ -138,7 +144,7 @@
             },
             "update-success": {
                 "title": "Succès",
-                "message": "Le centre est mis à jour avec succès",
+                "message": ["Les détails du centre sont mis à jour avec succès. \n ID du centre: ", " \n Nom du centre: "],
                 "btnTxt": "D'accord"
             },
             "update-error": {
@@ -162,9 +168,14 @@
                 "yesBtnTxt": "Laisser",
                 "noBtnTxt": "Rester"
             },
-            "no-data": {
+            "noData": {
                 "title": "Erreur",
                 "message": "Aucun Enregistrement Trouvé",
+                "btnTxt": "D'accord"
+            },
+            "lunchTimeValidation": {
+                "title": "Erreur",
+                "message": "Veuillez sélectionner les horaires du centre avant de choisir les horaires du déjeuner",
                 "btnTxt": "D'accord"
             }
         }
@@ -220,7 +231,8 @@
         "doc-category-mapping": "Catégorie de document - Mappage de types",
         "category": "Catégorie",
         "mapped-documents": "Documents mappés",
-        "unmapped-documents": "Documents non mappés"
+        "unmapped-documents": "Documents non mappés",
+        "masterDataTypes": "Types de données maîtres"
         
     },
     "errorPopup": {
@@ -233,12 +245,17 @@
             "title": "Erreur technique",
             "message": "Une erreur technique est survenue. Veuillez actualiser votre page pour continuer ou réessayer plus tard.",
             "btnTxt": "D'accord"
+        },
+        "unauthorized": {
+            "title": "Erreur d'autorisation",
+            "message": "Vous n'êtes pas autorisé à visiter cette page",
+            "btnTxt": "D'accord"
         }
     },
     "validationMessages": {
-        "required": "Les champs De et À sont obligatoires si 1 est sélectionné",
-        "range": "De ne peut pas être plus grand que To",
-        "invalid": "Entrée invalide. S'il vous plaît entrer correctement"
+        "required": "Veuillez renseigner les champs \"À\" et \"De\" pour filtrer selon la plage de dates",
+        "range": "La date de fin ne peut pas être antérieure à la date de début",
+        "invalid": "Veuillez sélectionner une valeur valide pour Date"
     },
     "packet-status": {
         "header": "Etat du paquet",
@@ -247,5 +264,43 @@
         "id": "ID d'enregistrement",
         "status": "Statut",
         "viewMore": "Afficher plus"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": ["Le centre d'inscription ", " est déclassé avec succès"],
+            "success-title": "Succès",
+            "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
+            "error-title": "Erreur",
+            "btnTxt": "D'accord",
+            "yesBtnTxt": "confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous mettre le centre d'inscription hors service ", "? \n Vous ne pouvez pas annuler cette action une fois que vous avez cliqué sur Confirmer."],
+            "confirmation-title": "Confirmation"
+        },
+        "activate": {
+            "success-message": ["centre d'inscription ", " est activé avec succès"],
+            "success-title": "Succès",
+            "error-message": "Le centre n'a pas pu être activé",
+            "error-title": "Erreur",
+            "btnTxt": "D'accord",
+            "yesBtnTxt": "Oui",
+            "noBtnTxt": "Non",
+            "confirmation-message": ["Voulez-vous activer le centre d'inscription ", "? \n Vous pouvez le désactiver plus tard si vous le souhaitez. Jusque-là, il sera défini comme actif"],
+            "confirmation-title": "Confirmation"
+        },
+        "deactivate": {
+            "success-message": ["centre d'inscription ", " est désactivé avec succès"],
+            "success-title": "Succès",
+            "error-message": "Le centre n'a pas pu être désactivé",
+            "error-title": "Erreur",
+            "btnTxt": "D'accord",
+            "yesBtnTxt": "Oui",
+            "noBtnTxt": "Non",
+            "confirmation-message": ["Voulez-vous désactiver le centre d'inscription ", " ? \n Vous pouvez l'activer plus tard si vous le souhaitez. Jusque-là, il sera défini comme inactif"],
+            "confirmation-title": "Confirmation"
+        }
+    },
+    "detailView":{
+        "detail":"vue détaillée"
     }
 }

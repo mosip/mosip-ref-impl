@@ -1,21 +1,23 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Injector } from '@angular/core';
-import smoothscroll from 'smoothscroll-polyfill';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DialougComponent } from '../../../shared/dialoug/dialoug.component';
-import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { Router } from '@angular/router';
-import { BookingModel } from '../center-selection/booking.model';
+import smoothscroll from 'smoothscroll-polyfill';
 
+import { BookingModel } from '../center-selection/booking.model';
 import { NameList } from 'src/app/shared/models/demographic-model/name-list.modal';
+import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
 import { BookingService } from '../booking.service';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DataStorageService } from 'src/app/core/services/data-storage.service';
+import { ConfigService } from 'src/app/core/services/config.service';
+import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
+
+import LanguageFactory from 'src/assets/i18n';
 import Utils from 'src/app/app.util';
 import * as appConstants from '../../../app.constants';
-import { ConfigService } from 'src/app/core/services/config.service';
-import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
-import { BookingDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service';
-import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-time-selection',
@@ -26,7 +28,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
   @ViewChild('widgetsContent', { read: ElementRef }) public widgetsContent;
   @ViewChild('cardsContent', { read: ElementRef }) public cardsContent;
   registrationCenter: String;
-  selectedCard = 0;
+  selectedCard: number;
   selectedTile = 0;
   limit = [];
   showAddButton = false;
@@ -49,6 +51,8 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
   canDeactivateFlag = true;
   DAYS: any;
   primaryLangCode = localStorage.getItem('langCode');
+  subscriptions: Subscription[] = [];
+
   constructor(
     private bookingService: BookingService,
     public dialog: MatDialog,
@@ -108,8 +112,8 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
 
   dateSelected(index: number) {
     this.selectedTile = index;
-    this.placeNamesInSlots();
-    this.cardSelected(0);
+    // this.placeNamesInSlots();
+    // this.cardSelected(0);
   }
 
   cardSelected(index: number): void {
@@ -169,7 +173,9 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
         this.availabilityData.push(element);
       }
     });
-    this.placeNamesInSlots();
+    this.enableBucketTabs();
+    this.deletedNames = [...this.names];
+    // this.placeNamesInSlots();
   }
 
   placeNamesInSlots() {
@@ -196,7 +202,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
   }
 
   getSlotsforCenter(id) {
-    this.dataService.getAvailabilityData(id).subscribe(
+    const subs = this.dataService.getAvailabilityData(id).subscribe(
       response => {
         this.spinner = false;
         if (response[appConstants.RESPONSE]) {
@@ -209,6 +215,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
         this.displayMessage('Error', this.errorlabels.error, error);
       }
     );
+    this.subscriptions.push(subs);
   }
 
   tabSelected(selection: string) {
@@ -277,7 +284,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
         data: data,
         disableClose: true
       });
-      dialogRef.afterClosed().subscribe(selectedOption => {
+      const subs = dialogRef.afterClosed().subscribe(selectedOption => {
         if (selectedOption) {
           this.bookingOperation(request);
         } else {
@@ -285,13 +292,14 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
           return;
         }
       });
+      this.subscriptions.push(subs);
     } else {
       this.bookingOperation(request);
     }
   }
 
   bookingOperation(request) {
-    this.dataService.makeBooking(request).subscribe(
+    const subs = this.dataService.makeBooking(request).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           const data = {
@@ -299,7 +307,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
             title: this.secondaryLanguagelabels.title_success,
             message: this.secondaryLanguagelabels.msg_success
           };
-          const dialogRef = this.dialog
+          this.dialog
             .open(DialougComponent, {
               width: '350px',
               data: data
@@ -318,6 +326,14 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
               const url = Utils.getURL(this.router.url, 'summary/acknowledgement', 2);
               this.router.navigateByUrl(url);
             });
+        } else if (
+          response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] === appConstants.ERROR_CODES.timeExpired
+        ) {
+          let timespan = response[appConstants.NESTED_ERROR][0].message.match(/\d+/g);
+          let errorMessage = this.errorlabels.timeExpired_1 + timespan[0] + this.errorlabels.timeExpired_2;
+          this.displayMessage('Error', errorMessage, {
+            error: response
+          });
         } else {
           this.displayMessage('Error', this.errorlabels.error, {
             error: response
@@ -328,6 +344,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
         this.displayMessage('Error', this.errorlabels.error, error);
       }
     );
+    this.subscriptions.push(subs);
   }
 
   displayMessage(title: string, message: string, error: any) {
@@ -354,7 +371,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
       message: message
     };
     const dialogRef = this.openDialog(messageObj, '250px');
-    dialogRef.afterClosed().subscribe(() => {
+    const subs = dialogRef.afterClosed().subscribe(() => {
       if (
         error &&
         error[appConstants.ERROR] &&
@@ -363,6 +380,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
         window.history.back();
       }
     });
+    this.subscriptions.push(subs);
   }
 
   openDialog(data, width) {
@@ -394,5 +412,6 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService implem
 
   ngOnDestroy() {
     if (!this.bookingService.getSendNotification()) this.reloadData();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

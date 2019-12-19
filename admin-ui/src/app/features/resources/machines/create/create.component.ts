@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
+import * as machineSpecFile from '../../../../../assets/entity-spec/machines.json';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-create',
@@ -47,7 +49,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     private dataService: DataStorageService,
     private translateService: TranslateService,
     private dialog: MatDialog,
-    private statusPipe: StatusPipe
+    private statusPipe: StatusPipe,
+    private auditService: AuditService
   ) {
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = appService.getConfig()['primaryLangCode'];
@@ -65,6 +68,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.auditService.audit(8, machineSpecFile.auditEventIds[1], 'machines');
     this.initializePrimaryForm();
     this.initializeSecondaryForm();
     this.getSecondaryLanguageLabelsAndErrorLabels();

@@ -1,120 +1,118 @@
 {
-    "actionButtons": [
-  
-    ],
-    "columnsToDisplay": [
-      {
-        "name": "code",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Code",
-          "ara": "رمز",
-          "fra": "Code"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": "",
-        "idKey":"id"
+  "auditEventIds": ["ADM-038", "ADM-060"],
+  "actionButtons": [],
+  "columnsToDisplay": [
+    {
+      "name": "code",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Code",
+        "ara": "رمز",
+        "fra": "Code"
       },
-      {
-        "name": "name",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": {
-          "eng": "Name",
-          "ara": "اسم",
-          "fra": "prénom"
-        },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": "",
-        "idKey":"id"
-      },
-      {
-        "name": "isActive",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
-        "sortOrder": "",
-        "showAsLink": "false",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "description",
-        "showInListView": "true",
-        "showInSingleView": "true",
-        "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "createdDateTime",
-        "showInListView": "true",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Created Time",
-          "ara": "الوقت الذي تم إنشاؤه",
-          "fra": "Temps créé"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "createdBy",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Created By",
-          "ara": "تم إنشاؤه من قبل",
-          "fra": "Créé par"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "updatedBy",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Updated By",
-          "ara": "تم التحديث بواسطة",
-          "fra": "Mise à jour par"
-        },
-        "sortOrder": "",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      },
-      {
-        "name": "updatedDateTime",
-        "showInListView": "false",
-        "showInSingleView": "false",
-        "label": {
-          "eng": "Updated Time",
-          "ara": "وقت التحديث",
-          "fra": "Temps mis à jour"
-        },
-        "sortOrder": "3",
-        "showAsLink": "",
-        "linkType": "",
-        "LinkURL": ""
-      }
-    ],
-    "paginator": {
-      "totalEntries": null,
-      "pageSize": "10",
-      "pageSizeList": [10, 20, 30, 40, 50]
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey": "id"
     },
-    "filterColumns": []
-  }
-  
+    {
+      "name": "name",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "prénom"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey": "id"
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "description",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Description", "ara": "وصف", "fra": "description" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Created By",
+        "ara": "تم إنشاؤه من قبل",
+        "fra": "Créé par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedBy",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "updatedDateTime",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Updated Time",
+        "ara": "وقت التحديث",
+        "fra": "Temps mis à jour"
+      },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": []
+}

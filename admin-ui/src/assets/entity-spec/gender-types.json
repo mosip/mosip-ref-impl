@@ -1,6 +1,6 @@
 {
-  "actionButtons": [
-  ],
+  "auditEventIds": ["ADM-033", "ADM-055"],
+  "actionButtons": [],
   "columnsToDisplay": [
     {
       "name": "code",

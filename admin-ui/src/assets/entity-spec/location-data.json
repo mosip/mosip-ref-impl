@@ -1,4 +1,5 @@
 {
+  "auditEventIds": ["ADM-036", "ADM-058"],
   "actionButtons": [
     {
       "buttonName": {
@@ -87,10 +88,10 @@
       "idKey": "code"
     },
     {
-      "name": "region",
+      "name": "province",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Region", "ara": "منطقة", "fra": "Région" },
+      "label": { "eng": "Province", "ara": "المحافظة", "fra": "Province" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -98,10 +99,10 @@
       "idKey": "code"
     },
     {
-      "name": "province",
+      "name": "region",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Province", "ara": "المحافظة", "fra": "Province" },
+      "label": { "eng": "Region", "ara": "منطقة", "fra": "Région" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
