@@ -197,8 +197,8 @@
               <mat-label>{{ 'center.holiday-zone' | translate }}</mat-label>
               <mat-select formControlName="holidayZone"
                 (selectionChange)="copyDataToSecondaryForm('holidayZone', primary.holidayZone.value)">
-                <mat-option *ngFor="let data of dropDownValues.holidayZone.primary" [value]="data.fieldCode">
-                  {{data.fieldValue}}
+                <mat-option *ngFor="let data of dropDownValues.holidayZone.primary" [value]="data.code">
+                  {{data.name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="primary.holidayZone.touched && primary.holidayZone.hasError('required')">
@@ -453,8 +453,8 @@
             <mat-form-field>
               <mat-label>{{secondaryLanguageLabels['holiday-zone']}}</mat-label>
               <mat-select formControlName="holidayZone">
-                <mat-option *ngFor="let data of dropDownValues.holidayZone.secondary" [value]="data.fieldCode">
-                  {{data.fieldValue}}
+                <mat-option *ngFor="let data of dropDownValues.holidayZone.secondary" [value]="data.code">
+                  {{data.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

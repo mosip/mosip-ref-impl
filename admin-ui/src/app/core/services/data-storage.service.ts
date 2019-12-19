@@ -29,8 +29,8 @@ export class DataStorageService {
     );
   }
 
-  getStubbedDataForDropdowns(): Observable<any> {
-    return this.http.get('./assets/data/centers-stub-data.json');
+  getStubbedDataForDropdowns(langCode: string): Observable<any> {
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'locations/level/' + langCode);
   }
 
   createCenter(data: RequestModel): Observable<any> {

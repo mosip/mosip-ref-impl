@@ -809,11 +809,17 @@ export class CreateComponent {
 
   getStubbedData() {
     this.getRegistrationCenterTypes();
-    this.dataStorageService.getStubbedDataForDropdowns().subscribe(response => {
-      this.dropDownValues.holidayZone.primary =
-        response[this.primaryLang].holidayZone;
-      this.dropDownValues.holidayZone.secondary =
-        response[this.secondaryLang].holidayZone;
+    this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
+      if (response.response.locations) {
+        this.dropDownValues.holidayZone.primary =
+        response.response.locations;
+      }
+    });
+    this.dataStorageService.getStubbedDataForDropdowns(this.secondaryLang).subscribe(response => {
+      if (response.response.locations) {
+        this.dropDownValues.holidayZone.secondary =
+        response.response.locations;
+      }
     });
   }
 
