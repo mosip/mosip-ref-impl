@@ -39,7 +39,7 @@
                             {{item.statusComment}},   {{item.createdDateTimes | date:'medium':'+0530'}}                       
                          </p>
                          <p *ngIf="item.statusCode !== 'SUCCESS'" >
-                              <span style="text-transform: capitalize;">{{item.statusCode.replace("_", " ").toLowerCase()}} , {{item.createdDateTimes | date:'medium':'+0530'}}</span>  
+                              <span style="text-transform: capitalize;">{{item.statusCode.replace("_", " ").toLowerCase()}} , {{item.statusComment}} , {{item.createdDateTimes | date:'medium':'+0530'}}</span>  
                          </p>
                     </li>
                 </ul>
