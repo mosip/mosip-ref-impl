@@ -260,7 +260,12 @@
         "error": "ID d'enregistrement non valide entré",
         "id": "ID d'enregistrement",
         "status": "Statut",
-        "viewMore": "Afficher plus"
+        "viewMore": "Afficher plus",
+        "errorMessages": {
+                "title": "Erreur",
+                "message": "RID introuvable",
+                "btnTxt": "D'accord"
+        }
     },
     "actionMessages" : {
         "decommission": {
