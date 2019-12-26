@@ -18,77 +18,12 @@ export class PacketStatusComponent implements OnInit {
     //   date: '19 Jun 2019',
     //   time: '09:30',
     //   status: 'Completed'
-    // },
-    // {
-    //   stageName: 'Decrypt Packet',
-    //   date: '19 Jun 2019',
-    //   time: '12:10',
-    //   status: 'Completed'
-    // },
-    // {
-    //   stageName: 'Virus Scan',
-    //   date: '19 Jun 2019',
-    //   time: '13:20',
-    //   status: 'Completed'
-    // },
-    // {
-    //   stageName: 'Structural Validation',
-    //   date: '19 Jun 2019',
-    //   time: '13:30',
-    //   status: 'Completed'
-    // },
-    // {
-    //   stageName: 'Packet Data Validation',
-    //   date: '20 Jun 2019',
-    //   time: '12:30',
-    //   status: 'Completed'
-    // },
-    // {
-    //   stageName: 'Individual Data Validation',
-    //   date: '20 Jun 2019',
-    //   time: '14:30',
-    //   status: 'In Progress'
-    // },
-    // {
-    //   stageName: 'Demographic Deduplication',
-    //   date: null,
-    //   time: null,
-    //   status: 'Incomplete'
-    // },
-    // {
-    //   stageName: 'Biometric Deduplication',
-    //   date: null,
-    //   time: null,
-    //   status: 'Incomplete'
-    // },
-    // {
-    //   stageName: 'Manual Verification',
-    //   date: null,
-    //   time: null,
-    //   status: 'Incomplete'
-    // },
-    // {
-    //   stageName: 'UIN Generation',
-    //   date: null,
-    //   time: null,
-    //   status: 'Incomplete'
-    // },
-    // {
-    //   stageName: 'Notify Resident',
-    //   date: null,
-    //   time: null,
-    //   status: 'Incomplete'
-    // },
-    // {
-    //   stageName: 'Transmit Packet to Print Queue',
-    //   date: null,
-    //   time: null,
-    //   status: 'Incomplete'
     // }
   ];
 
   showDetails = false;
   showTimeline = false;
+  errorMessages: any;
 
   id = '';
   error = false;
@@ -101,9 +36,16 @@ export class PacketStatusComponent implements OnInit {
     public dialog: MatDialog
   ) {
     translate.use(appService.getConfig().primaryLangCode);
+    this.translate
+    .getTranslation(this.appService.getConfig().primaryLangCode)
+    .subscribe(response => {
+      console.log(response);
+      this.errorMessages = response['packet-status'];
+    });
   }
 
   ngOnInit() {
+
     this.auditService.audit(5, 'ADM-045');
   }
 
@@ -123,9 +65,9 @@ export class PacketStatusComponent implements OnInit {
             .open(DialogComponent, {
                data: {
                 case: 'MESSAGE',
-                title: 'ERROR',
-                message: response['errors']['message'],
-                btnTxt: 'OK'
+                title: this.errorMessages.errorMessages.title,
+                message: this.errorMessages.errorMessages.message,
+                btnTxt: this.errorMessages.errorMessages.btnTxt
                } ,
               width: '700px',
               disableClose: true

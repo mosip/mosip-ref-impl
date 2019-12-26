@@ -18,7 +18,7 @@
                         <td>{{'packet-status.id' | translate}}</td><td><strong>{{data[0].registrationId}}</strong></td>
                     </tr>
                     <tr>
-                        <td>{{'packet-status.status' | translate}}</td><td><strong>In Progress</strong></td>
+                        <td>{{'packet-status.status' | translate}}</td><td><strong></strong></td>
                     </tr>
                 </table>
             </div>
@@ -32,11 +32,15 @@
                     </tr>
                 </table>
                 <ul *ngIf="showTimeline">
-                    <li *ngFor="let item of data" [ngClass]="item.status !== 'Incomplete' ? 'complete' : ''">
-                        <i [ngClass]="item.status === 'IN_PROGRESS' ? 'dot hollow-dot' : item.status !== 'SUCCESS' ? 'milestone-complete dot' : 'dot incomplete-hollow' "></i>
+                    <li *ngFor="let item of data" [ngClass]="item.statusCode !== 'SUCCESS' ? '' : 'complete'">
+                        <i [ngClass]="item.statusCode === 'IN_PROGRESS' ? 'dot hollow-dot' : item.statusCode === 'SUCCESS' ? 'milestone-complete dot' : 'dot incomplete-hollow' "></i>
                         <h3>{{item.transactionTypeCode.replace("_", " ")}}</h3>
-                        <p *ngIf="item.status !== 'Incomplete'">
-                            {{item.statusComment}},   {{item.createdDateTimes | date:'medium':'+0530'}}                        </p>
+                        <p *ngIf="item.statusCode === 'SUCCESS'">
+                            {{item.statusComment}},   {{item.createdDateTimes | date:'medium':'+0530'}}                       
+                         </p>
+                         <p *ngIf="item.statusCode !== 'SUCCESS'" >
+                              <span style="text-transform: capitalize;">{{item.statusCode.replace("_", " ").toLowerCase()}} , {{item.statusComment}} , {{item.createdDateTimes | date:'medium':'+0530'}}</span>  
+                         </p>
                     </li>
                 </ul>
             </div>

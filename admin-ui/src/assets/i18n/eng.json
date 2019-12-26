@@ -269,7 +269,12 @@
         "error": "Invalid Registration ID Entered",
         "id": "Registration ID",
         "status": "Status",
-        "viewMore": "View More"
+        "viewMore": "View More",
+        "errorMessages": {
+            "title": "Error",
+            "message": "RID Not Found",
+            "btnTxt": "Ok"
+        }
     },
     "actionMessages" : {
         "decommission": {

@@ -262,7 +262,12 @@
         "error": "تم إدخال معرف تسجيل غير صالح",
         "id": "معرف تسجيل",
         "status": "الحالة",
-        "viewMore": "عرض المزيد"
+        "viewMore": "عرض المزيد",
+        "errorMessages": {
+            "title": "خطأ",
+            "message": "لم يتم العثور على RID",
+            "btnTxt": "حسنا"
+        }
     },
     "actionMessages" : {
         "decommission": {
