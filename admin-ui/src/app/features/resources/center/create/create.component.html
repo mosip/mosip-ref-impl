@@ -329,7 +329,7 @@
             </mat-form-field>
           </div>
           <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-          <div *ngIf="secondaryLanguageLabels && secondaryLang" [formGroup]="secondaryForm"
+          <div *ngIf="secondaryLanguageLabels && secondaryLang && showSecondaryForm" [formGroup]="secondaryForm"
             [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
             <span><strong>{{secondaryLanguageLabels['language']}}</strong></span>
             <span *ngIf="!disableForms" matTooltip="{{secondaryLanguageLabels['keyboard-tooltip']}}" (click)="openKeyboard('secondary')" style="float: left; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>

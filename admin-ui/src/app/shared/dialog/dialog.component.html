@@ -203,3 +203,12 @@
     >
   </div>
 </div>
+
+<div class="pop-up" *ngIf="input.case === 'ERROR'">
+  <div class="pop-up-header">
+    <b mat-dialog-title>{{ input.title }}</b>
+    <div mat-dialog-content>
+      <p>{{ input.message }}</p>
+    </div>
+  </div>
+</div>
