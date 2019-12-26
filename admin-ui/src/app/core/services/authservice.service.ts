@@ -32,9 +32,10 @@ export class AuthService {
     const secondaryLangCode = this.appService.getConfig()[
       'secondaryLangCode'
     ];
+    console.log(primaryLangCode + ' ' + secondaryLangCode);
     if (
       primaryLangCode === null ||
-      primaryLangCode === '' ||
+      primaryLangCode === '' &&
       secondaryLangCode === null ||
       secondaryLangCode === ''
     ) {
