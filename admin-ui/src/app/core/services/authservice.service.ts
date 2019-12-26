@@ -35,9 +35,9 @@ export class AuthService {
     console.log(primaryLangCode + ' ' + secondaryLangCode);
     if (
       primaryLangCode === null ||
-      primaryLangCode === '' &&
+      primaryLangCode === '' || primaryLangCode.length === 0 &&
       secondaryLangCode === null ||
-      secondaryLangCode === ''
+      secondaryLangCode === '' || secondaryLangCode.length === 0
     ) {
       return false;
     } else {
