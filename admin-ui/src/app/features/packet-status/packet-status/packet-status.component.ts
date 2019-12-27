@@ -23,7 +23,8 @@ export class PacketStatusComponent implements OnInit {
 
   showDetails = false;
   showTimeline = false;
-  errorMessages: any;
+  messages: any;
+  statusCheck: string;
 
   id = '';
   error = false;
@@ -40,7 +41,7 @@ export class PacketStatusComponent implements OnInit {
     .getTranslation(this.appService.getConfig().primaryLangCode)
     .subscribe(response => {
       console.log(response);
-      this.errorMessages = response['packet-status'];
+      this.messages = response['packet-status'];
     });
   }
 
@@ -57,17 +58,26 @@ export class PacketStatusComponent implements OnInit {
         console.log(response);
         if (response['response'] != null) {
           this.data = response['response']['packetStatusUpdateList'];
-          this.error = false;
-          this.showDetails = true;
-        } else if (response['errors'] != null) {
+          // tslint:disable-next-line:prefer-for-of
+          for (let i = 0 ; i < this.data.length; i++) {
+            if (this.data[i].statusCode.includes('FAILED')) {
+              this.statusCheck = this.messages.statuscheckFailed;
+              break;
+            } else {
+              this.statusCheck = this.messages.statuscheckCompleted;
+            }
+            this.error = false;
+            this.showDetails = true;
+        }
+       } else if (response['errors'] != null) {
           console.log('error has occured');
           this.dialog
             .open(DialogComponent, {
                data: {
                 case: 'MESSAGE',
-                title: this.errorMessages.errorMessages.title,
-                message: this.errorMessages.errorMessages.message,
-                btnTxt: this.errorMessages.errorMessages.btnTxt
+                title: this.messages.errorMessages.title,
+                message: this.messages.errorMessages.message,
+                btnTxt: this.messages.errorMessages.btnTxt
                } ,
               width: '700px',
               disableClose: true
@@ -81,7 +91,7 @@ export class PacketStatusComponent implements OnInit {
     }
   }
 
-  viewMore() {
+viewMore() {
     this.showTimeline = !this.showTimeline;
   }
 }
