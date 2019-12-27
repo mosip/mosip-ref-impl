@@ -18,10 +18,12 @@ export class MaterDataCommonBodyComponent implements OnInit {
     fra: 'French',
     eng: 'English'
   };
+  showSecondaryForm: boolean;
 
   constructor() { }
 
   ngOnInit() {
+    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     console.log(this.primaryData, this.secondaryData, this.fields);
   }
 

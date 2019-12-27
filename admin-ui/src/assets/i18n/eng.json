@@ -274,7 +274,10 @@
             "title": "Error",
             "message": "RID Not Found",
             "btnTxt": "Ok"
-        }
+        },
+        "statuscheckFailed":"Failed",
+        "statuscheckCompleted":"Completed"
+
     },
     "actionMessages" : {
         "decommission": {

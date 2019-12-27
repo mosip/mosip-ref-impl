@@ -146,7 +146,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": "Name",
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -157,7 +157,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

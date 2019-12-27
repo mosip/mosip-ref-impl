@@ -268,7 +268,9 @@
                 "title": "Erreur",
                 "message": "RID introuvable",
                 "btnTxt": "D'accord"
-        }
+        },
+        "statuscheckFailed":"Échoué",
+        "statuscheckCompleted":"Terminé"
     },
     "actionMessages" : {
         "decommission": {

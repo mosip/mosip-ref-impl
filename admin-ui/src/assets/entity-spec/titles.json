@@ -126,7 +126,7 @@
   "filterColumns": [
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

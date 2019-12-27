@@ -112,7 +112,7 @@
   "filterColumns": [
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

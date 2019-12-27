@@ -1,21 +1,66 @@
-import { Component } from '@angular/core';
-import { RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {
+  RouterEvent,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError,
+  Router
+} from '@angular/router';
+import { AppConfigService } from './app-config.service';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from './shared/dialog/dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   loading = true;
+  primaryLangCode: string;
+  secondaryLangCode: string;
+  popUpMessage: any;
 
   subscribed: any;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private appConfigService: AppConfigService,
+    private dialog: MatDialog,
+    private translate: TranslateService
+  ) {
+    this.primaryLangCode = this.appConfigService.getConfig()['primaryLangCode'];
+    this.secondaryLangCode = this.appConfigService.getConfig()[
+      'secondaryLangCode'
+    ];
+    this.translate.getTranslation(this.primaryLangCode).subscribe(response => {
+      this.popUpMessage = response;
+     });
     this.subscribed = router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
     });
+  }
+
+  ngOnInit(): void {
+    if (
+      this.primaryLangCode === null ||
+      this.primaryLangCode === '' ||
+      this.secondaryLangCode === null ||
+      this.secondaryLangCode === ''
+    ) {
+      const dialogRef = this.dialog.open(DialogComponent, {
+        width: '350px',
+        data: {
+          case: 'ERROR',
+          title: 'ERROR',
+          message:
+            'The system has encountered a technical error. Administrator to setup the necessary language configuration(s)'
+        }, disableClose: true
+      });
+    }
   }
 
   navigationInterceptor(event: RouterEvent): void {

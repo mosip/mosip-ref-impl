@@ -213,7 +213,11 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": "Name",
+      "filterlabel": {
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "nom"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -224,7 +228,11 @@
     },
     {
       "filtername": "moduleId",
-      "filterlabel": "Module Id",
+      "filterlabel": {
+        "eng": "Module Id",
+        "ara": "معرف الوحدة النمطية",
+        "fra": "ID module"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -235,7 +243,11 @@
     },
     {
       "filtername": "moduleName",
-      "filterlabel": "Module Name",
+      "filterlabel": {
+        "eng": "Module Name",
+        "ara": "اسم الوحدة النمطية",
+        "fra": "Nom du module"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -246,7 +258,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

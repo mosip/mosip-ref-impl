@@ -267,7 +267,9 @@
             "title": "خطأ",
             "message": "لم يتم العثور على RID",
             "btnTxt": "حسنا"
-        }
+        },
+        "statuscheckFailed":" فشل",
+        "statuscheckCompleted":"منجز"
     },
     "actionMessages" : {
         "decommission": {
