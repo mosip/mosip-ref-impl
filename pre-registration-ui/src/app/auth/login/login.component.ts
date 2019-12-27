@@ -145,7 +145,7 @@ export class LoginComponent implements OnInit {
 
     this.setLanguageDirection(this.primaryLangFromConfig, this.secondaryLangFromConfig);
     localStorage.setItem('langCode', this.primaryLangFromConfig);
-    localStorage.setItem('secondaryLangCode', 'eng');
+    localStorage.setItem('secondaryLangCode', this.secondaryLangFromConfig);
     this.translate.use(this.primaryLang);
     this.selectedLanguage = appConstants.languageMapping[this.primaryLang].langName;
     if (
