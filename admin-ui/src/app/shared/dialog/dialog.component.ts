@@ -35,7 +35,7 @@ export class DialogComponent implements OnInit {
   requestModel: RequestModel;
   options = [];
   momentDate: any;
-
+  primaryLangCode: string;
   requiredError = false;
   rangeError = false;
   fieldName = '';
@@ -55,7 +55,9 @@ export class DialogComponent implements OnInit {
     private config: AppConfigService,
     private activatedRoute: ActivatedRoute,
     private auditService: AuditService
-  ) {}
+  ) {
+      this.primaryLangCode = this.config.getConfig().primaryLangCode;
+  }
 
   async ngOnInit() {
     this.input = this.data;

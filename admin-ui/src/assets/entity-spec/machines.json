@@ -144,7 +144,11 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": "Machine Name",
+      "filterlabel": {
+        "eng": "Machine Name",
+        "ara": "اسم الجهاز",
+        "fra": "Nom de la machine"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -155,7 +159,11 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": {
+        "eng": "Status",
+        "ara": "حاله",
+        "fra": "statut"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -166,7 +174,7 @@
     },
     {
       "filtername": "macAddress",
-      "filterlabel": "MAC Address",
+      "filterlabel": { "eng": "MAC Address", "ara":"عنوان ماك", "fra": "Adresse Mac" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -177,7 +185,7 @@
     },
     {
       "filtername": "serialNum",
-      "filterlabel": "Serial Number",
+      "filterlabel": {"eng":"Serial Number","ara":"رقم سري", "fra": "Numéro de série"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -188,7 +196,7 @@
     },
     {
       "filtername": "mapStatus",
-      "filterlabel": "Map Status",
+      "filterlabel": {"eng":"Map Status","ara":"خريطة الحالة", "fra": "État de la carte"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -199,7 +207,11 @@
     },
     {
       "filtername": "machineTypeName",
-      "filterlabel": "Machine Type",
+      "filterlabel": {
+        "eng": "Machine Type",
+        "ara": "نوع الجهاز",
+        "fra": "Type de machine"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

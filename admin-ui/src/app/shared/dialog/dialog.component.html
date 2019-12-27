@@ -12,7 +12,7 @@
                 <input
                   type="text"
                   matInput
-                  placeholder="{{ filter.filterlabel }}"
+                  placeholder="{{ filter.filterlabel[primaryLangCode] }}"
                   formControlName="{{ filter.filtername }}"
                   (focus)="
                     getControlName(
@@ -51,7 +51,7 @@
                     <input
                       matInput
                       [matDatepicker]="picker"
-                      placeholder="{{ filter.filterlabel }}"
+                      placeholder="{{ filter.filterlabel[primaryLangCode] }}"
                       formControlName="{{ filter.filtername }}"
                       (focus)="
                         getControlName(
@@ -70,7 +70,7 @@
                     <input
                       type="text"
                       matInput
-                      placeholder="{{ filter.filterlabel }}"
+                      placeholder="{{ filter.filterlabel[primaryLangCode] }}"
                       formControlName="{{ filter.filtername }}"
                       (focus)="
                         getControlName(
@@ -92,7 +92,7 @@
           </ng-container>
           <ng-container *ngSwitchCase="'true'">
             <mat-form-field>
-              <mat-label>{{ filter.filterlabel }}</mat-label>
+              <mat-label>{{ filter.filterlabel[primaryLangCode] }}</mat-label>
               <mat-select
                 formControlName="{{ filter.filtername }}"
                 (focus)="
