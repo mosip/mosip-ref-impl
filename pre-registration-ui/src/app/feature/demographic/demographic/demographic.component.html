@@ -321,6 +321,7 @@
           <h4>{{ secondaryLanguagelabels.language }}</h4>
           <mat-form-field>
             <input
+              [readonly]="isReadOnly"
               [matKeyboard]="keyboardSecondaryLang"
               matInput
               [placeholder]="secondaryLanguagelabels.label_name"
@@ -414,8 +415,6 @@
               name="fontStyle"
               aria-label="Font Style"
             >
-              <!-- <mat-button-toggle value="NFR"> {{ secondaryLanguagelabels.button_national }} </mat-button-toggle>
-              <mat-button-toggle value="FR"> {{ secondaryLanguagelabels.button_foreigner }} </mat-button-toggle> -->
               <mat-button-toggle *ngFor="let resident of secondaryResidenceStatus" [value]="resident.code">{{
                 resident.name
               }}</mat-button-toggle>
@@ -434,6 +433,7 @@
           <mat-form-field>
             <input
               [matKeyboard]="keyboardSecondaryLang"
+              [readonly]="isReadOnly"
               matInput
               #t_addressLine1
               #keyboardRef
@@ -449,6 +449,7 @@
           <!-- <mat-icon (click)="onKeyboardDisplay(formControlNames.addressLine1Secondary, 5)">keyboard</mat-icon> -->
           <mat-form-field>
             <input
+              [readonly]="isReadOnly"
               [matKeyboard]="keyboardSecondaryLang"
               [formControlName]="formControlNames.addressLine2Secondary"
               matInput
@@ -465,6 +466,7 @@
           <!-- <mat-icon (click)="onKeyboardDisplay(formControlNames.addressLine2Secondary, 6)">keyboard</mat-icon> -->
           <mat-form-field>
             <input
+              [readonly]="isReadOnly"
               [matKeyboard]="keyboardSecondaryLang"
               [formControlName]="formControlNames.addressLine3Secondary"
               name="t_addressLine3"

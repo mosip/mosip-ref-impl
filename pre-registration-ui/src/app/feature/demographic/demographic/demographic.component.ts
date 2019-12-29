@@ -81,6 +81,7 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
   canDeactivateFlag = true;
   hierarchyAvailable = true;
   isConsentMessage = false;
+  isReadOnly = false;
 
   step: number = 0;
   id: number;
@@ -517,6 +518,12 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
         index = 1;
         secondaryIndex = 0;
       }
+      if (this.primaryLang === this.secondaryLang) {
+        index = 0;
+        secondaryIndex = 0;
+        this.languages.pop();
+        this.isReadOnly = true;
+      }
       const dob = this.user.request.demographicDetails.identity.dateOfBirth;
       this.formControlValues = {
         fullName: this.user.request.demographicDetails.identity.fullName[index].value,
@@ -561,8 +568,6 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
           response => {
             if (response[appConstants.RESPONSE]) {
               this.genders = response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.genderTypes];
-              // change the formControlValue here as the language will be value change it to code
-              // this.formControlValues.gender = getCodeFromValue();
               resolve(true);
             } else {
               this.onError(this.errorlabels.error, '');
@@ -592,8 +597,6 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
             if (response[appConstants.RESPONSE]) {
               this.residenceStatus =
                 response[appConstants.RESPONSE][appConstants.DEMOGRAPHIC_RESPONSE_KEYS.residentTypes];
-              // change the formControlValue here as the language will be value change it to code
-              // this.formControlValues.residenceStatus = getCodeFromValue();
               resolve(true);
             } else {
               this.onError(this.errorlabels.error, '');
@@ -746,8 +749,6 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
                 childLocations.push(codeValueModal);
                 if (currentLocationCode && codeValueModal.valueCode === currentLocationCode) {
                   this.addCodeValue(codeValueModal);
-                  // change the formControlValue here as the language will be value change it to code
-                  // this.formControlValues[currentLocationCode] = codeValueModal.valueCode
                 }
               });
               return resolve(true);
