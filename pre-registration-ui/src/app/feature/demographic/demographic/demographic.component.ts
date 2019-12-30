@@ -482,6 +482,10 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
    * @memberof DemographicComponent
    */
   setFormControlValues() {
+    if (this.primaryLang === this.secondaryLang) {
+      this.languages.pop();
+      this.isReadOnly = true;
+    }
     if (!this.dataModification) {
       this.formControlValues = {
         fullName: '',
@@ -521,8 +525,6 @@ export class DemographicComponent extends FormDeactivateGuardService implements 
       if (this.primaryLang === this.secondaryLang) {
         index = 0;
         secondaryIndex = 0;
-        this.languages.pop();
-        this.isReadOnly = true;
       }
       const dob = this.user.request.demographicDetails.identity.dateOfBirth;
       this.formControlValues = {
