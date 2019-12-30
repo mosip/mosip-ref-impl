@@ -73,7 +73,13 @@
       </div>
 
       <div *ngIf="showVerify">
-        <button mat-raised-button class="btn_axn-pri" disabled="{{ disableBtn }}" (click)="submit()">
+        <button
+          mat-raised-button
+          class="btn_axn-pri"
+          [disabled]="disableVerify"
+          disabled="{{ disableBtn }}"
+          (click)="submit()"
+        >
           {{ 'login.action_verify' | translate }}
         </button>
       </div>
