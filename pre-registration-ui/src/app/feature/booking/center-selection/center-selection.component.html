@@ -1,4 +1,4 @@
-<div class="center_selection-wrapper">
+<div class="center_selection-wrapper" *ngIf="isWorkingDaysAvailable">
   <!-- Header -->
   <mat-card class="center-selection__title-card">
     <mat-card-header>
@@ -164,7 +164,7 @@
                   </span>
                 </div>
                 <div>
-                  <span>{{ 'centerSelection.text_open' | translate }}: Monday - Friday</span>
+                  <span>{{ 'centerSelection.text_open' | translate }}: {{ center.workingDays }}</span>
                 </div>
               </div>
             </mat-card>

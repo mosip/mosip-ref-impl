@@ -350,6 +350,20 @@ export class DataStorageService {
   }
 
   /**
+   * @description This is to get the list of working days for a given registration center id.
+   *
+   * @param {string} registartionCenterId
+   * @param {string} langCode
+   * @returns
+   * @memberof DataStorageService
+   */
+  getWorkingDays(registartionCenterId: string, langCode: string) {
+    const url =
+      this.BASE_URL + appConstants.APPEND_URL.master_data + 'workingdays/' + registartionCenterId + '/' + langCode;
+    return this.httpClient.get(url);
+  }
+
+  /**
    * @description This method is responsible to logout the user and invalidate the token.
    *
    * @returns an `Observable` of the body as an `Object`

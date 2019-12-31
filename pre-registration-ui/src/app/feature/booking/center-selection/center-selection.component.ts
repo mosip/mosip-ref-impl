@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs';
 export class CenterSelectionComponent extends BookingDeactivateGuardService implements OnInit, OnDestroy {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
+  isWorkingDaysAvailable = false;
   canDeactivateFlag = true;
   locationTypes = [];
 
@@ -43,6 +44,8 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   displayMessage = 'Showing nearby registration centers';
   users: UserModel[];
   subscriptions: Subscription[] = [];
+  primaryLang = localStorage.getItem('langCode');
+  workingDays: string;
 
   constructor(
     public dialog: MatDialog,
@@ -55,7 +58,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     private configService: ConfigService
   ) {
     super(dialog);
-    this.translate.use(localStorage.getItem('langCode'));
+    this.translate.use(this.primaryLang);
   }
 
   ngOnInit() {
@@ -71,7 +74,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   }
 
   getErrorLabels() {
-    let factory = new LanguageFactory(localStorage.getItem('langCode'));
+    let factory = new LanguageFactory(this.primaryLang);
     let response = factory.getCurrentlanguage();
     this.errorlabels = response['error'];
   }
@@ -84,7 +87,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     });
     const subs = this.dataService
       .recommendedCenters(
-        localStorage.getItem('langCode'),
+        this.primaryLang,
         this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode),
         pincodes
       )
@@ -236,14 +239,32 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     this.router.navigateByUrl(url);
   }
 
-  displayResults(response: any) {
+  async displayResults(response: any) {
     this.REGISTRATION_CENTRES = response['registrationCenters'];
+    await this.getWorkingDays();
     this.showTable = true;
     if (this.REGISTRATION_CENTRES) {
       this.selectedRow(this.REGISTRATION_CENTRES[0]);
       this.dispatchCenterCoordinatesList();
     }
   }
+
+  getWorkingDays() {
+    return new Promise(resolve => {
+      this.REGISTRATION_CENTRES.forEach(center => {
+        this.dataService.getWorkingDays(center.id, this.primaryLang).subscribe(response => {
+          console.log(response);
+          response[appConstants.RESPONSE]['workingdays'].forEach(day => {
+            center.workingDays = center.workingDays === undefined ? '' : center.workingDays + day.name + ', ';
+          });
+          center.workingDays = center.workingDays.substring(0, center.workingDays.length - 2);
+          this.isWorkingDaysAvailable = true;
+          resolve(true);
+        });
+      });
+    });
+  }
+
   displayMessageError(title: string, message: string, error: any) {
     if (
       error &&
