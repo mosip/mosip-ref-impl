@@ -22,6 +22,8 @@ public class IdObjectReferenceValidatorConstant {
 	public static final String IDENTITY_CITY_VALUE_PATH = "identity.city.*.value";
 	public static final String IDENTITY_ZONE_LANGUAGE_PATH = "identity.zone.*.language";
 	public static final String IDENTITY_ZONE_VALUE_PATH = "identity.zone.*.value";
+	public static final String IDENTITY_RESIDENCE_STATUS_LANGUAGE_PATH = "identity.residenceStatus.*.language";
+	public static final String IDENTITY_RESIDENCE_STATUS_VALUE_PATH = "identity.residenceStatus.*.value";
 	public static final String MASTERDATA_LANGUAGE_PATH = "response.languages.*";
 	public static final String MASTERDATA_LOCATIONS_PATH = "locations.*";
 	public static final String MASTERDATA_LANGUAGE_URI = "mosip.kernel.idobjectvalidator.masterdata.languages.rest.uri";
@@ -30,6 +32,7 @@ public class IdObjectReferenceValidatorConstant {
 	public static final String MASTERDATA_DOCUMENT_TYPES_URI = "mosip.kernel.idobjectvalidator.masterdata.documenttypes.rest.uri";
 	public static final String MASTERDATA_LOCATIONS_URI = "mosip.kernel.idobjectvalidator.masterdata.locations.rest.uri";
 	public static final String MASTERDATA_LOCATION_HIERARCHY_URI = "mosip.kernel.idobjectvalidator.masterdata.locationhierarchy.rest.uri";
+	public static final String MASTERDATA_INDIVIDUAL_TYPES_URI = "mosip.kernel.idobjectvalidator.masterdata.individualtypes.rest.uri";
 	public static final String LOCATION_NA = "mosip.kernel.idobjectvalidator.masterdata.locations.locationNotAvailable";
 	public static final String DOB_FORMAT = "uuuu/MM/dd";
 	public static final String IDENTITY_DOB_PATH = "identity.dateOfBirth";

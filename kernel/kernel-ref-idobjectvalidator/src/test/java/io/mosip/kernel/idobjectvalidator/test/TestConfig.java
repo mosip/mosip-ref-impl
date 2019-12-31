@@ -48,6 +48,7 @@ public class TestConfig {
 		mockLocationHierarchyCityResponse(restTemplate);
 		mockDocumentCategoriesResponse(restTemplate);
 		mockDocumentTypesResponse(restTemplate);
+		mockResidenceStatusResponse(restTemplate);
 		return restTemplate;
 	}
 
@@ -122,6 +123,13 @@ public class TestConfig {
 			throws RestClientException, JsonParseException, JsonMappingException, IOException {
 		String response = "{\"id\":null,\"version\":null,\"responsetime\":\"2019-05-21T05:37:16.097Z\",\"metadata\":null,\"response\":{\"documents\":[{\"code\":\"DOC001\",\"name\":\"Passport\",\"description\":\"Proof of Idendity\",\"langCode\":\"eng\",\"isActive\":true}]},\"errors\":null}";
 		when(restTemplate.getForObject("https://0.0.0.0/documenttypes", ResponseWrapper.class))
+				.thenReturn(mapper.readValue(response.getBytes(), ResponseWrapper.class));
+	}
+	
+	private void mockResidenceStatusResponse(RestTemplate restTemplate)
+			throws RestClientException, JsonParseException, JsonMappingException, IOException {
+		String response = "{\"id\":null,\"version\":null,\"responsetime\":\"2019-12-31T05:36:29.858Z\",\"metadata\":null,\"response\":{\"individualTypes\":[{\"code\":\"NA\",\"langCode\":\"eng\",\"name\":\"Native\",\"isActive\":true},{\"code\":\"NNA\",\"langCode\":\"eng\",\"name\":\"Non-Native\",\"isActive\":true}]},\"errors\":null}";
+		when(restTemplate.getForObject("https://0.0.0.0/individualtypes", ResponseWrapper.class))
 				.thenReturn(mapper.readValue(response.getBytes(), ResponseWrapper.class));
 	}
 
