@@ -1,6 +1,6 @@
 {
   "name": "pre-registration",
-  "version": "1.0.3",
+  "version": "1.0.3", 
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
