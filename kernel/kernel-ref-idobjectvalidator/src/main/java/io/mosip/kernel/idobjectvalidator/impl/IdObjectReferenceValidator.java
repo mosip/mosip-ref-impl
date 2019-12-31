@@ -15,12 +15,15 @@ import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValida
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_PROVINCE_VALUE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_REGION_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_REGION_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_RESIDENCE_STATUS_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_RESIDENCE_STATUS_VALUE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_ZONE_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_ZONE_VALUE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.LOCATION_NA;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_CATEGORIES_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_TYPES_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_GENDERTYPES_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_INDIVIDUAL_TYPES_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LANGUAGE_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATIONS_PATH;
@@ -91,6 +94,8 @@ import net.minidev.json.JSONArray;
 @RefreshScope
 public class IdObjectReferenceValidator implements IdObjectValidator {
 	
+	private static final String INDIVIDUAL_TYPES = "individualTypes";
+
 	private static final String GENDER_NAME = "genderName";
 
 	private static final String LOCATIONS = "locations";
@@ -177,6 +182,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	/** The postal code map. */
 	private SetValuedMap<String, String> postalCodeMap;
 	
+	private SetValuedMap<String, String> residenceStatusMap;
+	
 	/**
 	 * Load data.
 	 */
@@ -194,6 +201,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		loadCity();
 		loadZone();
 		loadPostalCode();
+		loadResidenceStatus();
 	}
 	
 	/* (non-Javadoc)
@@ -214,6 +222,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			validatePostalCode(identityString, errorList);
 			validateZone(identityString, errorList);
 			validateDocuments(identityString, errorList);
+			validateResidenceStatus(identityString, errorList);
 			if (errorList.isEmpty()) {
 				return true;
 			} else {
@@ -426,6 +435,23 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		Optional.ofNullable(postalCodeNameList).orElse(Collections.emptySet()).stream()
 				.forEach(hierarchyName -> Optional.ofNullable(locationDetails.get(hierarchyName))
 						.ifPresent(postalCodeMap::putAll));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void loadResidenceStatus() {
+		ResponseWrapper<LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>> responseBody = restTemplate
+				.getForObject(env.getProperty(MASTERDATA_INDIVIDUAL_TYPES_URI), ResponseWrapper.class);
+		if (Objects.isNull(responseBody.getErrors()) || responseBody.getErrors().isEmpty()) {
+			ArrayList<LinkedHashMap<String, Object>> response = responseBody.getResponse().get(INDIVIDUAL_TYPES);
+			residenceStatusMap = new HashSetValuedHashMap<>(response.size());
+			IntStream.range(0, response.size()).filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
+					.forEach(index -> {
+						residenceStatusMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
+								String.valueOf(response.get(index).get(CODE)));
+						residenceStatusMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
+								String.valueOf(response.get(index).get(NAME)));
+					});
+		}
 	}
 	
 	/**
@@ -664,6 +690,30 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 								.format(INVALID_INPUT_PARAMETER.getMessage(), convertToPath(jsonPath.getPath()))));
 					}
 				});
+	}
+	
+	private void validateResidenceStatus(String identityString, List<ServiceError> errorList) {
+		JsonPath residenceStatusLangPath = JsonPath.compile(IDENTITY_RESIDENCE_STATUS_LANGUAGE_PATH);
+		List<String> residenceStatusLangPathList = residenceStatusLangPath.read(identityString, PATH_LIST_OPTIONS);
+		JsonPath residenceStatusValuePath = JsonPath.compile(IDENTITY_RESIDENCE_STATUS_VALUE_PATH);
+		List<String> residenceStatusValuePathList = residenceStatusValuePath.read(identityString, PATH_LIST_OPTIONS);
+		Map<String, Map.Entry<String, String>> dataMap = IntStream.range(0, residenceStatusLangPathList.size())
+			.filter(index -> languageList
+					.contains(JsonPath.compile(residenceStatusLangPathList.get(index)).read(identityString, READ_OPTIONS)))
+			.boxed()
+			.collect(Collectors.toMap(residenceStatusLangPathList::get,
+					i -> new AbstractMap.SimpleImmutableEntry<String, String>(residenceStatusValuePathList.get(i),
+							JsonPath.compile(residenceStatusValuePathList.get(i)).read(identityString, READ_OPTIONS))));
+		dataMap.entrySet().stream()
+			.filter(entry -> {
+				String lang = JsonPath.compile(entry.getKey()).read(identityString, READ_OPTIONS);
+					return residenceStatusMap.containsKey(lang)
+							&& !residenceStatusMap.get(lang).contains(entry.getValue().getValue());
+			})
+			.forEach(entry -> errorList
+					.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
+							String.format(INVALID_INPUT_PARAMETER.getMessage(),
+									convertToPath(entry.getValue().getKey())))));
 	}
 	
 	/**
