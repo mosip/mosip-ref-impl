@@ -26,4 +26,22 @@ export class AuthService {
       return of(false);
     }));
   }
+
+  isLanguagesSet() {
+    const primaryLangCode = this.appService.getConfig()['primaryLangCode'];
+    const secondaryLangCode = this.appService.getConfig()[
+      'secondaryLangCode'
+    ];
+    console.log(primaryLangCode + ' ' + secondaryLangCode);
+    if (
+      primaryLangCode === null ||
+      primaryLangCode === '' || primaryLangCode.length === 0 &&
+      secondaryLangCode === null ||
+      secondaryLangCode === '' || secondaryLangCode.length === 0
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

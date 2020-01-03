@@ -70,6 +70,7 @@ export const PARAMS_KEYS = {
 
 export const ERROR_CODES = {
   noApplicantEnrolled: 'PRG_PAM_APP_005',
+  noLocationAvailable: 'KER-MSD-026',
   userBlocked: 'PRG_PAM_LGN_013',
   invalidPin: 'KER-IOV-004',
   tokenExpired: 'KER-ATH-401',
@@ -79,6 +80,7 @@ export const ERROR_CODES = {
 
 export const CONFIG_KEYS = {
   mosip_notification_type: 'mosip.notificationtype',
+  mosip_default_location: 'mosip.kernel.idobjectvalidator.masterdata.locations.locationNotAvailable',
   mosip_country_code: 'mosip.country.code',
   preregistration_nearby_centers: 'preregistration.nearby.centers',
   preregistration_timespan_rebook: 'preregistration.timespan.rebook',

@@ -5,9 +5,10 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { HomeComponent } from './core/home/home.component';
 import { ErrorComponent } from './shared/error/error.component';
 import { AuthguardService } from './core/services/authguard.service';
+import { LanguageGuard } from './core/services/LanguageGuard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'admin', pathMatch: 'full' },
+  { path: '', redirectTo: 'admin', pathMatch: 'full'},
   {
     path: 'admin',
     component: ParentComponent,
@@ -35,7 +36,7 @@ const routes: Routes = [
             m => m.PacketStatusModule
           )
       }
-    ], canActivateChild : [AuthguardService]
+    ], canActivateChild : [AuthguardService] , canActivate: [LanguageGuard]
   },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },

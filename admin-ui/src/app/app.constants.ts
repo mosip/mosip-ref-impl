@@ -89,7 +89,11 @@ export const masterdataMapping = {
   'blacklisted-words': {
     apiName: 'blacklistedwords',
     specFileName: 'blacklisted-words',
-    name: 'Blacklisted Word',
+    name: {
+      eng: 'Blacklisted Words',
+      ara: 'كلمات في القائمة السوداء',
+      fra: 'Mots sur la liste noire'
+    },
     nameKey: 'word',
     idKey: 'word',
     headerName: 'Blacklisted Words'
@@ -97,7 +101,11 @@ export const masterdataMapping = {
   holiday: {
     apiName: 'holidays',
     specFileName: 'holiday-data',
-    name: 'Holiday',
+    name: {
+      eng: 'Holiday',
+      ara: 'قائمة عطلة',
+      fra: 'Liste de vacances'
+    },
     nameKey: 'holidayName',
     idKey: 'holidayId',
     headerName: 'Holidays'
@@ -105,7 +113,11 @@ export const masterdataMapping = {
   'document-type': {
     apiName: 'documenttypes',
     specFileName: 'document-types',
-    name: 'Document Types',
+    name: {
+      eng: 'Document Type',
+      ara: 'أنواع المستندات',
+      fra: 'Types de documents'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Document Type'
@@ -113,7 +125,11 @@ export const masterdataMapping = {
   location: {
     apiName: 'locations',
     specFileName: 'location-data',
-    name: 'Location',
+    name: {
+      eng: 'Location',
+      ara: 'بيانات الموقع',
+      fra: 'Données de localisation'
+    },
     nameKey: 'name',
     idKey: 'postalCode',
     headerName: 'Location'
@@ -121,7 +137,11 @@ export const masterdataMapping = {
   'gender-type': {
     apiName: 'gendertypes',
     specFileName: 'gender-types',
-    name: 'Gender Type',
+    name: {
+      eng: 'Gender',
+      ara: 'جنس',
+      fra: 'Le sexe'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Gender Type'
@@ -129,7 +149,11 @@ export const masterdataMapping = {
   title: {
     apiName: 'title',
     specFileName: 'titles',
-    name: 'Title',
+    name: {
+    eng: 'Titles',
+    ara: 'العناوين',
+    fra: 'Les titres'
+  },
     nameKey: 'titleName',
     idKey: 'code',
     headerName: 'Title'
@@ -137,7 +161,11 @@ export const masterdataMapping = {
   templates: {
     apiName: 'templates',
     specFileName: 'templates',
-    name: 'Templates',
+    name: {
+      eng: 'Templates',
+      ara: 'قوالب',
+      fra: 'Modèles'
+    },
     nameKey: 'name',
     idKey: 'id',
     headerName: 'Templates'
@@ -145,7 +173,11 @@ export const masterdataMapping = {
   'machine-type': {
     apiName: 'machinetypes',
     specFileName: 'machine-type',
-    name: 'Machine Type',
+    name: {
+      eng: 'Machine Types',
+      ara: 'أنواع الآلات',
+      fra: 'Types de machines'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Machine Type'
@@ -153,7 +185,11 @@ export const masterdataMapping = {
   'device-types': {
     apiName: 'devicetypes',
     specFileName: 'device-type',
-    name: 'Device Type',
+    name: {
+      eng: 'Device Types',
+      ara: 'أنواع الأجهزة',
+      fra: 'Types de périphériques'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Device Type'
@@ -161,7 +197,11 @@ export const masterdataMapping = {
   'document-categories': {
     apiName: 'documentcategories',
     specFileName: 'document-category',
-    name: 'Document Category',
+    name: {
+      eng: 'Document Categories',
+      ara: 'فئات المستندات',
+      fra: 'Catégories de document'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Document Category'
@@ -169,7 +209,11 @@ export const masterdataMapping = {
   'machine-specs': {
     apiName: 'machinespecifications',
     specFileName: 'machine-specification',
-    name: 'Machine Specification',
+    name: {
+      eng: 'Machine Specification',
+      ara: 'المواصفات الجهاز',
+      fra: 'Spécifications de la machin'
+    },
     nameKey: 'name',
     idKey: 'id',
     headerName: 'Machine Specification'
@@ -177,7 +221,11 @@ export const masterdataMapping = {
   'device-specs': {
     apiName: 'devicespecifications',
     specFileName: 'device-specification',
-    name: 'Device Specification',
+    name: {
+      eng: 'Device Specification',
+      ara: 'مواصفات الجهاز',
+      fra: 'Spécifications de l\'appareil'
+    },
     nameKey: 'name',
     idKey: 'id',
     headerName: 'Device Specification'
@@ -185,7 +233,11 @@ export const masterdataMapping = {
   'center-type': {
     apiName: 'registrationcentertypes',
     specFileName: 'center-type',
-    name: 'Registration Center Type',
+    name: {
+      eng: 'Center Type',
+      ara: 'نوع المركز',
+      fra: 'Type de centre'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Registration Center Type'
@@ -193,10 +245,21 @@ export const masterdataMapping = {
   'individual-type': {
     apiName: 'individualtypes',
     specFileName: 'individual-types',
-    name: 'Individual Type',
+    name: {
+      eng: 'Individual Type',
+      ara: 'نوع الفردية',
+      fra: 'Type individuel'
+    },
     nameKey: 'name',
     idKey: 'code',
     headerName: 'Individual Type'
+  },
+  documentCategoryMapping: {
+    name: {
+      eng: 'Document Category - Type Mapping',
+      ara: 'فئة الوثيقة - نوع التعيين',
+      fra: 'Catégorie de document - Mappage de types'
+    }
   }
 };
 

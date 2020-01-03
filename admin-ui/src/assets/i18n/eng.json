@@ -151,7 +151,7 @@
             },
             "update-success": {
                 "title": "Success",
-                "message": "Center is updated Successfully",
+                "message": ["Center details are updated successfully. \n Center ID: ", " \n Center Name: "],
                 "btnTxt": "Ok"
             },
             "update-error": {
@@ -202,10 +202,11 @@
         "device-definition": "Device Definition",
         "machine-definition": "Machine Definition",
         "document-definition": "Document Definition",
-        "doc-category-mapping": "Doc Category - Type Mapping",
+        "doc-category-mapping": "Document Category - Type Mapping",
         "category": "Category",
         "mapped-documents": "Mapped Documents",
-        "unmapped-documents": "Unmapped Documents"
+        "unmapped-documents": "Unmapped Documents",
+        "masterDataTypes": "Masterdata Types"
     },
     "devices": {
         "header": "Device",
@@ -268,7 +269,15 @@
         "error": "Invalid Registration ID Entered",
         "id": "Registration ID",
         "status": "Status",
-        "viewMore": "View More"
+        "viewMore": "View More",
+        "errorMessages": {
+            "title": "Error",
+            "message": "RID Not Found",
+            "btnTxt": "Ok"
+        },
+        "statuscheckFailed":"Failed",
+        "statuscheckCompleted":"Completed"
+
     },
     "actionMessages" : {
         "decommission": {
@@ -304,5 +313,8 @@
             "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
             "confirmation-title": "Confirmation"
         }
+    },
+    "detailView":{
+        "detail":"Detail View"
     }
 }

@@ -53,6 +53,8 @@ export class CreateComponent {
   headerObject: HeaderModel;
   centerRequest = {} as CenterRequest;
   createUpdate = false;
+  showSecondaryForm: boolean;
+  secondaryObject: any;
 
   primaryForm: FormGroup;
   secondaryForm: FormGroup;
@@ -100,6 +102,7 @@ export class CreateComponent {
     this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
     this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
+    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
@@ -152,7 +155,8 @@ export class CreateComponent {
           this.primaryForm.controls.zone.disable();
         }
       });
-    this.dataStorageService
+    if (this.primaryLang !==  this.secondaryLang) {
+      this.dataStorageService
       .getZoneData(this.secondaryLang)
       .subscribe(response => {
         console.log(response);
@@ -164,6 +168,7 @@ export class CreateComponent {
           this.secondaryForm.controls.zone.disable();
         }
       });
+    }
   }
 
   onCreate() {
@@ -247,6 +252,7 @@ export class CreateComponent {
       this.formatWorkingDays(this.primaryForm.controls.workingDays.value),
       this.primaryForm.controls.exceptionalHolidays.value,
     );
+
     const secondaryObject = new CenterModel(
       this.secondaryForm.controls.addressLine1.value,
       this.secondaryForm.controls.addressLine2.value,
@@ -279,9 +285,11 @@ export class CreateComponent {
     );
     console.log(request);
     this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
-      console.log(updateResponse);
+      console.log('Primary Response' + updateResponse);
+      console.log(this.showSecondaryForm);
       if (!updateResponse.errors || updateResponse.errors.length === 0) {
         if (this.secondaryForm.valid) {
+          if (this.showSecondaryForm) {
           const secondaryRequest = new RequestModel(
             appConstants.registrationCenterCreateId,
             null,
@@ -290,11 +298,12 @@ export class CreateComponent {
           this.dataStorageService
             .updateCenter(secondaryRequest)
             .subscribe(secondaryResponse => {
+              console.log('Secondary Response' + secondaryResponse);
               if (
                 !secondaryResponse.errors ||
                 secondaryResponse.errors.length === 0
               ) {
-                this.showMessage('update-success')
+                this.showMessage('update-success', primaryObject)
                   .afterClosed()
                   .subscribe(() => {
                     this.router.navigateByUrl('admin/resources/centers/view');
@@ -303,8 +312,12 @@ export class CreateComponent {
                 this.showMessage('update-error');
               }
             });
+          }
         } else {
-          this.showMessage('update-success');
+          this.showMessage('update-success', primaryObject).afterClosed()
+          .subscribe(() => {
+            this.router.navigateByUrl('admin/resources/centers/view');
+          });
         }
       } else {
         this.showMessage('update-error');
@@ -319,7 +332,7 @@ export class CreateComponent {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
         message:
-          type === 'create-success'
+          type === 'create-success' || type === 'update-success'
             ? this.popupMessages[type].message[0] +
               data.id +
               this.popupMessages[type].message[1] +
@@ -422,19 +435,23 @@ export class CreateComponent {
     this.dataStorageService
       .createCenter(primaryRequest)
       .subscribe(createResponse => {
-        console.log(createResponse);
+        console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
           if (this.secondaryForm.valid) {
-            secondaryObject.id = createResponse.response.id;
-            secondaryObject.isActive = false;
-            const secondaryRequest = new RequestModel(
+            if (this.showSecondaryForm) {
+              console.log('inside secondary block');
+              secondaryObject.id = createResponse.response.id;
+              secondaryObject.isActive = false;
+              const secondaryRequest = new RequestModel(
               appConstants.registrationCenterCreateId,
               null,
               secondaryObject
             );
-            this.dataStorageService
+              console.log(JSON.stringify(secondaryRequest));
+              this.dataStorageService
               .createCenter(secondaryRequest)
               .subscribe(secondaryResponse => {
+                console.log('Secondary Response' + secondaryResponse);
                 if (!secondaryResponse.errors) {
                   this.showMessage('create-success', createResponse.response)
                     .afterClosed()
@@ -447,8 +464,15 @@ export class CreateComponent {
                   this.showMessage('create-error');
                 }
               });
+            }
           } else {
-            this.showMessage('create-success', createResponse.response);
+            this.showMessage('create-success', createResponse.response)
+            .afterClosed()
+                    .subscribe(() => {
+                      this.primaryForm.reset();
+                      this.secondaryForm.reset();
+                      this.router.navigateByUrl('admin/resources/centers/view');
+                    });
           }
         } else {
           this.showMessage('create-error');
@@ -479,6 +503,7 @@ export class CreateComponent {
             null,
             this.centerRequest
           );
+          if (this.showSecondaryForm) {
           this.centerService
             .getRegistrationCentersDetails(request)
             .subscribe(secondaryResponse => {
@@ -486,17 +511,20 @@ export class CreateComponent {
                 ? secondaryResponse.response.data[0]
                 : {};
               this.setSecondaryFormValues();
-              if (
-                this.activatedRoute.snapshot.queryParams.editable === 'true'
-              ) {
-                this.disableForms = false;
-                this.primaryForm.enable();
-                this.initializeSecondaryForm();
-                this.setSecondaryFormValues();
-                this.primaryForm.controls.noKiosk.enable();
-                this.primaryForm.controls.isActive.enable();
-              }
             });
+          }
+          if (
+              this.activatedRoute.snapshot.queryParams.editable === 'true'
+            ) {
+              this.disableForms = false;
+              this.primaryForm.enable();
+              if (this.showSecondaryForm) {
+              this.initializeSecondaryForm();
+              this.setSecondaryFormValues();
+              }
+              this.primaryForm.controls.noKiosk.enable();
+              this.primaryForm.controls.isActive.enable();
+            }
         } else {
           this.showErrorPopup();
         }
@@ -792,8 +820,10 @@ export class CreateComponent {
     } else {
       this.disableForms = false;
       this.primaryForm.enable();
-      this.initializeSecondaryForm();
-      this.setSecondaryFormValues();
+      if (this.showSecondaryForm) {
+        this.initializeSecondaryForm();
+        this.setSecondaryFormValues();
+      }
       this.primaryForm.controls.noKiosk.enable();
       this.primaryForm.controls.isActive.enable();
     }
@@ -809,11 +839,17 @@ export class CreateComponent {
 
   getStubbedData() {
     this.getRegistrationCenterTypes();
-    this.dataStorageService.getStubbedDataForDropdowns().subscribe(response => {
-      this.dropDownValues.holidayZone.primary =
-        response[this.primaryLang].holidayZone;
-      this.dropDownValues.holidayZone.secondary =
-        response[this.secondaryLang].holidayZone;
+    this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
+      if (response.response.locations) {
+        this.dropDownValues.holidayZone.primary =
+        response.response.locations;
+      }
+    });
+    this.dataStorageService.getStubbedDataForDropdowns(this.secondaryLang).subscribe(response => {
+      if (response.response.locations) {
+        this.dropDownValues.holidayZone.secondary =
+        response.response.locations;
+      }
     });
   }
 

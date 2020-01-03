@@ -99,7 +99,7 @@
   "filterColumns": [
     {
       "filtername": "word",
-      "filterlabel": "Word",
+      "filterlabel": { "eng": " Blacklisted Words", "ara": "اسم", "fra": "prénom" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -110,7 +110,7 @@
     },
     {
       "filtername": "langCode",
-      "filterlabel": "Language",
+      "filterlabel": { "eng": "Language", "ara": "حاله", "fra": "Language" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -121,7 +121,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

@@ -144,7 +144,7 @@
             },
             "update-success": {
                 "title": "نجاح",
-                "message": "تم تحديث المركز بنجاح",
+                "message": ["يتم تحديث تفاصيل المركز بنجاح. \n معرف المركز: ", " \n اسم المركز: "],
                 "btnTxt": "حسنا"
             },
             "update-error": {
@@ -231,7 +231,8 @@
         "doc-category-mapping": "وثيقة الفئة - نوع رسم الخرائط",
         "category": "الفئة",
         "mapped-documents": "المستندات المعينة",
-        "unmapped-documents": "المستندات غير المعينة"
+        "unmapped-documents": "المستندات غير المعينة",
+        "masterDataTypes": "أنواع البيانات الرئيسية"
     },
     "errorPopup": {
         "noData": {
@@ -261,7 +262,14 @@
         "error": "تم إدخال معرف تسجيل غير صالح",
         "id": "معرف تسجيل",
         "status": "الحالة",
-        "viewMore": "عرض المزيد"
+        "viewMore": "عرض المزيد",
+        "errorMessages": {
+            "title": "خطأ",
+            "message": "لم يتم العثور على RID",
+            "btnTxt": "حسنا"
+        },
+        "statuscheckFailed":" فشل",
+        "statuscheckCompleted":"منجز"
     },
     "actionMessages" : {
         "decommission": {
@@ -297,5 +305,8 @@
             "confirmation-message": ["هل تريد إلغاء تنشيط مركز التسجيل", " ? \n يمكنك تفعيلها في وقت لاحق إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
             "confirmation-title": "التأكيد"
         }
+    },
+    "detailView":{
+        "detail":"عرض التفاصيل"
     }
 }

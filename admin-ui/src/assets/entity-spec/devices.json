@@ -144,7 +144,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": "Device Name",
+      "filterlabel": { "eng": "Device Name", "ara":"اسم الجهاز", "fra": "Nom de l'appareil" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
@@ -156,7 +156,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara":"الحالة", "fra": "Statut" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
@@ -168,7 +168,7 @@
     },
     {
       "filtername": "macAddress",
-      "filterlabel": "MAC Address",
+      "filterlabel": { "eng": "MAC Address", "ara":"عنوان ماك", "fra": "Adresse Mac" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -179,7 +179,7 @@
     },
     {
       "filtername": "serialNum",
-      "filterlabel": "Serial Number",
+      "filterlabel": {"eng":"Serial Number","ara":"رقم سري", "fra": "Numéro de série"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -190,7 +190,7 @@
     },
     {
       "filtername": "mapStatus",
-      "filterlabel": "Map Status",
+      "filterlabel": {"eng":"Map Status","ara":"خريطة الحالة", "fra": "État de la carte"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -201,7 +201,7 @@
     },
     {
       "filtername": "deviceTypeName",
-      "filterlabel": "Device Type",
+      "filterlabel": { "eng": "Device Type", "ara":" نوع الجهاز", "fra": "Type d'appareil" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

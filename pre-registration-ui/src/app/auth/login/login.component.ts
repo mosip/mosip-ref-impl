@@ -31,12 +31,14 @@ export class LoginComponent implements OnInit {
   primaryLangFromConfig = '';
   primaryLang = '';
   secondaryLangFromConfig = '';
+  defaultLangCode = appConstants.DEFAULT_LANG_CODE;
   secondaryLang = '';
   showSendOTP = true;
   showResend = false;
   showVerify = false;
   showContactDetails = true;
   showOTP = false;
+  disableVerify = false;
   secondaryLanguagelabels: any;
   loggedOutLang: string;
   errorMessage: string;
@@ -45,6 +47,8 @@ export class LoginComponent implements OnInit {
   showSpinner = true;
   validationMessages = {};
   textDir = localStorage.getItem('dir');
+  LANGUAGE_ERROR_TEXT =
+    'The system has encountered a technical error. Administrator to setup the necessary language configuration(s)';
 
   constructor(
     private authService: AuthService,
@@ -110,6 +114,32 @@ export class LoginComponent implements OnInit {
   loadLanguagesWithConfig() {
     this.primaryLangFromConfig = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.mosip_primary_language);
     this.secondaryLangFromConfig = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.mosip_secondary_language);
+
+    // default secondary language if any of the primary or secondary langugae is not present
+    // this.primaryLangFromConfig === ''
+    //   ? (this.primaryLangFromConfig = this.defaultLangCode)
+    //   : this.primaryLangFromConfig;
+    // this.secondaryLangFromConfig === ''
+    //   ? (this.secondaryLangFromConfig = this.defaultLangCode)
+    //   : this.secondaryLangFromConfig;
+
+    if (
+      !this.primaryLangFromConfig ||
+      !this.secondaryLangFromConfig ||
+      this.primaryLangFromConfig === '' ||
+      this.secondaryLangFromConfig === ''
+    ) {
+      const message = {
+        case: 'MESSAGE',
+        message: this.LANGUAGE_ERROR_TEXT
+      };
+      this.dialog.open(DialougComponent, {
+        width: '350px',
+        data: message,
+        disableClose: true
+      });
+    }
+
     this.primaryLang = this.primaryLangFromConfig;
     this.secondaryLang = this.secondaryLangFromConfig;
 
@@ -255,6 +285,7 @@ export class LoginComponent implements OnInit {
 
       // dynamic update of button text for Resend and Verify
     } else if (this.showVerify && this.errorMessage === undefined) {
+      this.disableVerify = true;
       this.dataService.verifyOtp(this.inputContactDetails, this.inputOTP).subscribe(
         response => {
           if (!response['errors']) {
@@ -262,12 +293,15 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('loggedIn', 'true');
             this.authService.setToken();
             this.regService.setLoginId(this.inputContactDetails);
+            this.disableVerify = false;
             this.router.navigate(['dashboard']);
           } else {
+            this.disableVerify = false;
             this.showOtpMessage();
           }
         },
         error => {
+          this.disableVerify = false;
           this.showErrorMessage();
         }
       );

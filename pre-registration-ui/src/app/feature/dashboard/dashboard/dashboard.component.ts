@@ -47,6 +47,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   message = {};
 
   primaryLangCode = localStorage.getItem('langCode');
+  secondaryLangCode = localStorage.getItem('secondaryLangCode');
   textDir = localStorage.getItem('dir');
   secondaryLanguagelabels: any;
   errorLanguagelabels: any;
@@ -250,6 +251,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][0]['language'];
     if (lang !== this.primaryLangCode) {
       primaryIndex = 1;
+      secondaryIndex = 0;
+    }
+    if (this.primaryLangCode === this.secondaryLangCode) {
+      primaryIndex = 0;
       secondaryIndex = 0;
     }
     const applicant: Applicant = {

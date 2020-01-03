@@ -1,5 +1,5 @@
 <mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>
-<div *ngIf="(primaryData && secondaryData && !showSpinner)" id="flex-single-view">
+<div *ngIf="(primaryData  && !showSpinner)" id="flex-single-view">
   <h3>{{ 'devices.header' | translate }}</h3>
   <div class="flex-container">
     <div class="flex-header">
@@ -51,7 +51,7 @@
     
                 <mat-divider [vertical]="true" [inset]="true"></mat-divider>
     
-                <div class="secondary-form" *ngIf="secondaryLanguageLabels" [formGroup]="secondaryForm">
+                <div class="secondary-form" *ngIf="secondaryLanguageLabels && showSecondaryForm" [formGroup]="secondaryForm">
                     <strong class="title">{{secondaryLanguageLabels.language}}</strong>
                     <hr />
                     <br /><br />

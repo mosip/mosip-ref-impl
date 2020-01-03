@@ -41,6 +41,7 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   secondaryLanguageLabels: any;
   errorMessages: any;
+  showSecondaryForm: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,11 +58,14 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.primaryLang = appService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
     this.secondaryLang = appService.getConfig()['secondaryLangCode'];
+    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     this.subscribed = this.router.events.subscribe(async event => {
       if (event instanceof NavigationEnd) {
         this.showSpinner = true;
         await this.getData(this.primaryLang, true);
+        if (this.showSecondaryForm) {
         await this.getData(this.secondaryLang, false);
+        }
         this.showSpinner = false;
         console.log(this.primaryData, this.secondaryData);
       }
@@ -71,7 +75,9 @@ export class CreateComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.auditService.audit(8, deviceSpecFile.auditEventIds[1], 'devices');
     this.initializePrimaryForm();
+    if (this.showSecondaryForm) {
     this.initializeSecondaryForm();
+    }
     this.getSecondaryLanguageLabelsAndErrorLabels();
   }
 

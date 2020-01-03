@@ -191,7 +191,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": "Center Name",
+      "filterlabel": { "eng": "Center Name", "ara": "اسم المركز", "fra": "Nom du centre" },
       "filterType": "equals",
       "fieldType": "input",
       "autocomplete": "false",
@@ -203,7 +203,7 @@
     },
     {
       "filtername": "centerTypeName",
-      "filterlabel": "Center Type",
+      "filterlabel": { "eng": "Center Type", "ara":"نوع المركز", "fra": "Type de centre" },
       "filterType": "contains",
       "fieldType": "mat-select",
       "autocomplete": "false",
@@ -215,7 +215,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara":"الحالة", "fra": "Statut" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
@@ -227,7 +227,7 @@
     },
     {
       "filtername": "region",
-      "filterlabel": "Region",
+      "filterlabel": { "eng": "Region", "ara":"منطقة", "fra": "Région" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
@@ -239,7 +239,7 @@
     },
     {
       "filtername": "province",
-      "filterlabel": "Province",
+      "filterlabel": { "eng": "Province", "ara":"المحافظة", "fra": "Province" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
@@ -251,7 +251,7 @@
     },
     {
       "filtername": "city",
-      "filterlabel": "City",
+      "filterlabel": { "eng": "City", "ara":"مدينة", "fra": "Ville" },
       "uiField": "string",
       "filterType": "contains",
       "fieldType": "input",
@@ -264,7 +264,7 @@
     },
     {
       "filtername": "Zone",
-      "filterlabel": "Zone",
+      "filterlabel": { "eng": "Zone", "ara":"منطقة", "fra": "Zone" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
@@ -276,7 +276,7 @@
     },
     {
       "filtername": "postalCode",
-      "filterlabel": "Pin Code",
+      "filterlabel": { "eng": "Pin Code", "ara":"الرقم السري", "fra": "Code PIN" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",

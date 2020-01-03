@@ -103,7 +103,7 @@
   "filterColumns": [
     {
       "filtername": "holidayDateFrom",
-      "filterlabel": "Holiday Date From",
+      "filterlabel": { "eng": "Holiday Date From", "ara": "تاريخ عطلة من", "fra": "Date de vacances de" },
       "filterType": "between",
       "autocomplete": "false",
       "dropdown": "false",
@@ -114,7 +114,7 @@
     },
     {
       "filtername": "holidayDateTo",
-      "filterlabel": "Holiday Date To",
+      "filterlabel": { "eng": "Holiday Date To", "ara": "تاريخ عطلة ل", "fra": "Date de vacances à" },
       "filterType": "between",
       "autocomplete": "false",
       "dropdown": "false",
@@ -125,7 +125,11 @@
     },
     {
       "filtername": "holidayName",
-      "filterlabel": "Holiday Name",
+      "filterlabel": {
+        "eng": "Holiday Name",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -136,7 +140,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

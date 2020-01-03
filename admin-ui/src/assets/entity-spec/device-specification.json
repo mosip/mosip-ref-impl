@@ -169,7 +169,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": "Name",
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -180,7 +180,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": "Status",
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",
@@ -191,7 +191,7 @@
     },
     {
       "filtername": "brand",
-      "filterlabel": "brand",
+      "filterlabel": { "eng": "Brand", "ara": "علامة تجارية", "fra": "Marque" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "fasle",
@@ -202,7 +202,7 @@
     },
     {
       "filtername": "model",
-      "filterlabel": "Model",
+      "filterlabel": { "eng": "Model", "ara": "نموذج", "fra": "Modèle" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "fasle",
@@ -213,7 +213,11 @@
     },
     {
       "filtername": "deviceTypeName",
-      "filterlabel": "Device Type",
+      "filterlabel": {
+        "eng": "Device Type",
+        "ara": "نوع الجهاز",
+        "fra": "Type de Device"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",

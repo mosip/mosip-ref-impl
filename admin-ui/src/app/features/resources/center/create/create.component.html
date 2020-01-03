@@ -197,8 +197,8 @@
               <mat-label>{{ 'center.holiday-zone' | translate }}</mat-label>
               <mat-select formControlName="holidayZone"
                 (selectionChange)="copyDataToSecondaryForm('holidayZone', primary.holidayZone.value)">
-                <mat-option *ngFor="let data of dropDownValues.holidayZone.primary" [value]="data.fieldCode">
-                  {{data.fieldValue}}
+                <mat-option *ngFor="let data of dropDownValues.holidayZone.primary" [value]="data.code">
+                  {{data.name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="primary.holidayZone.touched && primary.holidayZone.hasError('required')">
@@ -329,7 +329,7 @@
             </mat-form-field>
           </div>
           <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-          <div *ngIf="secondaryLanguageLabels && secondaryLang" [formGroup]="secondaryForm"
+          <div *ngIf="secondaryLanguageLabels && secondaryLang && showSecondaryForm" [formGroup]="secondaryForm"
             [ngClass]="secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'">
             <span><strong>{{secondaryLanguageLabels['language']}}</strong></span>
             <span *ngIf="!disableForms" matTooltip="{{secondaryLanguageLabels['keyboard-tooltip']}}" (click)="openKeyboard('secondary')" style="float: left; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
@@ -453,8 +453,8 @@
             <mat-form-field>
               <mat-label>{{secondaryLanguageLabels['holiday-zone']}}</mat-label>
               <mat-select formControlName="holidayZone">
-                <mat-option *ngFor="let data of dropDownValues.holidayZone.secondary" [value]="data.fieldCode">
-                  {{data.fieldValue}}
+                <mat-option *ngFor="let data of dropDownValues.holidayZone.secondary" [value]="data.code">
+                  {{data.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
