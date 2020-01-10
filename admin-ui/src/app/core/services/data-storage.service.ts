@@ -118,4 +118,8 @@ export class DataStorageService {
     const params = new HttpParams().set('rid', registrationId);
     return this.http.get(this.BASE_URL + 'admin/packetstatusupdate', {params});
   }
+
+  getCreateUpdateSteps(entity: string) {
+  return this.http.get(`./assets/create-update-steps/${entity}-steps.json`);
+  }
 }

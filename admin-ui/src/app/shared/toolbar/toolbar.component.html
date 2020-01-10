@@ -11,7 +11,7 @@
           'filter-button-style': button.buttonName.eng === 'Filter'
         }"
       >
-        <img [src]="button.imagePath" />
+        <img [src]="button.imagePath" height="14px" width="14px"/>
         <span *ngIf="lang === 'eng'">{{ button.buttonName['eng']}}</span>
         <span *ngIf="lang === 'fra'">{{ button.buttonName['fra']}}</span>
         <span *ngIf="lang === 'ara'">{{ button.buttonName['ara']}}</span>
@@ -30,7 +30,7 @@
       >
       </mat-paginator>
       <button (click)="export()" mat-icon-button>
-        <mat-icon>save_alt</mat-icon>
+        <mat-icon style="margin-top: -8px;">save_alt</mat-icon>
       </button>
     </div>
   </mat-card>

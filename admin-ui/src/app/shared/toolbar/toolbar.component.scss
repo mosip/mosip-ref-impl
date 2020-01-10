@@ -1,94 +1,136 @@
 .mat-card {
   border-radius: 0;
-  height: 5em;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  height: 4em;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 .card-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 }
-.container{
+.container {
   overflow: auto;
   width: 100%;
-  margin:0;
+  margin: 0;
 }
-:host
-  ::ng-deep.mat-paginator-navigation-previous.mat-icon-button,
-  ::ng-deep.mat-paginator-navigation-next.mat-icon-button {
+:host ::ng-deep.mat-paginator-navigation-previous.mat-icon-button,
+::ng-deep.mat-paginator-navigation-next.mat-icon-button {
   padding: 0;
   border-radius: 0;
-  border: 1px solid lightgrey;
+  border: 0.9px solid #b5b7b7;
   cursor: pointer;
 }
-:host
-  ::ng-deep.mat-paginator-page-size-label {
-  margin: 0 4px;
-  font-size: 12px;
+:host ::ng-deep.mat-paginator-page-size-label {
+  margin: 0 10px;
+  font-size: 9.5px;
+  color: #3b4141;
 }
-:host
-  ::ng-deep.mat-paginator-range-label {
+:host ::ng-deep.mat-paginator-range-label {
   margin: 0 24px 0 20px;
-  font-size: 13px;
+  font-size: 9.5px !important;
+  color: #3b4141;
 }
-  :host
-  ::ng-deep.mat-paginator-page-size {
-    align-items: center;
-  }
+:host ::ng-deep.mat-paginator-page-size {
+  align-items: center;
+  font-size: 8px !important;
+  width: auto;
+}
 .container {
-    overflow: auto;
-    width: 100%;
-    margin: 0;
-  }
-  :host::ng-deep.mat-paginator-range-label{
-    white-space: nowrap;
-    margin: 5px;
-  }
-  :host::ng-deep.mat-paginator-container{
-    display: flex;
-    align-items: center;
-    min-height: 56px;
-    padding: 0 8px;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-
-  }
-  :host::ng-deep.mat-paginator-icon{
-    width: 25px;
-    fill: currentColor;
-  }
-  :host::ng-deep.mat-icon-button {
-    padding: 0;
-    min-width: 0;
-    width:auto;
-    height: 35px;
-    flex-shrink: 0;
-    line-height: 35px;
-    border-radius: 0;
-  }
-.download{
+  overflow: auto;
+  width: 100%;
+  margin: 0;
+}
+:host::ng-deep.mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0.4375em 0;
+  border: 0.9px solid #b5b7b7;
+  height: 20px;
+}
+:host::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: transparent;
+}
+::ng-deep .mat-paginator-page-size-select {
+  width: 50px !important;
+  padding: 10px;
+}
+::ng-deep .mat-select-arrow {
+  height: 3px !important;
+  width: 3px !important;
+}
+:host::ng-deep .mat-select-value {
+  font-size: 9px !important;
+  color: rgb(161, 161, 161);
+  padding-top: 3.5px;
+  padding-left: 8px;
+}
+:host::ng-deep .mat-option-text {
+  text-align: center !important;
+  font-size: 10px !important;
+}
+:host::ng-deep.mat-paginator-range-label {
+  white-space: nowrap;
+  margin: 5px;
+  font-size: 9.5px !important;
+  color: #3b4141;
+}
+:host::ng-deep.mat-paginator-container {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
+}
+:host::ng-deep.mat-paginator-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  margin-top: -12px;
+}
+:host::ng-deep.mat-icon-button {
+  padding: 0;
+  min-width: 0;
+  width: auto;
+  height: 25px;
+  flex-shrink: 0;
+  line-height: 35px;
+  border-radius: 0;
+}
+:host::ng-deep.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 1em;
+  width: 50px !important;
+  font-size: 7px;
+}
+.download {
   min-width: 0;
   line-height: 40px;
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
 }
-.button-style{
-  background-color: #FF4081;
+.button-style {
+  background-color: #ff4081;
   color: white;
-  font-size: 11px;
+  font-size: 9.2px;
+  height: 32px !important;
+  line-height: 7px;
+  font-family: "Roboto", sans-serif;
+  transform: scale(0.95);
 }
-.filter-button-style{
-font-size: 13px;
-color: #FF4081;
-border: 1px solid #FF4081;
+.filter-button-style {
+  height: 32px !important;
+  font-size: 9.2px;
+  color: #ff4081;
+  border: 1px solid #ff4081;
+  font-family: "Roboto", sans-serif;
+  line-height: 7px;
+  transform: scale(0.95);
 }
 
 .filter-placer {
-  color: #FF4081 !important;
+  color: #ff4081 !important;
   position: absolute !important;
   right: 0 !important;
-  margin: -12px -7px 0 10px;;
+  margin: -12px -7px 0 10px;
 }

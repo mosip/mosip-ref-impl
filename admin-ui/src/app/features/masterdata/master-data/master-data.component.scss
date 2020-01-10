@@ -1,16 +1,20 @@
 #master-data-home {
-  padding-top: 18px;
+  padding-top: 14px;
 }
-
 .heading {
   margin: 0px 10px 5px;
   display: flex;
   justify-content: space-between;
   overflow: hidden;
+  font-family: "Roboto", sans-serif;
   @media (max-width: 768px) {
     margin-right: 0px !important;
     margin-left: 0px !important;
   }
+}
+.mat-card-content {
+  margin-top: 5px !important;
+  margin-bottom:  5px !important;
 }
 
 #master-data-flex-container {
@@ -26,6 +30,8 @@
   }
   .header {
     border-bottom: 1px solid #c6c6c6 !important;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
     .mat-card-header-text {
       margin: 0px;
     }
@@ -37,11 +43,18 @@
   .content {
     display: flex;
     justify-content: space-between;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    margin-top: 2px;
     cursor: pointer;
     span {
       display: inline-block;
       vertical-align: middle;
     }
+  }
+  .content:hover{
+    background-color: #FFE6EE;
+    border-radius: 3px;
   }
 
   @media (max-width: 768px) {

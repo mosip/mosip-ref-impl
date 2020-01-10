@@ -7,7 +7,12 @@ import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as appConstants from '../../app.constants';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators
+} from '@angular/forms';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
@@ -15,6 +20,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 import Utils from 'src/app/app.utils';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dialog',
@@ -34,6 +40,7 @@ export class DialogComponent implements OnInit {
   filterModel: FilterValuesModel;
   requestModel: RequestModel;
   options = [];
+  createUpdateSteps: any  = {};
   momentDate: any;
   primaryLangCode: string;
   requiredError = false;
@@ -54,9 +61,11 @@ export class DialogComponent implements OnInit {
     private dataStorageService: DataStorageService,
     private config: AppConfigService,
     private activatedRoute: ActivatedRoute,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private translate: TranslateService
   ) {
-      this.primaryLangCode = this.config.getConfig().primaryLangCode;
+    this.primaryLangCode = this.config.getConfig().primaryLangCode;
+    this.translate.use(this.primaryLangCode);
   }
 
   async ngOnInit() {
@@ -68,6 +77,9 @@ export class DialogComponent implements OnInit {
         this.config.getConfig().primaryLangCode
       ).filters;
       await this.getFilterMappings();
+    }
+    if (this.input.case === 'STEPS-MESSAGE') {
+      await this.getStepsForCreateUpate();
     }
   }
 
@@ -433,5 +445,16 @@ export class DialogComponent implements OnInit {
         this.filterOptions[controlName] = [...response.response.filters];
         console.log(this.filterOptions);
       });
+  }
+  getStepsForCreateUpate() {
+    return new Promise((resolve, reject) => {
+      this.dataStorageService
+        .getCreateUpdateSteps(this.input.entity)
+        .subscribe(response => {
+           console.log(response);
+           this.createUpdateSteps.title = response['title'];
+           resolve(true);
+        });
+    });
   }
 }

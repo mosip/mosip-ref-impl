@@ -1,15 +1,15 @@
 <ul>
   <li>
     <a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active" (click)="onItemSelected(item)"
-      class="menu-list-item" [style.marginTop.px]="index == 0 ? 57:0">
-      <span *ngIf="item?.icon" class="routeIcon"><img src="{{item?.icon}}" alt="Icon"></span>&nbsp;
+      class="menu-list-item" [style.marginTop.px]="index == 0 ? 25:0">
+      <span *ngIf="item?.icon" class="routeIcon"><img src="{{item?.icon}}" style="margin-right: 5px;" alt="Icon"></span>&nbsp;
       <span class="menu-list-text">{{ item?.displayName | translate }}</span>
     </a>
     <ul>
       <ng-container *ngFor="let subItem of item?.children;let i=index">
         <li *ngIf="rolesService.checkRole(subItem)"><a mat-list-item [routerLink]="[subItem?.route]" routerLinkActive="list-item-active"
             (click)="onItemSelected(subItem)" class="menu-list-item">
-            <span class="menu-list-text padding-left">{{subItem?.displayName | translate }}</span>
+            <span class="menu-list-text-children padding-left">{{subItem?.displayName | translate }}</span>
           </a>
         </li>
       </ng-container>

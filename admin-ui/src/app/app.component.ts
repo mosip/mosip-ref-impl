@@ -38,28 +38,21 @@ export class AppComponent implements OnInit {
     ];
     this.translate.getTranslation(this.primaryLangCode).subscribe(response => {
       this.popUpMessage = response;
-     });
+    });
     this.subscribed = router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
     });
   }
 
   ngOnInit(): void {
-    if (
-      this.primaryLangCode === null ||
-      this.primaryLangCode === '' ||
-      this.secondaryLangCode === null ||
-      this.secondaryLangCode === ''
-    ) {
-      const dialogRef = this.dialog.open(DialogComponent, {
-        width: '350px',
-        data: {
-          case: 'ERROR',
-          title: 'ERROR',
-          message:
-            'The system has encountered a technical error. Administrator to setup the necessary language configuration(s)'
-        }, disableClose: true
-      });
+    if (this.isPrimaryOrSecondaryLanguageEmpty()) {
+      const data = {
+        case: 'ERROR',
+        title: 'ERROR',
+        message:
+          'The system has encountered a technical error. Administrator to setup the necessary language configuration(s)'
+      };
+      this.showErrorMessage(data);
     }
   }
 
@@ -81,5 +74,25 @@ export class AppComponent implements OnInit {
       this.loading = false;
       this.subscribed.unsubscribe();
     }
+  }
+  isPrimaryOrSecondaryLanguageEmpty(): boolean {
+    if (
+      this.primaryLangCode === null ||
+      this.primaryLangCode.trim().length === 0 ||
+      this.secondaryLangCode === null ||
+      this.secondaryLangCode.trim().length === 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  showErrorMessage(input) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: input,
+      disableClose: true
+    });
   }
 }

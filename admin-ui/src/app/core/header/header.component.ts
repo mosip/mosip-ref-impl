@@ -22,7 +22,11 @@ export class HeaderComponent implements OnInit {
     profileImg: './assets/images/profile.png',
     menuList: [
       {
-        displayName: 'Logout',
+        displayName: {
+          eng: 'Logout',
+          ara: 'تسجيل خروج',
+          fra: 'Se déconnecter'
+        },
         route: null
       }
     ]

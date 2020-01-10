@@ -15,8 +15,8 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 // `headlines` and `body-1` levels.
 $custom-typography: mat-typography-config(
   $font-family: 'Roboto, sans-serif',
-  $headline: mat-typography-level(18px, 48px, 1000),
-  $body-1: mat-typography-level(16px, 16px, 500),
-  $caption: mat-typography-level(16px, 16px, 600),
+  $headline: mat-typography-level(16px, 32px, 600),
+  $body-1: mat-typography-level(14px, 13px, 300),
+  $caption: mat-typography-level(15px, 15px, 300),
   $subheading-1: mat-typography-level(13px, 13px, 200)
 );

@@ -17,7 +17,7 @@
     </span>
     <mat-menu #menu="matMenu" backdropClass="profile">
       <ng-container *ngFor="let item of dataList">
-        <button (click)="onItem()" mat-menu-item>{{item?.displayName}}</button>
+        <button (click)="onItem()" mat-menu-item>{{item?.displayName[primaryLanguage]}}</button>
       </ng-container>
     </mat-menu>
   </div>

@@ -1,23 +1,24 @@
 {
     "menuItems": {
         "item1": {
-            "title": "MAISON"
+            "title": "Accueil"
         },
         "item2": {
-            "title": "RESSOURCES",
+            "title": "Ressources",
             "subItem1": "Centre",
             "subItem2": "Dispositifs",
             "subItem3": "Utilisateurs",
             "subItem4": "Machines"
         },
         "item3": {
-            "title": "DONNÉES DE BASE"
+            "title": "Données de base"
         },
         "item4": {
-            "title": "STATUT DE PAQUET"
+            "title": "État du paquet"
         }
     },
     "center": {
+        "title":"Centres",
         "center-detail-view" : "Vue détaillée du centre",
         "center-name": "Nom du centre",
         "center-id": "Identifiant du centre",
@@ -135,7 +136,14 @@
             }
         },
         "popupMessages": {
-            "create-edit": {
+            "create": {
+                "title": "Confirmation",
+                "message": "Cliquez sur oui pour créer / modifier le centre",
+                "yesBtnText": "Oui",
+                "noBtnText": "Non",
+                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
+            },
+            "edit": {
                 "title": "Confirmation",
                 "message": "Cliquez sur oui pour créer / modifier le centre",
                 "yesBtnText": "Oui",
@@ -189,6 +197,7 @@
         "title": "Erreur"
     },
     "devices": {
+        "title":"Dispositifs",
         "header": "Dispositif",
         "name": "Nom de l'appareil",
         "serialNumber": "Numéro de série",
@@ -205,6 +214,7 @@
         }
     },
     "machines": {
+        "title":"Machines",
         "header": "Machine",
         "name": "Nom de la machine",
         "machineSpecId": "Identifiant de machine",
@@ -309,5 +319,16 @@
     },
     "detailView":{
         "detail":"vue détaillée"
+    },
+    "users":{
+        "redirectMessage":"Cliquez ici pour rediriger vers la liste des utilisateurs de Keycloak"
+    },
+    "filters":{
+        "titleTxt":"Ajouter des filtres",
+        "footerButtons":{
+            "resetTxt":"Réinitialiser",
+            "cancelTxt":"Annuler",
+            "applyTxt":"Appliquer"
+        }
     }
 }

@@ -2,6 +2,7 @@ import { HeaderService } from 'src/app/core/services/header.service';
 import { LogoutService } from './../../core/services/logout.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-hamburger-menu',
@@ -16,12 +17,15 @@ export class HamburgerComponent implements OnInit {
   userName: string;
 
   dataList: any[];
-
+  primaryLanguage: string;
   constructor(
     private headerService: HeaderService,
     private logoutService: LogoutService,
-    private auditService: AuditService
-  ) {}
+    private auditService: AuditService,
+    private appConfig: AppConfigService
+  ) {
+    this.primaryLanguage = this.appConfig.getConfig()['primaryLangCode'];
+  }
 
   ngOnInit() {
     if (this.data !== null && this.data.menuList) {

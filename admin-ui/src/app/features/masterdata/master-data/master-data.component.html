@@ -11,7 +11,7 @@
                 </mat-card-header>
                 <ng-container *ngFor="let itemList of masterDataCommonList; let i = index">
                     <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="onList(itemList)">
-                        <span>{{itemList?.label[primaryLang]}}</span>
+                        <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                         <span style="text-align: right"><i class="material-icons">
                                 keyboard_arrow_right
                             </i></span>
@@ -22,19 +22,19 @@
         <div class="item1">
             <div class="sub-items">
                 <div class="sub-item1">
-                    <mat-card>
+                    <mat-card >
                         <mat-card-header class="header">
                             <b>{{'masterData.device-definition' | translate}}</b>
                         </mat-card-header>
                         <ng-container *ngFor="let itemList of masterDataDeviceList; let j = index">
                             <mat-card-content class="content" [style.marginTop.px]="j === 0 ? 10:0" (click)="onList(itemList)">
-                                <span>{{itemList?.label[primaryLang]}}</span>
+                                <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
                                         keyboard_arrow_right
                                     </i></span>
                             </mat-card-content>
                         </ng-container>
-                    </mat-card>
+                    </mat-card >
                 </div>
                 <div class="sub-item2">
                     <mat-card>
@@ -43,7 +43,7 @@
                         </mat-card-header>
                         <ng-container *ngFor="let itemList of masterDataMachineList; let k = index">
                             <mat-card-content class="content" [style.marginTop.px]="k === 0 ? 10:0" (click)="onList(itemList)">
-                                <span>{{itemList?.label[primaryLang]}}</span>
+                                <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
                                         keyboard_arrow_right
                                     </i></span>
@@ -58,7 +58,7 @@
                         </mat-card-header>
                         <ng-container *ngFor="let itemList of masterDataDocumentList; let l = index">
                             <mat-card-content class="content" [style.marginTop.px]="l === 0 ? 10:0" (click)="onList(itemList)">
-                                <span>{{itemList?.label[primaryLang]}}</span>
+                                <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
                                         keyboard_arrow_right
                                     </i></span>

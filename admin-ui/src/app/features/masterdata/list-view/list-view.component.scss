@@ -1,27 +1,29 @@
-.mat-card{
-    border-radius: 0;
-    border:1px solid rgb(155, 154, 154);
-    padding: 0;
-    margin:0;
-    width: 100%;
-    margin-top:2rem;
+.mat-card {
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .header {
-    display: block;
-    font-size: 1em;
-    font-weight: bold;
-    margin-top: 60px;
-    margin-bottom: -15px;
+  display: block;
+  font-size: 13.5px;
+  font-weight: bold;
+  margin-top: 32px;
+  margin-bottom: 16px;
+
+  font-family: "Roboto", sans-serif;
 }
 
 .breadcrumb {
-    font-size: 12.5px;
-    position: absolute;
-    margin-top: 20px;
+  font-size: 9.5px;
+  position: absolute;
+  margin-top: 13px;
+  font-family: "Roboto", sans-serif;
 }
 
 .breadcrumb > a {
-    text-decoration: none;
-    cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 }

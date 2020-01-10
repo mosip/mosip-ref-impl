@@ -76,7 +76,7 @@
     {
       "name": "name",
       "showInListView": "true",
-      "label": { "eng": "Name", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "label": { "eng": "Center", "ara": "مركز ", "fra": "Centre" },
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -108,9 +108,9 @@
       "name": "users",
       "showInListView": "",
       "label": {
-        "eng": "No. of Users",
-        "ara": "عدد المستخدمين",
-        "fra": "Nombre d'utilisateurs"
+        "eng": "Users",
+        "ara": "المستخدمين",
+        "fra": "Utilisateur"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -121,9 +121,9 @@
       "name": "devices",
       "showInListView": "",
       "label": {
-        "eng": "No. of Devices",
-        "ara": "عدد الأجهزة",
-        "fra": "Nombre d'appareils"
+        "eng": "Devices",
+        "ara": "الأجهزة",
+        "fra": "Dispositifs"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -134,9 +134,9 @@
       "name": "machines",
       "showInListView": "",
       "label": {
-        "eng": "No. of Machines",
-        "ara": "عدد الآلات",
-        "fra": "Nombre de machines"
+        "eng": "Machines",
+        "ara": "آلات",
+        "fra": "Machines"
       },
       "sortOrder": "",
       "showAsLink": "",

@@ -18,6 +18,7 @@
         }
     },
     "center": {
+        "title":"مراكز",
         "center-detail-view" : "عرض مركز التفاصيل",
         "center-name": "اسم المركز",
         "center-id": "معرف المركز",
@@ -135,7 +136,14 @@
             }
         },
         "popupMessages": {
-            "create-edit": {
+            "create": {
+                "title": "التأكيد",
+                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+                "yesBtnText": "نعم فعلا",
+                "noBtnText": "لا",
+                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+            },
+            "edit": {
                 "title": "التأكيد",
                 "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
                 "yesBtnText": "نعم فعلا",
@@ -189,6 +197,7 @@
         "title": "خطأ"
     },
     "devices": {
+        "title":"الأجهزة",
         "header": "جهاز",
         "name": "اسم الجهاز",
         "serialNumber": "رقم سري",
@@ -205,6 +214,7 @@
         }
     },
     "machines": {
+        "title":"آلات",
         "header": "آلة",
         "name": "إسم الألة",
         "machineSpecId": "معرف آلات الآلات",
@@ -308,5 +318,16 @@
     },
     "detailView":{
         "detail":"عرض التفاصيل"
+    },
+    "users":{
+        "redirectMessage":"انقر هنا لإعادة التوجيه إلى قائمة مستخدمي Keycloak"
+    },
+    "filters":{
+        "titleTxt":"إضافة مرشحات",
+        "footerButtons":{
+            "resetTxt":"إعادة تعيين",
+            "cancelTxt":"إلغاء",
+            "applyTxt":"تطبيق"
+        }
     }
 }
