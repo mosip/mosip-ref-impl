@@ -142,7 +142,7 @@ export const masterdataMapping = {
       ara: 'جنس',
       fra: 'Le sexe'
     },
-    nameKey: 'name',
+    nameKey: 'genderName',
     idKey: 'code',
     headerName: 'Gender Type'
   },
