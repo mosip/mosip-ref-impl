@@ -1,6 +1,6 @@
 <!-- center filter -->
 <div class="filter" *ngIf="input.case === 'filter'">
-  <h2 class="filter-heading">Add Filters</h2>
+  <h2 class="filter-heading">{{'filters.titleTxt'|translate}}</h2>
   <mat-divider></mat-divider>
   <form [formGroup]="filterGroup" (ngSubmit)="getFilterValuesOnSubmit()">
     <div class="flex-container">
@@ -37,7 +37,7 @@
                       style="margin-left:43%;"
                     ></mat-spinner>
                   </mat-option>
-                  <mat-option
+                  <mat-option  style="font-size: x-small;height: 30px;"
                     *ngFor="let option of filterOptions[filter.filtername]"
                     [value]="option.fieldValue"
                   >
@@ -111,7 +111,7 @@
                       style="margin-left:43%;"
                     ></mat-spinner>
                   </mat-option>
-                  <mat-option
+                  <mat-option style="font-size: x-small;"
                     *ngFor="let option of filterOptions[filter.filtername]"
                     [value]="option.fieldValue"
                   >
@@ -136,8 +136,8 @@
       >
         <img
           src="assets/images/refresh.png"
-          height="15px; width:14px;"
-        />&nbsp;Reset
+          height="15px; width:12px;"
+        />&nbsp;{{'filters.footerButtons.resetTxt'|translate}}
       </button>
       <button
         mat-button
@@ -145,7 +145,7 @@
         (click)="onNoClick()"
         style="color: #FF4081; background-color: white;"
       >
-        Cancel
+      {{'filters.footerButtons.cancelTxt'|translate}}
       </button>
       <button
         type="submit"
@@ -153,7 +153,7 @@
         class="footer-button"
         style="background-color:#FF4081; color:white;"
       >
-        Apply
+      {{'filters.footerButtons.applyTxt'|translate}}
       </button>
     </div>
   </form>
@@ -210,5 +210,21 @@
     <div mat-dialog-content>
       <p>{{ input.message }}</p>
     </div>
+  </div>
+</div>
+
+<div class="pop-up" *ngIf="input.case === 'STEPS-MESSAGE'">
+  <div class="pop-up-header">
+    <b mat-dialog-title>{{ createUpdateSteps.title }}</b>
+    <div mat-dialog-content>
+      <p>{{ input.message }}</p>
+    </div>
+  </div>
+  <div mat-dialog-actions class="pop-up-footer">
+    <span
+      ><button mat-button cdkFocusInitial (click)="dismiss()">
+        OK
+      </button></span
+    >
   </div>
 </div>

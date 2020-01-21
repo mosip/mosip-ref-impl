@@ -1,23 +1,24 @@
 {
     "menuItems": {
         "item1": {
-            "title": "HOME"
+            "title": "Home"
         },
         "item2": {
-            "title": "RESOURCES",
+            "title": "Resources",
             "subItem1": "Center",
             "subItem2": "Devices",
             "subItem3": "Users",
             "subItem4": "Machines"
         },
         "item3": {
-            "title": "MASTER DATA"
+            "title": "Master Data"
         },
         "item4": {
-            "title": "PACKET STATUS"
+            "title": "Packet Status"
         }
     },
     "center": {
+        "title":"Centers",
         "center-detail-view" : "Center Detail View",
         "center-name": "Center Name",
         "center-id": "Center Id",
@@ -209,6 +210,7 @@
         "masterDataTypes": "Masterdata Types"
     },
     "devices": {
+        "title":"Devices",
         "header": "Device",
         "name": "Device Name",
         "serialNumber": "Serial Number",
@@ -225,6 +227,7 @@
         }
     },
     "machines": {
+        "title":"Machines",
         "header": "Machine",
         "name": "Machine Name",
         "machineSpecId": "Machines Spec ID",
@@ -316,5 +319,16 @@
     },
     "detailView":{
         "detail":"Detail View"
+    },
+    "users":{
+        "redirectMessage":"Click here to redirect to Keycloak's Users list"
+    },
+    "filters":{
+        "titleTxt":"Add Filters",
+        "footerButtons":{
+            "resetTxt":"Reset",
+            "cancelTxt":"Cancel",
+            "applyTxt":"Apply"
+        }
     }
 }

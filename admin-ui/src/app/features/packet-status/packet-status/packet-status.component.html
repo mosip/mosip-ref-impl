@@ -1,7 +1,7 @@
 <div class="packet-status__container">
     <p class="packet-status__header-text">{{'packet-status.header' | translate}}</p>
-    <mat-card>
-            {{'packet-status.text' | translate}}
+    <mat-card style="border-radius: 0;">
+           <span style=" font-family: Roboto, sans-serif; margin-left:30px; font-size: 12px;">{{'packet-status.text' | translate}}</span> 
         <br><br>
         <mat-form-field class="packet-status__input-placer">
             <input matInput placeholder="Enter ID" [(ngModel)]="id" />
@@ -9,7 +9,7 @@
         <img src="./assets/images/search.png" (click)="search()" alt="search" class="packet-status__image-placer" height="20px" width="20px">
         <mat-error style="margin-left: 30px" *ngIf="error">{{'packet-status.error' | translate}}</mat-error>
     </mat-card>
-    <mat-card *ngIf="showDetails">
+    <mat-card *ngIf="showDetails" style="border-radius: 0;">
         <div class="packet-status__details-container">
             <div><img src="./assets/images/Packet_Status.png" alt="" height="100px" width="100px"></div>
             <div>

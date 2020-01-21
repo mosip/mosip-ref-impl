@@ -6,7 +6,7 @@
 @include angular-material-theme($app-theme);
 
 :root {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .spinner-placer {
@@ -16,8 +16,7 @@
 body {
   margin: 0;
   height: 100vh;
-  font-family: mat-font-family($custom-typography);
-  font-size: mat-font-size($custom-typography, body-1);
+  font-family: "Roboto", sans-serif;
   color: #292a1d !important;
 }
 * {
@@ -41,7 +40,7 @@ hr {
 }
 h3 {
   display: block;
-  font-size: 1em;
+  font-size: 14px;
   font-weight: bold;
   margin-top: 15px;
   margin-bottom: 10px;
@@ -49,7 +48,7 @@ h3 {
 
 // common css
 #flex-single-view {
-  padding-top: 18px;
+  padding-top: 10px;
   overflow: hidden;
   .navigation {
     .material-icons {
@@ -58,7 +57,7 @@ h3 {
     }
   }
   h3 {
-    margin: 0 !important;
+    margin:4px !important;
   }
   #flex-container {
     overflow: auto;
@@ -88,10 +87,12 @@ h3 {
       flex: 0.2;
       display: flex;
       align-items: center;
+      font-family: "Roboto", sans-serif;
+      font-size: 13px;
       .profile-img {
         img {
           width: 100%;
-          height: auto;
+          height: 70px;
         }
       }
     }
@@ -104,6 +105,8 @@ h3 {
       flex: 0.8;
       word-wrap: break-word;
       color: #ffffff;
+      font-family: "Roboto", sans-serif;
+      font-size: 11px;
       @media (max-width: 600px) {
         h3 {
           font-size: 10px;
@@ -121,9 +124,11 @@ h3 {
       flex: 1;
       word-wrap: break-word;
       color: #ffffff;
+      font-family: "Roboto", sans-serif;
+      font-size: 9px;
     }
     .small-text {
-      font-size: mat-font-size($custom-typography, subheading-1);
+      font-size: 11px;
       margin: 0 0 12px 0;
       @media (max-width: 420px) {
         font-size: 8px;
@@ -139,6 +144,7 @@ h3 {
     .forms-container {
       display: flex;
       flex-wrap: wrap;
+      font-size: 12px;
       .primary-form {
         padding-left: 25px;
         padding-top: 30px;
@@ -161,7 +167,7 @@ h3 {
         display: flex;
         justify-content: space-between;
         .mat-form-field {
-          width: 48% !important;
+          width: 45% !important;
         }
       }
     }
@@ -172,9 +178,10 @@ h3 {
     }
 
     .action-buttons > #createButton {
-      background-color: black !important;
+      background-color: #FF4081 !important;
       color: white !important;
     }
+    
   }
 
   .mat-divider.mat-divider-inset {

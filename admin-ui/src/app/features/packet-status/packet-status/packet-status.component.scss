@@ -3,8 +3,9 @@
 }
 
 .packet-status__header-text {
-    font-size: 20px;
+    font-size: 14px;
     font-weight: bold;
+    font-family: "Roboto", sans-serif;
 }
 
 .packet-status__input-placer {
@@ -21,16 +22,22 @@
     display: flex;
     flex-wrap: wrap;
     margin: 2.5% 5% !important;
+    font-size: 12px;
+    
 }
 
 .packet-status__details-container div {
     margin-right: 70px;
-    font-size: 12.5px !important;
+    font-size: 10px !important;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
 }
 
 .packet-status__details-container div table tr td {
-    font-size: 12.5px !important;
+    font-size: 11px !important;
     padding: 15px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
 }
 
 .packet-status__details-container div:nth-child(3) table tr td {

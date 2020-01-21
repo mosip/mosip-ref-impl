@@ -170,7 +170,8 @@ export class TableComponent implements OnInit, OnChanges {
       borderRadius: '',
       backgroundColor: '',
       whiteSpace: 'nowrap',
-      textTransform: ''
+      textTransform: '',
+      fontSize: ''
     };
     if (index === 0) {
       myTableStyles.color = '#0F2126';
@@ -178,17 +179,21 @@ export class TableComponent implements OnInit, OnChanges {
       return myTableStyles;
     }
     if (columnValue === true && columnName === 'isActive') {
-      myTableStyles.backgroundColor = '#C2F2DA';
-      myTableStyles.padding = '5px';
-      myTableStyles.border = '1px solid #4AD991';
-      myTableStyles.borderRadius = '7px';
+      myTableStyles.color = 'white';
+      myTableStyles.fontSize = '7.5px';
+      myTableStyles.backgroundColor = '#4AD991';
+      myTableStyles.padding = '4px 4px 4px 4px';
+      myTableStyles.border = '0.8px solid #68DA7E';
+      myTableStyles.borderRadius = '15px';
       myTableStyles.textTransform = 'uppercase';
       return myTableStyles;
     } else if (columnValue === false && columnName === 'isActive') {
-      myTableStyles.backgroundColor = '#CECFD0';
-      myTableStyles.padding = '5px';
-      myTableStyles.border = '1px solid #9C9F9F';
-      myTableStyles.borderRadius = '7px';
+      myTableStyles.color = 'white';
+      myTableStyles.backgroundColor = '#9C9F9F';
+      myTableStyles.fontSize = '7.5px';
+      myTableStyles.padding = '4px 4px 4px 4px';
+      myTableStyles.border = '0.8px solid #9C9F9F';
+      myTableStyles.borderRadius = '20px';
       myTableStyles.textTransform = 'uppercase';
       return myTableStyles;
     }

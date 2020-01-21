@@ -174,8 +174,8 @@ export class CreateComponent {
   onCreate() {
     let data = {};
     if (
-      this.secondaryForm.controls.name.value === '' ||
-      this.secondaryForm.controls.addressLine1.value === ''
+      (this.secondaryForm.controls.name.value === '' ||
+      this.secondaryForm.controls.addressLine1.value === '') && this.showSecondaryForm
     ) {
       data = {
         case: 'CONFIRMATION',

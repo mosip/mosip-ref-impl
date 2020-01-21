@@ -63,7 +63,8 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
         data: action,
         width: '700px',
         autoFocus: false,
-        disableClose: true
+        disableClose: true,
+        restoreFocus: false
       })
       .afterClosed()
       .subscribe(result => {

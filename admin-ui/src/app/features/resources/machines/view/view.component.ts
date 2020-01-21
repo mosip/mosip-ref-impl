@@ -44,6 +44,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private auditService: AuditService
   ) {
     this.getMachinesConfigs();
+    this.translateService.use(appService.getConfig().primaryLangCode);
     translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
       console.log(response);
       this.errorMessages = response.errorPopup;

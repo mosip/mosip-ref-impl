@@ -1,5 +1,5 @@
 import * as config from 'src/assets/config.json';
-
+export const AUTH_ERROR_CODE = 'KER-ATH-007';
 export const VERSION = '1.0';
 export const BASE_URL = config.baseUrl;
 export const IDS = 'dummy';
@@ -59,7 +59,7 @@ export const navItems = [
   },
   {
     displayName: 'menuItems.item4.title',
-    icon: './assets/images/id-card.svg',
+    icon: './assets/images/packet-status.svg',
     route: '/admin/packet-status',
     children: null,
     auditEventId: 'ADM-008',
@@ -150,10 +150,10 @@ export const masterdataMapping = {
     apiName: 'title',
     specFileName: 'titles',
     name: {
-    eng: 'Titles',
-    ara: 'العناوين',
-    fra: 'Les titres'
-  },
+      eng: 'Titles',
+      ara: 'العناوين',
+      fra: 'Les titres'
+    },
     nameKey: 'titleName',
     idKey: 'code',
     headerName: 'Title'
@@ -269,8 +269,16 @@ export const ListViewIdKeyMapping = {
     imagePath: 'assets/images/center-name-icon.png',
     auditEventId: 'ADM-064'
   },
-  devices: { idKey: 'id', auditEventId: 'ADM-065' },
-  machines: { idKey: 'id', auditEventId: 'ADM-066' },
+  devices: {
+    idKey: 'id',
+    imagePath: 'assets/images/Device.png',
+    auditEventId: 'ADM-065'
+  },
+  machines: {
+    idKey: 'id',
+    imagePath: 'assets/images/Machine.png',
+    auditEventId: 'ADM-066'
+  },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },
