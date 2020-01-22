@@ -44,21 +44,19 @@ export class AuthInterceptor implements HttpInterceptor {
         event => {
           if (event instanceof HttpResponse) {
             console.log(event);
-            if (
-              event.body.errors in event &&
-              event.body.errors !== null &&
-              event.body.response.errors[0]['errorCode'] ===
-                appConstants.AUTH_ERROR_CODE
-            ) {
-              this.redirectService.redirect(window.location.href);
-            } else {
-              if (event.url.split('/').includes('validateToken')) {
+            if (event.url.split('/').includes('validateToken')) {
                 if (event.body.response) {
                   this.headerService.setUsername(event.body.response.userId);
                   this.headerService.setRoles(event.body.response.role);
                 }
+                if (
+                  event.body.errors !== null &&
+                  event.body.errors[0]['errorCode'] ===
+                    appConstants.AUTH_ERROR_CODE
+                ) {
+                  this.redirectService.redirect(window.location.href);
+                }
               }
-            }
           }
         },
         err => {
