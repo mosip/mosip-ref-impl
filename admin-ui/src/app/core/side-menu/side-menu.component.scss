@@ -11,12 +11,14 @@
   .list-item-active {
     background: #f1f1f3 !important;
     border-right: 4px solid #ff4081 !important;
+    height: 42px !important;
   }
 }
 
 .mat-list-item {
   display: flex;
   width: auto !important;
+  height: 42px !important;
   
   .menu-list-text{
     font-weight: 600;
@@ -36,6 +38,7 @@
   font-size: 11.5px;
   opacity: 1;
   font-family: "Roboto", sans-serif;
+  height: 42px !important;
 }
 
 @include breakpoint-max(600px) {
