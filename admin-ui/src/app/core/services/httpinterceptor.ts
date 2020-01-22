@@ -51,8 +51,8 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
                 if (
                   event.body.errors !== null &&
-                  event.body.errors[0]['errorCode'] ===
-                    appConstants.AUTH_ERROR_CODE
+                  (event.body.errors[0]['errorCode'] ===
+                    appConstants.AUTH_ERROR_CODE[0] || event.body.errors[0]['errorCode'] === appConstants.AUTH_ERROR_CODE[1])
                 ) {
                   this.redirectService.redirect(window.location.href);
                 }
