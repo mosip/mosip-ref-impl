@@ -63,6 +63,8 @@
         "workingDays": "أيام العمل",
         "holidays": "عطلات استثنائية",
         "add-button": "إضافة",
+        "datepicker-placeholder":"اختيار موعد",
+        "devices-tooltip":"يتضمن الجهاز ماسحة البصمات ، ماسحة آيريس ، كاميرا ويب ، طابعة",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",
@@ -139,15 +141,15 @@
             "create": {
                 "title": "التأكيد",
                 "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
-                "yesBtnText": "نعم فعلا",
-                "noBtnText": "لا",
+                "yesBtnText": "تؤكد",
+                "noBtnText": "إلغاء",
                 "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
             },
             "edit": {
                 "title": "التأكيد",
                 "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
-                "yesBtnText": "نعم فعلا",
-                "noBtnText": "لا",
+                "yesBtnText": "تؤكد",
+                "noBtnText": "إلغاء",
                 "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
             },
             "update-success": {
@@ -299,8 +301,8 @@
             "error-message": "لا يمكن تنشيط المركز",
             "error-title": "خطأ",
             "btnTxt": "حسنا",
-            "yesBtnTxt": "نعم",
-            "noBtnTxt": "لا",
+            "yesBtnTxt": "تؤكد",
+            "noBtnTxt": "إلغاء",
             "confirmation-message": ["هل تريد تفعيل مركز التسجيل", "? \n يمكنك إلغاء تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه نشط"],
             "confirmation-title": "التأكيد"
         },
@@ -310,8 +312,8 @@
             "error-message": "لا يمكن إلغاء تنشيط المركز",
             "error-title": "خطأ",
             "btnTxt": "حسنا",
-            "yesBtnTxt": "نعم",
-            "noBtnTxt": "لا",
+            "yesBtnTxt": "تؤكد",
+            "noBtnTxt": "إلغاء",
             "confirmation-message": ["هل تريد إلغاء تنشيط مركز التسجيل", " ? \n يمكنك تفعيلها في وقت لاحق إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
             "confirmation-title": "التأكيد"
         }
