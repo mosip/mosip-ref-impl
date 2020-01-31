@@ -38,6 +38,7 @@ export class SingleViewComponent implements OnDestroy {
 
   popupMessages = [];
   showSecondaryForm: boolean;
+  noRecordFound = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -137,10 +138,14 @@ export class SingleViewComponent implements OnDestroy {
                 }
                 resolve(true);
               } else {
-                this.displayMessage(this.popupMessages['errorMessages'][0]);
+                // this.displayMessage(this.popupMessages['errorMessages'][0]);
+                this.noRecordFound = true ;
+                this.showSpinner = false;
               }
             } else {
-              this.displayMessage(this.popupMessages['errorMessages'][0]);
+              // this.displayMessage(this.popupMessages['errorMessages'][0]);
+                this.noRecordFound = true ;
+                this.showSpinner = false;
             }
           },
           error => {
