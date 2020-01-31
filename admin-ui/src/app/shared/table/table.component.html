@@ -6,11 +6,14 @@
         class="mat-header-cell table-header sticky-header"
       >
         <span class="columnName-sort-span"
-          ><span *ngIf="lang === 'eng'" matTooltip="{{'center-devices-tooltip' | translate}}"
+          ><span *ngIf="lang === 'eng'" matTooltip="{{'center.devices-tooltip' | translate}}"  
+          [matTooltipPosition]="'above'"
           [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.eng }}</span>
-          <span *ngIf="lang === 'fra'" matTooltip="{{'center-devices-tooltip' | translate}}"
+          <span *ngIf="lang === 'fra'" matTooltip="{{'center.devices-tooltip' | translate}}"
+          [matTooltipPosition]="'above'"
           [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.fra }}</span>
-          <span *ngIf="lang === 'ara'" matTooltip="{{'center-devices-tooltip' | translate}}"
+          <span *ngIf="lang === 'ara'" matTooltip="{{'center.devices-tooltip' | translate}}"
+          [matTooltipPosition]="'above'"
           [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.ara }}</span>
           <span (click)="sortColumn(columnName.name,i)"
             ><img *ngIf="sortIconTrackerArray[i] === 0"
