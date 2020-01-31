@@ -63,6 +63,8 @@
         "workingDays": "Working Days",
         "holidays": "Exceptional Holidays",
         "add-button": "Add",
+        "datepicker-placeholder":"Choose a date",
+        "devices-tooltip":"Device includes Fingerprint Scanner, Iris Scanner, Web Camera, Printer",
         "validationMessages": {
             "name": {
                 "required": "Center Name is required",
@@ -139,8 +141,8 @@
             "create": {
                 "title": "Confirmation",
                 "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
-                "yesBtnText": "Yes",
-                "noBtnText": "No",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
                 "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
             },
             "edit": {
@@ -300,8 +302,8 @@
             "error-message": "Center Could not be Activated",
             "error-title": "Error",
             "btnTxt": "Ok",
-            "yesBtnTxt": "Yes",
-            "noBtnTxt": "No",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to Activate the Registration Center ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
             "confirmation-title": "Confirmation"
         },
@@ -311,8 +313,8 @@
             "error-message": "Center Could not be Deactivated",
             "error-title": "Error",
             "btnTxt": "Ok",
-            "yesBtnTxt": "Yes",
-            "noBtnTxt": "No",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
             "confirmation-title": "Confirmation"
         }

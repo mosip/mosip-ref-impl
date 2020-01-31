@@ -13,3 +13,12 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.mat-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:50%;
+    margin: 20% 0 0 20%;
+}

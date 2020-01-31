@@ -114,10 +114,11 @@ export default class Utils {
             break;
           }
           default: {
-            if (/^[0-9a-zA-Z]{1,}/.test(filterParts[0])) {
-              const filterModel = new FilterModel(field, filterParts[1], filterParts[0]);
-              filters.push(filterModel);
-            }
+            console.log(filterParts[0]);
+            // if (/^[0-9a-zA-Z]{1,}/.test(filterParts[0])) {
+            const filterModel = new FilterModel(field, filterParts[1], filterParts[0]);
+            filters.push(filterModel);
+            // }
             break;
           }
         }
@@ -179,7 +180,8 @@ export default class Utils {
       if (filter.type === 'between') {
         url += `&${filter.columnName}=${filter.fromValue}$${filter.toValue}:${filter.type}`;
       } else {
-        url += `&${filter.columnName}=${filter.value}:${filter.type}`;
+        const filterValue = encodeURIComponent(filter.value);
+        url += `&${filter.columnName}=${filterValue}:${filter.type}`;
       }
     });
     return url;

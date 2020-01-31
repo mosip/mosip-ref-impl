@@ -63,6 +63,8 @@
         "workingDays": "jours de travail",
         "holidays": "Vacances exceptionnelles",
         "add-button": "Ajouter",
+        "datepicker-placeholder":"Choisissez une date",
+        "devices-tooltip":"L'appareil comprend un scanner d'empreintes digitales, un scanner d'iris, une caméra Web, une imprimante",
         "validationMessages": {
             "name": {
                 "required": "Le nom du centre est requis",
@@ -139,15 +141,15 @@
             "create": {
                 "title": "Confirmation",
                 "message": "Cliquez sur oui pour créer / modifier le centre",
-                "yesBtnText": "Oui",
-                "noBtnText": "Non",
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
                 "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
             },
             "edit": {
                 "title": "Confirmation",
                 "message": "Cliquez sur oui pour créer / modifier le centre",
-                "yesBtnText": "Oui",
-                "noBtnText": "Non",
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
                 "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
             },
             "update-success": {
@@ -300,8 +302,8 @@
             "error-message": "Le centre n'a pas pu être activé",
             "error-title": "Erreur",
             "btnTxt": "D'accord",
-            "yesBtnTxt": "Oui",
-            "noBtnTxt": "Non",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
             "confirmation-message": ["Voulez-vous activer le centre d'inscription ", "? \n Vous pouvez le désactiver plus tard si vous le souhaitez. Jusque-là, il sera défini comme actif"],
             "confirmation-title": "Confirmation"
         },
@@ -311,8 +313,8 @@
             "error-message": "Le centre n'a pas pu être désactivé",
             "error-title": "Erreur",
             "btnTxt": "D'accord",
-            "yesBtnTxt": "Oui",
-            "noBtnTxt": "Non",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
             "confirmation-message": ["Voulez-vous désactiver le centre d'inscription ", " ? \n Vous pouvez l'activer plus tard si vous le souhaitez. Jusque-là, il sera défini comme inactif"],
             "confirmation-title": "Confirmation"
         }
