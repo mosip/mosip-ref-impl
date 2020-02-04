@@ -181,6 +181,13 @@ export class AuditService {
 
   private postAuditLog(auditObject: AuditModel) {
     const request = new RequestModel('', null, auditObject);
-    this.http.post(this.appService.getConfig().baseUrl + 'admin/auditmanager/log', request);
+    this.http.post(this.appService.getConfig().baseUrl + 'admin/auditmanager/log', request).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }
