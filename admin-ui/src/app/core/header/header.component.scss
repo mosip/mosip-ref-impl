@@ -15,7 +15,7 @@
   cursor: pointer !important;
   span {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
   }
   .mosip-text {
     font-size: 18px;
@@ -30,7 +30,13 @@
     height: 35px;
   }
 }
-
+.version-txt{
+  font-size: 8px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  display: block;
+  margin-top: -19px;
+}
 .zone {
   text-align: center;
   flex: 1;

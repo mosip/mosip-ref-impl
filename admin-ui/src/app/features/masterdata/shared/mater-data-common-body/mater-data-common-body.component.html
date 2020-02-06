@@ -2,7 +2,7 @@
     <mat-card>
         <mat-card-content class="forms-container">
             <div class="primary-form">
-                <strong class="title">{{'center.language' | translate }}</strong>
+                <strong class="title">{{ languageNames[primaryLang] }}</strong>
                 <hr />
                 <br /><br />
                 <div *ngFor="let field of fields" class="mat-form1">
