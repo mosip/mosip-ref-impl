@@ -12,3 +12,10 @@
   margin-bottom: 2px;
   background: white;
 }
+
+.version-txt{
+  font-size: 8px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  display: block;
+}
