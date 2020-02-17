@@ -39,12 +39,15 @@
 }
 .zone {
   text-align: center;
-  flex: 1;
+  // flex: 1;
   background: #3b99bc 0% 0% no-repeat padding-box;
   border-radius: 26px;
   opacity: 0.8;
   color: #ffffff;
   opacity: 1;
+  // min-width: 115px;
+  width: 100px;
+  text-overflow: ellipsis;
   .zone-text{
     height: 20px;
     position: relative;
@@ -53,8 +56,6 @@
     text-transform: uppercase;
     font-weight: 100;
   }
-  min-width: 100px;
-  max-width: fit-content;
 
   @media (max-width: 840px) {
     h6 {

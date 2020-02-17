@@ -58,14 +58,14 @@ export class RolesGuard implements CanActivate {
         this.popupMessages = response['errorPopup']['unauthorized'];
         resolve(true);
       });
-    })
+    });
   }
 
   private async showMessage() {
     await this.getMessage();
     console.log(this.popupMessages);
     this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages.title,
@@ -75,7 +75,6 @@ export class RolesGuard implements CanActivate {
       disableClose: true
     }).afterClosed().subscribe(() => {
       this.router.navigateByUrl('admin/home');
-    })
+    });
   }
-  
 }

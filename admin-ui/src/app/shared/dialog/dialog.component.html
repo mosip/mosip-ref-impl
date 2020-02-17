@@ -1,6 +1,6 @@
 <!-- center filter -->
 <div class="filter" *ngIf="input.case === 'filter'">
-  <h2 class="filter-heading">{{'filters.titleTxt'|translate}}</h2>
+  <h2 class="filter-heading">{{ "filters.titleTxt" | translate }}</h2>
   <mat-divider></mat-divider>
   <form [formGroup]="filterGroup" (ngSubmit)="getFilterValuesOnSubmit()">
     <div class="flex-container">
@@ -37,7 +37,8 @@
                       style="margin-left:43%;"
                     ></mat-spinner>
                   </mat-option>
-                  <mat-option  style="font-size: x-small;height: 30px;"
+                  <mat-option
+                    style="font-size: x-small;height: 30px;"
                     *ngFor="let option of filterOptions[filter.filtername]"
                     [value]="option.fieldValue"
                   >
@@ -111,7 +112,8 @@
                       style="margin-left:43%;"
                     ></mat-spinner>
                   </mat-option>
-                  <mat-option style="font-size: x-small;"
+                  <mat-option
+                    style="font-size: x-small;"
                     *ngFor="let option of filterOptions[filter.filtername]"
                     [value]="option.fieldValue"
                   >
@@ -123,9 +125,17 @@
           </ng-container>
         </ng-container>
       </ng-container>
-      <mat-error *ngIf="requiredError">&nbsp; {{fieldName}}: {{'validationMessages.required' | translate}}</mat-error>
-      <mat-error *ngIf="rangeError">&nbsp; {{fieldName}}: {{'validationMessages.range' | translate}}</mat-error>
-      <mat-error *ngIf="!filterGroup.valid">&nbsp; {{'validationMessages.invalid' | translate}}</mat-error>
+      <mat-error *ngIf="requiredError"
+        >&nbsp; {{ fieldName }}:
+        {{ "validationMessages.required" | translate }}</mat-error
+      >
+      <mat-error *ngIf="rangeError"
+        >&nbsp; {{ fieldName }}:
+        {{ "validationMessages.range" | translate }}</mat-error
+      >
+      <mat-error *ngIf="!filterGroup.valid"
+        >&nbsp; {{ "validationMessages.invalid" | translate }}</mat-error
+      >
     </div>
     <div class="footer">
       <button
@@ -137,7 +147,7 @@
         <img
           src="assets/images/refresh.png"
           height="15px; width:12px;"
-        />&nbsp;{{'filters.footerButtons.resetTxt'|translate}}
+        />&nbsp;{{ "filters.footerButtons.resetTxt" | translate }}
       </button>
       <button
         mat-button
@@ -145,7 +155,7 @@
         (click)="onNoClick()"
         style="color: #FF4081; background-color: white;"
       >
-      {{'filters.footerButtons.cancelTxt'|translate}}
+        {{ "filters.footerButtons.cancelTxt" | translate }}
       </button>
       <button
         type="submit"
@@ -153,7 +163,7 @@
         class="footer-button"
         style="background-color:#FF4081; color:white;"
       >
-      {{'filters.footerButtons.applyTxt'|translate}}
+        {{ "filters.footerButtons.applyTxt" | translate }}
       </button>
     </div>
   </form>
@@ -189,6 +199,12 @@
 
 <!-- Message PopUp -->
 <div class="pop-up" *ngIf="input.case === 'MESSAGE'">
+  <img
+    src="assets/images/icon_Suceess right.png"
+    height="45px"
+    width="45px"
+    class="success-img"
+   *ngIf="input.title === ('Success' || 'نجاح' || 'Succès')"   />
   <div class="pop-up-header">
     <b mat-dialog-title>{{ input.title }}</b>
     <div mat-dialog-content>
