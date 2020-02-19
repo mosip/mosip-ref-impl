@@ -239,7 +239,11 @@ public class PacketeneratorService {
 				if (PacketGeneratorConstants.REGISTRATION_ID
 						.equals(((LinkedHashMap<String, String>) obj).get(PacketGeneratorConstants.LABEL))) {
 					((LinkedHashMap<String, String>) obj).put(PacketGeneratorConstants.VALUE, regId);
-					break;
+				}
+				if (PacketGeneratorConstants.CREATION_DATE
+						.equals(((LinkedHashMap<String, String>) obj).get(PacketGeneratorConstants.LABEL))) {
+					((LinkedHashMap<String, String>) obj).put(PacketGeneratorConstants.VALUE,
+							getPacketCreationTime(regId));
 				}
 			}
 

@@ -13,7 +13,11 @@ import io.mosip.packetgenerator.customvalidation.DOB;
 import io.mosip.packetgenerator.customvalidation.Gender;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
+/**
+ * 
+ * @author Girish Yarru
+ *
+ */
 @Data
 public class PacketRequestDto {
 	@ApiModelProperty(value = "the first name", position = 1)

@@ -1,5 +1,9 @@
 package io.mosip.packetgenerator.constant;
-
+/**
+ * 
+ * @author Girish Yarru
+ *
+ */
 public class PacketGeneratorConstants {
 	public static final String IDENTITY = "identity";
 	public static final String VALUE = "value";
@@ -11,6 +15,7 @@ public class PacketGeneratorConstants {
 	public static final String META_DATA = "metaData";
 	public static final String LABEL = "label";
 	public static final String REGISTRATION_ID = "registrationId";
+	public static final String CREATION_DATE = "creationDate";
 	public static final String AUDIT = "audit";
 	public static final String HASHSEQUENCE1 = "hashSequence1";
 	public static final String HASHSEQUENCE2 = "hashSequence2";

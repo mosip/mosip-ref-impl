@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 import lombok.Data;
 
-/* (non-Javadoc)
- * @see java.lang.Object#toString()
- * @author Rishabh Keshari
+/**
+ * 
+ * @author Girish Yarru
+ *
  */
 @Data
 public class PublicKeyResponseDto implements Serializable {
@@ -28,20 +29,18 @@ public class PublicKeyResponseDto implements Serializable {
 	/**
 	 * Instantiates a new public key response dto.
 	 *
-	 * @param publicKey
-	 *            the public key
-	 * @param issuedAt
-	 *            the issued at
-	 * @param expiryAt
-	 *            the expiry at
+	 * @param publicKey the public key
+	 * @param issuedAt  the issued at
+	 * @param expiryAt  the expiry at
 	 */
 	public PublicKeyResponseDto(String publicKey, String issuedAt, String expiryAt) {
 		this.publicKey = publicKey;
 		this.issuedAt = issuedAt;
 		this.expiryAt = expiryAt;
 	}
+
 	public PublicKeyResponseDto() {
-		
+
 	}
 
 }
