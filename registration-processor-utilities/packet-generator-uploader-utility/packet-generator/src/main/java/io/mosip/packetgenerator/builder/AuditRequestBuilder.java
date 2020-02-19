@@ -6,7 +6,11 @@ import org.springframework.stereotype.Service;
 
 import io.mosip.packetgenerator.dto.AuditDTO;
 import io.mosip.registration.processor.rest.client.audit.dto.AuditRequestDto;
-
+/**
+ * 
+ * @author Girish Yarru
+ *
+ */
 @Service
 public class AuditRequestBuilder {
 
@@ -23,8 +27,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add actionTimeStamp to this {@link AuditRequestBuilder}.
 	 *
-	 * @param actionTimeStamp
-	 *            actionTimeStamp
+	 * @param actionTimeStamp actionTimeStamp
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setActionTimeStamp(LocalDateTime actionTimeStamp) {
@@ -35,8 +38,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add applicationId to this {@link AuditRequestBuilder}.
 	 *
-	 * @param applicationId
-	 *            applicationId
+	 * @param applicationId applicationId
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setApplicationId(String applicationId) {
@@ -47,8 +49,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add applicationName to this {@link AuditRequestBuilder}.
 	 *
-	 * @param applicationName
-	 *            applicationName
+	 * @param applicationName applicationName
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setApplicationName(String applicationName) {
@@ -59,8 +60,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add createdBy to this {@link AuditRequestBuilder}.
 	 *
-	 * @param createdBy
-	 *            createdBy
+	 * @param createdBy createdBy
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setCreatedBy(String createdBy) {
@@ -71,8 +71,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add description to this {@link AuditRequestBuilder}.
 	 *
-	 * @param description
-	 *            description
+	 * @param description description
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setDescription(String description) {
@@ -83,8 +82,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add eventId to this {@link AuditRequestBuilder}.
 	 *
-	 * @param eventId
-	 *            eventId
+	 * @param eventId eventId
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setEventId(String eventId) {
@@ -95,8 +93,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add eventName to this {@link AuditRequestBuilder}.
 	 *
-	 * @param eventName
-	 *            eventName
+	 * @param eventName eventName
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setEventName(String eventName) {
@@ -107,8 +104,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add eventType to this {@link AuditRequestBuilder}.
 	 *
-	 * @param eventType
-	 *            eventType
+	 * @param eventType eventType
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setEventType(String eventType) {
@@ -119,8 +115,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add hostIp to this {@link AuditRequestBuilder}.
 	 *
-	 * @param hostIp
-	 *            hostIp
+	 * @param hostIp hostIp
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setHostIp(String hostIp) {
@@ -131,8 +126,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add hostName to this {@link AuditRequestBuilder}.
 	 *
-	 * @param hostName
-	 *            hostName
+	 * @param hostName hostName
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setHostName(String hostName) {
@@ -143,8 +137,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add id to this {@link AuditRequestBuilder}.
 	 *
-	 * @param id
-	 *            id
+	 * @param id id
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setId(String id) {
@@ -155,8 +148,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add idType to this {@link AuditRequestBuilder}.
 	 *
-	 * @param idType
-	 *            idType
+	 * @param idType idType
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setIdType(String idType) {
@@ -167,8 +159,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add moduleId to this {@link AuditRequestBuilder}.
 	 *
-	 * @param moduleId
-	 *            moduleId
+	 * @param moduleId moduleId
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setModuleId(String moduleId) {
@@ -179,8 +170,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add moduleName to this {@link AuditRequestBuilder}.
 	 *
-	 * @param moduleName
-	 *            moduleName
+	 * @param moduleName moduleName
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setModuleName(String moduleName) {
@@ -191,8 +181,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add sessionUserId to this {@link AuditRequestBuilder}.
 	 *
-	 * @param sessionUserId
-	 *            sessionUserId
+	 * @param sessionUserId sessionUserId
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setSessionUserId(String sessionUserId) {
@@ -203,8 +192,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Add sessionUserName to this {@link AuditRequestBuilder}.
 	 *
-	 * @param sessionUserName
-	 *            sessionUserName
+	 * @param sessionUserName sessionUserName
 	 * @return {@link AuditRequestBuilder}
 	 */
 	public AuditRequestBuilder setSessionUserName(String sessionUserName) {
@@ -215,8 +203,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Sets the created at.
 	 *
-	 * @param createdAt
-	 *            the created at
+	 * @param createdAt the created at
 	 * @return the audit request builder
 	 */
 	public AuditRequestBuilder setCreatedAt(LocalDateTime createdAt) {
@@ -227,8 +214,7 @@ public class AuditRequestBuilder {
 	/**
 	 * Sets the uuid.
 	 *
-	 * @param uuid
-	 *            the uuid
+	 * @param uuid the uuid
 	 * @return the audit request builder
 	 */
 	public AuditRequestBuilder setUuid(String uuid) {

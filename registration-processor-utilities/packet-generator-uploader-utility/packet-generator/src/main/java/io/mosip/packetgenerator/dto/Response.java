@@ -10,6 +10,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.mosip.registration.processor.core.common.rest.dto.ErrorDTO;
 import lombok.Data;
 
+/**
+ * 
+ * @author Girish Yarru
+ *
+ */
 @Data
 public class Response {
 	private String id = "io.mosip.packetgenerator.uploader";

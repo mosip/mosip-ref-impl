@@ -3,7 +3,7 @@ package io.mosip.packetgenerator.exception;
 import io.mosip.kernel.core.exception.BaseUncheckedException;
 
 /**
- * @author Sowmya The Class RegBaseUnCheckedException.
+ * @author Girish Yarru.
  */
 public class RegBaseUnCheckedException extends BaseUncheckedException {
 
@@ -20,10 +20,8 @@ public class RegBaseUnCheckedException extends BaseUncheckedException {
 	/**
 	 * Constructor.
 	 *
-	 * @param errorCode
-	 *            the Error Code Corresponds to Particular Exception
-	 * @param errorMessage
-	 *            the Message providing the specific context of the error
+	 * @param errorCode    the Error Code Corresponds to Particular Exception
+	 * @param errorMessage the Message providing the specific context of the error
 	 */
 	public RegBaseUnCheckedException(String errorCode, String errorMessage) {
 		super(errorCode, errorMessage);
@@ -33,12 +31,9 @@ public class RegBaseUnCheckedException extends BaseUncheckedException {
 	/**
 	 * Constructor.
 	 *
-	 * @param errorCode
-	 *            the Error Code Corresponds to Particular Exception
-	 * @param errorMessage
-	 *            the Message providing the specific context of the error
-	 * @param throwable
-	 *            the Cause of exception
+	 * @param errorCode    the Error Code Corresponds to Particular Exception
+	 * @param errorMessage the Message providing the specific context of the error
+	 * @param throwable    the Cause of exception
 	 */
 	public RegBaseUnCheckedException(String errorCode, String errorMessage, Throwable throwable) {
 		super(errorCode, errorMessage, throwable);

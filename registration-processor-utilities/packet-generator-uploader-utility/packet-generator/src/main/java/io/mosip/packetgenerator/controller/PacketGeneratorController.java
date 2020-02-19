@@ -12,17 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import io.mosip.packetgenerator.dto.Response;
-import io.mosip.packetgenerator.dto.Request;
 import io.mosip.packetgenerator.dto.PacketDetails;
+import io.mosip.packetgenerator.dto.Request;
+import io.mosip.packetgenerator.dto.Response;
 import io.mosip.packetgenerator.exception.RegBaseCheckedException;
 import io.mosip.packetgenerator.service.PacketeneratorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
 /**
  * 
  * @author Girish Yarru

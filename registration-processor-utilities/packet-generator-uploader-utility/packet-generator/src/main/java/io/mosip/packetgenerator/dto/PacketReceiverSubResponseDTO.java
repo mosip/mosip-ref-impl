@@ -6,17 +6,18 @@ import lombok.Data;
 
 /**
  * Instantiates a new response DTO.
- * @author Rishabh Keshari
+ * 
+ * @author Girish Yarru
  */
 @Data
-public class PacketReceiverSubResponseDTO implements Serializable{
+public class PacketReceiverSubResponseDTO implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3501660956959221378L;
-	
+
 	/** The status. */
 	private String status;
-	
+
 }

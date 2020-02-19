@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 /**
  * Instantiates a new packet receiver response DTO.
  * 
- * @author Rishabh Keshari
+ * @author Girish Yarru
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

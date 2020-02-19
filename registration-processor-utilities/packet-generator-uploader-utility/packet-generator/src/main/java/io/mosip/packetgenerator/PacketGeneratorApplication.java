@@ -9,6 +9,7 @@ import org.springframework.context.annotation.FilterType;
 import io.mosip.registration.processor.packet.storage.config.PacketStorageBeanConfig;
 import io.mosip.registration.processor.rest.client.config.RestConfigBean;
 import io.mosip.registration.processor.status.config.RegistrationStatusBeanConfig;
+
 /**
  * 
  * @author Girish Yarru
