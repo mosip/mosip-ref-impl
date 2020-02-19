@@ -153,8 +153,8 @@
                 "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
             },
             "update-success": {
-                "title": "Success",
-                "message": ["Center details are updated successfully. \n Center ID: ", " \n Center Name: "],
+                "title": "Success !",
+                "message": ["Center details are updated successfully. \n \n Center ID: ", " \n \n Center Name: "],
                 "btnTxt": "Ok"
             },
             "update-error": {
@@ -163,7 +163,7 @@
                 "btnTxt": "Ok"
             },
             "create-success": {
-                "title": "Success",
+                "title": "Success !",
                 "message": ["Center is created Successfully with Center ID: ", " and Center Name: "],
                 "btnTxt": "Ok"
             },
@@ -275,6 +275,7 @@
         "id": "Registration ID",
         "status": "Status",
         "viewMore": "View More",
+        "viewLess": "View Less",
         "errorMessages": {
             "title": "Error",
             "message": "RID Not Found",
@@ -288,35 +289,35 @@
         "decommission": {
             "success-message": ["The Registration Center ", " is Decommissioned successfully"],
             "success-title": "Success",
-            "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\nPlease un-map these resources before decommission the Center",
+            "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\n \n Please un-map these resources before decommission the Center",
             "error-title": "Error",
-            "btnTxt": "Ok",
+            "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
-            "confirmation-message": ["Do you want to Decommission the Registration Center ", " ? \n You cannot undo this action once you click on Confirm."],
-            "confirmation-title": "Confirmation"
+            "confirmation-message": ["Do you want to Decommission the Registration Center ", " ? \n \n You cannot undo this action once you click on Confirm."],
+            "confirmation-title": "Confirm Decommission"
         },
         "activate": {
             "success-message": ["Registration Center ", " is Activated Successfully"],
             "success-title": "Success",
             "error-message": "Center Could not be Activated",
             "error-title": "Error",
-            "btnTxt": "Ok",
+            "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
-            "confirmation-message": ["Do you want to Activate the Registration Center ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
-            "confirmation-title": "Confirmation"
+            "confirmation-message": ["Do you want to Activate the Registration Center ", "? \n \n You can Deactivate it later if you wish. Till then it will be set as Active"],
+            "confirmation-title": "Confirm Center Activation" 
         },
         "deactivate": {
             "success-message": ["Registration Center ", " is Deactivated Successfully"],
             "success-title": "Success",
             "error-message": "Center Could not be Deactivated",
             "error-title": "Error",
-            "btnTxt": "Ok",
+            "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
-            "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
-            "confirmation-title": "Confirmation"
+            "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n \n You can Activate it later if you wish. Till then it will be set as Inactive"],
+            "confirmation-title": "Confirm Center Deactivation"
         }
     },
     "detailView":{

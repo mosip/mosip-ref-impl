@@ -70,9 +70,9 @@
 }
 .elipses + * .cdk-overlay-pane > div.mat-menu-panel {
   .mat-menu-item {
-    line-height: 34px !important;
-    height: 34px !important;
-  }
+    line-height: 40px !important;
+  //   height: 34px !important;
+   }
 }
 .mat-menu-content:not(:empty) {
   min-height: auto !important;
@@ -80,4 +80,20 @@
 }
 .mat-menu-panel {
   min-height: auto !important;
+}
+
+.mat-menu {
+  border-radius: 0 !important;
+}
+:host::ng-deep .mat-menu-content {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.mat-menu-item{
+  line-height:30px !important;
+  height:35px !important;
+  font-size: x-small;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
 }

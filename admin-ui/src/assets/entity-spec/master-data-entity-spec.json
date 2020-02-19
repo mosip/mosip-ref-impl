@@ -3,7 +3,7 @@
       "common": [
         {
           "label": {
-            "eng": "Center Type",
+            "eng": "Center Types",
             "ara": "نوع المركز",
             "fra": "Type de centre"
           },
@@ -30,16 +30,16 @@
         },
         {
           "label": {
-            "eng": "Individual Type",
+            "eng": "Individual Types",
             "ara": "نوع الفردية",
-            "fra": "Type individuel"
+            "fra": "Type individuels"
           },
           "actionURL": "admin/masterdata/individual-type/view",
           "auditEventId": "ADM-013"
         },
         {
           "label": {
-            "eng": "List Of Holiday",
+            "eng": "List Of Holidays",
             "ara": "قائمة عطلة",
             "fra": "Liste de vacances"
           },
@@ -117,7 +117,7 @@
       "documentDefinition": [
         {
           "label": {
-            "eng": "Document Type",
+            "eng": "Document Types",
             "ara": "أنواع المستندات",
             "fra": "Types de documents"
           },

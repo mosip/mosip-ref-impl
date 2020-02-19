@@ -28,12 +28,12 @@
 }
 :host ::ng-deep.mat-paginator-range-label {
   margin: 0 24px 0 20px;
-  font-size: 9.5px !important;
+  font-size: 10px !important;
   color: #3b4141;
 }
 :host ::ng-deep.mat-paginator-page-size {
   align-items: center;
-  font-size: 8px !important;
+  font-size: 8.5px !important;
   width: auto;
 }
 .container {
@@ -56,22 +56,35 @@
 ::ng-deep .mat-select-arrow {
   height: 3px !important;
   width: 3px !important;
+  vertical-align: middle;
 }
 :host::ng-deep .mat-select-value {
-  font-size: 9px !important;
-  color: rgb(161, 161, 161);
-  padding-top: 3.5px;
+  font-size: 9.5px !important;
+  color: #3b4141;;
+  padding-top: 2px;
   padding-left: 8px;
 }
-:host::ng-deep .mat-option-text {
-  text-align: center !important;
-  font-size: 10px !important;
-}
+
 :host::ng-deep.mat-paginator-range-label {
   white-space: nowrap;
   margin: 5px;
   font-size: 9.5px !important;
   color: #3b4141;
+}
+:host::ng-deep.mat-paginator-range-label:before {
+  content: "Viewing   ";
+}
+::ng-deep.mat-select-panel  {
+  // min-width: 75px !important;
+  max-width: 100% !important;
+}
+::ng-deep .mat-option {
+  padding-left: 10px  !important;
+  height: 35px !important;
+}
+::ng-deep .mat-option-text {
+  font-size: 10px;
+  line-height: 12px;
 }
 :host::ng-deep.mat-paginator-container {
   display: flex;

@@ -275,6 +275,7 @@
         "id": "معرف تسجيل",
         "status": "الحالة",
         "viewMore": "عرض المزيد",
+        "viewLess": "عرض أقل",
         "errorMessages": {
             "title": "خطأ",
             "message": "لم يتم العثور على RID",

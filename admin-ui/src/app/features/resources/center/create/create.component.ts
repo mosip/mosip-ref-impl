@@ -327,7 +327,7 @@ export class CreateComponent {
 
   showMessage(type: string, data?: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
@@ -536,7 +536,7 @@ export class CreateComponent {
   showErrorPopup() {
     this.dialog
       .open(DialogComponent, {
-        width: '350px',
+        width: '400px',
         data: {
           case: 'MESSAGE',
           // tslint:disable-next-line:no-string-literal
@@ -1044,7 +1044,7 @@ export class CreateComponent {
     ) {
       return this.dialog
         .open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data: {
             case: 'CONFIRMATION',
             title: this.popupMessages['navigation-popup'].title,

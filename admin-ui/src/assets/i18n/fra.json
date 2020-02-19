@@ -276,6 +276,7 @@
         "id": "ID d'enregistrement",
         "status": "Statut",
         "viewMore": "Afficher plus",
+        "viewLess": "Voir moins",
         "errorMessages": {
                 "title": "Erreur",
                 "message": "RID introuvable",
