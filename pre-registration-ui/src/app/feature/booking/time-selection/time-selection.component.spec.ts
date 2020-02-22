@@ -18,7 +18,7 @@ let center = {
   centerTypeCode: 'REG',
   addressLine1: 'Route De Moulay Bousselham',
   addressLine2: 'Douar Sbih Menacera',
-  addressLine3: 'Morroco',
+  addressLine3: 'MyCountry',
   latitude: '34.360207',
   longitude: '-6.550075',
   locationCode: '14053',
