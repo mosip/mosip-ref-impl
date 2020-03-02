@@ -12,6 +12,7 @@ import { HamburgerComponent } from '../shared/hamburger-menu/hamburger-menu.comp
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StatusPipe } from './pipes/status.pipe';
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { MapStatusPipe } from './pipes/map-status.pipe';
 
 @NgModule({
   imports: [CommonModule, MaterialModule, I18nModule , ReactiveFormsModule, FormsModule],
@@ -23,7 +24,8 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     HamburgerComponent,
     ErrorComponent,
     StatusPipe,
-    DateFormatPipe
+    DateFormatPipe,
+    MapStatusPipe
   ],
   exports: [
     I18nModule,
@@ -35,7 +37,8 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     HamburgerComponent,
     ErrorComponent,
     StatusPipe,
-    DateFormatPipe
+    DateFormatPipe,
+    MapStatusPipe
   ],
   entryComponents: [DialogComponent],
   providers: [
