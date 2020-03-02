@@ -156,7 +156,7 @@
       "value" : [ ]
     }, {
       "label" : "applicantDemographicSequence",
-      "value" : [ "ID", "POR_Passport", "POA_CNIE card", "POE_Certification of Exception", "POI_CNIE card" ]
+      "value" : [ "ID", "POR_Passport", "POA_CNIE_card", "POE_Certification_of_Exception", "POI_CNIE_card" ]
     } ],
     "hashSequence2" : [ {
       "label" : "otherFiles",

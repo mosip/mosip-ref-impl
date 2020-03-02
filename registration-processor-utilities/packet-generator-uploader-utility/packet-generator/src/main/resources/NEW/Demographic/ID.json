@@ -77,12 +77,12 @@
       "value" : "بن منصور"
     } ],
     "proofOfAddress" : {
-      "value" : "POA_CNIE card",
+      "value" : "POA_CNIE_card",
       "type" : "CIN",
       "format" : "jpg"
     },
     "proofOfIdentity" : {
-      "value" : "POI_CNIE card",
+      "value" : "POI_CNIE_card",
       "type" : "CIN",
       "format" : "jpg"
     },
