@@ -153,7 +153,7 @@
                 "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
             },
             "update-success": {
-                "title": "Success !",
+                "title": "Success",
                 "message": ["Center details are updated successfully. \n \n Center ID: ", " \n \n Center Name: "],
                 "btnTxt": "Ok"
             },
@@ -163,7 +163,7 @@
                 "btnTxt": "Ok"
             },
             "create-success": {
-                "title": "Success !",
+                "title": "Success",
                 "message": ["Center is created Successfully with Center ID: ", " and Center Name: "],
                 "btnTxt": "Ok"
             },
