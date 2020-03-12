@@ -150,7 +150,7 @@
                 "message": "You are about to update a Registration Center. Please ensure that all the information is correct",
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Hence Registration Center will be updated only for Primary language. Do you still want to continue?"
             },
             "update-success": {
                 "title": "Success",
