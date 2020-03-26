@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "1.0.7-SNAPSHOT",
+  "version": "1.0.7",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
