@@ -10,16 +10,18 @@
   opacity: 100%;
   width: 100%;
   max-height: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 68px);
   margin: 0;
   padding: 0px 2vw;
+  padding-top: 5px;
+  padding-bottom: 30px;
 }
 .heading-row {
   display: flex;
   flex-wrap: wrap;
 }
 .heading {
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 24px;
   color: #fd518c;
   opacity: 100%;
@@ -39,9 +41,8 @@ img {
   border-radius: 0px;
   margin-left: 12px;
   margin-top: 30px;
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 10px;
-  opacity: 100;
 }
 .modify-app-btn {
   color: #fd518c;
@@ -49,13 +50,12 @@ img {
   border-radius: 0px;
   margin-left: 12px;
   margin-top: 30px;
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 10px;
-  opacity: 100;
 }
 .create-app-btn {
   color: #ffffff;
-  font-family: Roboto;
+  font-family: 'Roboto';
   background-color: #ff4081;
   opacity: 90%;
   margin-left: 12px;
@@ -75,7 +75,7 @@ img {
   padding-right: 45px;
 }
 .card-header {
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 0.8rem;
   opacity: 100%;
   display: flex;
@@ -94,7 +94,7 @@ img {
   margin-top: 20px;
 }
 .card-content {
-  font-family: Roboto;
+  font-family: 'Roboto';
   color: #838383;
   opacity: 90%;
   font-size: 12px;
