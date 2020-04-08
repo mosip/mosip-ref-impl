@@ -51,7 +51,7 @@ export class CommonService {
 
   private showMessage(data: any) {
     this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       data: {
         case: 'MESSAGE',
         ...data
@@ -108,7 +108,7 @@ export class CommonService {
       noBtnTxt: this.actionMessages[type]['noBtnTxt']
     };
     return this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: obj
     });
   }

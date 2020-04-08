@@ -143,18 +143,18 @@
                 "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Hence Registration Center will be created/updated only for Primary language. Do you still want to continue?"
             },
             "edit": {
                 "title": "Confirmation",
                 "message": "You are about to update a Registration Center. Please ensure that all the information is correct",
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Hence Registration Center will be updated only for Primary language. Do you still want to continue?"
             },
             "update-success": {
                 "title": "Success",
-                "message": ["Center details are updated successfully. \n Center ID: ", " \n Center Name: "],
+                "message": ["Center details are updated successfully. \n \n Center ID: ", " \n \n Center Name: "],
                 "btnTxt": "Ok"
             },
             "update-error": {
@@ -431,6 +431,7 @@
         "id": "Registration ID",
         "status": "Status",
         "viewMore": "View More",
+        "viewLess": "View Less",
         "errorMessages": {
             "title": "Error",
             "message": "RID Not Found",
@@ -446,7 +447,7 @@
             "success-title": "Success",
             "error-message": ["Cannot decommission ", " is still mapped with some other resources. \nPlease un-map the resources before decommissioning"],
             "error-title": "Error",
-            "btnTxt": "Ok",
+            "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to Decommission ", " ? \n You cannot undo this action once you click on Confirm."],
@@ -457,7 +458,7 @@
             "success-title": "Success",
             "error-message": ["", " Could not be Activated"],
             "error-title": "Error",
-            "btnTxt": "Ok",
+            "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to Activate ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
@@ -468,7 +469,7 @@
             "success-title": "Success",
             "error-message": ["", " Could not be Deactivated"],
             "error-title": "Error",
-            "btnTxt": "Ok",
+            "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to Deactivate  ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],

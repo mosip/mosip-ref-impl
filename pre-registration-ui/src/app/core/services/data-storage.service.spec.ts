@@ -31,13 +31,13 @@ describe('DataStorageService', () => {
       getUserDocuments: jasmine.createSpy('getUserDocuments').and.returnValue(of({ documents: ['hello.txt'] })),
       getLocationImmediateHierearchy: jasmine
         .createSpy('getLocationImmediateHierearchy')
-        .and.returnValue(of({ country: 'morroco' })),
+        .and.returnValue(of({ country: 'mycountry' })),
       getLocationMetadataHirearchy: jasmine
         .createSpy('getLocationMetadataHirearchy')
-        .and.returnValue(of({ country: 'morroco' })),
+        .and.returnValue(of({ country: 'mycountry' })),
       makeBooking: jasmine.createSpy('makeBooking').and.returnValue(of('success')),
       getAvailabilityData: jasmine.createSpy('getAvailabilityData').and.returnValue(of({ available: 4 })),
-      getLocationTypeData: jasmine.createSpy('getLocationTypeData').and.returnValue(of({ country: 'morroco' })),
+      getLocationTypeData: jasmine.createSpy('getLocationTypeData').and.returnValue(of({ country: 'mycountry' })),
       getRegistrationCentersByName: jasmine
         .createSpy('getRegistrationCentersByName')
         .and.returnValue(of({ registrationCenter: { centerId: '1001' } })),
@@ -197,7 +197,7 @@ describe('DataStorageService', () => {
     service.getLocationImmediateHierearchy('eng', 'country').subscribe(value => {
       response = value;
     });
-    expect(response.country).toBe('morroco');
+    expect(response.country).toBe('mycountry');
   });
 
   it('getLocationMetadataHirearchy', () => {
@@ -205,7 +205,7 @@ describe('DataStorageService', () => {
     service.getLocationMetadataHirearchy().subscribe(value => {
       response = value;
     });
-    expect(response.country).toBe('morroco');
+    expect(response.country).toBe('mycountry');
   });
 
   it('makeBooking', () => {
@@ -231,12 +231,12 @@ describe('DataStorageService', () => {
     service.getLocationTypeData().subscribe(value => {
       response = value;
     });
-    expect(response.country).toBe('morroco');
+    expect(response.country).toBe('mycountry');
   });
 
   it('getRegistrationCentersByName', () => {
     let response = null;
-    service.getRegistrationCentersByName('country', 'morroco').subscribe(value => {
+    service.getRegistrationCentersByName('country', 'mycountry').subscribe(value => {
       response = value;
     });
     expect(response.registrationCenter.centerId).toBe('1001');

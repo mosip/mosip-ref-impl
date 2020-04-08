@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'src/app/app-config.service';
 import { HeaderService } from '../services/header.service';
 import { DataStorageService } from '../services/data-storage.service';
-
+import { version } from 'package.json';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   };
 
   zone: string;
-
+  appVersion = version;
   constructor(
     public sideMenuService: SideMenuService,
     private translateService: TranslateService,
@@ -46,6 +46,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.appVersion);
     console.log('SreenWidth', this.screenResize);
     if (this.headerService.getUsername() !== '') {
       this.dataService

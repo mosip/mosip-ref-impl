@@ -143,14 +143,14 @@
                 "message": "Cliquez sur oui pour créer / modifier le centre",
                 "yesBtnText": "Confirmer",
                 "noBtnText": "Annuler",
-                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
+                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Par conséquent, le centre d'inscription sera mis à jour uniquement pour la langue principale. Voulez-vous continuer?"
             },
             "edit": {
                 "title": "Confirmation",
                 "message": "Cliquez sur oui pour créer / modifier le centre",
                 "yesBtnText": "Confirmer",
                 "noBtnText": "Annuler",
-                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Centre sera créé uniquement dans la langue principale. Voulez-vous continuer?"
+                "mandatorySecondaryFields": "Vous n'avez pas renseigné les données dans la langue secondaire. Par conséquent, le centre d'inscription sera mis à jour uniquement pour la langue principale. Voulez-vous continuer?"
             },
             "update-success": {
                 "title": "Succès",
@@ -276,6 +276,7 @@
         "id": "ID d'enregistrement",
         "status": "Statut",
         "viewMore": "Afficher plus",
+        "viewLess": "Voir moins",
         "errorMessages": {
                 "title": "Erreur",
                 "message": "RID introuvable",

@@ -68,7 +68,11 @@ h5 {
 }
 
 // Confirmation popup
-
+.mat-dialog-title {
+  font-weight: 600;
+  font-family:"Roboto", sans-serif;
+  font-size: 16px;
+}
 .pop-up {
   .pop-up-header {
     padding: 16px !important;
@@ -76,6 +80,8 @@ h5 {
   .mat-dialog-content {
     margin: 0 !important;
     padding: 0 !important;
+    font-family:"Roboto", sans-serif;
+    font-size: small;
   }
   .pop-up-footer  {
     background: #e6e7e7;

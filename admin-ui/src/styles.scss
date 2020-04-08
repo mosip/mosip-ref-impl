@@ -5,10 +5,17 @@
 
 @include angular-material-theme($app-theme);
 
+html {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  -ms-overflow-style: none;
+}
+
 :root {
   font-size: 14px;
 }
-
+.success-img {
+  margin: 16px 0 0 42%;
+}
 .spinner-placer {
   margin: 20% 0 0 40%;
 }
@@ -144,7 +151,7 @@ h3 {
     .forms-container {
       display: flex;
       flex-wrap: wrap;
-      font-size: 9.5px;
+      font-size: 10px;
       .primary-form {
         padding-left: 25px;
         padding-top: 30px;
