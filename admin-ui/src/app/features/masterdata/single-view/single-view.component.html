@@ -5,14 +5,15 @@
 </span>
 <br><br>
 <app-mater-data-common-view
-        *ngIf="mapping && headerData && specFileData && !showSpinner"
+        *ngIf="mapping && specFileData && !showSpinner"
         [masterDataName]="mapping.name[primaryLang]"
         [headerData]="headerData"
         [primaryData]="primaryData"
         [secondaryData]="secondaryData"
         [fields]="specFileData"
         [primaryLang]="primaryLangCode"
-        [secondaryLang]="secondaryLangCode">
+        [secondaryLang]="secondaryLangCode"
+        [masterdataType]="masterdataType">
 </app-mater-data-common-view>
-<mat-card *ngIf="noRecordFound" >{{'singleView.errorMessages.0'| translate}}</mat-card>
+<!-- <mat-card *ngIf="noRecordFound" >{{'singleView.errorMessages.0'| translate}}</mat-card> -->
 <mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>

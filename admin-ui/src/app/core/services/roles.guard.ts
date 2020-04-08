@@ -25,17 +25,19 @@ export class RolesGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const x = appConstants.navItems.filter(item => state.url.indexOf(item.route) >= 0);
-    let flag = false;
+    let flag = true;
     if (x[0].children) {
       const y = x[0].children.filter(item => state.url.indexOf(item.route) >= 0);
+      console.log("y[0].roles>>>"+y[0].roles);
       flag = this.checkRole(y[0].roles);
     } else {
+      console.log("x[0].roles>>>"+x[0].roles);
       flag = this.checkRole(x[0].roles);
     }
     if (flag) {
       return flag;
     } else {
-      this.showMessage();
+      /*this.showMessage();*/
       return flag;
     }
   }
@@ -63,7 +65,6 @@ export class RolesGuard implements CanActivate {
 
   private async showMessage() {
     await this.getMessage();
-    console.log(this.popupMessages);
     this.dialog.open(DialogComponent, {
       width: '350px',
       data: {

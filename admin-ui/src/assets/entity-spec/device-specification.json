@@ -2,6 +2,55 @@
   "auditEventIds": ["ADM-028", "ADM-050"],
   "actionButtons": [
     {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activateCenter"
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
+    },
+    {
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "/admin/masterdata/device-specs/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/masterdata/device-specs/create",
+      "showIn": "Button",
+      "validations": ""
+    },
+    {
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
@@ -15,7 +64,7 @@
     {
       "name": "id",
       "showInListView": "false",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "Machine Spec ID",
         "ara": "معرف الجهاز المواصفات",
@@ -34,7 +83,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "brand",
@@ -44,7 +95,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "model",
@@ -54,11 +107,29 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "deviceTypeName",
       "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Device Type",
+        "ara": "نوع الجهاز",
+        "fra": "Type de Device"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "deviceTypeCode",
+      "showInListView": "false",
       "showInSingleView": "true",
       "label": {
         "eng": "Device Type",
@@ -68,7 +139,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     },
     {
       "name": "minDriverversion",
@@ -82,7 +155,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "description",
@@ -92,7 +167,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "isActive",
@@ -102,7 +179,9 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     },
     {
       "name": "createdDateTime",

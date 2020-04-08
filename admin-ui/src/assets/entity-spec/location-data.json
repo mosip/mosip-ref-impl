@@ -10,7 +10,8 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "activateCenter"
     },
     {
       "buttonName": {
@@ -21,13 +22,32 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
     },
     {
-      "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
       "actionURL": "",
-      "redirectURL": "",
+      "redirectURL": "/admin/masterdata/location/single-view/$id",
       "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/masterdata/location/create",
+      "showIn": "Button",
       "validations": ""
     },
     {
@@ -54,7 +74,9 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey": "id"
+      "idKey": "id",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "zone",
@@ -69,7 +91,9 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey": "id"
+      "idKey": "id",
+      "inputType": "text",
+      "ismandatory": "true"
     },
 
     {
@@ -85,7 +109,9 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey": "code"
+      "idKey": "code",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "province",
@@ -96,7 +122,9 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey": "code"
+      "idKey": "code",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "region",
@@ -107,7 +135,9 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "idKey": "code"
+      "idKey": "code",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "isActive",
@@ -117,11 +147,13 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     },
     {
       "name": "createdDateTime",
-      "showInListView": "false",
+      "showInListView": "true",
       "showInSingleView": "false",
       "label": {
         "eng": "Created Time",
