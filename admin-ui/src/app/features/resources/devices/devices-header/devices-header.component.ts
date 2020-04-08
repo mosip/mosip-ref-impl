@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   Input,
-  ViewEncapsulation
+  ViewEncapsulation,
+  OnChanges
 } from '@angular/core';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';

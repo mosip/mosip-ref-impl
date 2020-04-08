@@ -208,7 +208,7 @@
         "validity": "صلاحية",
         "isActive": "الحالة",
         "zone": "منطقة",
-        "zone": "منطقة",
+        "deviceSpecId": "SpecId الجهاز",
         "language": "عربى",
         "edit": "تصحيح",
         "create": "خلق",

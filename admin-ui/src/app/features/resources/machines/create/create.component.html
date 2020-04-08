@@ -1,3 +1,4 @@
+<mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>
 <div id="flex-single-view" style="padding-top: 12px;">
   <h3>{{ 'machines.header' | translate }}</h3>
   <div class="flex-container">
@@ -98,13 +99,20 @@
                           {{ "machines.validationMessages.ipAddress.required" | translate }}
                           </mat-error>
                         </mat-form-field>
+<<<<<<< HEAD
+=======
+                  
+>>>>>>> Master UI screen dev
                         <mat-form-field>
                           <input
                             matInput
                             [min]="minDate"
                             [matDatepicker]="picker"
                             formControlName="validity"
+<<<<<<< HEAD
                             (dateChange)="captureDatePickerValue($event, 'validity', 'primary')"
+=======
+>>>>>>> Master UI screen dev
                             placeholder="{{ 'machines.validity' | translate }}"
                           />
                           <mat-datepicker-toggle
@@ -112,12 +120,20 @@
                             [for]="picker"
                           ></mat-datepicker-toggle>
                           <mat-datepicker #picker></mat-datepicker>
+<<<<<<< HEAD
+=======
+              
+>>>>>>> Master UI screen dev
                           <mat-error
                             *ngIf="
                               primary.validity.touched && primary.validity.hasError('required')
                             "
                           >
+<<<<<<< HEAD
                           {{ "machines.validationMessages.validity.required" | translate }}
+=======
+                          {{ "devices.validationMessages.validity.required" | translate }}
+>>>>>>> Master UI screen dev
                           </mat-error>
                         </mat-form-field>
                     
@@ -168,6 +184,7 @@
                           {{ "machines.validationMessages.zone.required" | translate }}
                           </mat-error>
                         </mat-form-field>
+<<<<<<< HEAD
                         
                         <mat-form-field>
                             <input
@@ -181,6 +198,9 @@
                           />                    
                         </mat-form-field>
 
+=======
+                    
+>>>>>>> Master UI screen dev
                         <mat-label>{{
                           "machines.machineSpecId" | translate
                         }}</mat-label>
@@ -200,8 +220,11 @@
                             {{ data.fieldValue }}
                           </mat-option>
                         </mat-select>
+<<<<<<< HEAD
 
                         
+=======
+>>>>>>> Master UI screen dev
                     
                 </div>
     
@@ -226,6 +249,7 @@
                     <hr />
                     <br /><br />
                     
+<<<<<<< HEAD
                         <mat-form-field>
                          <input
                             #keyboardRef
@@ -251,17 +275,39 @@
                             }}"
                           />
                            
+=======
+                        <mat-form-field>
+                         <input
+                            #keyboardRef
+                            #nameSecondary
+                            (focus)="scrollPage(nameSecondary, 'secondary', 'name', 8)"
+                            formControlName="name"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.name
+                            }}"
+                          />
+>>>>>>> Master UI screen dev
                         </mat-form-field>
                     
                         <mat-form-field>
                             <input
                             #keyboardRef
+<<<<<<< HEAD
                             #macAddressSecondary
                             (focus)="scrollPage(macAddressSecondary, 'secondary', 'macAddress', 10)"
                             formControlName="macAddress"
                             matInput
                             placeholder="{{
                               secondaryLanguageLabels.macAddress
+=======
+                            #serialNumberSecondary
+                            (focus)="scrollPage(serialNumberSecondary, 'secondary', 'serialNumber', 9)"
+                            formControlName="serialNumber"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.serialNumber
+>>>>>>> Master UI screen dev
                             }}"
                           />
                            
@@ -270,6 +316,7 @@
                         <mat-form-field>
                             <input
                             #keyboardRef
+<<<<<<< HEAD
                             #ipAddressSecondary
                             (focus)="scrollPage(ipAddressSecondary, 'secondary', 'ipAddress', 11)"
                             formControlName="ipAddress"
@@ -332,6 +379,72 @@
                           />
                         </mat-form-field>
 
+=======
+                            #macAddressSecondary
+                            (focus)="scrollPage(macAddressSecondary, 'secondary', 'macAddress', 10)"
+                            formControlName="macAddress"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.macAddress
+                            }}"
+                          />
+                           
+                        </mat-form-field>
+                    
+                        <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #ipAddressSecondary
+                            (focus)="scrollPage(ipAddressSecondary, 'secondary', 'ipAddress', 11)"
+                            formControlName="ipAddress"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.ipAddress
+                            }}"
+                          />
+                        </mat-form-field>
+                    
+                        <mat-form-field>
+                          <input
+                            matInput
+                            [min]="minDate"
+                            [matDatepicker]="picker"
+                            formControlName="validity"
+                            placeholder="{{secondaryLanguageLabels.validity}}"
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    
+                        <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #isActiveSecondary
+                            (focus)="scrollPage(isActiveSecondary, 'secondary', 'isActive', 13)"
+                            formControlName="isActive"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.isActive
+                            }}"
+                          />
+                        </mat-form-field>
+                    
+                        <mat-form-field>
+                          <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
+                          <mat-select formControlName="zone">
+                          <mat-option
+                            *ngFor="let data of dropDownValues.zone.secondary"
+                            [value]="data.code"
+                          >
+                            {{ data.name }}
+                          </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                    
+>>>>>>> Master UI screen dev
                         <mat-form-field class="left-sizing">
                         <mat-label>{{
                           secondaryLanguageLabels.machineSpecId
@@ -345,8 +458,11 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
+<<<<<<< HEAD
 
                       
+=======
+>>>>>>> Master UI screen dev
                   
                 </div>
             </mat-card-content>

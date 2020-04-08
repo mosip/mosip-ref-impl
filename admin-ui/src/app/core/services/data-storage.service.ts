@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import * as appConstants from '../../app.constants';
 import { RequestModel } from '../models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class DataStorageService {
@@ -117,6 +117,7 @@ export class DataStorageService {
       data
     );
   }
+<<<<<<< HEAD
 
   getDropDownValuesForMasterData(
     type: string
@@ -125,8 +126,11 @@ export class DataStorageService {
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type
     );
   }
+=======
+>>>>>>> Master UI screen dev
   
   getZoneData(langCode: string): Observable<any> {
+    console.log("getZoneData>>>");
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
