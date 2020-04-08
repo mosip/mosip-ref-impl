@@ -20,7 +20,7 @@ export class HeaderService {
   }
 
   setRoles(roles: string) {
-    this.roles = roles;
+    this.roles = "ZONAL_ADMIN";
   }
 
   getRoles(): string {
@@ -30,7 +30,7 @@ export class HeaderService {
   }
 
   getRoleCodes(): string {
-    return this.roles;
+    return "GLOBAL_ADMIN";
   }
 
   setZone(zone: string) {

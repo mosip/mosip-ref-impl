@@ -4,7 +4,7 @@ import { PaginationModel } from './core/models/pagination.model';
 import { FilterModel } from './core/models/filter.model';
 import { CenterRequest } from './core/models/centerRequest.model';
 
-export default class Utils {
+export default class Utilss {
 
   static formatDate(date: Date) {
     const pipe = new DatePipe('en-US');

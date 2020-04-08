@@ -15,7 +15,7 @@ export const navItems = [
   {
     displayName: 'menuItems.item1.title',
     icon: './assets/images/home.svg',
-    route: '/admin/home',
+    route: '/admin/resources/center',
     children: null,
     auditEventId: 'ADM-002',
     roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
