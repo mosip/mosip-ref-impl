@@ -35,7 +35,7 @@
       "redirectURL": "",
       "showIn": "Ellipsis",
       "validations": "",
-      "callBackFunction": "decommissionCenter"
+      "callBackFunction": "decommission"
     },
     {
       "buttonName": {

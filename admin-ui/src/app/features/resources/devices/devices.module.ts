@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { CreateComponent } from './create/create.component';
 import { ViewComponent } from './view/view.component';
 import { DevicesRoutingModule } from './devices-routing.module';
@@ -8,6 +9,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { DevicesHeaderComponent } from './devices-header/devices-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
+import { MatKeyboardModule } from 'ngx7-material-keyboard';
+
 
 @NgModule({
   imports: [
@@ -16,7 +19,8 @@ import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
     SharedModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatKeyboardModule
   ],
   declarations: [CreateComponent, ViewComponent, DevicesHeaderComponent],
   providers: [StatusPipe]

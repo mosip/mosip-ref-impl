@@ -174,6 +174,14 @@ export class AuditService {
         auditObject.description = `User cancelled ${data} of a Registration Center`;
         break;
       }
+      case 20: {
+        auditObject.eventName = `Page View: Device Create Form`;
+        auditObject.eventType = 'Navigation: Page View Event';
+        auditObject.moduleId = 'KER-MSD';
+        auditObject.moduleName = 'Kernel Masterdata';
+        auditObject.description = `User visited Device Create/Device Update form`;
+        break;
+      }
     }
     console.log(auditObject);
     this.postAuditLog(auditObject);

@@ -15,7 +15,7 @@ export const navItems = [
   {
     displayName: 'menuItems.item1.title',
     icon: './assets/images/home.svg',
-    route: '/admin/home',
+    route: '/admin/resources/center',
     children: null,
     auditEventId: 'ADM-002',
     roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
@@ -82,6 +82,8 @@ export const processingTimeInterval = 5;
 export const timeSlotsInterval = 30;
 
 export const registrationCenterCreateId = 'string';
+export const registrationDeviceCreateId = 'string';
+export const registrationMachineCreateId = 'string';
 
 export const viewFields = [];
 

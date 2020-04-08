@@ -284,7 +284,7 @@ export class CreateComponent {
       primaryObject
     );
     console.log(request);
-    this.dataStorageService.updateCenter(request).subscribe(updateResponse => {
+    this.dataStorageService.updateData(request).subscribe(updateResponse => {
       console.log('Primary Response' + updateResponse);
       console.log(this.showSecondaryForm);
       if (!updateResponse.errors || updateResponse.errors.length === 0) {
@@ -296,7 +296,7 @@ export class CreateComponent {
             secondaryObject
           );
           this.dataStorageService
-            .updateCenter(secondaryRequest)
+            .updateData(secondaryRequest)
             .subscribe(secondaryResponse => {
               console.log('Secondary Response' + secondaryResponse);
               if (
@@ -752,9 +752,7 @@ export class CreateComponent {
       exceptionalHolidays: [[]],
       isActive: [{ value: false, disabled: true }]
     });
-    if (this.disableForms) {
-      this.primaryForm.disable();
-    }
+    
   }
 
   initializeSecondaryForm() {
@@ -786,9 +784,7 @@ export class CreateComponent {
       exceptionalHolidays: [[]],
       isActive: [{ value: false, disabled: true }]
     });
-    if (this.disableForms) {
-      this.secondaryForm.disable();
-    }
+   
   }
 
   get primary() {

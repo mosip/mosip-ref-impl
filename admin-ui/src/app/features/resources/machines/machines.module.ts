@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MachinesHeaderComponent } from './machines-header/machines-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
+import { MatKeyboardModule } from 'ngx7-material-keyboard';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { StatusPipe } from 'src/app/shared/pipes/status.pipe';
     MaterialModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatKeyboardModule
   ],
   declarations: [ViewComponent, CreateComponent, MachinesHeaderComponent],
   providers: [StatusPipe]

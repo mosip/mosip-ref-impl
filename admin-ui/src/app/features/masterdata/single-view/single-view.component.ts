@@ -83,24 +83,18 @@ export class SingleViewComponent implements OnDestroy {
       .getSpecFileForMasterDataEntity(this.mapping.specFileName)
       .subscribe(response => {
         this.specFileData = response.columnsToDisplay;
-        console.log(this.specFileData);
-        this.auditService.audit(
-          8,
-          response.auditEventIds[1],
-          this.masterdataType
-        );
+        this.auditService.audit(8, response.auditEventIds[1], this.masterdataType);
       });
     if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
       this.primaryLangCode = this.id.split('$')[1];
       this.id = this.id.split('$')[0];
-      await this.getData(this.primaryLangCode, true);
+      await this.getData("eng", true);
     } else {
       await this.getData(this.primaryLangCode, true);
       if (this.showSecondaryForm) {
         await this.getData(this.secondaryLangCode, false);
       }
     }
-    console.log(this.primaryData, this.secondaryData);
     this.setHeaderData();
   }
 
@@ -116,6 +110,7 @@ export class SingleViewComponent implements OnDestroy {
   }
 
   getData(language: string, isPrimary: boolean) {
+    console.log("language>>>"+language);
     return new Promise((resolve, reject) => {
       const filterModel = new FilterModel(
         this.mapping.idKey,
@@ -136,9 +131,10 @@ export class SingleViewComponent implements OnDestroy {
         .subscribe(
           response => {
             if (response.response) {
-              if (isPrimary) {
-                if (response.response.data) {
-                  this.data.push(response.response.data);
+              if (response.response.data) {
+                console.log("response.response.data>>>"+response.response.data);
+                this.data.push(response.response.data);
+                if (isPrimary) {
                   this.primaryData = response.response.data[0];
                 } else {
                   this.noRecordFound = true;
