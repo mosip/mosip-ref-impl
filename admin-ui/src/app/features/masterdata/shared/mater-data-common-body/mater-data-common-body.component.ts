@@ -6,15 +6,14 @@ import {
   Input
 } from '@angular/core';
 
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 import {
   MatKeyboardRef,
-  MatKeyboardComponent,
-  MatKeyboardService
+  MatKeyboardComponent
 } from 'ngx7-material-keyboard';
 
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';

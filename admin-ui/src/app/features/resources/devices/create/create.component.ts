@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AppConfigService } from 'src/app/app-config.service';
@@ -170,7 +170,6 @@ export class CreateComponent{
       .subscribe(response => {
         this.secondaryLanguageLabels = response.devices;
         console.log(this.secondaryLanguageLabels);
-<<<<<<< HEAD
       });
     this.getDevicespecifications();
     this.getZoneData();
@@ -200,37 +199,6 @@ export class CreateComponent{
         this.dropDownValues.deviceTypeCode.secondary =
           response.response.filters;
       });
-=======
-      });
-    this.getDevicespecifications();
-    this.getZoneData();
-    this.initializePrimaryForm();
-    this.initializeSecondaryForm();    
-    this.translateService
-      .getTranslation(this.primaryLang)
-      .subscribe(response => {
-        this.popupMessages = response.devices.popupMessages;
-      });
-  }
-
-  getDevicespecifications() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
-    let request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('devicespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.deviceTypeCode.primary = response.response.filters;
-      });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('devicespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.deviceTypeCode.secondary =
-          response.response.filters;
-      });
->>>>>>> Master UI screen dev
   }
 
   getZoneData() {
@@ -297,17 +265,10 @@ export class CreateComponent{
       serialNumber: [''],
       macAddress: [''],
       ipAddress: [''],
-<<<<<<< HEAD
-      validity: [{ value: '', disabled: true }],
-      zone: [{ value: '', disabled: true }],
-      deviceSpecId: [{ value: '', disabled: true }],
-      isActive: [{ value: true, disabled: true }]
-=======
       validity: [''],
       isActive: [{ value: false, disabled: true }],
       zone: [''],
       deviceSpecId: ['', [Validators.required]]
->>>>>>> Master UI screen dev
     });
   }
 
@@ -486,17 +447,6 @@ export class CreateComponent{
     }
   }
   
-<<<<<<< HEAD
-  captureDatePickerValue(event: any, fieldName: string, type: string) {
-    if (this.primaryForm.controls[fieldName].valid) {
-      this.secondaryForm.controls[fieldName].setValue(event.target.value);
-    } else {
-      this.secondaryForm.controls[fieldName].setValue('');
-    }
-  }
-
-=======
->>>>>>> Master UI screen dev
   saveData() {
     this.createUpdate = true;
     const primaryObject = new DeviceModel(
@@ -537,11 +487,7 @@ export class CreateComponent{
             if (this.showSecondaryForm) {
               console.log('inside secondary block');
               secondaryObject.id = createResponse.response.id;
-<<<<<<< HEAD
-              secondaryObject.isActive = true;
-=======
               secondaryObject.isActive = false;
->>>>>>> Master UI screen dev
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,
@@ -621,11 +567,7 @@ export class CreateComponent{
             if (this.showSecondaryForm) {
               console.log('inside secondary block');
               secondaryObject.id = updateResponse.response.id;
-<<<<<<< HEAD
-              secondaryObject.isActive = true;
-=======
               secondaryObject.isActive = false;
->>>>>>> Master UI screen dev
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,

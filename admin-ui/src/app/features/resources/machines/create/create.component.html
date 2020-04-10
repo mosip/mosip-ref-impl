@@ -99,20 +99,13 @@
                           {{ "machines.validationMessages.ipAddress.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-<<<<<<< HEAD
-=======
                   
->>>>>>> Master UI screen dev
                         <mat-form-field>
                           <input
                             matInput
                             [min]="minDate"
                             [matDatepicker]="picker"
                             formControlName="validity"
-<<<<<<< HEAD
-                            (dateChange)="captureDatePickerValue($event, 'validity', 'primary')"
-=======
->>>>>>> Master UI screen dev
                             placeholder="{{ 'machines.validity' | translate }}"
                           />
                           <mat-datepicker-toggle
@@ -120,20 +113,13 @@
                             [for]="picker"
                           ></mat-datepicker-toggle>
                           <mat-datepicker #picker></mat-datepicker>
-<<<<<<< HEAD
-=======
               
->>>>>>> Master UI screen dev
                           <mat-error
                             *ngIf="
                               primary.validity.touched && primary.validity.hasError('required')
                             "
                           >
-<<<<<<< HEAD
-                          {{ "machines.validationMessages.validity.required" | translate }}
-=======
                           {{ "devices.validationMessages.validity.required" | translate }}
->>>>>>> Master UI screen dev
                           </mat-error>
                         </mat-form-field>
                     
@@ -184,23 +170,7 @@
                           {{ "machines.validationMessages.zone.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-<<<<<<< HEAD
-                        
-                        <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #publicKey
-                            formControlName="publicKey"
-                            matInput
-                            placeholder="{{
-                              'machines.publicKey' | translate
-                            }}"
-                          />                    
-                        </mat-form-field>
-
-=======
                     
->>>>>>> Master UI screen dev
                         <mat-label>{{
                           "machines.machineSpecId" | translate
                         }}</mat-label>
@@ -220,11 +190,19 @@
                             {{ data.fieldValue }}
                           </mat-option>
                         </mat-select>
-<<<<<<< HEAD
 
-                        
-=======
->>>>>>> Master UI screen dev
+                        <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #publicKey
+                            formControlName="publicKey"
+                            matInput
+                            placeholder="{{
+                              'machines.publicKey' | translate
+                            }}"
+                          />
+                    
+                        </mat-form-field>
                     
                 </div>
     
@@ -249,7 +227,6 @@
                     <hr />
                     <br /><br />
                     
-<<<<<<< HEAD
                         <mat-form-field>
                          <input
                             #keyboardRef
@@ -275,111 +252,11 @@
                             }}"
                           />
                            
-=======
-                        <mat-form-field>
-                         <input
-                            #keyboardRef
-                            #nameSecondary
-                            (focus)="scrollPage(nameSecondary, 'secondary', 'name', 8)"
-                            formControlName="name"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.name
-                            }}"
-                          />
->>>>>>> Master UI screen dev
                         </mat-form-field>
                     
                         <mat-form-field>
                             <input
                             #keyboardRef
-<<<<<<< HEAD
-                            #macAddressSecondary
-                            (focus)="scrollPage(macAddressSecondary, 'secondary', 'macAddress', 10)"
-                            formControlName="macAddress"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.macAddress
-=======
-                            #serialNumberSecondary
-                            (focus)="scrollPage(serialNumberSecondary, 'secondary', 'serialNumber', 9)"
-                            formControlName="serialNumber"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.serialNumber
->>>>>>> Master UI screen dev
-                            }}"
-                          />
-                           
-                        </mat-form-field>
-                    
-                        <mat-form-field>
-                            <input
-                            #keyboardRef
-<<<<<<< HEAD
-                            #ipAddressSecondary
-                            (focus)="scrollPage(ipAddressSecondary, 'secondary', 'ipAddress', 11)"
-                            formControlName="ipAddress"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.ipAddress
-                            }}"
-                          />
-                        </mat-form-field>
-                    
-                        <mat-form-field>
-                          <input
-                            matInput
-                            [min]="minDate"
-                            [matDatepicker]="picker"
-                            formControlName="validity"
-                            placeholder="{{secondaryLanguageLabels.validity}}"
-                          />
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="picker"
-                          ></mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                          <mat-label>{{ secondaryLanguageLabels["isActive"] }}</mat-label>
-                          <mat-select formControlName="isActive">
-                            <mat-option
-                              *ngFor="let data of dropDownValues.isActive"
-                              [value]="data"
-                            >
-                              {{ data | status }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                          <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
-                          <mat-select formControlName="zone">
-                          <mat-option
-                            *ngFor="let data of dropDownValues.zone.secondary"
-                            [value]="data.code"
-                          >
-                            {{ data.name }}
-                          </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #publicKey
-                            (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
-                            formControlName="publicKey"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.publicKey
-                            }}"
-                          />
-                        </mat-form-field>
-
-=======
                             #macAddressSecondary
                             (focus)="scrollPage(macAddressSecondary, 'secondary', 'macAddress', 10)"
                             formControlName="macAddress"
@@ -444,7 +321,6 @@
                           </mat-select>
                         </mat-form-field>
                     
->>>>>>> Master UI screen dev
                         <mat-form-field class="left-sizing">
                         <mat-label>{{
                           secondaryLanguageLabels.machineSpecId
@@ -458,11 +334,21 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-<<<<<<< HEAD
 
-                      
-=======
->>>>>>> Master UI screen dev
+
+                      <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #publicKey
+                            (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
+                            formControlName="publicKey"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.publicKey
+                            }}"
+                          />
+                        </mat-form-field>
+
                   
                 </div>
             </mat-card-content>

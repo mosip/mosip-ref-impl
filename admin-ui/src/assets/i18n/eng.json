@@ -257,6 +257,9 @@
             },
             "deviceSpecId": {
                 "required": "Device SpecId is required"
+            },
+            "publicKey": {
+                "required": "Public Key is required"
             } 
         },
         "popupMessages": {

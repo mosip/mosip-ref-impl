@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AppConfigService } from 'src/app/app-config.service';
@@ -256,12 +256,7 @@ export class CreateComponent{
       validity: ['', [Validators.required]],
       isActive: ['', [Validators.required]],
       zone: ['', [Validators.required]],
-<<<<<<< HEAD
-      machineSpecId: ['', [Validators.required]],
-      publicKey: ['', [Validators.required]],
-=======
       machineSpecId: ['', [Validators.required]]
->>>>>>> Master UI screen dev
     });
   }
 
@@ -458,17 +453,6 @@ export class CreateComponent{
     }
   }
 
-<<<<<<< HEAD
-  captureDatePickerValue(event: any, fieldName: string, type: string) {
-    if (this.primaryForm.controls[fieldName].valid) {
-      this.secondaryForm.controls[fieldName].setValue(event.target.value);
-    } else {
-      this.secondaryForm.controls[fieldName].setValue('');
-    }
-  }
-
-=======
->>>>>>> Master UI screen dev
   saveData() {
     this.createUpdate = true;
     const primaryObject = new MachineModel(
@@ -479,10 +463,8 @@ export class CreateComponent{
       this.primaryForm.controls.macAddress.value,
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
-<<<<<<< HEAD
       this.primaryForm.controls.publicKey.value,
-=======
->>>>>>> Master UI screen dev
+      this.primaryForm.controls.publicKey.value,
       this.primaryLang,
       "0",           
       true,        
@@ -495,10 +477,8 @@ export class CreateComponent{
       this.secondaryForm.controls.macAddress.value,
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
-<<<<<<< HEAD
       this.secondaryForm.controls.publicKey.value,
-=======
->>>>>>> Master UI screen dev
+      this.secondaryForm.controls.publicKey.value,
       this.secondaryLang, 
       "0",     
       true,               
@@ -508,16 +488,6 @@ export class CreateComponent{
       null,
       primaryObject
     );
-<<<<<<< HEAD
-    this.dataStorageService
-      .createMachine(primaryRequest)
-      .subscribe(createResponse => {
-        if (!createResponse.errors) {
-          if (this.secondaryForm.valid) {
-            if (this.showSecondaryForm) {
-              secondaryObject.id = createResponse.response.id;
-              secondaryObject.isActive = true;
-=======
     console.log("primaryRequest>>>",primaryRequest);
     this.dataStorageService
       .createMachine(primaryRequest)
@@ -529,16 +499,12 @@ export class CreateComponent{
               console.log('inside secondary block');
               secondaryObject.id = createResponse.response.id;
               secondaryObject.isActive = false;
->>>>>>> Master UI screen dev
               const secondaryRequest = new RequestModel(
               appConstants.registrationMachineCreateId,
               null,
               secondaryObject
             );
-<<<<<<< HEAD
-=======
               console.log(JSON.stringify(secondaryRequest));
->>>>>>> Master UI screen dev
               this.dataStorageService
               .createMachine(secondaryRequest)
               .subscribe(secondaryResponse => {
@@ -581,10 +547,8 @@ export class CreateComponent{
       this.primaryForm.controls.macAddress.value,
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
-<<<<<<< HEAD
       this.primaryForm.controls.publicKey.value,
-=======
->>>>>>> Master UI screen dev
+      this.primaryForm.controls.publicKey.value,
       this.primaryLang,
       this.data[0].id,           
       true,  
@@ -598,10 +562,8 @@ export class CreateComponent{
       this.secondaryForm.controls.macAddress.value,
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
-<<<<<<< HEAD
       this.secondaryForm.controls.publicKey.value,
-=======
->>>>>>> Master UI screen dev
+      this.secondaryForm.controls.publicKey.value,
       this.secondaryLang, 
       this.data[0].id,     
       true,               
@@ -611,35 +573,6 @@ export class CreateComponent{
       null,
       primaryObject
     );
-<<<<<<< HEAD
-    this.dataStorageService
-      .updateData(primaryRequest)
-      .subscribe(createResponse => {
-        if (!createResponse.errors) {
-          secondaryObject.id = createResponse.response.id;
-          secondaryObject.isActive = true;
-          const secondaryRequest = new RequestModel(
-            appConstants.registrationMachineCreateId,
-            null,
-            secondaryObject
-          );
-          this.dataStorageService
-          .updateData(secondaryRequest)
-          .subscribe(secondaryResponse => {
-            console.log('Secondary Response' + secondaryResponse);
-            if (!secondaryResponse.errors) {
-              this.showMessage('update-success', createResponse.response)
-                .afterClosed()
-                .subscribe(() => {
-                  this.primaryForm.reset();
-                  this.secondaryForm.reset();
-                  this.router.navigateByUrl('admin/resources/machines/view');
-                });
-            } else {
-              this.showMessage('update-error');
-            }
-          });          
-=======
     console.log("primaryRequest>>>",primaryRequest);
     this.dataStorageService
       .updateData(primaryRequest)
@@ -683,7 +616,6 @@ export class CreateComponent{
                       this.router.navigateByUrl('admin/resources/machines/view');
                     });
           }
->>>>>>> Master UI screen dev
         } else {
           this.showMessage('update-error');
         }
@@ -746,30 +678,26 @@ export class CreateComponent{
     this.primaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
-<<<<<<< HEAD
     this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-=======
->>>>>>> Master UI screen dev
+    //this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.primaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
   setSecondaryFormValues() {
     this.secondaryForm.controls.zone.setValue(this.data[0].zoneCode);
-<<<<<<< HEAD
     this.secondaryForm.controls.validity.setValue(this.data[1].validityDateTime);
     this.secondaryForm.controls.name.setValue(this.data[1].name);    
     this.secondaryForm.controls.macAddress.setValue(this.data[1].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
     this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-=======
     this.secondaryForm.controls.validity.setValue(this.data[0].validityDateTime);
     this.secondaryForm.controls.name.setValue(this.data[0].name);    
     this.secondaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
->>>>>>> Master UI screen dev
+    //this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
@@ -812,8 +740,4 @@ export class CreateComponent{
         this.router.navigateByUrl(`admin/resources/machines/view`)
       );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Master UI screen dev
