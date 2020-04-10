@@ -5,7 +5,6 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { DeviceRequest } from 'src/app/core/models/deviceRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
-import { DeviceSpecification } from 'src/app/core/models/device-specification';
 import { RequestModel } from 'src/app/core/models/request.model';
 import * as appConstants from '../../../../app.constants';
 import { HeaderModel } from 'src/app/core/models/header.model';
