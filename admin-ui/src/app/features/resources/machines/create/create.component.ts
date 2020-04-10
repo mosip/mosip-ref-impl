@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AppConfigService } from 'src/app/app-config.service';
@@ -7,7 +7,6 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
 import * as appConstants from '../../../../app.constants';
-import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material';
@@ -463,6 +462,7 @@ export class CreateComponent{
       this.primaryForm.controls.macAddress.value,
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
+      this.primaryForm.controls.publicKey.value,
       this.primaryLang,
       "0",           
       true,        
@@ -475,6 +475,7 @@ export class CreateComponent{
       this.secondaryForm.controls.macAddress.value,
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
+      this.secondaryForm.controls.publicKey.value,
       this.secondaryLang, 
       "0",     
       true,               
@@ -543,6 +544,7 @@ export class CreateComponent{
       this.primaryForm.controls.macAddress.value,
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
+      this.primaryForm.controls.publicKey.value,
       this.primaryLang,
       this.data[0].id,           
       true,  
@@ -556,6 +558,7 @@ export class CreateComponent{
       this.secondaryForm.controls.macAddress.value,
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
+      this.secondaryForm.controls.publicKey.value,
       this.secondaryLang, 
       this.data[0].id,     
       true,               
@@ -670,6 +673,7 @@ export class CreateComponent{
     this.primaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
+    //this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.primaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
@@ -681,6 +685,7 @@ export class CreateComponent{
     this.secondaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
+    //this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }

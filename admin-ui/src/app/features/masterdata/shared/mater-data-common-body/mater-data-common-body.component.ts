@@ -1,39 +1,23 @@
 import {
   Component,
   OnInit,
-  ViewEncapsulation,
   ElementRef,
   ViewChildren, 
   Input
 } from '@angular/core';
 
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
-import * as appConstants from '../../../../app.constants';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 import {
   MatKeyboardRef,
-  MatKeyboardComponent,
-  MatKeyboardService
+  MatKeyboardComponent
 } from 'ngx7-material-keyboard';
 
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
-
-import { CenterTypeModel } from 'src/app/core/models/center-type.model';
-import { BlacklistedWordsModel } from 'src/app/core/models/blacklisted-words.model';
-import { GenderModel } from 'src/app/core/models/gender.model';
-import { IndividualTypeModel } from 'src/app/core/models/individual-type.model';
-import { LocationModel } from 'src/app/core/models/location.model';
-import { TemplateModel } from 'src/app/core/models/template.model';
-import { TitleModel } from 'src/app/core/models/title.model';
-import { DeviceSpecsModel } from 'src/app/core/models/device-specs.model';
-import { DeviceTypesModel } from 'src/app/core/models/device-types.model';
-import { MachineSpecsModel } from 'src/app/core/models/machine-specs.model'
-import { MachineTypesModel } from 'src/app/core/models/machine-types.model';
-import { DocumentTypeModel } from 'src/app/core/models/document-type.model';
 
 import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';

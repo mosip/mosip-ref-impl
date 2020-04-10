@@ -257,6 +257,9 @@
             },
             "deviceSpecId": {
                 "required": "Device SpecId is required"
+            },
+            "publicKey": {
+                "required": "Public Key is required"
             } 
         },
         "popupMessages": {
@@ -318,6 +321,7 @@
         "validity": "Valid Date Time",
         "isActive": "Status",
         "zone": "Zone",
+        "publicKey": "Public Key",
         "language": "English",
         "edit": "Edit",
         "create": "Create",

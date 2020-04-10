@@ -1,14 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AppConfigService } from 'src/app/app-config.service';
 import { DeviceRequest } from 'src/app/core/models/deviceRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
-import { DeviceSpecification } from 'src/app/core/models/device-specification';
 import { RequestModel } from 'src/app/core/models/request.model';
 import * as appConstants from '../../../../app.constants';
-import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { HeaderModel } from 'src/app/core/models/header.model';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material';

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import * as appConstants from '../../app.constants';
 import { RequestModel } from '../models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class DataStorageService {

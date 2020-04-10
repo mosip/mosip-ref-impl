@@ -190,6 +190,19 @@
                             {{ data.fieldValue }}
                           </mat-option>
                         </mat-select>
+
+                        <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #publicKey
+                            formControlName="publicKey"
+                            matInput
+                            placeholder="{{
+                              'machines.publicKey' | translate
+                            }}"
+                          />
+                    
+                        </mat-form-field>
                     
                 </div>
     
@@ -321,6 +334,19 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
+
+                      <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #publicKey
+                            (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
+                            formControlName="publicKey"
+                            matInput
+                            placeholder="{{
+                              secondaryLanguageLabels.publicKey
+                            }}"
+                          />
+                        </mat-form-field>
                   
                 </div>
             </mat-card-content>
