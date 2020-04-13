@@ -35,6 +35,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   secondaryForm: FormGroup;
   popupMessages: any;
   pageName: string;
+  disableForms: boolean;
 
   @Input() primaryData: any;
   @Input() secondaryData: any;
@@ -64,6 +65,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   ngOnInit() {
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     this.isCreateForm = false;
+    this.disableForms = false;
     let url = this.router.url.split('/')[3];
     if(!this.primaryData){
       this.isCreateForm = true;
