@@ -2,31 +2,207 @@
     <mat-card>
         <mat-card-content class="forms-container">
             <div class="primary-form">
-                <strong class="title">{{ languageNames[primaryLang] }}</strong>
+                <strong class="title">{{'center.language' | translate }}</strong>
+                <span
+                  *ngIf="!disableForms"
+                  matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
+                  (click)="openKeyboard('primary')"
+                  style="float: right; color: grey; cursor: pointer;"
+                  ><i class="material-icons">keyboard</i></span
+                >
                 <hr />
                 <br /><br />
                 <div *ngFor="let field of fields" class="mat-form1">
-                    <mat-form-field *ngIf="field.showInSingleView === 'true'">
-                        <input matInput disabled placeholder="{{ field.label[primaryLang] }}" [value]="primaryData[field.name] | status">
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text'">     
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'primary')"
+                        matInput
+                        placeholder="{{
+                          field.label[primaryLang] | translate
+                        }}"
+                        [value]="primaryData[field.name]"
+                        field.required
+                      />                     
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'calendar'">
+                      <input
+                        matInput
+                        [min]="minDate"
+                        [matDatepicker]="picker"
+                        (dateChange)="captureDatePickerValue($event, field.name, 'primary')"
+                        formControlName="holidayDate"
+                        placeholder="{{field.label[primaryLang] | translate}}"
+                        [value]="primaryData[field.name]"
+                        field.required
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'dropdown'">
+                      <div *ngIf="field.name === 'deviceTypeCode'">
+                      <mat-select
+                        formControlName="deviceTypeCode"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.deviceTypeCode.primary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.fieldCode"
+                        >
+                          {{ data.fieldValue }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'machineTypeCode'">
+                      <mat-select
+                        formControlName="machineTypeCode"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.machineTypeCode.primary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.fieldCode"
+                        >
+                          {{ data.fieldValue }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'isActive'">
+                      <mat-select
+                        id="{{field.name}}"
+                        placeholder="{{ field.label[primaryLang] }}"
+                        [value]="primaryData[field.name]" 
+                        >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.isActive"
+                          [value]="data"
+                        >
+                          {{ data | status }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
                     </mat-form-field>
                 </div>
             </div>
-
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-
-            <div *ngIf="secondaryData && showSecondaryForm" class="secondary-form">
+            <div *ngIf="showSecondaryForm" class="secondary-form">
                 <strong class="title">{{ languageNames[secondaryLang] }}</strong>
+                <span
+                  *ngIf="!disableForms"
+                  matTooltip="{{languageNames['keyboard-tooltip'] | translate }}"
+                  (click)="openKeyboard('secondary')"
+                  style="float: right; color: grey; cursor: pointer;"
+                  ><i class="material-icons">keyboard</i></span
+                >
                 <hr />
                 <br /><br />
                 <div *ngFor="let field of fields" class="mat-form2">
-                        <mat-form-field *ngIf="field.showInSingleView === 'true'">
-                            <input matInput disabled placeholder="{{ field.label[secondaryLang] }}" [value]="secondaryData[field.name] | status">
-                        </mat-form-field>
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text'">
+                      
+                            <input
+                              #keyboardRef
+                              #{{field.name}}
+                              (keyup)="captureValue($event, field.name, 'secondary')"
+                              matInput
+                              placeholder="{{
+                                field.label[secondaryLang]
+                              }}"
+                              [value]="secondaryData[field.name]"
+                            />
+                       
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'calendar'">
+                      <input
+                        matInput
+                        [min]="minDate"
+                        [matDatepicker]="picker1"
+                        (dateChange)="captureDatePickerValue($event, field.name, 'secondary')"
+                        formControlName="holidayDate"
+                        placeholder="{{field.label[secondaryLang] | translate}}"
+                        [value]="secondaryData[field.name]"
+                        field.required
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker1"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+
+                      <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'dropdown'">
+                      <div *ngIf="field.name === 'deviceTypeCode'">
+                       <mat-select
+                        formControlName="deviceTypeCode"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.deviceTypeCode.secondary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.fieldCode"
+                        >
+                          {{ data.fieldValue }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'machineTypeCode'">
+                       <mat-select
+                        formControlName="machineTypeCode"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.machineTypeCode.secondary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.fieldCode"
+                        >
+                          {{ data.fieldValue }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'isActive'">
+                      <mat-select
+                        id="{{field.name}}"
+                        placeholder="{{ field.label[secondaryLang] }}"
+                        [value]="secondaryData[field.name]"
+                        >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.isActive"
+                          [value]="data"
+                        >
+                          {{ data | status }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                    </mat-form-field>        
                 </div>
             </div>
         </mat-card-content>
         <mat-card-actions class="action-buttons">
-            <!-- <button mat-raised-button>{{ 'center.create' | translate }}</button> -->
+        <button id="createButton" mat-raised-button (click)="submit()">
+        Save
+        </button>
+        <button mat-raised-button (click)="changePage('list')">
+        Cancel
+        </button>
         </mat-card-actions>
     </mat-card>
 </div>

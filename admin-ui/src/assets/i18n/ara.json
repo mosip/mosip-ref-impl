@@ -202,13 +202,19 @@
         "title":"الأجهزة",
         "header": "جهاز",
         "name": "اسم الجهاز",
-        "serialNumber": "رقم سري",
+        "serialNumber": "ررقم سري",
         "macAddress": "MAC عنوان",
         "ipAddress": "IP عنوان",
-        "validity": "تاريخ صحيح",
-        "isActive": "نشط",
+        "validity": "صلاحية",
+        "isActive": "الحالة",
+        "zone": "منطقة",
         "zone": "منطقة",
         "language": "عربى",
+        "edit": "تصحيح",
+        "create": "خلق",
+        "cancel": "إلغاء",
+        "status": "الحالة",
+        "keyboard-tooltip": "انقر للحصول على لوحة المفاتيح الافتراضية (العربية)",
         "errorMessages": {
             "title": "خطأ",
             "message": "لاتوجد بيانات",
@@ -224,9 +230,15 @@
         "macAddress": "MAC عنوان",
         "ipAddress": "IP عنوان",
         "validity": "تاريخ صحيح",
-        "isActive": "نشط",
+        "status": "الحالة",
+        "isActive": "الحالة",
         "zone": "منطقة",
+        "publicKey": "المفتاح العمومي",
         "language": "عربى",
+        "edit": "تصحيح",
+        "create": "خلق",
+        "cancel": "إلغاء",
+        "keyboard-tooltip": "انقر للحصول على لوحة المفاتيح الافتراضية (العربية)",
         "errorMessages": {
             "title": "خطأ",
             "message": "لاتوجد بيانات",
@@ -332,5 +344,57 @@
             "cancelTxt":"إلغاء",
             "applyTxt":"تطبيق"
         }
-    }
+    },
+        "popupMessages": {
+            "create": {
+                "title": "التأكيد",
+                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+                "yesBtnText": "تؤكد",
+                "noBtnText": "إلغاء",
+                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+            },
+            "edit": {
+                "title": "التأكيد",
+                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+                "yesBtnText": "تؤكد",
+                "noBtnText": "إلغاء",
+                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+            },
+            "update-success": {
+                "title": "نجاح",
+                "message": ["يتم تحديث تفاصيل المركز بنجاح. \n معرف المركز: ", " \n اسم المركز: "],
+                "btnTxt": "حسنا"
+            },
+            "update-error": {
+                "title": "خطأ",
+                "message": "كانت هناك بعض المشاكل في تحديث المركز. حاول مرة اخرى",
+                "btnTxt": "حسنا"
+            },
+            "create-success": {
+                "title": "نجاح",
+                "message": ["تم إنشاء المركز بنجاح باستخدام معرف المركز:", "واسم المركز:"],
+                "btnTxt": "حسنا"
+            },
+            "create-error": {
+                "title": "خطأ",
+                "message": "كان هناك بعض المشكلة في إنشاء مركز. حاول مرة اخرى",
+                "btnTxt": "حسنا"
+            },
+            "navigation-popup": {
+                "title": "التأكيد",
+                "message": "هل أنت متأكد أنك تريد التنقل بعيدًا عن هذه الصفحة؟ سيتم فقد أي بيانات غير محفوظة.",
+                "yesBtnTxt": "غادر",
+                "noBtnTxt": "البقاء"
+            },
+            "noData": {
+                "title": "خطأ",
+                "message": "لا يوجد سجلات",
+                "btnTxt": "حسنا"
+            },
+            "lunchTimeValidation": {
+                "title": "خطأ",
+                "message": "يرجى تحديد توقيت المركز قبل اختيار توقيت الغداء",
+                "btnTxt": "حسنا"
+            }
+        }
 }

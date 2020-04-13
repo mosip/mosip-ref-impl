@@ -30,7 +30,7 @@ export class DocumentCategoryMappingService {
   }
 
   getMappedDoc(code: string, lang: string): Observable<any> {
-    return this.http.get(this.BASE_URL + URL.mappedDocUrl + code + '/' + lang).pipe(map(response => {
+    return this.http.get(this.BASE_URL + 'masterdata/validdocuments/' + code +'/'+ lang).pipe(map(response => {
       return response;
     }));
   }
@@ -39,6 +39,22 @@ export class DocumentCategoryMappingService {
     return this.http.get(this.BASE_URL + URL.unMappedDocUrl + this.primaryLang).pipe(map(response => {
       return response;
     }));
+  }
+
+  updateMappedDoc(doccategorycode: string, doctypecode: string): Observable<any> {
+
+    return this.http.put(
+      this.BASE_URL + 'masterdata/validdocuments/map/' + doccategorycode + '/' + doctypecode,
+      ""
+    );
+
+  }
+
+  updateUnMappeddoc(doccategorycode: string, doctypecode: string): Observable<any> {
+    return this.http.put(
+      this.BASE_URL + 'masterdata/validdocuments/unmap/' + doccategorycode + '/' + doctypecode,
+      ""
+    );
   }
 
   setMappedDoc(item: any) {

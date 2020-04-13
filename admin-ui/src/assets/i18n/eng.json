@@ -221,11 +221,93 @@
         "validity": "Valid Date Time",
         "isActive": "Status",
         "zone": "Zone",
+        "deviceSpecId": "Device SpecId",
         "language": "English",
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "status": "Status",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
         "errorMessages": {
             "title": "Error",
             "message": "No Data Found",
             "btnTxt": "Ok"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "Device Name is required"
+            },
+            "serialNumber": {
+                "required": "Serial Number is required"
+            },
+            "macAddress": {
+                "required": "MAC Address is required"
+            },
+            "ipAddress": {
+                "required": "IP Address is required"
+            },
+            "validity": {
+                "required": "Validity is required"
+            },
+            "isActive": {
+                "required": "Status is required"
+            },
+            "zone": {
+                "required": "IP Address is required"
+            },
+            "deviceSpecId": {
+                "required": "Device SpecId is required"
+            },
+            "publicKey": {
+                "required": "Public Key is required"
+            } 
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Registration Device in ",". Please ensure that all the information is correct. Device ID will be generated once you Confirm"],
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a Registration Device. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": ["Device details are updated successfully. \n Device ID: ", " \n CenDeviceter Name: "],
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the device. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Device is created Successfully with Device ID: ", " and Device Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a device. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            }
         }
     },
     "machines": {
@@ -239,11 +321,89 @@
         "validity": "Valid Date Time",
         "isActive": "Status",
         "zone": "Zone",
+        "publicKey": "Public Key",
         "language": "English",
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
         "errorMessages": {
             "title": "Error",
             "message": "No Data Found",
             "btnTxt": "Ok"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "Machine Name is required"
+            },
+            "serialNumber": {
+                "required": "Serial Number is required"
+            },
+            "macAddress": {
+                "required": "MAC Address is required"
+            },
+            "ipAddress": {
+                "required": "IP Address is required"
+            },
+            "validity": {
+                "required": "Validity is required"
+            },
+            "isActive": {
+                "required": "Status is required"
+            },
+            "zone": {
+                "required": "IP Address is required"
+            },
+            "machineSpecId": {
+                "required": "Machines Spec ID is required"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Registration Machine in ",". Please ensure that all the information is correct. Machine ID will be generated once you Confirm"],
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Machine will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a Registration Machine. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Machine will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": ["Machine details are updated successfully. \n Machine ID: ", " \n CenMachineter Name: "],
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the Machine. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Machine is created Successfully with Machine ID: ", " and Machine Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a Machine. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            }
         }
     },
     "errorPopup": {
@@ -287,37 +447,37 @@
     },
     "actionMessages" : {
         "decommission": {
-            "success-message": ["The Registration Center ", " is Decommissioned successfully"],
+            "success-message": ["", " is Decommissioned successfully"],
             "success-title": "Success",
-            "error-message": "Cannot decommission the Center as some resources (Users/Machines/Devices) are still mapped to it.\n \n Please un-map these resources before decommission the Center",
+            "error-message": ["Cannot decommission ", " is still mapped with some other resources. \nPlease un-map the resources before decommissioning"],
             "error-title": "Error",
             "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
-            "confirmation-message": ["Do you want to Decommission the Registration Center ", " ? \n \n You cannot undo this action once you click on Confirm."],
-            "confirmation-title": "Confirm Decommission"
+            "confirmation-message": ["Do you want to Decommission ", " ? \n You cannot undo this action once you click on Confirm."],
+            "confirmation-title": "Confirmation"
         },
         "activate": {
-            "success-message": ["Registration Center ", " is Activated Successfully"],
+            "success-message": ["", " is Activated Successfully"],
             "success-title": "Success",
-            "error-message": "Center Could not be Activated",
+            "error-message": ["", " Could not be Activated"],
             "error-title": "Error",
             "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
-            "confirmation-message": ["Do you want to Activate the Registration Center ", "? \n \n You can Deactivate it later if you wish. Till then it will be set as Active"],
-            "confirmation-title": "Confirm Center Activation" 
+            "confirmation-message": ["Do you want to Activate ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
+            "confirmation-title": "Confirmation"
         },
         "deactivate": {
-            "success-message": ["Registration Center ", " is Deactivated Successfully"],
+            "success-message": ["", " is Deactivated Successfully"],
             "success-title": "Success",
-            "error-message": "Center Could not be Deactivated",
+            "error-message": ["", " Could not be Deactivated"],
             "error-title": "Error",
             "btnTxt": "Done",
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
-            "confirmation-message": ["Do you want to Deactivate the Registration Center ", " ? \n \n You can Activate it later if you wish. Till then it will be set as Inactive"],
-            "confirmation-title": "Confirm Center Deactivation"
+            "confirmation-message": ["Do you want to Deactivate  ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
+            "confirmation-title": "Confirmation"
         }
     },
     "detailView":{
