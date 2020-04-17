@@ -52,7 +52,7 @@ export const APPEND_URL = {
   master_data: 'v1/masterdata/',
   auth: 'login/',
   cancelAppointment: 'appointment/',
-  captcha:'captcha/'
+  captcha:'captcha/validatecaptcha'
 };
 
 export const PARAMS_KEYS = {
