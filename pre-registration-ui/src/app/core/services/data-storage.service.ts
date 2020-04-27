@@ -377,6 +377,7 @@ export class DataStorageService {
   verifyGCaptcha(captcha){
     console.log(captcha);
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.httpClient.post('http://localhost:9089/preregistration/v1/captcha/validatecaptcha',captcha);
+    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
+    return this.httpClient.post(url,captcha);
   }
 }

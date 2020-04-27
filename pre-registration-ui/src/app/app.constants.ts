@@ -51,7 +51,8 @@ export const APPEND_URL = {
   send_notification: 'notify',
   master_data: 'v1/masterdata/',
   auth: 'login/',
-  cancelAppointment: 'appointment/'
+  cancelAppointment: 'appointment/',
+  captcha:'captcha/'
 };
 
 export const PARAMS_KEYS = {
