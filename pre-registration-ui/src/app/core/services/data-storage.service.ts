@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import * as appConstants from '../../app.constants';
 import { AppConfigService } from '../../app-config.service';
@@ -372,5 +372,11 @@ export class DataStorageService {
   onLogout() {
     const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.auth + appConstants.APPEND_URL.logout;
     return this.httpClient.post(url, '');
+  }
+
+  verifyGCaptcha(captcha){
+    console.log(captcha);
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.httpClient.post('http://localhost:9089/preregistration/v1/captcha/validatecaptcha',captcha);
   }
 }

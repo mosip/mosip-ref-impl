@@ -19,7 +19,8 @@ export const IDS = {
   sendOtp: 'mosip.pre-registration.login.sendotp',
   validateOtp: 'mosip.pre-registration.login.useridotp',
   documentUpload: 'mosip.pre-registration.document.upload',
-  applicantTypeId: 'mosip.applicanttype.fetch'
+  applicantTypeId: 'mosip.applicanttype.fetch',
+  captchaId: 'mosip.pre-registration.captcha.id.validate'
 };
 
 export const APPEND_URL = {
@@ -107,7 +108,8 @@ export const CONFIG_KEYS = {
   mosip_preregistration_auto_logout_ping: 'mosip.preregistration.auto.logout.ping',
   preregistration_document_alllowe_files: 'preregistration.documentupload.allowed.file.type',
   preregistration_document_alllowe_file_size: 'preregistration.documentupload.allowed.file.size',
-  preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength'
+  preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
+  google_recaptcha_site_key: 'google.recaptcha.site.key'
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {
