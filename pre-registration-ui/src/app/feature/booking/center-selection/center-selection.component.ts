@@ -255,9 +255,14 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
         this.dataService.getWorkingDays(center.id, this.primaryLang).subscribe(response => {
           console.log(response);
           response[appConstants.RESPONSE]['workingdays'].forEach(day => {
-            center.workingDays = center.workingDays === undefined ? '' : center.workingDays + day.name + ', ';
+            if (day.working === true || ((day.working === null || day.working === undefined) && day.globalWorking === true)) { 
+              center.workingDays = center.workingDays === undefined ? '' : center.workingDays + day.name + ', ';
+            }
           });
-          center.workingDays = center.workingDays.substring(0, center.workingDays.length - 2);
+          if (center.workingDays) {
+            center.workingDays = center.workingDays.substring(0, center.workingDays.length - 2);
+          }
+          
           this.isWorkingDaysAvailable = true;
           resolve(true);
         });
