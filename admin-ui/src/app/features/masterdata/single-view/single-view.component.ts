@@ -86,9 +86,14 @@ export class SingleViewComponent implements OnDestroy {
         this.auditService.audit(8, response.auditEventIds[1], this.masterdataType);
       });
     if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
-      this.primaryLangCode = this.id.split('$')[1];
-      this.id = this.id.split('$')[0];
-      await this.getData("eng", true);
+      if(this.id){
+        this.primaryLangCode = this.id.split('$')[1];
+        this.id = this.id.split('$')[0];
+        await this.getData("eng", true);
+        if (this.showSecondaryForm) {
+          await this.getData(this.secondaryLangCode, false);
+        }
+      }      
     } else {
       await this.getData(this.primaryLangCode, true);
       if (this.showSecondaryForm) {
@@ -99,18 +104,19 @@ export class SingleViewComponent implements OnDestroy {
   }
 
   setHeaderData() {
-    this.headerData = new HeaderModel(
-      this.primaryData[this.mapping.nameKey],
-      this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
-      this.primaryData.createdBy ? this.primaryData.createdBy : '-',
-      this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
-      this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
-    );
+    if(this.primaryData){
+      this.headerData = new HeaderModel(
+        this.primaryData[this.mapping.nameKey],
+        this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
+        this.primaryData.createdBy ? this.primaryData.createdBy : '-',
+        this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
+        this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
+      );
+    }    
     this.showSpinner = false;
   }
 
   getData(language: string, isPrimary: boolean) {
-    console.log("language>>>"+language);
     return new Promise((resolve, reject) => {
       const filterModel = new FilterModel(
         this.mapping.idKey,
@@ -132,16 +138,14 @@ export class SingleViewComponent implements OnDestroy {
           response => {
             if (response.response) {
               if (response.response.data) {
-                console.log("response.response.data>>>"+response.response.data);
                 this.data.push(response.response.data);
                 if (isPrimary) {
                   this.primaryData = response.response.data[0];
                 } else {
+                  this.secondaryData = response.response.data[0];
                   this.noRecordFound = true;
                   this.showSpinner = false;
                 }
-              } else if (response.response.data && !isPrimary) {
-                this.secondaryData = response.response.data[0];
               }
             }
             resolve(true);
