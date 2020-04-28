@@ -1,7 +1,7 @@
 {
     "primaryLangCode": "eng",
     "secondaryLangCode": "ara",
-    "baseUrl": "http://localhost:8080/v1/",
+    "baseUrl": "https://dev.mosip.io/v1/",
     "adminUrl":"/admin-ui/"
 
 } 

@@ -16,7 +16,10 @@ export class CenterDropdown {
     public lunchStartTime: any = [],
     public lunchEndTime: any = [],
     public deviceTypeCode: any = {},
-    public machineTypeCode: any = {},    
+    public machineTypeCode: any = {},  
+    public fileFormatCode: any = {},  
+    public templateTypeCode: any = {},
+    public moduleId: any = {},    
     public isActive = [true, false]
   ) {}
 }
