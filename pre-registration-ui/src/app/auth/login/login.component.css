@@ -20,24 +20,27 @@
 
 .form_wrapper {
   margin: 4% 0%;
-  line-height: 2.8rem;
+  line-height: 2rem;
   height: 64vh;
 }
 
 .form_fields_padding {
-  margin: 30px auto;
+  margin: 5px auto;
   width: 38vw;
   max-width: 323px;
 }
 
 .heading {
-  font-size: 2rem;
+  font-size: 1.6rem;
   text-align: center;
+  font-weight: 400;
+  
 }
 
 .subHeading {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-align: center;
+  font-weight: 300;
 }
 
 mat-form-field {
@@ -54,7 +57,7 @@ mat-form-field {
 }
 
 .boldText {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .pinkText {
@@ -81,7 +84,9 @@ button {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
 }
-
+::ng-deep.mat-form-field-wrapper {
+  padding-bottom: 0.65em !important;
+}
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: white !important;
 }
@@ -90,4 +95,8 @@ button {
   .form_fields_padding {
     margin-left: 16%;
   }
+}
+.captcha{
+  padding-bottom: 10px !important;
+  transform: scale(0.8);
 }
