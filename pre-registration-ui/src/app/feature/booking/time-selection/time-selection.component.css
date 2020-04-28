@@ -14,6 +14,8 @@
   margin: 0px 2vw;
   border-bottom: 1px solid #ff4081;
   border-radius: 0px;
+  /* z-index:  -1; */
+  position: relative;
 }
 
 .time-selection__title-card-text {
@@ -35,6 +37,8 @@
   margin: 0px 2vw;
   border-radius: 0px;
   padding: 20px 2rem;
+  /* z-index:  -1; */
+  position: relative;
 }
 
 .time-selection__tile-date {
@@ -59,6 +63,8 @@
   display: flex;
   margin: 0 2vw;
   padding-bottom: 80px;
+  position: relative;
+  z-index: 1;
 }
 
 .time-seelection__slot-groups-div {
@@ -88,6 +94,7 @@
 .time-selection__names-container {
   min-width: 24.5%;
   padding: 0;
+  position: relative;
 }
 
 .time-selection__time-slots-container div {
@@ -285,7 +292,7 @@
   left: 0;
   padding: 2px 1.6rem;
   display: flex;
-  z-index: 22;
+  z-index: 5;
 }
 .spacer {
   flex: 1 1 auto;

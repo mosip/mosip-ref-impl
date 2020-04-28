@@ -10,7 +10,8 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "activateCenter"
     },
     {
       "buttonName": {
@@ -21,7 +22,8 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
     },
     {
       "buttonName": {
@@ -32,13 +34,32 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "decommission"
     },
     {
-      "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
       "actionURL": "",
-      "redirectURL": "",
+      "redirectURL": "/admin/resources/devices/single-view/$id",
       "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create Device",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/devices/create",
+      "showIn": "Button",
       "validations": ""
     },
     {

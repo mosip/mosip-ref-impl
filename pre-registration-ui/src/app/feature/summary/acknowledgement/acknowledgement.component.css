@@ -1,6 +1,8 @@
 .ack-container {
   margin: 20px 2vw;
   padding: 0 0 50px 0;
+  z-index: -1;
+  position: relative;
 }
 .ack__guidelines li:last-child{
     display: none;
@@ -50,6 +52,8 @@
 .ack__header-container {
   padding: 0;
   border-bottom: 1px solid #ff4081;
+  z-index: -1;
+  position: relative;
 }
 
 .ack__header-container hr {
@@ -124,6 +128,8 @@
   width: 100%;
   padding: 10px 2rem;
   border-bottom: 1px dashed #c9c9c9;
+  z-index: -1;
+  position: relative;
 }
 
 table tr td {
@@ -142,6 +148,8 @@ table tr td {
 
 .ack__guidelines-container {
   margin: 20px 2rem;
+  z-index: -1 !important;
+  position: relative;
 }
 
 #table-container table {

@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'home', component: MasterDataComponent, canActivate: [RolesGuard] },
   { path: 'documentCategoryMapping', component: DocumentCategoryMappingComponent, canActivate: [RolesGuard]},
   { path: ':type/view', component: ListViewComponent, canActivate: [RolesGuard, MasterdataGuard] },
-  { path: ':type/single-view/:id', component: SingleViewComponent, canActivate: [RolesGuard, MasterdataGuard] }
+  { path: ':type/single-view/:id', component: SingleViewComponent, canActivate: [RolesGuard, MasterdataGuard] },
+  { path: ':type/create', component: SingleViewComponent, canActivate: [RolesGuard, MasterdataGuard] },
 ];
 
 @NgModule({

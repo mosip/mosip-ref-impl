@@ -28,8 +28,10 @@ export class RolesGuard implements CanActivate {
     let flag = false;
     if (x[0].children) {
       const y = x[0].children.filter(item => state.url.indexOf(item.route) >= 0);
+      console.log("y[0].roles>>>"+y[0].roles);
       flag = this.checkRole(y[0].roles);
     } else {
+      console.log("x[0].roles>>>"+x[0].roles);
       flag = this.checkRole(x[0].roles);
     }
     if (flag) {
@@ -63,7 +65,6 @@ export class RolesGuard implements CanActivate {
 
   private async showMessage() {
     await this.getMessage();
-    console.log(this.popupMessages);
     this.dialog.open(DialogComponent, {
       width: '400px',
       data: {

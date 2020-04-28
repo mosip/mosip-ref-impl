@@ -10,7 +10,8 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "activateCenter"
     },
     {
       "buttonName": {
@@ -21,13 +22,32 @@
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
-      "validations": ""
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
     },
     {
-      "buttonName": { "eng": "Edit", "ara": "تحرير", "fra": "réviser" },
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
       "actionURL": "",
-      "redirectURL": "",
+      "redirectURL": "/admin/masterdata/document-type/single-view/$id",
       "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/masterdata/document-type/create",
+      "showIn": "Button",
       "validations": ""
     },
     {
@@ -49,7 +69,9 @@
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "name",
@@ -59,17 +81,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
-    },
-    {
-      "name": "isActive",
-      "showInListView": "true",
-      "showInSingleView": "true",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "description",
@@ -79,7 +93,21 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     },
     {
       "name": "createdDateTime",
