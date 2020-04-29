@@ -265,10 +265,10 @@ export class CreateComponent{
       serialNumber: [''],
       macAddress: [''],
       ipAddress: [''],
-      validity: [''],
-      isActive: [{ value: false, disabled: true }],
-      zone: [''],
-      deviceSpecId: ['', [Validators.required]]
+      validity: [{ value: '', disabled: true }],
+      zone: [{ value: '', disabled: true }],
+      deviceSpecId: [{ value: '', disabled: true }],
+      isActive: [{ value: true, disabled: true }]
     });
   }
 
@@ -304,6 +304,7 @@ export class CreateComponent{
     );
     this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
     this.primaryForm.controls.zone.setValue(this.primaryData.zone);
+    this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
   }
 
   setSecondaryData() {
@@ -322,6 +323,7 @@ export class CreateComponent{
     );
     this.secondaryForm.controls.isActive.setValue(this.statusPipe.transform(this.secondaryData.isActive));
     this.secondaryForm.controls.zone.setValue(this.secondaryData.zone);
+    this.secondaryForm.controls.publicKey.setValue(this.secondaryData.publicKey);
   }
 
   setHeaderData() {
@@ -445,6 +447,14 @@ export class CreateComponent{
     }
   }
   
+  captureDatePickerValue(event: any, fieldName: string, type: string) {
+    if (this.primaryForm.controls[fieldName].valid) {
+      this.secondaryForm.controls[fieldName].setValue(event.target.value);
+    } else {
+      this.secondaryForm.controls[fieldName].setValue('');
+    }
+  }
+
   saveData() {
     this.createUpdate = true;
     const primaryObject = new DeviceModel(
@@ -485,7 +495,7 @@ export class CreateComponent{
             if (this.showSecondaryForm) {
               console.log('inside secondary block');
               secondaryObject.id = createResponse.response.id;
-              secondaryObject.isActive = false;
+              secondaryObject.isActive = true;
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,
@@ -565,7 +575,7 @@ export class CreateComponent{
             if (this.showSecondaryForm) {
               console.log('inside secondary block');
               secondaryObject.id = updateResponse.response.id;
-              secondaryObject.isActive = false;
+              secondaryObject.isActive = true;
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,

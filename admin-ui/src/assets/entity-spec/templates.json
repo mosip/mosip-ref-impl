@@ -120,7 +120,7 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "dropdown",
       "ismandatory": "true"
     },
     {
@@ -152,7 +152,7 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "dropdown",
       "ismandatory": "true"
     },
     {
@@ -168,13 +168,13 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "dropdown",
       "ismandatory": "true"
     },
     {
       "name": "moduleName",
       "showInListView": "false",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "Module Name",
         "ara": "اسم الوحدة النمطية",
