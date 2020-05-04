@@ -265,10 +265,10 @@ export class CreateComponent{
       serialNumber: [''],
       macAddress: [''],
       ipAddress: [''],
-      validity: [{ value: '', disabled: true }],
-      zone: [{ value: '', disabled: true }],
-      deviceSpecId: [{ value: '', disabled: true }],
-      isActive: [{ value: true, disabled: true }]
+      validity: [''],
+      isActive: [{ value: false, disabled: true }],
+      zone: [''],
+      deviceSpecId: ['', [Validators.required]]
     });
   }
 
@@ -447,14 +447,6 @@ export class CreateComponent{
     }
   }
   
-  captureDatePickerValue(event: any, fieldName: string, type: string) {
-    if (this.primaryForm.controls[fieldName].valid) {
-      this.secondaryForm.controls[fieldName].setValue(event.target.value);
-    } else {
-      this.secondaryForm.controls[fieldName].setValue('');
-    }
-  }
-
   saveData() {
     this.createUpdate = true;
     const primaryObject = new DeviceModel(
@@ -495,7 +487,7 @@ export class CreateComponent{
             if (this.showSecondaryForm) {
               console.log('inside secondary block');
               secondaryObject.id = createResponse.response.id;
-              secondaryObject.isActive = true;
+              secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,
@@ -575,7 +567,7 @@ export class CreateComponent{
             if (this.showSecondaryForm) {
               console.log('inside secondary block');
               secondaryObject.id = updateResponse.response.id;
-              secondaryObject.isActive = true;
+              secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,

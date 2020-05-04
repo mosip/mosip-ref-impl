@@ -256,8 +256,8 @@ export class CreateComponent{
       validity: ['', [Validators.required]],
       isActive: ['', [Validators.required]],
       zone: ['', [Validators.required]],
-      machineSpecId: ['', [Validators.required]],
       publicKey: ['', [Validators.required]],
+      machineSpecId: ['', [Validators.required]]
     });
   }
 
@@ -462,6 +462,7 @@ export class CreateComponent{
     }
   }
 
+
   saveData() {
     this.createUpdate = true;
     const primaryObject = new MachineModel(
@@ -472,6 +473,7 @@ export class CreateComponent{
       this.primaryForm.controls.macAddress.value,
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
+      this.primaryForm.controls.publicKey.value,
       this.primaryForm.controls.publicKey.value,
       this.primaryLang,
       "0",           
@@ -486,6 +488,7 @@ export class CreateComponent{
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
       this.secondaryForm.controls.publicKey.value,
+      this.secondaryForm.controls.publicKey.value,
       this.secondaryLang, 
       "0",     
       true,               
@@ -495,19 +498,23 @@ export class CreateComponent{
       null,
       primaryObject
     );
+    console.log("primaryRequest>>>",primaryRequest);
     this.dataStorageService
       .createMachine(primaryRequest)
       .subscribe(createResponse => {
+        console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
           if (this.secondaryForm.valid) {
             if (this.showSecondaryForm) {
+              console.log('inside secondary block');
               secondaryObject.id = createResponse.response.id;
-              secondaryObject.isActive = true;
+              secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
               appConstants.registrationMachineCreateId,
               null,
               secondaryObject
             );
+              console.log(JSON.stringify(secondaryRequest));
               this.dataStorageService
               .createMachine(secondaryRequest)
               .subscribe(secondaryResponse => {
@@ -551,6 +558,7 @@ export class CreateComponent{
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
+      this.primaryForm.controls.publicKey.value,
       this.primaryLang,
       this.data[0].id,           
       true,  
@@ -565,6 +573,7 @@ export class CreateComponent{
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
       this.secondaryForm.controls.publicKey.value,
+      this.secondaryForm.controls.publicKey.value,
       this.secondaryLang, 
       this.data[0].id,     
       true,               
@@ -574,33 +583,49 @@ export class CreateComponent{
       null,
       primaryObject
     );
+    console.log("primaryRequest>>>",primaryRequest);
     this.dataStorageService
       .updateData(primaryRequest)
       .subscribe(createResponse => {
+        console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
-          secondaryObject.id = createResponse.response.id;
-          secondaryObject.isActive = true;
-          const secondaryRequest = new RequestModel(
-            appConstants.registrationMachineCreateId,
-            null,
-            secondaryObject
-          );
-          this.dataStorageService
-          .updateData(secondaryRequest)
-          .subscribe(secondaryResponse => {
-            console.log('Secondary Response' + secondaryResponse);
-            if (!secondaryResponse.errors) {
-              this.showMessage('update-success', createResponse.response)
-                .afterClosed()
-                .subscribe(() => {
-                  this.primaryForm.reset();
-                  this.secondaryForm.reset();
-                  this.router.navigateByUrl('admin/resources/machines/view');
-                });
-            } else {
-              this.showMessage('update-error');
+          if (this.secondaryForm.valid) {
+            if (this.showSecondaryForm) {
+              console.log('inside secondary block');
+              secondaryObject.id = createResponse.response.id;
+              secondaryObject.isActive = false;
+              const secondaryRequest = new RequestModel(
+              appConstants.registrationMachineCreateId,
+              null,
+              secondaryObject
+            );
+              console.log(JSON.stringify(secondaryRequest));
+              this.dataStorageService
+              .updateData(secondaryRequest)
+              .subscribe(secondaryResponse => {
+                console.log('Secondary Response' + secondaryResponse);
+                if (!secondaryResponse.errors) {
+                  this.showMessage('create-success', createResponse.response)
+                    .afterClosed()
+                    .subscribe(() => {
+                      this.primaryForm.reset();
+                      this.secondaryForm.reset();
+                      this.router.navigateByUrl('admin/resources/machines/view');
+                    });
+                } else {
+                  this.showMessage('update-error');
+                }
+              });
             }
-          });          
+          } else {
+            this.showMessage('update-success', createResponse.response)
+            .afterClosed()
+                    .subscribe(() => {
+                      this.primaryForm.reset();
+                      this.secondaryForm.reset();
+                      this.router.navigateByUrl('admin/resources/machines/view');
+                    });
+          }
         } else {
           this.showMessage('update-error');
         }
@@ -664,6 +689,7 @@ export class CreateComponent{
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
     this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
+    //this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.primaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
@@ -676,6 +702,12 @@ export class CreateComponent{
     this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
     this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
+    this.secondaryForm.controls.validity.setValue(this.data[0].validityDateTime);
+    this.secondaryForm.controls.name.setValue(this.data[0].name);    
+    this.secondaryForm.controls.macAddress.setValue(this.data[0].macAddress);
+    this.secondaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
+    this.secondaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
+    //this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }

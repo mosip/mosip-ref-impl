@@ -120,7 +120,7 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "dropdown",
+      "inputType": "text",
       "ismandatory": "true"
     },
     {
@@ -152,7 +152,7 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "dropdown",
+      "inputType": "text",
       "ismandatory": "true"
     },
     {
@@ -168,7 +168,7 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "dropdown",
+      "inputType": "text",
       "ismandatory": "true"
     },
     {
