@@ -320,6 +320,18 @@
                           </mat-select>
                         </mat-form-field>
                     
+                        <mat-form-field>
+                          <input
+                          #keyboardRef
+                          #publicKey
+                          (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
+                          formControlName="publicKey"
+                          matInput
+                          placeholder="{{
+                            secondaryLanguageLabels.publicKey
+                          }}"
+                        />
+                      </mat-form-field>
                         <mat-form-field class="left-sizing">
                         <mat-label>{{
                           secondaryLanguageLabels.machineSpecId

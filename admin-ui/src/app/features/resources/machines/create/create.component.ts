@@ -256,6 +256,7 @@ export class CreateComponent{
       validity: ['', [Validators.required]],
       isActive: ['', [Validators.required]],
       zone: ['', [Validators.required]],
+      publicKey: ['', [Validators.required]],
       machineSpecId: ['', [Validators.required]]
     });
   }
@@ -452,6 +453,15 @@ export class CreateComponent{
       this.secondaryForm.controls[fieldName].setValue('');
     }
   }
+
+  captureDatePickerValue(event: any, fieldName: string, type: string) {
+    if (this.primaryForm.controls[fieldName].valid) {
+      this.secondaryForm.controls[fieldName].setValue(event.target.value);
+    } else {
+      this.secondaryForm.controls[fieldName].setValue('');
+    }
+  }
+
 
   saveData() {
     this.createUpdate = true;

@@ -91,6 +91,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.secondaryData = {"region":"","province":"","city":"","zone":"","postalCode":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "templates"){
         this.pageName = "Template";
+        this.getTemplateFileFormat();
         this.primaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.primaryLang,"isActive":true,id:"0"};
         this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
       }else if(url === "title"){
@@ -141,6 +142,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Location";
       }else if(url === "templates"){
         this.pageName = "Template";
+        this.getTemplateFileFormat();
       }else if(url === "title"){
         this.pageName = "Title";
       }else if(url === "device-specs"){
@@ -200,6 +202,39 @@ export class MaterDataCommonBodyComponent implements OnInit {
           response.response.filters;
       });
   }
+  getTemplateFileFormat() {
+    this.dataStorageService
+      .getDropDownValuesForMasterData('templatefileformats/'+this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.fileFormatCode.primary = response.response.templateFileFormats;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('templatefileformats/'+this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.fileFormatCode.secondary = response.response.templateFileFormats;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('templatetypes/'+this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.templateTypeCode.primary = response.response.templateTypes;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('templatetypes/'+this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.templateTypeCode.secondary = response.response.templateTypes;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('modules/'+this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.moduleId.primary = response.response.modules;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('modules/'+this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.moduleId.secondary = response.response.modules;
+      });
+  }
+
 
   changePage(location: string) {
     if (location === 'home') {
