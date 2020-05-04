@@ -117,17 +117,6 @@ export class DataStorageService {
       data
     );
   }
-<<<<<<< HEAD
-
-  getDropDownValuesForMasterData(
-    type: string
-  ): Observable<any> {
-    return this.http.get(
-      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type
-    );
-  }
-=======
->>>>>>> Master UI screen dev
   
   getZoneData(langCode: string): Observable<any> {
     console.log("getZoneData>>>");
