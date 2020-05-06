@@ -685,7 +685,6 @@ export class CreateComponent{
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
     this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-    //this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.primaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
@@ -703,7 +702,6 @@ export class CreateComponent{
     this.secondaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
-    //this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
