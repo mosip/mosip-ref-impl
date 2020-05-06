@@ -62,7 +62,9 @@ html,
 body {
   height: 100%;
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  -ms-overflow-style: none;
 }
 .btn_axn-pri {
   min-width: 158px;

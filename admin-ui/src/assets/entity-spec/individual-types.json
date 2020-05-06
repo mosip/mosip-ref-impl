@@ -1,6 +1,65 @@
 {
   "auditEventIds": ["ADM-035", "ADM-057"],
-  "actionButtons": [],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activateCenter"
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
+    },
+    {
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "/admin/masterdata/individual-type/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/masterdata/individual-type/create",
+      "showIn": "Button",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
   "columnsToDisplay": [
     {
       "name": "code",
@@ -10,7 +69,9 @@
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "name",
@@ -20,7 +81,9 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "isActive",
@@ -30,7 +93,9 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     },
     {
       "name": "createdDateTime",

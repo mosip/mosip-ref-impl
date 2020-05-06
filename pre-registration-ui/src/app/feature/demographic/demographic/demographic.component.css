@@ -19,7 +19,6 @@
 
 .wrapper {
   background-color: #f4f4f4;
-  z-index: -1;
   overflow-x: hidden;
   margin: 0px 2vw;
   padding-top: 0;
@@ -29,8 +28,7 @@
 
 .user {
   background-color: #ffffff;
-  z-index: 1;
-  margin: auto;
+    margin: auto;
   padding: 1.2rem 2rem 0 2rem;
   padding-top: 1.2rem;
   background-color: white;
@@ -217,12 +215,12 @@ mat-icon {
 
 .user__buttons {
   width: 100%;
-  position: sticky;
-  bottom: 2px;
+  position: fixed;
+  bottom: -1px;
   left: -2px;
   display: flex;
   justify-content: space-between;
-  margin-top: 0.2rem;
+  /* margin-top: 0.2rem; */
   background-color: white;
   border-top: 5px solid #f4f4f4;
   padding: 0 2vw;
@@ -237,7 +235,7 @@ mat-icon {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   margin: 6px 2px 4px 2px;
   margin-right: 2rem;
   cursor: pointer;

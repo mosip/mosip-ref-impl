@@ -28,6 +28,8 @@
   align-content: center;
   display: flex;
   margin: 0 20% 0 20%;
+  position: relative;
+  z-index: -1 !important;
 }
 
 p {
