@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { DialougComponent } from "src/app/shared/dialoug/dialoug.component";
@@ -428,6 +428,8 @@ export class LoginComponent implements OnInit  {
           this.captchaError = true
         }
       });
+    } else {
+      this.captchaSucess = false;
     }
   }
   recaptchaError(event){
