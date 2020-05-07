@@ -99,13 +99,15 @@ export class SingleViewComponent implements OnDestroy {
   }
 
   setHeaderData() {
-    this.headerData = new HeaderModel(
-      this.primaryData[this.mapping.nameKey],
-      this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
-      this.primaryData.createdBy ? this.primaryData.createdBy : '-',
-      this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
-      this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
-    );
+    if(this.primaryData){
+      this.headerData = new HeaderModel(
+        this.primaryData[this.mapping.nameKey],
+        this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
+        this.primaryData.createdBy ? this.primaryData.createdBy : '-',
+        this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
+        this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
+      );
+    }    
     this.showSpinner = false;
   }
 
@@ -137,11 +139,10 @@ export class SingleViewComponent implements OnDestroy {
                 if (isPrimary) {
                   this.primaryData = response.response.data[0];
                 } else {
+                  this.secondaryData = response.response.data[0];
                   this.noRecordFound = true;
                   this.showSpinner = false;
                 }
-              } else if (response.response.data && !isPrimary) {
-                this.secondaryData = response.response.data[0];
               }
             }
             resolve(true);

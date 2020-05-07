@@ -259,9 +259,9 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
               center.workingDays = center.workingDays === undefined ? '' : center.workingDays + day.name + ', ';
             }
           });
-          if (center.workingDays) {
-            center.workingDays = center.workingDays.substring(0, center.workingDays.length - 2);
-          }
+          // if (center.workingDays) {
+          //   center.workingDays = center.workingDays.substring(0, center.workingDays.length - 2);
+          // }
           
           this.isWorkingDaysAvailable = true;
           resolve(true);
