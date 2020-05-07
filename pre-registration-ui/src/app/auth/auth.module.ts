@@ -7,10 +7,8 @@ import { LoginComponent } from "./login/login.component";
 import { AppRoutingModule } from "../app-routing.module";
 import { SharedModule } from "../shared/shared.module";
 import { CoreModule } from "../core/core.module";
-import { FooterComponent } from "../core/footer/footer.component";
 import {
   RecaptchaModule,
-  RecaptchaFormsModule,
   RECAPTCHA_LANGUAGE,
 } from "ng-recaptcha";
 import { ConfigService } from "../core/services/config.service";
@@ -28,8 +26,7 @@ export const language = new ConfigService().getConfigByKey(
     AppRoutingModule,
     SharedModule,
     CoreModule,
-    RecaptchaModule,
-    RecaptchaFormsModule,
+    RecaptchaModule
   ],
   providers: [
     {
