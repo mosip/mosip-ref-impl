@@ -52,6 +52,7 @@ export class CreateComponent {
   showSecondaryForm: boolean;
   secondaryObject: any;
 
+  
   primaryData: any;
   secondaryData: any;
 
@@ -223,6 +224,7 @@ export class CreateComponent {
           this.primaryForm.controls.zone.disable();
         }
       });
+
     if (this.primaryLang !== this.secondaryLang) {
       this.dataStorageService
         .getZoneData(this.secondaryLang)
@@ -485,7 +487,6 @@ export class CreateComponent {
       this.secondaryForm.controls[fieldName].setValue('');
     }
   }
-
   saveData() {
     this.createUpdate = true;
     const primaryObject = new MachineModel(

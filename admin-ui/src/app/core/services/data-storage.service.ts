@@ -62,7 +62,6 @@ export class DataStorageService {
 
     // tslint:disable-next-line:max-line-length
     const urlmapping = {centers: 'registrationcenters', machines: 'machines', devices: 'devices', 'center-type': 'registrationcentertypes', 'blacklisted-words': 'blacklistedwords', 'gender-type': 'gendertypes', 'individual-type': 'individualtypes', holiday: 'holidays', location: 'locations', templates: 'templates', title: 'title', 'device-specs': 'devicespecifications', 'device-types': 'devicetypes', 'machine-specs': 'machinespecifications', 'machine-type': 'machinetypes', 'document-type': 'documenttypes', 'document-categories': 'documentcategories'};
-
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url],
       data
@@ -70,6 +69,7 @@ export class DataStorageService {
   }
 
   updateData(data: RequestModel): Observable<any> {
+
     const url = this.router.url.split('/')[3];
 
     // tslint:disable-next-line: max-line-length
@@ -119,6 +119,7 @@ export class DataStorageService {
       data
     );
   }
+
 
   getDropDownValuesForMasterData(
     type: string
