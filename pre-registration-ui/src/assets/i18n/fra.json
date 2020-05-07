@@ -592,5 +592,9 @@
     "FR": "Étranger"
   },
   "sameAs": "Document téléchargé avec Identique à",
-  "DAYS": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+  "DAYS": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+
+  "recaptcha":{
+    "errorMessage":"Recaptcha a échoué. Veuillez réessayer"
+  }
 }

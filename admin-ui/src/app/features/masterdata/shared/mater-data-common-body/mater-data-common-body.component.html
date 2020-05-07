@@ -80,6 +80,57 @@
                         </mat-option>
                       </mat-select>
                       </div>
+                      <div *ngIf="field.name === 'fileFormatCode'">
+                      <mat-select
+                        formControlName="fileFormatCode"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.fileFormatCode.primary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.code"
+                        >
+                          {{ data.description }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'templateTypeCode'">
+                      <mat-select
+                        formControlName="templateTypeCode"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.templateTypeCode.primary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.code"
+                        >
+                          {{ data.description }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'moduleId'">
+                      <mat-select
+                        formControlName="moduleId"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.moduleId.primary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.id"
+                        >
+                          {{ data.description }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"
@@ -178,6 +229,57 @@
                         </mat-option>
                       </mat-select>
                       </div>
+                      <div *ngIf="field.name === 'fileFormatCode'">
+                      <mat-select
+                        formControlName="fileFormatCode"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.fileFormatCode.secondary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.code"
+                        >
+                          {{ data.description }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'templateTypeCode'">
+                      <mat-select
+                        formControlName="templateTypeCode"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.templateTypeCode.secondary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.code"
+                        >
+                          {{ data.description }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      <div *ngIf="field.name === 'moduleId'">
+                      <mat-select
+                        formControlName="moduleId"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.moduleId.secondary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.id"
+                        >
+                          {{ data.description }}
+                        </mat-option>
+                      </mat-select>
+                      </div>                      
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"

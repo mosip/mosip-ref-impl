@@ -98,21 +98,20 @@
                           {{ "devices.validationMessages.ipAddress.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
                         <mat-form-field>
-                            <input
-                              matInput
-                              [min]="minDate"
-                              [matDatepicker]="picker"
-                              formControlName="validity"
-                              placeholder="{{ 'devices.validity' | translate }}"
-                            />
-                            <mat-datepicker-toggle
-                              matSuffix
-                              [for]="picker"
-                            ></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-              
+                          <input
+                            matInput
+                            [min]="minDate"
+                            [matDatepicker]="picker"
+                            formControlName="validity"
+                            (dateChange)="captureDatePickerValue($event, 'validity', 'primary')"
+                            placeholder="{{ 'devices.validity' | translate }}"
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
                           <mat-error
                             *ngIf="
                               primary.validity.touched && primary.validity.hasError('required')
@@ -121,7 +120,7 @@
                           {{ "devices.validationMessages.validity.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+                        
                         <mat-form-field>
                           <mat-label>{{ "devices.isActive" | translate }}</mat-label>
                           <mat-select
