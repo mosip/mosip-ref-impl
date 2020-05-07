@@ -718,21 +718,12 @@ export class CreateComponent {
 
   setSecondaryFormValues() {
     this.secondaryForm.controls.zone.setValue(this.data[0].zoneCode);
-    this.secondaryForm.controls.validity.setValue(
-      this.data[1].validityDateTime
-    );
-    this.secondaryForm.controls.name.setValue(this.data[1].name);
-    this.secondaryForm.controls.macAddress.setValue(this.data[1].macAddress);
-    this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
-    this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
-    this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-    this.secondaryForm.controls.validity.setValue(
-      this.data[0].validityDateTime
-    );
-    this.secondaryForm.controls.name.setValue(this.data[0].name);
+    this.secondaryForm.controls.validity.setValue(this.data[0].validityDateTime);
+    this.secondaryForm.controls.name.setValue(this.data[0].name);    
     this.secondaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
+    this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }

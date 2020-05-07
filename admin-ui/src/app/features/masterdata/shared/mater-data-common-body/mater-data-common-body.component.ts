@@ -11,10 +11,15 @@ import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { MatKeyboardRef, MatKeyboardComponent } from 'ngx7-material-keyboard';
+
+import {
+  MatKeyboardRef,
+  MatKeyboardComponent
+} from 'ngx7-material-keyboard';
 
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
+
 import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
@@ -50,7 +55,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
     eng: 'English',
   };
   showSecondaryForm: boolean;
-  isCreateForm: boolean;
+  isCreateForm:boolean;
 
   constructor(
     private dataStorageService: DataStorageService,
@@ -374,14 +379,14 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicetypes', request)
-      .subscribe((response) => {
+      .subscribe(response => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
     filterRequest = new FilterRequest([filterObject], this.secondaryLang);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicetypes', request)
-      .subscribe((response) => {
+      .subscribe(response => {
         this.dropDownValues.deviceTypeCode.secondary =
           response.response.filters;
       });
@@ -393,14 +398,14 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinetypes', request)
-      .subscribe((response) => {
+      .subscribe(response => {
         this.dropDownValues.machineTypeCode.primary = response.response.filters;
       });
     filterRequest = new FilterRequest([filterObject], this.secondaryLang);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinetypes', request)
-      .subscribe((response) => {
+      .subscribe(response => {
         this.dropDownValues.machineTypeCode.secondary =
           response.response.filters;
       });
@@ -474,7 +479,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       this.secondaryData[formControlName] = formattedDate;
     }
   }
-
+  
   captureDropDownValue(event: any, formControlName: string, type: string) {
     if (event.source.value && event.source.selected && type === 'primary') {
       this.primaryData[formControlName] = event.source.value;
@@ -511,6 +516,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
             this.showErrorPopup(updateResponse.errors[0].message);
           }
       });
+
     } else {
       if (this.primaryData) {
         delete this.primaryData['createdBy'];
