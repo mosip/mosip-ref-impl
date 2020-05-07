@@ -8,7 +8,7 @@
         <mat-card>
             <mat-card-content class="forms-container">
                 <div class="primary-form" [formGroup]="primaryForm">
-                    <strong class="title">{{ 'machines.language' | translate }}</strong> 
+                    <strong class="title">{{ 'machines.language' | translate }}</strong>
                     <span
                       *ngIf="!disableForms"
                       matTooltip="{{ 'machines.keyboard-tooltip' | translate }}"
@@ -18,7 +18,7 @@
                     >
                     <hr />
                     <br /><br />
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -38,7 +38,7 @@
                           {{ "machines.validationMessages.name.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -56,9 +56,9 @@
                             "
                           >
                           {{ "machines.validationMessages.serialNumber.required" | translate }}
-                          </mat-error>                        
+                          </mat-error>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -78,7 +78,7 @@
                           {{ "machines.validationMessages.macAddress.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                  
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -98,7 +98,7 @@
                           {{ "machines.validationMessages.ipAddress.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                  
+
                         <mat-form-field>
                           <input
                             matInput
@@ -112,7 +112,7 @@
                             [for]="picker"
                           ></mat-datepicker-toggle>
                           <mat-datepicker #picker></mat-datepicker>
-              
+
                           <mat-error
                             *ngIf="
                               primary.validity.touched && primary.validity.hasError('required')
@@ -121,7 +121,7 @@
                           {{ "devices.validationMessages.validity.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                           <mat-label>{{ "machines.isActive" | translate }}</mat-label>
                           <mat-select
@@ -145,7 +145,7 @@
                           {{ "machines.validationMessages.isActive.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                           <mat-label>{{ "machines.zone" | translate }}</mat-label>
                           <mat-select
@@ -169,7 +169,7 @@
                           {{ "machines.validationMessages.zone.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+
                         <mat-label>{{
                           "machines.machineSpecId" | translate
                         }}</mat-label>
@@ -200,12 +200,12 @@
                               'machines.publicKey' | translate
                             }}"
                           />
-                    
+
                         </mat-form-field>
-                    
+
                 </div>
-    
-                <mat-divider [vertical]="true" [inset]="true"></mat-divider>    
+
+                <mat-divider [vertical]="true" [inset]="true"></mat-divider>
                     <div
                         *ngIf="
                           secondaryLanguageLabels && secondaryLang && showSecondaryForm
@@ -225,7 +225,7 @@
                     >
                     <hr />
                     <br /><br />
-                    
+
                         <mat-form-field>
                          <input
                             #keyboardRef
@@ -238,7 +238,7 @@
                             }}"
                           />
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -250,9 +250,9 @@
                               secondaryLanguageLabels.serialNumber
                             }}"
                           />
-                           
+
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -264,9 +264,9 @@
                               secondaryLanguageLabels.macAddress
                             }}"
                           />
-                           
+
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -279,7 +279,7 @@
                             }}"
                           />
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                           <input
                             matInput
@@ -294,7 +294,7 @@
                           ></mat-datepicker-toggle>
                           <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                             <input
                             #keyboardRef
@@ -307,7 +307,7 @@
                             }}"
                           />
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                           <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
                           <mat-select formControlName="zone">
@@ -319,7 +319,7 @@
                           </mat-option>
                           </mat-select>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                           <input
                           #keyboardRef
@@ -360,7 +360,7 @@
                           />
                         </mat-form-field>
 
-                  
+
                 </div>
             </mat-card-content>
             <mat-card-actions class="action-buttons">

@@ -47,7 +47,7 @@ export class CreateComponent{
   showSecondaryForm: boolean;
   secondaryObject: any;
 
-  
+
   primaryData: any;
   secondaryData: any;
 
@@ -96,7 +96,7 @@ export class CreateComponent{
   ) {
     this.subscribed = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-     
+
         this.initializeComponent();
       }
     });
@@ -104,7 +104,7 @@ export class CreateComponent{
     this.primaryLang = appService.getConfig()['primaryLangCode'];
     // tslint:disable-next-line:no-string-literal
     this.secondaryLang = appService.getConfig()['secondaryLangCode'];
-    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;   
+    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
@@ -151,6 +151,23 @@ export class CreateComponent{
     }
   }
 
+  openKeyboard(type: string) {
+    if (this.keyboardService.isOpened && this.keyboardType === type) {
+      this.keyboardService.dismiss();
+      this.keyboardRef = undefined;
+    } else {
+      this.keyboardType = type;
+      if (type === 'primary') {
+        this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
+      } else if (type === 'secondary') {
+        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
+      }
+      if (this.selectedField) {
+        this.selectedField.focus();
+      }
+    }
+  }
+
   initializeComponent() {
     this.days = appConstants.days[this.primaryLang];
     this.secondaryDays = appConstants.days[this.secondaryLang];
@@ -167,7 +184,18 @@ export class CreateComponent{
       }
     });
     this.translateService
-      .getTranslation(this.secondaryLang)
+      .getTranslation(this.primaryLang)
+      .subscribe(response => {
+        this.popupMessages = response.machines.popupMessages;
+      });
+  }
+
+  getMachinespecifications() {
+    const filterObject = new FilterValuesModel('name', 'unique', '');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let request = new RequestModel('', null, filterRequest);
+    this.dataStorageService
+      .getFiltersForAllMaterDataTypes('machinespecifications', request)
       .subscribe(response => {
         this.secondaryLanguageLabels = response.machines;
         console.log(this.secondaryLanguageLabels);
@@ -475,8 +503,8 @@ export class CreateComponent{
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
       this.primaryLang,
-      "0",           
-      true,        
+      "0",
+      true,
     );
     const secondaryObject = new MachineModel(
       this.secondaryForm.controls.zone.value,
@@ -487,9 +515,9 @@ export class CreateComponent{
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
       this.secondaryForm.controls.publicKey.value,
-      this.secondaryLang, 
-      "0",     
-      true,               
+      this.secondaryLang,
+      "0",
+      true,
     );
     const primaryRequest = new RequestModel(
       appConstants.registrationMachineCreateId,
@@ -557,9 +585,9 @@ export class CreateComponent{
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
       this.primaryLang,
-      this.data[0].id,           
-      true,  
-      
+      this.data[0].id,
+      true,
+
     );
     const secondaryObject = new MachineModel(
       this.secondaryForm.controls.zone.value,
@@ -570,9 +598,9 @@ export class CreateComponent{
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
       this.secondaryForm.controls.publicKey.value,
-      this.secondaryLang, 
-      this.data[0].id,     
-      true,               
+      this.secondaryLang,
+      this.data[0].id,
+      true,
     );
     const primaryRequest = new RequestModel(
       appConstants.registrationMachineCreateId,
@@ -680,7 +708,7 @@ export class CreateComponent{
   setPrimaryFormValues() {
     this.primaryForm.controls.zone.setValue(this.data[0].zoneCode);
     this.primaryForm.controls.validity.setValue(this.data[0].validityDateTime);
-    this.primaryForm.controls.name.setValue(this.data[0].name);    
+    this.primaryForm.controls.name.setValue(this.data[0].name);
     this.primaryForm.controls.macAddress.setValue(this.data[0].macAddress);
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
@@ -693,17 +721,11 @@ export class CreateComponent{
   setSecondaryFormValues() {
     this.secondaryForm.controls.zone.setValue(this.data[0].zoneCode);
     this.secondaryForm.controls.validity.setValue(this.data[1].validityDateTime);
-    this.secondaryForm.controls.name.setValue(this.data[1].name);    
+    this.secondaryForm.controls.name.setValue(this.data[1].name);
     this.secondaryForm.controls.macAddress.setValue(this.data[1].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
     this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-    this.secondaryForm.controls.validity.setValue(this.data[0].validityDateTime);
-    this.secondaryForm.controls.name.setValue(this.data[0].name);    
-    this.secondaryForm.controls.macAddress.setValue(this.data[0].macAddress);
-    this.secondaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
-    this.secondaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
-    //this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }

@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
   ElementRef,
-  ViewChildren, 
+  ViewChildren,
   Input
 } from '@angular/core';
 
@@ -263,7 +263,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       this.secondaryData[formControlName] = formattedDate;
     }
   }
-  
+
   captureDropDownValue(event: any, formControlName: string, type: string) {
     if (event.source.value && event.source.selected && type === 'primary') {
       this.primaryData[formControlName] = event.source.value;
@@ -312,7 +312,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.primaryData['updatedDateTime'];
         delete this.primaryData['isDeleted'];
         delete this.primaryData['deletedDateTime'];
-        delete this.primaryData['deviceTypeName']; 
+        delete this.primaryData['deviceTypeName'];
       }
       if(this.secondaryData){
         delete this.secondaryData['createdBy'];
@@ -321,7 +321,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['updatedDateTime'];
         delete this.secondaryData['isDeleted'];
         delete this.secondaryData['deletedDateTime'];
-        delete this.secondaryData['deviceTypeName']; 
+        delete this.secondaryData['deviceTypeName'];
       }
       let request = new RequestModel(
         "",
