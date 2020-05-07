@@ -588,5 +588,9 @@
     "FR": "Foreigner"
   },
   "sameAs": "Document Uploaded using Same As",
-  "DAYS": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  "DAYS": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+
+  "recaptcha":{
+    "errorMessage":"Recaptcha Failed. Please Re-try"
+  }
 }

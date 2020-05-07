@@ -10,6 +10,8 @@ import { MaterialModule } from './shared/material.module';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfigService } from './app-config.service';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 const appInitialization = (appConfig: AppConfigService) => {
   return () => {
     return appConfig.loadAppConfig();
@@ -26,7 +28,9 @@ const appInitialization = (appConfig: AppConfigService) => {
     AppRoutingModule,
     CoreModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule, 
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers: [CookieService,
               AppConfigService,

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class DataStorageService {
-  constructor(private http: HttpClient, private appService: AppConfigService,private router: Router) {}
+  constructor(private http: HttpClient, private appService: AppConfigService, private router: Router) {}
 
   private BASE_URL = this.appService.getConfig().baseUrl;
 
@@ -20,7 +20,7 @@ export class DataStorageService {
     locationCode: string,
     langCode: string
   ): Observable<any> {
-    console.log("getImmediateChildren>>>");
+    console.log('getImmediateChildren>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
@@ -32,7 +32,7 @@ export class DataStorageService {
   }
 
   getStubbedDataForDropdowns(langCode: string): Observable<any> {
-    console.log("getStubbedDataForDropdowns>>>");
+    console.log('getStubbedDataForDropdowns>>>');
     return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'locations/level/' + langCode);
   }
 
@@ -58,10 +58,10 @@ export class DataStorageService {
   }
 
   createMasterData(data: RequestModel): Observable<any> {
-    let url = this.router.url.split('/')[3];
-   
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
-    
+    const url = this.router.url.split('/')[3];
+
+    // tslint:disable-next-line:max-line-length
+    const urlmapping = {centers: 'registrationcenters', machines: 'machines', devices: 'devices', 'center-type': 'registrationcentertypes', 'blacklisted-words': 'blacklistedwords', 'gender-type': 'gendertypes', 'individual-type': 'individualtypes', holiday: 'holidays', location: 'locations', templates: 'templates', title: 'title', 'device-specs': 'devicespecifications', 'device-types': 'devicetypes', 'machine-specs': 'machinespecifications', 'machine-type': 'machinetypes', 'document-type': 'documenttypes', 'document-categories': 'documentcategories'};
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url],
       data
@@ -69,10 +69,12 @@ export class DataStorageService {
   }
 
   updateData(data: RequestModel): Observable<any> {
-    let url = this.router.url.split('/')[3];
-    
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
-    
+
+    const url = this.router.url.split('/')[3];
+
+    // tslint:disable-next-line: max-line-length
+    const urlmapping = {centers: 'registrationcenters', machines: 'machines', devices: 'devices', 'center-type': 'registrationcentertypes', 'blacklisted-words': 'blacklistedwords', 'gender-type': 'gendertypes', 'individual-type': 'individualtypes', holiday: 'holidays', location: 'locations', templates: 'templates', title: 'title', 'device-specs': 'devicespecifications', 'device-types': 'devicetypes', 'machine-specs': 'machinespecifications', 'machine-type': 'machinetypes', 'document-type': 'documenttypes', 'document-categories': 'documentcategories'};
+
     return this.http.put(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url],
       data
@@ -111,15 +113,24 @@ export class DataStorageService {
     type: string,
     data: RequestModel
   ): Observable<any> {
-    console.log("getFiltersForAllMaterDataTypes>>>"+type+"<<<data>>>"+data);
+    console.log('getFiltersForAllMaterDataTypes>>>' + type + '<<<data>>>' + data);
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
       data
     );
   }
-  
+
+
+  getDropDownValuesForMasterData(
+    type: string
+  ): Observable<any> {
+    return this.http.get(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type
+    );
+  }
+
   getZoneData(langCode: string): Observable<any> {
-    console.log("getZoneData>>>");
+    console.log('getZoneData>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
@@ -129,7 +140,7 @@ export class DataStorageService {
   }
 
   getLoggedInUserZone(userId: string, langCode: string): Observable<any> {
-    console.log("getLoggedInUserZone>>>");
+    console.log('getLoggedInUserZone>>>');
     let params = new HttpParams();
     params = params.append('userID', userId);
     params = params.append('langCode', langCode);
@@ -141,13 +152,13 @@ export class DataStorageService {
 
   decommission(centerId: string) {
     let url = this.router.url.split('/')[3];
-    if(url === "centers"){
-      url = "registrationcenters";
+    if (url === 'centers') {
+      url = 'registrationcenters';
     }
     return this.http.put(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
-        url+ '/' +
+        url + '/' +
         'decommission/' +
         centerId,
       {}

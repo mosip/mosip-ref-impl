@@ -304,6 +304,7 @@ export class CreateComponent{
     );
     this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
     this.primaryForm.controls.zone.setValue(this.primaryData.zone);
+    this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
   }
 
   setSecondaryData() {
@@ -322,6 +323,7 @@ export class CreateComponent{
     );
     this.secondaryForm.controls.isActive.setValue(this.statusPipe.transform(this.secondaryData.isActive));
     this.secondaryForm.controls.zone.setValue(this.secondaryData.zone);
+    this.secondaryForm.controls.publicKey.setValue(this.secondaryData.publicKey);
   }
 
   setHeaderData() {
