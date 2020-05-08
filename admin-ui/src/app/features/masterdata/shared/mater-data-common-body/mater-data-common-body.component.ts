@@ -72,62 +72,49 @@ export class MaterDataCommonBodyComponent implements OnInit {
       if(url === "center-type"){
         this.pageName = "Center Type";
         this.primaryData = {"code":"","name":"","descr":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "blacklisted-words"){
         this.pageName = "Blacklisted Word";
         this.primaryData = {"word":"","description":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"word":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "gender-type"){
         this.pageName = "Gender Type";
         this.primaryData = {"code":"","genderName":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","genderName":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "individual-type"){
         this.pageName = "Individual Type";
         this.primaryData = {"code":"","name":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","name":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "location"){
         this.pageName = "Location";
-        this.primaryData = {"region":"","province":"","city":"","zone":"","postalCode":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"region":"","province":"","city":"","zone":"","postalCode":"","langCode":this.secondaryLang,"isActive":true};
+        this.getHierarchyLevel();
+        this.primaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "templates"){
         this.pageName = "Template";
         this.getTemplateFileFormat();
         this.primaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.primaryLang,"isActive":true,id:"0"};
-        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
       }else if(url === "title"){
         this.pageName = "Title";
         this.primaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "device-specs"){
         this.pageName = "Device Specification";
         this.getDeviceTypes();
         this.primaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
-        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
       }else if(url === "device-types"){
         this.pageName = "Device Type";
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "machine-specs"){
         this.pageName = "Machine Specification";
         this.getMachineTypes();
         this.primaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
-        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
       }else if(url === "machine-type"){
         this.pageName = "Machine Type";
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "document-type"){
         this.pageName = "Document Type";
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "document-categories"){
         this.pageName = "Document Category";
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "holiday"){
         this.pageName = "Holiday";
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "", "holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.primaryLang,"isActive":true,"id":"0"};
-        this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.secondaryLang,"isActive":true,"id":"0"};
       }
     }else{
       if(url === "center-type"){
@@ -140,6 +127,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Individual Type";
       }else if(url === "location"){
         this.pageName = "Location";
+        this.getHierarchyLevel();
       }else if(url === "templates"){
         this.pageName = "Template";
         this.getTemplateFileFormat();
@@ -161,6 +149,38 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Document Category";
       }else if(url === "holiday"){
         this.pageName = "Holiday";
+      }
+    }
+
+    if(!this.secondaryData){
+      if(url === "center-type"){
+        this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "blacklisted-words"){
+        this.secondaryData = {"word":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "gender-type"){
+        this.secondaryData = {"code":"","genderName":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "individual-type"){
+        this.secondaryData = {"code":"","name":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "location"){
+        this.secondaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "templates"){
+        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
+      }else if(url === "title"){
+        this.secondaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "device-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(url === "device-types"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "machine-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(url === "machine-type"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "document-type"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "document-categories"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "holiday"){
+        this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.secondaryLang,"isActive":true,"id":"0"};
       }
     }
   }
@@ -235,6 +255,18 @@ export class MaterDataCommonBodyComponent implements OnInit {
       });
   }
 
+  getHierarchyLevel() {
+    this.dataStorageService
+      .getDropDownValuesForMasterData('locations/'+this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('locations/'+this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations;
+      });
+  }
 
   changePage(location: string) {
     if (location === 'home') {
@@ -265,10 +297,23 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
-    if (event.source.value && event.source.selected && type === 'primary') {
+    if (event.source.value && event.source.selected) {
       this.primaryData[formControlName] = event.source.value;
-    } else if (type === 'secondary') {
-      this.secondaryData[formControlName] = event.source.value;
+      this.secondaryData[formControlName] = event.source.value; 
+    }
+  }
+
+  captureLocationDropDownValue(event: any, formControlName: string, type: string) {    
+    if (event.source.selected) {
+      this.primaryData[formControlName] = event.source.value;
+      this.secondaryData[formControlName] = event.source.value; 
+      this.primaryData["hierarchyName"] = event.source.viewValue;
+    }
+  }
+
+  captureLocationSecondaryDropDownValue(event: any, formControlName: string, type: string) {
+    if (event.source.value) {
+      this.secondaryData["hierarchyName"] = event.source.viewValue; 
     }
   }
 

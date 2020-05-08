@@ -64,7 +64,7 @@
     {
       "name": "postalCode",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "Postal Code",
         "ara": "رمز",
@@ -81,7 +81,7 @@
     {
       "name": "zone",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "Zone",
         "ara": "منطقة",
@@ -99,7 +99,7 @@
     {
       "name": "city",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": {
         "eng": "City",
         "ara": "مدينة",
@@ -116,7 +116,7 @@
     {
       "name": "province",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Province", "ara": "المحافظة", "fra": "Province" },
       "sortOrder": "",
       "showAsLink": "false",
@@ -129,7 +129,7 @@
     {
       "name": "region",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Region", "ara": "منطقة", "fra": "Région" },
       "sortOrder": "",
       "showAsLink": "false",
@@ -206,6 +206,56 @@
       "showAsLink": "",
       "linkType": "",
       "LinkURL": ""
+    },
+    {
+      "name": "hierarchyLevel",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Hierarchy Name",
+        "ara": "اسم التسلسل الهرمي",
+        "fra": "Nom de la hiérarchie"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
+    },
+    {
+      "name": "code",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Code",
+        "ara": "الشفرة",
+        "fra": "Code"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey": "code",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "name",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "Nom"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "idKey": "name",
+      "inputType": "text",
+      "ismandatory": "true"
     }
   ],
   "paginator": {
