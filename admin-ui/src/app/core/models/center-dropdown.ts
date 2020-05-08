@@ -20,6 +20,7 @@ export class CenterDropdown {
     public fileFormatCode: any = {},  
     public templateTypeCode: any = {},
     public moduleId: any = {},    
+    public hierarchyLevelCode: any = {},
     public isActive = [true, false]
   ) {}
 }

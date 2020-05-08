@@ -287,6 +287,7 @@ export class LoginComponent implements OnInit  {
         )
       )
     ) {
+      console.log("showVerifyBtn>>>");
       this.showVerify = true;
       this.showResend = false;
     } else {
@@ -366,7 +367,7 @@ export class LoginComponent implements OnInit  {
               this.authService.setToken();
               this.regService.setLoginId(this.inputContactDetails);
               this.disableVerify = false;
-              this.router.navigate(["dashboard"]);
+              this.router.navigate(["dynamicui"]);
             } else {
               this.disableVerify = false;
               this.showOtpMessage();

@@ -11,6 +11,7 @@ import { AuthGuardService } from './auth/auth-guard.service';
  */
 const appRoutes: Routes = [
   { path: 'dashboard', loadChildren: './feature/dashboard/dashboard.module#DashboardModule' },
+  { path: 'dynamicui', loadChildren: './feature/dynamicui/dynamicui.module#DynamicuiModule' },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'contact', component: ContactComponent },

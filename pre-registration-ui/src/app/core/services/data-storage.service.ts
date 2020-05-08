@@ -380,4 +380,9 @@ export class DataStorageService {
     const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
     return this.httpClient.post(url,captcha);
   }
+
+  getDynamicuiform() {
+    return this.httpClient.get(this.BASE_URL + this.PRE_REG_URL + 'idschema/latest');
+  }
+
 }

@@ -131,6 +131,23 @@
                         </mat-option>
                       </mat-select>
                       </div>
+                      <div *ngIf="field.name === 'hierarchyLevel'">
+                      <mat-select
+                        formControlName="hierarchyLevel"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.hierarchyLevelCode.primary"
+                          (onSelectionChange)="
+                            captureLocationDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.locationHierarchylevel"
+                        >
+                          {{ data.locationHierarchyName }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"
@@ -267,7 +284,7 @@
                       <mat-select
                         formControlName="moduleId"
                         [value]="secondaryData[field.name]" 
-                        placeholder="{{ field.label[primaryLang] }}"               
+                        placeholder="{{ field.label[secondaryLang] }}"               
                       >
                         <mat-option
                           *ngFor="let data of dropDownValues.moduleId.secondary"
@@ -279,7 +296,25 @@
                           {{ data.description }}
                         </mat-option>
                       </mat-select>
-                      </div>                      
+                      </div> 
+                      <div *ngIf="field.name === 'hierarchyLevel'">
+                      <mat-select
+                        formControlName="hierarchyLevel"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"
+                        disabled = true              
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.hierarchyLevelCode.secondary"
+                          (onSelectionChange)="
+                            captureLocationSecondaryDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.locationHierarchylevel"
+                        >
+                          {{ data.locationHierarchyName }}
+                        </mat-option>
+                      </mat-select>
+                      </div>                     
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"

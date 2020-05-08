@@ -84,7 +84,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.primaryData = {"code":"","name":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "location"){
         this.pageName = "Location";
-        this.primaryData = {"region":"","province":"","city":"","zone":"","postalCode":"","langCode":this.primaryLang,"isActive":true};
+        this.getHierarchyLevel();
+        this.primaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "templates"){
         this.pageName = "Template";
         this.getTemplateFileFormat();
@@ -127,6 +128,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Individual Type";
       }else if(url === "location"){
         this.pageName = "Location";
+        this.getHierarchyLevel();
       }else if(url === "templates"){
         this.pageName = "Template";
         this.getTemplateFileFormat();
@@ -161,7 +163,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "individual-type"){
         this.secondaryData = {"code":"","name":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "location"){
-        this.secondaryData = {"region":"","province":"","city":"","zone":"","postalCode":"","langCode":this.secondaryLang,"isActive":true};
+        this.secondaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "templates"){
         this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
       }else if(url === "title"){
@@ -236,6 +238,19 @@ export class MaterDataCommonBodyComponent implements OnInit {
       });
   }
 
+  getHierarchyLevel() {
+    this.dataStorageService
+      .getDropDownValuesForMasterData('locations/'+this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('locations/'+this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations;
+      });
+  }
+
   getMachineTypes() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
     let filterRequest = new FilterRequest([filterObject], this.primaryLang);
@@ -283,7 +298,21 @@ export class MaterDataCommonBodyComponent implements OnInit {
   captureDropDownValue(event: any, formControlName: string, type: string) {
     if (event.source.value && event.source.selected) {
       this.primaryData[formControlName] = event.source.value;
-      this.secondaryData[formControlName] = event.source.value;
+      this.secondaryData[formControlName] = event.source.value; 
+    }
+  }
+
+  captureLocationDropDownValue(event: any, formControlName: string, type: string) {    
+    if (event.source.selected) {
+      this.primaryData[formControlName] = event.source.value;
+      this.secondaryData[formControlName] = event.source.value; 
+      this.primaryData["hierarchyName"] = event.source.viewValue;
+    }
+  }
+
+  captureLocationSecondaryDropDownValue(event: any, formControlName: string, type: string) {
+    if (event.source.value) {
+      this.secondaryData["hierarchyName"] = event.source.viewValue; 
     }
   }
 
