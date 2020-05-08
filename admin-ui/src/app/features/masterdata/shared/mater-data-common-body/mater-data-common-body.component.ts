@@ -268,6 +268,22 @@ export class MaterDataCommonBodyComponent implements OnInit {
       });
   }
 
+  getMachineTypes() {
+    const filterObject = new FilterValuesModel('name', 'unique', '');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let request = new RequestModel('', null, filterRequest);
+    this.dataStorageService
+      .getDropDownValuesForMasterData('locations/'+this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations;
+      });
+    this.dataStorageService
+      .getDropDownValuesForMasterData('locations/'+this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations;
+      });
+  }
+
   changePage(location: string) {
     if (location === 'home') {
       this.router.navigateByUrl('admin/masterdata/home');

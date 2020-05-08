@@ -148,6 +148,23 @@
                         </mat-option>
                       </mat-select>
                       </div>
+                      <div *ngIf="field.name === 'hierarchyLevel'">
+                      <mat-select
+                        formControlName="hierarchyLevel"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.hierarchyLevelCode.primary"
+                          (onSelectionChange)="
+                            captureLocationDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.locationHierarchylevel"
+                        >
+                          {{ data.locationHierarchyName }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"
