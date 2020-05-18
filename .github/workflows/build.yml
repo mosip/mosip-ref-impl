@@ -15,6 +15,10 @@ jobs:
   # This workflow contains a single job called "build"
   build-admin-ui:
     runs-on: ubuntu-latest
+    env: 
+      NAMESPACE: ${{ secrets. dev_namespace_docker_hub }}
+      SERVICE_NAME: admin-ui
+      SERVICE_LOCATION: admin-ui
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -23,14 +27,46 @@ jobs:
       - uses: actions/setup-node@v1
         
       - name: npm install
-        run: cd admin-ui && npm install --ignore-scripts
+        run: cd ${{ env.SERVICE_LOCATION }} && npm install --ignore-scripts
       
       - name: npm build
-        run: cd admin-ui && npm run-script build -- --prod --base-href . --output-path=dist
+        run: cd ${{ env.SERVICE_LOCATION }} && npm run-script build -- --prod --base-href . --output-path=dist
+      
+      - name: setup environment
+        run: |
+          # Strip git ref prefix from version
+          echo "::set-env name=BRANCH_NAME::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
+          echo ${{ env.BRANCH_NAME }}
+      
+      - name: Build image
+        run: |
+          cd "./${{env.SERVICE_LOCATION}}"
+          docker build . --file Dockerfile --tag ${{ env.SERVICE_NAME }}
+      
+      - name: Log into registry
+        run: echo "${{ secrets.release_docker_hub }}" | docker login -u ${{ secrets.actor_docker_hub }} --password-stdin
+        
+      - name: Push image
+        run: |
+          IMAGE_ID=$NAMESPACE/$SERVICE_NAME
+          
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$BRANCH_NAME
+          echo "push version $VERSION"
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+          
 
 # This workflow contains a single job called "build"
   build-pre-registration-ui:
     runs-on: ubuntu-latest
+    env:
+      NAMESPACE: ${{ secrets. dev_namespace_docker_hub }}
+      SERVICE_NAME: pre-registration-ui
+      SERVICE_LOCATION: pre-registration-ui
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -39,7 +75,35 @@ jobs:
       - uses: actions/setup-node@v1
         
       - name: npm install
-        run: cd pre-registration-ui && npm install --ignore-scripts
+        run: cd ${{ env.SERVICE_LOCATION }} && npm install --ignore-scripts
       
       - name: npm build
-        run: cd pre-registration-ui && npm run-script build -- --prod --base-href . --output-path=dist
+        run: cd ${{ env.SERVICE_LOCATION }} && npm run-script build -- --prod --base-href . --output-path=dist
+
+      - name: setup environment
+        run: |
+          # Strip git ref prefix from version
+          echo "::set-env name=BRANCH_NAME::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
+          echo ${{ env.BRANCH_NAME }}
+      
+      - name: Build image
+        run: |
+          cd "./${{env.SERVICE_LOCATION}}"
+          docker build . --file Dockerfile --tag ${{ env.SERVICE_NAME }}
+      
+      - name: Log into registry
+        run: echo "${{ secrets.release_docker_hub }}" | docker login -u ${{ secrets.actor_docker_hub }} --password-stdin
+        
+      - name: Push image
+        run: |
+          IMAGE_ID=$NAMESPACE/$SERVICE_NAME
+          
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$BRANCH_NAME
+          echo "push version $VERSION"
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+  
