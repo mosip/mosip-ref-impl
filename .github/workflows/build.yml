@@ -26,9 +26,7 @@ jobs:
     - uses: actions/setup-node@v1.4.2
       with:     
         # Version Spec of the version to use.  Examples: 10.x, 10.15.1, >=10.15.0
-        node-version: 14.2.0
-    
-    - name: npm setup
+        node-version: '14.2.0'
     - run: npm install --ignore-scripts
     
     - name: npm build
