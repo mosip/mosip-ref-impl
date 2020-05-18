@@ -22,5 +22,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         
-      - name: test
-        run: echo "test"
+      - name: npm install
+        run: cd admin-ui && npm install --ignore-scripts
+      
+      - name: npm build
+        run: cd admin-ui && npm run-script build --prod --base-href . --output-path=dist
