@@ -26,7 +26,7 @@ import * as appConstants from '../../../../app.constants';
 
 @Component({
   selector: 'app-mater-data-common-body',
-  templateUrl: './mater-data-common-body.component.html'
+  templateUrl: './mater-data-common-body.component.html',
 })
 export class MaterDataCommonBodyComponent implements OnInit {
   private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
@@ -52,10 +52,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
   languageNames = {
     ara: 'عربى',
     fra: 'French',
-    eng: 'English'
+    eng: 'English',
   };
   showSecondaryForm: boolean;
-  isCreateForm:boolean;
+  isCreateForm: boolean;
 
   primaryKeyboard: string;
   secondaryKeyboard: string;
@@ -141,24 +141,24 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "templates"){
         this.pageName = "Template";
         this.getTemplateFileFormat();
-      }else if(url === "title"){
-        this.pageName = "Title";
-      }else if(url === "device-specs"){
-        this.pageName = "Device Specification";
+      } else if (url === 'title') {
+        this.pageName = 'Title';
+      } else if (url === 'device-specs') {
+        this.pageName = 'Device Specification';
         this.getDeviceTypes();
-      }else if(url === "device-types"){
-        this.pageName = "Device Type";
-      }else if(url === "machine-specs"){
-        this.pageName = "Machine Specification";
+      } else if (url === 'device-types') {
+        this.pageName = 'Device Type';
+      } else if (url === 'machine-specs') {
+        this.pageName = 'Machine Specification';
         this.getMachineTypes();
-      }else if(url === "machine-type"){
-        this.pageName = "Machine Type";
-      }else if(url === "document-type"){
-        this.pageName = "Document Type";
-      }else if(url === "document-categories"){
-        this.pageName = "Document Category";
-      }else if(url === "holiday"){
-        this.pageName = "Holiday";
+      } else if (url === 'machine-type') {
+        this.pageName = 'Machine Type';
+      } else if (url === 'document-type') {
+        this.pageName = 'Document Type';
+      } else if (url === 'document-categories') {
+        this.pageName = 'Document Category';
+      } else if (url === 'holiday') {
+        this.pageName = 'Holiday';
       }
     }
 
@@ -243,14 +243,14 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicetypes', request)
-      .subscribe(response => {
+      .subscribe((response) => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
     filterRequest = new FilterRequest([filterObject], this.secondaryLang);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicetypes', request)
-      .subscribe(response => {
+      .subscribe((response) => {
         this.dropDownValues.deviceTypeCode.secondary =
           response.response.filters;
       });
@@ -262,47 +262,53 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinetypes', request)
-      .subscribe(response => {
+      .subscribe((response) => {
         this.dropDownValues.machineTypeCode.primary = response.response.filters;
       });
     filterRequest = new FilterRequest([filterObject], this.secondaryLang);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinetypes', request)
-      .subscribe(response => {
+      .subscribe((response) => {
         this.dropDownValues.machineTypeCode.secondary =
           response.response.filters;
       });
   }
   getTemplateFileFormat() {
     this.dataStorageService
-      .getDropDownValuesForMasterData('templatefileformats/'+this.primaryLang)
-      .subscribe(response => {
-        this.dropDownValues.fileFormatCode.primary = response.response.templateFileFormats;
+      .getDropDownValuesForMasterData('templatefileformats/' + this.primaryLang)
+      .subscribe((response) => {
+        this.dropDownValues.fileFormatCode.primary =
+          response.response.templateFileFormats;
       });
     this.dataStorageService
-      .getDropDownValuesForMasterData('templatefileformats/'+this.secondaryLang)
-      .subscribe(response => {
-        this.dropDownValues.fileFormatCode.secondary = response.response.templateFileFormats;
+      .getDropDownValuesForMasterData(
+        'templatefileformats/' + this.secondaryLang
+      )
+      .subscribe((response) => {
+        this.dropDownValues.fileFormatCode.secondary =
+          response.response.templateFileFormats;
       });
     this.dataStorageService
-      .getDropDownValuesForMasterData('templatetypes/'+this.primaryLang)
-      .subscribe(response => {
-        this.dropDownValues.templateTypeCode.primary = response.response.templateTypes;
+      .getDropDownValuesForMasterData('templatetypes/' + this.primaryLang)
+      .subscribe((response) => {
+        this.dropDownValues.templateTypeCode.primary =
+          response.response.templateTypes;
       });
     this.dataStorageService
-      .getDropDownValuesForMasterData('templatetypes/'+this.secondaryLang)
-      .subscribe(response => {
-        this.dropDownValues.templateTypeCode.secondary = response.response.templateTypes;
+      .getDropDownValuesForMasterData('templatetypes/' + this.secondaryLang)
+      .subscribe((response) => {
+        this.dropDownValues.templateTypeCode.secondary =
+          response.response.templateTypes;
       });
     this.dataStorageService
-      .getDropDownValuesForMasterData('modules/'+this.primaryLang)
-      .subscribe(response => {
+      .getDropDownValuesForMasterData('modules/' + this.primaryLang)
+      .subscribe((response) => {
         this.dropDownValues.moduleId.primary = response.response.modules;
       });
     this.dataStorageService
-      .getDropDownValuesForMasterData('modules/'+this.secondaryLang)
-      .subscribe(response => {
+      .getDropDownValuesForMasterData('modules/' + this.secondaryLang)
+      .subscribe((response) => {
         this.dropDownValues.moduleId.secondary = response.response.modules;
       });
   }
@@ -324,9 +330,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
     if (location === 'home') {
       this.router.navigateByUrl('admin/masterdata/home');
     } else if (location === 'list') {
-      this.router.navigateByUrl(
-        `admin/masterdata/${this.masterdataType}/view`
-      );
+      this.router.navigateByUrl(`admin/masterdata/${this.masterdataType}/view`);
     }
   }
 
@@ -339,8 +343,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDatePickerValue(event: any, formControlName: string, type: string) {
-    let dateFormat = new Date(event.target.value);
-    let formattedDate = dateFormat.getFullYear() + "-" + ("0"+(dateFormat.getMonth()+1)).slice(-2) + "-" + ("0" + dateFormat.getDate()).slice(-2);
+    const dateFormat = new Date(event.target.value);
+    const formattedDate =
+      dateFormat.getFullYear() +
+      '-' +
+      ('0' + (dateFormat.getMonth() + 1)).slice(-2) +
+      '-' +
+      ('0' + dateFormat.getDate()).slice(-2);
     if (type === 'primary') {
       this.primaryData[formControlName] = formattedDate;
     } else if (type === 'secondary') {
@@ -372,22 +381,18 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   submit() {
-    if(this.isCreateForm){
-      let request = new RequestModel(
-        "",
-        null,
-        this.primaryData
-      );
-      this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
+    if (this.isCreateForm) {
+      const request = new RequestModel('', null, this.primaryData);
+      this.dataStorageService
+        .createMasterData(request)
+        .subscribe((updateResponse) => {
           if (!updateResponse.errors) {
-            let request = new RequestModel(
-              "",
-              null,
-              this.secondaryData
-            );
-            this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
+            const request = new RequestModel('', null, this.secondaryData);
+            this.dataStorageService
+              .createMasterData(request)
+              .subscribe((updateResponse) => {
                 if (!updateResponse.errors) {
-                  let url = this.pageName+" Created Successfully";
+                  const url = this.pageName + ' Created Successfully';
                   this.showMessage(url)
                     .afterClosed()
                     .subscribe(() => {
@@ -398,13 +403,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 } else {
                   this.showErrorPopup(updateResponse.errors[0].message);
                 }
-            });
+              });
           } else {
             this.showErrorPopup(updateResponse.errors[0].message);
           }
-      });
-    }else{
-      if(this.primaryData){
+        });
+    } else {
+      if (this.primaryData) {
         delete this.primaryData['createdBy'];
         delete this.primaryData['createdDateTime'];
         delete this.primaryData['updatedBy'];
@@ -413,7 +418,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.primaryData['deletedDateTime'];
         delete this.primaryData['deviceTypeName'];
       }
-      if(this.secondaryData){
+      if (this.secondaryData) {
         delete this.secondaryData['createdBy'];
         delete this.secondaryData['createdDateTime'];
         delete this.secondaryData['updatedBy'];
@@ -422,21 +427,18 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['deletedDateTime'];
         delete this.secondaryData['deviceTypeName'];
       }
-      let request = new RequestModel(
-        "",
-        null,
-        this.primaryData
-      );
-      this.dataStorageService.updateData(request).subscribe(updateResponse => {
+      const request = new RequestModel('', null, this.primaryData);
+      this.dataStorageService
+        .updateData(request)
+        .subscribe((updateResponse) => {
           if (!updateResponse.errors) {
-            let request = new RequestModel(
-              "",
-              null,
-              this.secondaryData
-            );
-            this.dataStorageService.updateData(request).subscribe(updateResponse => {
+            // tslint:disable-next-line: no-shadowed-variable
+            const request = new RequestModel('', null, this.secondaryData);
+            this.dataStorageService
+              .updateData(request)
+              .subscribe((updateResponse) => {
                 if (!updateResponse.errors) {
-                  let url = this.pageName+" Updated Successfully";
+                  const url = this.pageName + ' Updated Successfully';
                   this.showMessage(url)
                     .afterClosed()
                     .subscribe(() => {
@@ -447,11 +449,11 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 } else {
                   this.showErrorPopup(updateResponse.errors[0].message);
                 }
-            });
+              });
           } else {
             this.showErrorPopup(updateResponse.errors[0].message);
           }
-      });
+        });
     }
   }
 
@@ -462,24 +464,23 @@ export class MaterDataCommonBodyComponent implements OnInit {
       data: {
         case: 'MESSAGE',
         title: 'Success',
-        message: message,
-        btnTxt: 'Ok'
-      }
+        message,
+        btnTxt: 'Ok',
+      },
     });
     return dialogRef;
   }
 
   showErrorPopup(message: string) {
-    this.dialog
-      .open(DialogComponent, {
-        width: '350px',
-        data: {
-          case: 'MESSAGE',
-          title: 'Error',
-          message: message,
-          btnTxt: 'Ok'
-        },
-        disableClose: true
-      });
+    this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: {
+        case: 'MESSAGE',
+        title: 'Error',
+        message,
+        btnTxt: 'Ok',
+      },
+      disableClose: true,
+    });
   }
 }
