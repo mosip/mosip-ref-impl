@@ -1,4 +1,9 @@
-import { Component, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  ElementRef,
+  ViewChildren,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AppConfigService } from 'src/app/app-config.service';
@@ -26,15 +31,15 @@ import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
 import {
   MatKeyboardRef,
   MatKeyboardComponent,
-  MatKeyboardService
+  MatKeyboardService,
 } from 'ngx7-material-keyboard';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class CreateComponent{
+export class CreateComponent {
   secondaryLanguageLabels: any;
   primaryLang: string;
   secondaryLang: string;
@@ -46,7 +51,6 @@ export class CreateComponent{
   createUpdate = false;
   showSecondaryForm: boolean;
   secondaryObject: any;
-
 
   primaryData: any;
   secondaryData: any;
@@ -92,11 +96,10 @@ export class CreateComponent{
     private dialog: MatDialog,
     private statusPipe: StatusPipe,
     private auditService: AuditService,
-    private machineService: MachineService,
+    private machineService: MachineService
   ) {
-    this.subscribed = this.router.events.subscribe(event => {
+    this.subscribed = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-
         this.initializeComponent();
       }
     });
@@ -151,30 +154,16 @@ export class CreateComponent{
     }
   }
 
-  openKeyboard(type: string) {
-    if (this.keyboardService.isOpened && this.keyboardType === type) {
-      this.keyboardService.dismiss();
-      this.keyboardRef = undefined;
-    } else {
-      this.keyboardType = type;
-      if (type === 'primary') {
-        this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
-      } else if (type === 'secondary') {
-        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
-      }
-      if (this.selectedField) {
-        this.selectedField.focus();
-      }
-    }
-  }
-
   initializeComponent() {
     this.days = appConstants.days[this.primaryLang];
     this.secondaryDays = appConstants.days[this.secondaryLang];
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe((params) => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
-        console.log("machineSpecFile.auditEventIds[1]>>>"+machineSpecFile.auditEventIds[1]);
+        console.log(
+          'machineSpecFile.auditEventIds[1]>>>' +
+            machineSpecFile.auditEventIds[1]
+        );
         this.auditService.audit(8, machineSpecFile.auditEventIds[1], 'machine');
         this.disableForms = false;
         this.getData(params);
@@ -206,34 +195,34 @@ export class CreateComponent{
     this.initializeSecondaryForm();
     this.translateService
       .getTranslation(this.primaryLang)
-      .subscribe(response => {
+      .subscribe((response) => {
         this.popupMessages = response.machines.popupMessages;
       });
   }
 
-  getMachinespecifications() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
-    let request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.primary = response.response.filters;
-      });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.secondary =
-          response.response.filters;
-      });
-  }
+  // getMachinespecifications() {
+  //   const filterObject = new FilterValuesModel('name', 'unique', '');
+  //   let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+  //   let request = new RequestModel('', null, filterRequest);
+  //   this.dataStorageService
+  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
+  //     .subscribe((response) => {
+  //       this.dropDownValues.machineTypeCode.primary = response.response.filters;
+  //     });
+  //   filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+  //   request = new RequestModel('', null, filterRequest);
+  //   this.dataStorageService
+  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
+  //     .subscribe((response) => {
+  //       this.dropDownValues.machineTypeCode.secondary =
+  //         response.response.filters;
+  //     });
+  // }
 
   getZoneData() {
     this.dataStorageService
       .getZoneData(this.primaryLang)
-      .subscribe(response => {
+      .subscribe((response) => {
         console.log(response);
         this.dropDownValues.zone.primary = response.response;
         if (this.dropDownValues.zone.primary.length === 1) {
@@ -243,19 +232,19 @@ export class CreateComponent{
           this.primaryForm.controls.zone.disable();
         }
       });
-    if (this.primaryLang !==  this.secondaryLang) {
+    if (this.primaryLang !== this.secondaryLang) {
       this.dataStorageService
-      .getZoneData(this.secondaryLang)
-      .subscribe(response => {
-        console.log(response);
-        this.dropDownValues.zone.secondary = response.response;
-        if (this.dropDownValues.zone.secondary.length === 1) {
-          this.secondaryForm.controls.zone.setValue(
-            this.dropDownValues.zone.secondary[0].code
-          );
-          this.secondaryForm.controls.zone.disable();
-        }
-      });
+        .getZoneData(this.secondaryLang)
+        .subscribe((response) => {
+          console.log(response);
+          this.dropDownValues.zone.secondary = response.response;
+          if (this.dropDownValues.zone.secondary.length === 1) {
+            this.secondaryForm.controls.zone.setValue(
+              this.dropDownValues.zone.secondary[0].code
+            );
+            this.secondaryForm.controls.zone.disable();
+          }
+        });
     }
   }
 
@@ -285,7 +274,7 @@ export class CreateComponent{
       isActive: ['', [Validators.required]],
       zone: ['', [Validators.required]],
       publicKey: ['', [Validators.required]],
-      machineSpecId: ['', [Validators.required]]
+      machineSpecId: ['', [Validators.required]],
     });
   }
 
@@ -316,13 +305,18 @@ export class CreateComponent{
   }
 
   showError() {
-    this.dialog.open(DialogComponent, {
-      width: '350px',
-      data: {
-        case: 'MESSAGE'
-      },
-      disableClose: true
-    }).afterClosed().subscribe(() => this.router.navigateByUrl('admin/resources/machine/view'));
+    this.dialog
+      .open(DialogComponent, {
+        width: '350px',
+        data: {
+          case: 'MESSAGE',
+        },
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe(() =>
+        this.router.navigateByUrl('admin/resources/machine/view')
+      );
   }
 
   setPrimaryData() {
@@ -333,9 +327,13 @@ export class CreateComponent{
     this.primaryForm.controls.validity.setValue(
       this.primaryData.validityDateTime
     );
-    this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
+    this.primaryForm.controls.isActive.setValue(
+      this.statusPipe.transform(this.primaryData.isActive)
+    );
     this.primaryForm.controls.zone.setValue(this.primaryData.zoneCode);
-    this.primaryForm.controls.machineSpecId.setValue(this.primaryData.machineSpecId);
+    this.primaryForm.controls.machineSpecId.setValue(
+      this.primaryData.machineSpecId
+    );
   }
 
   setSecondaryData() {
@@ -352,9 +350,13 @@ export class CreateComponent{
     this.secondaryForm.controls.validity.setValue(
       this.secondaryData.validityDateTime
     );
-    this.secondaryForm.controls.isActive.setValue(this.statusPipe.transform(this.secondaryData.isActive));
+    this.secondaryForm.controls.isActive.setValue(
+      this.statusPipe.transform(this.secondaryData.isActive)
+    );
     this.secondaryForm.controls.zone.setValue(this.secondaryData.zoneCode);
-    this.secondaryForm.controls.machineSpecId.setValue(this.secondaryData.machineSpecId);
+    this.secondaryForm.controls.machineSpecId.setValue(
+      this.secondaryData.machineSpecId
+    );
   }
 
   setHeaderData() {
@@ -389,8 +391,8 @@ export class CreateComponent{
             title: this.popupMessages['navigation-popup'].title,
             message: this.popupMessages['navigation-popup'].message,
             yesBtnTxt: this.popupMessages['navigation-popup'].yesBtnTxt,
-            noBtnTxt: this.popupMessages['navigation-popup'].noBtnTxt
-          }
+            noBtnTxt: this.popupMessages['navigation-popup'].noBtnTxt,
+          },
         })
         .afterClosed();
     } else {
@@ -428,22 +430,25 @@ export class CreateComponent{
 
   onCreate() {
     let data = {};
-    if (this.secondaryForm.controls.name.value === '' && this.showSecondaryForm    ) {
+    if (
+      this.secondaryForm.controls.name.value === '' &&
+      this.showSecondaryForm
+    ) {
       data = {
         case: 'CONFIRMATION',
         title: this.popupMessages['create'].title,
         message: this.popupMessages['create'].mandatorySecondaryFields,
         yesBtnTxt: this.popupMessages['create'].yesBtnText,
-        noBtnTxt: this.popupMessages['create'].noBtnText
+        noBtnTxt: this.popupMessages['create'].noBtnText,
       };
     } else {
       if (this.data.length === 0) {
         data = {
           case: 'CONFIRMATION',
           title: this.popupMessages['create'].title,
-          message: "Are you sure about the data has been filled is correct?",
+          message: 'Are you sure about the data has been filled is correct?',
           yesBtnTxt: this.popupMessages['create'].yesBtnText,
-          noBtnTxt: this.popupMessages['create'].noBtnText
+          noBtnTxt: this.popupMessages['create'].noBtnText,
         };
       } else {
         data = {
@@ -451,15 +456,15 @@ export class CreateComponent{
           title: this.popupMessages['edit'].title,
           message: this.popupMessages['edit'].message,
           yesBtnTxt: this.popupMessages['edit'].yesBtnText,
-          noBtnTxt: this.popupMessages['edit'].noBtnText
+          noBtnTxt: this.popupMessages['edit'].noBtnText,
         };
       }
     }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
-      data
+      data,
     });
-    dialogRef.afterClosed().subscribe(response => {
+    dialogRef.afterClosed().subscribe((response) => {
       if (response && this.data.length === 0) {
         this.auditService.audit(18, 'ADM-104', 'create');
         this.saveData();
@@ -489,7 +494,6 @@ export class CreateComponent{
       this.secondaryForm.controls[fieldName].setValue('');
     }
   }
-
 
   saveData() {
     this.createUpdate = true;
@@ -524,10 +528,10 @@ export class CreateComponent{
       null,
       primaryObject
     );
-    console.log("primaryRequest>>>",primaryRequest);
+    console.log('primaryRequest>>>', primaryRequest);
     this.dataStorageService
       .createMachine(primaryRequest)
-      .subscribe(createResponse => {
+      .subscribe((createResponse) => {
         console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
           if (this.secondaryForm.valid) {
@@ -536,36 +540,38 @@ export class CreateComponent{
               secondaryObject.id = createResponse.response.id;
               secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
-              appConstants.registrationMachineCreateId,
-              null,
-              secondaryObject
-            );
+                appConstants.registrationMachineCreateId,
+                null,
+                secondaryObject
+              );
               console.log(JSON.stringify(secondaryRequest));
               this.dataStorageService
-              .createMachine(secondaryRequest)
-              .subscribe(secondaryResponse => {
-                console.log('Secondary Response' + secondaryResponse);
-                if (!secondaryResponse.errors) {
-                  this.showMessage('create-success', createResponse.response)
-                    .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/machines/view');
-                    });
-                } else {
-                  this.showMessage('create-error');
-                }
-              });
+                .createMachine(secondaryRequest)
+                .subscribe((secondaryResponse) => {
+                  console.log('Secondary Response' + secondaryResponse);
+                  if (!secondaryResponse.errors) {
+                    this.showMessage('create-success', createResponse.response)
+                      .afterClosed()
+                      .subscribe(() => {
+                        this.primaryForm.reset();
+                        this.secondaryForm.reset();
+                        this.router.navigateByUrl(
+                          'admin/resources/machines/view'
+                        );
+                      });
+                  } else {
+                    this.showMessage('create-error');
+                  }
+                });
             }
           } else {
             this.showMessage('create-success', createResponse.response)
-            .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/machines/view');
-                    });
+              .afterClosed()
+              .subscribe(() => {
+                this.primaryForm.reset();
+                this.secondaryForm.reset();
+                this.router.navigateByUrl('admin/resources/machines/view');
+              });
           }
         } else {
           this.showMessage('create-error');
@@ -607,10 +613,10 @@ export class CreateComponent{
       null,
       primaryObject
     );
-    console.log("primaryRequest>>>",primaryRequest);
+    console.log('primaryRequest>>>', primaryRequest);
     this.dataStorageService
       .updateData(primaryRequest)
-      .subscribe(createResponse => {
+      .subscribe((createResponse) => {
         console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
           if (this.secondaryForm.valid) {
@@ -619,36 +625,38 @@ export class CreateComponent{
               secondaryObject.id = createResponse.response.id;
               secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
-              appConstants.registrationMachineCreateId,
-              null,
-              secondaryObject
-            );
+                appConstants.registrationMachineCreateId,
+                null,
+                secondaryObject
+              );
               console.log(JSON.stringify(secondaryRequest));
               this.dataStorageService
-              .updateData(secondaryRequest)
-              .subscribe(secondaryResponse => {
-                console.log('Secondary Response' + secondaryResponse);
-                if (!secondaryResponse.errors) {
-                  this.showMessage('create-success', createResponse.response)
-                    .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/machines/view');
-                    });
-                } else {
-                  this.showMessage('update-error');
-                }
-              });
+                .updateData(secondaryRequest)
+                .subscribe((secondaryResponse) => {
+                  console.log('Secondary Response' + secondaryResponse);
+                  if (!secondaryResponse.errors) {
+                    this.showMessage('create-success', createResponse.response)
+                      .afterClosed()
+                      .subscribe(() => {
+                        this.primaryForm.reset();
+                        this.secondaryForm.reset();
+                        this.router.navigateByUrl(
+                          'admin/resources/machines/view'
+                        );
+                      });
+                  } else {
+                    this.showMessage('update-error');
+                  }
+                });
             }
           } else {
             this.showMessage('update-success', createResponse.response)
-            .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/machines/view');
-                    });
+              .afterClosed()
+              .subscribe(() => {
+                this.primaryForm.reset();
+                this.secondaryForm.reset();
+                this.router.navigateByUrl('admin/resources/machines/view');
+              });
           }
         } else {
           this.showMessage('update-error');
@@ -668,7 +676,7 @@ export class CreateComponent{
       this.MachineRequest
     );
     this.machineService.getRegistrationMachinesDetails(request).subscribe(
-      response => {
+      (response) => {
         if (response.response.data) {
           this.data[0] = response.response.data[0];
           this.initializeheader();
@@ -680,28 +688,26 @@ export class CreateComponent{
             this.MachineRequest
           );
           if (this.showSecondaryForm) {
-          this.machineService
-            .getRegistrationMachinesDetails(request)
-            .subscribe(secondaryResponse => {
-              this.data[1] = secondaryResponse.response.data
-                ? secondaryResponse.response.data[0]
-                : {};
-              this.setSecondaryFormValues();
-            });
+            this.machineService
+              .getRegistrationMachinesDetails(request)
+              .subscribe((secondaryResponse) => {
+                this.data[1] = secondaryResponse.response.data
+                  ? secondaryResponse.response.data[0]
+                  : {};
+                this.setSecondaryFormValues();
+              });
           }
-          if (
-              this.activatedRoute.snapshot.queryParams.editable === 'true'
-            ) {
-              this.disableForms = false;
-              this.primaryForm.enable();
-              if (this.showSecondaryForm) {
-              }
+          if (this.activatedRoute.snapshot.queryParams.editable === 'true') {
+            this.disableForms = false;
+            this.primaryForm.enable();
+            if (this.showSecondaryForm) {
             }
+          }
         } else {
           this.showErrorPopup();
         }
       },
-      error => this.showErrorPopup()
+      (error) => this.showErrorPopup()
     );
   }
 
@@ -713,8 +719,9 @@ export class CreateComponent{
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
     this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-    //this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
-    this.primaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
+    this.primaryForm.controls.machineSpecId.setValue(
+      this.data[0].machineSpecId
+    );
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
@@ -743,8 +750,8 @@ export class CreateComponent{
               this.popupMessages[type].message[1] +
               data.name
             : this.popupMessages[type].message,
-        btnTxt: this.popupMessages[type].btnTxt
-      }
+        btnTxt: this.popupMessages[type].btnTxt,
+      },
     });
     return dialogRef;
   }
@@ -759,9 +766,9 @@ export class CreateComponent{
           title: this.popupMessages['noData']['title'],
           message: this.popupMessages['noData']['message'],
           // tslint:disable-next-line:no-string-literal
-          btnTxt: this.popupMessages['noData']['btnTxt']
+          btnTxt: this.popupMessages['noData']['btnTxt'],
         },
-        disableClose: true
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() =>
