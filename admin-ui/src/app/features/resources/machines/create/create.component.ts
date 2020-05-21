@@ -151,22 +151,6 @@ export class CreateComponent{
     }
   }
 
-  openKeyboard(type: string) {
-    if (this.keyboardService.isOpened && this.keyboardType === type) {
-      this.keyboardService.dismiss();
-      this.keyboardRef = undefined;
-    } else {
-      this.keyboardType = type;
-      if (type === 'primary') {
-        this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
-      } else if (type === 'secondary') {
-        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
-      }
-      if (this.selectedField) {
-        this.selectedField.focus();
-      }
-    }
-  }
 
   initializeComponent() {
     this.days = appConstants.days[this.primaryLang];
@@ -211,24 +195,24 @@ export class CreateComponent{
       });
   }
 
-  getMachinespecifications() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
-    let request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.primary = response.response.filters;
-      });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.secondary =
-          response.response.filters;
-      });
-  }
+  // getMachinespecifications() {
+  //   const filterObject = new FilterValuesModel('name', 'unique', '');
+  //   let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+  //   let request = new RequestModel('', null, filterRequest);
+  //   this.dataStorageService
+  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
+  //     .subscribe(response => {
+  //       this.dropDownValues.machineTypeCode.primary = response.response.filters;
+  //     });
+  //   filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+  //   request = new RequestModel('', null, filterRequest);
+  //   this.dataStorageService
+  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
+  //     .subscribe(response => {
+  //       this.dropDownValues.machineTypeCode.secondary =
+  //         response.response.filters;
+  //     });
+  // }
 
   getZoneData() {
     this.dataStorageService
