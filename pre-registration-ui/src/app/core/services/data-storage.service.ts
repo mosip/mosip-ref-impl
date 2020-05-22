@@ -384,4 +384,5 @@ export class DataStorageService {
   getIdentityJson() {
     return this.httpClient.get('assets/identity-spec.json');
    }
+
 }

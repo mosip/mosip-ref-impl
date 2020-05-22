@@ -168,6 +168,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   codeValue: CodeValueModal[] = [];
   subscriptions: Subscription[] = [];
 
+
   identityData = [];
   uiFields = [];
   primaryuserForm = false;
@@ -403,6 +404,7 @@ export class DemographicComponent extends FormDeactivateGuardService
         this.user = this.regService.getUser(this.step);
         this.preRegId = this.user.preRegId;
       }
+
       this.uiFields.forEach((control, index) => {
         this.userForm.addControl(control.id, new FormControl(""));
         this.transUserForm.addControl(control.id, new FormControl(""));
@@ -527,7 +529,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
     if (transliterate.includes(fieldName)) {
       if (event.type === "focusout") {
-        //this.onTransliteration(fieldName,fieldName);
+        this.onTransliteration(fieldName,fieldName);
       }
     } else {
       this.transUserForm.controls[`${fieldName}`].setValue(
@@ -568,6 +570,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       }
     }
   }
+
 
   /**
    * @description This is get the location the input values
@@ -847,6 +850,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     url = Utils.getURL(this.router.url, "dashboard", 2);
     this.router.navigate([url]);
   }
+
  
   /**
    * @description This method is to format the date event to yyyy/mm/dd format
@@ -902,6 +906,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {*} toControl
    * @memberof DemographicComponent
    */
+
   onTransliteration(fromControl: any, toControl: any) {
     if (this.userForm.controls[`${fromControl}`].value) {
       const request: any = {

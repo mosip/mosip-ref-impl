@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class DataStorageService {
-  constructor(private http: HttpClient, private appService: AppConfigService,private router: Router) {}
+  constructor(private http: HttpClient, private appService: AppConfigService, private router: Router) {}
 
   private BASE_URL = this.appService.getConfig().baseUrl;
 
@@ -20,7 +20,7 @@ export class DataStorageService {
     locationCode: string,
     langCode: string
   ): Observable<any> {
-    console.log("getImmediateChildren>>>");
+    console.log('getImmediateChildren>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
@@ -32,7 +32,7 @@ export class DataStorageService {
   }
 
   getStubbedDataForDropdowns(langCode: string): Observable<any> {
-    console.log("getStubbedDataForDropdowns>>>");
+    console.log('getStubbedDataForDropdowns>>>');
     return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'locations/level/' + langCode);
   }
 
@@ -111,7 +111,7 @@ export class DataStorageService {
     type: string,
     data: RequestModel
   ): Observable<any> {
-    console.log("getFiltersForAllMaterDataTypes>>>"+type+"<<<data>>>"+data);
+    console.log('getFiltersForAllMaterDataTypes>>>' + type + '<<<data>>>' + data);
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
       data
@@ -127,7 +127,7 @@ export class DataStorageService {
   }
 
   getZoneData(langCode: string): Observable<any> {
-    console.log("getZoneData>>>");
+    console.log('getZoneData>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
@@ -137,7 +137,7 @@ export class DataStorageService {
   }
 
   getLoggedInUserZone(userId: string, langCode: string): Observable<any> {
-    console.log("getLoggedInUserZone>>>");
+    console.log('getLoggedInUserZone>>>');
     let params = new HttpParams();
     params = params.append('userID', userId);
     params = params.append('langCode', langCode);
@@ -149,13 +149,13 @@ export class DataStorageService {
 
   decommission(centerId: string) {
     let url = this.router.url.split('/')[3];
-    if(url === "centers"){
-      url = "registrationcenters";
+    if (url === 'centers') {
+      url = 'registrationcenters';
     }
     return this.http.put(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
-        url+ '/' +
+        url + '/' +
         'decommission/' +
         centerId,
       {}
