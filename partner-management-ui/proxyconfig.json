@@ -1,0 +1,81 @@
+{
+  "/partners/getpartners": {
+    "target": "http://localhost:1122",
+    "secure": false,
+    "changeOrigin":true
+  },
+
+    "/misps":{
+        "target":"http://localhost:8888/pmp",
+        "secure":false,
+        "changeOrigin":true
+    },    
+    "/misps/*/status":{
+        "target":"http://localhost:8888/pmp",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/misps/*":{
+        "target":"http://localhost:8888/pmp",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/policies":{
+        "target":"http://localhost:8989/pmp",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/policies/*":{
+        "target":"http://localhost:8989/pmp",
+        "secure":false,
+        "changeOrigin":true
+    },
+
+      "/pmpartners/getManager": {
+        "target": "http://localhost:1133",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/pmpartners/updateStatus": {
+        "target": "http://localhost:1133",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/pmpartners/PartnerAPIKeyRequests": {
+        "target": "http://localhost:1133",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/pmpartners": {
+        "target": "http://localhost:1133",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/pmpartners/policyname": {
+        "target": "http://localhost:1133",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/partnerReg": {
+        "target": "http://localhost:1122/partners",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/partners": {
+        "target": "http://localhost:1122",
+        "secure": false,
+        "changeOrigin":true
+      },
+    
+      "/partners/submit": {
+        "target": "http://localhost:1122",
+        "secure": false,
+        "changeOrigin":true
+      }
+}

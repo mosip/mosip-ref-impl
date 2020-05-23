@@ -1,0 +1,244 @@
+{
+  "auditEventIds": ["ADM-027", "ADM-049"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Submit Request",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "submitPartnerAPIKeyRequest"
+    },
+    {
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "/admin/resources/partner/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "partnerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create Partner",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/partner/create",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "partnerID",
+      "showInListView": "true",
+      "label": { "eng": "PartnerID", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "organizationName",
+      "showInListView": "true",
+      "label": {
+        "eng": "OrganizationName",
+        "ara": "نوع المركز",
+        "fra": "Type de centre"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "contactNumber",
+      "showInListView": "true",
+      "label": { "eng": "ContactNumber", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "policyName",
+      "showInListView": "",
+      "label": {
+        "eng": "PolicyName",
+        "ara": "عدد المستخدمين",
+        "fra": "Nombre d'utilisateurs"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "emailId",
+      "showInListView": "",
+      "label": {
+        "eng": "Email",
+        "ara": "عدد الأجهزة",
+        "fra": "Nombre d'appareils"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "status",
+      "showInListView": "",
+      "label": {
+        "eng": "Status",
+        "ara": "عدد الآلات",
+        "fra": "Nombre de machines"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "address",
+      "showInListView": "",
+      "label": {
+        "eng": "Address",
+        "ara": "هاتف مُتَكَون",
+        "fra": "Téléphone Contact"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "apiKeyRequestStatus",
+      "showInListView": "",
+      "label": {
+        "eng": "Submit Request Status",
+        "ara": "هاتف مُتَكَون",
+        "fra": "Téléphone Contact"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": "Center Name",
+      "filterType": "equals",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "registrationcenters",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "centerTypeName",
+      "filterlabel": "Center Type",
+      "filterType": "contains",
+      "fieldType": "mat-select",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "registrationcentertypes",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "registrationcenters",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "region",
+      "filterlabel": "Region",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Region",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "province",
+      "filterlabel": "Province",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Province",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "city",
+      "filterlabel": "City",
+      "uiField": "string",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "City",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "Zone",
+      "filterlabel": "Zone",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Zone",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "postalCode",
+      "filterlabel": "Pin Code",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "true",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "locations",
+      "fieldName": "Postal Code",
+      "methodCallName": ""
+    }
+  ]
+}

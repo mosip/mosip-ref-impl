@@ -1,0 +1,257 @@
+{
+  "auditEventIds": ["ADM-030", "ADM-052"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate Partner",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activatePartner"
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate Partner",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivatePartner"
+    },
+    {
+      "buttonName": {
+        "eng": "Approve ApikeyReq",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "approvePartnerRequestStatus"
+    },
+    {
+      "buttonName": {
+        "eng": "Reject ApikeyReq",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "rejectPartnerRequestStatus"
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate APIKey",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivateAPIKeyStatus"
+    },
+    {
+      "buttonName": {
+        "eng": "Activate APIKey",
+        "ara": "وقف التشغيل",
+        "fra": "mettre hors service"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activateAPIKeyStatus"
+    },
+    {
+      "buttonName": { "eng": "Change Policy", "ara": "تحرير", "fra": "réviser" },
+      "actionURL": "",
+      "redirectURL": "/admin/resources/pmanager/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "pmanagerEdit"
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "partnerID",
+      "showInListView": "True",
+      "label": {
+        "eng": "partnerID",
+        "ara": "اسم الجهاز",
+        "fra": "Nom de la Device"
+      },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "policyName",
+      "showInListView": "true",
+      "label": {
+        "eng": "policyName",
+        "ara": "نوع الجهاز",
+        "fra": "Type de Device"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "partnerStatus",
+      "showInListView": "true",
+      "label": { "eng": "partnerStatus", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "apikeyReqID",
+      "showInListView": "",
+      "label": { "eng": "apikeyReqID", "ara": "عنوان", "fra": "Mac Adresse" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "apikeyReqIDStatus",
+      "showInListView": "",
+      "label": {
+        "eng": "apikeyReqIDStatus",
+        "ara": "الرقم التسلسلي",
+        "fra": "numéro"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "partnerAPIKey",
+      "showInListView": "",
+      "label": {
+        "eng": "partnerAPIKey",
+        "ara": "تعيين الحالة",
+        "fra": "Attribuer un statut"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "partnerAPIKeyStatus",
+      "showInListView": "",
+      "label": {
+        "eng": "partnerAPIKeyStatus",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "partnerID",
+      "filterlabel": "partnerID",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "devices",
+      "fieldName": "partnerID",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "name",
+      "filterlabel": "Device Name",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "devices",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": "Status",
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "devices",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "macAddress",
+      "filterlabel": "MAC Address",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "devices",
+      "fieldName": "macAddress",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "serialNum",
+      "filterlabel": "Serial Number",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "devices",
+      "fieldName": "serialNum",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "mapStatus",
+      "filterlabel": "Map Status",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "devices",
+      "fieldName": "mapStatus",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "deviceTypeName",
+      "filterlabel": "Device Type",
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "devicetypes",
+      "fieldName": "name",
+      "methodCallName": ""
+    }
+  ]
+}

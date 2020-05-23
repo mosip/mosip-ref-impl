@@ -1,0 +1,63 @@
+<div id ="flex-single-view">
+    <div id="flex-container">
+        <app-policy-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-policy-header>
+        <div id="myDiv" class="flex-body">
+            <mat-card>
+                <mat-card-content class="forms-container">
+                    <div [formGroup] ="primaryForm" class="primary-form">
+                        <span><strong>{{'policy.language'| translate}} </strong></span>
+                        <span *ngIf="!disableForms" matTooltip="{{'policy.keyboard-tooltip' | translate}}" (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
+                        <hr />
+                        <br /><br />
+                        <h3>{{ 'policy.policy-details' | translate }}</h3>
+                        <mat-form-field>
+                            <input #keyboardRef #name (focus)="scrollPage(name, 'primary', 'name', 0)" formControlName="name" matInput placeholder="{{ 'policy.name' | translate }}">            
+                            <mat-error *ngIf="primary.name.touched && primary.name.hasError('required')">
+                                {{'policy.validationMessages.name.required' | translate }}
+                              </mat-error>
+                              <mat-error *ngIf="primary.name.touched && primary.name.hasError('maxlength')">
+                                {{'policy.validationMessages.name.max-length' | translate }}
+                              </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                          <input #keyboardRef #name (focus)="scrollPage(desc, 'primary', 'desc', 1)" formControlName="desc" matInput placeholder="{{ 'policy.desc' | translate }}">            
+                          <mat-error *ngIf="primary.desc.touched && primary.desc.hasError('required')">
+                            {{'policy.validationMessages.desc.required' | translate }}
+                          </mat-error>
+                          <mat-error *ngIf="primary.desc.touched && primary.desc.hasError('maxlength')">
+                            {{'policy.validationMessages.desc.max-length' | translate }}
+                          </mat-error>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="disableForms">
+                          <input #keyboardRef #name (focus)="scrollPage(authname, 'primary', 'authname', 2)" formControlName="authname" matInput placeholder="{{ 'policy.authPolicies' | translate }}">            
+                        </mat-form-field>
+                        <mat-form-field *ngIf="disableForms">
+                          <input #keyboardRef #name (focus)="scrollPage(authdesc, 'primary', 'authdesc', 3)" formControlName="authdesc" matInput placeholder="{{ 'policy.allowedKycAttributes' | translate }}">            
+                        </mat-form-field>
+                        <mat-form-field *ngIf="!disableForms && data.length !== 0">
+                          <mat-label>AuthPolicies</mat-label>
+                          <mat-select [formControl]="toppings" multiple>
+                            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>       
+                        <mat-form-field *ngIf="!disableForms && data.length !== 0">
+                          <mat-label>KycAttributes</mat-label>
+                          <mat-select [formControl]="toppings" multiple>
+                            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>  
+                    </div>
+                </mat-card-content>
+                <mat-card-actions class="action-buttons">
+                    <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length === 0"
+                      (click)="submit()">{{ 'misp.create' | translate }}</button>
+                    <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length !== 0"
+                      (click)="submit()">{{ 'misp.update' | translate }} </button>
+                    <button id="createButton" mat-raised-button *ngIf="disableForms"
+                      (click)="submit()">{{ 'misp.edit' | translate }}</button>
+                    <button mat-raised-button (click)="cancel()">{{ 'misp.cancel' | translate }}</button>
+                  </mat-card-actions> 
+            </mat-card>
+        </div>
+    </div>
+</div>
