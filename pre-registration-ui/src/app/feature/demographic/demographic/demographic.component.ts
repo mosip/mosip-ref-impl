@@ -168,15 +168,15 @@ export class DemographicComponent extends FormDeactivateGuardService
   codeValue: CodeValueModal[] = [];
   subscriptions: Subscription[] = [];
 
-  formControlValues = {};
+
   identityData = [];
   uiFields = [];
   primaryuserForm = false;
   primarydropDownFields = {};
-  @ViewChild("dropdown") dropdown: any;
   secondaryDropDownLables = {};
   secondaryuserForm = false;
-
+  locationHeirarchy = [];
+  validationMessage : any;
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -221,7 +221,8 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.setConfig();
     this.getPrimaryLabels();
     await this.getConsentMessage();
-
+    this.validationMessage = appConstants.errorMessages;
+    console.log(this.validationMessage);
     let factory = new LanguageFactory(this.secondaryLang);
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response["demographic"];
@@ -367,6 +368,12 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
 
+  /**
+   * @description This method will get the Identity Schema Json
+   * 
+   * 
+   */
+
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((item) => {
@@ -375,10 +382,7 @@ export class DemographicComponent extends FormDeactivateGuardService
           if (
             obj.inputRequired === true &&
             obj.controlType !== null &&
-            !(
-              obj.controlType === "fileupload" ||
-              obj.controlType === "biometrics"
-            )
+            !(obj.controlType === "fileupload")
           ) {
             this.uiFields.push(obj);
           }
@@ -400,7 +404,8 @@ export class DemographicComponent extends FormDeactivateGuardService
         this.user = this.regService.getUser(this.step);
         this.preRegId = this.user.preRegId;
       }
-      this.uiFields.forEach((control,index) => {
+
+      this.uiFields.forEach((control, index) => {
         this.userForm.addControl(control.id, new FormControl(""));
         this.transUserForm.addControl(control.id, new FormControl(""));
 
@@ -433,14 +438,14 @@ export class DemographicComponent extends FormDeactivateGuardService
             Validators.required,
             Validators.pattern(control.validators[0].validator),
           ]);
-          if (this.primaryLang! == this.secondaryLang) {
+          if (this.primaryLang !== this.secondaryLang) {
             this.transUserForm.controls[`${control.id}`].setValidators([
               Validators.required,
               Validators.pattern(control.validators[0].validator),
             ]);
           }
         }
-        if (this.uiFields.length === (index + 1)){
+        if (this.uiFields.length === index + 1) {
           this.primaryuserForm = true;
           this.secondaryuserForm = true;
         }
@@ -451,8 +456,11 @@ export class DemographicComponent extends FormDeactivateGuardService
           this.primarydropDownFields[control.id] = [];
           this.secondaryDropDownLables[control.id] = [];
         }
+        if (control.locationHierarchy) {
+          this.locationHeirarchy = [];
+          this.locationHeirarchy = [...control.locationHierarchy];
+        }
       });
-      
       resolve(true);
       this.setLocations();
       this.setGender();
@@ -460,33 +468,48 @@ export class DemographicComponent extends FormDeactivateGuardService
     });
   }
 
-  dropdownApiCall(controlName: string) {
-    if (controlName === "gender") {
-      this.primarydropDownFields[controlName] = [...this.primaryGender];
-      this.secondaryDropDownLables[controlName] = [...this.secondaryGender];
-    } else if (controlName === "residenceStatus") {
-      this.primarydropDownFields[controlName] = [
+  /**
+   * 
+   * @description this method is to make dropdown api calls
+   * 
+   * @param controlObject is Identity Type Object 
+   *  ex: { id : 'region',controlType: 'dropdown' ...}
+   */
+  dropdownApiCall(controlObject: any) {
+    if (controlObject.id === appConstants.controlTypeGender) {
+      this.primarydropDownFields[controlObject.id] = [...this.primaryGender];
+      this.secondaryDropDownLables[controlObject.id] = [
+        ...this.secondaryGender,
+      ];
+    } else if (controlObject.id === appConstants.controlTypeResidenceStatus) {
+      this.primarydropDownFields[controlObject.id] = [
         ...this.primaryResidenceStatus,
       ];
-      this.secondaryDropDownLables[controlName] = [
+      this.secondaryDropDownLables[controlObject.id] = [
         ...this.secondaryResidenceStatus,
       ];
-    } else if (controlName === "region") {
-    } else if (controlName === "province") {
-      this.primarydropDownFields[controlName] = [];
-      let locationCode = this.userForm.get("region").value;
-      this.loadLocationData(locationCode, "province");
-    } else if (controlName === "city") {
-      this.primarydropDownFields[controlName] = [];
-      let locationCode = this.userForm.get("province").value;
-      this.loadLocationData(locationCode, "city");
-    } else if (controlName === "zone") {
-      this.primarydropDownFields[controlName] = [];
-      let locationCode = this.userForm.get("city").value;
-      this.loadLocationData(locationCode, "zone");
+    } else if (controlObject.locationHierarchy) {
+      if (controlObject.locationHierarchy.includes(controlObject.id)) {
+        if (controlObject.locationHierarchy.indexOf(controlObject.id) !== 0) {
+          this.primarydropDownFields[controlObject.id] = [];
+          const location = controlObject.locationHierarchy.indexOf(
+            controlObject.id
+          );
+          const parentLocation = controlObject.locationHierarchy[location - 1];
+          let locationCode = this.userForm.get(`${parentLocation}`).value;
+          this.loadLocationData(locationCode, controlObject.id);
+        }
+      }
     }
   }
 
+  /**
+   * @description this method will copy dropdown values from its 
+   * respective dropdown inputs to it's ssecondary input
+   * 
+   * @param fieldName input field
+   * @param fieldValue input field value
+   */
   copyDataToSecondaryForm(fieldName: string, fieldValue: string) {
     this.secondaryDropDownLables[fieldName].forEach((element) => {
       if (element.valueCode === fieldValue) {
@@ -494,17 +517,19 @@ export class DemographicComponent extends FormDeactivateGuardService
       }
     });
   }
-
+  
+  /**
+   * @description This method will copy non dropdown field values
+   * from primary form to secondary form
+   * 
+   * @param fieldName input field name
+   * @param event event type
+   */
   copyToSecondaryFormNonDropDown(fieldName: string, event: Event) {
-    const transliterate = [
-      "fullName",
-      "addressLine1",
-      "addressLine2",
-      "addressLine3",
-    ];
+    const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
     if (transliterate.includes(fieldName)) {
       if (event.type === "focusout") {
-        // this.onTransliteration(fieldName,fieldName);
+        this.onTransliteration(fieldName,fieldName);
       }
     } else {
       this.transUserForm.controls[`${fieldName}`].setValue(
@@ -522,16 +547,20 @@ export class DemographicComponent extends FormDeactivateGuardService
    */
   private async setLocations() {
     await this.getLocationMetadataHirearchy();
-    this.loadLocationData(this.uppermostLocationHierarchy, "region");
+    this.loadLocationData(
+      this.uppermostLocationHierarchy,
+      this.locationHeirarchy[0]
+    );
   }
-
+  /**
+   * @description This is to reset the input values 
+   * when the parent input value is changed
+   *
+   * @param fieldName location dropdown control Name
+   */
   resetLocationFields(fieldName: string) {
-    if (
-      fieldName === "region" ||
-      fieldName === "province" ||
-      fieldName === "city"
-    ) {
-      const locationFields = ["region", "province", "city", "zone"];
+    if (this.locationHeirarchy.includes(fieldName)) {
+      const locationFields = [...this.locationHeirarchy];
       const index = locationFields.indexOf(fieldName);
       for (let i = index + 1; i < locationFields.length; i++) {
         this.userForm.controls[locationFields[i]].setValue("");
@@ -542,6 +571,13 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
 
+
+  /**
+   * @description This is get the location the input values
+   *
+   * @param fieldName location dropdown control Name
+   * @param locationCode location code of parent location
+   */
   loadLocationData(locationCode: string, fieldName: string) {
     this.dataStorageService
       .getLocationImmediateHierearchy(this.primaryLang, locationCode)
@@ -705,7 +741,8 @@ export class DemographicComponent extends FormDeactivateGuardService
   }
 
   /**
-   * @description This will get the residenceStatus details from the master data.
+   * @description This will get the residenceStatus 
+   * details from the master data.
    *
    * @private
    * @returns
@@ -790,25 +827,17 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   addCodeValue(element: CodeValueModal, fieldName: string) {
-    if (
-      fieldName === "region" ||
-      fieldName === "province" ||
-      fieldName === "city" ||
-      fieldName === "zone"
-    ){
-      let checkElementIsPresent = [];
-    checkElementIsPresent = this.codeValue.filter(
-      (ele) => ele.valueCode === element.valueCode
+    this.codeValue.push({
+      valueCode: element.valueCode,
+      valueName: element.valueName,
+      languageCode: element.languageCode,
+    });
+    this.codeValue.push(
+      this.secondaryDropDownLables[fieldName].filter(
+        (value) => value.valueCode === element.valueCode
+      )[0]
     );
-    if (checkElementIsPresent.length < 1) {
-      this.codeValue.push({
-        valueCode: element.valueCode,
-        valueName: element.valueName,
-        languageCode: element.languageCode,
-      });
-      console.log(this.codeValue);
-    }
-  }
+    console.log(this.codeValue);
   }
 
   /**
@@ -822,6 +851,12 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.router.navigate([url]);
   }
 
+ 
+  /**
+   * @description This method is to format the date event to yyyy/mm/dd format
+   * 
+   * @param event date event
+   */
   dateEvent(event) {
     const date = new Date(event.value);
     const year = date.getFullYear();
@@ -848,14 +883,15 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.transUserForm.controls["dateOfBirth"].setValue(formattedDate);
   }
 
-  getReadOnlyfields(field: string) {
-    const transliterate = [
-      "fullName",
-      "addressLine1",
-      "addressLine2",
-      "addressLine3",
-    ];
+  /**
+   * @description To mark a input as readonly or not
+   * 
+   * 
+   * @param field Input control name
+   */
 
+  getReadOnlyfields(field: string) {
+    const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
     if (transliterate.includes(field)) {
       return false;
     } else {
@@ -870,7 +906,8 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {*} toControl
    * @memberof DemographicComponent
    */
-  onTransliteration(fromControl: FormControl, toControl: any) {
+
+  onTransliteration(fromControl: any, toControl: any) {
     if (this.userForm.controls[`${fromControl}`].value) {
       const request: any = {
         from_field_lang: this.primaryLang,
@@ -959,7 +996,7 @@ export class DemographicComponent extends FormDeactivateGuardService
                     ] === appConstants.ERROR_CODES.invalidPin
                   ) {
                     console.log(response);
-                    //message = this.formValidation(response);
+                    message = this.formValidation(response);
                   } else message = this.errorlabels.error;
                   this.onError(message, "");
                   return;
@@ -1105,12 +1142,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     if (typeof identity[element] === "object") {
       let forms = [];
       let formControlNames = "";
-      const transliterateField = [
-        "fullName",
-        "addressLine1",
-        "addressLine2",
-        "addressLine3",
-      ];
+      const transliterateField = [...appConstants.TRANSLITERATE_FIELDS];
       if (transliterateField.includes(element)) {
         forms = ["userForm", "transUserForm"];
         formControlNames = element;
@@ -1165,10 +1197,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.identityData.forEach((field) => {
       if (
         field.inputRequired === true &&
-        !(
-          field.controlType === "fileupload" ||
-          field.controlType === "biometrics"
-        )
+        !(field.controlType === "fileupload")
       ) {
         if (!field.inputRequired) {
           identityObj[field.id] = "";
