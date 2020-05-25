@@ -106,9 +106,17 @@
   font-size: 10px;
   font-weight: 300;
 }
-.mat-error {
+
+.primary-errors{
   font-size: 9.5px;
-  margin-left: 10px;
+  margin-left: 22px;
+}
+.secondary-errors{
+  font-size: 9.5px;
+  margin-right: 22px;
+}
+::ng-deep svg.mat-datepicker-toggle-default-icon {
+  padding-bottom: 10px !important;
 }
 
 .user__form h4 {

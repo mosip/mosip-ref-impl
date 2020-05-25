@@ -184,3 +184,20 @@ export const DOCUMENT_UPLOAD_REQUEST_DTO_KEY = 'Document request';
 export const PREVIEW_DATA_APPEND_URL = 'demographic/v0.1/applicationData';
 
 export const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export const controlTypeGender = 'gender';
+export const controlTypeResidenceStatus = 'residenceStatus';
+export const TRANSLITERATE_FIELDS = ["fullName","addressLine1","addressLine2","addressLine3"];
+
+export const errorMessages = {
+  requiredMessage : {
+    eng : "Is Required",
+    ara : "مطلوب",
+    fra : "Est requis"
+  },
+  InvalidStringMessage: {
+    eng : "Invalid",
+    ara : "غير صالحة",
+    fra : "Invalide"
+  }
+}
