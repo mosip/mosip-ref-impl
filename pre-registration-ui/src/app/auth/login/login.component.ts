@@ -297,10 +297,15 @@ export class LoginComponent implements OnInit  {
 
   submit(): void {
     this.loginIdValidator();
-    this.showCaptcha = false;
+    if(this.captchaSucess){
+      this.showCaptcha = false;
+    } else{
+      this.captchaError = true;
+      this.showCaptcha = true;
+    }
     if (
       (this.showSendOTP || this.showResend) &&
-      this.errorMessage === undefined
+      this.errorMessage === undefined && this.captchaSucess
     ) {
       this.inputOTP = "";
       this.showResend = true;
@@ -323,6 +328,8 @@ export class LoginComponent implements OnInit  {
             this.showResend = false;
             this.showOTP = false;
             this.showVerify = false;
+            this.showCaptcha = true;
+            this.captchaSucess = false;
             document.getElementById("minutesSpan").innerText = this.minutes;
             document.getElementById("timer").style.visibility = "hidden";
             clearInterval(this.timer);

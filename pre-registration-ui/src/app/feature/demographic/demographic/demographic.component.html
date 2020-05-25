@@ -12,7 +12,7 @@
           <ng-container *ngFor="let field of uiFields">
             <ng-container *ngIf="field.controlType === 'textbox'">
               <mat-form-field [ngClass]="'text-field'">
-                <mat-label>{{ field.labelName }}</mat-label>
+                <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <input
                   matInput
                   formControlName="{{ field.id }}"
@@ -26,11 +26,11 @@
             </ng-container>
             <ng-container *ngIf="field.controlType === 'dropdown'">
               <mat-form-field [ngClass]="'dropdown-field'">
-                <mat-label>{{ field.labelName }}</mat-label>
+                <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <mat-select
                   style="margin-top: 5px; padding: 4px;"
                   formControlName="{{ field.id }}"
-                  (focus)="dropdownApiCall(field.id)"
+                  (click)="dropdownApiCall(field)"
                   (selectionChange)="copyDataToSecondaryForm(field.id,userForm.get(field.id).value)"
                   #dropdown
                 >
@@ -55,7 +55,7 @@
             </ng-container>
             <ng-container *ngIf="field.controlType === 'date'">
               <mat-form-field [ngClass]="'date-field'">
-                <mat-label>{{ field.labelName }}</mat-label>
+                <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <input
                 matInput
                 formControlName="{{ field.id }}"
@@ -75,21 +75,21 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
             </ng-container>
-            <mat-error
+            <mat-error class="primary-errors"
               *ngIf="primaryuserForm &&
                 userForm.get(field.id).hasError('required') &&
                 userForm.get(field.id).touched
               "
-              >{{ field.labelName }} is required</mat-error
+              >{{ field.labelName[primaryLang] }} {{validationMessage.requiredMessage[primaryLang]}}</mat-error
             >
-            <mat-error 
+            <mat-error class="primary-errors"
               *ngIf="
                 primaryuserForm &&
                 userForm.get(field.id).touched &&
                 userForm.get(field.id).dirty &&
                 userForm.get(field.id).hasError('pattern')
               "
-              >{{ field.labelName }} is not a vaild string
+              >{{validationMessage.InvalidStringMessage[primaryLang]}} {{ field.labelName[primaryLang] }}
             </mat-error>
           </ng-container>
         </form>
@@ -100,7 +100,7 @@
         <ng-container *ngFor="let field of uiFields">
           <ng-container *ngIf="field.controlType === 'textbox'">
             <mat-form-field [ngClass]="'text-field'">
-              <mat-label>{{ field.labelName }}</mat-label>
+              <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <input
                 matInput
                 formControlName="{{ field.id }}"
@@ -111,7 +111,7 @@
           </ng-container>
           <ng-container *ngIf="field.controlType === 'dropdown'">
             <mat-form-field [ngClass]="'dropdown-field'">
-              <mat-label>{{ field.labelName }}</mat-label>
+              <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <mat-select
                 style="margin-top: 5px; padding: 4px;"
                 formControlName="{{ field.id }}"
@@ -138,7 +138,7 @@
           </ng-container>
           <ng-container *ngIf="field.controlType === 'date'">
             <mat-form-field [ngClass]="'date-field'">
-              <mat-label>{{ field.labelName }}</mat-label>
+              <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <input
                 matInput
                 style="margin-top: 5px;padding: 4px;"
@@ -147,21 +147,21 @@
               />
             </mat-form-field>
           </ng-container>
-          <mat-error
+          <mat-error class="secondary-errors"
             *ngIf="secondaryuserForm &&
             transUserForm.get(field.id).touched &&
               transUserForm.get(field.id).hasError('required')
             "
-            >{{ field.labelName }} is required</mat-error
+            >{{ field.labelName[secondaryLang] }} {{validationMessage.requiredMessage[secondaryLang]}}</mat-error
           >
-          <mat-error 
+          <mat-error  class="secondary-errors"
             *ngIf="
               secondaryuserForm &&
               transUserForm.get(field.id).touched &&
               transUserForm.get(field.id).dirty &&
               transUserForm.get(field.id).hasError('pattern')
             "
-            >{{ field.labelName }} is not a vaild string
+            >{{validationMessage.InvalidStringMessage[secondaryLang]}}  {{ field.labelName[secondaryLang] }} 
           </mat-error>
         </ng-container>
         </form>
