@@ -359,7 +359,7 @@ export class CreateComponent {
     );
   }
 
-  setHeaderData() {
+  /*setHeaderData() {
     this.headerObject = new HeaderModel(
       this.primaryData.name,
       this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
@@ -368,7 +368,7 @@ export class CreateComponent {
       this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
     );
     console.log(this.headerObject);
-  }
+  }*/
 
   ngOnDestroy() {
     this.subscribed.unsubscribe();

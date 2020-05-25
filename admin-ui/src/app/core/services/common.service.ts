@@ -187,10 +187,10 @@ export class CommonService {
       data.macAddress,
       data.serialNum,
       data.ipAddress,
-      data.id,
-      data.isActive,
       data.langCode,
       data.deviceSpecId,
+      data.id,
+      data.isActive,     
     );
     return primaryObject;
   }
@@ -204,9 +204,10 @@ export class CommonService {
       data.macAddress,
       data.serialNum,
       data.ipAddress,
-      data.id,
-      data.isActive,
+      "",
       data.langCode,
+      data.id,
+      data.isActive,      
     );
     return primaryObject;
   }

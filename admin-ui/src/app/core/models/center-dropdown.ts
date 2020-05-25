@@ -19,7 +19,8 @@ export class CenterDropdown {
     public machineTypeCode: any = {},
     public fileFormatCode: any = {},
     public templateTypeCode: any = {},
-    public moduleId: any = {},
-    public isActive = [true, false]
+    public moduleId: any = {},    
+    public hierarchyLevelCode: any = {},
+    public isActive = ["active", "isactive"]
   ) {}
 }

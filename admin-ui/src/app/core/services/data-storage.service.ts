@@ -16,6 +16,10 @@ export class DataStorageService {
     return this.http.get('./assets/entity-spec/center.json');
   }
 
+  getDeviceSpecificLabelsAndActions(): Observable<any> {
+    return this.http.get('./assets/entity-spec/devices.json');
+  }
+
   getImmediateChildren(
     locationCode: string,
     langCode: string
