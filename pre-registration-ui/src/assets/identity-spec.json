@@ -273,71 +273,96 @@
            ],
            "required":true
         },
-        {
-           "id":"proofOfAddress",
-           "description":"proofOfAddress",
-           "labelName":"proofOfAddress",
-           "controlType":"fileupload",
-           "inputRequired":true,
-           "validators":[
-
-           ],
-           "required":false
-        },
-        {
-           "id":"proofOfIdentity",
-           "description":"proofOfIdentity",
-           "labelName":"proofOfIdentity",
-           "controlType":"fileupload",
-           "inputRequired":true,
-           "validators":[
-
-           ],
-           "required":true
-        },
-        {
-           "id":"proofOfRelationship",
-           "description":"proofOfRelationship",
-           "labelName":"proofOfRelationship",
-           "controlType":"fileupload",
-           "inputRequired":true,
-           "validators":[
-
-           ],
-           "required":true
-        },
-        {
-           "id":"proofOfDateOfBirth",
-           "description":"proofOfDateOfBirth",
-           "labelName":"proofOfDateOfBirth",
-           "controlType":"fileupload",
-           "inputRequired":true,
-           "validators":[
-
-           ],
-           "required":true
-        },
-        {
-           "id":"proofOfException",
-           "description":"proofOfException",
-           "labelName":"proofOfException",
-           "controlType":"fileupload",
-           "inputRequired":true,
-           "validators":[
-
-           ],
-           "required":true
-        },
-        {
-           "id":"proofOfException-1",
-           "description":"proofOfException",
-           "labelName":"proofOfException",
-           "controlType":"fileupload",
-           "inputRequired":true,
-           "validators":[
-
-           ],
-           "required":true
-        }
+		{
+            "id": "proofOfAddress",
+            "inputRequired": true,
+            "type": "documentType",
+            "minimum": 0,
+            "maximum": 0,
+            "description": "proofOfAddress",
+            "label": [{"value":"Address Proof","language":"eng"}],
+            "controlType": "fileupload",
+            "fieldType": "default",
+            "format": "none",
+            "validators": [],
+            "fieldCategory": "optional",
+            "required": false,
+            "subType" : "POA"
+         }, {
+            "id": "proofOfIdentity",
+            "inputRequired": true,
+            "type": "documentType",
+            "minimum": 0,
+            "maximum": 0,
+            "description": "proofOfIdentity",
+            "label": [{"value":"Identity Proof","language":"eng"}],
+            "controlType": "fileupload",
+            "fieldType": "default",
+            "format": "none",
+            "validators": [],
+            "fieldCategory": "evidence",
+            "required": true,
+            "subType" : "POI"
+         }, {
+            "id": "proofOfRelationship",
+            "inputRequired": true,
+            "type": "documentType",
+            "minimum": 0,
+            "maximum": 0,
+            "description": "proofOfRelationship",
+            "label": [{"value":"Relationship Proof","language":"eng"}],
+            "controlType": "fileupload",
+            "fieldType": "default",
+            "format": "none",
+            "validators": [],
+            "fieldCategory": "evidence",
+            "required": true,
+            "subType" : "POR"
+         }, {
+            "id": "proofOfDateOfBirth",
+            "inputRequired": true,
+            "type": "documentType",
+            "minimum": 0,
+            "maximum": 0,
+            "description": "proofOfDateOfBirth",
+            "label": [{"value":"DOB Proof","language":"eng"}],
+            "controlType": "fileupload",
+            "fieldType": "default",
+            "format": "none",
+            "validators": [],
+            "fieldCategory": "evidence",
+            "required": true,
+            "subType" : "POB"
+         }, {
+            "id": "proofOfException",
+            "inputRequired": true,
+            "type": "documentType",
+            "minimum": 0,
+            "maximum": 0,
+            "description": "proofOfException",
+            "label": [{"value":"Exception Proof","language":"eng"}],
+            "controlType": "fileupload",
+            "fieldType": "default",
+            "format": "none",
+            "validators": [],
+            "fieldCategory": "evidence",
+            "required": true,
+            "subType" : "POE"
+         }, {
+            "id": "proofOfException-1",
+            "inputRequired": true,
+            "type": "documentType",
+            "minimum": 0,
+            "maximum": 0,
+            "description": "proofOfException",
+            "label": [{"value":"Exception Proof 2","language":"eng"}],
+            "controlType": "fileupload",
+            "fieldType": "default",
+            "format": "none",
+            "validators": [],
+            "fieldCategory": "evidence",
+            "required": true,
+            "subType" : "POE"
+         }
    ]
 }

@@ -2,7 +2,7 @@
   <h3>{{ 'devices.header' | translate }}</h3>
   <div class="flex-container">
     <div class="flex-header" style="width: 100%;">
-      <app-devices-header *ngIf="headerObject" [headerData]="headerObject"></app-devices-header>
+      <app-devices-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-devices-header>
     </div>
     <div class="flex-body">
         <mat-card>
