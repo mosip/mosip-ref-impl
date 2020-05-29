@@ -3,7 +3,7 @@
 </div>
 <div>
   <div class="wrapper">
-    <div class="user" *ngIf="primaryuserForm && !hasError && secondaryuserForm">
+    <div class="user" *ngIf="primaryuserForm  && secondaryuserForm" >
       <header>{{ "demographic.title" | translate }}</header>
       <hr />
       <div [dir]="textDir" class="user__container" *ngIf="primaryuserForm">
