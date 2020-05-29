@@ -76,7 +76,6 @@ import com.jayway.jsonpath.Option;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.exception.ServiceError;
 import io.mosip.kernel.core.http.ResponseWrapper;
-import io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorSupportedOperations;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectIOException;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectValidationFailedException;
 import io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator;
@@ -208,7 +207,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 * @see io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator#validateIdObject(java.lang.Object)
 	 */
 	@Override
-	public boolean validateIdObject(Object identityObject, IdObjectValidatorSupportedOperations operation)
+	public boolean validateIdObject(String identitySchema, Object identityObject, List<String> requiredFields)
 			throws IdObjectIOException, IdObjectValidationFailedException {
 		try {
 			String identityString = mapper.writeValueAsString(identityObject);
@@ -234,7 +233,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			throw new IdObjectIOException(ID_OBJECT_PARSING_FAILED, e);
 		}
 	}
-	
+
 	/**
 	 * Load languages.
 	 */

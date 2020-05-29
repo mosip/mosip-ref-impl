@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
-			<version>${project.version}</version>
+			<version>${kernel-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -49,4 +49,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	<version>1.0.9-SNAPSHOT</version>
+	<properties>
+		<kernel-core.version>1.0.9-SNAPSHOT</kernel-core.version>
+	</properties>
 </project>
