@@ -9,12 +9,6 @@
   </div>
   <div class="file-upload__body">
     <div class="file-upload__body__1">
-
-      <ng-container *ngFor="let field of uiFields">
-          <mat-form-field class="file-upload__input">
-            <mat-label>{{ field.id }}</mat-label>           
-          </mat-form-field>
-      </ng-container>
       <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
         <mat-form-field class="file-upload__input">
           <mat-select
