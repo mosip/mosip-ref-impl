@@ -391,8 +391,8 @@ export class DemographicComponent extends FormDeactivateGuardService
         this.setLocations();
         this.setGender();
         this.setResident();
+        resolve(true);
       });
-      resolve(true);
     });
   }
   /**
@@ -495,7 +495,6 @@ export class DemographicComponent extends FormDeactivateGuardService
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
   dropdownApiCall(controlObject: any) {
-    console.log(controlObject);
     if (controlObject.locationHierarchy) {
       if (controlObject.locationHierarchy.includes(controlObject.id)) {
         if (controlObject.locationHierarchy.indexOf(controlObject.id) !== 0) {
@@ -537,7 +536,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
     if (transliterate.includes(fieldName)) {
       if (event.type === "focusout") {
-        // this.onTransliteration(fieldName,fieldName);
+        this.onTransliteration(fieldName,fieldName);
       }
     } else {
       this.transUserForm.controls[`${fieldName}`].setValue(
@@ -621,7 +620,7 @@ export class DemographicComponent extends FormDeactivateGuardService
                 let codeValueModal: CodeValueModal = {
                   valueCode: element.code,
                   valueName: element.name,
-                  languageCode: this.primaryLang,
+                  languageCode: this.secondaryLang,
                 };
                 this.secondaryDropDownLables[`${fieldName}`].push(
                   codeValueModal
@@ -691,7 +690,7 @@ export class DemographicComponent extends FormDeactivateGuardService
         let index = 0;
         let secondaryIndex = 1;
         this.loggerService.info("user", this.user);
-
+        this.codeValue = this.user.location;
         if (
           this.user.request.demographicDetails.identity.fullName[0].language !==
           this.primaryLang
@@ -750,20 +749,6 @@ export class DemographicComponent extends FormDeactivateGuardService
                 ].value
               );
             }
-            const element1 = this.primarydropDownFields[control.id].filter(
-              (val) =>
-                val.valueCode ===
-                this.user.request.demographicDetails.identity[control.id][index]
-                  .value
-            );
-            this.codeValue.push(element1);
-            const element2 = this.secondaryDropDownLables[control.id].filter(
-              (val) =>
-                val.valueCode ===
-                this.user.request.demographicDetails.identity[control.id][index]
-                  .value
-            );
-            this.codeValue.push(element2);
           }
       });
     }
