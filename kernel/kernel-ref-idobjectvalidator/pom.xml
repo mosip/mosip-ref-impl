@@ -9,6 +9,7 @@
 
 	<name>kernel-ref-idobjectvalidator</name>
 	<artifactId>kernel-ref-idobjectvalidator</artifactId>
+	<version>0.9.1</version>
 
 	<dependencies>
 		<dependency>
