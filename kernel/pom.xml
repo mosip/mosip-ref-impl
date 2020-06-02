@@ -3,14 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>io.mosip</groupId>
-		<artifactId>mosip-ref-parent</artifactId>
-		<version>0.9.1</version>
-	</parent>
-
-      
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
 	<version>0.9.1</version>
@@ -127,6 +119,9 @@
 		<json.utility.version>20180130</json.utility.version>
 		<json.schema.validator.version>2.2.10</json.schema.validator.version>
 		<json.version>20180813</json.version>
+
+		<!-- kernel -->
+		<kernel-core.version>1.0.9-SNAPSHOT</kernel-core.version>
 
 		<!-- utilities -->
 		<commons-math3>3.6.1</commons-math3>
