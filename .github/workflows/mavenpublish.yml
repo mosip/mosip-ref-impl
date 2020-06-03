@@ -8,7 +8,7 @@ on:
     types: [closed]
   
 jobs:
-  build:
+  build-kernel-ref-idobjectvalidator:
 
     runs-on: ubuntu-latest
 
