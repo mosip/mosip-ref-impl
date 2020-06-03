@@ -173,6 +173,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
               this.displayResults(response[appConstants.RESPONSE]);
             } else {
               this.showMessage = true;
+              this.selectedCentre = null;
             }
           },
           error => {
