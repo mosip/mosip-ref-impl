@@ -163,9 +163,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   private getPrimaryLabels() {
-    let factory = new LanguageFactory(this.primaryLang);
-    let response = factory.getCurrentlanguage();
-    console.log("uiFields>>>"+this.uiFields);
+    console.log("uiFields>>>");
   }
 
   /**

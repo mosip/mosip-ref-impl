@@ -126,10 +126,13 @@
     class="user__btn user__btn--back"
     type="button"
     (click)="onBack()"
-    [disabled]="isModify == 'true' || disableNavigation"
+    [disabled]="disableNavigation"
+    *ngIf="isModify == 'false'" 
+    
   >
     {{ 'documents.action_back' | translate }}
   </button>
+  <span class="spacer"></span>
   <button *ngIf="isModify == 'false'" class="user__btn" type="button" (click)="onNext()" [disabled]="disableNavigation">
     {{ 'documents.action_continue' | translate }}
   </button>

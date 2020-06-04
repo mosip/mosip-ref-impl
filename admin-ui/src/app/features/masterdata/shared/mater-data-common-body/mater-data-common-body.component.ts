@@ -233,6 +233,83 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }
       if (this.selectedField) {
         this.selectedField.focus();
+<<<<<<< HEAD
+=======
+      }
+    }
+
+    if(!this.secondaryData){
+      if(url === "center-type"){
+        this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "blacklisted-words"){
+        this.secondaryData = {"word":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "gender-type"){
+        this.secondaryData = {"code":"","genderName":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "individual-type"){
+        this.secondaryData = {"code":"","name":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "location"){
+        this.secondaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "templates"){
+        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
+      }else if(url === "title"){
+        this.secondaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "device-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(url === "device-types"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "machine-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(url === "machine-type"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "document-type"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "document-categories"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(url === "holiday"){
+        this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }
+    }
+  }
+
+  scrollPage(
+    element: HTMLElement,
+    type: string,
+    formControlName: string,
+    index: number
+  ) {
+    //element.scrollIntoView({ block: 'center', inline: 'nearest' });
+    this.selectedField = element;
+    if (this.keyboardRef) {
+      console.log("index>>>"+index);
+      this.keyboardRef.instance.setInputInstance(
+        this.attachToElementMesOne._results[index]
+      );
+      /*if (type === 'primary') {
+        this.keyboardRef.instance.attachControl(
+          this.primaryForm.controls[formControlName]
+        );
+      } else if (type === 'secondary') {
+        this.keyboardRef.instance.attachControl(
+          this.secondaryForm.controls[formControlName]
+        );
+      }*/
+    }
+  }
+
+  openKeyboard(type: string) {
+    if (this.keyboardService.isOpened && this.keyboardType === type) {
+      this.keyboardService.dismiss();
+      this.keyboardRef = undefined;
+    } else {
+      this.keyboardType = type;
+      if (type === 'primary') {
+        this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
+      } else if (type === 'secondary') {
+        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
+      }
+      if (this.selectedField) {
+        this.selectedField.focus();
+>>>>>>> b61faced2ef54ed5de144b8bffe0ba35e2cc3c46
       }
     }
   }

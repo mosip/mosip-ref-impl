@@ -1,8 +1,6 @@
 .preview__container {
   margin: 5px 2vw;
   margin-bottom: 90px;
-  z-index: -1 !important;
-  position: relative;
 }
 
 .preview__file__table__header td {

@@ -275,3 +275,6 @@ mat-select:focus {
   background: rgba(0, 0, 0, 0.5);
   z-index: 10;
 }
+.spacer {
+  flex: 1 1 auto;
+}

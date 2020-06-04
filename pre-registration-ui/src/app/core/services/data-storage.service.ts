@@ -382,6 +382,7 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
+    //const url =this.BASE_URL + this.PRE_REG_URL+ 'config';
     return this.httpClient.get('assets/identity-spec.json');
    }
 

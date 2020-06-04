@@ -23,6 +23,7 @@
                             <input
                             #keyboardRef
                             #name
+                            (keyup)="captureValue($event, 'name', 'primary')"
                             (focus)="scrollPage(name, 'primary', 'name', 0)"
                             formControlName="name"
                             matInput
@@ -43,6 +44,7 @@
                             <input
                             #keyboardRef
                             #serialNumber
+                            (keyup)="captureValue($event, 'serialNumber', 'primary')"
                             (focus)="scrollPage(serialNumber, 'primary', 'serialNumber', 1)"
                             formControlName="serialNumber"
                             matInput
@@ -63,6 +65,7 @@
                             <input
                             #keyboardRef
                             #macAddress
+                            (keyup)="captureValue($event, 'macAddress', 'primary')"
                             (focus)="scrollPage(macAddress, 'primary', 'macAddress', 2)"
                             formControlName="macAddress"
                             matInput
@@ -83,6 +86,7 @@
                             <input
                             #keyboardRef
                             #ipAddress
+                            (keyup)="captureValue($event, 'ipAddress', 'primary')"
                             (focus)="scrollPage(ipAddress, 'primary', 'ipAddress', 3)"
                             formControlName="ipAddress"
                             matInput
@@ -105,6 +109,7 @@
                             [min]="minDate"
                             [matDatepicker]="picker"
                             formControlName="validity"
+                            (dateChange)="captureDatePickerValue($event, 'validity', 'primary')"
                             placeholder="{{ 'machines.validity' | translate }}"
                           />
                           <mat-datepicker-toggle
@@ -122,29 +127,7 @@
                           </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field>
-                          <mat-label>{{ "machines.isActive" | translate }}</mat-label>
-                          <mat-select
-                            formControlName="isActive"
-                            (selectionChange)="
-                              copyDataToSecondaryForm('isActive', primary.isActive.value)
-                            "
-                          >
-                            <mat-option
-                              *ngFor="let data of dropDownValues.isActive"
-                              [value]="data"
-                            >
-                              {{ data | status }}
-                            </mat-option>
-                          </mat-select>
-                          <mat-error
-                            *ngIf="
-                              primary.isActive.touched && primary.isActive.hasError('required')
-                            "
-                          >
-                          {{ "machines.validationMessages.isActive.required" | translate }}
-                          </mat-error>
-                        </mat-form-field>
+                        
 
                         <mat-form-field>
                           <mat-label>{{ "machines.zone" | translate }}</mat-label>
@@ -170,6 +153,7 @@
                           </mat-error>
                         </mat-form-field>
 
+                        <mat-form-field>
                         <mat-label>{{
                           "machines.machineSpecId" | translate
                         }}</mat-label>
@@ -189,6 +173,7 @@
                             {{ data.fieldValue }}
                           </mat-option>
                         </mat-select>
+                        </mat-form-field>
 
                         <mat-form-field>
                             <input
@@ -196,11 +181,36 @@
                             #publicKey
                             formControlName="publicKey"
                             matInput
+                            (keyup)="captureValue($event, 'publicKey', 'primary')"
                             placeholder="{{
                               'machines.publicKey' | translate
                             }}"
                           />
 
+                        </mat-form-field>
+
+                        <mat-form-field>
+                          <mat-label>{{ "machines.isActive" | translate }}</mat-label>
+                          <mat-select
+                            formControlName="isActive"
+                            (selectionChange)="
+                              copyDataToSecondaryForm('isActive', primary.isActive.value)
+                            "
+                          >
+                            <mat-option
+                              *ngFor="let data of dropDownValues.isActive"
+                              [value]="data"
+                            >
+                              {{ data | status }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error
+                            *ngIf="
+                              primary.isActive.touched && primary.isActive.hasError('required')
+                            "
+                          >
+                          {{ "machines.validationMessages.isActive.required" | translate }}
+                          </mat-error>
                         </mat-form-field>
 
                 </div>
@@ -295,18 +305,7 @@
                           <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
 
-                        <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #isActiveSecondary
-                            (focus)="scrollPage(isActiveSecondary, 'secondary', 'isActive', 13)"
-                            formControlName="isActive"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.isActive
-                            }}"
-                          />
-                        </mat-form-field>
+                      
 
                         <mat-form-field>
                           <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
@@ -320,19 +319,8 @@
                           </mat-select>
                         </mat-form-field>
 
+                        
                         <mat-form-field>
-                          <input
-                          #keyboardRef
-                          #publicKey
-                          (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
-                          formControlName="publicKey"
-                          matInput
-                          placeholder="{{
-                            secondaryLanguageLabels.publicKey
-                          }}"
-                        />
-                      </mat-form-field>
-                        <mat-form-field class="left-sizing">
                         <mat-label>{{
                           secondaryLanguageLabels.machineSpecId
                         }}</mat-label>
@@ -346,6 +334,7 @@
                         </mat-select>
                       </mat-form-field>
 
+
                       <mat-form-field>
                             <input
                             #keyboardRef
@@ -358,17 +347,38 @@
                             }}"
                           />
                         </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>{{ secondaryLanguageLabels["isActive"] }}</mat-label>
+                          <mat-select formControlName="isActive">
+                            <mat-option
+                              *ngFor="let data of dropDownValues.isActive"
+                              [value]="data"
+                            >
+                              {{ data | status }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
 
 
                 </div>
             </mat-card-content>
             <mat-card-actions class="action-buttons">
+               
                 <button
-                    id="createButton"
-                    mat-raised-button
-                    (click)="submit()"
-                  >
-                    Save
+                  id="createButton"
+                  mat-raised-button
+                  *ngIf="data.length !== 0"
+                  (click)="submit()"
+                >
+                  {{ "machines.update" | translate }}
+                </button>
+                <button
+                  id="createButton"
+                  mat-raised-button
+                  *ngIf="data.length == 0"
+                  (click)="submit()"
+                >
+                  {{ "machines.create" | translate }}
                 </button>
                 <button mat-raised-button (click)="cancel()">
                     {{ "machines.cancel" | translate }}
