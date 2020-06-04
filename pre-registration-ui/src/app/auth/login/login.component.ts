@@ -297,11 +297,13 @@ export class LoginComponent implements OnInit  {
 
   submit(): void {
     this.loginIdValidator();
-    if(this.captchaSucess){
+    if(this.captchaSucess && this.errorMessage === undefined){
       this.showCaptcha = false;
-    } else{
-      this.captchaError = true;
+    } else if (this.captchaSucess && this.errorMessage ! == undefined) {
       this.showCaptcha = true;
+    }
+    else if(!this.captchaSucess && this.errorMessage === undefined) {
+      this.captchaError = true;
     }
     if (
       (this.showSendOTP || this.showResend) &&
