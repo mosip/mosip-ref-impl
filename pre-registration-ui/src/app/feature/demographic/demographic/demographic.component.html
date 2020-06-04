@@ -30,12 +30,12 @@
                 <mat-select
                   style="margin-top: 5px; padding: 4px;"
                   formControlName="{{ field.id }}"
-                  (click)="dropdownApiCall(field)"
+                  (focus)="dropdownApiCall(field)"
                   (selectionChange)="copyDataToSecondaryForm(field.id,userForm.get(field.id).value)"
                   #dropdown
                 >
                 <mat-option
-                    *ngIf="primarydropDownFields[field.id]?.length === 0"
+                    *ngIf="!(primarydropDownFields[field.id]?.length > 0 && primarydropDownFields[field.id] !== null)"
                   >
                     <mat-spinner
                       [diameter]="20"
