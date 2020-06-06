@@ -7,6 +7,8 @@ export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
 export const DEFAULT_LANG_CODE = 'eng';
+export const IDSCHEMAVERSION = '0.1';
+export const IDSchemaVersionLabel = 'IDSchemaVersion';
 
 export const IDS = {
   newUser: 'mosip.pre-registration.demographic.create',

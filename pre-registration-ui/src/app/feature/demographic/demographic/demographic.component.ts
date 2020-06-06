@@ -690,7 +690,7 @@ export class DemographicComponent extends FormDeactivateGuardService
         let index = 0;
         let secondaryIndex = 1;
         this.loggerService.info("user", this.user);
-        this.codeValue = this.user.location;
+        this.codeValue = this.user.location === undefined? []:this.user.location;
         if (
           this.user.request.demographicDetails.identity.fullName[0].language !==
           this.primaryLang
@@ -1214,7 +1214,12 @@ export class DemographicComponent extends FormDeactivateGuardService
         );
       }
     } else if (typeof identity[element] === "string") {
-      attr = this.userForm.controls[`${element}`].value;
+      if (element === appConstants.IDSchemaVersionLabel){
+        attr = appConstants.IDSCHEMAVERSION;
+      } else {
+        attr = this.userForm.controls[`${element}`].value;
+      }
+     
     }
     identity[element] = attr;
   }
@@ -1243,7 +1248,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   private createIdentityJSONDynamic() {
-    const identityObj = {};
+    const identityObj = { IDSchemaVersion : ''};
     const stringField = ["dateOfBirth", "postalCode", "email", "phone"];
     this.identityData.forEach((field) => {
       if (
@@ -1265,6 +1270,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     let keyArr: any[] = Object.keys(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
+      console.log(element);
       this.createAttributeArray(element, identityObj);
     }
     const identityRequest = { identity: identityObj };
