@@ -560,7 +560,7 @@
       "booked": "Rendez-vous est réservé avec succès",
       "expired": "La date de rendez-vous est passée"
     },
-    "deleteIcon": "Vous pouvez supprimer l’application entière ou annuler le rendez-vous et enregistrer les détails, Supprimer l’application entière et annuler le rendez-vous. Annulez le rendez-vous et enregistrez les détails.",
+    "deleteIcon": "Vous pouvez soit rejeter la demande entière, soit annuler le rendez-vous et enregistrer les détails.",
     "book/modify_appointment": "Vous devez cocher la case en regard de l'identifiant de pré-inscription pour qu'un ou plusieurs demandeurs puissent prendre un rendez-vous",
     "bookAppointment": "Commencez par sélectionner le créneau horaire préféré, puis sélectionnez le demandeur applicable pour le créneau sélectionné. ",
     "send_email/sms": "Vous pouvez ajouter le destinataire supplémentaire pour recevoir la ou les notifications.",

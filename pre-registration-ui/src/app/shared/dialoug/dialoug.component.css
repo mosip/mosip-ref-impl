@@ -87,3 +87,6 @@
 .error-dialog {
   margin-bottom: 15px;
 }
+::ng-deep .mat-input-element {
+  padding: 10px !important;
+}
