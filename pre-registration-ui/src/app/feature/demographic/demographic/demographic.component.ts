@@ -456,16 +456,16 @@ export class DemographicComponent extends FormDeactivateGuardService
   }
 
   /**
-   * @description this is set the location hierarchy for the location dropdowns
+   * @description this is set the location hierarchy for the location dropdowns 
    */
   async setLocationHierarchy() {
     await this.getLocationHierarchy();
   }
 
   /**
-   * @description this method is used to get the location hierarchy from the ui
+   * @description this method is used to get the location hierarchy from the ui 
    * spec dropdown fields.
-   *
+   * 
    */
   getLocationHierarchy() {
     return new Promise((resolve) => {
@@ -481,16 +481,16 @@ export class DemographicComponent extends FormDeactivateGuardService
       }
     });
   }
-  /**
-   * @description sets the dropdown arrays for primary and secondary forms.
-   */
+/**
+ * @description sets the dropdown arrays for primary and secondary forms.
+ */
   setDropDownArrays() {
     this.getIntialDropDownArrays();
   }
-  /**
-   * @description this method initialise the primary and secondary dropdown array for the
-   *  dropdown fields.
-   */
+ /**
+  * @description this method initialise the primary and secondary dropdown array for the 
+  *  dropdown fields.
+  */
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
       if (control.controlType === "dropdown") {
@@ -714,7 +714,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       let secondaryIndex = 1;
       this.loggerService.info("user", this.user);
       this.codeValue =
-        this.user.location === undefined ? [] : this.user.location;
+      this.user.location === undefined ? [] : this.user.location;
       if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
@@ -914,10 +914,10 @@ export class DemographicComponent extends FormDeactivateGuardService
     );
     console.log(this.codeValue);
   }
-  /**
-   * @description this method will populate the codevalue array when user wants to
-   * modify the application details. so that dropdown values are available in preview component.
-   */
+/**
+ * @description this method will populate the codevalue array when user wants to 
+ * modify the application details. so that dropdown values are available in preview component.
+ */
   populateCodeValue() {
     const dropdownFileds = this.uiFields.filter(
       (field) => field.controlType === "dropdown"
@@ -1484,8 +1484,8 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
   ngOnDestroy(): void {
-    if (this.codeValue.length === 0 && this.dataModification) {
-      this.populateCodeValue();
+    if(this.codeValue.length === 0 && this.dataModification){
+       this.populateCodeValue();
     }
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
