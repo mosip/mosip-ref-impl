@@ -456,16 +456,16 @@ export class DemographicComponent extends FormDeactivateGuardService
   }
 
   /**
-   * @description this is set the location hierarchy for the location dropdowns 
+   * @description this is set the location hierarchy for the location dropdowns
    */
   async setLocationHierarchy() {
     await this.getLocationHierarchy();
   }
 
   /**
-   * @description this method is used to get the location hierarchy from the ui 
+   * @description this method is used to get the location hierarchy from the ui
    * spec dropdown fields.
-   * 
+   *
    */
   getLocationHierarchy() {
     return new Promise((resolve) => {
@@ -481,16 +481,16 @@ export class DemographicComponent extends FormDeactivateGuardService
       }
     });
   }
-/**
- * @description sets the dropdown arrays for primary and secondary forms.
- */
+  /**
+   * @description sets the dropdown arrays for primary and secondary forms.
+   */
   setDropDownArrays() {
     this.getIntialDropDownArrays();
   }
- /**
-  * @description this method initialise the primary and secondary dropdown array for the 
-  *  dropdown fields.
-  */
+  /**
+   * @description this method initialise the primary and secondary dropdown array for the
+   *  dropdown fields.
+   */
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
       if (control.controlType === "dropdown") {
@@ -714,7 +714,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       let secondaryIndex = 1;
       this.loggerService.info("user", this.user);
       this.codeValue =
-      this.user.location === undefined ? [] : this.user.location;
+        this.user.location === undefined ? [] : this.user.location;
       if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
@@ -869,9 +869,9 @@ export class DemographicComponent extends FormDeactivateGuardService
                 languageCode: element.langCode,
               };
             }
-            if(langCode === this.primaryLang){
+            if (langCode === this.primaryLang) {
               this.primarydropDownFields[field].push(codeValue);
-            }else{
+            } else {
               this.secondaryDropDownLables[field].push(codeValue);
             }
             resolve(true);
@@ -914,10 +914,10 @@ export class DemographicComponent extends FormDeactivateGuardService
     );
     console.log(this.codeValue);
   }
-/**
- * @description this method will populate the codevalue array when user wants to 
- * modify the application details. so that dropdown values are available in preview component.
- */
+  /**
+   * @description this method will populate the codevalue array when user wants to
+   * modify the application details. so that dropdown values are available in preview component.
+   */
   populateCodeValue() {
     const dropdownFileds = this.uiFields.filter(
       (field) => field.controlType === "dropdown"
@@ -981,6 +981,9 @@ export class DemographicComponent extends FormDeactivateGuardService
     console.log(formattedDate);
     this.userForm.controls["dateOfBirth"].setValue(formattedDate);
     this.transUserForm.controls["dateOfBirth"].setValue(formattedDate);
+    if (this.dataModification) {
+      this.hasDobChanged();
+    }
   }
 
   /**
@@ -1263,11 +1266,12 @@ export class DemographicComponent extends FormDeactivateGuardService
         );
       }
     } else if (typeof identity[element] === "string") {
-      if (element === appConstants.IDSchemaVersionLabel){
-        attr = appConstants.IDSCHEMAVERSION;
+      if (element === appConstants.IDSchemaVersionLabel) {
+        // attr = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
+        attr = "0.1";
       } else {
         attr = this.userForm.controls[`${element}`].value;
-      } 
+      }
     }
     identity[element] = attr;
   }
@@ -1296,7 +1300,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   private createIdentityJSONDynamic() {
-    const identityObj = { IDSchemaVersion : ''};
+    const identityObj = { IDSchemaVersion: "" };
     const stringField = ["dateOfBirth", "postalCode", "email", "phone"];
     this.identityData.forEach((field) => {
       if (
@@ -1377,6 +1381,35 @@ export class DemographicComponent extends FormDeactivateGuardService
     return req;
   }
 
+  hasDobChanged() {
+    const currentDob = this.user.request.demographicDetails.identity
+      .dateOfBirth;
+    const changedDob = this.userForm.controls["dateOfBirth"].value;
+    const currentDobYears = this.calculateAge(currentDob);
+    const changedDobYears = this.calculateAge(changedDob);
+    //const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
+    const ageToBeAdult = 5;
+    if (this.showPreviewButton) {
+      if (
+        (currentDobYears < ageToBeAdult && changedDobYears < ageToBeAdult) ||
+        (currentDobYears > ageToBeAdult && changedDobYears > ageToBeAdult)
+      ) {
+        this.showPreviewButton = true;
+      } else {
+        this.showPreviewButton = false;
+        console.log(this.message);
+        this.message["modifyUserFromPreview"] = "false";
+      }
+    }
+  }
+  calculateAge(bDay) {
+    const now = new Date();
+    const born = new Date(bDay);
+    const years = Math.floor(
+      (now.getTime() - born.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+    );
+    return years;
+  }
   /**
    * @description This is a dialoug box whenever an erroe comes from the server, it will appear.
    *
@@ -1453,8 +1486,8 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
   ngOnDestroy(): void {
-    if(this.codeValue.length === 0 && this.dataModification){
-       this.populateCodeValue();
+    if (this.codeValue.length === 0 && this.dataModification) {
+      this.populateCodeValue();
     }
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
