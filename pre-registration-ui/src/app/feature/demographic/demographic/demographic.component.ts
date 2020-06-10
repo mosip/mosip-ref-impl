@@ -375,8 +375,9 @@ export class DemographicComponent extends FormDeactivateGuardService
 
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getIdentityJson().subscribe((item) => {
-        this.identityData = [...item["identity"]];
+      this.dataStorageService.getIdentityJson().subscribe((response) => {
+        console.log(response);
+        this.identityData = response['response']["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
           if (
             obj.inputRequired === true &&
@@ -1267,8 +1268,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       }
     } else if (typeof identity[element] === "string") {
       if (element === appConstants.IDSchemaVersionLabel) {
-        // attr = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
-        attr = "0.1";
+        attr = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
       } else {
         attr = this.userForm.controls[`${element}`].value;
       }
@@ -1387,8 +1387,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     const changedDob = this.userForm.controls["dateOfBirth"].value;
     const currentDobYears = this.calculateAge(currentDob);
     const changedDobYears = this.calculateAge(changedDob);
-    //const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
-    const ageToBeAdult = 5;
+    const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
     if (this.showPreviewButton) {
       if (
         (currentDobYears < ageToBeAdult && changedDobYears < ageToBeAdult) ||
