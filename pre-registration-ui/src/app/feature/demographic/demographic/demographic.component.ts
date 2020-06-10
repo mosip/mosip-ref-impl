@@ -376,6 +376,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
+        console.log(response);
         this.identityData = response['response']["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
           if (
