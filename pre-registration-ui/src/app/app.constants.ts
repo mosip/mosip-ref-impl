@@ -7,7 +7,6 @@ export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
 export const DEFAULT_LANG_CODE = 'eng';
-export const IDSCHEMAVERSION = '0.1';
 export const IDSchemaVersionLabel = 'IDSchemaVersion';
 
 export const IDS = {
@@ -114,7 +113,9 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_files: 'preregistration.documentupload.allowed.file.type',
   preregistration_document_alllowe_file_size: 'preregistration.documentupload.allowed.file.size',
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
-  google_recaptcha_site_key: 'google.recaptcha.site.key'
+  google_recaptcha_site_key: 'google.recaptcha.site.key',
+  mosip_adult_age:'mosip.adult.age',
+  mosip_idschema_version:'mosip.idschema.version'
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {

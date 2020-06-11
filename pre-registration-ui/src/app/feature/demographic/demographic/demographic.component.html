@@ -45,8 +45,7 @@
                   <mat-option
                     *ngFor="let dropdown of primarydropDownFields[field.id]"
                     [value]="dropdown.valueCode"
-                    (click)="resetLocationFields(field.id);
-                             addCodeValue(dropdown,field.id);"
+                    (click)="resetLocationFields(field.id);"
                   >
                     {{ dropdown.valueName }}
                   </mat-option>
