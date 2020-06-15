@@ -70,7 +70,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("fields>>>"+this.fields);
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     this.isCreateForm = false;
     this.disableForms = false;
@@ -349,8 +348,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
-    console.log("event.source.value>>>"+event.source.value);
-    console.log("formControlName>>>"+formControlName);
     if (event.source.value && event.source.selected) {
       this.primaryData[formControlName] = event.source.value;
       this.secondaryData[formControlName] = event.source.value; 
@@ -372,6 +369,23 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   submit() {
+    let self = this;
+    self.executeAPI();
+/*    for (var i = 0, len = self.fields.length; i < len; i++) {
+      if (self.fields[i].showInSingleView) {
+        if(self.fields[i].ismandatory){
+          if(!self.primaryData[self.fields[i].name]){
+            this.showErrorPopup(self.fields[i].label[this.primaryLang]+" is required");
+            break;
+          }else if(len = i+1){
+            self.executeAPI();
+          }
+        }
+      }
+    }*/
+  }
+
+  executeAPI(){
     if(this.isCreateForm){
       let request = new RequestModel(
         "",
@@ -380,8 +394,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
       );
       this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
+            this.secondaryData["code"] = updateResponse.response.code; 
             let request = new RequestModel(
-              "",
+              updateResponse.response.code,
               null,
               this.secondaryData
             );
