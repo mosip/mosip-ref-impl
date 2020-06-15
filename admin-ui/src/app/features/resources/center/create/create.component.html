@@ -1264,10 +1264,10 @@
           <button
             id="createButton"
             mat-raised-button
-            *ngIf="disableForms"
+            *ngIf="data.length == 0"
             (click)="submit()"
           >
-            {{ "center.edit" | translate }}
+            {{ "center.create" | translate }}
           </button>
           <button mat-raised-button (click)="cancel()">
             {{ "center.cancel" | translate }}

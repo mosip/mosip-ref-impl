@@ -273,7 +273,7 @@
            ],
            "required":true
         },
-		{
+      {
             "id": "proofOfAddress",
             "inputRequired": true,
             "type": "documentType",

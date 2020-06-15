@@ -253,7 +253,7 @@ export class CreateComponent{
       macAddress: ['', [Validators.required]],
       ipAddress: ['', [Validators.required]],
       validity: ['', [Validators.required]],
-      isActive: [{ value: false, disabled: true }],
+      isActive: [{ value: true}],
       zone: ['', [Validators.required]],
       deviceSpecId: ['', [Validators.required]]
     });
@@ -266,7 +266,7 @@ export class CreateComponent{
       macAddress: [''],
       ipAddress: [''],
       validity: [''],
-      isActive: [{ value: false, disabled: true }],
+      isActive: [{ value: true }],
       zone: [''],
       deviceSpecId: ['', [Validators.required]]
     });
@@ -396,7 +396,6 @@ export class CreateComponent{
   }
 
   onCreate() {
-    console.log("onCreate>>>"+this.secondaryForm.controls.name.value);
     let data = {};
     if (this.secondaryForm.controls.name.value === '' && this.showSecondaryForm
     ) {
@@ -409,7 +408,13 @@ export class CreateComponent{
       };
     } else {
       if (this.data.length === 0) {
-
+        data = {
+          case: 'CONFIRMATION',
+          title: this.popupMessages['create'].title,
+          message: this.popupMessages['create'].message[0]+ this.primaryForm.controls.name.value + this.popupMessages['create'].message[1],
+          yesBtnTxt: this.popupMessages['create'].yesBtnText,
+          noBtnTxt: this.popupMessages['create'].noBtnText
+        };
       } else {
         data = {
           case: 'CONFIRMATION',
@@ -446,7 +451,17 @@ export class CreateComponent{
       this.secondaryForm.controls[fieldName].setValue('');
     }
   }
-  
+
+  captureValue(event: any, formControlName: string, type: string) {
+    this.secondaryForm.controls[formControlName].setValue(event.target.value);
+  }
+
+  captureDatePickerValue(event: any, formControlName: string, type: string) {
+    /*let dateFormat = new Date(event.target.value);
+    let formattedDate = dateFormat.getFullYear() + "-" + ("0"+(dateFormat.getMonth()+1)).slice(-2) + "-" + ("0" + dateFormat.getDate()).slice(-2);*/
+    this.secondaryForm.controls[formControlName].setValue(event.target.value);
+  }
+
   saveData() {
     this.createUpdate = true;
     const primaryObject = new DeviceModel(

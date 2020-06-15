@@ -173,10 +173,21 @@ export class CreateComponent {
       }
     });
     this.translateService
+      .getTranslation(this.secondaryLang)
+      .subscribe(response => {
+        this.secondaryLanguageLabels = response.machines;
+      });
+    this.getMachinespecifications();
+    this.getZoneData();
+    this.initializePrimaryForm();
+    this.initializeSecondaryForm();
+    this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response.machines.popupMessages;
       });
+
+    
   }
 
   getMachinespecifications() {
@@ -186,39 +197,17 @@ export class CreateComponent {
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinespecifications', request)
       .subscribe(response => {
-        this.secondaryLanguageLabels = response.machines;
-        console.log(this.secondaryLanguageLabels);
+        this.dropDownValues.machineTypeCode.primary = response.response.filters;
       });
-    this.getMachinespecifications();
-    this.getZoneData();
-    this.initializePrimaryForm();
-    this.initializeSecondaryForm();
-    this.translateService
-      .getTranslation(this.primaryLang)
-      .subscribe((response) => {
-        this.popupMessages = response.machines.popupMessages;
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    request = new RequestModel('', null, filterRequest);
+    this.dataStorageService
+      .getFiltersForAllMaterDataTypes('machinespecifications', request)
+      .subscribe(response => {
+        this.dropDownValues.machineTypeCode.secondary =
+          response.response.filters;
       });
   }
-
-  // getMachinespecifications() {
-  //   const filterObject = new FilterValuesModel('name', 'unique', '');
-  //   let filterRequest = new FilterRequest([filterObject], this.primaryLang);
-  //   let request = new RequestModel('', null, filterRequest);
-  //   this.dataStorageService
-  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
-  //     .subscribe((response) => {
-  //       this.dropDownValues.machineTypeCode.primary = response.response.filters;
-  //     });
-  //   filterRequest = new FilterRequest([filterObject], this.secondaryLang);
-  //   request = new RequestModel('', null, filterRequest);
-  //   this.dataStorageService
-  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
-  //     .subscribe(response => {
-  //     .subscribe((response) => {
-  //       this.dropDownValues.machineTypeCode.secondary =
-  //         response.response.filters;
-  //     });
-  // }
 
   getZoneData() {
     this.dataStorageService
@@ -267,15 +256,15 @@ export class CreateComponent {
 
   initializePrimaryForm() {
     this.primaryForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      serialNumber: ['', [Validators.required]],
-      macAddress: ['', [Validators.required]],
-      ipAddress: ['', [Validators.required]],
-      validity: ['', [Validators.required]],
-      isActive: ['', [Validators.required]],
-      zone: ['', [Validators.required]],
-      publicKey: ['', [Validators.required]],
-      machineSpecId: ['', [Validators.required]],
+      name: ['', Validators.required],
+      serialNumber: ['', Validators.required],
+      macAddress: ['', Validators.required],
+      ipAddress: ['', Validators.required],
+      validity: ['', Validators.required],
+      isActive: ['', Validators.required],
+      zone: ['', Validators.required],
+      publicKey: ['', Validators.required],
+      machineSpecId: ['', Validators.required],
     });
   }
 
@@ -404,8 +393,8 @@ export class CreateComponent {
   submit() {
     if (!this.disableForms) {
       this.auditService.audit(17, 'ADM-097');
-      this.onCreate();
-      /*if (this.primaryForm.valid) {
+      //this.onCreate();
+      if (this.primaryForm.valid) {
         for (const i in this.secondaryForm.controls) {
           if (this.secondaryForm.controls[i]) {
             this.secondaryForm.controls[i].markAsTouched();
@@ -419,7 +408,7 @@ export class CreateComponent {
             this.secondaryForm.controls[i].markAsTouched();
           }
         }
-      }*/
+      }
     } else {
       this.disableForms = false;
       this.primaryForm.enable();
@@ -488,12 +477,14 @@ export class CreateComponent {
     }
   }
 
-  captureDatePickerValue(event: any, fieldName: string, type: string) {
-    if (this.primaryForm.controls[fieldName].valid) {
-      this.secondaryForm.controls[fieldName].setValue(event.target.value);
-    } else {
-      this.secondaryForm.controls[fieldName].setValue('');
-    }
+  captureValue(event: any, formControlName: string, type: string) {
+    this.secondaryForm.controls[formControlName].setValue(event.target.value);
+  }
+
+  captureDatePickerValue(event: any, formControlName: string, type: string) {
+    /*let dateFormat = new Date(event.target.value);
+    let formattedDate = dateFormat.getFullYear() + "-" + ("0"+(dateFormat.getMonth()+1)).slice(-2) + "-" + ("0" + dateFormat.getDate()).slice(-2);*/
+    this.secondaryForm.controls[formControlName].setValue(event.target.value);
   }
 
   saveData() {

@@ -23,6 +23,7 @@
                             <input
                             #keyboardRef
                             #name
+                            (keyup)="captureValue($event, 'name', 'primary')"
                             (focus)="scrollPage(name, 'primary', 'name', 0)"
                             formControlName="name"
                             matInput
@@ -43,6 +44,7 @@
                             <input
                             #keyboardRef
                             #serialNumber
+                            (keyup)="captureValue($event, 'serialNumber', 'primary')"
                             (focus)="scrollPage(serialNumber, 'primary', 'serialNumber', 1)"
                             formControlName="serialNumber"
                             matInput
@@ -63,6 +65,7 @@
                             <input
                             #keyboardRef
                             #macAddress
+                            (keyup)="captureValue($event, 'macAddress', 'primary')"
                             (focus)="scrollPage(macAddress, 'primary', 'macAddress', 2)"
                             formControlName="macAddress"
                             matInput
@@ -83,6 +86,7 @@
                             <input
                             #keyboardRef
                             #ipAddress
+                            (keyup)="captureValue($event, 'ipAddress', 'primary')"
                             (focus)="scrollPage(ipAddress, 'primary', 'ipAddress', 3)"
                             formControlName="ipAddress"
                             matInput
@@ -105,6 +109,7 @@
                               [min]="minDate"
                               [matDatepicker]="picker"
                               formControlName="validity"
+                              (dateChange)="captureDatePickerValue($event, 'validity', 'primary')"
                               placeholder="{{ 'devices.validity' | translate }}"
                             />
                             <mat-datepicker-toggle
@@ -121,24 +126,24 @@
                           {{ "devices.validationMessages.validity.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+
                         <mat-form-field>
-                          <mat-label>{{ "devices.isActive" | translate }}</mat-label>
-                          <mat-select
-                            formControlName="isActive"
-                            (selectionChange)="
-                              copyDataToSecondaryForm('isActive', primary.isActive.value)
-                            "
+                        <mat-label>{{"devices.deviceSpecId" | translate}}</mat-label>
+                        <mat-select
+                          formControlName="deviceSpecId"
+                          (selectionChange)="
+                            copyDataToSecondaryForm('deviceSpecId', primary.deviceSpecId.value)
+                          "
+                        >
+                          <mat-option
+                            *ngFor="let data of dropDownValues.deviceTypeCode.primary"
+                            [value]="data.fieldCode"
                           >
-                            <mat-option
-                              *ngFor="let data of dropDownValues.isActive"
-                              [value]="data"
-                            >
-                              {{ data | status }}
-                            </mat-option>
-                          </mat-select>
+                            {{ data.fieldValue }}
+                          </mat-option>
+                        </mat-select> 
                         </mat-form-field>
-                    
+
                         <mat-form-field>
                           <mat-label>{{ "devices.zone" | translate }}</mat-label>
                           <mat-select
@@ -162,26 +167,23 @@
                           {{ "devices.validationMessages.zone.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
-                        <mat-label>{{
-                          "devices.deviceSpecId" | translate
-                        }}</mat-label>
-                        <mat-select
-                          formControlName="deviceSpecId"
-                          (selectionChange)="
-                            copyDataToSecondaryForm(
-                              'deviceSpecId',
-                              primary.deviceSpecId.value
-                            )
-                          "
-                        >
-                          <mat-option
-                            *ngFor="let data of dropDownValues.deviceTypeCode.primary"
-                            [value]="data.fieldCode"
+
+                        <mat-form-field>
+                          <mat-label>{{ "devices.isActive" | translate }}</mat-label>
+                          <mat-select
+                            formControlName="isActive"
+                            (selectionChange)="
+                              copyDataToSecondaryForm('isActive', primary.isActive.value)
+                            "
                           >
-                            {{ data.fieldValue }}
-                          </mat-option>
-                        </mat-select>                        
+                            <mat-option
+                              *ngFor="let data of dropDownValues.isActive"
+                              [value]="data"
+                            >
+                              {{ data | status }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>   
                     
                 </div>    
                 <mat-divider [vertical]="true" [inset]="true"></mat-divider>    
@@ -281,7 +283,31 @@
                           {{ "devices.validationMessages.validity.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-                    
+
+                        <mat-form-field class="left-sizing">
+                        <mat-label>{{secondaryLanguageLabels["deviceSpecId"]}}</mat-label>
+                        <mat-select formControlName="deviceSpecId">
+                          <mat-option
+                            *ngFor="let data of dropDownValues.deviceTypeCode.secondary"
+                            [value]="data.fieldCode"
+                          >
+                          {{ data.fieldValue }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                        <mat-form-field>
+                          <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
+                          <mat-select formControlName="zone">
+                          <mat-option
+                            *ngFor="let data of dropDownValues.zone.secondary"
+                            [value]="data.code"
+                          >
+                            {{ data.name }}
+                          </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
                         <mat-form-field>
                           <mat-label>{{ secondaryLanguageLabels["isActive"] }}</mat-label>
                           <mat-select formControlName="isActive">
@@ -294,31 +320,7 @@
                           </mat-select>
                         </mat-form-field>
                     
-                        <mat-form-field>
-                          <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
-                          <mat-select formControlName="zone">
-                          <mat-option
-                            *ngFor="let data of dropDownValues.zone.secondary"
-                            [value]="data.code"
-                          >
-                            {{ data.name }}
-                          </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                    
-                        <mat-form-field class="left-sizing">
-                        <mat-label>{{
-                          secondaryLanguageLabels.deviceSpecId
-                        }}</mat-label>
-                        <mat-select formControlName="deviceSpecId">
-                          <mat-option
-                            *ngFor="let data of dropDownValues.deviceTypeCode.secondary"
-                            [value]="data.fieldCode"
-                          >
-                            {{ data.fieldValue }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                        
                 </div>
             </mat-card-content>
             <mat-card-actions class="action-buttons">

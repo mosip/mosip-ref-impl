@@ -61,10 +61,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   secondaryKeyboard: string;
   keyboardType: string;
 
-  primaryKeyboard: string;
-  secondaryKeyboard: string;
-  keyboardType: string;
-
   constructor(
     private dataStorageService: DataStorageService,
     private router: Router,
@@ -74,7 +70,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("fields>>>"+this.fields);
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     this.isCreateForm = false;
     this.disableForms = false;
@@ -163,80 +158,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Document Category";
       }else if(url === "holiday"){
         this.pageName = "Holiday";
-      }
-    }
-
-    if(!this.secondaryData){
-      if(url === "center-type"){
-        this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "blacklisted-words"){
-        this.secondaryData = {"word":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "gender-type"){
-        this.secondaryData = {"code":"","genderName":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "individual-type"){
-        this.secondaryData = {"code":"","name":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "location"){
-        this.secondaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "templates"){
-        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
-      }else if(url === "title"){
-        this.secondaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "device-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
-      }else if(url === "device-types"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "machine-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
-      }else if(url === "machine-type"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "document-type"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "document-categories"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "holiday"){
-        this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.secondaryLang,"isActive":true,"id":"0"};
-      }
-    }
-  }
-
-  scrollPage(
-    element: HTMLElement,
-    type: string,
-    formControlName: string,
-    index: number
-  ) {
-    //element.scrollIntoView({ block: 'center', inline: 'nearest' });
-    this.selectedField = element;
-    if (this.keyboardRef) {
-      console.log("index>>>"+index);
-      this.keyboardRef.instance.setInputInstance(
-        this.attachToElementMesOne._results[index]
-      );
-      /*if (type === 'primary') {
-        this.keyboardRef.instance.attachControl(
-          this.primaryForm.controls[formControlName]
-        );
-      } else if (type === 'secondary') {
-        this.keyboardRef.instance.attachControl(
-          this.secondaryForm.controls[formControlName]
-        );
-      }*/
-    }
-  }
-
-  openKeyboard(type: string) {
-    if (this.keyboardService.isOpened && this.keyboardType === type) {
-      this.keyboardService.dismiss();
-      this.keyboardRef = undefined;
-    } else {
-      this.keyboardType = type;
-      if (type === 'primary') {
-        this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
-      } else if (type === 'secondary') {
-        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
-      }
-      if (this.selectedField) {
-        this.selectedField.focus();
       }
     }
 
@@ -427,8 +348,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
-    console.log("event.source.value>>>"+event.source.value);
-    console.log("formControlName>>>"+formControlName);
     if (event.source.value && event.source.selected) {
       this.primaryData[formControlName] = event.source.value;
       this.secondaryData[formControlName] = event.source.value; 
@@ -450,6 +369,23 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   submit() {
+    let self = this;
+    self.executeAPI();
+/*    for (var i = 0, len = self.fields.length; i < len; i++) {
+      if (self.fields[i].showInSingleView) {
+        if(self.fields[i].ismandatory){
+          if(!self.primaryData[self.fields[i].name]){
+            this.showErrorPopup(self.fields[i].label[this.primaryLang]+" is required");
+            break;
+          }else if(len = i+1){
+            self.executeAPI();
+          }
+        }
+      }
+    }*/
+  }
+
+  executeAPI(){
     if(this.isCreateForm){
       let request = new RequestModel(
         "",
@@ -458,8 +394,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
       );
       this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
+            this.secondaryData["code"] = updateResponse.response.code; 
             let request = new RequestModel(
-              "",
+              updateResponse.response.code,
               null,
               this.secondaryData
             );
