@@ -721,7 +721,7 @@ public class IdaController {
 		ObjectNode requestBody = mapper.createObjectNode();
 		requestBody.put("clientId", env.getProperty("clientId"));
 		requestBody.put("secretKey", env.getProperty("secretKey"));
-		requestBody.put("appId", "regproc");
+		requestBody.put("appId", env.getProperty("appId"));
 		RequestWrapper<ObjectNode> request = new RequestWrapper<>();
 		request.setRequesttime(DateUtils.getUTCCurrentDateTime());
 		request.setRequest(requestBody);
