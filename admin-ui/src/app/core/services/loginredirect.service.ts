@@ -13,6 +13,6 @@ export class LoginRedirectService {
     const stateParam = uuid();
     this.cookie.set('state', stateParam, undefined, '/');
    // console.log('returning false login redirect' + stateParam);
-    window.location.href = `${this.appService.getConfig().baseUrl}authmanager/login/` + btoa(url);
+    window.location.href = `${this.appService.getConfig().baseUrl}${this.appService.getConfig().login}` + btoa(url);
   }
 }
