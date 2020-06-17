@@ -11,12 +11,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.spec.X509EncodedKeySpec;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
@@ -350,17 +354,22 @@ public class IdaController {
 								   .replace("$count", getFingerCount()).
 								    replace("$deviceId", env.getProperty("ida.request.captureFinger.deviceId")).
 								    replace("$domainUri", env.getProperty("ida.request.captureFinger.domainUri")).
-								    replace("$deviceSubId", getIrisDeviceSubId()).
+								    replace("$deviceSubId", getFingerDeviceSubId()).
+								    replace("$captureTime", getCaptureTime()).
 								    replace("$previousHash", getPreviousHash()).
 								    replace("$requestedScore",env.getProperty("ida.request.captureFinger.requestedScore")).
 								    replace("$type",env.getProperty("ida.request.captureFinger.type")).
-								    replace("$bioSubType",getFingerBioSubType()).
+								    replace("$bioSubType",getBioSubType(getFingerCount(), env.getProperty("ida.request.captureFinger.bioSubType"))).
 								    replace("$name",env.getProperty("ida.request.captureFinger.name")).
 								    replace("$value",env.getProperty("ida.request.captureFinger.value"));
 		
 		return capturebiometrics(requestBody);
 	}	
 	
+	
+	private String getFingerDeviceSubId() {
+		return "0";
+	}
 	
 	private String getIrisDeviceSubId() {
 		if(irisCount.getSelectionModel().getSelectedIndex() == 0) {
@@ -387,10 +396,11 @@ public class IdaController {
 								    replace("$deviceId", env.getProperty("ida.request.captureIris.deviceId")).
 								    replace("$domainUri", env.getProperty("ida.request.captureIris.domainUri")).
 								    replace("$deviceSubId", getIrisDeviceSubId()).
+								    replace("$captureTime", getCaptureTime()).
 								    replace("$previousHash", getPreviousHash()).
 								    replace("$requestedScore",env.getProperty("ida.request.captureIris.requestedScore")).
 								    replace("$type",env.getProperty("ida.request.captureIris.type")).
-								    replace("$bioSubType",getIrisBioSubType()).
+								    replace("$bioSubType",getBioSubType(getIrisCount(), env.getProperty("ida.request.captureIris.bioSubType"))).
 								    replace("$name",env.getProperty("ida.request.captureIris.name")).
 								    replace("$value",env.getProperty("ida.request.captureIris.value"));
 		
@@ -408,10 +418,11 @@ public class IdaController {
 									    replace("$deviceId", env.getProperty("ida.request.captureFace.deviceId")).
 									    replace("$domainUri", env.getProperty("ida.request.captureFace.domainUri")).
 									    replace("$deviceSubId", getFaceDeviceSubId()).
+									    replace("$captureTime", getCaptureTime()).
 									    replace("$previousHash", getPreviousHash()).
 									    replace("$requestedScore",env.getProperty("ida.request.captureFace.requestedScore")).
 									    replace("$type",env.getProperty("ida.request.captureFace.type")).
-									    replace("$bioSubType",getFaceBioSubType()).
+									    replace("$bioSubType",getBioSubType(getFaceCount(), env.getProperty("ida.request.captureFace.bioSubType"))).
 									    replace("$name",env.getProperty("ida.request.captureFace.name")).
 									    replace("$value",env.getProperty("ida.request.captureFace.value"));		
 
@@ -426,45 +437,12 @@ public class IdaController {
 		return fingerCount.getValue() == null ? String.valueOf(1) : fingerCount.getValue();
 	}
 	
-	private String getFingerBioSubType() {
-		String bioValue = env.getProperty("ida.request.captureFinger.bioSubType");
-		String fingerCount = getFingerCount();
-		if(fingerCount.equalsIgnoreCase("1")) {
+	private String getBioSubType(String count, String bioValue) {		
+		if(count.equalsIgnoreCase("1")) {
 			return  "\"" + bioValue + "\"";
-		}
-		
+		}		
 		String finalStr = "\""+ bioValue + "\"";
-		for(int i = 2; i<=Integer.parseInt(fingerCount); i++) {
-			finalStr = finalStr + "," + "\""+ bioValue + "\"";
-		}
-		
-		return finalStr;
-	}
-	
-	private String getIrisBioSubType() {
-		String bioValue = env.getProperty("ida.request.captureIris.bioSubType");
-		String irisCount = getIrisCount();
-		if(irisCount.equalsIgnoreCase("1")) {
-			return  "\"" + bioValue + "\"";
-		}
-		
-		String finalStr = "\""+ bioValue + "\"";
-		for(int i = 2; i<=Integer.parseInt(irisCount); i++) {
-			finalStr = finalStr + "," + "\""+ bioValue + "\"";
-		}
-		
-		return finalStr;
-	}
-
-	private String getFaceBioSubType() {
-		String bioValue = env.getProperty("ida.request.captureFace.bioSubType");
-		String faceCount = getFaceCount();
-		if(faceCount.equalsIgnoreCase("1")) {
-			return  "\"" + bioValue + "\"";
-		}
-		
-		String finalStr = "\""+ bioValue + "\"";
-		for(int i = 2; i<=Integer.parseInt(faceCount); i++) {
+		for(int i = 2; i<=Integer.parseInt(count); i++) {
 			finalStr = finalStr + "," + "\""+ bioValue + "\"";
 		}
 		
@@ -479,6 +457,13 @@ public class IdaController {
 		return String.valueOf(1);
 	}
 
+	private String getCaptureTime() {
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+		df.setTimeZone(tz);
+		String nowAsISO = df.format(new Date());
+		return nowAsISO;
+	}
 	@SuppressWarnings("rawtypes")
 	private String capturebiometrics(String requestBody) throws Exception {
 		System.out.println("Capture request:\n" + requestBody);

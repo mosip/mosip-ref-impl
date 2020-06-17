@@ -1,1 +1,1 @@
-java -Dfinger.deviceId=finger-device-id -Diris.deviceId=iris-device-id -Dface.deviceId=face-device-id -Dbase.url=http://qa.mosip.io -jar ./target/authentication-demo-ui-0.10.1.jar
+java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id -Dbase.url=https://sandboxv2.southindia.cloudapp.azure.com -jar ./target/authentication-demo-ui-1.0.9.jar
