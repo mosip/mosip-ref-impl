@@ -190,24 +190,24 @@ export class CreateComponent {
     
   }
 
-  getMachinespecifications() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
-    let request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.primary = response.response.filters;
-      });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.secondary =
-          response.response.filters;
-      });
-  }
+  // getMachinespecifications() {
+  //   const filterObject = new FilterValuesModel('name', 'unique', '');
+  //   let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+  //   let request = new RequestModel('', null, filterRequest);
+  //   this.dataStorageService
+  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
+  //     .subscribe(response => {
+  //       this.dropDownValues.machineTypeCode.primary = response.response.filters;
+  //     });
+  //   filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+  //   request = new RequestModel('', null, filterRequest);
+  //   this.dataStorageService
+  //     .getFiltersForAllMaterDataTypes('machinespecifications', request)
+  //     .subscribe(response => {
+  //       this.dropDownValues.machineTypeCode.secondary =
+  //         response.response.filters;
+  //     });
+  // }
 
   getZoneData() {
     this.dataStorageService

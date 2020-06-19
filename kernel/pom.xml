@@ -3,20 +3,58 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>io.mosip</groupId>
-		<artifactId>mosip-ref-parent</artifactId>
-		<version>0.9.1</version>
-	</parent>
-
-
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
+	<version>0.9.1</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>Parent project of MOSIP Kernel for Philippines</description>
-
+	<url>https://github.com/mosip/mosip-ref-impl</url>
+	
+	<licenses>
+          <license>
+                <name>MPL 2.0</name>
+                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+          </license>
+        </licenses>
+	
+	<scm>
+                <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
+                <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
+                <url>https://github.com/mosip/mosip-ref-impl</url>
+                <tag>HEAD</tag>
+        </scm>
+        <developers>
+                <developer>
+                  <name>Mosip</name>
+                  <email>mosip.emailnotifier@gmail.com</email>
+                  <organization>io.mosip</organization>
+                  <organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
+                </developer>
+        </developers>
+	
+         <repositories>
+          <repository>
+            <id>ossrh</id>
+            <name>Central Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <layout>default</layout>
+            <snapshots>
+                  <enabled>true</enabled>
+            </snapshots>
+          </repository>
+        </repositories>
+        <distributionManagement>
+                <snapshotRepository>
+                        <id>ossrh</id>
+                        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                 <repository>
+                        <id>ossrh</id>
+                        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+        </distributionManagement>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -28,7 +66,7 @@
 		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
 		<maven.surefire.plugin.version>2.9</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.1</maven.jacoco.plugin.version>
-		<maven.sonar.plugin.version>3.2</maven.sonar.plugin.version>
+		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<maven.javadoc.version>3.0.1</maven.javadoc.version>
 		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
 
@@ -81,6 +119,9 @@
 		<json.utility.version>20180130</json.utility.version>
 		<json.schema.validator.version>2.2.10</json.schema.validator.version>
 		<json.version>20180813</json.version>
+
+		<!-- kernel -->
+		<kernel-core.version>1.0.9-SNAPSHOT</kernel-core.version>
 
 		<!-- utilities -->
 		<commons-math3>3.6.1</commons-math3>
@@ -161,6 +202,14 @@
 					<groupId>org.sonarsource.scanner.maven</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>${maven.sonar.plugin.version}</version>
+					    <executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>sonar</goal>
+								</goals>
+							</execution>
+					    </executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -199,12 +248,83 @@
 				</executions>
 			</plugin>
 			<plugin>
+                          	<groupId>org.sonatype.plugins</groupId>
+                          	<artifactId>nexus-staging-maven-plugin</artifactId>
+                          	<version>1.6.7</version>
+                          	<extensions>true</extensions>
+                          	<executions>
+                   			 <execution>
+                      				<id>default-deploy</id>
+                      				<phase>deploy</phase>
+                      				<goals>
+                        				<goal>deploy</goal>
+                      				</goals>
+                    			</execution>
+                          	</executions>
+                  	  	<configuration>
+                        		<serverId>ossrh</serverId>
+                        		<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        		<autoReleaseAfterClose>false</autoReleaseAfterClose>
+                  		</configuration>
+                	</plugin> 
+
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-source-plugin</artifactId>
+                  <version>2.2.1</version>
+                  <executions>
+                        <execution>
+                          <id>attach-sources</id>
+                          <goals>
+                                <goal>jar-no-fork</goal>
+                          </goals>
+                        </execution>
+                  </executions>
+                </plugin>
+
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>2.9.1</version>
+                  <executions>
+                        <execution>
+                          <id>attach-javadocs</id>
+                          <goals>
+                                <goal>jar</goal>
+                          </goals>
+                        </execution>
+                  </executions>
+                  <configuration>
+                          <additionalJOption>-Xdoclint:none</additionalJOption>
+                  </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.5</version>
+                  <executions>
+                        <execution>
+                          <id>sign-artifacts</id>
+                          <phase>verify</phase>
+                          <goals>
+                                <goal>sign</goal>
+                          </goals>
+		          <configuration>
+                		<gpgArguments>
+                    			<arg>--pinentry-mode</arg>
+                    			<arg>loopback</arg>
+                		</gpgArguments>
+            		 </configuration>
+                        </execution>
+                  </executions>
+                </plugin>
+<!--			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
-		</plugins>
+-->		</plugins>
 	</build>
 </project>
