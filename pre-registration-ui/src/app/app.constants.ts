@@ -7,6 +7,7 @@ export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
 export const DEFAULT_LANG_CODE = 'eng';
+export const IDSchemaVersionLabel = 'IDSchemaVersion';
 
 export const IDS = {
   newUser: 'mosip.pre-registration.demographic.create',
@@ -35,7 +36,8 @@ export const APPEND_URL = {
   gender: 'v1/masterdata/gendertypes',
   resident: 'v1/masterdata/individualtypes',
   transliteration: 'transliteration/transliterate',
-  applicantType: 'v1/applicanttype/',
+  //applicantType: 'v1/applicanttype/',
+  applicantType: 'v1/masterdata/',
   validDocument: 'applicanttype/',
   getApplicantType: 'getApplicantType',
   post_document: 'documents/',
@@ -111,7 +113,9 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_files: 'preregistration.documentupload.allowed.file.type',
   preregistration_document_alllowe_file_size: 'preregistration.documentupload.allowed.file.size',
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
-  google_recaptcha_site_key: 'google.recaptcha.site.key'
+  google_recaptcha_site_key: 'google.recaptcha.site.key',
+  mosip_adult_age:'mosip.adult.age',
+  mosip_idschema_version:'mosip.idschema.version'
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {
@@ -183,3 +187,20 @@ export const DOCUMENT_UPLOAD_REQUEST_DTO_KEY = 'Document request';
 export const PREVIEW_DATA_APPEND_URL = 'demographic/v0.1/applicationData';
 
 export const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export const controlTypeGender = 'gender';
+export const controlTypeResidenceStatus = 'residenceStatus';
+export const TRANSLITERATE_FIELDS = ["fullName","addressLine1","addressLine2","addressLine3"];
+
+export const errorMessages = {
+  requiredMessage : {
+    eng : "Is Required",
+    ara : "مطلوب",
+    fra : "Est requis"
+  },
+  InvalidStringMessage: {
+    eng : "Invalid",
+    ara : "غير صالحة",
+    fra : "Invalide"
+  }
+}

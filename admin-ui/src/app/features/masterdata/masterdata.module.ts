@@ -12,6 +12,7 @@ import { ListViewComponent } from './list-view/list-view.component';
 import { SingleViewComponent } from './single-view/single-view.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DocumentCategoryMappingComponent } from './document-category-mapping/document-category-mapping.component';
+import { MatKeyboardModule } from 'ngx7-material-keyboard';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { DocumentCategoryMappingComponent } from './document-category-mapping/do
     MasterdataRoutingModule,
     MaterialModule,
     I18nModule,
-    SharedModule
+    SharedModule,
+    MatKeyboardModule
   ]
 })
 export class MasterdataModule { }

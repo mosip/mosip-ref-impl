@@ -52,8 +52,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let factory = new LanguageFactory(localStorage.getItem('langCode'));
     let response = factory.getCurrentlanguage();
     const secondaryLanguagelabels = response['login']['logout_msg'];
-    localStorage.removeItem('loggedOutLang');
-    localStorage.removeItem('loggedOut');
     const data = {
       case: 'MESSAGE',
       message: secondaryLanguagelabels
@@ -64,7 +62,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
         data: data
       })
       .afterClosed()
-      .subscribe(() => this.authService.onLogout());
+      .subscribe(response => {
+        if(response){
+          localStorage.removeItem('loggedOutLang');
+          localStorage.removeItem('loggedOut');
+          this.authService.onLogout();
+        }
+        
+      }
+        );
   }
 
   ngOnDestroy() {

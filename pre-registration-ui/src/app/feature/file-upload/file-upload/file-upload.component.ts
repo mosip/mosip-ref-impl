@@ -101,10 +101,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     preRegistrationId: ''
   };
   subscriptions: Subscription[] = [];
+  identityData = [];
+  uiFields = [];
 
   constructor(
     private registration: RegistrationService,
-    private dataStroage: DataStorageService,
+    private dataStorageService: DataStorageService,
     private router: Router,
     private config: ConfigService,
     public domSanitizer: DomSanitizer,
@@ -116,8 +118,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.initiateComponent();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getIdentityJsonFormat();
+    console.log("this>>>>>>"+this.uiFields);
     this.getFileSize();
+    this.getPrimaryLabels();
     this.allowedFiles = this.config
       .getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files)
       .split(',');
@@ -135,13 +140,30 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let response = factory.getCurrentlanguage();
     if (response['message']) this.fileUploadLanguagelabels = response['message'];
     if (response['error']) this.errorlabels = response['error'];
-
     this.getApplicantTypeID();
     if (!this.users[0].files) {
       this.users[0].files = this.userFiles;
     } else {
       // this.sortUserFiles();
     }
+  }
+
+  async getIdentityJsonFormat() {
+    return new Promise((resolve, reject) => {
+      this.dataStorageService.getIdentityJson().subscribe((response) => {
+      this.identityData = response['response']["idSchema"]["identity"];
+      this.identityData.forEach((obj) => {
+        if (obj.inputRequired === true && obj.controlType === "fileupload") {
+          this.uiFields.push(obj);
+        }
+      });
+    });
+    resolve(true);
+    });
+  }
+
+  private getPrimaryLabels() {
+    console.log("uiFields>>>");
   }
 
   /**
@@ -366,7 +388,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
     DOCUMENT_CATEGORY_DTO = new RequestModel(appConstants.IDS.applicantTypeId, requestArray, {});
 
-    const subs = await this.dataStroage.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
+    const subs = await this.dataStorageService.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.getDocumentCategories(response['response'].applicantType.applicantTypeCode);
@@ -397,7 +419,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   async getDocumentCategories(applicantcode) {
-    const subs = await this.dataStroage.getDocumentCategories(applicantcode).subscribe(
+    const subs = await this.dataStorageService.getDocumentCategories(applicantcode).subscribe(
       res => {
         if (res[appConstants.RESPONSE]) {
           this.LOD = res['response'].documentCategories;
@@ -421,7 +443,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   async getAllApplicants() {
-    const subs = await this.dataStroage.getUsers(this.loginId).subscribe(
+    const subs = await this.dataStorageService.getUsers(this.loginId).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.bookingService.addApplicants(response['response']['basicDetails']);
@@ -551,7 +573,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   viewFile(fileMeta: FileModel) {
     this.fileIndex = 0;
     this.disableNavigation = true;
-    const subs = this.dataStroage.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
+    const subs = this.dataStorageService.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
       res => {
         if (res[appConstants.RESPONSE]) {
           this.setByteArray(res['response'].document);
@@ -783,7 +805,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DTO_KEY, JSON.stringify(this.documentRequest));
     this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY, event.target.files.item(0));
 
-    const subs = this.dataStroage.sendFile(this.formData, this.users[0].preRegId).subscribe(
+    const subs = this.dataStorageService.sendFile(this.formData, this.users[0].preRegId).subscribe(
       response => {
         if (response[appConstants.RESPONSE]) {
           this.updateUsers(response);
@@ -857,7 +879,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.disableNavigation = true;
     if (event.value == '') {
       let arr = fileMetadata.filter(ent => ent.docCatCode === 'POA');
-      const subs = this.dataStroage.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(
+      const subs = this.dataStorageService.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(
         res => {
           if (res[appConstants.RESPONSE]) {
             this.sameAsselected = false;
@@ -882,7 +904,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       );
       this.subscriptions.push(subs);
     } else {
-      const subs = this.dataStroage.copyDocument(event.value, this.users[0].preRegId).subscribe(
+      const subs = this.dataStorageService.copyDocument(event.value, this.users[0].preRegId).subscribe(
         response => {
           if (response[appConstants.RESPONSE]) {
             this.registration.setSameAs(event.value);

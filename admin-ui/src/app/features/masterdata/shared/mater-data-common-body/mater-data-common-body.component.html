@@ -12,12 +12,13 @@
                 >
                 <hr />
                 <br /><br />
-                <div *ngFor="let field of fields" class="mat-form1">
+                <div *ngFor="let field of fields; let i = index" class="mat-form1">
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text'">
                       <input
                         #keyboardRef
                         #{{field.name}}
                         (keyup)="captureValue($event, field.name, 'primary')"
+                        (focus)="scrollPage(field.name, 'primary', field.name, i)"
                         matInput
                         placeholder="{{
                           field.label[primaryLang] | translate
@@ -131,6 +132,24 @@
                           </mat-option>
                         </mat-select>
                         </div>
+                      <div *ngIf="field.name === 'hierarchyLevel'">
+                      <mat-select
+                        formControlName="hierarchyLevel"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.hierarchyLevelCode.primary"
+                          (onSelectionChange)="
+                            captureLocationDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.locationHierarchylevel"
+                        >
+                          {{ data.locationHierarchyName }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+                      
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"
@@ -139,6 +158,9 @@
                         >
                         <mat-option
                           *ngFor="let data of dropDownValues.isActive"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
                           [value]="data"
                         >
                           {{ data | status }}
@@ -160,20 +182,19 @@
                 >
                 <hr />
                 <br /><br />
-                <div *ngFor="let field of fields" class="mat-form2">
+                <div *ngFor="let field of fields; let ii = index" class="mat-form2">
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text'">
-
-                            <input
-                              #keyboardRef
-                              #{{field.name}}
-                              (keyup)="captureValue($event, field.name, 'secondary')"
-                              matInput
-                              placeholder="{{
-                                field.label[secondaryLang]
-                              }}"
-                              [value]="secondaryData[field.name]"
-                            />
-
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'secondary')"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii)"
+                        matInput
+                        placeholder="{{
+                          field.label[secondaryLang]
+                        }}"
+                        [value]="secondaryData[field.name]"
+                      />
                     </mat-form-field>
 
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'calendar'">
@@ -280,6 +301,25 @@
                           </mat-option>
                         </mat-select>
                         </div>
+                     
+                      <div *ngIf="field.name === 'hierarchyLevel'">
+                      <mat-select
+                        formControlName="hierarchyLevel"
+                        [value]="secondaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"
+                        disabled = true              
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.hierarchyLevelCode.secondary"
+                          (onSelectionChange)="
+                            captureLocationSecondaryDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.locationHierarchylevel"
+                        >
+                          {{ data.locationHierarchyName }}
+                        </mat-option>
+                      </mat-select>
+                      </div>                     
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"
@@ -288,6 +328,9 @@
                         >
                         <mat-option
                           *ngFor="let data of dropDownValues.isActive"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
                           [value]="data"
                         >
                           {{ data | status }}

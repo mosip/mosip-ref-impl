@@ -220,8 +220,8 @@
         "ipAddress": "IP Address",
         "validity": "Valid Date Time",
         "isActive": "Status",
-        "zone": "Zone",
-        "deviceSpecId": "Device SpecId",
+        "zone": "Administrative Zone",
+        "deviceSpecId": "Device Spec Name",
         "language": "English",
         "edit": "Edit",
         "create": "Create",
@@ -253,7 +253,7 @@
                 "required": "Status is required"
             },
             "zone": {
-                "required": "IP Address is required"
+                "required": "Administrative Zone is required"
             },
             "deviceSpecId": {
                 "required": "Device SpecId is required"
@@ -320,12 +320,13 @@
         "ipAddress": "IP Address",
         "validity": "Valid Date Time",
         "isActive": "Status",
-        "zone": "Zone",
+        "zone": "Administrative Zone",
         "publicKey": "Public Key",
         "language": "English",
         "edit": "Edit",
         "create": "Create",
         "cancel": "Cancel",
+        "update": "Update",
         "keyboard-tooltip": "Click for Virtual Keyboard (English)",
         "errorMessages": {
             "title": "Error",
@@ -352,7 +353,7 @@
                 "required": "Status is required"
             },
             "zone": {
-                "required": "IP Address is required"
+                "required": "Administrative Zone is required"
             },
             "machineSpecId": {
                 "required": "Machines Spec ID is required"
@@ -361,26 +362,26 @@
         "popupMessages": {
             "create": {
                 "title": "Confirmation",
-                "message": ["You are about to create a Registration Machine in ",". Please ensure that all the information is correct. Machine ID will be generated once you Confirm"],
+                "message": ["You are about to create Machine details ",". Please ensure that all the information is correct. Machine ID will be generated once you Confirm"],
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Machine will be created only in Primary language. Do you still want to continue?"
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Machine details will be created only in Primary language. Do you still want to continue?"
             },
             "edit": {
                 "title": "Confirmation",
-                "message": "You are about to update a Registration Machine. Please ensure that all the information is correct",
+                "message": "You are about to update Machine details. Please ensure that all the information is correct",
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Machine will be created only in Primary language. Do you still want to continue?"
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Machine details will be created only in Primary language. Do you still want to continue?"
             },
             "update-success": {
                 "title": "Success",
-                "message": ["Machine details are updated successfully. \n Machine ID: ", " \n CenMachineter Name: "],
+                "message": ["Machine details are updated successfully. Machine ID: ", " and Machine Name: "],
                 "btnTxt": "Ok"
             },
             "update-error": {
                 "title": "Error",
-                "message": "There was some issue in updating the Machine. Please try again",
+                "message": "There was some issue in updating the Machine details. Please try again",
                 "btnTxt": "Ok"
             },
             "create-success": {
@@ -390,7 +391,7 @@
             },
             "create-error": {
                 "title": "Error",
-                "message": "There was some issue in creating a Machine. Please try again",
+                "message": "There was some issue in creating a Machine details. Please try again",
                 "btnTxt": "Ok"
             },
             "navigation-popup": {

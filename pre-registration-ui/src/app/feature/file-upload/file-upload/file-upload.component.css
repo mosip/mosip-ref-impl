@@ -275,3 +275,12 @@ mat-select:focus {
   background: rgba(0, 0, 0, 0.5);
   z-index: 10;
 }
+.spacer {
+  flex: 1 1 auto;
+}
+::ng-deep .mat-form-field-hide-placeholder .mat-select-placeholder {
+  padding: 5px !important;
+}
+::ng-deep .mat-select-value-text {
+  line-height: 23px !important;
+}

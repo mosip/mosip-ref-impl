@@ -37,7 +37,7 @@
         <mat-card>
           <div class="card-header">
             <span class="checkbox"
-              ><mat-checkbox [disabled]="isBookingAllowed(user)" (change)="onSelectUser(user, $event)"
+              ><mat-checkbox *ngIf="!isBookingAllowed(user)" (change)="onSelectUser(user, $event)"
                 >{{ 'dashboard.card.text_app_id' | translate }}
               </mat-checkbox></span
             >
@@ -48,7 +48,7 @@
               >
             </span>
             <span class="spacer"></span>
-            <button (click)="onDelete(user)" mat-icon-button [disabled]="user.status === 'Expired'">
+            <button (click)="onDelete(user)" mat-icon-button *ngIf="!(user.status === 'Expired')">
               <img
                 matTooltip="{{ 'helpText.deleteIcon' | translate }}"
                 [matTooltipDisabled]="false"

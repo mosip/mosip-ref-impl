@@ -556,7 +556,7 @@
       "booked": "Appointment is booked successfully",
       "expired": "Appointed date has passed"
     },
-    "deleteIcon": "You can either discard entire application or cancel the appointment and save the details,Discard entire application and cancels the appointment.Cancel appointment and save the details.",
+    "deleteIcon": "You can either discard entire application or cancel the appointment and save the details.",
     "book/modify_appointment": "You must tick the check box near to pre-registration id for one or multiple applicants to book/modify appointment",
     "bookAppointment": "First, select the preferred time slot as provided Then select the applicable applicant for the time slot selected.For multiple applications, repeat the same for the remaining applicant ",
     "send_email/sms": "You may add the additional recipient to receive the notification(s).",

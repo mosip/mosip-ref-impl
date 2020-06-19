@@ -173,6 +173,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
               this.displayResults(response[appConstants.RESPONSE]);
             } else {
               this.showMessage = true;
+              this.selectedCentre = null;
             }
           },
           error => {
@@ -254,15 +255,14 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
       this.REGISTRATION_CENTRES.forEach(center => {
         this.dataService.getWorkingDays(center.id, this.primaryLang).subscribe(response => {
           console.log(response);
+          center.workingDays = '';
           response[appConstants.RESPONSE]['workingdays'].forEach(day => {
             if (day.working === true || ((day.working === null || day.working === undefined) && day.globalWorking === true)) {
-              center.workingDays = center.workingDays === undefined ? '' : center.workingDays + day.name + ', ';
+              console.log(day.name);
+              center.workingDays = center.workingDays + day.name + ', ';
+              console.log(center.workingDays);
             }
           });
-          // if (center.workingDays) {
-          //   center.workingDays = center.workingDays.substring(0, center.workingDays.length - 2);
-          // }
-
           this.isWorkingDaysAvailable = true;
           resolve(true);
         });

@@ -380,4 +380,10 @@ export class DataStorageService {
     const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
     return this.httpClient.post(url,captcha);
   }
+
+  getIdentityJson() {
+    const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    return this.httpClient.get(url);
+   }
+
 }

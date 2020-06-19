@@ -81,6 +81,7 @@ img {
   display: flex;
   background-color: #d8f7ff;
   align-items: center;
+  min-height: 40px;
 }
 .mat-card {
   width: 335px;
