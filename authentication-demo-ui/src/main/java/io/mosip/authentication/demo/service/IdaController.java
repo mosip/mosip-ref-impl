@@ -344,8 +344,14 @@ public class IdaController {
 
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private String getCaptureRequestTemplate() {
-		return new String(cryptoUtil.decodeBase64(env.getProperty("ida.request.captureRequest.template")));
+		String requestBody = new String(cryptoUtil.decodeBase64(env.getProperty("ida.request.captureRequest.template")));
+		System.out.println(requestBody);
+		return requestBody;
 	}
 
 	private String captureFingerprint() throws Exception {
