@@ -514,9 +514,11 @@ public class IdaController {
 			} else {
 				responsetextField.setText("Capture Failed");
 				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
+				break;
 			}
-			System.out.println(result);
 		}
+		
+		System.out.println(result);
 		return result;
 	}
 
