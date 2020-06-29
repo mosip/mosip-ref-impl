@@ -495,12 +495,19 @@ public class IdaController {
 			}
 			bR.close();
 		} catch (IOException e) {
+			responsetextField.setText("Device connectivity failed....");
+			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			e.printStackTrace();
 		}
 		String result = stringBuilder.toString();
-		String error = null;		
-	
+		String error = null;
+		
 		List data = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
+		if(data == null) {
+			responsetextField.setText(result);
+			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
+		}
+		
 		for (int j = 0; j < data.size(); j++) {
 			Map e = (Map) data.get(j);			
 			Map errorMap = (Map) e.get("error");
