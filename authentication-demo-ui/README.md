@@ -18,13 +18,13 @@ This includes demostration for below listed ID-Authentication scenarios:
 ### Launching the Application (Windows)
 1. Update the `ID-Authentication-Demo-UI.bat` batch file as below:
 ```
-java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id 
+java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id -DmispLicenseKey=misplkey -DpartnerId=partnerId -DpartnerApiKey=partnerApiKey
 -Dmosip.base.url=https://qa.mosip.io -jar ./target/authentication-demo-ui-x.x.x.jar
 ```
 
 For example,
 ```
-java -Dida.request.captureFinger.deviceId=1 -Dida.request.captureIris.deviceId=2 -Dida.request.captureFace.deviceId=2 -Dmosip.base.url=https://qa.mosip.io -jar ./target/authentication-demo-ui-1.0.9.jar
+java -Dida.request.captureFinger.deviceId=1 -Dida.request.captureIris.deviceId=2 -Dida.request.captureFace.deviceId=2 -Dmosip.base.url=https://qa.mosip.io -DmispLicenseKey=UmjbDSra8pzOGd5rVtKekTb9D6VdvOQg4Kmw5TzBdw18mbzzME -DpartnerId=748757 -DpartnerApiKey=9418294 -jar ./target/authentication-demo-ui-1.0.9.jar
 ```
 
 2. Run the batch file.
