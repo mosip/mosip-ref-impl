@@ -3,7 +3,7 @@ The demo Application for ID-Authentication, used to demonstrate the ID-Authentic
 
 *Disclaimer: This is not a complete reference implementation for all ID-Authentication scenarios. This is used to demonstrate the authentication services for some high level scenarios only.*
 
-Compatible MDS Version: v0.9.2
+Compatible MDS Version: v0.9.5
 
 This includes demostration for below listed ID-Authentication scenarios:
 1. Single Fingerprint Authentication
