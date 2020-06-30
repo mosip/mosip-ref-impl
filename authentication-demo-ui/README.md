@@ -15,9 +15,16 @@ This includes demonstration for below listed ID-Authentication scenarios:
 7. Multi-Modality of Biometric Authentication - Fingerprint/Iris/Face
 8. Multi-factor Authentication - OTP + Biometrics
 
+### Dependencies
+App dependencies are mentioned below.For all Kernel services refer to [commons repo](https://github.com/mosip/commons)
+* kernel-keygenerator-bouncycastle
+* kernel-crypto-jce
+* kernel-core
+
+Build the above services and update the authentication-demo-ui POM with corresponding versions. 
+
 ### Build
-The following commands should be run in the project to build the application - 
-`mvn clean install -Dgpg.skip=true`
+The following command should be run in the project to build the application - mvn clean install -Dgpg.skip=true  
 
 
 ### Launching the Application (Windows)
@@ -27,14 +34,14 @@ java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.capture
 -Dmosip.base.url=https://qa.mosip.io -jar ./target/authentication-demo-ui-x.x.x.jar
 ```
 
-### Keys Explanation
-* ida.request.captureFinger.deviceId = Finger Device Id
-* ida.request.captureIris.deviceId = Iris Device Id
-* ida.request.captureFace.deviceId = Face Device Id
-* mispLicenseKey = MOSIP infra provider license key 
-* partnerId = Registred Service Provider Id
-* partnerApiKey = Service Provider Policy Mapped Key
-* mosip.base.url = MOSIP hosted url
+# Keys Explaination
+ida.request.captureFinger.deviceId = Finger Device Id
+ida.request.captureIris.deviceId = Iris Device Id
+ida.request.captureFace.deviceId = Face Device Id
+mispLicenseKey = MISP Licenese Key 
+partnerId = Partner Id
+partnerApiKey = Partner Api Key
+mosip.base.url = MOSIP hosted url
 
 For example,
 ```
