@@ -5,7 +5,7 @@ The demo Application for ID-Authentication, used to demonstrate the ID-Authentic
 
 Compatible MDS Version: v0.9.5
 
-This includes demostration for below listed ID-Authentication scenarios:
+This includes demonstration for below listed ID-Authentication scenarios:
 1. Single Fingerprint Authentication
 2. Multiple Fingerprint Authentication
 3. Single Iris Authentication
@@ -15,12 +15,26 @@ This includes demostration for below listed ID-Authentication scenarios:
 7. Multi-Modality of Biometric Authentication - Fingerprint/Iris/Face
 8. Multi-factor Authentication - OTP + Biometrics
 
+### Build
+The following commands should be run in the project to build the application - 
+`mvn clean install -Dgpg.skip=true`
+
+
 ### Launching the Application (Windows)
 1. Update the `ID-Authentication-Demo-UI.bat` batch file as below:
 ```
 java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id -DmispLicenseKey=misplkey -DpartnerId=partnerId -DpartnerApiKey=partnerApiKey
 -Dmosip.base.url=https://qa.mosip.io -jar ./target/authentication-demo-ui-x.x.x.jar
 ```
+
+### Keys Explanation
+* ida.request.captureFinger.deviceId = Finger Device Id
+* ida.request.captureIris.deviceId = Iris Device Id
+* ida.request.captureFace.deviceId = Face Device Id
+* mispLicenseKey = MOSIP infra provider license key 
+* partnerId = Registred Service Provider Id
+* partnerApiKey = Service Provider Policy Mapped Key
+* mosip.base.url = MOSIP hosted url
 
 For example,
 ```
@@ -29,3 +43,12 @@ java -Dida.request.captureFinger.deviceId=1 -Dida.request.captureIris.deviceId=2
 
 2. Run the batch file.
 
+
+## Trouble Shooting
+### Error: java.lang.SecurityException: JCE cannot authenticate the provider BC
+ Please follow below steps.
+1.  edit jre\lib\security\java.security
+2.  add security.provider.10=org.bouncycastle.jce.provider.BouncyCastleProvider
+3.  copy bc*.jar to jre\lib\ext
+
+After this stop the application and re-run.
