@@ -21,8 +21,6 @@ App dependencies are mentioned below.For all Kernel services refer to [commons r
 * kernel-crypto-jce
 * kernel-core
 
-Build the above services and update the authentication-demo-ui POM with corresponding versions. 
-
 ### Build
 The following command should be run in the project to build the application - mvn clean install -Dgpg.skip=true  
 
