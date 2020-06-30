@@ -22,7 +22,8 @@ App dependencies are mentioned below.For all Kernel services refer to [commons r
 * kernel-core
 
 ### Build
-The following command should be run in the project to build the application - mvn clean install -Dgpg.skip=true  
+The following command should be run in the project to build the application - 
+`mvn clean install -Dgpg.skip=true`
 
 
 ### Launching the Application (Windows)
@@ -32,14 +33,14 @@ java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.capture
 -Dmosip.base.url=https://qa.mosip.io -jar ./target/authentication-demo-ui-x.x.x.jar
 ```
 
-# Keys Explaination
-ida.request.captureFinger.deviceId = Finger Device Id
-ida.request.captureIris.deviceId = Iris Device Id
-ida.request.captureFace.deviceId = Face Device Id
-mispLicenseKey = MISP Licenese Key 
-partnerId = Partner Id
-partnerApiKey = Partner Api Key
-mosip.base.url = MOSIP hosted url
+### Keys Explaination
+* ida.request.captureFinger.deviceId = Finger Device Id
+* ida.request.captureIris.deviceId = Iris Device Id
+* ida.request.captureFace.deviceId = Face Device Id
+* mispLicenseKey = MISP Licenese Key 
+* partnerId = Partner Id
+* partnerApiKey = Partner Api Key
+* mosip.base.url = MOSIP hosted url
 
 For example,
 ```
