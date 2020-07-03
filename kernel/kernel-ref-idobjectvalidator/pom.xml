@@ -9,7 +9,7 @@
 
 	<name>kernel-ref-idobjectvalidator</name>
 	<artifactId>kernel-ref-idobjectvalidator</artifactId>
-	<version>1.0.9-SNAPSHOT</version>
+	<version>1.0.9</version>
 
 	<dependencies>
 		<dependency>
@@ -51,6 +51,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<kernel-core.version>1.0.9-SNAPSHOT</kernel-core.version>
+		<kernel-core.version>1.0.9</kernel-core.version>
 	</properties>
 </project>
