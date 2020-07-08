@@ -51,12 +51,12 @@ export class DialougComponent implements OnInit {
     this.input = this.data;
   }
 
-  onNoClick(): void {
-    this.dialogRef.close(true);
+  onNoClick(input): void {
+    this.dialogRef.close(input);
   }
 
   onSubmit(): void {
-    this.onNoClick();
+    this.onNoClick('');
   }
 
   validateMobile() {

@@ -166,6 +166,12 @@ export class DataStorageService {
     );
   }
 
+  getLocationsHierarchyByLangCode(langCode:string,locCode:string) {
+    return this.httpClient.get(
+      this.BASE_URL + appConstants.APPEND_URL.master_data + 'locations/' + locCode + '/' + langCode
+    );
+  }
+
   getAvailabilityData(registrationCenterId) {
     return this.httpClient.get(
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.booking_availability + registrationCenterId
@@ -385,5 +391,23 @@ export class DataStorageService {
     const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
     return this.httpClient.get(url);
    }
+
+
+   getRegistrationCentersById(regCenterId, langCode:string){
+    return this.httpClient.get(
+      this.BASE_URL +
+      appConstants.APPEND_URL.master_data +
+      appConstants.APPEND_URL.registration_centers_by_name + regCenterId + '/' + langCode
+    );
+   }
+
+   getAppointmentDetails(preRegId){
+    return this.httpClient.get(
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.booking_appointment + '/' + preRegId
+    );
+   }
+
 
 }

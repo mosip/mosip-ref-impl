@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
         .pipe(filter((event: NavigationEvent) => event instanceof NavigationStart))
         .subscribe((event: NavigationStart) => {
           if (event.restoredState) {
-            this.configService.navigationType = 'popstate';
+           // this.configService.navigationType = 'popstate';
             this.preventBack();
           }
         })

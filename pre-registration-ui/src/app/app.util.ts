@@ -13,7 +13,7 @@ export default class Utils {
     return formattedDate;
   }
 
-  static getURL(currentURL: string, nextRoute: string, numberofPop = 1) {
+  static getURL(currentURL: string, nextRoute: string, numberofPop = 2) {
     if (currentURL) {
       const urlSegments = currentURL.split('/');
       for (let index = 0; index < numberofPop; index++) {

@@ -15,6 +15,7 @@ import LanguageFactory from 'src/assets/i18n';
 export class HeaderComponent implements OnInit, OnDestroy {
   flag = false;
   subscription: Subscription;
+  primaryLang:string;
   constructor(
     public authService: AuthService,
     private translate: TranslateService,
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+   this.primaryLang = localStorage.getItem('langCode');
     this.subscription = this.authService.myProp$.subscribe(res => {
       this.flag = res;
     });
@@ -32,16 +34,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogoClick() {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['dashboard']);
+      if(this.primaryLang !== null || this.primaryLang){
+        this.primaryLang = localStorage.getItem('langCode');
+      }
+      this.router.navigate([this.primaryLang,'dashboard']);
     } else {
       this.router.navigate(['/']);
     }
   }
 
   onHome() {
-    let homeURL = '';
-    homeURL = 'dashboard';
-    this.router.navigate([homeURL]);
+    if(this.primaryLang !== null || this.primaryLang){
+      this.primaryLang = localStorage.getItem('langCode');
+    }
+    this.router.navigate([this.primaryLang,"dashboard"]);
   }
 
   async doLogout() {

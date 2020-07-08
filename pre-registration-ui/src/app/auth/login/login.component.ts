@@ -64,12 +64,12 @@ export class LoginComponent implements OnInit  {
     private regService: RegistrationService,
     private configService: ConfigService
   ) {
-    translate.setDefaultLang("fra");
+    translate.setDefaultLang("eng");
     localStorage.clear();
   }
 
   ngOnInit() {
-    localStorage.setItem("langCode", "fra");
+    localStorage.setItem("langCode", "eng");
     this.showSpinner = true;
     this.loadConfigs();
     if (this.authService.isAuthenticated()) {
@@ -374,8 +374,9 @@ export class LoginComponent implements OnInit  {
               localStorage.setItem("loggedIn", "true");
               this.authService.setToken();
               this.regService.setLoginId(this.inputContactDetails);
+              localStorage.setItem('loginId',this.inputContactDetails);
               this.disableVerify = false;
-              this.router.navigate(["dashboard"]);
+              this.router.navigate([this.primaryLang,"dashboard"]);
             } else {
               this.disableVerify = false;
               this.showOtpMessage();

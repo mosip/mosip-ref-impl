@@ -18,17 +18,17 @@ export class ParentComponent implements OnInit {
 
   onActivate($event) {
     const route_parts = this.router.url.split('/');
-    if (route_parts[route_parts.length - 1] === 'demographic') {
+    if (route_parts[3] === 'demographic') {
       this.componentName = 'DemographicComponent';
-    } else if (route_parts[route_parts.length - 1] === 'file-upload') {
+    } else if (route_parts[3] === 'file-upload') {
       this.componentName = 'FileUploadComponent';
-    } else if (route_parts[route_parts.length - 1] === 'pick-center') {
+    } else if (route_parts[5] === 'pick-center') {
       this.componentName = 'CenterSelectionComponent';
-    } else if (route_parts[route_parts.length - 1] === 'pick-time') {
+    } else if (route_parts[5].includes('pick-time')) {
       this.componentName = 'TimeSelectionComponent';
-    } else if (route_parts[route_parts.length - 1] === 'acknowledgement') {
+    } else if (route_parts[5] === 'acknowledgement') {
       this.componentName = 'AcknowledgementComponent';
-    } else if (route_parts[route_parts.length - 1] === 'preview') {
+    } else if (route_parts[5] === 'preview') {
       this.componentName = 'PreviewComponent';
     }
   }
