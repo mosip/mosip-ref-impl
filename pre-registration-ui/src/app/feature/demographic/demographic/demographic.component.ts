@@ -7,7 +7,7 @@ import {
   HostListener,
   ViewChildren,
 } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import {
   FormGroup,
   FormControl,
@@ -44,6 +44,7 @@ import { LogService } from "src/app/shared/logger/log.service";
 import LanguageFactory from "src/assets/i18n";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
+import { resolve } from "url";
 // import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
@@ -112,7 +113,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   maxDate = new Date(Date.now());
   preRegId = "";
   loginId = "";
-  user: UserModel;
+  user: UserModel = new UserModel();
   demodata: string[];
   secondaryLanguagelabels: any;
   demographiclabels: any;
@@ -189,6 +190,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    */
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private regService: RegistrationService,
     private dataStorageService: DataStorageService,
     private bookingService: BookingService,
@@ -214,14 +216,12 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   async ngOnInit() {
-    await this.getIdentityJsonFormat();
     this.initialization();
+    await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
-    this.setConfig();
     this.getPrimaryLabels();
     await this.getConsentMessage();
     this.validationMessage = appConstants.errorMessages;
-    console.log(this.validationMessage);
     let factory = new LanguageFactory(this.secondaryLang);
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response["demographic"];
@@ -231,50 +231,10 @@ export class DemographicComponent extends FormDeactivateGuardService
     if (!this.dataModification) {
       if (
         !previousURL.includes("demographic") ||
-        (previousURL.includes("demographic") &&
-          this.configService.navigationType !== "popstate")
+        (previousURL.includes("demographic"))
       )
         if (this.isConsentMessage) this.consentDeclaration();
     }
-  }
-
-  /**
-   * @description This set the global configuration used in the demographic component.
-   *
-   * @memberof DemographicComponent
-   */
-  setConfig() {
-    this.MOBILE_PATTERN = this.config[
-      appConstants.CONFIG_KEYS.mosip_regex_phone
-    ];
-    this.REFERENCE_IDENTITY_NUMBER_PATTERN = this.config[
-      appConstants.CONFIG_KEYS.mosip_regex_referenceIdentityNumber
-    ];
-    this.EMAIL_PATTERN = this.config[
-      appConstants.CONFIG_KEYS.mosip_regex_email
-    ];
-    this.POSTALCODE_PATTERN = this.config[
-      appConstants.CONFIG_KEYS.mosip_regex_postalCode
-    ];
-    this.DOB_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_DOB];
-    this.defaultDay = this.config[
-      appConstants.CONFIG_KEYS.mosip_default_dob_day
-    ];
-    this.defaultMonth = this.config[
-      appConstants.CONFIG_KEYS.mosip_default_dob_month
-    ];
-    this.ADDRESS_PATTERN = this.config[
-      appConstants.CONFIG_KEYS.preregistration_address_length
-    ];
-    this.FULLNAME_PATTERN = this.config[
-      appConstants.CONFIG_KEYS.preregistration_fullname_length
-    ];
-    this.agePattern = this.config[
-      appConstants.CONFIG_KEYS.mosip_id_validation_identity_age
-    ];
-    this.defaultLocation = this.config[
-      appConstants.CONFIG_KEYS.mosip_default_location
-    ];
   }
 
   /**
@@ -321,25 +281,36 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @private
    * @memberof DemographicComponent
    */
-  private initialization() {
+  private async initialization() {
     if (localStorage.getItem("newApplicant") === "true") {
       this.isNewApplicant = true;
     }
     if (
-      this.message["modifyUser"] === "true" ||
-      this.message["modifyUserFromPreview"] === "true"
+       localStorage.getItem('modifyUser') === "true" 
     ) {
       this.dataModification = true;
-      this.step = this.regService.getUsers().length - 1;
-      if (this.message["modifyUserFromPreview"] === "true")
+      this.activatedRoute.params.subscribe(param => {
+        this.preRegId = param['appId'];
+      });
+      if(this.preRegId){
+       await this.getUserInfo();
+      }
+      if (localStorage.getItem("modifyUserFromPreview") === "true") {
         this.showPreviewButton = true;
-    } else {
-      this.dataModification = false;
-      this.step = this.regService.getUsers().length;
     }
-    this.loginId = this.regService.getLoginId();
+    this.loginId = localStorage.getItem('loginId');
   }
+}
 
+     getUserInfo() {
+      return new Promise((resolve)=> {
+        this.dataStorageService.getUser(this.preRegId).subscribe(
+          response => this.user.request = response[appConstants.RESPONSE]
+        );
+        resolve(true);
+      });
+     
+    }
   /**
    * @description This is the consent form, which applicant has to agree upon to proceed forward.
    *
@@ -403,11 +374,6 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   async initForm() {
-    if (this.dataModification) {
-      this.user = this.regService.getUser(this.step);
-      console.log(this.user);
-      this.preRegId = this.user.preRegId;
-    }
     this.uiFields.forEach((control, index) => {
       this.userForm.addControl(control.id, new FormControl(""));
       this.transUserForm.addControl(control.id, new FormControl(""));
@@ -474,7 +440,6 @@ export class DemographicComponent extends FormDeactivateGuardService
           (value) => value.controlType === "dropdown" && value.locationHierarchy
         ),
       ];
-      console.log(locations);
       if (locations && locations[0].locationHierarchy) {
         this.locationHeirarchy = [...locations[0].locationHierarchy];
         resolve(true);
@@ -534,12 +499,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.secondaryDropDownLables[fieldName].forEach((element) => {
       if (element.valueCode === fieldValue) {
         this.transUserForm.controls[fieldName].setValue(fieldValue);
-        this.addCodeValue(element, fieldName);
-      }
-    });
-    this.primarydropDownFields[fieldName].forEach((element) => {
-      if (element.valueCode === fieldValue) {
-        this.addCodeValue(element, fieldName);
       }
     });
   }
@@ -618,7 +577,6 @@ export class DemographicComponent extends FormDeactivateGuardService
                   valueName: element.name,
                   languageCode: this.primaryLang,
                 };
-                console.log(fieldName);
                 this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
               });
             }
@@ -726,13 +684,11 @@ export class DemographicComponent extends FormDeactivateGuardService
         index = 0;
         secondaryIndex = 0;
       }
-      console.log(this.uiFields);
       this.uiFields.forEach((control) => {
         if (
           control.controlType !== "dropdown" &&
           !appConstants.TRANSLITERATE_FIELDS.includes(control.id)
         ) {
-          console.log(control.id);
           this.userForm.controls[`${control.id}`].setValue(
             this.user.request.demographicDetails.identity[`${control.id}`]
           );
@@ -740,7 +696,6 @@ export class DemographicComponent extends FormDeactivateGuardService
             this.user.request.demographicDetails.identity[`${control.id}`]
           );
         } else if (appConstants.TRANSLITERATE_FIELDS.includes(control.id)) {
-          console.log(control.id);
           this.userForm.controls[`${control.id}`].setValue(
             this.user.request.demographicDetails.identity[control.id][index]
               .value
@@ -901,46 +856,47 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {CodeValueModal} element
    * @memberof DemographicComponent
    */
-  addCodeValue(element: CodeValueModal, fieldName: string) {
-    this.codeValue.push({
-      valueCode: element.valueCode,
-      valueName: element.valueName,
-      languageCode: element.languageCode,
-    });
-    this.codeValue.push(
-      this.secondaryDropDownLables[fieldName].filter(
-        (value) => value.valueCode === element.valueCode
-      )[0]
-    );
-    console.log(this.codeValue);
-  }
+  // addCodeValue(element: CodeValueModal, fieldName: string) {
+  //   this.codeValue.push({
+  //     valueCode: element.valueCode,
+  //     valueName: element.valueName,
+  //     languageCode: element.languageCode,
+  //   });
+  //   this.codeValue.push(
+  //     this.secondaryDropDownLables[fieldName].filter(
+  //       (value) => value.valueCode === element.valueCode
+  //     )[0]
+  //   );
+  //   console.log(this.codeValue);
+  // }
   /**
    * @description this method will populate the codevalue array when user wants to
    * modify the application details. so that dropdown values are available in preview component.
    */
-  populateCodeValue() {
-    const dropdownFileds = this.uiFields.filter(
-      (field) => field.controlType === "dropdown"
-    );
-    for (let field of dropdownFileds) {
-      if (this.primarydropDownFields[field.id].length > 0) {
-        this.codeValue.push(
-          this.primarydropDownFields[field.id].filter(
-            (value) =>
-              value.valueCode ===
-              this.user.request.demographicDetails.identity[field.id][0].value
-          )[0]
-        );
-        this.codeValue.push(
-          this.secondaryDropDownLables[field.id].filter(
-            (value) =>
-              value.valueCode ===
-              this.user.request.demographicDetails.identity[field.id][0].value
-          )[0]
-        );
-      }
-    }
-  }
+  // populateCodeValue() {
+  //   const dropdownFileds = this.uiFields.filter(
+  //     (field) => field.controlType === "dropdown"
+  //   );
+  //   for (let field of dropdownFileds) {
+  //     if (this.primarydropDownFields[field.id].length === 0) {
+  //       this.codeValue.push(
+  //         this.primarydropDownFields[field.id].filter(
+  //           (value) =>
+  //             value.valueCode ===
+  //             this.user.request.demographicDetails.identity[field.id][0].value
+  //         )[0]
+  //       );
+  //       this.codeValue.push(
+  //         this.secondaryDropDownLables[field.id].filter(
+  //           (value) =>
+  //             value.valueCode ===
+  //             this.user.request.demographicDetails.identity[field.id][0].value
+  //         )[0]
+  //       );
+  //     }
+  //   }
+  //   localStorage.setItem('locations',JSON.stringify(this.codeValue));
+  // }
   /**
    * @description On click of back button the user will be navigate to dashboard.
    *
@@ -978,7 +934,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
 
     const formattedDate = `${year}/${monthOfYear}/${dateOfMonth}`;
-    console.log(formattedDate);
     this.userForm.controls["dateOfBirth"].setValue(formattedDate);
     this.transUserForm.controls["dateOfBirth"].setValue(formattedDate);
     if (this.dataModification) {
@@ -1018,7 +973,6 @@ export class DemographicComponent extends FormDeactivateGuardService
         to_field_lang: this.secondaryLang,
         to_field_value: "",
       };
-      console.log(request);
       if (this.primaryLang === this.secondaryLang) {
         this.transUserForm.controls[toControl].patchValue(
           this.userForm.controls[`${fromControl}`].value
@@ -1075,15 +1029,12 @@ export class DemographicComponent extends FormDeactivateGuardService
     if (this.userForm.valid && this.transUserForm.valid) {
       const identity = this.createIdentityJSONDynamic();
       const request = this.createRequestJSON(identity);
-      console.log(request);
       const responseJSON = this.createResponseJSON(identity);
-      console.log(responseJSON);
       this.dataUploadComplete = false;
       if (this.dataModification) {
-        let preRegistrationId = this.user.preRegId;
         this.subscriptions.push(
           this.dataStorageService
-            .updateUser(request, preRegistrationId)
+            .updateUser(request, this.preRegId)
             .subscribe(
               (response) => {
                 if (
@@ -1092,19 +1043,17 @@ export class DemographicComponent extends FormDeactivateGuardService
                   response[appConstants.NESTED_ERROR] !== null
                 ) {
                   let message = "";
-                  console.log(response);
                   if (
                     response[appConstants.NESTED_ERROR][0][
                       appConstants.ERROR_CODE
                     ] === appConstants.ERROR_CODES.invalidPin
                   ) {
-                    console.log(response);
                     message = this.formValidation(response);
                   } else message = this.errorlabels.error;
                   this.onError(message, "");
                   return;
                 } else {
-                  this.onModification(responseJSON);
+                 // this.onModification(responseJSON);
                 }
                 this.onSubmission();
               },
@@ -1125,20 +1074,19 @@ export class DemographicComponent extends FormDeactivateGuardService
               ) {
                 this.loggerService.error(JSON.stringify(response));
                 let message = "";
-                console.log(response);
                 if (
                   response[appConstants.NESTED_ERROR] &&
                   response[appConstants.NESTED_ERROR][0][
                     appConstants.ERROR_CODE
                   ] === appConstants.ERROR_CODES.invalidPin
                 ) {
-                  console.log(response);
                   message = this.formValidation(response);
                 } else message = this.errorlabels.error;
                 this.onError(message, "");
                 return;
               } else {
-                this.onAddition(response, responseJSON);
+                this.preRegId = response[appConstants.RESPONSE].preRegistrationId;
+               // this.onAddition(response, responseJSON);
               }
               this.onSubmission();
             },
@@ -1155,7 +1103,6 @@ export class DemographicComponent extends FormDeactivateGuardService
   formValidation(response: any) {
     const str = response[appConstants.NESTED_ERROR][0]["message"];
     const attr = str.substring(str.lastIndexOf("/") + 1);
-    console.log(attr);
     let message = this.errorlabels[attr];
     this.userForm.controls[attr].setErrors({
       incorrect: true,
@@ -1170,24 +1117,16 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {ResponseModel} request
    * @memberof DemographicComponent
    */
-  private onModification(request: ResponseModel) {
-    this.regService.updateUser(
-      this.step,
-      new UserModel(
-        this.preRegId,
-        request,
-        this.regService.getUserFiles(this.step),
-        this.codeValue
-      )
-    );
-    this.bookingService.updateNameList(this.step, {
-      fullName: this.userForm.controls["fullName"].value,
-      fullNameSecondaryLang: this.transUserForm.controls["fullName"].value,
-      preRegId: this.preRegId,
-      postalCode: this.userForm.controls["postalCode"].value,
-      regDto: this.bookingService.getNameList()[0].regDto,
-    });
-  }
+  //private onModification(request: ResponseModel) {
+    
+    // this.bookingService.updateNameList(this.step, {
+    //   fullName: this.userForm.controls["fullName"].value,
+    //   fullNameSecondaryLang: this.transUserForm.controls["fullName"].value,
+    //   preRegId: this.preRegId,
+    //   postalCode: this.userForm.controls["postalCode"].value,
+    //   regDto: this.bookingService.getNameList()[0].regDto,
+    // });
+  //}
 
   /**
    * @description This is called when user creates a new application.
@@ -1197,21 +1136,21 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {ResponseModel} request
    * @memberof DemographicComponent
    */
-  private onAddition(response: any, request: ResponseModel) {
-    this.preRegId =
-      response[appConstants.RESPONSE][
-        appConstants.DEMOGRAPHIC_RESPONSE_KEYS.preRegistrationId
-      ];
-    this.regService.addUser(
-      new UserModel(this.preRegId, request, this.files, this.codeValue)
-    );
-    this.bookingService.addNameList({
-      fullName: this.userForm.controls["fullName"].value,
-      fullNameSecondaryLang: this.transUserForm.controls["fullName"].value,
-      preRegId: this.preRegId,
-      postalCode: this.userForm.controls["postalCode"].value,
-    });
-  }
+  // private onAddition(response: any, request: ResponseModel) {
+  //   this.preRegId =
+  //     response[appConstants.RESPONSE][
+  //       appConstants.DEMOGRAPHIC_RESPONSE_KEYS.preRegistrationId
+  //     ];
+  //   this.regService.addUser(
+  //     new UserModel(this.preRegId, request, this.files, this.codeValue)
+  //   );
+  //   this.bookingService.addNameList({
+  //     fullName: this.userForm.controls["fullName"].value,
+  //     fullNameSecondaryLang: this.transUserForm.controls["fullName"].value,
+  //     preRegId: this.preRegId,
+  //     postalCode: this.userForm.controls["postalCode"].value,
+  //   });
+  // }
 
   /**
    * @description After sumission of the form, the user is route to file-upload or preview page.
@@ -1220,16 +1159,18 @@ export class DemographicComponent extends FormDeactivateGuardService
    */
   onSubmission() {
     this.canDeactivateFlag = false;
-    this.loggerService.info("regService.getUsers", this.regService.getUsers());
     this.checked = true;
     this.dataUploadComplete = true;
     let url = "";
-    if (this.message["modifyUserFromPreview"] === "true") {
-      url = Utils.getURL(this.router.url, "summary/preview");
+    if (localStorage.getItem("modifyUserFromPreview") === "true") {
+      url = Utils.getURL(this.router.url, "summary");
+      localStorage.setItem('modifyUserFromPreview','false');
+      this.router.navigateByUrl(url+`/${this.preRegId}/preview`);
     } else {
       url = Utils.getURL(this.router.url, "file-upload");
+      this.router.navigate([url,this.preRegId]);
     }
-    this.router.navigate([url]);
+    
   }
 
   /**
@@ -1321,7 +1262,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     let keyArr: any[] = Object.keys(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
-      console.log(element);
       this.createAttributeArray(element, identityObj);
     }
     const identityRequest = { identity: identityObj };
@@ -1338,7 +1278,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    */
   private createRequestJSON(identity) {
     let langCode = this.primaryLang;
-    if (this.user) {
+    if (this.user.request) {
       langCode = this.user.request.langCode;
     }
     const request = {
@@ -1362,15 +1302,15 @@ export class DemographicComponent extends FormDeactivateGuardService
     let createdDateTime = Utils.getCurrentDate();
     let updatedDateTime = "";
     let langCode = this.primaryLang;
-    if (this.user) {
-      preRegistrationId = this.user.preRegId;
+    if (this.user.request) {
+      preRegistrationId = this.preRegId;
       createdBy = this.user.request.createdBy;
       createdDateTime = this.user.request.createdDateTime;
       updatedDateTime = Utils.getCurrentDate();
       langCode = this.user.request.langCode;
     }
     const req = {
-      preRegistrationId: preRegistrationId,
+      preRegistrationId: this.preRegId,
       createdBy: createdBy,
       createdDateTime: createdDateTime,
       updatedDateTime: updatedDateTime,
@@ -1395,8 +1335,7 @@ export class DemographicComponent extends FormDeactivateGuardService
         this.showPreviewButton = true;
       } else {
         this.showPreviewButton = false;
-        console.log(this.message);
-        this.message["modifyUserFromPreview"] = "false";
+        localStorage.setItem('modifyUserFromPreview','false');
       }
     }
   }
@@ -1484,9 +1423,9 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
   ngOnDestroy(): void {
-    if (this.codeValue.length === 0 && this.dataModification) {
-      this.populateCodeValue();
-    }
+    // if (this.codeValue.length === 0 && this.dataModification) {
+    //   this.populateCodeValue();
+    // }
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

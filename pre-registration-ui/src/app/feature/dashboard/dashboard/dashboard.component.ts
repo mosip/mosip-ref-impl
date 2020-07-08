@@ -22,6 +22,7 @@ import { FilesModel } from 'src/app/shared/models/demographic-model/files.model'
 import { LogService } from 'src/app/shared/logger/log.service';
 import LanguageFactory from 'src/assets/i18n';
 import { Subscription } from 'rxjs';
+import { NotificationDtoModel } from 'src/app/shared/models/notification-model/notification-dto.model';
 // import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
@@ -96,7 +97,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   ngOnInit() {
-    this.loginId = this.regService.getLoginId();
+    this.loginId = localStorage.getItem('loginId');
     this.initUsers();
     const subs = this.autoLogout.currentMessageAutoLogout.subscribe(message => (this.message = message));
     this.subscriptions.push(subs);
@@ -123,10 +124,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     this.getUsers();
   }
 
-  flushArrays() {
-    this.regService.flushUsers();
-    this.bookingService.flushNameList();
-  }
+  // flushArrays() {
+  //   this.regService.flushUsers();
+  //   this.bookingService.flushNameList();
+  // }
 
   /**
    * @description This is to get all the users assosiated to the login id.
@@ -152,9 +153,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
           this.allApplicants =
             applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails];
-          this.bookingService.addApplicants(
-            applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails]
-          );
+          // this.bookingService.addApplicants(
+          //   applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails]
+          // );
           for (
             let index = 0;
             index <
@@ -290,10 +291,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onNewApplication() {
-    this.flushArrays();
-    this.regService.changeMessage({ modifyUser: 'false' });
+    //this.flushArrays();
+    localStorage.setItem('modifyUser','false');
+   // this.regService.changeMessage({ modifyUser: 'false' });
     if (this.loginId) {
-      this.router.navigate(['pre-registration', 'demographic']);
+      this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/demographic/new`);
       this.isNewApplication = true;
     } else {
       this.router.navigate(['/']);
@@ -303,7 +305,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
-      data: data
+      data: data,
+      restoreFocus: false
     });
     return dialogRef;
   }
@@ -362,7 +365,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    this.bookingService.addApplicants(this.allApplicants);
+    // this.bookingService.addApplicants(this.allApplicants);
   }
 
   deletePreregistration(element: any) {
@@ -401,6 +404,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   }
 
   cancelAppointment(element: any) {
+    const preRegId = element.applicationID;
+    const appointmentDate = element.appointmentDate
+    const appointmentDateTime = element.appointmentTime
     element.regDto.pre_registration_id = element.applicationID;
     const subs = this.dataStorageService
       .cancelAppointment(new RequestModel(appConstants.IDS.booking, element.regDto), element.applicationID)
@@ -411,6 +417,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
               this.secondaryLanguagelabels.title_success,
               this.secondaryLanguagelabels.cancelAppointment.msg_deleted
             );
+           // this.sendNotification(preRegId,appointmentDate,appointmentDateTime);
             const index = this.users.indexOf(element);
             this.users[index].status = appConstants.APPLICATION_STATUS_CODES.pending;
             this.users[index].appointmentDate = '-';
@@ -471,9 +478,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onModifyInformation(user: Applicant) {
-    this.flushArrays();
+  //  this.flushArrays();
     const preId = user.applicationID;
-    this.regService.changeMessage({ modifyUser: 'true' });
+    localStorage.setItem('modifyUser','true');
+   // this.regService.changeMessage({ modifyUser: 'true' });
     this.disableModifyDataButton = true;
     const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
       response => this.setUserFiles(response),
@@ -483,7 +491,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         this.onError(error);
       },
       () => {
-        this.addtoNameList(user);
+       // this.addtoNameList(user);
         this.dataStorageService.getUser(preId).subscribe(
           response => {
             this.onModification(response, preId);
@@ -508,9 +516,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   private onModification(response: any, preId: string) {
     const request = response[appConstants.RESPONSE];
     this.disableModifyDataButton = true;
-    this.regService.addUser(new UserModel(preId, request, this.userFiles));
+   // this.regService.addUser(new UserModel(preId, request, this.userFiles));
     this.fetchedDetails = true;
-    this.router.navigate(['pre-registration', 'demographic']);
+    this.router.navigate([this.primaryLangCode,'pre-registration', 'demographic',preId]);
   }
 
   /**
@@ -539,12 +547,13 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onModifyMultipleAppointment() {
-    this.flushArrays();
-    for (let index = 0; index < this.selectedUsers.length; index++) {
-      this.addtoNameList(this.selectedUsers[index]);
-    }
+    //this.flushArrays();
+    // const ids = [];
+    // for (let index = 0; index < this.selectedUsers.length; index++) {
+     // this.addtoNameList(this.selectedUsers[index]);
+    // }
     let url = '';
-    url = Utils.getURL(this.router.url, 'pre-registration/booking/pick-center');
+    url = Utils.getURL(this.router.url, `pre-registration/booking/${this.selectedUsers[0].applicationID}/pick-center`,1);
     this.router.navigateByUrl(url);
   }
 
@@ -555,10 +564,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onAcknowledgementView(user: Applicant) {
-    this.flushArrays();
-    this.addtoNameList(user);
+    // this.flushArrays();
+    // this.addtoNameList(user);
+    console.log(user);
     let url = '';
-    url = Utils.getURL(this.router.url, 'pre-registration/summary/acknowledgement');
+    url = Utils.getURL(this.router.url, `pre-registration/summary/${user.applicationID}/acknowledgement`,1);
     this.router.navigateByUrl(url);
   }
 
@@ -568,22 +578,22 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @param {Applicant} user
    * @memberof DashBoardComponent
    */
-  addtoNameList(user: Applicant) {
-    const preId = user.applicationID;
-    const fullName = user.name;
-    const regDto = user.regDto;
-    const status = user.status;
-    const postalCode = user.postalCode;
-    const nameInSecondaryLanguage = user.nameInSecondaryLanguage;
-    this.bookingService.addNameList({
-      fullName: fullName,
-      preRegId: preId,
-      regDto: regDto,
-      status: status,
-      postalCode: postalCode,
-      fullNameSecondaryLang: nameInSecondaryLanguage
-    });
-  }
+  // addtoNameList(user: Applicant) {
+  //   const preId = user.applicationID;
+  //   const fullName = user.name;
+  //   const regDto = user.regDto;
+  //   const status = user.status;
+  //   const postalCode = user.postalCode;
+  //   const nameInSecondaryLanguage = user.nameInSecondaryLanguage;
+  //   this.bookingService.addNameList({
+  //     fullName: fullName,
+  //     preRegId: preId,
+  //     regDto: regDto,
+  //     status: status,
+  //     postalCode: postalCode,
+  //     fullNameSecondaryLang: nameInSecondaryLanguage
+  //   });
+  // }
 
   setUserFiles(response) {
     if (!response['errors']) {
@@ -667,6 +677,34 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  async sendNotification(prid,appDate,appDateTime) {
+    let userDetails;
+    this.dataStorageService.getUser(prid).subscribe(response => {
+      if(response[appConstants.RESPONSE]){
+        userDetails = response[appConstants.RESPONSE].demographicDetails.identity;
+        console.log(userDetails);
+        const notificationDto = new NotificationDtoModel(
+          userDetails['fullName'][0].value,
+          prid,
+          appDate,
+          appDateTime,
+          userDetails.phone,
+          userDetails.email,
+          null,
+          true
+        );
+        console.log(notificationDto);
+       const model = new RequestModel(appConstants.IDS.notification, notificationDto);
+       let notificationRequest = new FormData();
+       notificationRequest.append(appConstants.notificationDtoKeys.notificationDto, JSON.stringify(model).trim());
+       notificationRequest.append(appConstants.notificationDtoKeys.langCode, localStorage.getItem('langCode'));
+       const subs = this.dataStorageService.sendNotification(notificationRequest).subscribe(response => {
+         console.log(response);
+       });
+      }
+    });
+    }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());

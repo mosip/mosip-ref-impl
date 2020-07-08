@@ -46,6 +46,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   subscriptions: Subscription[] = [];
   primaryLang = localStorage.getItem('langCode');
   workingDays: string;
+  preRegId:any;
 
   constructor(
     public dialog: MatDialog,
@@ -55,24 +56,44 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private translate: TranslateService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private activatedRoute: ActivatedRoute
   ) {
     super(dialog);
     this.translate.use(this.primaryLang);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+   this.activatedRoute.params.subscribe(param=>{
+    this.preRegId = param['appId'];
+   });
+   await this.getUserInfo();
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
     const subs = this.dataService.getLocationTypeData().subscribe(response => {
       this.locationTypes = response[appConstants.RESPONSE]['locations'];
     });
     this.subscriptions.push(subs);
-    this.users = this.service.getNameList();
     this.getRecommendedCenters();
     this.getErrorLabels();
   }
-
+ 
+  getUserInfo(){
+    return new Promise((resolve) => {
+      this.dataService
+        .getUser(this.preRegId.toString())
+        .subscribe((response) => {
+          this.users = [
+            new UserModel(
+              this.preRegId.toString(),
+              response[appConstants.RESPONSE],
+              undefined,
+              [],
+            )]
+          resolve(true);
+        });
+    });
+}
   getErrorLabels() {
     let factory = new LanguageFactory(this.primaryLang);
     let response = factory.getCurrentlanguage();
@@ -80,11 +101,8 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   }
 
   getRecommendedCenters() {
-    const pincodes = [];
+    const pincodes = [this.users[0].request.demographicDetails.identity.postalCode];
     this.REGISTRATION_CENTRES = [];
-    this.users.forEach(user => {
-      pincodes.push(user['postalCode']);
-    });
     const subs = this.dataService
       .recommendedCenters(
         this.primaryLang,
@@ -92,7 +110,11 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
         pincodes
       )
       .subscribe(response => {
-        if (response[appConstants.RESPONSE]) this.displayResults(response['response']);
+        if (response[appConstants.RESPONSE]){
+          this.displayResults(response['response']);
+        } else {
+          this.displayMessageError('Error', this.errorlabels.regCenterNotavailabe, '');
+        }
       });
     this.subscriptions.push(subs);
   }
@@ -215,29 +237,20 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   }
 
   routeNext() {
-    this.registrationService.setRegCenterId(this.selectedCentre.id);
-    this.users.forEach(user => {
-      this.service.updateRegistrationCenterData(user.preRegId, this.selectedCentre);
-    });
     this.canDeactivateFlag = false;
-    this.router.navigate(['../pick-time'], { relativeTo: this.route });
+    this.router.navigate(['../pick-time'], { relativeTo: this.route ,queryParams: { regCenter: this.selectedCentre.id }});
   }
 
   routeDashboard() {
     this.canDeactivateFlag = false;
-    const url = Utils.getURL(this.router.url, 'dashboard', 3);
-    this.router.navigateByUrl(url);
+    this.router.navigate([`${this.primaryLang}/dashboard`]);
   }
 
   routeBack() {
     let url = '';
-    if (this.registrationService.getUsers().length === 0) {
-      url = Utils.getURL(this.router.url, 'dashboard', 3);
-    } else {
-      url = Utils.getURL(this.router.url, 'summary/preview', 2);
-    }
+      url = Utils.getURL(this.router.url, 'summary', 3);
     this.canDeactivateFlag = false;
-    this.router.navigateByUrl(url);
+    this.router.navigateByUrl(url+`/${this.preRegId}/preview`);
   }
 
   async displayResults(response: any) {
@@ -253,14 +266,11 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
   getWorkingDays() {
     return new Promise(resolve => {
       this.REGISTRATION_CENTRES.forEach(center => {
-        this.dataService.getWorkingDays(center.id, this.primaryLang).subscribe(response => {
-          console.log(response);
+        this.dataService.getWorkingDays(center.id, this.primaryLang).subscribe(response => {;
           center.workingDays = '';
           response[appConstants.RESPONSE]['workingdays'].forEach(day => {
             if (day.working === true || ((day.working === null || day.working === undefined) && day.globalWorking === true)) {
-              console.log(day.name);
               center.workingDays = center.workingDays + day.name + ', ';
-              console.log(center.workingDays);
             }
           });
           this.isWorkingDaysAvailable = true;

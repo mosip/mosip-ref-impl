@@ -12,6 +12,8 @@ import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
 import LanguageFactory from 'src/assets/i18n';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/core/services/config.service';
+import { ActivatedRoute } from '@angular/router';
+import { NameList } from 'src/app/shared/models/demographic-model/name-list.modal';
 
 @Component({
   selector: 'app-acknowledgement',
@@ -32,19 +34,40 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   bookingDataSecondary = '';
   subscriptions: Subscription[] = [];
   notificationTypes: string[];
-
+  preRegId: any;
+  nameList: NameList = {
+    preRegId: "",
+    fullName: "",
+    fullNameSecondaryLang: "",
+    regDto: "",
+    status: "",
+    registrationCenter: "",
+    bookingData: "",
+    postalCode: "",
+  };
+  regCenterId;
+  primaryLangCode;
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
     private translate: TranslateService,
     private dataStorageService: DataStorageService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.translate.use(localStorage.getItem('langCode'));
+    this.primaryLangCode = localStorage.getItem('langCode');
   }
 
   async ngOnInit() {
-    this.usersInfo = this.bookingService.getNameList();
+    this.activatedRoute.params.subscribe(param => {
+      this.preRegId = param['appId'];
+    });
+    await this.getUserInfo();
+    await this.getAppointmentDetails();
+    await this.getRegCenterDetails();
+    this.usersInfo = [this.nameList];
+    console.log(this.usersInfo);
     let notificationTypes = this.configService
       .getConfigByKey(appConstants.CONFIG_KEYS.mosip_notification_type)
       .split('|');
@@ -65,6 +88,45 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     }
   }
 
+  getUserInfo() {
+    return new Promise((resolve)=> {
+      this.dataStorageService.getUser(this.preRegId).subscribe(
+        response => {
+        if(response[appConstants.RESPONSE]!== null){
+          this.nameList.preRegId = response[appConstants.RESPONSE].preRegistrationId;
+          this.nameList.status = response[appConstants.RESPONSE].statusCode;
+          this.nameList.fullName = response[appConstants.RESPONSE].demographicDetails.identity.fullName[0].value;
+          this.nameList.fullNameSecondaryLang =
+          response[appConstants.RESPONSE].demographicDetails.identity.fullName[1].value;
+          this.nameList.postalCode = response[appConstants.RESPONSE].demographicDetails.identity.postalCode;
+          this.nameList.registrationCenter = '';
+        }
+        resolve(true);
+        });
+    });
+  }
+
+  getAppointmentDetails(){
+   return new Promise(resolve => {
+     this.dataStorageService.getAppointmentDetails(this.preRegId).subscribe(response =>{
+       console.log(response);
+       this.nameList.regDto = response[appConstants.RESPONSE];
+       this.regCenterId = response[appConstants.RESPONSE].registration_center_id;
+       resolve(true);
+     });
+   });
+  }
+  getRegCenterDetails(){
+    return new Promise(resolve => {
+     this.dataStorageService.getRegistrationCentersById(this.regCenterId,this.primaryLangCode).subscribe( response => {
+       if(response[appConstants.RESPONSE]){
+         console.log(response[appConstants.RESPONSE]);
+         this.nameList.registrationCenter= response[appConstants.RESPONSE].registrationCenters[0];
+        resolve(true);
+       }
+     });
+    });
+  }
   async apiCalls() {
     return new Promise(async (resolve, reject) => {
       if (!this.usersInfo[0].registrationCenter) {
@@ -259,6 +321,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         additionalRecipient,
         false
       );
+      console.log(notificationDto);
       const model = new RequestModel(appConstants.IDS.notification, notificationDto);
       this.notificationRequest.append(appConstants.notificationDtoKeys.notificationDto, JSON.stringify(model).trim());
       this.notificationRequest.append(appConstants.notificationDtoKeys.langCode, localStorage.getItem('langCode'));
@@ -270,10 +333,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.bookingService.flushNameList();
-    this.usersInfo.forEach(user => {
-      this.bookingService.addNameList(user);
-    });
+    // this.bookingService.flushNameList();
+    // this.usersInfo.forEach(user => {
+    //   this.bookingService.addNameList(user);
+    // });
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

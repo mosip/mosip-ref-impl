@@ -1,4 +1,4 @@
-<mat-card class="time-selection__title-card">
+<mat-card class="time-selection__title-card" *ngIf="availabilityData.length !== 0" >
   <mat-card-header>
     <p class="time-selection__title-card-text">
       {{ 'timeSelection.title_book' | translate }}
@@ -12,8 +12,8 @@
   <mat-spinner [diameter]="50"></mat-spinner>
 </div>
 <div *ngIf="!spinner">
-  <mat-card class="time-selection__date-card">
-    <div *ngIf="availabilityData.length !== 0">
+  <mat-card class="time-selection__date-card" *ngIf="availabilityData.length !== 0">
+    <div>
       <div class="container">
         <div class="time-selection__arrow-text">
           <p (click)="scrollLeft()">{{ 'timeSelection.text_prev' | translate }}</p>
@@ -44,7 +44,7 @@
       </div>
     </div>
   </mat-card>
-  <div class="time-seelection__slot-groups-div">
+  <div class="time-seelection__slot-groups-div" *ngIf="availabilityData.length !== 0">
     <a
       (click)="tabSelected('morning')"
       [ngClass]="
@@ -87,7 +87,7 @@
         </div>
       </div>
     </mat-card>
-    <mat-card class="time-selection__names-container">
+    <mat-card class="time-selection__names-container" *ngIf="availabilityData.length>0" >
       <div>
         <div
           *ngIf="availabilityData[selectedTile] !== undefined && selectedCard !== undefined"

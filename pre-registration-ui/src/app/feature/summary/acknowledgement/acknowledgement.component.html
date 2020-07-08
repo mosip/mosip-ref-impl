@@ -109,7 +109,7 @@
     <!-- <button mat-button (click)="navigateBack()" class="user-back-btn">{{'preview.action_back'| translate}}</button> -->
     <span class="spacer"></span>
     <button
-      *ngIf="notificationTypes.length > 0 && notificationTypes[0] !== ''"
+      *ngIf=" notificationTypes && notificationTypes.length > 0 && notificationTypes[0] !== ''"
       matTooltip="{{ 'helpText.send_email/sms' | translate }}"
       mat-button
       (click)="sendAcknowledgement()"

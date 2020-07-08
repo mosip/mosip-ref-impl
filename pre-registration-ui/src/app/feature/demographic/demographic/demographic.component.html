@@ -16,7 +16,6 @@
                 <input
                   matInput
                   formControlName="{{ field.id }}"
-                  style="margin-top: 5px;padding: 4px;"
                   (focusout)="copyToSecondaryFormNonDropDown(field.id,$event)"
                   (input)="copyToSecondaryFormNonDropDown(field.id,$event)"
                   #keyboardRef
@@ -28,7 +27,6 @@
               <mat-form-field [ngClass]="'dropdown-field'">
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <mat-select
-                  style="margin-top: 5px; padding: 4px;"
                   formControlName="{{ field.id }}"
                   (focus)="dropdownApiCall(field)"
                   (selectionChange)="copyDataToSecondaryForm(field.id,userForm.get(field.id).value)"
@@ -58,7 +56,6 @@
                 <input
                 matInput
                 formControlName="{{ field.id }}"
-                style="margin-top: 5px;padding: 4px;"
               />
                 <input
                   matInput
@@ -103,7 +100,6 @@
               <input
                 matInput
                 formControlName="{{ field.id }}"
-                style="margin-top: 5px;padding: 4px;"
                 [readonly]="getReadOnlyfields(field.id)"
               />
             </mat-form-field>
@@ -112,7 +108,6 @@
             <mat-form-field [ngClass]="'dropdown-field'">
               <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <mat-select
-                style="margin-top: 5px; padding: 4px;"
                 formControlName="{{ field.id }}"
                 #dropdown
                 [disabled]="true"
@@ -140,7 +135,6 @@
               <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <input
                 matInput
-                style="margin-top: 5px;padding: 4px;"
                 formControlName="{{ field.id }}"
                 [readonly]="true"
               />
@@ -168,16 +162,15 @@
     </div>
   </div>
   <div class="user__buttons">
-    <button
+    <!-- <button
       class="user__btn user__btn--back"
       type="button"
       (click)="onBack()"
       [disabled]="
-        isNewApplicant || this.message['modifyUserFromPreview'] === 'true'
-      "
+        isNewApplicant || localStorage.getItem('modifyUserFromPreview') === 'true'"
     >
       {{ "demographic.action_back" | translate }}
-    </button>
+    </button> -->
     <button
       *ngIf="!showPreviewButton"
       class="user__btn"
