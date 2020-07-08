@@ -215,7 +215,6 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   async ngOnInit() {
-    await this.getIdentityJsonFormat();
     this.initialization();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
