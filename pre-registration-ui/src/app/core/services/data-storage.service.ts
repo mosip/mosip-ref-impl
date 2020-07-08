@@ -392,6 +392,7 @@ export class DataStorageService {
     return this.httpClient.get(url);
    }
 
+
    getRegistrationCentersById(regCenterId, langCode:string){
     return this.httpClient.get(
       this.BASE_URL +
@@ -407,5 +408,6 @@ export class DataStorageService {
       appConstants.APPEND_URL.booking_appointment + '/' + preRegId
     );
    }
+
 
 }

@@ -78,6 +78,7 @@
   flex-wrap: wrap;
   font-family: "Roboto", sans-serif;
 }
+
 /* ::ng-deep .mat-form-field-label .mat-select-placeholder {
 
 } */
@@ -88,6 +89,7 @@
   padding: 2px !important;
   /* line-height: 20px !important; */
 }
+
 ::ng-deep.mat-datepicker-content .mat-calendar {
   width: 200px !important;
   height: 250px !important;
@@ -103,11 +105,13 @@
 
 .primary-errors{
   font-size: 9.5px;
+
   margin-left: 5px;
 }
 .secondary-errors{
   font-size: 9.5px;
   margin-right: 5px;
+
 }
 ::ng-deep svg.mat-datepicker-toggle-default-icon {
   padding-bottom: 10px !important;

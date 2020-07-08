@@ -44,7 +44,6 @@ import { LogService } from "src/app/shared/logger/log.service";
 import LanguageFactory from "src/assets/i18n";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
-import { resolve } from "url";
 // import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
@@ -216,6 +215,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @memberof DemographicComponent
    */
   async ngOnInit() {
+    await this.getIdentityJsonFormat();
     this.initialization();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
@@ -238,6 +238,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   }
 
   /**
+
    * @description This will return the json object of label of demographic in the primary language.
    *
    * @private
@@ -297,6 +298,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       }
       if (localStorage.getItem("modifyUserFromPreview") === "true") {
         this.showPreviewButton = true;
+
     }
     this.loginId = localStorage.getItem('loginId');
   }
@@ -461,11 +463,13 @@ export class DemographicComponent extends FormDeactivateGuardService
       if (control.controlType === "dropdown") {
         this.primarydropDownFields[control.id] = [];
         this.secondaryDropDownLables[control.id] = [];
+
       }
     });
   }
 
   /**
+
    *
    * @description this method is to make dropdown api calls
    *
@@ -504,6 +508,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   }
 
   /**
+
    * @description This method will copy non dropdown field values
    * from primary form to secondary form
    *
@@ -577,6 +582,7 @@ export class DemographicComponent extends FormDeactivateGuardService
                   valueName: element.name,
                   languageCode: this.primaryLang,
                 };
+
                 this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
               });
             }
@@ -856,6 +862,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {CodeValueModal} element
    * @memberof DemographicComponent
    */
+
   // addCodeValue(element: CodeValueModal, fieldName: string) {
   //   this.codeValue.push({
   //     valueCode: element.valueCode,
@@ -869,10 +876,12 @@ export class DemographicComponent extends FormDeactivateGuardService
   //   );
   //   console.log(this.codeValue);
   // }
+
   /**
    * @description this method will populate the codevalue array when user wants to
    * modify the application details. so that dropdown values are available in preview component.
    */
+
   // populateCodeValue() {
   //   const dropdownFileds = this.uiFields.filter(
   //     (field) => field.controlType === "dropdown"
@@ -897,6 +906,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   //   }
   //   localStorage.setItem('locations',JSON.stringify(this.codeValue));
   // }
+
   /**
    * @description On click of back button the user will be navigate to dashboard.
    *
@@ -1029,7 +1039,9 @@ export class DemographicComponent extends FormDeactivateGuardService
     if (this.userForm.valid && this.transUserForm.valid) {
       const identity = this.createIdentityJSONDynamic();
       const request = this.createRequestJSON(identity);
+      console.log(request);
       const responseJSON = this.createResponseJSON(identity);
+      console.log(responseJSON);
       this.dataUploadComplete = false;
       if (this.dataModification) {
         this.subscriptions.push(
@@ -1053,6 +1065,7 @@ export class DemographicComponent extends FormDeactivateGuardService
                   this.onError(message, "");
                   return;
                 } else {
+
                  // this.onModification(responseJSON);
                 }
                 this.onSubmission();
@@ -1080,6 +1093,7 @@ export class DemographicComponent extends FormDeactivateGuardService
                     appConstants.ERROR_CODE
                   ] === appConstants.ERROR_CODES.invalidPin
                 ) {
+                  console.log(response);
                   message = this.formValidation(response);
                 } else message = this.errorlabels.error;
                 this.onError(message, "");
@@ -1117,6 +1131,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {ResponseModel} request
    * @memberof DemographicComponent
    */
+
   //private onModification(request: ResponseModel) {
     
     // this.bookingService.updateNameList(this.step, {
@@ -1128,6 +1143,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     // });
   //}
 
+
   /**
    * @description This is called when user creates a new application.
    *
@@ -1136,6 +1152,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    * @param {ResponseModel} request
    * @memberof DemographicComponent
    */
+
   // private onAddition(response: any, request: ResponseModel) {
   //   this.preRegId =
   //     response[appConstants.RESPONSE][
@@ -1151,6 +1168,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   //     postalCode: this.userForm.controls["postalCode"].value,
   //   });
   // }
+
 
   /**
    * @description After sumission of the form, the user is route to file-upload or preview page.
@@ -1169,6 +1187,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     } else {
       url = Utils.getURL(this.router.url, "file-upload");
       this.router.navigate([url,this.preRegId]);
+
     }
     
   }

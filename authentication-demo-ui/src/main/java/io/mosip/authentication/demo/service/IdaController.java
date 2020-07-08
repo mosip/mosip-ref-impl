@@ -11,12 +11,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.spec.X509EncodedKeySpec;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
@@ -24,7 +28,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -149,7 +152,7 @@ public class IdaController {
 	private String previousHash;
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
-
+	
 	@FXML
 	private void initialize() {
 		responsetextField.setText(null);
@@ -344,29 +347,25 @@ public class IdaController {
 	private String captureFingerprint() throws Exception {
 		responsetextField.setText("Capturing Fingerprint...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
-
-		String requestBody = "{\n" + 
-				"	\"env\": \"Staging\",\n" + 
-				"	\"purpose\": \"Auth\",\n" + 
-				"	\"specVersion\": \"0.9.2\",\n" + 
-				"	\"timeout\": " + env.getProperty("fingerprint.capture.timeout", "10000") + ",\n" + 
-				"	\"captureTime\": \"0001-01-01T00:00:00\",\n" + 
-				"	\"transactionId\": \"1234567890\",\n" + 
-				"	\"bio\": [{\n" + 
-				"		\"type\": \"FIR\",\n" + 
-				"		\"count\": " + getFingerCount() + ",\n" + 
-				"		\"requestedScore\": 60,\n" + 
-				"		\"deviceId\": \"" + env.getProperty("finger.deviceId") + "\",\n" + 
-				"		\"deviceSubId\": " + getFingerDeviceSubId() + ",\n" + 
-				"		\"previousHash\": \"" + getPreviousHash() + "\"\n" + 
-				"	}],\n" + 
-				"	\"customOpts\": [{\n" + 
-				"		\"Name\": \"name1\",\n" + 
-				"		\"Value\": \"value1\"\n" + 
-				"	}]\n" + 
-				"}";
+		
+		String requestBody = env.getProperty("ida.request.captureRequest.template");
+		
+		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFinger.timeout"))
+								   .replace("$count", getFingerCount()).
+								    replace("$deviceId", env.getProperty("ida.request.captureFinger.deviceId")).
+								    replace("$domainUri", env.getProperty("ida.request.captureFinger.domainUri")).
+								    replace("$deviceSubId", getFingerDeviceSubId()).
+								    replace("$captureTime", getCaptureTime()).
+								    replace("$previousHash", getPreviousHash()).
+								    replace("$requestedScore",env.getProperty("ida.request.captureFinger.requestedScore")).
+								    replace("$type",env.getProperty("ida.request.captureFinger.type")).
+								    replace("$bioSubType",getBioSubType(getFingerCount(), env.getProperty("ida.request.captureFinger.bioSubType"))).
+								    replace("$name",env.getProperty("ida.request.captureFinger.name")).
+								    replace("$value",env.getProperty("ida.request.captureFinger.value"));
+		
 		return capturebiometrics(requestBody);
-	}
+	}	
+	
 	
 	private String getFingerDeviceSubId() {
 		return "0";
@@ -390,26 +389,21 @@ public class IdaController {
 		responsetextField.setText("Capturing Iris...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
-		String requestBody = "{\n" + 
-				"	\"env\": \"Staging\",\n" + 
-				"	\"purpose\": \"Auth\",\n" + 
-				"	\"specVersion\": \"0.9.2\",\n" + 
-				"	\"timeout\": " + env.getProperty("iris.capture.timeout", "10000") + ",\n" + 
-				"	\"captureTime\": \"0001-01-01T00:00:00\",\n" + 
-				"	\"transactionId\": \"1234567890\",\n" + 
-				"	\"bio\": [{\n" + 
-				"		\"type\": \"IIR\",\n" + 
-				"		\"count\": " + getIrisCount() + ",\n" + 
-				"		\"requestedScore\": 60,\n" + 
-				"		\"deviceId\": \"" + env.getProperty("iris.deviceId") + "\",\n" + 
-				"		\"deviceSubId\": " + getIrisDeviceSubId() + ",\n" + 
-				"		\"previousHash\": \"" + getPreviousHash() + "\"\n" + 
-				"	}],\n" + 
-				"	\"customOpts\": [{\n" + 
-				"		\"Name\": \"name1\",\n" + 
-				"		\"Value\": \"value1\"\n" + 
-				"	}]\n" + 
-				"}";
+	String requestBody = env.getProperty("ida.request.captureRequest.template");
+		
+	requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureIris.timeout"))
+								   .replace("$count", getIrisCount()).
+								    replace("$deviceId", env.getProperty("ida.request.captureIris.deviceId")).
+								    replace("$domainUri", env.getProperty("ida.request.captureIris.domainUri")).
+								    replace("$deviceSubId", getIrisDeviceSubId()).
+								    replace("$captureTime", getCaptureTime()).
+								    replace("$previousHash", getPreviousHash()).
+								    replace("$requestedScore",env.getProperty("ida.request.captureIris.requestedScore")).
+								    replace("$type",env.getProperty("ida.request.captureIris.type")).
+								    replace("$bioSubType",getBioSubType(getIrisCount(), env.getProperty("ida.request.captureIris.bioSubType"))).
+								    replace("$name",env.getProperty("ida.request.captureIris.name")).
+								    replace("$value",env.getProperty("ida.request.captureIris.value"));
+		
 		return capturebiometrics(requestBody);
 	}
 	
@@ -417,26 +411,21 @@ public class IdaController {
 		responsetextField.setText("Capturing Face...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
-		String requestBody = "{\n" + 
-				"	\"env\": \"Staging\",\n" + 
-				"	\"purpose\": \"Auth\",\n" + 
-				"	\"specVersion\": \"0.9.2\",\n" + 
-				"	\"timeout\": " + env.getProperty("face.capture.timeout", "30000") + ",\n" + 
-				"	\"captureTime\": \"0001-01-01T00:00:00\",\n" + 
-				"	\"transactionId\": \"1234567890\",\n" + 
-				"	\"bio\": [{\n" + 
-				"		\"type\": \"FACE\",\n" + 
-				"		\"count\": " + getFaceCount() + ",\n" + 
-				"		\"requestedScore\": 0,\n" + 
-				"		\"deviceId\": \"" + env.getProperty("face.deviceId") + "\",\n" + 
-				"		\"deviceSubId\": " + getFaceDeviceSubId() + ",\n" + 
-				"		\"previousHash\": \"" + getPreviousHash() + "\"\n" + 
-				"	}],\n" + 
-				"	\"customOpts\": [{\n" + 
-				"		\"Name\": \"name1\",\n" + 
-				"		\"Value\": \"value1\"\n" + 
-				"	}]\n" + 
-				"}";
+		String requestBody = env.getProperty("ida.request.captureRequest.template");
+		
+		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFace.timeout"))
+									   .replace("$count", getFaceCount()).
+									    replace("$deviceId", env.getProperty("ida.request.captureFace.deviceId")).
+									    replace("$domainUri", env.getProperty("ida.request.captureFace.domainUri")).
+									    replace("$deviceSubId", getFaceDeviceSubId()).
+									    replace("$captureTime", getCaptureTime()).
+									    replace("$previousHash", getPreviousHash()).
+									    replace("$requestedScore",env.getProperty("ida.request.captureFace.requestedScore")).
+									    replace("$type",env.getProperty("ida.request.captureFace.type")).
+									    replace("$bioSubType",getBioSubType(getFaceCount(), env.getProperty("ida.request.captureFace.bioSubType"))).
+									    replace("$name",env.getProperty("ida.request.captureFace.name")).
+									    replace("$value",env.getProperty("ida.request.captureFace.value"));		
+
 		return capturebiometrics(requestBody);
 	}
 
@@ -448,6 +437,18 @@ public class IdaController {
 		return fingerCount.getValue() == null ? String.valueOf(1) : fingerCount.getValue();
 	}
 	
+	private String getBioSubType(String count, String bioValue) {		
+		if(count.equalsIgnoreCase("1")) {
+			return  "\"" + bioValue + "\"";
+		}		
+		String finalStr = "\""+ bioValue + "\"";
+		for(int i = 2; i<=Integer.parseInt(count); i++) {
+			finalStr = finalStr + "," + "\""+ bioValue + "\"";
+		}
+		
+		return finalStr;
+	}
+	
 	private String getIrisCount() {
 		return String.valueOf(irisCount.getSelectionModel().getSelectedIndex() + 1);
 	}
@@ -456,12 +457,19 @@ public class IdaController {
 		return String.valueOf(1);
 	}
 
+	private String getCaptureTime() {
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+		df.setTimeZone(tz);
+		String nowAsISO = df.format(new Date());
+		return nowAsISO;
+	}
 	@SuppressWarnings("rawtypes")
 	private String capturebiometrics(String requestBody) throws Exception {
 		System.out.println("Capture request:\n" + requestBody);
 		CloseableHttpClient client = HttpClients.createDefault();
 		StringEntity requestEntity = new StringEntity(requestBody, ContentType.APPLICATION_JSON);
-		HttpUriRequest request = RequestBuilder.create("CAPTURE").setUri("http://127.0.0.1:4501/capture")
+		HttpUriRequest request = RequestBuilder.create("CAPTURE").setUri(env.getProperty("ida.captureRequest.uri"))
 				.setEntity(requestEntity).build();
 		CloseableHttpResponse response;
 		StringBuilder stringBuilder = new StringBuilder();
@@ -519,8 +527,7 @@ public class IdaController {
 			RestTemplate restTemplate = createTemplate();
 			HttpEntity<OtpRequestDTO> httpEntity = new HttpEntity<>(otpRequestDTO);
 			ResponseEntity<Map> response = restTemplate.exchange(
-					env.getProperty("ida.otp.url",
-							getBaseUrl() + "/idauthentication/v1/otp/1873299273/735899345"),
+					env.getProperty("ida.otp.url"),
 					HttpMethod.POST, httpEntity, Map.class);
 			System.err.println(response);
 			
@@ -542,11 +549,7 @@ public class IdaController {
 		} catch (KeyManagementException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private String getBaseUrl() {
-		return env.getProperty("base.url", "https://qa.mosip.io");
-	}
+	}	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
@@ -644,8 +647,7 @@ public class IdaController {
 	}
 
 	private String getUrl() {
-		return env.getProperty("ida.auth.url",
-				getBaseUrl() + "/idauthentication/v1/auth/1873299273/735899345");
+		return env.getProperty("ida.auth.url");
 	}
 
 	private boolean isBioAuthType() {
@@ -680,7 +682,7 @@ public class IdaController {
 		CryptomanagerRequestDto request = new CryptomanagerRequestDto();
 		request.setApplicationId("IDA");
 		request.setData(Base64.encodeBase64URLSafeString(data.getBytes(StandardCharsets.UTF_8)));
-		String publicKeyId = env.getProperty("publicKeyId", "PARTNER");
+		String publicKeyId = env.getProperty("ida.reference.id");
 		request.setReferenceId(publicKeyId);
 		String utcTime = getUTCCurrentDateTimeISOString();
 		request.setTimeStamp(utcTime);
@@ -688,7 +690,7 @@ public class IdaController {
 		uriParams.put("appId", "IDA");
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(
-						env.getProperty("ida.publickey.url", getBaseUrl() + "/v1/keymanager/publickey/IDA"))
+						env.getProperty("ida.publickey.url") + "/IDA")
 				.queryParam("timeStamp", getUTCCurrentDateTimeISOString())
 				.queryParam("referenceId", publicKeyId);
 		ResponseEntity<Map> response = restTemplate.exchange(builder.build(uriParams), HttpMethod.GET, null, Map.class);
@@ -717,15 +719,14 @@ public class IdaController {
 
 	private String generateAuthToken() {
 		ObjectNode requestBody = mapper.createObjectNode();
-		requestBody.put("clientId", env.getProperty("clientId", "ida"));
-		requestBody.put("secretKey", env.getProperty("secretKey", "bad25866-e6a5-4f93-831a-08923ea6eee0"));
-		requestBody.put("appId", "ida");
+		requestBody.put("clientId", env.getProperty("clientId"));
+		requestBody.put("secretKey", env.getProperty("secretKey"));
+		requestBody.put("appId", env.getProperty("appId"));
 		RequestWrapper<ObjectNode> request = new RequestWrapper<>();
 		request.setRequesttime(DateUtils.getUTCCurrentDateTime());
 		request.setRequest(requestBody);
 		ClientResponse response = WebClient
-				.create(env.getProperty("ida.authmanager.url",
-						getBaseUrl() + "/v1/authmanager/authenticate/clientidsecretkey"))
+				.create(env.getProperty("ida.authmanager.url"))
 				.post().syncBody(request).exchange().block();
 		List<ResponseCookie> list = response.cookies().get("Authorization");
 		if (list != null && !list.isEmpty()) {
@@ -742,6 +743,7 @@ public class IdaController {
 		return new HttpEntity<CryptomanagerRequestDto>(req, headers);
 	}
 
+	
 	private static final TrustManager[] UNQUESTIONING_TRUST_MANAGER = new TrustManager[] { new X509TrustManager() {
 		public java.security.cert.X509Certificate[] getAcceptedIssuers() {
 			return null;

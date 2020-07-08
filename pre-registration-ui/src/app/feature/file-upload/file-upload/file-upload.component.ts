@@ -163,6 +163,24 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   private getPrimaryLabels() {
   }
 
+  async getIdentityJsonFormat() {
+    return new Promise((resolve, reject) => {
+      this.dataStorageService.getIdentityJson().subscribe((response) => {
+      this.identityData = response['response']["idSchema"]["identity"];
+      this.identityData.forEach((obj) => {
+        if (obj.inputRequired === true && obj.controlType === "fileupload") {
+          this.uiFields.push(obj);
+        }
+      });
+    });
+    resolve(true);
+    });
+  }
+
+  private getPrimaryLabels() {
+    console.log("uiFields>>>");
+  }
+
   /**
    *@description This method initialises the users array and the language set by the user.
    *@private
