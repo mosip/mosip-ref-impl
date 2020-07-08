@@ -16,7 +16,6 @@
                 <input
                   matInput
                   formControlName="{{ field.id }}"
-
                   (focusout)="copyToSecondaryFormNonDropDown(field.id,$event)"
                   (input)="copyToSecondaryFormNonDropDown(field.id,$event)"
                   #keyboardRef
@@ -28,7 +27,6 @@
               <mat-form-field [ngClass]="'dropdown-field'">
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <mat-select
-
                   formControlName="{{ field.id }}"
                   (focus)="dropdownApiCall(field)"
                   (selectionChange)="copyDataToSecondaryForm(field.id,userForm.get(field.id).value)"
@@ -58,7 +56,6 @@
                 <input
                 matInput
                 formControlName="{{ field.id }}"
-
               />
                 <input
                   matInput
