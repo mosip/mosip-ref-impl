@@ -149,23 +149,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        this.identityData = response["response"]["idSchema"]["identity"];
-        this.identityData.forEach((obj) => {
-          if (obj.inputRequired === true && obj.controlType === "fileupload") {
-            this.uiFields.push(obj);
-          }
-        });
-      });
-      resolve(true);
-    });
-  }
-
-  private getPrimaryLabels() {
-  }
-
-  async getIdentityJsonFormat() {
-    return new Promise((resolve, reject) => {
-      this.dataStorageService.getIdentityJson().subscribe((response) => {
       this.identityData = response['response']["idSchema"]["identity"];
       this.identityData.forEach((obj) => {
         if (obj.inputRequired === true && obj.controlType === "fileupload") {
