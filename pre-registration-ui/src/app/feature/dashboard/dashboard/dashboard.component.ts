@@ -282,6 +282,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   onNewApplication() {
     localStorage.setItem('modifyUser','false');
+    localStorage.setItem('newApplicant','true');
     if (this.loginId) {
       this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/demographic/new`);
       this.isNewApplication = true;

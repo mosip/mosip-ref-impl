@@ -326,7 +326,8 @@ export class PreviewComponent implements OnInit {
   navigateDashboard() {
     localStorage.setItem("newApplicant", "true");
     localStorage.setItem("modifyUserFromPreview", "false");
-    this.router.navigate([`${this.primaryLanguage}/dashboard`]);
+    localStorage.setItem('modifyUser','false');
+    this.router.navigate([`${this.primaryLanguage}/pre-registration/demographic/new`]);
   }
 
   navigateBack() {

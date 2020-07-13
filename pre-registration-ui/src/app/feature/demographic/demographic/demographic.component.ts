@@ -220,12 +220,8 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.secondaryLanguagelabels = response["demographic"];
     this.initForm();
     await this.setFormControlValues();
-    let previousURL = this.routerService.getPreviousUrl();
+    // let previousURL = this.routerService.getPreviousUrl();
     if (!this.dataModification) {
-      if (
-        !previousURL.includes("demographic") ||
-        (previousURL.includes("demographic"))
-      )
         if (this.isConsentMessage) this.consentDeclaration();
     }
   }
