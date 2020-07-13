@@ -333,10 +333,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.bookingService.flushNameList();
-    // this.usersInfo.forEach(user => {
-    //   this.bookingService.addNameList(user);
-    // });
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

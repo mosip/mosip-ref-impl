@@ -13,7 +13,6 @@ import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
 
 import { FileModel } from 'src/app/shared/models/demographic-model/file.model';
 import { Applicant } from 'src/app/shared/models/dashboard-model/dashboard.modal';
-import { UserModel } from 'src/app/shared/models/demographic-model/user.modal';
 import * as appConstants from '../../../app.constants';
 import Utils from 'src/app/app.util';
 import { ConfigService } from 'src/app/core/services/config.service';
@@ -23,7 +22,6 @@ import { LogService } from 'src/app/shared/logger/log.service';
 import LanguageFactory from 'src/assets/i18n';
 import { Subscription } from 'rxjs';
 import { NotificationDtoModel } from 'src/app/shared/models/notification-model/notification-dto.model';
-// import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
  * @description This is the dashbaord component which displays all the users linked to the login id
@@ -124,11 +122,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     this.getUsers();
   }
 
-  // flushArrays() {
-  //   this.regService.flushUsers();
-  //   this.bookingService.flushNameList();
-  // }
-
   /**
    * @description This is to get all the users assosiated to the login id.
    *
@@ -153,9 +146,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
           this.allApplicants =
             applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails];
-          // this.bookingService.addApplicants(
-          //   applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails]
-          // );
           for (
             let index = 0;
             index <
@@ -291,9 +281,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onNewApplication() {
-    //this.flushArrays();
     localStorage.setItem('modifyUser','false');
-   // this.regService.changeMessage({ modifyUser: 'false' });
     if (this.loginId) {
       this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/demographic/new`);
       this.isNewApplication = true;
@@ -365,7 +353,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    // this.bookingService.addApplicants(this.allApplicants);
   }
 
   deletePreregistration(element: any) {
@@ -478,10 +465,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onModifyInformation(user: Applicant) {
-  //  this.flushArrays();
     const preId = user.applicationID;
     localStorage.setItem('modifyUser','true');
-   // this.regService.changeMessage({ modifyUser: 'true' });
     this.disableModifyDataButton = true;
     const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
       response => this.setUserFiles(response),
@@ -491,7 +476,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         this.onError(error);
       },
       () => {
-       // this.addtoNameList(user);
         this.dataStorageService.getUser(preId).subscribe(
           response => {
             this.onModification(response, preId);
@@ -514,9 +498,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   private onModification(response: any, preId: string) {
-    const request = response[appConstants.RESPONSE];
     this.disableModifyDataButton = true;
-   // this.regService.addUser(new UserModel(preId, request, this.userFiles));
     this.fetchedDetails = true;
     this.router.navigate([this.primaryLangCode,'pre-registration', 'demographic',preId]);
   }
@@ -547,11 +529,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onModifyMultipleAppointment() {
-    //this.flushArrays();
-    // const ids = [];
-    // for (let index = 0; index < this.selectedUsers.length; index++) {
-     // this.addtoNameList(this.selectedUsers[index]);
-    // }
     let url = '';
     url = Utils.getURL(this.router.url, `pre-registration/booking/${this.selectedUsers[0].applicationID}/pick-center`,1);
     this.router.navigateByUrl(url);
@@ -564,36 +541,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onAcknowledgementView(user: Applicant) {
-    // this.flushArrays();
-    // this.addtoNameList(user);
     console.log(user);
     let url = '';
     url = Utils.getURL(this.router.url, `pre-registration/summary/${user.applicationID}/acknowledgement`,1);
     this.router.navigateByUrl(url);
   }
-
-  /**
-   * @description This method add the user details to shared service name list array.
-   *
-   * @param {Applicant} user
-   * @memberof DashBoardComponent
-   */
-  // addtoNameList(user: Applicant) {
-  //   const preId = user.applicationID;
-  //   const fullName = user.name;
-  //   const regDto = user.regDto;
-  //   const status = user.status;
-  //   const postalCode = user.postalCode;
-  //   const nameInSecondaryLanguage = user.nameInSecondaryLanguage;
-  //   this.bookingService.addNameList({
-  //     fullName: fullName,
-  //     preRegId: preId,
-  //     regDto: regDto,
-  //     status: status,
-  //     postalCode: postalCode,
-  //     fullNameSecondaryLang: nameInSecondaryLanguage
-  //   });
-  // }
 
   setUserFiles(response) {
     if (!response['errors']) {
@@ -652,9 +604,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   private async onError(error?: any) {
     await this.getErrorLabels();
-    let message = this.errorLanguagelabels.error;
-    // this.titleOnError = this.errorLanguagelabels.errorLabel;
-    // this.errorService.onError(this.titleOnError, message, error, this.errorLanguagelabels);
+    let message = this.errorLanguagelabels.error;;
     this.titleOnError = this.errorLanguagelabels.errorLabel;
     if (
       error &&

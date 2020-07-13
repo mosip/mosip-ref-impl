@@ -7,7 +7,6 @@ import { TranslateService } from "@ngx-translate/core";
 import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
 import LanguageFactory from "src/assets/i18n";
-import { FileModel } from "src/app/shared/models/demographic-model/file.model";
 import { ConfigService } from "src/app/core/services/config.service";
 
 @Component({

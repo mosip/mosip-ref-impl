@@ -27,9 +27,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
    this.primaryLang = localStorage.getItem('langCode');
-    this.subscription = this.authService.myProp$.subscribe(res => {
-      this.flag = res;
-    });
   }
 
   onLogoClick() {

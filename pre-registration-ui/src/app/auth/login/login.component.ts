@@ -145,15 +145,6 @@ export class LoginComponent implements OnInit  {
     this.secondaryLangFromConfig = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.mosip_secondary_language
     );
-
-    // default secondary language if any of the primary or secondary langugae is not present
-    // this.primaryLangFromConfig === ''
-    //   ? (this.primaryLangFromConfig = this.defaultLangCode)
-    //   : this.primaryLangFromConfig;
-    // this.secondaryLangFromConfig === ''
-    //   ? (this.secondaryLangFromConfig = this.defaultLangCode)
-    //   : this.secondaryLangFromConfig;
-
     if (
       !this.primaryLangFromConfig ||
       !this.secondaryLangFromConfig ||

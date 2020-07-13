@@ -15,12 +15,9 @@ import {
   AbstractControl,
 } from "@angular/forms";
 import {
-  MatSelectChange,
-  MatButtonToggleChange,
   MatDialog,
 } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
-import { BookingService } from "../../booking/booking.service";
 
 import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { RegistrationService } from "src/app/core/services/registration.service";
@@ -32,7 +29,6 @@ import Utils from "src/app/app.util";
 import { DialougComponent } from "src/app/shared/dialoug/dialoug.component";
 import { ConfigService } from "src/app/core/services/config.service";
 import { AttributeModel } from "src/app/shared/models/demographic-model/attribute.modal";
-import { ResponseModel } from "src/app/shared/models/demographic-model/response.model";
 import { FilesModel } from "src/app/shared/models/demographic-model/files.model";
 import {
   MatKeyboardService,
@@ -44,7 +40,6 @@ import { LogService } from "src/app/shared/logger/log.service";
 import LanguageFactory from "src/assets/i18n";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
-// import { ErrorService } from 'src/app/shared/error/error.service';
 
 /**
  * @description This component takes care of the demographic page.
@@ -192,7 +187,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     private activatedRoute: ActivatedRoute,
     private regService: RegistrationService,
     private dataStorageService: DataStorageService,
-    private bookingService: BookingService,
     private configService: ConfigService,
     private translate: TranslateService,
     public dialog: MatDialog,
@@ -306,7 +300,11 @@ export class DemographicComponent extends FormDeactivateGuardService
      getUserInfo() {
       return new Promise((resolve)=> {
         this.dataStorageService.getUser(this.preRegId).subscribe(
-          response => this.user.request = response[appConstants.RESPONSE]
+          response => {
+            if(response[appConstants.RESPONSE]){
+              this.user.request = response[appConstants.RESPONSE];
+            }
+          }
         );
         resolve(true);
       });
@@ -855,56 +853,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     });
   }
 
-  /**
-   * @description This method push to the CodeValueModal array
-   *
-   * @param {CodeValueModal} element
-   * @memberof DemographicComponent
-   */
-
-  // addCodeValue(element: CodeValueModal, fieldName: string) {
-  //   this.codeValue.push({
-  //     valueCode: element.valueCode,
-  //     valueName: element.valueName,
-  //     languageCode: element.languageCode,
-  //   });
-  //   this.codeValue.push(
-  //     this.secondaryDropDownLables[fieldName].filter(
-  //       (value) => value.valueCode === element.valueCode
-  //     )[0]
-  //   );
-  //   console.log(this.codeValue);
-  // }
-
-  /**
-   * @description this method will populate the codevalue array when user wants to
-   * modify the application details. so that dropdown values are available in preview component.
-   */
-
-  // populateCodeValue() {
-  //   const dropdownFileds = this.uiFields.filter(
-  //     (field) => field.controlType === "dropdown"
-  //   );
-  //   for (let field of dropdownFileds) {
-  //     if (this.primarydropDownFields[field.id].length === 0) {
-  //       this.codeValue.push(
-  //         this.primarydropDownFields[field.id].filter(
-  //           (value) =>
-  //             value.valueCode ===
-  //             this.user.request.demographicDetails.identity[field.id][0].value
-  //         )[0]
-  //       );
-  //       this.codeValue.push(
-  //         this.secondaryDropDownLables[field.id].filter(
-  //           (value) =>
-  //             value.valueCode ===
-  //             this.user.request.demographicDetails.identity[field.id][0].value
-  //         )[0]
-  //       );
-  //     }
-  //   }
-  //   localStorage.setItem('locations',JSON.stringify(this.codeValue));
-  // }
 
   /**
    * @description On click of back button the user will be navigate to dashboard.
@@ -1063,9 +1011,6 @@ export class DemographicComponent extends FormDeactivateGuardService
                   } else message = this.errorlabels.error;
                   this.onError(message, "");
                   return;
-                } else {
-
-                 // this.onModification(responseJSON);
                 }
                 this.onSubmission();
               },
@@ -1099,7 +1044,6 @@ export class DemographicComponent extends FormDeactivateGuardService
                 return;
               } else {
                 this.preRegId = response[appConstants.RESPONSE].preRegistrationId;
-               // this.onAddition(response, responseJSON);
               }
               this.onSubmission();
             },
@@ -1123,50 +1067,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     return message;
   }
 
-  /**
-   * @description This is called when user chooses to modify the data.
-   *
-   * @private
-   * @param {ResponseModel} request
-   * @memberof DemographicComponent
-   */
-
-  //private onModification(request: ResponseModel) {
-    
-    // this.bookingService.updateNameList(this.step, {
-    //   fullName: this.userForm.controls["fullName"].value,
-    //   fullNameSecondaryLang: this.transUserForm.controls["fullName"].value,
-    //   preRegId: this.preRegId,
-    //   postalCode: this.userForm.controls["postalCode"].value,
-    //   regDto: this.bookingService.getNameList()[0].regDto,
-    // });
-  //}
-
-
-  /**
-   * @description This is called when user creates a new application.
-   *
-   * @private
-   * @param {*} response
-   * @param {ResponseModel} request
-   * @memberof DemographicComponent
-   */
-
-  // private onAddition(response: any, request: ResponseModel) {
-  //   this.preRegId =
-  //     response[appConstants.RESPONSE][
-  //       appConstants.DEMOGRAPHIC_RESPONSE_KEYS.preRegistrationId
-  //     ];
-  //   this.regService.addUser(
-  //     new UserModel(this.preRegId, request, this.files, this.codeValue)
-  //   );
-  //   this.bookingService.addNameList({
-  //     fullName: this.userForm.controls["fullName"].value,
-  //     fullNameSecondaryLang: this.transUserForm.controls["fullName"].value,
-  //     preRegId: this.preRegId,
-  //     postalCode: this.userForm.controls["postalCode"].value,
-  //   });
-  // }
 
 
   /**
@@ -1375,8 +1275,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.dataUploadComplete = true;
     this.hasError = true;
     this.titleOnError = this.errorlabels.errorLabel;
-    // this.errorService.onError(this.titleOnError, message, error, this.errorlabels);
-
     if (
       error &&
       error[appConstants.ERROR] &&
@@ -1441,9 +1339,6 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
   ngOnDestroy(): void {
-    // if (this.codeValue.length === 0 && this.dataModification) {
-    //   this.populateCodeValue();
-    // }
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
