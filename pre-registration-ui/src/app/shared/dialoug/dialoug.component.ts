@@ -105,7 +105,6 @@ export class DialougComponent implements OnInit {
   }
 
   async userRedirection() {
-    console.log(this.routerService.getHistory());
     let url = this.routerService.getPreviousUrl();
     if (
       localStorage.getItem("newApplicant") === "true" &&
