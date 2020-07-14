@@ -7,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserModel } from 'src/app/shared/models/demographic-model/user.modal';
 import { BookingService } from '../booking.service';
-import { RegistrationService } from 'src/app/core/services/registration.service';
 import { TranslateService } from '@ngx-translate/core';
 import Utils from 'src/app/app.util';
 import { ConfigService } from 'src/app/core/services/config.service';
@@ -54,7 +53,6 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
     private dataService: DataStorageService,
     private router: Router,
     private route: ActivatedRoute,
-    private registrationService: RegistrationService,
     private translate: TranslateService,
     private configService: ConfigService,
     private activatedRoute: ActivatedRoute

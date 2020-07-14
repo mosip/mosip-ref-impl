@@ -15,7 +15,6 @@ import { BookingModel } from "../center-selection/booking.model";
 import { NameList } from "src/app/shared/models/demographic-model/name-list.modal";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 import { BookingService } from "../booking.service";
-import { RegistrationService } from "src/app/core/services/registration.service";
 import { TranslateService } from "@ngx-translate/core";
 import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { ConfigService } from "src/app/core/services/config.service";
@@ -419,17 +418,6 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
                 const booking = this.bookingDataList.filter(
                   (element) => element.preRegistrationId === name.preRegId
                 );
-                // if (booking[0]) {
-                //   this.bookingService.addNameList(name);
-                //   const appointmentDateTime =
-                //     booking[0].appointment_date +
-                //     "," +
-                //     booking[0].time_slot_from;
-                //   this.bookingService.updateBookingDetails(
-                //     name.preRegId,
-                //     appointmentDateTime
-                //   );
-                // }
               });
               this.bookingService.setSendNotification(true);
               const url = Utils.getURL(
@@ -517,13 +505,6 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     this.canDeactivateFlag = false;
     this.router.navigate([`${this.primaryLangCode}/dashboard`]);
   }
-
-  // reloadData() {
-  //   this.bookingService.flushNameList();
-  //   this.temp.forEach((name) => {
-  //     this.bookingService.addNameList(name);
-  //   });
-  // }
 
   navigateBack() {
     this.canDeactivateFlag = false;

@@ -132,7 +132,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.getAllowedFileTypes(this.allowedFiles);
     this.loginId = localStorage.getItem("loginId");
     this.getAllApplicants();
-    //this.setApplicants();
     this.sameAs = this.registration.getSameAs();
     if (this.sameAs === "") {
       this.sameAsselected = false;
@@ -183,7 +182,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (!this.users[0].files) {
       this.users[0].files = this.userFiles;
     }
-    //this.activeUsers = JSON.parse(JSON.stringify(this.registration.getUsers()));
     this.loggerService.info("active users", this.activeUsers);
   }
 
@@ -993,10 +991,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.users[this.step].files.documentsMetaData.push(this.userFile[0]);
     }
     this.userFile = [];
-    // this.registration.updateUser(
-    //   this.registration.getUsers().length - 1,
-    //   this.users[this.step]
-    // );
   }
 
   openFile() {
