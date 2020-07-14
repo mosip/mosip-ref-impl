@@ -31,20 +31,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogoClick() {
     if (this.authService.isAuthenticated()) {
-      if(this.primaryLang !== null || this.primaryLang){
-        this.primaryLang = localStorage.getItem('langCode');
-      }
-      this.router.navigate([this.primaryLang,'dashboard']);
+      this.router.navigate([localStorage.getItem('langCode'),'dashboard']);
     } else {
       this.router.navigate(['/']);
     }
   }
 
   onHome() {
-    if(this.primaryLang !== null || this.primaryLang){
-      this.primaryLang = localStorage.getItem('langCode');
-    }
-    this.router.navigate([this.primaryLang,"dashboard"]);
+    this.router.navigate([localStorage.getItem('langCode'),"dashboard"]);
   }
 
   async doLogout() {
