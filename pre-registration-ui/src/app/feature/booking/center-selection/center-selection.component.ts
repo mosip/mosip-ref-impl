@@ -292,7 +292,14 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService impl
       title: title,
       message: message
     };
-    this.openDialog(messageObj, '250px');
+    const dialogRef = this.openDialog(messageObj, '250px');
+    dialogRef.afterClosed().subscribe( () =>{
+      if(messageObj.message === this.errorlabels.regCenterNotavailabe){
+        this.canDeactivateFlag = false ;
+        this.router.navigate([`${this.primaryLang}/dashboard`]);
+      }
+    }
+    );
   }
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {

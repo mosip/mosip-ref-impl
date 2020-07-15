@@ -487,7 +487,12 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
         error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
           appConstants.ERROR_CODES.slotNotAvailable
       ) {
-        window.history.back();
+        this.canDeactivateFlag = false;
+        this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/booking/${this.preRegId}/pick-center`);
+      }
+      if(this.errorlabels.centerDetailsNotAvailable === messageObj.message){
+        this.canDeactivateFlag = false;
+        this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/booking/${this.preRegId}/pick-center`);
       }
     });
     this.subscriptions.push(subs);

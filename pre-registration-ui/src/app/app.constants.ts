@@ -166,10 +166,10 @@ export const languageMapping = {
     langName: 'English'
   },
   ara: {
-    langName: 'Arabic'
+    langName: 'عربى'
   },
   fra: {
-    langName: 'French'
+    langName: 'Français'
   }
 };
 
