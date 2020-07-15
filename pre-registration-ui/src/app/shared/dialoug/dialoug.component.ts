@@ -106,12 +106,7 @@ export class DialougComponent implements OnInit {
 
   async userRedirection() {
     let url = this.routerService.getPreviousUrl();
-    if (
-      localStorage.getItem("newApplicant") === "true" &&
-      !(url.includes("dashboard") || url.includes("preview"))
-    ) {
-      await this.firstPopUp();
-    } else if (
+   if (
       localStorage.getItem("newApplicant") === "true" &&
       url.includes("preview")
     ) {
@@ -121,6 +116,14 @@ export class DialougComponent implements OnInit {
       url.includes("dashboard")
     ) {
       await this.secondPopUp();
+    } else if (
+      localStorage.getItem("newApplicant") === "true" &&
+      (url.includes("demographic")  && Number(localStorage.getItem('noOfApplicant'))> 0)
+    ) {
+      await this.secondPopUp();
+      
+    } else {
+      await this.firstPopUp();
     }
   }
 

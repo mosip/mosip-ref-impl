@@ -152,6 +152,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
             applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails].length;
             index++
           ) {
+            localStorage.setItem('noOfApplicant',applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails].length);
             const applicant = this.createApplicant(applicants, index);
             this.users.push(applicant);
           }
@@ -366,6 +367,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           index = this.selectedUsers.indexOf(element);
           this.selectedUsers.splice(index, 1);
           if (this.users.length == 0) {
+            localStorage.setItem('noOfApplicant','0');
             this.onNewApplication();
             localStorage.setItem('newApplicant', 'true');
           } else {
@@ -434,14 +436,14 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       if (selectedOption && Number(selectedOption) === 1) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe(confirm => {
-          if (confirm) {
+          if (confirm !== 'Cancel') {
             this.deletePreregistration(element);
           }
         });
       } else if (selectedOption && Number(selectedOption) === 2) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe(confirm => {
-          if (confirm) {
+          if (confirm !== 'Cancel') {
             this.cancelAppointment(element);
           }
         });

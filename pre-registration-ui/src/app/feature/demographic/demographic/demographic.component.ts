@@ -670,8 +670,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       let index = 0;
       let secondaryIndex = 1;
       this.loggerService.info("user", this.user);
-      this.codeValue =
-        this.user.location === undefined ? [] : this.user.location;
+      console.log("user", this.user);
       if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
