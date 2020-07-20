@@ -103,7 +103,7 @@ export class DemographicComponent extends FormDeactivateGuardService
   maxDate = new Date(Date.now());
   preRegId = "";
   loginId = "";
-  user: UserModel;
+  user: UserModel = new UserModel();
   demodata: string[];
   secondaryLanguagelabels: any;
   demographiclabels: any;
@@ -297,7 +297,6 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.dataStorageService.getUser(preRegId).subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
           console.log(response);
-          this.user = new UserModel();
           this.user.request = response[appConstants.RESPONSE];
           resolve(true);
         }
