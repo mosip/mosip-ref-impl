@@ -272,11 +272,9 @@ export class DemographicComponent extends FormDeactivateGuardService
     if (localStorage.getItem("modifyUser") === "true") {
       console.log(localStorage.getItem("modifyUser"));
       this.dataModification = true;
-      this.activatedRoute.params.subscribe((param) => {
-        this.preRegId = param["appId"];
-        console.log(this.preRegId);
-        this.setUserInfo();
-      });
+      await this.getPreRegId();
+      console.log(this.preRegId);
+      await this.getUserInfo(this.preRegId);
       if (localStorage.getItem("modifyUserFromPreview") === "true") {
         this.showPreviewButton = true;
       }
@@ -284,8 +282,14 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
 
-  async setUserInfo() {
-    await this.getUserInfo(this.preRegId);
+  getPreRegId(){
+    return new Promise(resolve =>{
+      this.activatedRoute.params.subscribe((param) => {
+        this.preRegId = param["appId"];
+        console.log(this.preRegId);
+        resolve(true);
+      });
+    });
   }
 
   getUserInfo(preRegId) {
@@ -295,9 +299,9 @@ export class DemographicComponent extends FormDeactivateGuardService
           console.log(response);
           this.user = new UserModel();
           this.user.request = response[appConstants.RESPONSE];
+          resolve(true);
         }
       });
-      resolve(true);
     });
   }
   /**
@@ -337,8 +341,10 @@ export class DemographicComponent extends FormDeactivateGuardService
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         console.log(response);
-        this.identityData = response['response']["idSchema"]["identity"];
-        this.locationHeirarchy = [...response['response']["idSchema"]["locationHeirarchy"]];
+        this.identityData = response["identity"];
+        this.locationHeirarchy = [...response["locationHierarchy"]];
+        //this.identityData = response['response']["idSchema"]["identity"];
+        //this.locationHeirarchy = [...response['response']["idSchema"]["locationHierarchy"]];
         console.log(this.locationHeirarchy);
         this.identityData.forEach((obj) => {
           if (
@@ -784,6 +790,14 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.currentAge = this.calculateAge(
       this.user.request.demographicDetails.identity['dateOfBirth']
     ).toString();
+    this.userForm.controls[`dateOfBirth`].setValue(
+      this.user.request.demographicDetails.identity['dateOfBirth'
+    ]
+    );
+    this.transUserForm.controls[`dateOfBirth`].setValue(
+      this.user.request.demographicDetails.identity['dateOfBirth'
+    ]
+    );
   }
   /**
    * @description This is called when age is changed and the date of birth will get calculated.
@@ -812,13 +826,13 @@ export class DemographicComponent extends FormDeactivateGuardService
         this.date = this.defaultDay;
         this.month = this.defaultMonth;
         this.year = calulatedYear.toString();
-        this.userForm.controls["dateOfBirth"].patchValue(
+        this.userForm.controls["dateOfBirth"].setValue(
           calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
         );
-        this.transUserForm.controls["dateOfBirth"].patchValue(
+        this.transUserForm.controls["dateOfBirth"].setValue(
           calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
         );
-        this.userForm.controls["dateOfBirth"].setErrors(null);
+        // this.userForm.controls["dateOfBirth"].setErrors(null);
         console.log(this.userForm);
       } else {
         this.dd.nativeElement.value = "";
@@ -851,10 +865,10 @@ export class DemographicComponent extends FormDeactivateGuardService
     if (dobRegex.test(newDate)) {
       this.currentAge = this.calculateAge(newDate).toString();
       this.age.nativeElement.value = this.currentAge;
-      this.userForm.controls["dateOfBirth"].patchValue(newDate);
-      this.transUserForm.controls["dateOfBirth"].patchValue(newDate);
+      this.userForm.controls["dateOfBirth"].setValue(newDate);
+      this.transUserForm.controls["dateOfBirth"].setValue(newDate);
       console.log(this.userForm);
-    } else if (this.date && this.month && this.year) {
+    } else {
       this.userForm.controls["dateOfBirth"].markAsTouched();
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
@@ -882,6 +896,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
       });
+      console.log(this.userForm.controls["dateOfBirth"]);
       this.yyyy.nativeElement.value = "";
       this.date = "";
       this.month = "";
