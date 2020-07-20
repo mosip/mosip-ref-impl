@@ -341,10 +341,10 @@ export class DemographicComponent extends FormDeactivateGuardService
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         console.log(response);
-        this.identityData = response["identity"];
-        this.locationHeirarchy = [...response["locationHierarchy"]];
-        //this.identityData = response['response']["idSchema"]["identity"];
-        //this.locationHeirarchy = [...response['response']["idSchema"]["locationHierarchy"]];
+        //this.identityData = response["identity"];
+        //this.locationHeirarchy = [...response["locationHierarchy"]];
+        this.identityData = response['response']["idSchema"]["identity"];
+        this.locationHeirarchy = [...response['response']["idSchema"]["locationHierarchy"]];
         console.log(this.locationHeirarchy);
         this.identityData.forEach((obj) => {
           if (
@@ -868,7 +868,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.userForm.controls["dateOfBirth"].setValue(newDate);
       this.transUserForm.controls["dateOfBirth"].setValue(newDate);
       console.log(this.userForm);
-    } else {
+    } else if (this.date && this.month && this.year) {
       this.userForm.controls["dateOfBirth"].markAsTouched();
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
@@ -896,7 +896,6 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
       });
-      console.log(this.userForm.controls["dateOfBirth"]);
       this.yyyy.nativeElement.value = "";
       this.date = "";
       this.month = "";
