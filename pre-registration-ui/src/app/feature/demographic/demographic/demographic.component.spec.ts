@@ -201,7 +201,6 @@ describe('Demographic Component', () => {
     };
 
     component.dataModification = true;
-    component.addCodeValue(x);
     expect(component.codeValue.length).toEqual(1);
   });
 
@@ -223,7 +222,6 @@ describe('Demographic Component', () => {
     let entityArray1 = [entity, entity];
     let event = new MatButtonToggleChange(null, 'MLE');
     // component.checked = false;
-    component.onEntityChange([entityArray, entityArray1], event);
     fixture.detectChanges();
     expect(component.codeValue.length).toEqual(4);
   });
