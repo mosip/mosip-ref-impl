@@ -832,6 +832,9 @@ export class DemographicComponent extends FormDeactivateGuardService
           calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
         );
         // this.userForm.controls["dateOfBirth"].setErrors(null);
+        if (this.dataModification) {
+          this.hasDobChanged();
+        }
         console.log(this.userForm);
       } else {
         this.dd.nativeElement.value = "";
@@ -867,7 +870,11 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.userForm.controls["dateOfBirth"].setValue(newDate);
       this.transUserForm.controls["dateOfBirth"].setValue(newDate);
       console.log(this.userForm);
-    } else if (this.date && this.month && this.year) {
+      if (this.dataModification) {
+        console.log(newDate);
+        this.hasDobChanged();
+      }
+    } else {
       this.userForm.controls["dateOfBirth"].markAsTouched();
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
