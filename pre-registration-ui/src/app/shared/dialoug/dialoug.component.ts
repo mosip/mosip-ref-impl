@@ -106,25 +106,22 @@ export class DialougComponent implements OnInit {
 
   async userRedirection() {
     let url = this.routerService.getPreviousUrl();
-   if (
+    if (
       localStorage.getItem("newApplicant") === "true" &&
       url.includes("preview")
     ) {
       await this.thirdPopUp();
     } else if (
       localStorage.getItem("newApplicant") === "true" &&
-      url.includes("dashboard")
+      Number(localStorage.getItem("noOfApplicant")) > 0
     ) {
       await this.secondPopUp();
     } else if (
       localStorage.getItem("newApplicant") === "true" &&
-      (url.includes("demographic")  && Number(localStorage.getItem('noOfApplicant'))> 0)
+      Number(localStorage.getItem("noOfApplicant")) === 0
     ) {
-      await this.secondPopUp();
-      
-    } else {
       await this.firstPopUp();
-    }
+    } 
   }
 
   firstPopUp() {
@@ -174,9 +171,13 @@ export class DialougComponent implements OnInit {
   }
   redirectingUser() {
     let url = this.routerService.getPreviousUrl();
-    let preRegId = url.split('/')[4];
+    let preRegId = url.split("/")[4];
     if (url.includes("preview"))
-      this.router.navigate([`${localStorage.getItem("langCode")}/pre-registration/summary/${preRegId}/preview`]);
+      this.router.navigate([
+        `${localStorage.getItem(
+          "langCode"
+        )}/pre-registration/summary/${preRegId}/preview`,
+      ]);
     else
       this.router.navigate([`${localStorage.getItem("langCode")}/dashboard`]);
   }
