@@ -51,7 +51,27 @@
               </mat-form-field>
             </ng-container>
             <ng-container *ngIf="field.controlType === 'date'">
-                <br/>
+              <mat-form-field [ngClass]="'date-field'">
+                <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+                <input
+                matInput
+                formControlName="{{ field.id }}"
+                style="margin-top: 5px;padding: 4px;"
+              />
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  style="margin-top: 5px;padding: 4px;"
+                  (dateChange)="dateEvent($event)"
+                  style="display: none;"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+                <!-- <br/>
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <div class="user__age-or-date">
                   <div class="user__date">
@@ -109,7 +129,7 @@
                   "
                 >
                   {{ 'demographic.validation.DOB_validation' | translate }}
-                </div> 
+                </div>  -->
             </ng-container>
             <mat-error class="primary-errors"
               *ngIf="primaryuserForm &&
@@ -171,7 +191,17 @@
             </mat-form-field>
           </ng-container>
           <ng-container *ngIf="field.controlType === 'date'">
-            <br/>
+            <mat-form-field >
+              <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+              <input
+                matInput
+                style="margin-top: 5px;padding: 4px;"
+                formControlName="{{ field.id }}"
+                [value]="userForm.get(field.id)"
+                [readonly]="true"
+              />
+            </mat-form-field>
+            <!-- <br/>
             <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
             <div class="user__age-or-date">
               <div class="user__date">
@@ -216,7 +246,7 @@
                 </mat-form-field>
                 <div class="user__age--years">{{ secondaryLanguagelabels.text_years }}</div>
               </div>
-            </div>
+            </div> -->
           </ng-container>
           <mat-error class="secondary-errors"
             *ngIf="secondaryuserForm &&

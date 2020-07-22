@@ -1195,6 +1195,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
       url = Utils.getURL(this.router.url, "file-upload");
+      localStorage.removeItem('addingUserFromPreview');
       this.router.navigate([url, this.preRegId]);
     }
   }

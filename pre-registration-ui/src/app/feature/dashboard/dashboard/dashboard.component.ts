@@ -87,6 +87,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   ) {
     this.translate.use(this.primaryLangCode);
     localStorage.setItem('modifyDocument', 'false');
+    localStorage.removeItem("addingUserFromPreview");
   }
 
   /**
