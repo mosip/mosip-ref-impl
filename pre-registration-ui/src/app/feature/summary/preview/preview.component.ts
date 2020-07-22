@@ -327,6 +327,7 @@ export class PreviewComponent implements OnInit {
     localStorage.setItem("newApplicant", "true");
     localStorage.setItem("modifyUserFromPreview", "false");
     localStorage.setItem('modifyUser','false');
+    localStorage.setItem('addingUserFromPreview','true');
     this.router.navigate([`${this.primaryLanguage}/pre-registration/demographic/new`]);
   }
 
