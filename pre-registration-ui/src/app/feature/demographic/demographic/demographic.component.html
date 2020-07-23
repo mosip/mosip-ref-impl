@@ -51,7 +51,7 @@
               </mat-form-field>
             </ng-container>
             <ng-container *ngIf="field.controlType === 'date'">
-              <mat-form-field [ngClass]="'date-field'">
+              <!-- <mat-form-field [ngClass]="'date-field'">
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <input
                 matInput
@@ -70,8 +70,8 @@
                   [for]="picker"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-                <!-- <br/>
+              </mat-form-field> -->
+                <br/>
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <div class="user__age-or-date">
                   <div class="user__date">
@@ -129,7 +129,7 @@
                   "
                 >
                   {{ 'demographic.validation.DOB_validation' | translate }}
-                </div>  -->
+                </div> 
             </ng-container>
             <mat-error class="primary-errors"
               *ngIf="primaryuserForm &&
@@ -191,7 +191,7 @@
             </mat-form-field>
           </ng-container>
           <ng-container *ngIf="field.controlType === 'date'">
-            <mat-form-field >
+            <!-- <mat-form-field >
               <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <input
                 matInput
@@ -200,8 +200,8 @@
                 [value]="userForm.get(field.id)"
                 [readonly]="true"
               />
-            </mat-form-field>
-            <!-- <br/>
+            </mat-form-field> -->
+            <br/>
             <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
             <div class="user__age-or-date">
               <div class="user__date">
@@ -246,7 +246,7 @@
                 </mat-form-field>
                 <div class="user__age--years">{{ secondaryLanguagelabels.text_years }}</div>
               </div>
-            </div> -->
+            </div>
           </ng-container>
           <mat-error class="secondary-errors"
             *ngIf="secondaryuserForm &&
