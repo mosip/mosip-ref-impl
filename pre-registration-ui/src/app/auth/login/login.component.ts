@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit  {
   }
 
   ngOnInit() {
-    this.captchaSucess = true;
     localStorage.setItem("langCode", "eng");
     this.showSpinner = true;
     this.loadConfigs();
