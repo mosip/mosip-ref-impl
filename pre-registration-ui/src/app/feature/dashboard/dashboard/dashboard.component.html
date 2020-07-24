@@ -37,7 +37,7 @@
         <mat-card>
           <div class="card-header">
             <span class="checkbox"
-              ><mat-checkbox  [disabled]="selectedUsers.length> 0 && selectedUsers[0].applicationID !== user.applicationID" (change)="onSelectUser(user, $event)"
+              ><mat-checkbox   (change)="onSelectUser(user, $event)"
                 >
               </mat-checkbox></span
             >

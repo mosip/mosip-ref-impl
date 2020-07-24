@@ -25,7 +25,8 @@ const appRoutes: Routes = [
       { path: 'demographic/:appId', loadChildren: './feature/demographic/demographic.module#DemographicModule' },
       { path: 'file-upload/:appId', loadChildren: './feature/file-upload/file-upload.module#FileUploadModule' },
       { path: 'summary/:appId', loadChildren: './feature/summary/summary.module#SummaryModule' },
-      { path: 'booking/:appId', loadChildren: './feature/booking/booking.module#BookingModule' }
+      { path: 'booking/:appId', loadChildren: './feature/booking/booking.module#BookingModule' },
+      { path: 'booking/mulityappointement', loadChildren: './feature/booking/booking.module#BookingModule' },
       
 
     ]
