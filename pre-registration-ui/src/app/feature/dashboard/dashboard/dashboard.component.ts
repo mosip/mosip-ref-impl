@@ -58,7 +58,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   isFetched = false;
   allApplicants: any[];
   users: Applicant[] = [];
-  selectedUsers: Applicant[] = [];
+  selectedUsers = [];
   titleOnError = '';
   subscriptions: Subscription[] = [];
 
@@ -88,6 +88,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     this.translate.use(this.primaryLangCode);
     localStorage.setItem('modifyDocument', 'false');
     localStorage.removeItem("addingUserFromPreview");
+    localStorage.removeItem("muiltyAppointment");
+    localStorage.removeItem("modifyMultipleAppointment");
   }
 
   /**
@@ -534,8 +536,21 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   onModifyMultipleAppointment() {
     let url = '';
-    url = Utils.getURL(this.router.url, `pre-registration/booking/${this.selectedUsers[0].applicationID}/pick-center`,1);
-    this.router.navigateByUrl(url);
+    localStorage.setItem("modifyMultipleAppointment","true");
+    if(this.selectedUsers.length === 1){
+      url = Utils.getURL(this.router.url, `pre-registration/booking/${this.selectedUsers[0].applicationID}/pick-center`,1);
+      this.router.navigateByUrl(url);
+    } else {
+      let selectedPrids = [];
+      this.selectedUsers.forEach(id =>{
+      selectedPrids.push(id.applicationID);
+      });
+      console.log(selectedPrids);
+      localStorage.setItem("muiltyAppointment",JSON.stringify(selectedPrids));
+      url = Utils.getURL(this.router.url, `pre-registration/booking/mulityappointement/pick-center`,1);
+      this.router.navigateByUrl(url);
+    }
+  
   }
 
   /**
