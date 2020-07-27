@@ -23,7 +23,7 @@ import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-gua
 import LanguageFactory from "src/assets/i18n";
 import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
-
+import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
 
 @Component({
   selector: "app-time-selection",
@@ -39,14 +39,14 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   selectedTile = 0;
   limit = [];
   showAddButton = false;
-  names: NameList[];
+  names: NameList[] = [];
   deletedNames = [];
   availabilityData = [];
   days: number;
   disableAddButton = false;
   activeTab = "morning";
   bookingDataList = [];
-  temp: NameList[];
+  temp: NameList[] = [];
   registrationCenterLunchTime = [];
   secondaryLang = localStorage.getItem("secondaryLangCode");
   secondaryLanguagelabels: any;
@@ -59,8 +59,8 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   DAYS: any;
   primaryLangCode = localStorage.getItem("langCode");
   subscriptions: Subscription[] = [];
-  preRegId: any;
-  userInfo: any;
+  preRegId: any = [];
+  userInfo: any = [];
   regCenterInfo: any;
 
   constructor(
@@ -78,15 +78,21 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   }
 
   async ngOnInit() {
-    this.activatedRoute.params.subscribe((param) => {
-      this.preRegId = param["appId"];
-    });
+    if (this.router.url.includes("mulityappointement")) {
+      this.preRegId = [
+        ...JSON.parse(localStorage.getItem("muiltyAppointment")),
+      ];
+    } else {
+      this.activatedRoute.params.subscribe((param) => {
+        this.preRegId = [param["appId"]];
+      });
+    }
     this.activatedRoute.queryParams.subscribe((param) => {
       this.registrationCenter = param["regCenter"];
     });
-    await this.getUserInfo();
+    await this.getUserInfo(this.preRegId);
     await this.getRegCenterDetails();
-    this.prepareNameList(this.userInfo,this.regCenterInfo);
+    this.prepareNameList(this.userInfo, this.regCenterInfo);
     this.days = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_availability_noOfDays
     );
@@ -102,64 +108,89 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     this.errorlabels = response["error"];
     this.DAYS = response["DAYS"];
   }
-  getUserInfo() {
+  
+  getUserInfo(preRegId) {
+    return new Promise(async (resolve) => {
+      for (let i = 0; i < preRegId.length; i++) {
+        await this.getUserDetails(preRegId[i]).then((user) =>
+          this.userInfo.push(user)
+        );
+      }
+      resolve();
+    });
+  }
+
+  getUserDetails(prid) {
+    return new Promise((resolve) => {
+      this.dataService.getUser(prid.toString()).subscribe((response) => {
+        resolve(
+          new UserModel(
+            prid.toString(),
+            response[appConstants.RESPONSE],
+            undefined,
+            []
+          )
+        );
+      });
+    });
+  }
+
+  getRegCenterDetails() {
     return new Promise((resolve) => {
       this.dataService
-        .getUser(this.preRegId.toString())
+        .getRegistrationCentersById(
+          this.registrationCenter,
+          this.primaryLangCode
+        )
         .subscribe((response) => {
-          if(response[appConstants.RESPONSE]){
-            this.userInfo = response[appConstants.RESPONSE];
+          if (response[appConstants.RESPONSE]) {
+            console.log(response[appConstants.RESPONSE]);
+            this.regCenterInfo =
+              response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
         });
     });
   }
 
-  getRegCenterDetails(){
-    return new Promise(resolve => {
-     this.dataService.getRegistrationCentersById(this.registrationCenter,this.primaryLangCode).subscribe( response => {
-       if(response[appConstants.RESPONSE]){
-         console.log(response[appConstants.RESPONSE]);
-         this.regCenterInfo = response[appConstants.RESPONSE].registrationCenters[0];
-        resolve(true);
-       }
-     });
+  private prepareNameList(userInfo, regCenterInfo) {
+    console.log(this.userInfo.length);
+    userInfo.forEach((user) => {
+      console.log(user);
+      const nameList: NameList = {
+        preRegId: "",
+        fullName: "",
+        fullNameSecondaryLang: "",
+        regDto: "",
+        status: "",
+        registrationCenter: "",
+        bookingData: "",
+        postalCode: "",
+      };
+
+      nameList.preRegId = user.request.preRegistrationId;
+      nameList.status = user.request.statusCode;
+      nameList.fullName =
+        user.request.demographicDetails.identity.fullName[0].value;
+      nameList.fullNameSecondaryLang =
+        user.request.demographicDetails.identity.fullName[1].value;
+      nameList.postalCode = user.request.demographicDetails.identity.postalCode;
+      nameList.registrationCenter = regCenterInfo;
+      this.names.push(nameList);
+      this.temp.push(nameList);
     });
-  }
-
-  private prepareNameList(userInfo,regCenterInfo) {
-    const nameList: NameList = {
-      preRegId: "",
-      fullName: "",
-      fullNameSecondaryLang: "",
-      regDto: "",
-      status: "",
-      registrationCenter: "",
-      bookingData: "",
-      postalCode: "",
-    };
-
-    nameList.preRegId = userInfo.preRegistrationId;
-    nameList.status = userInfo.statusCode;
-    nameList.fullName = userInfo.demographicDetails.identity.fullName[0].value;
-    nameList.fullNameSecondaryLang =
-    userInfo.demographicDetails.identity.fullName[1].value;
-    nameList.postalCode = userInfo.demographicDetails.identity.postalCode;
-    nameList.registrationCenter = regCenterInfo;
-    this.names = [nameList];
-    this.temp = [nameList];
   }
 
   public scrollRight(): void {
     // for edge browser
     this.widgetsContent.nativeElement.scrollBy({
       left: this.widgetsContent.nativeElement.scrollLeft + 100,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
     // for chrome browser
     this.widgetsContent.nativeElement.scrollTo({
       left: this.widgetsContent.nativeElement.scrollLeft + 100,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }
 
@@ -167,12 +198,12 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     // for edge browser
     this.widgetsContent.nativeElement.scrollBy({
       left: this.widgetsContent.nativeElement.scrollLeft - 100,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
     //for chrome browser
     this.widgetsContent.nativeElement.scrollTo({
       left: this.widgetsContent.nativeElement.scrollLeft - 100,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }
 
@@ -420,12 +451,16 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
                 );
               });
               this.bookingService.setSendNotification(true);
-              const url = Utils.getURL(
-                this.router.url,
-                "summary",
-                3
-              );
-              this.router.navigateByUrl(url+`/${this.preRegId}/acknowledgement`);
+              const url = Utils.getURL(this.router.url, "summary", 3);
+              if (this.router.url.includes("mulityappointement")) {
+                this.router.navigateByUrl(
+                  url + `/mulityappointement/acknowledgement`
+                );
+              } else {
+                this.router.navigateByUrl(
+                  url + `/${this.preRegId[0]}/acknowledgement`
+                );
+              }
             });
         } else if (
           response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
@@ -488,11 +523,27 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
           appConstants.ERROR_CODES.slotNotAvailable
       ) {
         this.canDeactivateFlag = false;
-        this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/booking/${this.preRegId}/pick-center`);
+        if (this.router.url.includes("mulityappointement")) {
+          this.router.navigateByUrl(
+            `${this.primaryLangCode}/pre-registration/booking/mulityappointement/pick-center`
+          );
+        } else {
+          this.router.navigateByUrl(
+            `${this.primaryLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+          );
+        }
       }
-      if(this.errorlabels.centerDetailsNotAvailable === messageObj.message){
+      if (this.errorlabels.centerDetailsNotAvailable === messageObj.message) {
         this.canDeactivateFlag = false;
-        this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/booking/${this.preRegId}/pick-center`);
+        if (this.router.url.includes("mulityappointement")) {
+          this.router.navigateByUrl(
+            `${this.primaryLangCode}/pre-registration/booking/mulityappointement/pick-center`
+          );
+        } else {
+          this.router.navigateByUrl(
+            `${this.primaryLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+          );
+        }
       }
     });
     this.subscriptions.push(subs);
@@ -513,7 +564,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
 
   navigateBack() {
     this.canDeactivateFlag = false;
-    const url = Utils.getURL(this.router.url, "pick-center",1);
+    const url = Utils.getURL(this.router.url, "pick-center", 1);
     this.router.navigateByUrl(url);
   }
 
