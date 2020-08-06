@@ -273,7 +273,6 @@ export class DemographicComponent extends FormDeactivateGuardService
       console.log(localStorage.getItem("modifyUser"));
       this.dataModification = true;
       await this.getPreRegId();
-      console.log(this.preRegId);
       await this.getUserInfo(this.preRegId);
       if (localStorage.getItem("modifyUserFromPreview") === "true") {
         this.showPreviewButton = true;
@@ -627,7 +626,7 @@ export class DemographicComponent extends FormDeactivateGuardService
    *
    * @memberof DemographicComponent
    */
-  setFormControlValues() {
+  async setFormControlValues() {
     if (this.primaryLang === this.secondaryLang) {
       this.languages.pop();
       this.isReadOnly = true;
@@ -642,6 +641,9 @@ export class DemographicComponent extends FormDeactivateGuardService
       let secondaryIndex = 1;
       this.loggerService.info("user", this.user);
       console.log("user", this.user);
+      if(this.user.request === undefined){
+        await this.getUserInfo(this.preRegId);
+      }
       if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
@@ -789,6 +791,7 @@ export class DemographicComponent extends FormDeactivateGuardService
     this.currentAge = this.calculateAge(
       this.user.request.demographicDetails.identity['dateOfBirth']
     ).toString();
+
     this.userForm.controls[`dateOfBirth`].setValue(
       this.user.request.demographicDetails.identity['dateOfBirth'
     ]

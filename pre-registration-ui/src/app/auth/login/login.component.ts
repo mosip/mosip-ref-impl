@@ -248,10 +248,11 @@ export class LoginComponent implements OnInit  {
       this.primaryLang = this.configService.getConfigByKey(
         appConstants.CONFIG_KEYS.mosip_secondary_language
       );
-
       this.setLanguageDirection(this.primaryLang, this.secondaryLang);
+      this.authService.primaryLang = this.primaryLang;
       localStorage.setItem("langCode", this.primaryLang);
       localStorage.setItem("secondaryLangCode", this.secondaryLang);
+      this.router.navigate([localStorage.getItem('langCode')]);
     } else {
       this.primaryLang = this.configService.getConfigByKey(
         appConstants.CONFIG_KEYS.mosip_primary_language
@@ -259,13 +260,13 @@ export class LoginComponent implements OnInit  {
       this.secondaryLang = this.configService.getConfigByKey(
         appConstants.CONFIG_KEYS.mosip_secondary_language
       );
-
+      this.authService.primaryLang = this.primaryLang;
       this.setLanguageDirection(this.primaryLang, this.secondaryLang);
       localStorage.setItem("langCode", this.primaryLang);
       localStorage.setItem("secondaryLangCode", this.secondaryLang);
+      this.router.navigate([localStorage.getItem('langCode')]);
     }
-
-    this.translate.use(localStorage.getItem("langCode"));
+    this.translate.use(localStorage.getItem('langCode'));
     this.loadValidationMessages();
   }
 
