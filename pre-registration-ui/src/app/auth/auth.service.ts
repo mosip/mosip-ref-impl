@@ -15,6 +15,12 @@ export class AuthService {
   ) {}
 
   token: string;
+  primaryLang: string = 'eng';
+  secondaryLang: string;
+
+  getPrimaryLang() {
+    return this.primaryLang;
+  }
 
   setToken() {
     this.token = this.getCookie();
@@ -52,7 +58,7 @@ export class AuthService {
     localStorage.setItem("loggedIn", "false");
     localStorage.setItem("loggedOut", "true");
     this.removeToken();
-    localStorage.removeItem('config');
+    localStorage.removeItem("config");
     this.dataStorageService.onLogout().subscribe();
     this.router.navigate(["/"]);
     this.userIdle.stopWatching();
