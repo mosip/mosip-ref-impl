@@ -62,7 +62,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   preRegId: any = [];
   userInfo: any = [];
   regCenterInfo: any;
-
+  showsNamesContainer: boolean;
   constructor(
     private bookingService: BookingService,
     public dialog: MatDialog,
@@ -108,7 +108,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     this.errorlabels = response["error"];
     this.DAYS = response["DAYS"];
   }
-  
+
   getUserInfo(preRegId) {
     return new Promise(async (resolve) => {
       for (let i = 0; i < preRegId.length; i++) {
@@ -293,6 +293,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     });
     this.enableBucketTabs();
     this.deletedNames = [...this.names];
+    console.log(this.availabilityData);
     // this.placeNamesInSlots();
   }
 
@@ -355,6 +356,18 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
         this.availabilityData[this.selectedTile].showAfternoon)
     ) {
       this.activeTab = selection;
+      console.log(this.availabilityData[this.selectedTile]);
+      console.log(
+        this.availabilityData[this.selectedTile].timeSlots.filter(
+          (day) => day.tag === this.activeTab
+        ).length
+      );
+      this.availabilityData[this.selectedTile].timeSlots.filter(
+        (day) => day.tag === this.activeTab
+      ).length > 0
+        ? (this.showsNamesContainer = true)
+        : (this.showsNamesContainer = false);
+        console.log(this.showsNamesContainer);
     }
   }
 
