@@ -87,7 +87,7 @@
         </div>
       </div>
     </mat-card>
-    <mat-card class="time-selection__names-container" *ngIf="availabilityData.length>0" >
+    <mat-card class="time-selection__names-container" *ngIf="availabilityData.length>0 && showsNamesContainer" >
       <div>
         <div
           *ngIf="availabilityData[selectedTile] !== undefined && selectedCard !== undefined"
