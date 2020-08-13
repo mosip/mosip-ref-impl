@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - 1.0.*
+      - develop
   
 jobs:
   build-kernel-ref-idobjectvalidator:
