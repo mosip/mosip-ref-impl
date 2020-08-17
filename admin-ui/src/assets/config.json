@@ -2,6 +2,8 @@
     "primaryLangCode": "eng",
     "secondaryLangCode": "ara",
     "baseUrl": "http://localhost:8080/v1/",
-    "adminUrl":"/admin-ui/"
-
+    "adminUrl":"/admin-ui/",
+    "validateToken": "authmanager/authorize/admin/validateToken",
+    "login": "admin/login/",
+    "logout": "admin/logout/user"
 } 
