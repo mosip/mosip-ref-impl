@@ -293,7 +293,6 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     });
     this.enableBucketTabs();
     this.deletedNames = [...this.names];
-    console.log(this.availabilityData);
     // this.placeNamesInSlots();
   }
 

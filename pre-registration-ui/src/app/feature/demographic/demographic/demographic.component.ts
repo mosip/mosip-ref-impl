@@ -295,9 +295,9 @@ export class DemographicComponent extends FormDeactivateGuardService
     return new Promise((resolve) => {
       this.dataStorageService.getUser(preRegId).subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
-          console.log(response);
           this.user.request = response[appConstants.RESPONSE];
-          resolve(true);
+          console.log(this.user.request);
+          resolve(response[appConstants.RESPONSE]);
         }
       });
     });
