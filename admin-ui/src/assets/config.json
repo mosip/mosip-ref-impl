@@ -1,7 +1,7 @@
 {
     "primaryLangCode": "eng",
     "secondaryLangCode": "ara",
-    "baseUrl": "https://dev.mosip.net/v1/",
+    "baseUrl": "http://localhost:8080/v1/",
     "adminUrl":"/admin-ui/",
     "validateToken": "authmanager/authorize/admin/validateToken",
     "login": "admin/login/",
