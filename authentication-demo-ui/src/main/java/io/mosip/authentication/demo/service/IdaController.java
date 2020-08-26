@@ -343,12 +343,22 @@ public class IdaController {
 		return null;
 
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getCaptureRequestTemplate() {
+		String requestBody = new String(cryptoUtil.decodeBase64(env.getProperty("ida.request.captureRequest.template")));
+		System.out.println(requestBody);
+		return requestBody;
+	}
 
 	private String captureFingerprint() throws Exception {
 		responsetextField.setText("Capturing Fingerprint...");
-		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
+		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");	
 		
-		String requestBody = env.getProperty("ida.request.captureRequest.template");
+		String requestBody = getCaptureRequestTemplate();
 		
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFinger.timeout"))
 								   .replace("$count", getFingerCount()).
@@ -389,7 +399,7 @@ public class IdaController {
 		responsetextField.setText("Capturing Iris...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
-	String requestBody = env.getProperty("ida.request.captureRequest.template");
+	String requestBody = getCaptureRequestTemplate();
 		
 	requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureIris.timeout"))
 								   .replace("$count", getIrisCount()).
@@ -411,7 +421,7 @@ public class IdaController {
 		responsetextField.setText("Capturing Face...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
-		String requestBody = env.getProperty("ida.request.captureRequest.template");
+		String requestBody = getCaptureRequestTemplate();
 		
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFace.timeout"))
 									   .replace("$count", getFaceCount()).
@@ -459,11 +469,12 @@ public class IdaController {
 
 	private String getCaptureTime() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
 		df.setTimeZone(tz);
 		String nowAsISO = df.format(new Date());
 		return nowAsISO;
 	}
+	
 	@SuppressWarnings("rawtypes")
 	private String capturebiometrics(String requestBody) throws Exception {
 		System.out.println("Capture request:\n" + requestBody);
@@ -484,29 +495,43 @@ public class IdaController {
 			}
 			bR.close();
 		} catch (IOException e) {
+			responsetextField.setText("Device connectivity failed....");
+			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			e.printStackTrace();
 		}
 		String result = stringBuilder.toString();
-		String error = ((Map) mapper.readValue(result, Map.class).get("error")).get("errorCode").toString();
+		String error = null;
 		
-		if (error.equals("0")) {
-			responsetextField.setText("Capture Success");
-			responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
-			ObjectMapper objectMapper = new ObjectMapper();
-			List dataList = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
-			for (int i = 0; i < dataList.size(); i++) {
-				Map b = (Map) dataList.get(i);
-				String dataJws = (String) b.get("data");
-				Map dataMap = objectMapper.readValue(CryptoUtil.decodeBase64(dataJws.split("\\.")[1]), Map.class);
-				System.out.println((i+1) + " Bio-type: " + dataMap.get("bioType") + " Bio-sub-type: " +  dataMap.get("bioSubType"));
-				previousHash = (String) b.get("hash");
-			}
-		} else {
-			responsetextField.setText("Capture Failed");
+		List data = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
+		if(data == null) {
+			responsetextField.setText(result);
 			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 		}
+		
+		for (int j = 0; j < data.size(); j++) {
+			Map e = (Map) data.get(j);			
+			Map errorMap = (Map) e.get("error");
+			error = errorMap.get("errorCode").toString();		
+			if (error.equals("0")) {
+				responsetextField.setText("Capture Success");
+				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
+				ObjectMapper objectMapper = new ObjectMapper();
+				List dataList = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
+				for (int i = 0; i < dataList.size(); i++) {
+					Map b = (Map) dataList.get(i);
+					String dataJws = (String) b.get("data");
+					Map dataMap = objectMapper.readValue(CryptoUtil.decodeBase64(dataJws.split("\\.")[1]), Map.class);
+					System.out.println((i+1) + " Bio-type: " + dataMap.get("bioType") + " Bio-sub-type: " +  dataMap.get("bioSubType"));
+					previousHash = (String) b.get("hash");
+				}
+			} else {
+				responsetextField.setText("Capture Failed");
+				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
+				break;
+			}
+		}
+		
 		System.out.println(result);
-	
 		return result;
 	}
 
