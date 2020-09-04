@@ -167,6 +167,8 @@ export class DemographicComponent extends FormDeactivateGuardService
   secondaryuserForm = false;
   locationHeirarchy = [];
   validationMessage: any;
+  dynamicFields = [];
+  dynamicFieldAndValues = [];
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -281,8 +283,8 @@ export class DemographicComponent extends FormDeactivateGuardService
     }
   }
 
-  getPreRegId(){
-    return new Promise(resolve =>{
+  getPreRegId() {
+    return new Promise((resolve) => {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = param["appId"];
         console.log(this.preRegId);
@@ -295,9 +297,9 @@ export class DemographicComponent extends FormDeactivateGuardService
     return new Promise((resolve) => {
       this.dataStorageService.getUser(preRegId).subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
-          console.log(response);
           this.user.request = response[appConstants.RESPONSE];
-          resolve(true);
+          console.log(this.user.request);
+          resolve(response[appConstants.RESPONSE]);
         }
       });
     });
@@ -339,8 +341,8 @@ export class DemographicComponent extends FormDeactivateGuardService
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         console.log(response);
-        //this.identityData = response["identity"];
-        //this.locationHeirarchy = [...response["locationHierarchy"]];
+        // this.identityData = response["identity"];
+        // this.locationHeirarchy = [...response["locationHierarchy"]];
         this.identityData = response['response']["idSchema"]["identity"];
         this.locationHeirarchy = [...response['response']["idSchema"]["locationHierarchy"]];
         console.log(this.locationHeirarchy);
@@ -353,10 +355,16 @@ export class DemographicComponent extends FormDeactivateGuardService
             this.uiFields.push(obj);
           }
         });
+        this.dynamicFields = this.uiFields.filter(
+          (fields) =>
+            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+        );
+        console.log(this.dynamicFields);
         this.setDropDownArrays();
         this.setLocations();
         this.setGender();
         this.setResident();
+        this.setDynamicFieldValues();
         resolve(true);
       });
     });
@@ -601,6 +609,40 @@ export class DemographicComponent extends FormDeactivateGuardService
     );
   }
 
+  private async setDynamicFieldValues() {
+    await this.getDynamicFieldValues(this.primaryLang);
+    await this.getDynamicFieldValues(this.secondaryLang);
+  }
+
+  getDynamicFieldValues(lang) {
+     return new Promise((resolve) => {
+      this.dataStorageService
+        .getDynamicFieldsandValues(lang)
+        .subscribe((response) => {
+          console.log(response);
+          let dynamicField = response[appConstants.RESPONSE]["data"];
+          this.dynamicFields.forEach((field) => {
+            dynamicField.forEach((res) => {
+              if (field.id === res.name && res.langCode === this.primaryLang) {
+                this.filterOnLangCode(this.primaryLang, field, res["fieldVal"]);
+              }
+              if (
+                field.id === res.name &&
+                res.langCode === this.secondaryLang
+              ) {
+                this.filterOnLangCode(
+                  this.secondaryLang,
+                  field,
+                  res["fieldVal"]
+                );
+              }
+            });
+          });
+        });
+      resolve(true);
+    });
+  }
+
   /**
    * @description This is to get the list of gender available in the master data.
    *
@@ -641,7 +683,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       let secondaryIndex = 1;
       this.loggerService.info("user", this.user);
       console.log("user", this.user);
-      if(this.user.request === undefined){
+      if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
       if (
@@ -661,7 +703,7 @@ export class DemographicComponent extends FormDeactivateGuardService
           !appConstants.TRANSLITERATE_FIELDS.includes(control.id)
         ) {
           if (control.id === "dateOfBirth") {
-             this.setDateOfBirth();
+            this.setDateOfBirth();
           } else {
             this.userForm.controls[`${control.id}`].setValue(
               this.user.request.demographicDetails.identity[`${control.id}`]
@@ -682,15 +724,15 @@ export class DemographicComponent extends FormDeactivateGuardService
           );
         } else if (control.controlType === "dropdown") {
           if (this.locationHeirarchy.includes(control.id)) {
-              this.dropdownApiCall(control);
-              if(control.id === 'postalCode'){
-                this.userForm.controls[`${control.id}`].setValue(
-                  this.user.request.demographicDetails.identity[`${control.id}`]
-                );
-                this.transUserForm.controls[`${control.id}`].setValue(
-                  this.user.request.demographicDetails.identity[`${control.id}`]
-                );
-              } else {
+            this.dropdownApiCall(control);
+            if (control.id === "postalCode") {
+              this.userForm.controls[`${control.id}`].setValue(
+                this.user.request.demographicDetails.identity[`${control.id}`]
+              );
+              this.transUserForm.controls[`${control.id}`].setValue(
+                this.user.request.demographicDetails.identity[`${control.id}`]
+              );
+            } else {
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[control.id][index]
                   .value
@@ -700,7 +742,7 @@ export class DemographicComponent extends FormDeactivateGuardService
                   secondaryIndex
                 ].value
               );
-              }
+            }
           } else {
             this.userForm.controls[`${control.id}`].setValue(
               this.user.request.demographicDetails.identity[control.id][index]
@@ -779,26 +821,25 @@ export class DemographicComponent extends FormDeactivateGuardService
     });
   }
 
-  setDateOfBirth(){
-    this.date = this.user.request.demographicDetails.identity['dateOfBirth'
+  setDateOfBirth() {
+    this.date = this.user.request.demographicDetails.identity[
+      "dateOfBirth"
     ].split("/")[2];
     this.month = this.user.request.demographicDetails.identity[
-      'dateOfBirth'
+      "dateOfBirth"
     ].split("/")[1];
     this.year = this.user.request.demographicDetails.identity[
-      'dateOfBirth'
+      "dateOfBirth"
     ].split("/")[0];
     this.currentAge = this.calculateAge(
-      this.user.request.demographicDetails.identity['dateOfBirth']
+      this.user.request.demographicDetails.identity["dateOfBirth"]
     ).toString();
 
     this.userForm.controls[`dateOfBirth`].setValue(
-      this.user.request.demographicDetails.identity['dateOfBirth'
-    ]
+      this.user.request.demographicDetails.identity["dateOfBirth"]
     );
     this.transUserForm.controls[`dateOfBirth`].setValue(
-      this.user.request.demographicDetails.identity['dateOfBirth'
-    ]
+      this.user.request.demographicDetails.identity["dateOfBirth"]
     );
   }
   /**
@@ -1198,7 +1239,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
       url = Utils.getURL(this.router.url, "file-upload");
-      localStorage.removeItem('addingUserFromPreview');
+      localStorage.removeItem("addingUserFromPreview");
       this.router.navigate([url, this.preRegId]);
     }
   }

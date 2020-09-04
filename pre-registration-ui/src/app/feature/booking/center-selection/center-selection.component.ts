@@ -358,6 +358,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
         ) {
           this.routeDashboard();
         } else {
+          localStorage.setItem("modifyUser","true");
           this.router.navigate([`${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`]);
         }
         
