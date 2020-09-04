@@ -28,7 +28,7 @@ export class AuthService {
 
   removeToken() {
     this.token = null;
-    this.deleteCookie();
+    // this.deleteCookie();
   }
 
   getCookie() {
@@ -37,11 +37,11 @@ export class AuthService {
     if (match) return match[2];
   }
 
-  deleteCookie() {
-    const name = this.cookieName;
-    console.log(this.getCookie());
-    document.cookie = `${name}=null`;
-  }
+  // deleteCookie() {
+  //   const name = this.cookieName;
+  //   console.log(this.getCookie());
+  //   document.cookie = `${name}=null`;
+  // }
 
   isAuthenticated() {
     if (

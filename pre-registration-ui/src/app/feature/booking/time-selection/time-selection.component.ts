@@ -63,6 +63,8 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   userInfo: any = [];
   regCenterInfo: any;
   showsNamesContainer: boolean;
+  afternoonSlotAvailable: boolean = false;
+  morningSlotAvailable: boolean = false;
   constructor(
     private bookingService: BookingService,
     public dialog: MatDialog,
@@ -267,9 +269,11 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
         if (fromTime[0] < this.registrationCenterLunchTime[0]) {
           slot.tag = "morning";
           element.showMorning = true;
+          this.morningSlotAvailable = true;
         } else {
           slot.tag = "afternoon";
           element.showAfternoon = true;
+          this.afternoonSlotAvailable = true;
         }
         slot.displayTime =
           Number(fromTime[0]) > 12 ? Number(fromTime[0]) - 12 : fromTime[0];

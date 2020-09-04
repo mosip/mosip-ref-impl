@@ -46,6 +46,7 @@
   </mat-card>
   <div class="time-seelection__slot-groups-div" *ngIf="availabilityData.length !== 0">
     <a
+    *ngIf="morningSlotAvailable" 
       (click)="tabSelected('morning')"
       [ngClass]="
         activeTab === 'morning' ? 'time-seelection__slot-groups-div-selected' : 'time-seelection__slot-groups-div a'
@@ -53,6 +54,7 @@
       >{{ 'timeSelection.text_morning' | translate }}</a
     >
     <a
+      *ngIf="afternoonSlotAvailable" 
       (click)="tabSelected('afternoon')"
       [ngClass]="
         activeTab === 'afternoon' ? 'time-seelection__slot-groups-div-selected' : 'time-seelection__slot-groups-div a'

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 
-import * as appConstants from '../../app.constants';
-import { AppConfigService } from '../../app-config.service';
-import { Applicant } from '../../shared/models/dashboard-model/dashboard.modal';
-import { ConfigService } from './config.service';
-import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
+import * as appConstants from "../../app.constants";
+import { AppConfigService } from "../../app-config.service";
+import { Applicant } from "../../shared/models/dashboard-model/dashboard.modal";
+import { ConfigService } from "./config.service";
+import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 
 /**
  * @description This class is responsible for sending or receiving data to the service.
@@ -15,7 +15,7 @@ import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
  * @class DataStorageService
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class DataStorageService {
   /**
@@ -32,11 +32,12 @@ export class DataStorageService {
     private configService: ConfigService
   ) {}
 
-  BASE_URL = this.appConfigService.getConfig()['BASE_URL'];
-  PRE_REG_URL = this.appConfigService.getConfig()['PRE_REG_URL'];
+  BASE_URL = this.appConfigService.getConfig()["BASE_URL"];
+  PRE_REG_URL = this.appConfigService.getConfig()["PRE_REG_URL"];
 
   getUsers(userId: string) {
-    let url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;
+    let url =
+      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;
     return this.httpClient.get<Applicant[]>(url);
   }
 
@@ -48,7 +49,12 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   getUser(preRegId: string) {
-    let url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants + appConstants.APPENDER + preRegId;
+    let url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.applicants +
+      appConstants.APPENDER +
+      preRegId;
     return this.httpClient.get(url);
   }
 
@@ -85,12 +91,20 @@ export class DataStorageService {
    */
   getTransliteration(request: any) {
     const obj = new RequestModel(appConstants.IDS.transliteration, request);
-    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.transliteration;
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.transliteration;
     return this.httpClient.post(url, obj);
   }
 
   getUserDocuments(preRegId) {
-    return this.httpClient.get(this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.document + preRegId);
+    return this.httpClient.get(
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.document +
+        preRegId
+    );
   }
 
   /**
@@ -102,32 +116,47 @@ export class DataStorageService {
    */
   addUser(identity: any) {
     const obj = new RequestModel(appConstants.IDS.newUser, identity);
-    let url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;
+    let url =
+      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;
     return this.httpClient.post(url, obj);
   }
 
   updateUser(identity: any, preRegId: string) {
-    let url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants + appConstants.APPENDER + preRegId;
+    let url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.applicants +
+      appConstants.APPENDER +
+      preRegId;
     const obj = new RequestModel(appConstants.IDS.updateUser, identity);
     return this.httpClient.put(url, obj);
   }
 
   sendFile(formdata: FormData, preRegId: string) {
     return this.httpClient.post(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.post_document + preRegId,
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.post_document +
+        preRegId,
       formdata
     );
   }
 
   deleteRegistration(preId: string) {
     return this.httpClient.delete(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.delete_application + preId
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.delete_application +
+        preId
     );
   }
 
   cancelAppointment(data: RequestModel, preRegId: string) {
     return this.httpClient.put(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.cancelAppointment + preRegId,
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.cancelAppointment +
+        preRegId,
       data
     );
   }
@@ -137,13 +166,15 @@ export class DataStorageService {
       this.BASE_URL +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.nearby_registration_centers +
-        localStorage.getItem('langCode') +
-        '/' +
+        localStorage.getItem("langCode") +
+        "/" +
         coords.longitude +
-        '/' +
+        "/" +
         coords.latitude +
-        '/' +
-        this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_nearby_centers)
+        "/" +
+        this.configService.getConfigByKey(
+          appConstants.CONFIG_KEYS.preregistration_nearby_centers
+        )
     );
   }
 
@@ -152,35 +183,48 @@ export class DataStorageService {
       this.BASE_URL +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.registration_centers_by_name +
-        localStorage.getItem('langCode') +
-        '/' +
+        localStorage.getItem("langCode") +
+        "/" +
         locType +
-        '/' +
+        "/" +
         text
     );
   }
 
   getLocationTypeData() {
     return this.httpClient.get(
-      this.BASE_URL + appConstants.APPEND_URL.master_data + 'locations/' + localStorage.getItem('langCode')
+      this.BASE_URL +
+        appConstants.APPEND_URL.master_data +
+        "locations/" +
+        localStorage.getItem("langCode")
     );
   }
 
-  getLocationsHierarchyByLangCode(langCode:string,locCode:string) {
+  getLocationsHierarchyByLangCode(langCode: string, locCode: string) {
     return this.httpClient.get(
-      this.BASE_URL + appConstants.APPEND_URL.master_data + 'locations/' + locCode + '/' + langCode
+      this.BASE_URL +
+        appConstants.APPEND_URL.master_data +
+        "locations/" +
+        locCode +
+        "/" +
+        langCode
     );
   }
 
   getAvailabilityData(registrationCenterId) {
     return this.httpClient.get(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.booking_availability + registrationCenterId
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.booking_availability +
+        registrationCenterId
     );
   }
 
   makeBooking(request: RequestModel) {
     return this.httpClient.post(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.booking_appointment,
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.booking_appointment,
       request
     );
   }
@@ -192,7 +236,9 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   getLocationMetadataHirearchy() {
-    return this.configService.getConfigByKey(appConstants.CONFIG_KEYS.mosip_country_code);
+    return this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.mosip_country_code
+    );
   }
 
   /**
@@ -216,9 +262,15 @@ export class DataStorageService {
 
   deleteFile(documentId, preRegId) {
     return this.httpClient.delete(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.post_document + documentId,
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.post_document +
+        documentId,
       {
-        params: new HttpParams().append(appConstants.PARAMS_KEYS.preRegistrationId, preRegId)
+        params: new HttpParams().append(
+          appConstants.PARAMS_KEYS.preRegistrationId,
+          preRegId
+        ),
       }
     );
   }
@@ -233,31 +285,40 @@ export class DataStorageService {
       this.PRE_REG_URL +
       appConstants.APPEND_URL.post_document +
       destinationId +
-      '?catCode=' +
+      "?catCode=" +
       appConstants.PARAMS_KEYS.POA +
-      '&sourcePreId=' +
+      "&sourcePreId=" +
       sourceId;
     // const params = new URLSearchParams().set(appConstants.PARAMS_KEYS.catCode, appConstants.PARAMS_KEYS.POA);
     // params.set(appConstants.PARAMS_KEYS.sourcePrId, sourceId);
 
     return this.httpClient.put(url, {
-      observe: 'body',
-      responseType: 'json'
+      observe: "body",
+      responseType: "json",
     });
   }
 
   getFileData(fileDocumentId, preId) {
     return this.httpClient.get(
-      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.post_document + fileDocumentId,
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.post_document +
+        fileDocumentId,
       {
-        params: new HttpParams().append(appConstants.PARAMS_KEYS.preRegistrationId, preId)
+        params: new HttpParams().append(
+          appConstants.PARAMS_KEYS.preRegistrationId,
+          preId
+        ),
       }
     );
   }
 
   generateQRCode(data: string) {
     const obj = new RequestModel(appConstants.IDS.qrCode, data);
-    return this.httpClient.post(this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.qr_code, obj);
+    return this.httpClient.post(
+      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.qr_code,
+      obj
+    );
   }
 
   sendNotification(data: FormData) {
@@ -270,29 +331,39 @@ export class DataStorageService {
     );
   }
 
-  recommendedCenters(langCode: string, locationHierarchyCode: number, data: string[]) {
+  recommendedCenters(
+    langCode: string,
+    locationHierarchyCode: number,
+    data: string[]
+  ) {
     let url =
       this.BASE_URL +
       appConstants.APPEND_URL.master_data +
-      'registrationcenters/' +
+      "registrationcenters/" +
       langCode +
-      '/' +
+      "/" +
       locationHierarchyCode +
-      '/names?';
-    data.forEach(name => {
-      url += 'name=' + name;
+      "/names?";
+    data.forEach((name) => {
+      url += "name=" + name;
       if (data.indexOf(name) !== data.length - 1) {
-        url += '&';
+        url += "&";
       }
     });
-    if (url.charAt(url.length - 1) === '&') {
+    if (url.charAt(url.length - 1) === "&") {
       url = url.substring(0, url.length - 1);
     }
     return this.httpClient.get(url);
   }
 
   getRegistrationCenterByIdAndLangCode(id: string, langCode: string) {
-    const url = this.BASE_URL + appConstants.APPEND_URL.master_data + 'registrationcenters/' + id + '/' + langCode;
+    const url =
+      this.BASE_URL +
+      appConstants.APPEND_URL.master_data +
+      "registrationcenters/" +
+      id +
+      "/" +
+      langCode;
     return this.httpClient.get(url);
   }
 
@@ -300,16 +371,18 @@ export class DataStorageService {
     const url =
       this.BASE_URL +
       appConstants.APPEND_URL.master_data +
-      'templates/' +
-      localStorage.getItem('langCode') +
-      '/' +
+      "templates/" +
+      localStorage.getItem("langCode") +
+      "/" +
       templateType;
     return this.httpClient.get(url);
   }
 
   getApplicantType(docuemntCategoryDto) {
     return this.httpClient.post(
-      this.BASE_URL + appConstants.APPEND_URL.applicantType + appConstants.APPEND_URL.getApplicantType,
+      this.BASE_URL +
+        appConstants.APPEND_URL.applicantType +
+        appConstants.APPEND_URL.getApplicantType,
       docuemntCategoryDto
     );
   }
@@ -320,38 +393,53 @@ export class DataStorageService {
       appConstants.APPEND_URL.location +
       appConstants.APPEND_URL.validDocument +
       applicantCode +
-      '/languages';
+      "/languages";
     return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
-      params: new HttpParams().append(appConstants.PARAMS_KEYS.getDocumentCategories, localStorage.getItem('langCode'))
+      params: new HttpParams().append(
+        appConstants.PARAMS_KEYS.getDocumentCategories,
+        localStorage.getItem("langCode")
+      ),
     });
   }
 
   getConfig() {
     //    return this.httpClient.get('./assets/configs.json');
-    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.auth + appConstants.APPEND_URL.config;
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.auth +
+      appConstants.APPEND_URL.config;
     return this.httpClient.get(url);
   }
 
   sendOtp(userId: string) {
     const req = {
-      userId: userId
+      userId: userId,
     };
 
     const obj = new RequestModel(appConstants.IDS.sendOtp, req);
 
-    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.auth + appConstants.APPEND_URL.send_otp;
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.auth +
+      appConstants.APPEND_URL.send_otp;
     return this.httpClient.post(url, obj);
   }
 
   verifyOtp(userId: string, otp: string) {
     const request = {
       otp: otp,
-      userId: userId
+      userId: userId,
     };
 
     const obj = new RequestModel(appConstants.IDS.validateOtp, request);
 
-    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.auth + appConstants.APPEND_URL.login;
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.auth +
+      appConstants.APPEND_URL.login;
     return this.httpClient.post(url, obj);
   }
 
@@ -365,7 +453,12 @@ export class DataStorageService {
    */
   getWorkingDays(registartionCenterId: string, langCode: string) {
     const url =
-      this.BASE_URL + appConstants.APPEND_URL.master_data + 'workingdays/' + registartionCenterId + '/' + langCode;
+      this.BASE_URL +
+      appConstants.APPEND_URL.master_data +
+      "workingdays/" +
+      registartionCenterId +
+      "/" +
+      langCode;
     return this.httpClient.get(url);
   }
 
@@ -376,38 +469,53 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   onLogout() {
-    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.auth + appConstants.APPEND_URL.logout;
-    return this.httpClient.post(url, '');
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.auth +
+      appConstants.APPEND_URL.logout;
+    return this.httpClient.post(url, "");
   }
 
-  verifyGCaptcha(captcha){
+  verifyGCaptcha(captcha) {
     console.log(captcha);
-    const headers = new HttpHeaders({'Content-Type':'application/json'});
-    const url = this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
-    return this.httpClient.post(url,captcha);
+    const headers = new HttpHeaders({ "Content-Type": "application/json" });
+    const url =
+      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
+    return this.httpClient.post(url, captcha);
   }
 
   getIdentityJson() {
-    const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    const url = "assets/identity-spec.json";
     return this.httpClient.get(url);
-   }
+  }
 
-
-   getRegistrationCentersById(regCenterId, langCode:string){
+  getRegistrationCentersById(regCenterId, langCode: string) {
     return this.httpClient.get(
       this.BASE_URL +
-      appConstants.APPEND_URL.master_data +
-      appConstants.APPEND_URL.registration_centers_by_name + regCenterId + '/' + langCode
+        appConstants.APPEND_URL.master_data +
+        appConstants.APPEND_URL.registration_centers_by_name +
+        regCenterId +
+        "/" +
+        langCode
     );
-   }
+  }
 
-   getAppointmentDetails(preRegId){
+  getAppointmentDetails(preRegId) {
     return this.httpClient.get(
       this.BASE_URL +
-      this.PRE_REG_URL +
-      appConstants.APPEND_URL.booking_appointment + '/' + preRegId
+        this.PRE_REG_URL +
+        appConstants.APPEND_URL.booking_appointment +
+        "/" +
+        preRegId
     );
-   }
+  }
 
-
+  getDynamicFieldsandValues(langCode) {
+    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    const url = this.BASE_URL + appConstants.APPEND_URL.master_data + `dynamicfields?langCode=${langCode}`;
+    console.log(url);
+    return this.httpClient.get(url);
+  }
 }
