@@ -1,2 +1,1 @@
-java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id -Dmosip.base.url=https://extint.southindia.cloudapp.azure.com -DmispLicenseKey=UmjbDSra8pzOGd5rVtKekTb9D6VdvOQg4Kmw5TzBdw18mbzzME -DpartnerId=748757 -DpartnerApiKey=9418294 -jar ./target/authentication-demo-ui-1.0.9.jar
-
+java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id -Dmosip.base.url=https://sandboxv2.southindia.cloudapp.azure.com -Dspring.cloud.config.label=1.0.9 -Dspring.profiles.active=qa -Dspring.cloud.config.uri=http://104.211.212.28:51000 -jar ./target/authentication-demo-ui-1.0.9.jar
