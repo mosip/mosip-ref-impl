@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewEncapsulation, ElementRef, ViewChildren} from '@angular/core';
+import {Component,  ViewEncapsulation} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { BulkuploadService } from 'src/app/core/services/bulkupload.service';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 
