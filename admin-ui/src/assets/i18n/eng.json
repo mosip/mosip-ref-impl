@@ -15,6 +15,11 @@
         },
         "item4": {
             "title": "Packet Status"
+        },
+        "item5": {
+            "title": "Bulk Upload",
+            "subItem1": "Master Data",
+            "subItem2": "Packets"
         }
     },
     "center": {
@@ -210,6 +215,12 @@
         "mapped-documents": "Mapped Documents",
         "unmapped-documents": "Unmapped Documents",
         "masterDataTypes": "Masterdata Types"
+    },
+    "masterdataupload": {
+        "title": "Master Data Upload"
+    },
+    "packetupload": {
+        "title": "Packet Upload"
     },
     "devices": {
         "title":"Devices",
