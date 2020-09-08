@@ -35,6 +35,13 @@ const routes: Routes = [
           import('./features/packet-status/packet-status.module').then(
             m => m.PacketStatusModule
           )
+      },
+      {
+        path: 'bulkupload',
+        loadChildren: () =>
+          import('./features/bulkupload/bulkupload.module').then(
+            m => m.BulkuploadModule
+          )
       }
     ], canActivateChild : [AuthguardService] , canActivate: [LanguageGuard]
   },

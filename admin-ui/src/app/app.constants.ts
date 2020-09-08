@@ -68,10 +68,33 @@ export const navItems = [
   {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
-    route: '/admin/masterdata',
+    route: '/admin/packet-status',
     children: null,
     auditEventId: 'ADM-009',
     roles: ['GLOBAL_ADMIN']
+  },
+  {
+    displayName: 'menuItems.item5.title',
+    icon: 'assets/images/support.svg',
+    route: 'admin/bulkupload',
+    children: [
+      {
+        displayName: 'menuItems.item5.subItem1',
+        icon: null,
+        route: '/admin/bulkupload/masterdataupload',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },
+      {
+        displayName: 'menuItems.item5.subItem2',
+        icon: null,
+        route: '/admin/bulkupload/packetupload',
+        auditEventId: 'ADM-005',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      }
+    ],
+    auditEventId: 'ADM-003',
+    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   }
 ];
 
@@ -294,7 +317,10 @@ export const ListViewIdKeyMapping = {
   'individual-type': { idKey: 'code', auditEventId: 'ADM-077' },
   'gender-type': { idKey: 'code', auditEventId: 'ADM-078' },
   'center-type': { idKey: 'code', auditEventId: 'ADM-079' },
-  holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' }
+  holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' },
+  masterdataupload : { idKey: 'transcationId', auditEventId: 'ADM-081' },
+  packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' }
+  
 };
 
 export const FilterMapping = {
