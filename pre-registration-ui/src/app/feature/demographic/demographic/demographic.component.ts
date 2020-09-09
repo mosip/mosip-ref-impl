@@ -1084,8 +1084,7 @@ export class DemographicComponent extends FormDeactivateGuardService
       const request: any = {
         from_field_lang: this.primaryLang,
         from_field_value: this.userForm.controls[`${fromControl}`].value,
-        to_field_lang: this.secondaryLang,
-        to_field_value: "",
+        to_field_lang: this.secondaryLang
       };
       if (this.primaryLang === this.secondaryLang) {
         this.transUserForm.controls[toControl].patchValue(
