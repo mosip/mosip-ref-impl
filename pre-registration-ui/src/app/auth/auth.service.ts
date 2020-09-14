@@ -8,6 +8,7 @@ import { DataStorageService } from "../core/services/data-storage.service";
 })
 export class AuthService {
   cookieName = "Authorization";
+  isCaptchaSuccess: boolean;
   constructor(
     private router: Router,
     private dataStorageService: DataStorageService,
@@ -28,7 +29,6 @@ export class AuthService {
 
   removeToken() {
     this.token = null;
-    // this.deleteCookie();
   }
 
   getCookie() {
@@ -37,11 +37,14 @@ export class AuthService {
     if (match) return match[2];
   }
 
-  // deleteCookie() {
-  //   const name = this.cookieName;
-  //   console.log(this.getCookie());
-  //   document.cookie = `${name}=null`;
-  // }
+  setCaptchaAuthenticate(isSuccess:boolean){
+   this.isCaptchaSuccess = isSuccess;
+  }
+   
+  isCaptchaAuthenticated(){
+    return this.isCaptchaSuccess;
+  }
+
 
   isAuthenticated() {
     if (

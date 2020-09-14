@@ -13,11 +13,12 @@ import {
 } from "ng-recaptcha";
 import { ConfigService } from "../core/services/config.service";
 import * as appConstants from "../app.constants";
+import { CaptchaComponent } from './captcha/captcha.component';
 export const language = new ConfigService().getConfigByKey(
   appConstants.CONFIG_KEYS.mosip_primary_language
 );
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, CaptchaComponent],
   imports: [
     FormsModule,
     CommonModule,
