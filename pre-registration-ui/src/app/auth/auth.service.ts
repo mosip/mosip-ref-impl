@@ -8,7 +8,7 @@ import { DataStorageService } from "../core/services/data-storage.service";
 })
 export class AuthService {
   cookieName = "Authorization";
-  isCaptchaSuccess: boolean;
+  isCaptchaSuccess: boolean = false;
   constructor(
     private router: Router,
     private dataStorageService: DataStorageService,
@@ -62,6 +62,7 @@ export class AuthService {
     localStorage.setItem("loggedOut", "true");
     this.removeToken();
     localStorage.removeItem("config");
+    this.setCaptchaAuthenticate(false);
     this.dataStorageService.onLogout().subscribe();
     this.router.navigate(["/"]);
     this.userIdle.stopWatching();

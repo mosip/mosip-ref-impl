@@ -37,7 +37,6 @@ export class CaptchaComponent implements OnInit {
           if (this.captchaSucess) {
             console.log("Captcha Authentication :" + this.captchaSucess);
             this.authService.setCaptchaAuthenticate(this.captchaSucess);
-            this.captchaError = false;
           } else {
             this.authService.setCaptchaAuthenticate(false);
           }
