@@ -132,7 +132,15 @@ export class LoginComponent implements OnInit {
   }
 
   loadRecaptchaSiteKey() {
-    this.enableCaptcha = this.configService.getConfigByKey("enable-captcha");
+    if (
+      this.configService.getConfigByKey("enable-captcha") === "false" ||
+      this.configService.getConfigByKey("enable-captcha") === undefined
+    ) {
+      this.enableCaptcha = false;
+    } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
+      this.enableCaptcha = true;
+    }
+    console.log(this.enableCaptcha + typeof this.enableCaptcha);
     if (!this.enableCaptcha) {
       this.enableSendOtp = true;
     }
