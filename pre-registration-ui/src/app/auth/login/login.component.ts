@@ -298,6 +298,7 @@ export class LoginComponent implements OnInit {
       this.errorMessage === undefined
     ) {
       this.showCaptcha = false;
+      this.captchaError = false;
     } else if (
       this.enableCaptcha &&
       this.authService.isCaptchaAuthenticated() &&
@@ -341,7 +342,7 @@ export class LoginComponent implements OnInit {
             this.showVerify = false;
             if (this.enableCaptcha) {
               this.showCaptcha = true;
-              localStorage.setItem("auth_captcha", "false");
+              this.authService.setCaptchaAuthenticate(false);
             }
             document.getElementById("minutesSpan").innerText = this.minutes;
             document.getElementById("timer").style.visibility = "hidden";

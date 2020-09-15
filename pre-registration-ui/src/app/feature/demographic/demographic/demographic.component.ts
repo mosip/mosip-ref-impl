@@ -622,9 +622,11 @@ export class DemographicComponent extends FormDeactivateGuardService
           console.log(response);
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
+            console.log(field);
             dynamicField.forEach((res) => {
               if (field.id === res.name && res.langCode === this.primaryLang) {
-                this.filterOnLangCode(this.primaryLang, field, res["fieldVal"]);
+                this.filterOnLangCode(this.primaryLang, res.name, res["fieldVal"]);
+                console.log(this.primarydropDownFields);
               }
               if (
                 field.id === res.name &&
@@ -632,7 +634,7 @@ export class DemographicComponent extends FormDeactivateGuardService
               ) {
                 this.filterOnLangCode(
                   this.secondaryLang,
-                  field,
+                  res.name,
                   res["fieldVal"]
                 );
               }
