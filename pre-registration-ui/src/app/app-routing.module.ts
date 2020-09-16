@@ -26,7 +26,7 @@ const appRoutes: Routes = [
       { path: 'file-upload/:appId', loadChildren: './feature/file-upload/file-upload.module#FileUploadModule' },
       { path: 'summary/:appId', loadChildren: './feature/summary/summary.module#SummaryModule' },
       { path: 'booking/:appId', loadChildren: './feature/booking/booking.module#BookingModule' },
-      { path: 'booking/mulityappointement', loadChildren: './feature/booking/booking.module#BookingModule' },
+      { path: 'booking/multiappointement', loadChildren: './feature/booking/booking.module#BookingModule' },
       
 
     ]

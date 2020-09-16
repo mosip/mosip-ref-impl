@@ -63,9 +63,9 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
   }
 
   async ngOnInit() {
-    if (this.router.url.includes("mulityappointement")) {
+    if (this.router.url.includes("multiappointement")) {
       this.preRegId = [
-        ...JSON.parse(localStorage.getItem("muiltyAppointment")),
+        ...JSON.parse(localStorage.getItem("multiappointement")),
       ];
     } else {
       this.activatedRoute.params.subscribe((param) => {
@@ -288,7 +288,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
 
   routeBack() {
     if (
-      this.router.url.includes("mulityappointement") ||
+      this.router.url.includes("multiappointement") ||
       localStorage.getItem("modifyMultipleAppointment") === "true"
     ) {
       this.routeDashboard();
@@ -353,7 +353,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
       if (messageObj.message === this.errorlabels.regCenterNotavailabe) {
         this.canDeactivateFlag = false;
         if (
-          this.router.url.includes("mulityappointement") ||
+          this.router.url.includes("multiappointement") ||
           localStorage.getItem("modifyMultipleAppointment") === "true"
         ) {
           this.routeDashboard();

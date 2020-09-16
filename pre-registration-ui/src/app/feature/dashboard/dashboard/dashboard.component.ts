@@ -547,8 +547,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       selectedPrids.push(id.applicationID);
       });
       console.log(selectedPrids);
-      localStorage.setItem("muiltyAppointment",JSON.stringify(selectedPrids));
-      url = Utils.getURL(this.router.url, `pre-registration/booking/mulityappointement/pick-center`,1);
+      localStorage.setItem("multiappointement",JSON.stringify(selectedPrids));
+      url = Utils.getURL(this.router.url, `pre-registration/booking/multiappointement/pick-center`,1);
       this.router.navigateByUrl(url);
     }
   
