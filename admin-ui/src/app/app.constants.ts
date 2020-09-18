@@ -68,7 +68,7 @@ export const navItems = [
   {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
-    route: '/admin/packet-status',
+    route: '/admin/masterdata',
     children: null,
     auditEventId: 'ADM-009',
     roles: ['GLOBAL_ADMIN']
