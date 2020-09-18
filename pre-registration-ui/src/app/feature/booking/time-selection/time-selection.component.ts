@@ -81,9 +81,9 @@ export class TimeSelectionComponent
   }
 
   async ngOnInit() {
-    if (this.router.url.includes("multiappointement")) {
+    if (this.router.url.includes("multiappointment")) {
       this.preRegId = [
-        ...JSON.parse(localStorage.getItem("multiappointement")),
+        ...JSON.parse(localStorage.getItem("multiappointment")),
       ];
     } else {
       this.activatedRoute.params.subscribe((param) => {
@@ -482,9 +482,9 @@ export class TimeSelectionComponent
               });
               this.bookingService.setSendNotification(true);
               const url = Utils.getURL(this.router.url, "summary", 3);
-              if (this.router.url.includes("multiappointement")) {
+              if (this.router.url.includes("multiappointment")) {
                 this.router.navigateByUrl(
-                  url + `/multiappointement/acknowledgement`
+                  url + `/multiappointment/acknowledgement`
                 );
               } else {
                 this.router.navigateByUrl(
@@ -553,9 +553,9 @@ export class TimeSelectionComponent
           appConstants.ERROR_CODES.slotNotAvailable
       ) {
         this.canDeactivateFlag = false;
-        if (this.router.url.includes("multiappointement")) {
+        if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/multiappointement/pick-center`
+            `${this.primaryLangCode}/pre-registration/booking/multiappointment/pick-center`
           );
         } else {
           this.router.navigateByUrl(
@@ -565,9 +565,9 @@ export class TimeSelectionComponent
       }
       if (this.errorlabels.centerDetailsNotAvailable === messageObj.message) {
         this.canDeactivateFlag = false;
-        if (this.router.url.includes("multiappointement")) {
+        if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/multiappointement/pick-center`
+            `${this.primaryLangCode}/pre-registration/booking/multiappointment/pick-center`
           );
         } else {
           this.router.navigateByUrl(

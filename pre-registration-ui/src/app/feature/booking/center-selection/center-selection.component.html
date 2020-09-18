@@ -153,7 +153,7 @@
                           changeTimeFormat(center.centerEndTime.substring(0, 5))
                       }}
                     </div>
-                    <div *ngIf="center.lunchStartTime === null && center.lunchEndTime === null">
+                    <div *ngIf="center.lunchStartTime === null || center.lunchEndTime === null">
                       Lunch:
                       {{
                         changeTimeFormat(center.lunchStartTime.substring(0, 5)) +
