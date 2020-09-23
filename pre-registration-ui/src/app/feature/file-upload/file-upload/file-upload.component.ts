@@ -148,19 +148,19 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-      this.identityData = response['response']["idSchema"]["identity"];
-      this.identityData.forEach((obj) => {
-        if (obj.inputRequired === true && obj.controlType === "fileupload") {
-          this.uiFields.push(obj);
-        }
+        this.identityData = response["response"]["idSchema"]["identity"];
+        this.identityData.forEach((obj) => {
+          if (obj.inputRequired === true && obj.controlType === "fileupload") {
+            this.uiFields.push(obj);
+          }
+        });
       });
-    });
-    resolve(true);
+      resolve(true);
     });
   }
 
   private getPrimaryLabels() {
-    console.log("uiFields>>>");
+    console.log("uiFields>>>" + this.uiFields);
   }
 
   /**
@@ -178,7 +178,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       await this.getUserInfo();
       await this.getUserFiles();
       this.getApplicantTypeID();
-    };
+    }
     if (!this.users[0].files) {
       this.users[0].files = this.userFiles;
     }
@@ -743,6 +743,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   handleFileInput(event: any, docName: string, docCode: string) {
+    console.log(event);
+    this.uiFields.forEach((field) => {
+      if (field.id === docCode && field.required) {
+        console.log("doc is required");
+      }
+    });
     const extensionRegex = new RegExp(
       "(?:" + this.allowedFilesHtml.replace(/,/g, "|") + ")"
     );
@@ -1115,9 +1121,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onBack() {
-    localStorage.setItem('modifyUser','true');
+    localStorage.setItem("modifyUser", "true");
     let url = Utils.getURL(this.router.url, "demographic");
-    this.router.navigateByUrl(url+ `/${this.preRegId}`);
+    this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
 
   /**
