@@ -154,8 +154,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.uiFields.push(obj);
           }
         });
+        resolve(true);
       });
-      resolve(true);
     });
   }
 
@@ -733,6 +733,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   clickOnButton(i) {
+    console.log(i);
     document.getElementById("file_" + i).click();
   }
 
@@ -745,7 +746,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   handleFileInput(event: any, docName: string, docCode: string) {
     console.log(event);
     this.uiFields.forEach((field) => {
-      if (field.id === docCode && field.required) {
+      console.log(field);
+      if (field.id === docCode && field.required  ) {
         console.log("doc is required");
       }
     });
