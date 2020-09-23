@@ -104,6 +104,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   identityData = [];
   uiFields = [];
   preRegId: number;
+  isDocUploadRequired = [];
 
   constructor(
     private registration: RegistrationService,
@@ -151,6 +152,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         this.identityData = response["response"]["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
           if (obj.inputRequired === true && obj.controlType === "fileupload") {
+            console.log(obj);
             this.uiFields.push(obj);
           }
         });
@@ -744,13 +746,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   handleFileInput(event: any, docName: string, docCode: string) {
-    console.log(event);
-    this.uiFields.forEach((field) => {
-      console.log(field);
-      if (field.id === docCode && field.required  ) {
-        console.log("doc is required");
-      }
-    });
     const extensionRegex = new RegExp(
       "(?:" + this.allowedFilesHtml.replace(/,/g, "|") + ")"
     );
@@ -1134,6 +1129,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
+    this.users[0].files[0].documentsMetaData.forEach((element) => {
+      console.log(element);
+     this.uiFields.forEach(field =>{
+       console.log(field);
+       if (field.id === element.docCatCode && field.required && element.docName ===null){
+         this.isDocUploadRequired.push(element.docCatCode);
+       }
+     });
+    });
+    console.log(this.isDocUploadRequired);
     localStorage.setItem("modifyDocument", "false");
     let url = Utils.getURL(this.router.url, "summary");
     this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
