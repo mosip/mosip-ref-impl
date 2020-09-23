@@ -22,7 +22,6 @@
             placeholder="{{ document.code }}"
             (selectionChange)="selectChange($event, i)"
             [disabled]="document.code === 'POA' && sameAsselected ? true : false"
-            required
           >
             <!-- (openedChange)="openedChange(i, $event)" -->
             <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
