@@ -151,7 +151,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         this.identityData = response["response"]["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
-          if (obj.inputRequired === true && obj.controlType === "fileupload") {
+          if (obj.controlType === "fileupload") {
             console.log(obj);
             this.uiFields.push(obj);
           }
@@ -1132,12 +1132,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     console.log(this.userFiles["documentsMetaData"]);
     this.userFiles["documentsMetaData"].forEach((element) => {
       console.log(element);
-     this.uiFields.forEach(field =>{
-       console.log(field);
-       if (field.id === element.docCatCode && field.required && element.docName ===null){
-         this.isDocUploadRequired.push(element.docCatCode);
-       }
-     });
+      this.uiFields.forEach((field) => {
+        console.log(field);
+        if (
+          field.id === element.docCatCode &&
+          field.required &&
+          element.docName === undefined
+        ) {
+          this.isDocUploadRequired.push(element.docCatCode);
+        }
+      });
     });
     console.log(this.isDocUploadRequired);
     localStorage.setItem("modifyDocument", "false");
