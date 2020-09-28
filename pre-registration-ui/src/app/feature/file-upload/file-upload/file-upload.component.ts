@@ -1129,7 +1129,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    this.users[0].files[0].documentsMetaData.forEach((element) => {
+    console.log(this.userFiles["documentsMetaData"]);
+    this.userFiles["documentsMetaData"].forEach((element) => {
       console.log(element);
      this.uiFields.forEach(field =>{
        console.log(field);
