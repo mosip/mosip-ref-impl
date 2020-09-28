@@ -1129,9 +1129,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   onNext() {
     this.userFiles["documentsMetaData"].forEach((element) => {
-      console.log("user doc "+element);
+      console.log("user doc "+element.docCatCode);
       this.uiFields.forEach((field) => {
-        console.log("required field"+field);
+        console.log("required field"+ field.id + field.required);
         if (
           field.id === element.docCatCode &&
           field.required &&
@@ -1139,11 +1139,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             element.docName === "" ||
             element.docName === null)
         ) {
+          console.log("inside loop");
           this.isDocUploadRequired.push(element.docCatCode);
         }
       });
     });
     console.log(this.isDocUploadRequired);
+    if(this.isDocUploadRequired.length>0){
+      let message = "please upload ";
+      let docList = "";
+      for(let i=0;i<this.isDocUploadRequired.length;i++){
+         docList = docList + this.isDocUploadRequired[i] + " ,";
+      }
+      this.displayMessage("Required",message+docList);
+    }
     localStorage.setItem("modifyDocument", "false");
     let url = Utils.getURL(this.router.url, "summary");
     this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
