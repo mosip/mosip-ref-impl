@@ -152,7 +152,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         this.identityData = response["response"]["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
           if (obj.controlType === "fileupload") {
-            console.log(obj);
             this.uiFields.push(obj);
           }
         });
@@ -1129,15 +1128,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    console.log(this.userFiles["documentsMetaData"]);
     this.userFiles["documentsMetaData"].forEach((element) => {
-      console.log(element);
+      console.log("user doc "+element);
       this.uiFields.forEach((field) => {
-        console.log(field);
+        console.log("required field"+field);
         if (
           field.id === element.docCatCode &&
           field.required &&
-          element.docName === undefined
+          (element.docName === undefined ||
+            element.docName === "" ||
+            element.docName === null)
         ) {
           this.isDocUploadRequired.push(element.docCatCode);
         }
