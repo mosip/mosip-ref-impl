@@ -1125,23 +1125,22 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
+    console.log(this.LOD);
+    console.log(this.users[0].files.documentsMetaData);
     this.LOD.forEach((document) => {
-      if (this.userFile[0][`${document.code}`] === undefined) {
-        console.log(document.code);
-        console.log(this.userFile[0][`${document.code}`]);
-        this.isDocUploadRequired.push(document.code);
-      } else {
-        this.uiFields.forEach((field) => {
-          if (
-            field.id === document.code &&
-            field.required &&
-            (this.userFile[0].docName !== undefined ||
-              this.userFile[0].docName === "")
-          ) {
-            console.log(document.code+"is uploaded");
-          }
-        });
-      }
+      this.users[0].files.documentsMetaData.forEach((file) => {
+        if (file.docCatCode === document.code) {
+          this.uiFields.forEach((field) => {
+            if (
+              field.id === document.code &&
+              field.required &&
+              file.docName === undefined
+            ) {
+              this.isDocUploadRequired.push(document.code);
+            }
+          });
+        }
+      });
     });
     if (this.isDocUploadRequired.length > 0) {
       let message = "please upload ";
@@ -1150,10 +1149,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         docList = docList + this.isDocUploadRequired[i] + " ,";
       }
       this.displayMessage("Required", message + docList);
+    } else {
+      localStorage.setItem("modifyDocument", "false");
+      let url = Utils.getURL(this.router.url, "summary");
+      this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     }
-    localStorage.setItem("modifyDocument", "false");
-    let url = Utils.getURL(this.router.url, "summary");
-    this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
   }
 
   /**
