@@ -643,7 +643,7 @@ export class CommonService {
     });
     dialogRef.afterClosed().subscribe(response => {   
       if(response){
-        let url = this.router.url.split('/')[3];
+        /*let url = this.router.url.split('/')[3];*/
         this.auditService.audit(18, 'ADM-100', 'unassign');
         let dynamicObject = data;
         delete dynamicObject.createdBy;
@@ -708,7 +708,7 @@ export class CommonService {
     });
     dialogRef.afterClosed().subscribe(response => {   
       if(response){
-        let url = this.router.url.split('/')[3];
+        /*let url = this.router.url.split('/')[3];*/
         this.auditService.audit(18, 'ADM-100', 'unassign');
         let dynamicObject = data;
         delete dynamicObject.createdBy;

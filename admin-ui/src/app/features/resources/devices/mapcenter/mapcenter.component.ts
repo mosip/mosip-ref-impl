@@ -173,7 +173,6 @@ export class MapcenterComponent{
   }
 
   saveData(){
-    let self = this;
     delete this.deviceInfo.createdBy;
     delete this.deviceInfo.createdDateTime;
     delete this.deviceInfo.updatedBy;
