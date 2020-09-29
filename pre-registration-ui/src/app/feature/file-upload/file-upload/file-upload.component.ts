@@ -160,9 +160,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getPrimaryLabels() {
-    console.log("uiFields>>>" + this.uiFields);
-  }
+  private getPrimaryLabels() {}
 
   /**
    *@description This method initialises the users array and the language set by the user.
@@ -734,7 +732,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   clickOnButton(i) {
-    console.log(i);
     document.getElementById("file_" + i).click();
   }
 
@@ -1128,30 +1125,31 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    this.userFiles["documentsMetaData"].forEach((element) => {
-      console.log("user doc "+element.docCatCode);
-      this.uiFields.forEach((field) => {
-        console.log("required field"+ field.id + field.required);
-        if (
-          field.id === element.docCatCode &&
-          field.required &&
-          (element.docName === undefined ||
-            element.docName === "" ||
-            element.docName === null)
-        ) {
-          console.log("inside loop");
-          this.isDocUploadRequired.push(element.docCatCode);
-        }
-      });
+    this.LOD.forEach((document) => {
+      if (this.userFile[0][`${document.code}`] === undefined) {
+        console.log(document.code);
+        console.log(this.userFile[0][`${document.code}`]);
+        this.isDocUploadRequired.push(document.code);
+      } else {
+        this.uiFields.forEach((field) => {
+          if (
+            field.id === document.code &&
+            field.required &&
+            (this.userFile[0].docName !== undefined ||
+              this.userFile[0].docName === "")
+          ) {
+            console.log(document.code+"is uploaded");
+          }
+        });
+      }
     });
-    console.log(this.isDocUploadRequired);
-    if(this.isDocUploadRequired.length>0){
+    if (this.isDocUploadRequired.length > 0) {
       let message = "please upload ";
       let docList = "";
-      for(let i=0;i<this.isDocUploadRequired.length;i++){
-         docList = docList + this.isDocUploadRequired[i] + " ,";
+      for (let i = 0; i < this.isDocUploadRequired.length; i++) {
+        docList = docList + this.isDocUploadRequired[i] + " ,";
       }
-      this.displayMessage("Required",message+docList);
+      this.displayMessage("Required", message + docList);
     }
     localStorage.setItem("modifyDocument", "false");
     let url = Utils.getURL(this.router.url, "summary");
