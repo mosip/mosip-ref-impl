@@ -1128,17 +1128,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     console.log(this.LOD);
     console.log(this.users[0].files.documentsMetaData);
     this.LOD.forEach((document) => {
-      this.users[0].files.documentsMetaData.forEach((file) => {
-        if (file.docCatCode === document.code) {
-          this.uiFields.forEach((field) => {
-            if (
-              field.id === document.code &&
-              field.required &&
-              file.docName === undefined
-            ) {
-              this.isDocUploadRequired.push(document.code);
-            }
-          });
+      this.uiFields.forEach((field) => {
+        if (field.id === document.code && field.required) {
+          let docArray = this.users[0].files.documentsMetaData.filter(
+            (file) => file.docCatCode === document.code
+          );
+          console.log(docArray);
+          if(docArray.length === 0){
+            this.isDocUploadRequired.push(document.code);
+          }
         }
       });
     });
