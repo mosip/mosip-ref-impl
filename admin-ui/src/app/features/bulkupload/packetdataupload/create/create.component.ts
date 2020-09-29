@@ -94,11 +94,16 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
+    let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
+    console.log("statusDescription>>>"+statusDescription);
     if(uploadResponse.response.status == "FAILED"){
+      for( let prop in statusDescription ){
+        console.log( statusDescription[prop] );
+      }
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: "File upload failed because virus was found. \n\n\n Please update your file and retry again.",
+        message: uploadResponse.response.statusDescription,
         btnTxt: "DONE"
       };
     }else{

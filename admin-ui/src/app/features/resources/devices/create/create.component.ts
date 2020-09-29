@@ -175,10 +175,30 @@ export class CreateComponent{
     this.getZoneData();
     this.initializePrimaryForm();
     this.initializeSecondaryForm();    
+    this.getCenterDetails();  
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response.devices.popupMessages;
+      });
+  }
+
+  getCenterDetails() {
+    const filterObject = new FilterValuesModel('name', 'unique', '');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let request = new RequestModel('', null, filterRequest);
+    this.dataStorageService
+      .getFiltersForAllMaterDataTypes('registrationcenters', request)
+      .subscribe(response => {
+        this.dropDownValues.regCenterCode.primary = response.response.filters;
+      });
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    request = new RequestModel('', null, filterRequest);
+    this.dataStorageService
+      .getFiltersForAllMaterDataTypes('registrationcenters', request)
+      .subscribe(response => {
+        this.dropDownValues.regCenterCode.secondary =
+          response.response.filters;
       });
   }
 
@@ -255,7 +275,8 @@ export class CreateComponent{
       validity: ['', [Validators.required]],
       isActive: [{ value: true}],
       zone: ['', [Validators.required]],
-      deviceSpecId: ['', [Validators.required]]
+      deviceSpecId: ['', [Validators.required]],
+      regCenterId: ['', [Validators.required]]
     });
   }
 
@@ -268,7 +289,8 @@ export class CreateComponent{
       validity: [''],
       isActive: [{ value: true }],
       zone: [''],
-      deviceSpecId: ['', [Validators.required]]
+      deviceSpecId: ['', [Validators.required]],
+      regCenterId: ['', [Validators.required]]
     });
   }
 

@@ -155,5 +155,28 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": []
+  "filterColumns":  [
+    {
+      "filtername": "name",
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "machinetypes",
+      "fieldName": "genderName",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "isActive",
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "true",
+      "datePicker": "false",
+      "apiName": "machinetypes",
+      "fieldName": "isActive",
+      "methodCallName": ""
+    }
+  ]
 }

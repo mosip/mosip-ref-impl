@@ -437,11 +437,17 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['deletedDateTime'];
         delete this.secondaryData['deviceTypeName'];
       }
+      /*console.log("this.router.url>>>"+this.router.url.split('/')[3]);*/
+      if(this.router.url.split('/')[3] === "blacklisted-words"){
+        this.primaryData['oldWord'] = this.primaryData['word'];
+        this.secondaryData['oldWord'] = this.secondaryData['word'];
+      }
       let request = new RequestModel(
         "",
         null,
         this.primaryData
       );
+
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
             let request = new RequestModel(

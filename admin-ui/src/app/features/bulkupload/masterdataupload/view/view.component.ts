@@ -77,7 +77,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/resources/masterdataupload/view?${url}`);
+    this.router.navigateByUrl(`admin/bulkupload/masterdataupload/view?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -98,7 +98,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl('admin/resources/masterdataupload/view?' + url);
+    this.router.navigateByUrl('admin/bulkupload/masterdataupload/view?' + url);
   }
 
   getMasterDataUpload() {
@@ -114,9 +114,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
+    console.log("filters>>>"+JSON.stringify(filters));
     console.log(JSON.stringify(this.requestModel));
     this.bulkuploadService
-      .getUploadDetails(this.requestModel, "masterdata")
+      .getUploadDetails(this.requestModel, "masterdata", filters.pagination.pageStart, filters.pagination.pageFetch)
       .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {
