@@ -13,8 +13,8 @@ export class BulkuploadService {
 
   private BASE_URL = this.appService.getConfig().baseUrl;
 
-  getUploadDetails(request: RequestModel, bulkuploadtype : any): Observable<any> {
-    return this.http.get(this.BASE_URL + 'admin'  + '/bulkupload/getAllTransactions?category='+bulkuploadtype);
+  getUploadDetails(request: RequestModel, bulkuploadtype : any, pageStart : any, pageFetch : any): Observable<any> {
+    return this.http.get(this.BASE_URL + 'admin'  + '/bulkupload/getAllTransactions?category='+bulkuploadtype+'&pageNumber='+Number(pageStart)+'&pageSize='+Number(pageFetch));
   }
 
   uploadData(data: any): Observable<any> {

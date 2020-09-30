@@ -3,7 +3,7 @@
   "actionButtons": [
     {
       "buttonName": {
-        "eng": "Upload Data",
+        "eng": "Upload Packet",
         "ara": "إضافة مركز",
         "fra": "Ajouter le centre"
       },

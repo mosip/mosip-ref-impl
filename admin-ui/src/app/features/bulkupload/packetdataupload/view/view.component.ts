@@ -78,7 +78,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     filters.pagination.pageStart = event.pageIndex;
     console.log("filters>>>"+JSON.stringify(filters));
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/resources/packetupload/view?${url}`);
+    this.router.navigateByUrl(`admin/bulkupload/packetupload/view?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -99,7 +99,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl('admin/resources/packetupload/view?' + url);
+    this.router.navigateByUrl('admin/bulkupload/packetupload/view?' + url);
   }
 
   getPacketUpload() {
@@ -117,7 +117,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.bulkuploadService
-      .getUploadDetails(this.requestModel, "packet")
+      .getUploadDetails(this.requestModel, "packet", filters.pagination.pageStart, filters.pagination.pageFetch)
       .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {

@@ -26,7 +26,7 @@
       "LinkURL": ""
     },
     {
-      "name": "enitiyName",
+      "name": "entityName",
       "showInListView": "true",
       "label": {"eng": "Table Name", "ara": "نوع المركز", "fra": "Type de centre"},
       "sortOrder": "",
