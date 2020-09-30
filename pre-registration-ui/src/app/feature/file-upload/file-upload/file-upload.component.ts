@@ -1125,25 +1125,33 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    console.log(this.LOD);
-    console.log(this.users[0].files.documentsMetaData);
+    let displayedDocCatCode = [];
+    let uploadDocumentsCatCode = [];
+    let requiredDocuments = [];
     this.LOD.forEach((document) => {
-      this.uiFields.forEach((field) => {
-        console.log(field);
-        if (field.id === document.code && field.required) {
-          let docArray = this.users[0].files.documentsMetaData.filter(
-            (file) => file.docCatCode === document.code
-          );
-          console.log(this.users[0].files.documentsMetaData.filter(
-            (file) => file.docCatCode === document.code
-          ));
-          console.log(docArray);
-          if(docArray.length === 0){
-            this.isDocUploadRequired.push(document.code);
+      displayedDocCatCode.push(document.code);
+    });
+    console.log(displayedDocCatCode);
+    this.users[0].files.documentsMetaData.forEach((file) => {
+      uploadDocumentsCatCode.push(file.docCatCode);
+    });
+    console.log(uploadDocumentsCatCode);
+    this.uiFields.forEach((field) => {
+      if (field.required) {
+        requiredDocuments.push(field.id);
+      }
+    });
+    console.log(requiredDocuments);
+    displayedDocCatCode.forEach((docCat) => {
+      requiredDocuments.forEach((reqDoc) => {
+        if (docCat === reqDoc) {
+          if (uploadDocumentsCatCode.indexOf(docCat) < 0) {
+            this.isDocUploadRequired.push(docCat);
           }
         }
       });
     });
+
     if (this.isDocUploadRequired.length > 0) {
       let message = "please upload ";
       let docList = "";
