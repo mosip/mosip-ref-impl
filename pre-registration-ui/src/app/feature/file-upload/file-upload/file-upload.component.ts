@@ -976,6 +976,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.removeFilePreview();
     }
     for (let file of this.users[0].files.documentsMetaData) {
+      if(!file.docCatCode.includes(this.userFile[0].docCatCode)){
+        this.users[0].files.documentsMetaData.push(this.userFile[0]);
+      }
+    }
+     
+    for (let file of this.users[0].files.documentsMetaData) {
       if (
         file.docCatCode == this.userFile[0].docCatCode ||
         file.docCatCode == null ||
@@ -1128,12 +1134,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let displayedDocCatCode = [];
     let uploadDocumentsCatCode = [];
     let requiredDocuments = [];
+    this.isDocUploadRequired = [];
     this.LOD.forEach((document) => {
       displayedDocCatCode.push(document.code);
     });
     console.log(displayedDocCatCode);
     this.users[0].files.documentsMetaData.forEach((file) => {
-      uploadDocumentsCatCode.push(file.docCatCode);
+      if(file.docCatCode!== undefined || file.docCatCode !== ""){
+        uploadDocumentsCatCode.push(file.docCatCode);
+      }
     });
     console.log(uploadDocumentsCatCode);
     this.uiFields.forEach((field) => {
