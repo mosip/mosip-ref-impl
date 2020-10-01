@@ -975,11 +975,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
-    for (let file of this.users[0].files.documentsMetaData) {
-      if(!file.docCatCode.includes(this.userFile[0].docCatCode)){
-        this.users[0].files.documentsMetaData.push(this.userFile[0]);
-      }
-    }
      
     for (let file of this.users[0].files.documentsMetaData) {
       if (
