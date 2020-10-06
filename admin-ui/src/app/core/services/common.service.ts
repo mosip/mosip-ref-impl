@@ -120,17 +120,54 @@ export class CommonService {
 
   private createMessage(type: string, listItem: string, data?: any) {
     let obj = {};
-    console.log("data>>>"+data);
+    let url = this.router.url.split('/')[3];
+    let textToDisplay = null;
+    if(url === "centers"){
+      textToDisplay = data.name;
+    }else if(url === "machines"){
+      textToDisplay = data.name;
+    }else if(url === "devices"){
+      textToDisplay = data.name;
+    }else if(url === "center-type"){
+      textToDisplay = data.name;
+    }else if(url === "blacklisted-words"){
+      textToDisplay = data.word;
+    }else if(url === "gender-type"){
+      textToDisplay = data.genderName;
+    }else if(url === "individual-type"){
+      textToDisplay = data.name;
+    }else if(url === "location"){
+      textToDisplay = data.zone;
+    }else if(url === "templates"){
+      textToDisplay = data.name;
+    }else if(url === "title"){
+      textToDisplay = data.titleName;
+    }else if(url === "device-specs"){
+      textToDisplay = data.name;
+    }else if(url === "device-types"){
+      textToDisplay = data.name;
+    }else if(url === "machine-specs"){
+      textToDisplay = data.name;
+    }else if(url === "machine-type"){
+      textToDisplay = data.name;
+    }else if(url === "document-type"){
+      textToDisplay = data.name;
+    }else if(url === "document-categories"){
+      textToDisplay = data.name;
+    }else if(url === "holiday"){
+      textToDisplay = data.holidayName;
+    }
+    /*console.log("textToDisplay>>>"+textToDisplay);*/
     if (type === 'success') {
       obj = {
         title: this.actionMessages[listItem]['success-title'],
-        message: this.actionMessages[listItem]['success-message'][0] + data + this.actionMessages[listItem]['success-message'][1],
+        message: this.actionMessages[listItem]['success-message'][0] + textToDisplay + this.actionMessages[listItem]['success-message'][1],
         btnTxt: this.actionMessages[listItem]['btnTxt']
       };
     } else if (type === 'error') {
       obj = {
         title: this.actionMessages[listItem]['error-title'],
-        message: this.actionMessages[listItem]['error-message'][0] + data + this.actionMessages[listItem]['error-message'][1],
+        message: this.actionMessages[listItem]['error-message'][0] + textToDisplay + this.actionMessages[listItem]['error-message'][1],
         btnTxt: this.actionMessages[listItem]['btnTxt']
       };
     }
@@ -147,17 +184,13 @@ export class CommonService {
       response => {
         console.log("request.request>>>"+JSON.stringify(request.request));
         if (!response.errors || response.errors.length === 0) {
-          if(request.request.genderName){
-            this.createMessage('success', callingFunction, request.request.genderName);
-          }else{
-            this.createMessage('success', callingFunction, request.request.name);
-          }          
+          this.createMessage('success', callingFunction, request.request);     
           this.router.navigateByUrl(this.router.url);
         } else {
-          this.createMessage('error', callingFunction, request.request.name);
+          this.createMessage('error', callingFunction, request.request);
         }
       },
-      error => this.createMessage('error', callingFunction, request.request.name)
+      error => this.createMessage('error', callingFunction, request.request)
     );
   }
 
@@ -393,10 +426,7 @@ export class CommonService {
       data.holidayDate,
       data.holidayName,
       data.holidayDesc,
-      data.holidayDate,
-      data.holidayName,
-      data.holidayDesc,
-      "NTH",
+      "KTA",
       "eng",
       data.isActive,
       data.holidayId,
