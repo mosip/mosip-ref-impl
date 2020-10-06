@@ -4,7 +4,7 @@
     <a (click)="changePage('list')">&nbsp;&nbsp; {{ mapping.name[primaryLang] }} &nbsp;&nbsp;</a> 
 </span>
 <br><br>
-<div *ngIf="(allDocCategoryList && mappedDocList && unMappedDocList && !showSpinner)" id="flex-single-view">
+<div *ngIf="(allDocCategoryList && unMappedDocList && !showSpinner)" id="flex-single-view">
     <h3>{{'masterData.doc-category-mapping'|translate}}</h3>
     <div id="flex-container">
         <div class="flex-header">

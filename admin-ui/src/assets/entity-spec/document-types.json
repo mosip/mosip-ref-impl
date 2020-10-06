@@ -64,14 +64,14 @@
     {
       "name": "code",
       "showInListView": "true",
-      "showInSingleView": "false",
+      "showInSingleView": "true",
       "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "",
-      "ismandatory": ""
+      "inputType": "text",
+      "ismandatory": "true"
     },
     {
       "name": "name",
