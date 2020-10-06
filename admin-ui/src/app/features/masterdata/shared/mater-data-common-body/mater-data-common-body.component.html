@@ -13,7 +13,7 @@
                 <hr />
                 <br /><br />
                 <div *ngFor="let field of fields; let i = index" class="mat-form1">
-                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text'">
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name !== 'code'">
                       <input
                         #keyboardRef
                         #{{field.name}}
@@ -25,6 +25,37 @@
                         }}"
                         [value]="primaryData[field.name]"
                         field.required
+                      />
+                    </mat-form-field>
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && isCreateForm">
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (focus)="scrollPage(field.name, 'primary', field.name, i)"
+                        matInput
+                        placeholder="{{
+                          field.label[primaryLang] | translate
+                        }}"
+                        [value]="primaryData[field.name]"
+                        field.required
+                      />
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && !isCreateForm">
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (focus)="scrollPage(field.name, 'primary', field.name, i)"
+                        matInput
+                        placeholder="{{
+                          field.label[primaryLang] | translate
+                        }}"
+                        [value]="primaryData[field.name]"
+                        field.required
+                        readonly
+                        disabled
                       />
                     </mat-form-field>
 
@@ -183,7 +214,7 @@
                 <hr />
                 <br /><br />
                 <div *ngFor="let field of fields; let ii = index" class="mat-form2">
-                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text'">
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name !== 'code'">
                       <input
                         #keyboardRef
                         #{{field.name}}
@@ -196,7 +227,34 @@
                         [value]="secondaryData[field.name]"
                       />
                     </mat-form-field>
-
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && isCreateForm">
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'secondary')"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii)"
+                        matInput
+                        placeholder="{{
+                          field.label[secondaryLang]
+                        }}"
+                        [value]="secondaryData[field.name]"
+                      />
+                    </mat-form-field>
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && !isCreateForm">
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'secondary')"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii)"
+                        matInput
+                        placeholder="{{
+                          field.label[secondaryLang]
+                        }}"
+                        [value]="secondaryData[field.name]"
+                        readonly
+                        disabled
+                      />
+                    </mat-form-field>
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'calendar'">
                       <input
                         matInput

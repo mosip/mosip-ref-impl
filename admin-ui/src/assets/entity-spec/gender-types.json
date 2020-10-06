@@ -157,7 +157,7 @@
   },
   "filterColumns":  [
     {
-      "filtername": "name",
+      "filtername": "genderName",
       "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
       "filterType": "equals",
       "autocomplete": "false",

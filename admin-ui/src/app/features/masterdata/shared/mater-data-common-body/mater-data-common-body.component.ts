@@ -123,7 +123,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "holiday"){
         this.pageName = "Holiday";
-        this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "", "holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.primaryLang,"isActive":true,"id":"0"};
+        this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
       }
     }else{
       if(url === "center-type"){
@@ -189,7 +189,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "document-categories"){
         this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(url === "holiday"){
-        this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","holidayMonth":null,"holidayYear":null,"holidayDay":null,"langCode":this.secondaryLang,"isActive":true,"id":"0"};
+        this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.secondaryLang,"isActive":true};
       }
     }
   }
@@ -394,26 +394,37 @@ export class MaterDataCommonBodyComponent implements OnInit {
       );
       this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
-            this.secondaryData["code"] = updateResponse.response.code; 
-            let request = new RequestModel(
-              updateResponse.response.code,
-              null,
-              this.secondaryData
-            );
-            this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
-                if (!updateResponse.errors) {
-                  let url = this.pageName+" Created Successfully";
-                  this.showMessage(url)
-                    .afterClosed()
-                    .subscribe(() => {
-                      this.router.navigateByUrl(
-                        `admin/masterdata/${this.masterdataType}/view`
-                      );
-                    });
-                } else {
-                  this.showErrorPopup(updateResponse.errors[0].message);
-                }
-            });
+            if(this.secondaryData.name){
+              this.secondaryData["code"] = updateResponse.response.code; 
+              let request = new RequestModel(
+                updateResponse.response.code,
+                null,
+                this.secondaryData
+              );
+              this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
+                  if (!updateResponse.errors) {
+                    let url = this.pageName+" Created Successfully";
+                    this.showMessage(url)
+                      .afterClosed()
+                      .subscribe(() => {
+                        this.router.navigateByUrl(
+                          `admin/masterdata/${this.masterdataType}/view`
+                        );
+                      });
+                  } else {
+                    this.showErrorPopup(updateResponse.errors[0].message);
+                  }
+              });
+            }else{
+              let url = this.pageName+" Created Successfully";
+              this.showMessage(url)
+                .afterClosed()
+                .subscribe(() => {
+                  this.router.navigateByUrl(
+                    `admin/masterdata/${this.masterdataType}/view`
+                  );
+                });
+            }
           } else {
             this.showErrorPopup(updateResponse.errors[0].message);
           }
@@ -427,6 +438,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.primaryData['isDeleted'];
         delete this.primaryData['deletedDateTime'];
         delete this.primaryData['deviceTypeName'];
+        delete this.primaryData['machineTypeName'];        
       }
       if(this.secondaryData){
         delete this.secondaryData['createdBy'];
@@ -436,6 +448,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['isDeleted'];
         delete this.secondaryData['deletedDateTime'];
         delete this.secondaryData['deviceTypeName'];
+        delete this.secondaryData['machineTypeName'];
       }
       /*console.log("this.router.url>>>"+this.router.url.split('/')[3]);*/
       if(this.router.url.split('/')[3] === "blacklisted-words"){
@@ -450,25 +463,36 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
-            let request = new RequestModel(
-              "",
-              null,
-              this.secondaryData
-            );
-            this.dataStorageService.updateData(request).subscribe(updateResponse => {
-                if (!updateResponse.errors) {
-                  let url = this.pageName+" Updated Successfully";
-                  this.showMessage(url)
-                    .afterClosed()
-                    .subscribe(() => {
-                      this.router.navigateByUrl(
-                        `admin/masterdata/${this.masterdataType}/view`
-                      );
-                    });
-                } else {
-                  this.showErrorPopup(updateResponse.errors[0].message);
-                }
-            });
+            if(this.secondaryData.name){
+              let request = new RequestModel(
+                "",
+                null,
+                this.secondaryData
+              );
+              this.dataStorageService.updateData(request).subscribe(updateResponse => {
+                  if (!updateResponse.errors) {
+                    let url = this.pageName+" Updated Successfully";
+                    this.showMessage(url)
+                      .afterClosed()
+                      .subscribe(() => {
+                        this.router.navigateByUrl(
+                          `admin/masterdata/${this.masterdataType}/view`
+                        );
+                      });
+                  } else {
+                    this.showErrorPopup(updateResponse.errors[0].message);
+                  }
+              });
+            }else{
+              let url = this.pageName+" Updated Successfully";
+                this.showMessage(url)
+                  .afterClosed()
+                  .subscribe(() => {
+                    this.router.navigateByUrl(
+                      `admin/masterdata/${this.masterdataType}/view`
+                    );
+                  });
+            }
           } else {
             this.showErrorPopup(updateResponse.errors[0].message);
           }
