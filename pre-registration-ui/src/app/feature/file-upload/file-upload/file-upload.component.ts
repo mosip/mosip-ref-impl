@@ -1011,8 +1011,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.disableNavigation = true;
     if (event.value == "") {
       let arr = fileMetadata.filter((ent) => ent.docCatCode === "POA");
+      console.log(arr);
       const subs = this.dataStorageService
-        .deleteFile(arr[0].documentId, arr[0].prereg_id)
+        .deleteFile(arr[0].documentId,this.preRegId)
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
