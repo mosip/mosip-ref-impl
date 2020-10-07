@@ -150,7 +150,7 @@
           </ng-container>
         </form>
       </div>
-      <div [dir]="secTextDir" class="user__container" *ngIf="secondaryuserForm && !(primaryLang === SecondaryLang)" >
+      <div [dir]="secTextDir" class="user__container" *ngIf="secondaryuserForm && !(primaryLang === secondaryLang)" >
         <form [formGroup]="transUserForm" class="user__form">
         <h4>{{ secondaryLanguagelabels.language }}</h4>
         <ng-container *ngFor="let field of uiFields">
