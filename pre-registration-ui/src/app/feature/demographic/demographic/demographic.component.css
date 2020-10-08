@@ -57,9 +57,11 @@
   padding: 1rem 0rem 1rem 0rem;
   /* margin-top: 1rem; */
   margin-bottom: 2rem;
-  width: 50%;
+  /* width: 50%; */
   /* margin-left: 2%; */
   float: left;
+  display:flex;
+  justify-content: space-between;
 }
 /* .user__container:focus-within {
   box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.3);
