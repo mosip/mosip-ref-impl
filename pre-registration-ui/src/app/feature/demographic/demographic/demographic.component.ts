@@ -389,7 +389,7 @@ export class DemographicComponent
         this.userForm.controls[`${control.id}`].setValidators(
           Validators.required
         );
-        if (this.primaryLang! == this.secondaryLang) {
+        if (this.primaryLang !== this.secondaryLang) {
           this.transUserForm.controls[`${control.id}`].setValidators(
             Validators.required
           );
@@ -703,7 +703,7 @@ export class DemographicComponent
     if (!this.dataModification) {
       this.uiFields.forEach((control) => {
         this.userForm.controls[control.id].setValue("");
-        if (this.primaryLang !== this.secondaryLang) {
+        if(this.primaryLang !== this.secondaryLang){
           this.transUserForm.controls[control.id].setValue("");
         }
       });
@@ -737,7 +737,7 @@ export class DemographicComponent
             this.userForm.controls[`${control.id}`].setValue(
               this.user.request.demographicDetails.identity[`${control.id}`]
             );
-            if (this.primaryLang! == this.secondaryLang) {
+            if (this.primaryLang !== this.secondaryLang) {
               this.transUserForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
               );
@@ -748,7 +748,7 @@ export class DemographicComponent
             this.user.request.demographicDetails.identity[control.id][index]
               .value
           );
-          if (this.primaryLang! == this.secondaryLang) {
+          if (this.primaryLang !== this.secondaryLang) {
             this.transUserForm.controls[`${control.id}`].setValue(
               this.user.request.demographicDetails.identity[control.id][
                 secondaryIndex
@@ -762,7 +762,7 @@ export class DemographicComponent
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
               );
-              if (this.primaryLang! == this.secondaryLang) {
+              if (this.primaryLang !== this.secondaryLang) {
                 this.transUserForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[`${control.id}`]
                 );
@@ -772,7 +772,7 @@ export class DemographicComponent
                 this.user.request.demographicDetails.identity[control.id][index]
                   .value
               );
-              if (this.primaryLang! == this.secondaryLang) {
+              if (this.primaryLang !== this.secondaryLang) {
                 this.transUserForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[control.id][
                     secondaryIndex
@@ -785,7 +785,7 @@ export class DemographicComponent
               this.user.request.demographicDetails.identity[control.id][index]
                 .value
             );
-            if (this.primaryLang! == this.secondaryLang) {
+            if (this.primaryLang !== this.secondaryLang) {
               this.transUserForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[control.id][
                   secondaryIndex
@@ -877,7 +877,7 @@ export class DemographicComponent
     this.userForm.controls[`dateOfBirth`].setValue(
       this.user.request.demographicDetails.identity["dateOfBirth"]
     );
-    if (this.primaryLang! == this.secondaryLang) {
+    if (this.primaryLang !== this.secondaryLang) {
       this.transUserForm.controls[`dateOfBirth`].setValue(
         this.user.request.demographicDetails.identity["dateOfBirth"]
       );
@@ -955,7 +955,7 @@ export class DemographicComponent
       this.currentAge = this.calculateAge(newDate).toString();
       this.age.nativeElement.value = this.currentAge;
       this.userForm.controls["dateOfBirth"].setValue(newDate);
-      if (this.primaryLang! == this.secondaryLang) {
+      if (this.primaryLang !== this.secondaryLang) {
         this.transUserForm.controls["dateOfBirth"].setValue(newDate);
       }
       console.log(this.userForm);
