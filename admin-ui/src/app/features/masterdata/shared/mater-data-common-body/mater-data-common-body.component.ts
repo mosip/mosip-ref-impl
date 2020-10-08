@@ -38,6 +38,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
   popupMessages: any;
   pageName: string;
   disableForms: boolean;
+  copyPrimaryWord: any;
+  copySecondaryWord: any;
 
   @Input() primaryData: any;
   @Input() secondaryData: any;
@@ -126,9 +128,14 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
       }
     }else{
+      
       if(url === "center-type"){
         this.pageName = "Center Type";
       }else if(url === "blacklisted-words"){
+        this.copyPrimaryWord = this.primaryData.word;
+        if(this.secondaryData){
+          this.copySecondaryWord = this.secondaryData.word;
+        }        
         this.pageName = "Blacklisted Word";
       }else if(url === "gender-type"){
         this.pageName = "Gender Type";
@@ -203,7 +210,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
     //element.scrollIntoView({ block: 'center', inline: 'nearest' });
     this.selectedField = element;
     if (this.keyboardRef) {
-      console.log("index>>>"+index);
       this.keyboardRef.instance.setInputInstance(
         this.attachToElementMesOne._results[index]
       );
@@ -348,7 +354,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
-    if (event.source.value && event.source.selected) {
+    if (event.source.selected) {
       this.primaryData[formControlName] = event.source.value;
       this.secondaryData[formControlName] = event.source.value; 
     }
@@ -386,6 +392,37 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   executeAPI(){
+    let url = this.router.url.split('/')[3];
+    let textToValidate = null;
+    if(url === "center-type"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "blacklisted-words"){
+      textToValidate = this.secondaryData.word;
+    }else if(url === "gender-type"){
+      textToValidate = this.secondaryData.genderName;
+    }else if(url === "individual-type"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "location"){
+      textToValidate = this.secondaryData.zone;
+    }else if(url === "templates"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "title"){
+      textToValidate = this.secondaryData.titleName;
+    }else if(url === "device-specs"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "device-types"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "machine-specs"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "machine-type"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "document-type"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "document-categories"){
+      textToValidate = this.secondaryData.name;
+    }else if(url === "holiday"){
+      textToValidate = this.secondaryData.holidayName;
+    }
     if(this.isCreateForm){
       let request = new RequestModel(
         "",
@@ -394,7 +431,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       );
       this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
-            if(this.secondaryData.name){
+            if(textToValidate){
               this.secondaryData["code"] = updateResponse.response.code; 
               let request = new RequestModel(
                 updateResponse.response.code,
@@ -452,8 +489,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }
       /*console.log("this.router.url>>>"+this.router.url.split('/')[3]);*/
       if(this.router.url.split('/')[3] === "blacklisted-words"){
-        this.primaryData['oldWord'] = this.primaryData['word'];
-        this.secondaryData['oldWord'] = this.secondaryData['word'];
+        this.primaryData['oldWord'] = this.copyPrimaryWord;
+        if(this.secondaryData.word){
+          this.secondaryData['oldWord'] = this.copySecondaryWord;
+        }         
       }
       let request = new RequestModel(
         "",
@@ -463,7 +502,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
-            if(this.secondaryData.name){
+            if(textToValidate){
               let request = new RequestModel(
                 "",
                 null,
