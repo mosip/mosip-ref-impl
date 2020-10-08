@@ -9,8 +9,8 @@
       <div
         [dir]="textDir"
         [ngClass]="{
-          user__container: primaryLang === secondaryLang,
-          user_container_single_form: primaryLang !== secondaryLang
+          user__container: primaryLang !== secondaryLang,
+          user_container_single_form: primaryLang === secondaryLang
         }"
         *ngIf="primaryuserForm"
       >
@@ -177,7 +177,10 @@
       </div>
       <div
         [dir]="secTextDir"
-        class="user__container"
+        [ngClass]="{
+          user__container: primaryLang !== secondaryLang,
+          user_container_single_form: primaryLang === secondaryLang
+        }"
         *ngIf="secondaryuserForm && !(primaryLang === secondaryLang)"
       >
         <form [formGroup]="transUserForm" class="user__form">
