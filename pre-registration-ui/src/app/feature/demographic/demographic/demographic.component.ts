@@ -1017,7 +1017,9 @@ export class DemographicComponent
   private filterOnLangCode(langCode: string, field: string, entityArray: any) {
     return new Promise((resolve, reject) => {
       if (entityArray) {
+        console.log(entityArray);
         entityArray.filter((element: any) => {
+          console.log(element);
           if (element.langCode === langCode) {
             let codeValue: CodeValueModal;
             if (element.genderName) {
@@ -1026,11 +1028,16 @@ export class DemographicComponent
                 valueName: element.genderName,
                 languageCode: element.langCode,
               };
-            }
-            if (element.name) {
+            } else if (element.name) {
               codeValue = {
                 valueCode: element.code,
                 valueName: element.name,
+                languageCode: element.langCode,
+              };
+            } else {
+              codeValue = {
+                valueCode: element.code,
+                valueName: element.value,
                 languageCode: element.langCode,
               };
             }
