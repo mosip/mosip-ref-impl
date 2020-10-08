@@ -643,7 +643,9 @@ export class DemographicComponent
           this.dynamicFields.forEach((field) => {
             console.log(field);
             dynamicField.forEach((res) => {
+              console.log(res);
               if (field.id === res.name && res.langCode === this.primaryLang) {
+                console.log(res["fieldVal"]);
                 this.filterOnLangCode(
                   this.primaryLang,
                   res.name,
@@ -651,15 +653,17 @@ export class DemographicComponent
                 );
                 console.log(this.primarydropDownFields);
               }
-              if (
-                field.id === res.name &&
-                res.langCode === this.secondaryLang
-              ) {
-                this.filterOnLangCode(
-                  this.secondaryLang,
-                  res.name,
-                  res["fieldVal"]
-                );
+              if (this.primaryLang !== this.secondaryLang) {
+                if (
+                  field.id === res.name &&
+                  res.langCode === this.secondaryLang
+                ) {
+                  this.filterOnLangCode(
+                    this.secondaryLang,
+                    res.name,
+                    res["fieldVal"]
+                  );
+                }
               }
             });
           });
@@ -703,7 +707,7 @@ export class DemographicComponent
     if (!this.dataModification) {
       this.uiFields.forEach((control) => {
         this.userForm.controls[control.id].setValue("");
-        if(this.primaryLang !== this.secondaryLang){
+        if (this.primaryLang !== this.secondaryLang) {
           this.transUserForm.controls[control.id].setValue("");
         }
       });
