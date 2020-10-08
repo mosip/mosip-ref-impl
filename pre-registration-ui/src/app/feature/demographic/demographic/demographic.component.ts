@@ -703,7 +703,7 @@ export class DemographicComponent
     if (!this.dataModification) {
       this.uiFields.forEach((control) => {
         this.userForm.controls[control.id].setValue("");
-        if (this.primaryLang !== this.secondaryLang) {
+        if(this.primaryLang !== this.secondaryLang){
           this.transUserForm.controls[control.id].setValue("");
         }
       });
@@ -737,7 +737,7 @@ export class DemographicComponent
             this.userForm.controls[`${control.id}`].setValue(
               this.user.request.demographicDetails.identity[`${control.id}`]
             );
-            if (this.primaryLang! == this.secondaryLang) {
+            if (this.primaryLang !== this.secondaryLang) {
               this.transUserForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
               );
@@ -748,7 +748,7 @@ export class DemographicComponent
             this.user.request.demographicDetails.identity[control.id][index]
               .value
           );
-          if (this.primaryLang! == this.secondaryLang) {
+          if (this.primaryLang !== this.secondaryLang) {
             this.transUserForm.controls[`${control.id}`].setValue(
               this.user.request.demographicDetails.identity[control.id][
                 secondaryIndex
@@ -762,7 +762,7 @@ export class DemographicComponent
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
               );
-              if (this.primaryLang! == this.secondaryLang) {
+              if (this.primaryLang !== this.secondaryLang) {
                 this.transUserForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[`${control.id}`]
                 );
@@ -772,7 +772,7 @@ export class DemographicComponent
                 this.user.request.demographicDetails.identity[control.id][index]
                   .value
               );
-              if (this.primaryLang! == this.secondaryLang) {
+              if (this.primaryLang !== this.secondaryLang) {
                 this.transUserForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[control.id][
                     secondaryIndex
@@ -785,7 +785,7 @@ export class DemographicComponent
               this.user.request.demographicDetails.identity[control.id][index]
                 .value
             );
-            if (this.primaryLang! == this.secondaryLang) {
+            if (this.primaryLang !== this.secondaryLang) {
               this.transUserForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[control.id][
                   secondaryIndex
