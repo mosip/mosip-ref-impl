@@ -498,14 +498,16 @@ export class DemographicComponent
    */
   copyToSecondaryFormNonDropDown(fieldName: string, event: Event) {
     const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
-    if (transliterate.includes(fieldName)) {
-      if (event.type === "focusout") {
-        this.onTransliteration(fieldName, fieldName);
+    if(this.primaryLang !== this.secondaryLang){
+      if (transliterate.includes(fieldName)) {
+        if (event.type === "focusout") {
+          this.onTransliteration(fieldName, fieldName);
+        }
+      } else {
+        this.transUserForm.controls[`${fieldName}`].setValue(
+          this.userForm.controls[`${fieldName}`].value
+        );
       }
-    } else {
-      this.transUserForm.controls[`${fieldName}`].setValue(
-        this.userForm.controls[`${fieldName}`].value
-      );
     }
   }
 
