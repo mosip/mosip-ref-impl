@@ -1107,7 +1107,9 @@ export class DemographicComponent
 
     const formattedDate = `${year}/${monthOfYear}/${dateOfMonth}`;
     this.userForm.controls["dateOfBirth"].setValue(formattedDate);
-    this.transUserForm.controls["dateOfBirth"].setValue(formattedDate);
+    if(this.primaryLang !== this.secondaryLang){
+      this.transUserForm.controls["dateOfBirth"].setValue(formattedDate);
+    }
     if (this.dataModification) {
       this.hasDobChanged();
     }
@@ -1195,9 +1197,11 @@ export class DemographicComponent
   onSubmit() {
     this.uiFields.forEach((element) => {
       this.userForm.controls[`${element.id}`].markAsTouched();
-      this.transUserForm.controls[`${element.id}`].markAsTouched();
+      if(this.primaryLang !== this.secondaryLang){
+        this.transUserForm.controls[`${element.id}`].markAsTouched();
+      }
     });
-    if (this.userForm.valid && this.transUserForm.valid) {
+    if (this.userForm.valid) {
       const identity = this.createIdentityJSONDynamic();
       const request = this.createRequestJSON(identity);
       console.log(request);
