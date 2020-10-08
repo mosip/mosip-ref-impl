@@ -399,7 +399,7 @@ export class DemographicComponent
         this.userForm.controls[`${control.id}`].setValidators([
           Validators.pattern(control.validators[0].validator),
         ]);
-        if (this.primaryLang! == this.secondaryLang) {
+        if (this.primaryLang !== this.secondaryLang) {
           this.transUserForm.controls[`${control.id}`].setValidators([
             Validators.pattern(control.validators[0].validator),
           ]);
@@ -913,7 +913,7 @@ export class DemographicComponent
         this.userForm.controls["dateOfBirth"].setValue(
           calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
         );
-        if (this.primaryLang! == this.secondaryLang) {
+        if (this.primaryLang !== this.secondaryLang) {
           this.transUserForm.controls["dateOfBirth"].setValue(
             calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
           );
