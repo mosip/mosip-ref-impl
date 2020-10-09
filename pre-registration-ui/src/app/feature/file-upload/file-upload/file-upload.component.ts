@@ -1132,14 +1132,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let uploadDocumentsCatCode = [];
     let requiredDocuments = [];
     this.isDocUploadRequired = [];
-    this.dataStorageService.getUserDocuments(this.preRegId).subscribe(response =>{
-      if (!response["errors"]) {
-        userfile = response[appConstants.RESPONSE][appConstants.METADATA];
-      } else{
-        userfile = [];
-      }
-    });
-    console.log(userfile);
+    this.getUserFiles();
+    console.log(this.userFile);
     this.LOD.forEach((document) => {
       displayedDocCatCode.push(document.code);
     });
