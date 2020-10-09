@@ -215,7 +215,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.userFile = response[appConstants.RESPONSE][appConstants.METADATA];
     } else {
       let fileModel: FileModel = new FileModel("", "", "", "", "", "", "");
-      this.userFile.push(fileModel);
+      if(this.userFile.length === 0){
+        this.userFile.push(fileModel);
+      }
     }
     this.userFiles["documentsMetaData"] = this.userFile;
   }
@@ -1127,7 +1129,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    let userfile;
     let displayedDocCatCode = [];
     let uploadDocumentsCatCode = [];
     let requiredDocuments = [];
@@ -1138,6 +1139,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       displayedDocCatCode.push(document.code);
     });
     console.log(displayedDocCatCode);
+    this.uiFields.forEach((field) => {
+      if (field.required) {
+        requiredDocuments.push(field.id);
+      }
+    });
     this.userFile.filter(file=>{
      if(file.docCatCode !== undefined){
        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
@@ -1146,11 +1152,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
      }
     });
     console.log(uploadDocumentsCatCode);
-    this.uiFields.forEach((field) => {
-      if (field.required) {
-        requiredDocuments.push(field.id);
-      }
-    });
     console.log(requiredDocuments);
     displayedDocCatCode.forEach((docCat) => {
       requiredDocuments.forEach((reqDoc) => {
@@ -1161,7 +1162,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         }
       });
     });
-
+    console.log(this.isDocUploadRequired);
     if (this.isDocUploadRequired.length > 0) {
       let message = "please upload ";
       let docList = "";
