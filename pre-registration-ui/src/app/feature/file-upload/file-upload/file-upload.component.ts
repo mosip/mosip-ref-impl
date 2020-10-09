@@ -1138,6 +1138,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       displayedDocCatCode.push(document.code);
     });
     console.log(displayedDocCatCode);
+     this.userFile.forEach(file=>{
+     if(file.docCatCode !== undefined || file.docCatCode !== ""){
+       uploadDocumentsCatCode.push(file.docCatCode);
+     }
+    });
     console.log(uploadDocumentsCatCode);
     this.uiFields.forEach((field) => {
       if (field.required) {
