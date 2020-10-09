@@ -1133,8 +1133,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let uploadDocumentsCatCode = [];
     let requiredDocuments = [];
     this.isDocUploadRequired = [];
-    this.getUserFiles();
-    console.log(this.userFile);
+//     this.getUserFiles();
+//     console.log(this.userFile);
     this.LOD.forEach((document) => {
       displayedDocCatCode.push(document.code);
     });
@@ -1144,13 +1144,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         requiredDocuments.push(field.id);
       }
     });
-    this.userFile.filter(file=>{
-     if(file.docCatCode !== undefined){
-       if(file.docCatCode !== "" || file.docCatCode.length !== 0){
-        uploadDocumentsCatCode.push(file.docCatCode);
-       }
-     }
-    });
+//     this.userFile.filter(file=>{
+//      if(file.docCatCode !== undefined){
+//        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
+//         uploadDocumentsCatCode.push(file.docCatCode);
+//        }
+//      }
+//     });
     console.log(uploadDocumentsCatCode);
     console.log(requiredDocuments);
     displayedDocCatCode.forEach((docCat) => {
