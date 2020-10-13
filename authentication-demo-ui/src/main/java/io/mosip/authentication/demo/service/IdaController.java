@@ -733,6 +733,7 @@ public class IdaController {
 				String authToken = generateAuthToken();
 				if (authToken != null && !authToken.isEmpty()) {
 					request.getHeaders().set("Cookie", "Authorization=" + authToken);
+					request.getHeaders().set("Authorization", "Authorization=" + authToken);
 				}
 				return execution.execute(request, body);
 			}
