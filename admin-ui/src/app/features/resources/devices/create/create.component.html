@@ -145,6 +145,23 @@
                         </mat-form-field>
 
                         <mat-form-field>
+                        <mat-label>Center Name</mat-label>
+                        <mat-select
+                          formControlName="regCenterId"
+                          (selectionChange)="
+                            copyDataToSecondaryForm('regCenterId', primary.regCenterId.value)
+                          "
+                        >
+                          <mat-option
+                            *ngFor="let data of dropDownValues.deviceTypeCode.primary"
+                            [value]="data.fieldCode"
+                          >
+                            {{ data.fieldValue }}
+                          </mat-option>
+                        </mat-select> 
+                        </mat-form-field>
+
+                        <mat-form-field>
                           <mat-label>{{ "devices.zone" | translate }}</mat-label>
                           <mat-select
                             formControlName="zone"
@@ -288,7 +305,19 @@
                         <mat-label>{{secondaryLanguageLabels["deviceSpecId"]}}</mat-label>
                         <mat-select formControlName="deviceSpecId">
                           <mat-option
-                            *ngFor="let data of dropDownValues.deviceTypeCode.secondary"
+                            *ngFor="let data of dropDownValues.regCenterCode.secondary"
+                            [value]="data.fieldCode"
+                          >
+                          {{ data.fieldValue }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                       <mat-form-field class="left-sizing">
+                        <mat-label>اسم المركز</mat-label>
+                        <mat-select formControlName="regCenterId">
+                          <mat-option
+                            *ngFor="let data of dropDownValues.regCenterCode.secondary"
                             [value]="data.fieldCode"
                           >
                           {{ data.fieldValue }}

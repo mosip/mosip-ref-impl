@@ -474,25 +474,26 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     const preId = user.applicationID;
     localStorage.setItem('modifyUser','true');
     this.disableModifyDataButton = true;
-    const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
-      response => this.setUserFiles(response),
-      error => {
-        this.loggerService.error('dashboard error', error);
-        this.disableModifyDataButton = false;
-        this.onError(error);
-      },
-      () => {
-        this.dataStorageService.getUser(preId).subscribe(
-          response => {
-            this.onModification(response, preId);
-          },
-          error => {
-            this.onError(error);
-          }
-        );
-      }
-    );
-    this.subscriptions.push(subs);
+    this.onModification(preId);
+    // const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
+    //   response => this.setUserFiles(response),
+    //   error => {
+    //     this.loggerService.error('dashboard error', error);
+    //     this.disableModifyDataButton = false;
+    //     this.onError(error);
+    //   },
+    //   () => {
+    //     this.dataStorageService.getUser(preId).subscribe(
+    //       response => {
+    //         this.onModification(response, preId);
+    //       },
+    //       error => {
+    //         this.onError(error);
+    //       }
+    //     );
+    //   }
+    // );
+    // this.subscriptions.push(subs);
   }
 
   /**
@@ -503,7 +504,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @param {string} preId
    * @memberof DashBoardComponent
    */
-  private onModification(response: any, preId: string) {
+  private onModification(preId: string) {
     this.disableModifyDataButton = true;
     this.fetchedDetails = true;
     this.router.navigate([this.primaryLangCode,'pre-registration', 'demographic',preId]);
@@ -546,8 +547,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       selectedPrids.push(id.applicationID);
       });
       console.log(selectedPrids);
-      localStorage.setItem("muiltyAppointment",JSON.stringify(selectedPrids));
-      url = Utils.getURL(this.router.url, `pre-registration/booking/mulityappointement/pick-center`,1);
+      localStorage.setItem("multiappointment",JSON.stringify(selectedPrids));
+      url = Utils.getURL(this.router.url, `pre-registration/booking/multiappointment/pick-center`,1);
       this.router.navigateByUrl(url);
     }
   

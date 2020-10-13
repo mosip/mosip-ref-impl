@@ -850,7 +850,7 @@ export class CreateComponent {
   }
 
   getRegistrationCenterTypes() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
+    let filterObject = new FilterValuesModel('name', 'unique', '');
     let filterRequest = new FilterRequest([filterObject], this.primaryLang);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService

@@ -62,9 +62,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    if (this.router.url.includes("mulityappointement")) {
+    if (this.router.url.includes("multiappointment")) {
       this.preRegId = [
-        ...JSON.parse(localStorage.getItem("muiltyAppointment")),
+        ...JSON.parse(localStorage.getItem("multiappointment")),
       ];
     } else {
       this.activatedRoute.params.subscribe((param) => {

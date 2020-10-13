@@ -104,6 +104,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   identityData = [];
   uiFields = [];
   preRegId: number;
+  isDocUploadRequired = [];
 
   constructor(
     private registration: RegistrationService,
@@ -148,20 +149,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-      this.identityData = response['response']["idSchema"]["identity"];
-      this.identityData.forEach((obj) => {
-        if (obj.inputRequired === true && obj.controlType === "fileupload") {
-          this.uiFields.push(obj);
-        }
+        this.identityData = response["response"]["idSchema"]["identity"];
+        this.identityData.forEach((obj) => {
+          if (obj.controlType === "fileupload") {
+            this.uiFields.push(obj);
+          }
+        });
+        resolve(true);
       });
-    });
-    resolve(true);
     });
   }
 
-  private getPrimaryLabels() {
-    console.log("uiFields>>>");
-  }
+  private getPrimaryLabels() {}
 
   /**
    *@description This method initialises the users array and the language set by the user.
@@ -178,7 +177,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       await this.getUserInfo();
       await this.getUserFiles();
       this.getApplicantTypeID();
-    };
+    }
     if (!this.users[0].files) {
       this.users[0].files = this.userFiles;
     }
@@ -216,7 +215,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.userFile = response[appConstants.RESPONSE][appConstants.METADATA];
     } else {
       let fileModel: FileModel = new FileModel("", "", "", "", "", "", "");
-      this.userFile.push(fileModel);
+      if(this.userFile.length === 0){
+        this.userFile.push(fileModel);
+      }
     }
     this.userFiles["documentsMetaData"] = this.userFile;
   }
@@ -976,6 +977,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
+     
     for (let file of this.users[0].files.documentsMetaData) {
       if (
         file.docCatCode == this.userFile[0].docCatCode ||
@@ -1011,8 +1013,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.disableNavigation = true;
     if (event.value == "") {
       let arr = fileMetadata.filter((ent) => ent.docCatCode === "POA");
+      console.log(arr);
       const subs = this.dataStorageService
-        .deleteFile(arr[0].documentId, arr[0].prereg_id)
+        .deleteFile(arr[0].documentId,this.preRegId)
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
@@ -1115,9 +1118,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onBack() {
-    localStorage.setItem('modifyUser','true');
+    localStorage.setItem("modifyUser", "true");
     let url = Utils.getURL(this.router.url, "demographic");
-    this.router.navigateByUrl(url+ `/${this.preRegId}`);
+    this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
 
   /**
@@ -1126,9 +1129,52 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    localStorage.setItem("modifyDocument", "false");
-    let url = Utils.getURL(this.router.url, "summary");
-    this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    let displayedDocCatCode = [];
+    let uploadDocumentsCatCode = [];
+    let requiredDocuments = [];
+    this.isDocUploadRequired = [];
+//     this.getUserFiles();
+//     console.log(this.userFile);
+    this.LOD.forEach((document) => {
+      displayedDocCatCode.push(document.code);
+    });
+    console.log(displayedDocCatCode);
+    this.uiFields.forEach((field) => {
+      if (field.required) {
+        requiredDocuments.push(field.id);
+      }
+    });
+//     this.userFile.filter(file=>{
+//      if(file.docCatCode !== undefined){
+//        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
+//         uploadDocumentsCatCode.push(file.docCatCode);
+//        }
+//      }
+//     });
+    console.log(uploadDocumentsCatCode);
+    console.log(requiredDocuments);
+    displayedDocCatCode.forEach((docCat) => {
+      requiredDocuments.forEach((reqDoc) => {
+        if (docCat === reqDoc) {
+          if (uploadDocumentsCatCode.indexOf(docCat) < 0) {
+            this.isDocUploadRequired.push(docCat);
+          }
+        }
+      });
+    });
+    console.log(this.isDocUploadRequired);
+    if (this.isDocUploadRequired.length > 0) {
+      let message = "please upload ";
+      let docList = "";
+      for (let i = 0; i < this.isDocUploadRequired.length; i++) {
+        docList = docList + this.isDocUploadRequired[i] + " ,";
+      }
+      this.displayMessage("Required", message + docList);
+    } else {
+      localStorage.setItem("modifyDocument", "false");
+      let url = Utils.getURL(this.router.url, "summary");
+      this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    }
   }
 
   /**

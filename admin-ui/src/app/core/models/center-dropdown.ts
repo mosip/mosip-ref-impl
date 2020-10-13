@@ -21,6 +21,7 @@ export class CenterDropdown {
     public templateTypeCode: any = {},
     public moduleId: any = {},    
     public hierarchyLevelCode: any = {},
-    public isActive = [true, false]
+    public isActive = [true, false],
+    public regCenterCode: any = {}
   ) {}
 }

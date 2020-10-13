@@ -30,7 +30,8 @@ import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
   templateUrl: "./time-selection.component.html",
   styleUrls: ["./time-selection.component.css"],
 })
-export class TimeSelectionComponent extends BookingDeactivateGuardService
+export class TimeSelectionComponent
+  extends BookingDeactivateGuardService
   implements OnInit, OnDestroy {
   @ViewChild("widgetsContent", { read: ElementRef }) public widgetsContent;
   @ViewChild("cardsContent", { read: ElementRef }) public cardsContent;
@@ -63,6 +64,8 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   userInfo: any = [];
   regCenterInfo: any;
   showsNamesContainer: boolean;
+  afternoonSlotAvailable: boolean = false;
+  morningSlotAvailable: boolean = false;
   constructor(
     private bookingService: BookingService,
     public dialog: MatDialog,
@@ -78,9 +81,9 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
   }
 
   async ngOnInit() {
-    if (this.router.url.includes("mulityappointement")) {
+    if (this.router.url.includes("multiappointment")) {
       this.preRegId = [
-        ...JSON.parse(localStorage.getItem("muiltyAppointment")),
+        ...JSON.parse(localStorage.getItem("multiappointment")),
       ];
     } else {
       this.activatedRoute.params.subscribe((param) => {
@@ -264,12 +267,27 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
         slot.names = [];
         let fromTime = slot.fromTime.split(":");
         let toTime = slot.toTime.split(":");
-        if (fromTime[0] < this.registrationCenterLunchTime[0]) {
+        if (this.registrationCenterLunchTime[0] === null) {
           slot.tag = "morning";
           element.showMorning = true;
+          this.morningSlotAvailable = true;
+          this.afternoonSlotAvailable = false;
+        } else if (
+          this.registrationCenterLunchTime[0] !== null &&
+          this.registrationCenterLunchTime[0].split(":")[0] === "00"
+        ) {
+          slot.tag = "morning";
+          element.showMorning = true;
+          this.morningSlotAvailable = true;
+          this.afternoonSlotAvailable = false;
+        } else if (fromTime[0] < this.registrationCenterLunchTime[0]) {
+          slot.tag = "morning";
+          element.showMorning = true;
+          this.morningSlotAvailable = true;
         } else {
           slot.tag = "afternoon";
           element.showAfternoon = true;
+          this.afternoonSlotAvailable = true;
         }
         slot.displayTime =
           Number(fromTime[0]) > 12 ? Number(fromTime[0]) - 12 : fromTime[0];
@@ -293,7 +311,6 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
     });
     this.enableBucketTabs();
     this.deletedNames = [...this.names];
-    console.log(this.availabilityData);
     // this.placeNamesInSlots();
   }
 
@@ -367,7 +384,7 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
       ).length > 0
         ? (this.showsNamesContainer = true)
         : (this.showsNamesContainer = false);
-        console.log(this.showsNamesContainer);
+      console.log(this.showsNamesContainer);
     }
   }
 
@@ -465,9 +482,9 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
               });
               this.bookingService.setSendNotification(true);
               const url = Utils.getURL(this.router.url, "summary", 3);
-              if (this.router.url.includes("mulityappointement")) {
+              if (this.router.url.includes("multiappointment")) {
                 this.router.navigateByUrl(
-                  url + `/mulityappointement/acknowledgement`
+                  url + `/multiappointment/acknowledgement`
                 );
               } else {
                 this.router.navigateByUrl(
@@ -536,9 +553,9 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
           appConstants.ERROR_CODES.slotNotAvailable
       ) {
         this.canDeactivateFlag = false;
-        if (this.router.url.includes("mulityappointement")) {
+        if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/mulityappointement/pick-center`
+            `${this.primaryLangCode}/pre-registration/booking/multiappointment/pick-center`
           );
         } else {
           this.router.navigateByUrl(
@@ -548,9 +565,9 @@ export class TimeSelectionComponent extends BookingDeactivateGuardService
       }
       if (this.errorlabels.centerDetailsNotAvailable === messageObj.message) {
         this.canDeactivateFlag = false;
-        if (this.router.url.includes("mulityappointement")) {
+        if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/mulityappointement/pick-center`
+            `${this.primaryLangCode}/pre-registration/booking/multiappointment/pick-center`
           );
         } else {
           this.router.navigateByUrl(

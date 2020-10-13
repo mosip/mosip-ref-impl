@@ -24,6 +24,9 @@ import { MachineTypesModel } from '../models/machine-types.model';
 import { DocumentTypeModel } from '../models/document-type.model';
 import { DocumentCategoriesModel } from '../models/document-categories.model';
 import { HolidaySpecsModel } from '../models/holiday-specs.model';
+import { CenterRequest } from 'src/app/core/models/centerRequest.model';
+import { FilterModel } from 'src/app/core/models/filter.model';
+import { CenterService } from 'src/app/core/services/center.service';
 
 import { AuditService } from './audit.service';
 
@@ -33,6 +36,7 @@ import { AuditService } from './audit.service';
 })
 export class CommonService {
   actionMessages: any;
+  centerRequest = {} as CenterRequest;
 
   constructor(
     private router: Router,
@@ -40,7 +44,8 @@ export class CommonService {
     private dialog: MatDialog,
     private appService: AppConfigService,
     private translate: TranslateService,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private centerService: CenterService
   ) {
     translate
       .getTranslation(appService.getConfig().primaryLangCode)
@@ -51,7 +56,7 @@ export class CommonService {
 
   private showMessage(data: any) {
     this.dialog.open(DialogComponent, {
-      width: '400px',
+      width: '550px',
       data: {
         case: 'MESSAGE',
         ...data
@@ -115,23 +120,61 @@ export class CommonService {
 
   private createMessage(type: string, listItem: string, data?: any) {
     let obj = {};
+    let url = this.router.url.split('/')[3];
+    let textToDisplay = null;
+    if(url === "centers"){
+      textToDisplay = data.name;
+    }else if(url === "machines"){
+      textToDisplay = data.name;
+    }else if(url === "devices"){
+      textToDisplay = data.name;
+    }else if(url === "center-type"){
+      textToDisplay = data.name;
+    }else if(url === "blacklisted-words"){
+      textToDisplay = data.word;
+    }else if(url === "gender-type"){
+      textToDisplay = data.genderName;
+    }else if(url === "individual-type"){
+      textToDisplay = data.name;
+    }else if(url === "location"){
+      textToDisplay = data.zone;
+    }else if(url === "templates"){
+      textToDisplay = data.name;
+    }else if(url === "title"){
+      textToDisplay = data.titleName;
+    }else if(url === "device-specs"){
+      textToDisplay = data.name;
+    }else if(url === "device-types"){
+      textToDisplay = data.name;
+    }else if(url === "machine-specs"){
+      textToDisplay = data.name;
+    }else if(url === "machine-type"){
+      textToDisplay = data.name;
+    }else if(url === "document-type"){
+      textToDisplay = data.name;
+    }else if(url === "document-categories"){
+      textToDisplay = data.name;
+    }else if(url === "holiday"){
+      textToDisplay = data.holidayName;
+    }
+    /*console.log("textToDisplay>>>"+textToDisplay);*/
     if (type === 'success') {
       obj = {
         title: this.actionMessages[listItem]['success-title'],
-        message: this.actionMessages[listItem]['success-message'][0] + data + this.actionMessages[listItem]['success-message'][1],
+        message: this.actionMessages[listItem]['success-message'][0] + textToDisplay + this.actionMessages[listItem]['success-message'][1],
         btnTxt: this.actionMessages[listItem]['btnTxt']
       };
     } else if (type === 'error') {
       obj = {
         title: this.actionMessages[listItem]['error-title'],
-        message: this.actionMessages[listItem]['error-message'][0] + data + this.actionMessages[listItem]['error-message'][1],
+        message: this.actionMessages[listItem]['error-message'][0] + textToDisplay + this.actionMessages[listItem]['error-message'][1],
         btnTxt: this.actionMessages[listItem]['btnTxt']
       };
     }
     this.showMessage(obj);
   }
 
-  private updateData(callingFunction: string, data: CenterModel) {
+  private updateData(callingFunction: string, data: CenterModel, actualData:any) {
     const request = new RequestModel(
       appConstants.registrationDeviceCreateId,
       null,
@@ -139,14 +182,15 @@ export class CommonService {
     );
     this.dataService.updateData(request).subscribe(
       response => {
+        console.log("request.request>>>"+JSON.stringify(actualData));
         if (!response.errors || response.errors.length === 0) {
-          this.createMessage('success', callingFunction, request.request.name);
+          this.createMessage('success', callingFunction, actualData);     
           this.router.navigateByUrl(this.router.url);
         } else {
-          this.createMessage('error', callingFunction, request.request.name);
+          this.createMessage('error', callingFunction, actualData);
         }
       },
-      error => this.createMessage('error', callingFunction, request.request.name)
+      error => this.createMessage('error', callingFunction, actualData)
     );
   }
 
@@ -382,10 +426,7 @@ export class CommonService {
       data.holidayDate,
       data.holidayName,
       data.holidayDesc,
-      data.holidayDate,
-      data.holidayName,
-      data.holidayDesc,
-      "NTH",
+      "KTA",
       "eng",
       data.isActive,
       data.holidayId,
@@ -396,6 +437,17 @@ export class CommonService {
   centerEdit(data: any, url: string, idKey: string) {
     this.auditService.audit(9, 'ADM-084', {
       buttonName: 'edit',
+      masterdataName: this.router.url.split('/')[
+        this.router.url.split('/').length - 2
+      ]
+    });
+    url = url.replace('$id', data[idKey]);
+    this.router.navigateByUrl(url + '?editable=true');
+  }
+
+  mapCenter(data: any, url: string, idKey: string) {
+    this.auditService.audit(9, 'ADM-084', {
+      buttonName: 'mapCenter',
       masterdataName: this.router.url.split('/')[
         this.router.url.split('/').length - 2
       ]
@@ -505,8 +557,7 @@ export class CommonService {
         }
         
         dynamicObject.isActive = true;
-        console.log(dynamicObject);
-        this.updateData('activate', dynamicObject);
+        this.updateData('activate', dynamicObject, data);
       } else {
         this.auditService.audit(19, 'ADM-101', 'activate');
       }
@@ -574,10 +625,160 @@ export class CommonService {
 
         dynamicObject.isActive = false;
         console.log(dynamicObject);
-        this.updateData('deactivate', dynamicObject);
+        this.updateData('deactivate', dynamicObject, data);
       } else {
         this.auditService.audit(19, 'ADM-103', 'deactivate');
       }
     });
+  }
+
+  unmapCenter(data: any, url: string, idKey: string) {
+    if(data.regCenterId){
+      const filter = new FilterModel('id', 'equals', data.regCenterId);
+      this.centerRequest.filters = [filter];
+      this.centerRequest.languageCode = "eng";
+      this.centerRequest.sort = [];
+      this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
+      let request = new RequestModel(
+        appConstants.registrationDeviceCreateId,
+        null,
+        this.centerRequest
+      );
+      this.centerService.getRegistrationCentersDetails(request).subscribe(
+        response => {
+          if (response.response.data) {
+            console.log(response.response.data[0].name);
+          }
+        }
+      );
+    }
+
+    this.auditService.audit(9, 'ADM-090', {
+      buttonName: 'unassign',
+      masterdataName: this.router.url.split('/')[
+        this.router.url.split('/').length - 2
+      ]
+    });
+    const obj = {
+      case: 'CONFIRMATION',
+      title: "Confirm Unassign",
+      message: "Do you want to unassign the selected Device from the Registration Center",
+      yesBtnTxt: "CONFIRM",
+      noBtnTxt: "CANCEL"
+    };
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '650px',
+      data: obj
+    });
+    dialogRef.afterClosed().subscribe(response => {   
+      if(response){
+        /*let url = this.router.url.split('/')[3];*/
+        this.auditService.audit(18, 'ADM-100', 'unassign');
+        let dynamicObject = data;
+        delete dynamicObject.createdBy;
+        delete dynamicObject.createdDateTime;
+        delete dynamicObject.updatedBy;
+        delete dynamicObject.updatedDateTime;
+        delete dynamicObject.deletedDateTime;
+        delete dynamicObject.isDeleted;
+        delete dynamicObject.zone;
+        delete dynamicObject.deviceTypeName;
+        delete dynamicObject.mapStatus;
+        dynamicObject.regCenterId = null;
+
+        const request = new RequestModel(
+          appConstants.registrationDeviceCreateId,
+          null,
+          dynamicObject
+        );
+        this.dataService.updateData(request).subscribe(
+          response => {
+            let obj = {};
+            if (!response.errors || response.errors.length === 0) {
+              obj = {
+                title: "Success",
+                message: "Success! You have unassigned Device "+dynamicObject.name+" from Registration Center successfully",
+                btnTxt: "Ok",
+                width: '650px'
+              };
+              this.showMessage(obj);
+              this.router.navigateByUrl(this.router.url);
+            } else {
+              /*obj = {
+                title: "Error",
+                message: this.actionMessages[listItem]['error-message'][0] + data + this.actionMessages[listItem]['error-message'][1],
+                btnTxt: "Ok"
+              };*/
+              this.showMessage(obj);
+            }
+          }
+        );
+      }      
+    }); 
+  }
+
+  unmapMachineCenter(data: any, url: string, idKey: string) {
+    this.auditService.audit(9, 'ADM-090', {
+      buttonName: 'unassign',
+      masterdataName: this.router.url.split('/')[
+        this.router.url.split('/').length - 2
+      ]
+    });
+    const obj = {
+      case: 'CONFIRMATION',
+      title: "Confirm Unassign",
+      message: "Do you want to unassign the selected Machine from the Registration Center",
+      yesBtnTxt: "CONFIRM",
+      noBtnTxt: "CANCEL"
+    };
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '650px',
+      data: obj
+    });
+    dialogRef.afterClosed().subscribe(response => {   
+      if(response){
+        /*let url = this.router.url.split('/')[3];*/
+        this.auditService.audit(18, 'ADM-100', 'unassign');
+        let dynamicObject = data;
+        delete dynamicObject.createdBy;
+        delete dynamicObject.createdDateTime;
+        delete dynamicObject.updatedBy;
+        delete dynamicObject.updatedDateTime;
+        delete dynamicObject.deletedDateTime;
+        delete dynamicObject.isDeleted;
+        delete dynamicObject.zone;
+        delete dynamicObject.machineTypeName;
+        delete dynamicObject.mapStatus;
+        dynamicObject.regCenterId = null;
+
+        const request = new RequestModel(
+          appConstants.registrationDeviceCreateId,
+          null,
+          dynamicObject
+        );
+        this.dataService.updateData(request).subscribe(
+          response => {
+            let obj = {};
+            if (!response.errors || response.errors.length === 0) {
+              obj = {
+                title: "Success",
+                message: "Success! You have unassigned Machine "+dynamicObject.name+" from Registration Center successfully",
+                btnTxt: "Ok",
+                width: '650px'
+              };
+              this.showMessage(obj);
+              this.router.navigateByUrl(this.router.url);
+            } else {
+              /*obj = {
+                title: "Error",
+                message: this.actionMessages[listItem]['error-message'][0] + data + this.actionMessages[listItem]['error-message'][1],
+                btnTxt: "Ok"
+              };*/
+              this.showMessage(obj);
+            }
+          }
+        );
+      }      
+    }); 
   }
 }
