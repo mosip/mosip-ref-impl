@@ -433,6 +433,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
           if (!updateResponse.errors) {
             if(textToValidate){
               this.secondaryData["code"] = updateResponse.response.code; 
+              if(updateResponse.response.id){
+                this.secondaryData["id"] = updateResponse.response.id; 
+              }              
               let request = new RequestModel(
                 updateResponse.response.code,
                 null,
