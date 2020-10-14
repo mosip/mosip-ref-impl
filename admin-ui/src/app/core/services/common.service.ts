@@ -248,7 +248,7 @@ export class CommonService {
       data.macAddress,
       data.serialNum,
       data.ipAddress,
-      "",
+      null,
       data.langCode,
       data.id,
       data.isActive,      
