@@ -62,6 +62,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   titleOnError = '';
   subscriptions: Subscription[] = [];
 
+  name = '';
+
   /**
    * @description Creates an instance of DashBoardComponent.
    * @param {Router} router
@@ -114,6 +116,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response['dashboard'].discard;
     this.regService.setSameAs('');
+    this.name = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
   }
 
   /**
@@ -243,7 +248,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let primaryIndex = 0;
     let secondaryIndex = 1;
     let lang =
-      applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][0]['language'];
+      applicantResponse['demographicMetadata'][this.name][0]['language'];
     if (lang !== this.primaryLangCode) {
       primaryIndex = 1;
       secondaryIndex = 0;
@@ -255,7 +260,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     const applicant: Applicant = {
       applicationID: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.preId],
       name:
-        applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][primaryIndex][
+        applicantResponse['demographicMetadata'][this.name][primaryIndex][
           'value'
         ],
       appointmentDateTime: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto]
@@ -270,7 +275,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       status: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode],
       regDto: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto],
       nameInSecondaryLanguage:
-        applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][
+        applicantResponse['demographicMetadata'][this.name][
           secondaryIndex
         ]['value'],
       postalCode: applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.postalCode]
