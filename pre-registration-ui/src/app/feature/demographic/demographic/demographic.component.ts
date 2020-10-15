@@ -721,13 +721,13 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
-      if (
+      /*if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
       ) {
         index = 1;
         secondaryIndex = 0;
-      }
+      }*/
       if (this.primaryLang === this.secondaryLang) {
         index = 0;
         secondaryIndex = 0;
@@ -740,9 +740,15 @@ export class DemographicComponent
           if (control.id === "dateOfBirth") {
             this.setDateOfBirth();
           } else {
-            this.userForm.controls[`${control.id}`].setValue(
-              this.user.request.demographicDetails.identity[`${control.id}`]
-            );
+            if(typeof(this.user.request.demographicDetails.identity[`${control.id}`]) == "object"){
+              this.userForm.controls[`${control.id}`].setValue(
+                this.user.request.demographicDetails.identity[`${control.id}`][0].value
+              );
+            }else{
+              this.userForm.controls[`${control.id}`].setValue(
+                this.user.request.demographicDetails.identity[`${control.id}`]
+              );
+            }            
             if (this.primaryLang !== this.secondaryLang) {
               this.transUserForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]

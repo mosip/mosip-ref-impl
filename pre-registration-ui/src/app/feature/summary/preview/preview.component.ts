@@ -8,6 +8,7 @@ import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
 import LanguageFactory from "src/assets/i18n";
 import { ConfigService } from "src/app/core/services/config.service";
+import { CodeValueModal } from "src/app/shared/models/demographic-model/code.value.modal";
 
 @Component({
   selector: "app-preview",
@@ -35,6 +36,13 @@ export class PreviewComponent implements OnInit {
   secondaryLocations;
   residenceStatus: any;
   genders: any;
+
+  identityData = [];
+  uiFields = [];
+  locationHeirarchy = [];
+  dynamicFields = [];
+  primarydropDownFields = {};
+  secondaryDropDownFields = {};
   constructor(
     private dataStorageService: DataStorageService,
     private router: Router,
@@ -54,6 +62,7 @@ export class PreviewComponent implements OnInit {
       this.preRegId = param["appId"];
     });
     this.locationData();
+    await this.getIdentityJsonFormat();
     await this.getResidentDetails();
     await this.getGenderDetails();
     await this.getUserInfo();
@@ -62,12 +71,130 @@ export class PreviewComponent implements OnInit {
     this.previewData = this.user.request.demographicDetails.identity;
     this.calculateAge();
     this.previewData.primaryAddress = this.combineAddress(0);
-    this.previewData.secondaryAddress = this.combineAddress(1);
+    //this.previewData.secondaryAddress = this.combineAddress(1);
     this.formatDob(this.previewData.dateOfBirth);
     this.setFieldValues();
     this.getSecondaryLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
+  }
+
+  async getIdentityJsonFormat() {
+    return new Promise((resolve, reject) => {
+      this.dataStorageService.getIdentityJson().subscribe((response) => {
+        console.log(response);
+        this.identityData = response["response"]["idSchema"]["identity"];
+        this.locationHeirarchy = [
+          ...response["response"]["idSchema"]["locationHierarchy"],
+        ];
+        this.identityData.forEach((obj) => {
+          if (
+            obj.inputRequired === true &&
+            obj.controlType !== null &&
+            !(obj.controlType === "fileupload")
+          ) {
+            this.uiFields.push(obj);
+          }
+        });
+        this.dynamicFields = this.uiFields.filter(
+          (fields) =>
+            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+        );
+        this.getIntialDropDownArrays();
+        this.setDynamicFieldValues();
+        resolve(true);
+      });
+    });
+  }
+
+  getIntialDropDownArrays() {
+    this.uiFields.forEach((control) => {
+      if (control.controlType === "dropdown") {
+        this.primarydropDownFields[control.id] = [];
+        if (this.primaryLanguage != this.secondaryLanguage) {
+          this.secondaryDropDownFields[control.id] = [];
+        }
+      }
+    });
+  }
+
+  private async setDynamicFieldValues() {
+    await this.getDynamicFieldValues(this.primaryLanguage);
+    if (this.primaryLanguage !== this.secondaryLanguage) {
+      await this.getDynamicFieldValues(this.secondaryLanguage);
+    }
+  }
+
+  getDynamicFieldValues(lang) {
+    return new Promise((resolve) => {
+      this.dataStorageService
+        .getDynamicFieldsandValues(lang)
+        .subscribe((response) => {
+          console.log(response);
+          let dynamicField = response[appConstants.RESPONSE]["data"];
+          this.dynamicFields.forEach((field) => {
+            dynamicField.forEach((res) => {
+              if (field.id === res.name && res.langCode === this.primaryLanguage) {
+                this.filterOnLangCode(
+                  this.primaryLanguage,
+                  res.name,
+                  res["fieldVal"]
+                );
+              }
+              if (this.primaryLanguage !== this.secondaryLanguage) {
+                if (
+                  field.id === res.name &&
+                  res.langCode === this.secondaryLanguage
+                ) {
+                  this.filterOnLangCode(
+                    this.secondaryLanguage,
+                    res.name,
+                    res["fieldVal"]
+                  );
+                }
+              }
+            });
+          });
+        });
+      resolve(true);
+    });
+  }
+
+  private filterOnLangCode(langCode: string, field: string, entityArray: any) {
+    return new Promise((resolve, reject) => {
+      if (entityArray) {
+        entityArray.filter((element: any) => {
+          if (element.langCode === langCode) {
+            let codeValue: CodeValueModal;
+            if (element.genderName) {
+              codeValue = {
+                valueCode: element.code,
+                valueName: element.genderName,
+                languageCode: element.langCode,
+              };
+            } else if (element.name) {
+              codeValue = {
+                valueCode: element.code,
+                valueName: element.name,
+                languageCode: element.langCode,
+              };
+            } else {
+              codeValue = {
+                valueCode: element.code,
+                valueName: element.value,
+                languageCode: element.langCode,
+              };
+            }
+            if (langCode === this.primaryLanguage) {
+              this.primarydropDownFields[field].push(codeValue);
+            } else {
+              this.secondaryDropDownFields[field].push(codeValue);
+            }
+            resolve(true);
+          }
+        });
+      }
+    });
   }
 
   getUserInfo() {
