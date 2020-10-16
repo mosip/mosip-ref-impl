@@ -1163,18 +1163,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       });
     });
     console.log(this.isDocUploadRequired);
-    if (this.isDocUploadRequired.length > 0) {
+    /*if (this.isDocUploadRequired.length > 0) {
       let message = "please upload ";
       let docList = "";
       for (let i = 0; i < this.isDocUploadRequired.length; i++) {
         docList = docList + this.isDocUploadRequired[i] + " ,";
       }
       this.displayMessage("Required", message + docList);
-    } else {
+    } else {*/
       localStorage.setItem("modifyDocument", "false");
       let url = Utils.getURL(this.router.url, "summary");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
-    }
+    /*}*/
   }
 
   /**
