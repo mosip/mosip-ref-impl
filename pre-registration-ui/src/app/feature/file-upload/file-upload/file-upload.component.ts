@@ -271,6 +271,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         if (applicant.preRegistrationId == this.preRegId) {
           this.allApplicants.splice(i, 1);
           this.allApplicants.push(this.noneApplicant);
+          console.log(JSON.stringify(this.allApplicants));
           this.removeExtraNone();
         }
         i++;
@@ -559,8 +560,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     );
     this.removeApplicantsWithoutPOA();
     this.updateApplicants();
-    this.allApplicants = this.getApplicantsName(this.applicants);
-    const temp = JSON.parse(JSON.stringify(this.allApplicants));
+    let temp = this.getApplicantsName(this.applicants);
+    this.allApplicants = JSON.parse(JSON.stringify(this.allApplicants));
+    temp = JSON.parse(JSON.stringify(this.allApplicants));
     this.setNoneApplicant();
   }
 
