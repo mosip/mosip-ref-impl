@@ -343,12 +343,22 @@ public class IdaController {
 		return null;
 
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getCaptureRequestTemplate() {
+		String requestBody = new String(cryptoUtil.decodeBase64(env.getProperty("ida.request.captureRequest.template")));
+		System.out.println(requestBody);
+		return requestBody;
+	}
 
 	private String captureFingerprint() throws Exception {
 		responsetextField.setText("Capturing Fingerprint...");
-		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
+		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");	
 		
-		String requestBody = env.getProperty("ida.request.captureRequest.template");
+		String requestBody = getCaptureRequestTemplate();
 		
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFinger.timeout"))
 								   .replace("$count", getFingerCount()).
@@ -389,7 +399,7 @@ public class IdaController {
 		responsetextField.setText("Capturing Iris...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
-	String requestBody = env.getProperty("ida.request.captureRequest.template");
+	String requestBody = getCaptureRequestTemplate();
 		
 	requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureIris.timeout"))
 								   .replace("$count", getIrisCount()).
@@ -411,7 +421,7 @@ public class IdaController {
 		responsetextField.setText("Capturing Face...");
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
-		String requestBody = env.getProperty("ida.request.captureRequest.template");
+		String requestBody = getCaptureRequestTemplate();
 		
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFace.timeout"))
 									   .replace("$count", getFaceCount()).
@@ -459,11 +469,12 @@ public class IdaController {
 
 	private String getCaptureTime() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
 		df.setTimeZone(tz);
 		String nowAsISO = df.format(new Date());
 		return nowAsISO;
 	}
+	
 	@SuppressWarnings("rawtypes")
 	private String capturebiometrics(String requestBody) throws Exception {
 		System.out.println("Capture request:\n" + requestBody);
@@ -484,29 +495,43 @@ public class IdaController {
 			}
 			bR.close();
 		} catch (IOException e) {
+			responsetextField.setText("Device connectivity failed....");
+			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			e.printStackTrace();
 		}
 		String result = stringBuilder.toString();
-		String error = ((Map) mapper.readValue(result, Map.class).get("error")).get("errorCode").toString();
+		String error = null;
 		
-		if (error.equals("0")) {
-			responsetextField.setText("Capture Success");
-			responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
-			ObjectMapper objectMapper = new ObjectMapper();
-			List dataList = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
-			for (int i = 0; i < dataList.size(); i++) {
-				Map b = (Map) dataList.get(i);
-				String dataJws = (String) b.get("data");
-				Map dataMap = objectMapper.readValue(CryptoUtil.decodeBase64(dataJws.split("\\.")[1]), Map.class);
-				System.out.println((i+1) + " Bio-type: " + dataMap.get("bioType") + " Bio-sub-type: " +  dataMap.get("bioSubType"));
-				previousHash = (String) b.get("hash");
-			}
-		} else {
-			responsetextField.setText("Capture Failed");
+		List data = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
+		if(data == null) {
+			responsetextField.setText(result);
 			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 		}
+		
+		for (int j = 0; j < data.size(); j++) {
+			Map e = (Map) data.get(j);			
+			Map errorMap = (Map) e.get("error");
+			error = errorMap.get("errorCode").toString();		
+			if (error.equals("0")) {
+				responsetextField.setText("Capture Success");
+				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
+				ObjectMapper objectMapper = new ObjectMapper();
+				List dataList = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
+				for (int i = 0; i < dataList.size(); i++) {
+					Map b = (Map) dataList.get(i);
+					String dataJws = (String) b.get("data");
+					Map dataMap = objectMapper.readValue(CryptoUtil.decodeBase64(dataJws.split("\\.")[1]), Map.class);
+					System.out.println((i+1) + " Bio-type: " + dataMap.get("bioType") + " Bio-sub-type: " +  dataMap.get("bioSubType"));
+					previousHash = (String) b.get("hash");
+				}
+			} else {
+				responsetextField.setText("Capture Failed");
+				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
+				break;
+			}
+		}
+		
 		System.out.println(result);
-	
 		return result;
 	}
 
@@ -708,6 +733,9 @@ public class IdaController {
 				String authToken = generateAuthToken();
 				if (authToken != null && !authToken.isEmpty()) {
 					request.getHeaders().set("Cookie", "Authorization=" + authToken);
+					request.getHeaders().set("Authorization", "Authorization=" + authToken);
+					request.getHeaders().set("signature", "eyJ4NWMiOlsiTUlJRFpUQ0NBazJnQXdJQkFnSUVYVmp0VkRBTkJna3Foa2lHOXcwQkFRc0ZBREJqTVFzd0NRWURWUVFHRXdKSlRqRUxNQWtHQTFVRUNCTUNTMEV4RWpBUUJnTlZCQWNUQ1VKaGJtZGhiRzl5WlRFT01Bd0dBMVVFQ2hNRlNVbEpWRUl4RGpBTUJnTlZCQXNUQlUxUFUwbFFNUk13RVFZRFZRUUREQXBOVDFOSlVGOVVaWE4wTUI0WERUSXdNVEF4TXpBMU16a3pObG9YRFRJek1UQXhNekExTXprek5sb3dZekVMTUFrR0ExVUVCaE1DU1U0eEN6QUpCZ05WQkFnVEFrdEJNUkl3RUFZRFZRUUhFd2xDWVc1bllXeHZjbVV4RGpBTUJnTlZCQW9UQlVsSlNWUkNNUTR3REFZRFZRUUxFd1ZOVDFOSlVERVRNQkVHQTFVRUF3d0tUVTlUU1ZCZlZHVnpkRENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFQSzk3d25namw3V0Y3RURkcENncThXSVA5Z1JhVUZ6VFU4VElhZ1d3alVmRlFpUTV0Q0s2VTdkZ1hsMmZTR1VlVEh4U1p5WWNhZk0wM3hGcUJGQytsMzU5WDFEVUx0ZW9KRWZMZENUYkRxSUdYMWFpQTlNbkVHbTB3U1pFV3duMUVxYVhQYXpMNjVPL0tQN29paVFnZmxMTGhMSW1HT0l3MzF6UDd5UVFUeCtIc0ZmU1VsbXgrc1IrZGtkQkppdkdINng3b0ZRTi90VGJXaGxwVEFpVjBFVUlWamJGS2dsS2NZeG9oWVVnOEpYbzg3S1lHRndIeHlYbnpleTU5bG04d0JnWUZiRUhoeHh1bWt4aDlrdnp0ZUVEOGdkMWdseUVXcTR4UU1QNXY2cHBndlZ4VU5Pb2c0OXRJTlkybFFubEJkalNFb2d0elN2WnRmVmV6Qmp5UE1DQXdFQUFhTWhNQjh3SFFZRFZSME9CQllFRkZOb0pYMHRTRm9WeURZa2dyRFBZL1J6dktZbk1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQlNCM1ZLdjNvRHR1ZUZvc1Q2VEJhVytaSUlSaEMwbHdIeU90QThvcVA3c2p0Q2tLUU83MU1ESFlHbXB3WlpLUnV3QXZlbEJsdGRNa2FoNWEvbmUrYjBvK0E5Qk5vREZpSDA4cFg0Q0w5ZHJFOVZOSE5XcnQ2M0RhVGE1NEVvZG91OXZUd09lcTJlUmVQWmRsZllwSi9MdE9zTkdYbTloSkZhYzNZdlpWOTgxMmxESWdWL2JDc04xOE1GK3BmakU3UW5aMDJocDJJTWt5c1NqQXlUTktVQ25ORlcvY2NYb2tsdzgzNENPcHUrd2VaaXZmUzdYZ1VjclhTb1o0ZmxaTlZ0RTlDaXZOVUhuSXlRQUcwb0JyblZla2tLbDF2RGRFR2EyT21salhrRDlOenEwRXdVVllUWERJdGMxaThacFYyQVVaVHdBUWRieUFLNi81YjNCcVlRIl0sImFsZyI6IlJTNTEyIn0.aGVsbG8gd29ybGQ.WGsSyKwBxtzt2B_mBDAbdHr4g_x0IZSXPZ2RCjWjD5Rp9wImKMeqFx0Uex7mV3D0mIaraXVMr8_WrB9bQcWOHf6sOTFfwmmmu_SgFqO9U85de0YTJbNAogBgCxzoIIkGgnRDes3SpIyw361Qy-w4kZKBezvj6z53kQB50HmcaOAPpzcPZdQGP7B_a9a-YFLnViZeOb5Ki-dhc72qw0TDXp-7HwTGERDxnvCT07pQTSyxSpgow--HPxF2cPOnRSMJ14VcA0PuJkjb8ykpMYpapMzs2KDhsYApEx7PTORW3J3izehb3BNHb4tj91t_eDo1UPc_y6ryz3BaBM6qZycTkw");
+					
 				}
 				return execution.execute(request, body);
 			}

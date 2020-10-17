@@ -497,6 +497,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
           this.secondaryData['oldWord'] = this.copySecondaryWord;
         }         
       }
+      if(this.router.url.split('/')[3] === "holiday"){
+        delete this.primaryData['name'];
+        delete this.secondaryData['name'];
+      }
       let request = new RequestModel(
         "",
         null,
