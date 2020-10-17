@@ -105,7 +105,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   uiFields = [];
   preRegId: number;
   isDocUploadRequired = [];
-
+  name:"";
+  
   constructor(
     private registration: RegistrationService,
     private dataStorageService: DataStorageService,
@@ -144,6 +145,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (response["message"])
       this.fileUploadLanguagelabels = response["message"];
     if (response["error"]) this.errorlabels = response["error"];
+    this.name = this.config.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
   }
 
   async getIdentityJsonFormat() {
@@ -271,6 +275,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         if (applicant.preRegistrationId == this.preRegId) {
           this.allApplicants.splice(i, 1);
           this.allApplicants.push(this.noneApplicant);
+          console.log(JSON.stringify(this.allApplicants));
           this.removeExtraNone();
         }
         i++;
@@ -371,20 +376,22 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let allApplicants: any[] = [];
 
     allApplicants = JSON.parse(JSON.stringify(applicants));
-
+    let name = this.config.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
     for (let applicant of allApplicants) {
       for (let name of applicant) {
         if (
-          name["demographicMetadata"].fullName[j].language != this.primaryLang
+          name["demographicMetadata"][name][j].language != this.primaryLang
         ) {
-          allApplicants[i].demographicMetadata.fullName.splice(j, 1);
+          allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
         j++;
       }
       i++;
     }
-
-    return JSON.parse(JSON.stringify(allApplicants));
+    console.log("allApplicants>>>"+JSON.stringify(allApplicants));
+    return allApplicants;
   }
   /**
    *
@@ -559,8 +566,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     );
     this.removeApplicantsWithoutPOA();
     this.updateApplicants();
-    this.allApplicants = this.getApplicantsName(this.applicants);
-    const temp = JSON.parse(JSON.stringify(this.allApplicants));
+    let temp = this.getApplicantsName(this.applicants);
+    this.allApplicants = JSON.parse(JSON.stringify(temp));
+    console.log("this.allApplicants"+this.allApplicants.length);
+    temp = JSON.parse(JSON.stringify(this.allApplicants));
     this.setNoneApplicant();
   }
 
