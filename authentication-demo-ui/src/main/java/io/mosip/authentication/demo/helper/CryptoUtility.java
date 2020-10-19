@@ -17,6 +17,7 @@ import javax.crypto.SecretKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.apache.commons.codec.binary.Base64;
 
 import io.mosip.kernel.core.crypto.spi.CryptoCoreSpec;
 
@@ -132,6 +133,16 @@ public class CryptoUtility {
 	public byte[] asymmetricEncrypt(byte[] data, PublicKey publicKey) throws NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		return cryptoCore.asymmetricEncrypt(publicKey, data);
+	}
+	
+	/**
+	 * Decodes from BASE64
+	 * 
+	 * @param data data to decode
+	 * @return decoded data
+	 */
+	public byte[] decodeBase64(String data) {
+		return Base64.decodeBase64(data);
 	}
 
 }

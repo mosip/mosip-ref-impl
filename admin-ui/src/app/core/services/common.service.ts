@@ -174,7 +174,7 @@ export class CommonService {
     this.showMessage(obj);
   }
 
-  private updateData(callingFunction: string, data: CenterModel) {
+  private updateData(callingFunction: string, data: CenterModel, actualData:any) {
     const request = new RequestModel(
       appConstants.registrationDeviceCreateId,
       null,
@@ -182,15 +182,15 @@ export class CommonService {
     );
     this.dataService.updateData(request).subscribe(
       response => {
-        console.log("request.request>>>"+JSON.stringify(request.request));
+        console.log("request.request>>>"+JSON.stringify(actualData));
         if (!response.errors || response.errors.length === 0) {
-          this.createMessage('success', callingFunction, request.request);     
+          this.createMessage('success', callingFunction, actualData);     
           this.router.navigateByUrl(this.router.url);
         } else {
-          this.createMessage('error', callingFunction, request.request);
+          this.createMessage('error', callingFunction, actualData);
         }
       },
-      error => this.createMessage('error', callingFunction, request.request)
+      error => this.createMessage('error', callingFunction, actualData)
     );
   }
 
@@ -248,7 +248,7 @@ export class CommonService {
       data.macAddress,
       data.serialNum,
       data.ipAddress,
-      "",
+      null,
       data.langCode,
       data.id,
       data.isActive,      
@@ -557,8 +557,7 @@ export class CommonService {
         }
         
         dynamicObject.isActive = true;
-        console.log(dynamicObject);
-        this.updateData('activate', dynamicObject);
+        this.updateData('activate', dynamicObject, data);
       } else {
         this.auditService.audit(19, 'ADM-101', 'activate');
       }
@@ -626,7 +625,7 @@ export class CommonService {
 
         dynamicObject.isActive = false;
         console.log(dynamicObject);
-        this.updateData('deactivate', dynamicObject);
+        this.updateData('deactivate', dynamicObject, data);
       } else {
         this.auditService.audit(19, 'ADM-103', 'deactivate');
       }

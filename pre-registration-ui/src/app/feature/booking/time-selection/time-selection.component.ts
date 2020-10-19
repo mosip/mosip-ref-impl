@@ -66,6 +66,7 @@ export class TimeSelectionComponent
   showsNamesContainer: boolean;
   afternoonSlotAvailable: boolean = false;
   morningSlotAvailable: boolean = false;
+  name = "";
   constructor(
     private bookingService: BookingService,
     public dialog: MatDialog,
@@ -93,6 +94,9 @@ export class TimeSelectionComponent
     this.activatedRoute.queryParams.subscribe((param) => {
       this.registrationCenter = param["regCenter"];
     });
+    this.name = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
     await this.getUserInfo(this.preRegId);
     await this.getRegCenterDetails();
     this.prepareNameList(this.userInfo, this.regCenterInfo);
@@ -174,9 +178,10 @@ export class TimeSelectionComponent
       nameList.preRegId = user.request.preRegistrationId;
       nameList.status = user.request.statusCode;
       nameList.fullName =
-        user.request.demographicDetails.identity.fullName[0].value;
-      nameList.fullNameSecondaryLang =
-        user.request.demographicDetails.identity.fullName[1].value;
+        user["request"].demographicDetails.identity[this.name][0].value;
+      if(user["request"].demographicDetails.identity[this.name][1])
+        nameList.fullNameSecondaryLang =
+          user["request"].demographicDetails.identity[this.name][1].value;
       nameList.postalCode = user.request.demographicDetails.identity.postalCode;
       nameList.registrationCenter = regCenterInfo;
       this.names.push(nameList);
