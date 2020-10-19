@@ -53,7 +53,7 @@
             </table>
           </div>
           <div class="spacer"></div>
-          <!-- <div id="table-container" *ngIf="secondaryLanguagelabels && secondaryLanguageRegistrationCenter">
+          <div id="table-container" *ngIf="secondaryLanguagelabels && secondaryLanguageRegistrationCenter && primaryLanguage != secondaryLanguage">
             <table>
               <tr>
                 <td>{{ secondaryLanguagelabels.label_name }}</td>
@@ -86,7 +86,7 @@
                 <td>{{ user.bookingTimeSecondary }}, {{ user.bookingDataSecondary }}</td>
               </tr>
             </table>
-          </div> -->
+          </div>
           <div class="spacer"></div>
           <div *ngIf="user.qrCodeBlob" id="qr-code-container" class="ack__qr-code">
             <img id="qr-code" src="data:image/png;base64,{{ user.qrCodeBlob }}" />

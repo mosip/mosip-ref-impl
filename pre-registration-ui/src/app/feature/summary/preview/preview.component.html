@@ -99,7 +99,17 @@
               </tr>
             </table>
           </div> -->
-        <!-- <div [ngClass]="secondaryLanguage === 'ara' ? 'preview__body-content-div right' : 'preview__body-content-div'">
+        <div *ngIf="primaryLanguage == secondaryLanguage">
+          <div class="preview__modify-div">
+              <span
+                (click)="modifyDemographic()"
+                class="preview__modify-div-span"
+                matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
+                ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
+              >
+            </div>
+        </div>
+        <div *ngIf="primaryLanguage != secondaryLanguage" [ngClass]="secondaryLanguage === 'ara' ? 'preview__body-content-div right' : 'preview__body-content-div'">
           <div>
             <div class="preview__modify-div">
               <span>{{ secondaryLanguagelabels.language }}</span>
@@ -113,7 +123,58 @@
             <h3>{{ secondaryLanguagelabels.subheading_information }}</h3>
             <hr />
           </div>
-          <div>
+          <table>
+            <tr *ngFor="let field of uiFields">
+              <td>{{ field.labelName[secondaryLanguage] }}</td>
+              <td>:</td>
+              <div *ngIf="field.controlType != 'dropdown'">
+                <td *ngIf="previewData[field.id].length > 2">
+                  {{ previewData[field.id] }}
+                </td>
+                <td *ngIf="previewData[field.id]">
+                  {{ previewData[field.id][0].value }}
+                </td>
+              </div>
+              <div *ngIf="field.controlType == 'dropdown'">
+                <td *ngIf="field.id == 'gender'">
+                  <div  *ngFor="let genderType of genders">
+                    <div  *ngIf = "genderType.langCode === secondaryLanguage">
+                      <div  *ngIf = "previewData[field.id][0].value === genderType.code">
+                        {{genderType.genderName}}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="field.id == 'residenceStatus'">
+                  <div  *ngFor="let residentType of residenceStatus">
+                    <div  *ngIf = "residentType.langCode === secondaryLanguage">
+                      <div  *ngIf = "previewData[field.id][0].value === residentType.code">
+                        {{residentType.name}}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <div *ngIf="field.id != 'residenceStatus'">
+                  <div *ngIf="field.id != 'gender'">
+                    <td *ngIf="field.fieldType === 'dynamic'">
+                      <div *ngFor="let dropdown of primarydropDownFields[field.id]">
+                        <div  *ngIf = "previewData[field.id][0].value === dropdown.valueCode">
+                          {{ dropdown.valueName }}
+                        </div>
+                      </div>
+                    </td>
+                    <td *ngIf="previewData[field.id].length > 2">
+                      {{ previewData[field.id] }}
+                    </td>
+                    <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic'">
+                      {{ previewData[field.id][0].value }}
+                    </td>
+                  </div>
+                </div>
+              </div>
+            </tr>
+          </table>
+          <!-- <div>
             <table *ngIf="secondaryLanguagelabels !== undefined" class="preview__personal-info-table">
               <tr>
                 <td>{{ secondaryLanguagelabels.label_name }}</td>
@@ -189,8 +250,8 @@
                 <td>{{ previewData.referenceIdentityNumber }}</td> 
               </tr>
             </table>
-          </div>
-        </div> -->
+          </div> -->
+        </div>
       </div>
     </mat-card-content>
     <div class="preview__footer-header">
