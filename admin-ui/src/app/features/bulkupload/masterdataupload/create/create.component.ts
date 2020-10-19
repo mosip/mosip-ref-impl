@@ -93,7 +93,7 @@ export class CreateComponent {
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: "File upload failed because the template was wrong. \n\n\n Please update your file and retry again.",
+        message: uploadResponse.response.message,
         btnTxt: "DONE"
       };
     }else{
