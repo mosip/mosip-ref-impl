@@ -20,7 +20,8 @@ import { Subscription } from "rxjs";
   templateUrl: "./center-selection.component.html",
   styleUrls: ["./center-selection.component.css"],
 })
-export class CenterSelectionComponent extends BookingDeactivateGuardService
+export class CenterSelectionComponent
+  extends BookingDeactivateGuardService
   implements OnInit, OnDestroy {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
@@ -64,9 +65,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
 
   async ngOnInit() {
     if (this.router.url.includes("multiappointment")) {
-      this.preRegId = [
-        ...JSON.parse(localStorage.getItem("multiappointment")),
-      ];
+      this.preRegId = [...JSON.parse(localStorage.getItem("multiappointment"))];
     } else {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = [param["appId"]];
@@ -252,6 +251,12 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
     if (Number(inputTime[0]) < 12) {
       formattedTime = inputTime[0];
       formattedTime += ":" + inputTime[1] + " am";
+    } else if (Number(inputTime[0]) === 0) {
+      formattedTime = inputTime[0] + 12;
+      formattedTime += ":" + inputTime[1] + " am";
+    } else if (Number(inputTime[0]) === 12) {
+      formattedTime = inputTime[0];
+      formattedTime += ":" + inputTime[1] + " pm";
     } else {
       formattedTime = Number(inputTime[0]) - 12;
       formattedTime += ":" + inputTime[1] + " pm";
@@ -358,10 +363,11 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
         ) {
           this.routeDashboard();
         } else {
-          localStorage.setItem("modifyUser","true");
-          this.router.navigate([`${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`]);
+          localStorage.setItem("modifyUser", "true");
+          this.router.navigate([
+            `${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`,
+          ]);
         }
-        
       }
     });
   }
