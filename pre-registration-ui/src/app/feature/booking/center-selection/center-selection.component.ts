@@ -252,7 +252,7 @@ export class CenterSelectionComponent
       formattedTime = inputTime[0];
       formattedTime += ":" + inputTime[1] + " am";
     } else if (Number(inputTime[0]) === 0) {
-      formattedTime = inputTime[0] + 12;
+      formattedTime = Number(inputTime[0]) + 12;
       formattedTime += ":" + inputTime[1] + " am";
     } else if (Number(inputTime[0]) === 12) {
       formattedTime = inputTime[0];
