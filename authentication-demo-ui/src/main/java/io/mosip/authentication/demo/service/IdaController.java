@@ -592,7 +592,8 @@ public class IdaController {
 		authRequestDTO.setIndividualId(idValue.getText());
 		// Set Individual Id type
 		authRequestDTO.setIndividualIdType(idTypebox.getValue());
-
+		authRequestDTO.setEnv("Staging");
+		authRequestDTO.setDomainUri(env.getProperty("ida.request.captureFinger.domainUri"));
 		RequestDTO requestDTO = new RequestDTO();
 		requestDTO.setTimestamp(getUTCCurrentDateTimeISOString());
 
