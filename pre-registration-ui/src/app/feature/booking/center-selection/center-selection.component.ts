@@ -248,7 +248,7 @@ export class CenterSelectionComponent
   changeTimeFormat(time: string): string | Number {
     let inputTime = time.split(":");
     let formattedTime: any;
-    if (Number(inputTime[0]) < 12) {
+    if (Number(inputTime[0]) < 12 && Number(inputTime[0]) > 0) {
       formattedTime = inputTime[0];
       formattedTime += ":" + inputTime[1] + " am";
     } else if (Number(inputTime[0]) === 0) {
