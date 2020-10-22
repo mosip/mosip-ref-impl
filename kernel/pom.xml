@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
-	<version>1.1.2-rc1</version>
+	<version>1.1.2-rc2</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>Parent project of MOSIP Kernel for Philippines</description>
@@ -121,7 +121,7 @@
 		<json.version>20180813</json.version>
 
 		<!-- kernel -->
-		<kernel-core.version>1.1.2-rc1</kernel-core.version>
+		<kernel-core.version>1.1.2-rc2</kernel-core.version>
 
 		<!-- utilities -->
 		<commons-math3>3.6.1</commons-math3>
@@ -182,7 +182,6 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -211,9 +210,6 @@
 							</execution>
 					    </executions>
 				</plugin>
-			</plugins>
-		</pluginManagement>
-		<plugins>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -280,6 +276,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven.javadoc.version}</version>
+				<executions>
+                        <execution>
+                          <id>attach-javadocs</id>
+                          <goals>
+                                <goal>jar</goal>
+                          </goals>
+                        </execution>
+                  </executions>
 				<configuration>
 					<aggregate>true</aggregate>
 					<doclint>none</doclint>
