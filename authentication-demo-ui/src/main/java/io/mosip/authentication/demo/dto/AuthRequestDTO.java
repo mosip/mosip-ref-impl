@@ -44,6 +44,8 @@ public class AuthRequestDTO extends BaseAuthRequestDTO {
 	/** The value for requestSessionKey*/
 	private String requestSessionKey;
 	
+	private String env;
 	
+	private String  domainUri;
 
 }
