@@ -42,6 +42,13 @@ const routes: Routes = [
           import('./features/bulkupload/bulkupload.module').then(
             m => m.BulkuploadModule
           )
+      },
+      {
+        path: 'keymanager',
+        loadChildren: () =>
+          import('./features/keymanager/keymanager.module').then(
+            m => m.KeymanagerModule
+          )
       }
     ], canActivateChild : [AuthguardService] , canActivate: [LanguageGuard]
   },

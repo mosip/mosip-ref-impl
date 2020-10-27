@@ -95,6 +95,50 @@ export const navItems = [
     ],
     auditEventId: 'ADM-003',
     roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+  },
+  {
+    displayName: 'menuItems.item6.title',
+    icon: 'assets/images/support.svg',
+    route: 'admin/keymanager',
+    children: [
+      {
+        displayName: 'menuItems.item6.subItem1',
+        icon: null,
+        route: '/admin/keymanager/generatecsr',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },
+      {
+        displayName: 'menuItems.item6.subItem2',
+        icon: null,
+        route: '/admin/keymanager/generatemasterkey',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },
+      {
+        displayName: 'menuItems.item6.subItem3',
+        icon: null,
+        route: '/admin/keymanager/generatecsr3',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },
+      {
+        displayName: 'menuItems.item6.subItem4',
+        icon: null,
+        route: '/admin/keymanager/uploadcertificate',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },
+      {
+        displayName: 'menuItems.item6.subItem5',
+        icon: null,
+        route: '/admin/keymanager/uploadotherdomaincertificate',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      }
+    ],
+    auditEventId: 'ADM-003',
+    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   }
 ];
 
