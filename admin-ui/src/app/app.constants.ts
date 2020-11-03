@@ -63,7 +63,7 @@ export const navItems = [
     route: '/admin/packet-status',
     children: null,
     auditEventId: 'ADM-008',
-    roles: ['ZONAL_ADMIN']
+    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   },
   {
     displayName: 'menuItems.item3.title',
@@ -83,18 +83,18 @@ export const navItems = [
         icon: null,
         route: '/admin/bulkupload/masterdataupload',
         auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN']
       },
       {
         displayName: 'menuItems.item5.subItem2',
         icon: null,
         route: '/admin/bulkupload/packetupload',
         auditEventId: 'ADM-005',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN']
       }
     ],
     auditEventId: 'ADM-003',
-    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+    roles: ['GLOBAL_ADMIN']
   },
   {
     displayName: 'menuItems.item6.title',

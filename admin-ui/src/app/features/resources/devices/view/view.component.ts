@@ -106,6 +106,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.filtersApplied = true;
     }
     this.sortFilter = filters.sort;
+    if(this.sortFilter.length == 0){
+      this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
+    }
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.dataStroageService

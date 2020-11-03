@@ -137,6 +137,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
           this.copySecondaryWord = this.secondaryData.word;
         }        
         this.pageName = "Blacklisted Word";
+        this.primaryData['oldWord'] = this.primaryData['word'];
       }else if(url === "gender-type"){
         this.pageName = "Gender Type";
       }else if(url === "individual-type"){
@@ -490,7 +491,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['deviceTypeName'];
         delete this.secondaryData['machineTypeName'];
       }
-      /*console.log("this.router.url>>>"+this.router.url.split('/')[3]);*/
       if(this.router.url.split('/')[3] === "blacklisted-words"){
         this.primaryData['oldWord'] = this.copyPrimaryWord;
         if(this.secondaryData.word){
