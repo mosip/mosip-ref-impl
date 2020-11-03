@@ -518,11 +518,9 @@ export class CreateComponent{
     this.dataStorageService
       .createDevice(primaryRequest)
       .subscribe(createResponse => {
-        console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
           if (this.secondaryForm.valid) {
             if (this.showSecondaryForm) {
-              console.log('inside secondary block');
               secondaryObject.id = createResponse.response.id;
               secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
@@ -547,6 +545,14 @@ export class CreateComponent{
                   this.showMessage('create-error');
                 }
               });
+            }else {
+              this.showMessage('update-success', createResponse.response)
+              .afterClosed()
+                      .subscribe(() => {
+                        this.primaryForm.reset();
+                        this.secondaryForm.reset();
+                        this.router.navigateByUrl('admin/resources/devices/view');
+                      });
             }
           } else {
             this.showMessage('update-success', createResponse.response)

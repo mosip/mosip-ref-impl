@@ -464,6 +464,14 @@ export class CreateComponent {
                   this.showMessage('create-error');
                 }
               });
+            }else {
+              this.showMessage('create-success', createResponse.response)
+              .afterClosed()
+                      .subscribe(() => {
+                        this.primaryForm.reset();
+                        this.secondaryForm.reset();
+                        this.router.navigateByUrl('admin/resources/centers/view');
+                      });
             }
           } else {
             this.showMessage('create-success', createResponse.response)

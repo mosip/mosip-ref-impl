@@ -62,6 +62,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   titleOnError = '';
   subscriptions: Subscription[] = [];
 
+  name = '';
+
   /**
    * @description Creates an instance of DashBoardComponent.
    * @param {Router} router
@@ -114,6 +116,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response['dashboard'].discard;
     this.regService.setSameAs('');
+    this.name = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
   }
 
   /**
@@ -243,7 +248,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let primaryIndex = 0;
     let secondaryIndex = 1;
     let lang =
-      applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][0]['language'];
+      applicantResponse['demographicMetadata'][this.name][0]['language'];
     if (lang !== this.primaryLangCode) {
       primaryIndex = 1;
       secondaryIndex = 0;
@@ -255,7 +260,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     const applicant: Applicant = {
       applicationID: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.preId],
       name:
-        applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][primaryIndex][
+        applicantResponse['demographicMetadata'][this.name][primaryIndex][
           'value'
         ],
       appointmentDateTime: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto]
@@ -270,7 +275,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       status: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode],
       regDto: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto],
       nameInSecondaryLanguage:
-        applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][
+        applicantResponse['demographicMetadata'][this.name][
           secondaryIndex
         ]['value'],
       postalCode: applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.postalCode]
@@ -474,25 +479,26 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     const preId = user.applicationID;
     localStorage.setItem('modifyUser','true');
     this.disableModifyDataButton = true;
-    const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
-      response => this.setUserFiles(response),
-      error => {
-        this.loggerService.error('dashboard error', error);
-        this.disableModifyDataButton = false;
-        this.onError(error);
-      },
-      () => {
-        this.dataStorageService.getUser(preId).subscribe(
-          response => {
-            this.onModification(response, preId);
-          },
-          error => {
-            this.onError(error);
-          }
-        );
-      }
-    );
-    this.subscriptions.push(subs);
+    this.onModification(preId);
+    // const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
+    //   response => this.setUserFiles(response),
+    //   error => {
+    //     this.loggerService.error('dashboard error', error);
+    //     this.disableModifyDataButton = false;
+    //     this.onError(error);
+    //   },
+    //   () => {
+    //     this.dataStorageService.getUser(preId).subscribe(
+    //       response => {
+    //         this.onModification(response, preId);
+    //       },
+    //       error => {
+    //         this.onError(error);
+    //       }
+    //     );
+    //   }
+    // );
+    // this.subscriptions.push(subs);
   }
 
   /**
@@ -503,7 +509,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @param {string} preId
    * @memberof DashBoardComponent
    */
-  private onModification(response: any, preId: string) {
+  private onModification(preId: string) {
     this.disableModifyDataButton = true;
     this.fetchedDetails = true;
     this.router.navigate([this.primaryLangCode,'pre-registration', 'demographic',preId]);
@@ -546,8 +552,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       selectedPrids.push(id.applicationID);
       });
       console.log(selectedPrids);
-      localStorage.setItem("muiltyAppointment",JSON.stringify(selectedPrids));
-      url = Utils.getURL(this.router.url, `pre-registration/booking/mulityappointement/pick-center`,1);
+      localStorage.setItem("multiappointment",JSON.stringify(selectedPrids));
+      url = Utils.getURL(this.router.url, `pre-registration/booking/multiappointment/pick-center`,1);
       this.router.navigateByUrl(url);
     }
   

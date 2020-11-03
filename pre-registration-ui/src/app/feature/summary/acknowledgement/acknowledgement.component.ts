@@ -48,6 +48,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   };
   regCenterId;
   primaryLangCode;
+  name = "";
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
@@ -62,15 +63,18 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    if (this.router.url.includes("mulityappointement")) {
+    if (this.router.url.includes("multiappointment")) {
       this.preRegId = [
-        ...JSON.parse(localStorage.getItem("muiltyAppointment")),
+        ...JSON.parse(localStorage.getItem("multiappointment")),
       ];
     } else {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = [param["appId"]];
       });
     }
+    this.name = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
     await this.getUserInfo(this.preRegId);
     await this.getRegCenterDetails();
     console.log(this.usersInfo);
@@ -94,8 +98,11 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.bookingService.resetSendNotification();
       this.automaticNotification();
     }
+
+
   }
   getUserInfo(preRegId) {
+    let self = this;
     return new Promise((resolve) => {
       preRegId.forEach(async (prid: any, index) => {
         await this.getUserDetails(prid).then(async (user) => {
@@ -112,9 +119,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           nameList.preRegId = user["request"].preRegistrationId;
           nameList.status = user["request"].statusCode;
           nameList.fullName =
-            user["request"].demographicDetails.identity.fullName[0].value;
-          nameList.fullNameSecondaryLang =
-            user["request"].demographicDetails.identity.fullName[1].value;
+            user["request"].demographicDetails.identity[self.name][0].value;
+          if(user["request"].demographicDetails.identity[self.name][1])
+            nameList.fullNameSecondaryLang =
+              user["request"].demographicDetails.identity[self.name][1].value;
           nameList.postalCode =
             user["request"].demographicDetails.identity.postalCode;
           nameList.registrationCenter = "";

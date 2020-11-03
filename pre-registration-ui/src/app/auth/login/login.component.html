@@ -1,4 +1,4 @@
-<div class="wrapper spacing" *ngIf="showSpinner && captcha">
+<div class="wrapper spacing" *ngIf="showSpinner">
   <mat-spinner></mat-spinner>
 </div>
 
@@ -14,7 +14,7 @@
     </div>
 
     <div
-      style="width: 38vw; max-width: 323px;"
+      style="width: 38vw; max-width: 323px"
       [ngClass]="
         selectedLanguage !== 'Arabic'
           ? 'form_fields_wrapper form_fields_padding'
@@ -53,19 +53,10 @@
         </div>
         <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
       </div>
-      <div class="captcha" *ngIf="showCaptcha" >
-        <re-captcha
-          hl="ar"
-          id="grecaptcha"
-          class="g-recaptcha"
-          (resolved)="recaptcha($event)"
-          siteKey="{{siteKey}}"
-
-          data-error-callback ="recaptchaError($event)"
-          #captcha
-        ></re-captcha>
+      <div *ngIf="enableCaptcha && showCaptcha">
+        <app-captcha [captchaSiteKey]="siteKey"></app-captcha>
       </div>
-      <div *ngIf="captchaError" class="error" style="margin-left: 55px;">
+      <div *ngIf="captchaError" class="error" style="margin-left: 55px">
         {{ "recaptcha.errorMessage" | translate }}
       </div>
       <div *ngIf="showOTP">
@@ -87,7 +78,10 @@
           mat-raised-button
           class="btn_axn-pri"
           [disabled]="
-            inputContactDetails.length > 0 && captchaSucess ? false : true
+            inputContactDetails.length > 0 &&
+            (enableSendOtp || authService.isCaptchaAuthenticated())
+              ? false
+              : true
           "
           (click)="submit()"
         >
