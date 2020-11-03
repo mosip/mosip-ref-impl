@@ -20,6 +20,7 @@
             <ng-container *ngIf="field.controlType === 'textbox'">
               <mat-form-field [ngClass]="'text-field'">
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+                <span *ngIf="field.required" class="required-annotation">*</span>
                 <input
                   matInput
                   formControlName="{{ field.id }}"
@@ -33,6 +34,7 @@
             <ng-container *ngIf="field.controlType === 'dropdown'">
               <mat-form-field [ngClass]="'dropdown-field'">
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+                <span *ngIf="field.required" class="required-annotation">*</span>
                 <mat-select
                   formControlName="{{ field.id }}"
                   (focus)="dropdownApiCall(field)"
@@ -90,6 +92,7 @@
               </mat-form-field> -->
               <br />
               <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+              <span *ngIf="field.required" class="required-annotation">*</span>
               <div class="user__age-or-date">
                 <div class="user__date">
                   <mat-form-field>
@@ -189,6 +192,7 @@
             <ng-container *ngIf="field.controlType === 'textbox'">
               <mat-form-field [ngClass]="'text-field'">
                 <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+                <span *ngIf="field.required" class="required-annotation">*</span>
                 <input
                   matInput
                   formControlName="{{ field.id }}"
@@ -199,6 +203,7 @@
             <ng-container *ngIf="field.controlType === 'dropdown'">
               <mat-form-field [ngClass]="'dropdown-field'">
                 <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+                <span *ngIf="field.required" class="required-annotation">*</span>
                 <mat-select
                   formControlName="{{ field.id }}"
                   #dropdown
@@ -234,6 +239,7 @@
             </mat-form-field> -->
               <br />
               <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+              <span *ngIf="field.required" class="required-annotation">*</span>
               <div class="user__age-or-date">
                 <div class="user__date">
                   <mat-form-field>
