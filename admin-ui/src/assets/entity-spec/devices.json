@@ -210,17 +210,6 @@
       "methodCallName": ""
     },
     {
-      "filtername": "mapStatus",
-      "filterlabel": {"eng":"Map Status","ara":"خريطة الحالة", "fra": "État de la carte"},
-      "filterType": "equals",
-      "autocomplete": "false",
-      "dropdown": "true",
-      "datePicker": "false",
-      "apiName": "devices",
-      "fieldName": "mapStatus",
-      "methodCallName": ""
-    },
-    {
       "filtername": "deviceTypeName",
       "filterlabel": { "eng": "Device Type", "ara":" نوع الجهاز", "fra": "Type d'appareil" },
       "filterType": "equals",

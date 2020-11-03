@@ -20,7 +20,8 @@ import { Subscription } from "rxjs";
   templateUrl: "./center-selection.component.html",
   styleUrls: ["./center-selection.component.css"],
 })
-export class CenterSelectionComponent extends BookingDeactivateGuardService
+export class CenterSelectionComponent
+  extends BookingDeactivateGuardService
   implements OnInit, OnDestroy {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
@@ -63,10 +64,8 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
   }
 
   async ngOnInit() {
-    if (this.router.url.includes("mulityappointement")) {
-      this.preRegId = [
-        ...JSON.parse(localStorage.getItem("muiltyAppointment")),
-      ];
+    if (this.router.url.includes("multiappointment")) {
+      this.preRegId = [...JSON.parse(localStorage.getItem("multiappointment"))];
     } else {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = [param["appId"]];
@@ -249,9 +248,15 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
   changeTimeFormat(time: string): string | Number {
     let inputTime = time.split(":");
     let formattedTime: any;
-    if (Number(inputTime[0]) < 12) {
+    if (Number(inputTime[0]) < 12 && Number(inputTime[0]) > 0) {
       formattedTime = inputTime[0];
       formattedTime += ":" + inputTime[1] + " am";
+    } else if (Number(inputTime[0]) === 0) {
+      formattedTime = Number(inputTime[0]) + 12;
+      formattedTime += ":" + inputTime[1] + " am";
+    } else if (Number(inputTime[0]) === 12) {
+      formattedTime = inputTime[0];
+      formattedTime += ":" + inputTime[1] + " pm";
     } else {
       formattedTime = Number(inputTime[0]) - 12;
       formattedTime += ":" + inputTime[1] + " pm";
@@ -288,7 +293,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
 
   routeBack() {
     if (
-      this.router.url.includes("mulityappointement") ||
+      this.router.url.includes("multiappointment") ||
       localStorage.getItem("modifyMultipleAppointment") === "true"
     ) {
       this.routeDashboard();
@@ -353,14 +358,16 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
       if (messageObj.message === this.errorlabels.regCenterNotavailabe) {
         this.canDeactivateFlag = false;
         if (
-          this.router.url.includes("mulityappointement") ||
+          this.router.url.includes("multiappointment") ||
           localStorage.getItem("modifyMultipleAppointment") === "true"
         ) {
           this.routeDashboard();
         } else {
-          this.router.navigate([`${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`]);
+          localStorage.setItem("modifyUser", "true");
+          this.router.navigate([
+            `${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`,
+          ]);
         }
-        
       }
     });
   }

@@ -9,14 +9,13 @@ import { RegistrationService } from "src/app/core/services/registration.service"
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "../../app.constants";
 import LanguageFactory from "../../../assets/i18n";
-import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
-export class LoginComponent implements OnInit  {
+export class LoginComponent implements OnInit {
   languages: string[] = [];
   inputPlaceholderContact = "Email ID or Phone Number";
   inputPlaceholderOTP = "Enter OTP";
@@ -46,15 +45,15 @@ export class LoginComponent implements OnInit  {
   minutes: string;
   seconds: string;
   showSpinner = true;
-  captchaError = false;
   validationMessages = {};
   textDir = localStorage.getItem("dir");
   LANGUAGE_ERROR_TEXT =
     "The system has encountered a technical error. Administrator to setup the necessary language configuration(s)";
-  captchaSucess: boolean;
-  showCaptcha = true;
   siteKey: any;
-  captcha: any;
+  enableCaptcha = false;
+  enableSendOtp: boolean;
+  showCaptcha: boolean = true;
+  captchaError: boolean;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -132,7 +131,19 @@ export class LoginComponent implements OnInit  {
     );
   }
 
-  loadRecaptchaSiteKey(){
+  loadRecaptchaSiteKey() {
+    if (
+      this.configService.getConfigByKey("enable-captcha") === "false" ||
+      this.configService.getConfigByKey("enable-captcha") === undefined
+    ) {
+      this.enableCaptcha = false;
+    } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
+      this.enableCaptcha = true;
+    }
+    console.log(this.enableCaptcha + typeof this.enableCaptcha);
+    if (!this.enableCaptcha) {
+      this.enableSendOtp = true;
+    }
     this.siteKey = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.google_recaptcha_site_key
     );
@@ -252,7 +263,7 @@ export class LoginComponent implements OnInit  {
       this.authService.primaryLang = this.primaryLang;
       localStorage.setItem("langCode", this.primaryLang);
       localStorage.setItem("secondaryLangCode", this.secondaryLang);
-      this.router.navigate([localStorage.getItem('langCode')]);
+      this.router.navigate([localStorage.getItem("langCode")]);
     } else {
       this.primaryLang = this.configService.getConfigByKey(
         appConstants.CONFIG_KEYS.mosip_primary_language
@@ -264,9 +275,9 @@ export class LoginComponent implements OnInit  {
       this.setLanguageDirection(this.primaryLang, this.secondaryLang);
       localStorage.setItem("langCode", this.primaryLang);
       localStorage.setItem("secondaryLangCode", this.secondaryLang);
-      this.router.navigate([localStorage.getItem('langCode')]);
+      this.router.navigate([localStorage.getItem("langCode")]);
     }
-    this.translate.use(localStorage.getItem('langCode'));
+    this.translate.use(localStorage.getItem("langCode"));
     this.loadValidationMessages();
   }
 
@@ -289,18 +300,33 @@ export class LoginComponent implements OnInit  {
 
   submit(): void {
     this.loginIdValidator();
-    if(this.captchaSucess && this.errorMessage === undefined){
+    if (
+      this.enableCaptcha &&
+      this.authService.isCaptchaAuthenticated() &&
+      this.errorMessage === undefined
+    ) {
       this.showCaptcha = false;
-    } else if (this.captchaSucess && this.errorMessage ! == undefined) {
+      this.captchaError = false;
+    } else if (
+      this.enableCaptcha &&
+      this.authService.isCaptchaAuthenticated() &&
+      this.errorMessage! == undefined
+    ) {
       this.showCaptcha = true;
-    }
-    else if(!this.captchaSucess && this.errorMessage === undefined) {
+    } else if (
+      this.enableCaptcha &&
+      !this.authService.isCaptchaAuthenticated() &&
+      this.errorMessage === undefined
+    ) {
       this.captchaError = true;
     }
     if (
       (this.showSendOTP || this.showResend) &&
-      this.errorMessage === undefined && this.captchaSucess
+      this.errorMessage === undefined &&
+      ((this.enableCaptcha && this.authService.isCaptchaAuthenticated()) ||
+        this.enableSendOtp)
     ) {
+      console.log("test");
       this.inputOTP = "";
       this.showResend = true;
       this.showOTP = true;
@@ -322,8 +348,10 @@ export class LoginComponent implements OnInit  {
             this.showResend = false;
             this.showOTP = false;
             this.showVerify = false;
-            this.showCaptcha = true;
-            this.captchaSucess = false;
+            if (this.enableCaptcha) {
+              this.showCaptcha = true;
+              this.authService.setCaptchaAuthenticate(false);
+            }
             document.getElementById("minutesSpan").innerText = this.minutes;
             document.getElementById("timer").style.visibility = "hidden";
             clearInterval(this.timer);
@@ -366,9 +394,9 @@ export class LoginComponent implements OnInit  {
               localStorage.setItem("loggedIn", "true");
               this.authService.setToken();
               this.regService.setLoginId(this.inputContactDetails);
-              localStorage.setItem('loginId',this.inputContactDetails);
+              localStorage.setItem("loginId", this.inputContactDetails);
               this.disableVerify = false;
-              this.router.navigate([this.primaryLang,"dashboard"]);
+              this.router.navigate([this.primaryLang, "dashboard"]);
             } else {
               this.disableVerify = false;
               this.showOtpMessage();
@@ -409,33 +437,5 @@ export class LoginComponent implements OnInit  {
       width: "350px",
       data: message,
     });
-  }
-
-  recaptcha(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-    let data = {
-      captchaToken: "",
-    };
-    data.captchaToken = captchaResponse;
-    let obj = new RequestModel(appConstants.IDS.captchaId, data, "");
-    if (data.captchaToken != null) {
-      this.dataService.verifyGCaptcha(obj).subscribe((response) => {
-        console.log(response);
-        if (response['response']){
-           this.captchaSucess = response['response'].success;
-           console.log(this.captchaSucess);
-           this.captchaError = false;
-        }else{
-          grecaptcha.reset();
-          this.captchaError = true
-        }
-      });
-    } else {
-      this.captchaSucess = false;
-    }
-  }
-  recaptchaError(event){
-    console.log(event);
-   alert(event);
   }
 }
