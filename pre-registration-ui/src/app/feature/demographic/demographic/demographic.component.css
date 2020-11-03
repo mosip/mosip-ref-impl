@@ -327,6 +327,10 @@ mat-icon {
   border-bottom: 2px solid #22a8c9;
 }
 
+.required-annotation{
+  color: red;
+}
+
 @media (max-width: 798px) {
   .user__container {
     width: 100%;
