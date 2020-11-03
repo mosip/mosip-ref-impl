@@ -130,6 +130,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Center Type";
       }else if(url === "blacklisted-words"){
         this.pageName = "Blacklisted Word";
+        this.primaryData['oldWord'] = this.primaryData['word'];
       }else if(url === "gender-type"){
         this.pageName = "Gender Type";
       }else if(url === "individual-type"){
@@ -451,10 +452,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['machineTypeName'];
       }
       /*console.log("this.router.url>>>"+this.router.url.split('/')[3]);*/
-      if(this.router.url.split('/')[3] === "blacklisted-words"){
+      /*if(this.router.url.split('/')[3] === "blacklisted-words"){
         this.primaryData['oldWord'] = this.primaryData['word'];
         this.secondaryData['oldWord'] = this.secondaryData['word'];
-      }
+      }*/
       let request = new RequestModel(
         "",
         null,

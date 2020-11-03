@@ -54,8 +54,16 @@ export class CreateComponent {
       const file = event.target.files[0];
       self.createForm.get('files').setValue(file);
       self.fileName = file.name;
-      var reader = new FileReader();
 
+      const fileReader: FileReader = new FileReader();
+
+      fileReader.onload = (event: Event) => {
+        self.fileData = fileReader.result; // This is valid
+      };
+
+      fileReader.readAsText(file);
+
+      /*var reader = new FileReader();
       reader.onload = function(evt) {
         if(evt.target.readyState != 2) return;
         if(evt.target.error) {
@@ -64,8 +72,7 @@ export class CreateComponent {
         }
         self.fileData = evt.target.result;
       };
-
-      reader.readAsText(file);
+      reader.readAsText(file);*/
     }
   }
 

@@ -4,7 +4,7 @@
             <div class="primary-form">
                 <strong class="title">{{'center.language' | translate }}</strong>
                 <span
-                  *ngIf="!disableForms"
+                  *ngIf="!disableForms && pageName !=='Blacklisted Word'"
                   matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
                   (click)="openKeyboard('primary')"
                   style="float: right; color: grey; cursor: pointer;"
@@ -14,7 +14,7 @@
                 <br /><br />
                 <div *ngFor="let field of fields; let i = index" class="mat-form1">
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name !== 'code'">
-                      <input
+                       <input
                         #keyboardRef
                         #{{field.name}}
                         (keyup)="captureValue($event, field.name, 'primary')"
@@ -202,7 +202,7 @@
                 </div>
             </div>
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-            <div *ngIf="showSecondaryForm" class="secondary-form">
+            <div *ngIf="showSecondaryForm && pageName !=='Blacklisted Word'" class="secondary-form">
                 <strong class="title">{{ languageNames[secondaryLang] }}</strong>
                 <span
                   *ngIf="!disableForms"
