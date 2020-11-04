@@ -1,5 +1,8 @@
 <img src="assets/ajax-loader.gif" *ngIf="disableNavigation" class="loader" />
-<div class="file-upload">
+<div class="spinner" *ngIf="!users[0] && LOD.length > 0" >
+  <mat-spinner></mat-spinner>
+</div>
+<div class="file-upload" *ngIf="users[0]" >
   <div class="file-uploaad__header">{{ 'documents.title_document' | translate }}</div>
   <div class="file-upload__message">
     {{ 'documents.text_filetype' | translate }} : {{ allowedFilesHtml }} &nbsp;{{
@@ -48,7 +51,8 @@
             "
           />
         </span>
-        <span *ngIf="document.code === 'POA'">
+
+        <span *ngIf="document.code === 'POA' && allApplicants">
           <span *ngIf="allApplicants.length > 1"> {{ 'documents.OR' | translate }}</span>
           <span *ngIf="allApplicants.length > 1">
             <mat-form-field class="file-upload__or">
@@ -57,8 +61,11 @@
                 (selectionChange)="sameAsChange($event, users[0].files.documentsMetaData)"
                 [(value)]="sameAs"
               >
-                <mat-option *ngFor="let applicant of allApplicants" value="{{ applicant.preRegistrationId }}">
-                  {{ applicant.demographicMetadata.fullName[0].value }}
+                <mat-option *ngFor="let applicant of allApplicants" value="{{applicant.preRegistrationId}}">
+                  <div *ngIf = "applicant.demographicMetadata[name]">
+                    {{applicant.demographicMetadata[name][0].value}}
+                  </div>
+                  <!-- {{ applicant.demographicMetadata }} -->
                 </mat-option>
               </mat-select>
             </mat-form-field>

@@ -73,7 +73,7 @@
     <p>{{ input.message }}</p>
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()" cdkFocusInitial class="error-dialog">
+    <button mat-button (click)="onNoClick(true)" cdkFocusInitial class="error-dialog">
       {{ 'dialog.action_dismiss' | translate }}
     </button>
   </div>
@@ -94,7 +94,7 @@
       style="
     width: 50%;
 "
-      ><button mat-button (click)="onNoClick()" cdkFocusInitial>{{ input.noButtonText }}</button></span
+      ><button mat-button (click)="onNoClick(input.noButtonText)" cdkFocusInitial>{{ input.noButtonText }}</button></span
     >
   </div>
 </div>
@@ -126,7 +126,7 @@
       [ngClass]="isChecked ? 'accept-button-disabled' : 'accept-button'"
       [disabled]="isChecked"
       mat-button
-      (click)="onNoClick()"
+      (click)="onNoClick(input.acceptButton)"
       cdkFocusInitial
     >
       {{ input.acceptButton }}
@@ -152,7 +152,7 @@
   </div>
   <div mat-dialog-actions>
     <span
-      ><button (click)="onNoClick()" mat-button [mat-dialog-close]="confirm" cdkFocusInitial>
+      ><button (click)="onNoClick(input.yesButtonText)" mat-button [mat-dialog-close]="confirm" cdkFocusInitial>
         {{ input.yesButtonText }}
       </button></span
     >

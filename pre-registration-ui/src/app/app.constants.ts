@@ -90,6 +90,7 @@ export const CONFIG_KEYS = {
   preregistration_nearby_centers: 'preregistration.nearby.centers',
   preregistration_timespan_rebook: 'preregistration.timespan.rebook',
   mosip_login_mode: 'mosip.login.mode',
+  preregistartion_identity_name : 'preregistartion.identity.name',
   mosip_regex_email: 'mosip.id.validation.identity.email',
   mosip_regex_phone: 'mosip.id.validation.identity.phone',
   mosip_primary_language: 'mosip.primary-language',
@@ -166,10 +167,10 @@ export const languageMapping = {
     langName: 'English'
   },
   ara: {
-    langName: 'Arabic'
+    langName: 'عربى'
   },
   fra: {
-    langName: 'French'
+    langName: 'Français'
   }
 };
 

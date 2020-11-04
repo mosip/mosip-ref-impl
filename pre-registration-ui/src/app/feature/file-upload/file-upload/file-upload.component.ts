@@ -1,42 +1,42 @@
-import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy } from "@angular/core";
 
-import { Router } from '@angular/router';
-import * as appConstants from '../../../app.constants';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ViewChild } from '@angular/core';
-import { FileModel } from 'src/app/shared/models/demographic-model/file.model';
-import { UserModel } from 'src/app/shared/models/demographic-model/user.modal';
-import { RegistrationService } from 'src/app/core/services/registration.service';
-import { DataStorageService } from 'src/app/core/services/data-storage.service';
-import { TranslateService } from '@ngx-translate/core';
-import { BookingService } from '../../booking/booking.service';
-import { RequestModel } from 'src/app/shared/models/request-model/RequestModel';
-import { ConfigService } from 'src/app/core/services/config.service';
-import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
-import { MatDialog } from '@angular/material';
-import { FilesModel } from 'src/app/shared/models/demographic-model/files.model';
-import { LogService } from 'src/app/shared/logger/log.service';
-import Utils from 'src/app/app.util';
-import LanguageFactory from 'src/assets/i18n';
-import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from "@angular/router";
+import * as appConstants from "../../../app.constants";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { ViewChild } from "@angular/core";
+import { FileModel } from "src/app/shared/models/demographic-model/file.model";
+import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
+import { RegistrationService } from "src/app/core/services/registration.service";
+import { DataStorageService } from "src/app/core/services/data-storage.service";
+import { TranslateService } from "@ngx-translate/core";
+import { BookingService } from "../../booking/booking.service";
+import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
+import { ConfigService } from "src/app/core/services/config.service";
+import { DialougComponent } from "src/app/shared/dialoug/dialoug.component";
+import { MatDialog } from "@angular/material";
+import { FilesModel } from "src/app/shared/models/demographic-model/files.model";
+import { LogService } from "src/app/shared/logger/log.service";
+import Utils from "src/app/app.util";
+import LanguageFactory from "src/assets/i18n";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  selector: "app-file-upload",
+  templateUrl: "./file-upload.component.html",
+  styleUrls: ["./file-upload.component.css"],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
   selected = [];
-  @ViewChild('fileUpload')
+  @ViewChild("fileUpload")
   fileInputVariable: ElementRef;
-  fileDocCatCode = '';
+  fileDocCatCode = "";
   sortedUserFiles: any[] = [];
   applicantType: string;
-  allowedFilesHtml: string = '';
-  allowedFileSize: string = '';
+  allowedFilesHtml: string = "";
+  allowedFileSize: string = "";
   sameAsselected: boolean = false;
   isModify: any;
-  fileName: string = '';
+  fileName: string = "";
   fileByteArray;
   fileUrl: SafeResourceUrl;
   applicantPreRegId: string;
@@ -53,15 +53,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   loginId: string;
   documentIndex: number;
   selectedDocument: SelectedDocuments = {
-    docCatCode: '',
-    docTypeCode: ''
+    docCatCode: "",
+    docTypeCode: "",
   };
   selectedDocuments: SelectedDocuments[] = [];
-  LOD: DocumentCategory[];
+  LOD: DocumentCategory[] = [];
   fileIndex: number = -1;
   fileUploadLanguagelabels: any;
   errorlabels: any;
-  fileExtension: string = 'pdf';
+  fileExtension: string = "pdf";
   sameAs: string;
   disableNavigation: boolean = false;
   start: boolean = false;
@@ -69,17 +69,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   documentName: string;
   flag: boolean;
   zoom: number = 0.5;
-  primaryLang = localStorage.getItem('langCode');
+  primaryLang = localStorage.getItem("langCode");
 
   documentUploadRequestBody: DocumentUploadRequestDTO = {
-    docCatCode: '',
-    docTypCode: '',
-    langCode: ''
+    docCatCode: "",
+    docTypCode: "",
+    langCode: "",
   };
   files: FilesModel;
   documentCategoryDto: DocumentCategoryDTO = {
-    attribute: '',
-    value: ''
+    attribute: "",
+    value: "",
   };
   documentCategoryrequestDto: DocumentCategoryDTO[];
   documentRequest: RequestModel;
@@ -93,17 +93,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     demographicMetadata: {
       fullName: [
         {
-          language: '',
-          value: 'None'
-        }
-      ]
+          language: "",
+          value: "None",
+        },
+      ],
     },
-    preRegistrationId: ''
+    preRegistrationId: "",
   };
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
-
+  preRegId: number;
+  isDocUploadRequired = [];
+  name:"";
+  
   constructor(
     private registration: RegistrationService,
     private dataStorageService: DataStorageService,
@@ -113,81 +116,126 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     private bookingService: BookingService,
     private translate: TranslateService,
     private dialog: MatDialog,
-    private loggerService: LogService
+    private loggerService: LogService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.initiateComponent();
   }
 
   async ngOnInit() {
     await this.getIdentityJsonFormat();
-    console.log("this>>>>>>"+this.uiFields);
     this.getFileSize();
     this.getPrimaryLabels();
     this.allowedFiles = this.config
-      .getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files)
-      .split(',');
+      .getConfigByKey(
+        appConstants.CONFIG_KEYS.preregistration_document_alllowe_files
+      )
+      .split(",");
     this.getAllowedFileTypes(this.allowedFiles);
-    this.loginId = this.registration.getLoginId();
-    this.setApplicants();
+    this.loginId = localStorage.getItem("loginId");
+    this.getAllApplicants();
     this.sameAs = this.registration.getSameAs();
-    if (this.sameAs === '') {
+    if (this.sameAs === "") {
       this.sameAsselected = false;
     } else {
       this.sameAsselected = true;
     }
-
     let factory = new LanguageFactory(this.primaryLang);
     let response = factory.getCurrentlanguage();
-    if (response['message']) this.fileUploadLanguagelabels = response['message'];
-    if (response['error']) this.errorlabels = response['error'];
-    this.getApplicantTypeID();
-    if (!this.users[0].files) {
-      this.users[0].files = this.userFiles;
-    } else {
-      // this.sortUserFiles();
-    }
+    if (response["message"])
+      this.fileUploadLanguagelabels = response["message"];
+    if (response["error"]) this.errorlabels = response["error"];
+    this.name = this.config.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
   }
 
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-      this.identityData = response['response']["idSchema"]["identity"];
-      this.identityData.forEach((obj) => {
-        if (obj.inputRequired === true && obj.controlType === "fileupload") {
-          this.uiFields.push(obj);
-        }
+        this.identityData = response["response"]["idSchema"]["identity"];
+        this.identityData.forEach((obj) => {
+          if (obj.controlType === "fileupload") {
+            this.uiFields.push(obj);
+          }
+        });
+        resolve(true);
       });
-    });
-    resolve(true);
     });
   }
 
-  private getPrimaryLabels() {
-    console.log("uiFields>>>");
-  }
+  private getPrimaryLabels() {}
 
   /**
    *@description This method initialises the users array and the language set by the user.
    *@private
    * @memberof FileUploadComponent
    */
-  private initiateComponent() {
+  private async initiateComponent() {
     this.translate.use(this.primaryLang);
-    this.isModify = localStorage.getItem('modifyDocument');
-    if (this.registration.getUsers().length > 0) {
-      this.users[0] = JSON.parse(JSON.stringify(this.registration.getUser(this.registration.getUsers().length - 1)));
-      this.activeUsers = JSON.parse(JSON.stringify(this.registration.getUsers()));
+    this.isModify = localStorage.getItem("modifyDocument");
+    this.activatedRoute.params.subscribe((param) => {
+      this.preRegId = param["appId"];
+    });
+    if (this.preRegId) {
+      await this.getUserInfo();
+      await this.getUserFiles();
+      this.getApplicantTypeID();
     }
-    this.loggerService.info('active users', this.activeUsers);
+    if (!this.users[0].files) {
+      this.users[0].files = this.userFiles;
+    }
+    this.loggerService.info("active users", this.activeUsers);
   }
 
+  getUserInfo() {
+    return new Promise((resolve) => {
+      this.dataStorageService
+        .getUser(this.preRegId.toString())
+        .subscribe((response) => {
+          this.users.push(
+            new UserModel(
+              this.preRegId.toString(),
+              response[appConstants.RESPONSE],
+              undefined,
+              undefined
+            )
+          );
+          resolve(true);
+        });
+    });
+  }
+
+  getUserFiles() {
+    return new Promise((resolve) => {
+      this.dataStorageService
+        .getUserDocuments(this.preRegId)
+        .subscribe((response) => this.setUserFiles(response));
+      resolve(true);
+    });
+  }
+  setUserFiles(response) {
+    if (!response["errors"]) {
+      this.userFile = response[appConstants.RESPONSE][appConstants.METADATA];
+    } else {
+      let fileModel: FileModel = new FileModel("", "", "", "", "", "", "");
+      if(this.userFile.length === 0){
+        this.userFile.push(fileModel);
+      }
+    }
+    this.userFiles["documentsMetaData"] = this.userFile;
+  }
   onModification() {
     if (
       this.users[0].files &&
       this.users[0].files.documentsMetaData[0].docCatCode &&
-      this.users[0].files.documentsMetaData[0].docCatCode !== ''
+      this.users[0].files.documentsMetaData[0].docCatCode !== ""
     ) {
-      for (let index = 0; index < this.users[0].files.documentsMetaData.length; index++) {
+      for (
+        let index = 0;
+        index < this.users[0].files.documentsMetaData.length;
+        index++
+      ) {
         const fileMetadata = this.users[0].files.documentsMetaData;
         let arr = [];
         let indice: number;
@@ -200,7 +248,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           }
         });
         if (arr.length > 0) {
-          let temp = arr[0].documentTypes.filter(ele => ele.code === fileMetadata[indice].docTypCode);
+          let temp = arr[0].documentTypes.filter(
+            (ele) => ele.code === fileMetadata[indice].docTypCode
+          );
           this.LOD[indexLOD].selectedDocName = temp[0].code;
         }
       }
@@ -214,17 +264,22 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   private setNoneApplicant() {
     let i: number = 0;
-    const temp = JSON.parse(JSON.stringify(this.allApplicants.push(this.noneApplicant)));
+    const temp = JSON.parse(
+      JSON.stringify(this.allApplicants.push(this.noneApplicant))
+    );
 
     let noneCount: Boolean = this.isNoneAvailable();
 
     for (let applicant of this.allApplicants) {
-      if (applicant.preRegistrationId == this.users[0].preRegId) {
-        this.allApplicants.splice(i, 1);
-        this.allApplicants.push(this.noneApplicant);
-        this.removeExtraNone();
+      if (this.users) {
+        if (applicant.preRegistrationId == this.preRegId) {
+          this.allApplicants.splice(i, 1);
+          this.allApplicants.push(this.noneApplicant);
+          console.log(JSON.stringify(this.allApplicants));
+          this.removeExtraNone();
+        }
+        i++;
       }
-      i++;
     }
   }
   /**
@@ -237,9 +292,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let i = 0;
     for (let file of allowedFiles) {
       if (i == 0) {
-        this.allowedFilesHtml = this.allowedFilesHtml + file.substring(file.indexOf('/') + 1);
+        this.allowedFilesHtml =
+          this.allowedFilesHtml + file.substring(file.indexOf("/") + 1);
       } else {
-        this.allowedFilesHtml = this.allowedFilesHtml + ',' + file.substring(file.indexOf('/') + 1);
+        this.allowedFilesHtml =
+          this.allowedFilesHtml + "," + file.substring(file.indexOf("/") + 1);
       }
       i++;
     }
@@ -252,8 +309,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   getFileSize() {
     this.allowedFileSize =
       (
-        this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_file_size) / 1000000
-      ).toString() + 'mb';
+        this.config.getConfigByKey(
+          appConstants.CONFIG_KEYS.preregistration_document_alllowe_file_size
+        ) / 1000000
+      ).toString() + "mb";
   }
 
   /**
@@ -265,7 +324,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   removeExtraNone() {
     let i: number = 0;
     for (let applicant of this.allApplicants) {
-      if (applicant.preRegistrationId == '') {
+      if (applicant.preRegistrationId == "") {
         this.allApplicants.splice(i, 1);
       }
       i++;
@@ -280,7 +339,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   isNoneAvailable() {
     let noneCount: number = 0;
     for (let applicant of this.allApplicants) {
-      if (applicant.preRegistrationId == '') {
+      if (applicant.preRegistrationId == "") {
         noneCount++;
       }
     }
@@ -317,18 +376,22 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let allApplicants: any[] = [];
 
     allApplicants = JSON.parse(JSON.stringify(applicants));
-
+    let name = this.config.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
     for (let applicant of allApplicants) {
       for (let name of applicant) {
-        if (name['demographicMetadata'].fullName[j].language != this.primaryLang) {
-          allApplicants[i].demographicMetadata.fullName.splice(j, 1);
+        if (
+          name["demographicMetadata"][name][j].language != this.primaryLang
+        ) {
+          allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
         j++;
       }
       i++;
     }
-
-    return JSON.parse(JSON.stringify(allApplicants));
+    console.log("allApplicants>>>"+JSON.stringify(allApplicants));
+    return allApplicants;
   }
   /**
    *
@@ -337,33 +400,35 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   async getApplicantTypeID() {
     let requestDTO: DocumentCategoryDTO = {
-      attribute: '',
-      value: ''
+      attribute: "",
+      value: "",
     };
 
     let DOBDTO: DocumentCategoryDTO = {
-      attribute: '',
-      value: ''
+      attribute: "",
+      value: "",
     };
 
     let genderDTO: DocumentCategoryDTO = {
-      attribute: '',
-      value: ''
+      attribute: "",
+      value: "",
     };
 
     let biometricDTO: DocumentCategoryDTO = {
-      attribute: '',
-      value: ''
+      attribute: "",
+      value: "",
     };
 
     let requestArray = {
-      attributes: []
+      attributes: [],
     };
     let DOCUMENT_CATEGORY_DTO: RequestModel;
     let DOB = this.users[0].request.demographicDetails.identity.dateOfBirth;
 
-    requestDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    for (let language of this.users[0].request.demographicDetails.identity.residenceStatus) {
+    requestDTO.attribute =
+      appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
+    for (let language of this.users[0].request.demographicDetails.identity
+      .residenceStatus) {
       if (language.language === this.primaryLang) {
         requestDTO.value = language.value;
       }
@@ -372,7 +437,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     requestArray.attributes.push(requestDTO);
 
     DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;
-    DOBDTO.value = DOB.replace(/\//g, '-') + 'T11:46:12.640Z';
+    DOBDTO.value = DOB.replace(/\//g, "-") + "T11:46:12.640Z";
 
     requestArray.attributes.push(DOBDTO);
 
@@ -381,26 +446,41 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
     requestArray.attributes.push(genderDTO);
 
-    biometricDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.biometricAvailable;
+    biometricDTO.attribute =
+      appConstants.APPLICANT_TYPE_ATTRIBUTES.biometricAvailable;
     biometricDTO.value = false;
 
     requestArray.attributes.push(biometricDTO);
 
-    DOCUMENT_CATEGORY_DTO = new RequestModel(appConstants.IDS.applicantTypeId, requestArray, {});
-
-    const subs = await this.dataStorageService.getApplicantType(DOCUMENT_CATEGORY_DTO).subscribe(
-      response => {
-        if (response[appConstants.RESPONSE]) {
-          this.getDocumentCategories(response['response'].applicantType.applicantTypeCode);
-          this.setApplicantType(response);
-        } else {
-          this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
-        }
-      },
-      error => {
-        this.displayMessage('Error', this.errorlabels.error, error);
-      }
+    DOCUMENT_CATEGORY_DTO = new RequestModel(
+      appConstants.IDS.applicantTypeId,
+      requestArray,
+      {}
     );
+    const subs = await this.dataStorageService
+      .getApplicantType(DOCUMENT_CATEGORY_DTO)
+      .subscribe(
+        (response) => {
+          if (response[appConstants.RESPONSE]) {
+            localStorage.setItem(
+              "applicantType",
+              response["response"].applicantType.applicantTypeCode
+            );
+            this.getDocumentCategories(
+              response["response"].applicantType.applicantTypeCode
+            );
+            this.setApplicantType(response);
+          } else {
+            this.displayMessage(
+              this.fileUploadLanguagelabels.uploadDocuments.error,
+              this.errorlabels.error
+            );
+          }
+        },
+        (error) => {
+          this.displayMessage("Error", this.errorlabels.error, error);
+        }
+      );
     this.subscriptions.push(subs);
   }
   /**
@@ -410,7 +490,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   async setApplicantType(response) {
-    this.applicantType = await response['response'].applicationtypecode;
+    this.applicantType = await response["response"].applicationtypecode;
   }
   /**
    *@description method to get document catrgories from master data.
@@ -419,21 +499,27 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   async getDocumentCategories(applicantcode) {
-    const subs = await this.dataStorageService.getDocumentCategories(applicantcode).subscribe(
-      res => {
-        if (res[appConstants.RESPONSE]) {
-          this.LOD = res['response'].documentCategories;
-          this.enableBrowseButtonList = new Array(this.LOD.length).fill(false);
-          this.registration.setDocumentCategories(res['response'].documentCategories);
-          this.onModification();
-        } else {
-          this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
+    const subs = await this.dataStorageService
+      .getDocumentCategories(applicantcode)
+      .subscribe(
+        (res) => {
+          if (res[appConstants.RESPONSE]) {
+            this.LOD = res["response"].documentCategories;
+            this.enableBrowseButtonList = new Array(this.LOD.length).fill(
+              false
+            );
+            this.onModification();
+          } else {
+            this.displayMessage(
+              this.fileUploadLanguagelabels.uploadDocuments.error,
+              this.errorlabels.error
+            );
+          }
+        },
+        (error) => {
+          this.displayMessage("Error", this.errorlabels.error, error);
         }
-      },
-      error => {
-        this.displayMessage('Error', this.errorlabels.error, error);
-      }
-    );
+      );
     this.subscriptions.push(subs);
   }
 
@@ -444,15 +530,24 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   async getAllApplicants() {
     const subs = await this.dataStorageService.getUsers(this.loginId).subscribe(
-      response => {
+      (response) => {
         if (response[appConstants.RESPONSE]) {
-          this.bookingService.addApplicants(response['response']['basicDetails']);
+          this.bookingService.addApplicants(
+            response["response"]["basicDetails"]
+          );
         } else {
-          this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
+          this.displayMessage(
+            this.fileUploadLanguagelabels.uploadDocuments.error,
+            this.errorlabels.error
+          );
         }
       },
-      err => {
-        this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error, err);
+      (err) => {
+        this.displayMessage(
+          this.fileUploadLanguagelabels.uploadDocuments.error,
+          this.errorlabels.error,
+          err
+        );
       },
       () => {
         this.setApplicants();
@@ -466,13 +561,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   setApplicants() {
-    this.applicants = JSON.parse(JSON.stringify(this.bookingService.getAllApplicants()));
-
+    this.applicants = JSON.parse(
+      JSON.stringify(this.bookingService.getAllApplicants())
+    );
     this.removeApplicantsWithoutPOA();
-
     this.updateApplicants();
-    this.allApplicants = this.getApplicantsName(this.applicants);
-    const temp = JSON.parse(JSON.stringify(this.allApplicants));
+    let temp = this.getApplicantsName(this.applicants);
+    this.allApplicants = JSON.parse(JSON.stringify(temp));
+    console.log("this.allApplicants"+this.allApplicants.length);
+    temp = JSON.parse(JSON.stringify(this.allApplicants));
     this.setNoneApplicant();
   }
 
@@ -480,7 +577,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let i = 0;
     let tempApplicants = [];
     for (let applicant of this.applicants) {
-      if (applicant.demographicMetadata['proofOfAddress'] != null) {
+      if (applicant.demographicMetadata["proofOfAddress"] != null) {
         tempApplicants.push(this.applicants[i]);
       }
       i++;
@@ -504,32 +601,33 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       x++;
     }
     let fullName: FullName = {
-      language: '',
-      value: ''
+      language: "",
+      value: "",
     };
     let user: Applicants = {
-      preRegistrationId: '',
+      preRegistrationId: "",
       demographicMetadata: {
-        fullName: [fullName]
-      }
+        fullName: [fullName],
+      },
     };
     let activeUsers: any[] = [];
     for (let i of this.activeUsers) {
       fullName = {
-        language: '',
-        value: ''
+        language: "",
+        value: "",
       };
       user = {
-        preRegistrationId: '',
+        preRegistrationId: "",
         demographicMetadata: {
-          fullName: [fullName]
-        }
+          fullName: [fullName],
+        },
       };
       if (i.files) {
         for (let file of i.files.documentsMetaData) {
-          if (file.docCatCode === 'POA') {
+          if (file.docCatCode === "POA") {
             user.preRegistrationId = i.preRegId;
-            user.demographicMetadata.fullName = i.request.demographicDetails.identity.fullName;
+            user.demographicMetadata.fullName =
+              i.request.demographicDetails.identity.fullName;
             activeUsers.push(JSON.parse(JSON.stringify(user)));
           }
         }
@@ -573,47 +671,58 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   viewFile(fileMeta: FileModel) {
     this.fileIndex = 0;
     this.disableNavigation = true;
-    const subs = this.dataStorageService.getFileData(fileMeta.documentId, this.users[0].preRegId).subscribe(
-      res => {
-        if (res[appConstants.RESPONSE]) {
-          this.setByteArray(res['response'].document);
-        } else {
-          this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
-          this.start = false;
-        }
-        this.fileName = fileMeta.docName;
-        this.fileDocCatCode = fileMeta.docCatCode;
-        let i = 0;
-        for (let x of this.users[0].files.documentsMetaData) {
-          if (this.fileName === x.docName && this.fileDocCatCode === x.docCatCode) {
-            break;
+    const subs = this.dataStorageService
+      .getFileData(fileMeta.documentId, this.users[0].preRegId)
+      .subscribe(
+        (res) => {
+          if (res[appConstants.RESPONSE]) {
+            this.setByteArray(res["response"].document);
+          } else {
+            this.displayMessage(
+              this.fileUploadLanguagelabels.uploadDocuments.error,
+              this.errorlabels.error
+            );
+            this.start = false;
           }
-          i++;
-        }
-        this.fileIndex = i;
-        this.fileExtension = fileMeta.docName.substring(fileMeta.docName.indexOf('.') + 1);
-        this.fileExtension = this.fileExtension.toLowerCase();
-        if (this.fileByteArray) {
-          switch (this.fileExtension) {
-            case 'pdf':
-              this.flag = false;
-              this.fileUrl = 'data:application/pdf;base64,' + this.fileByteArray;
+          this.fileName = fileMeta.docName;
+          this.fileDocCatCode = fileMeta.docCatCode;
+          let i = 0;
+          for (let x of this.users[0].files.documentsMetaData) {
+            if (
+              this.fileName === x.docName &&
+              this.fileDocCatCode === x.docCatCode
+            ) {
               break;
-            default:
-              this.flag = true;
-              this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-                'data:image/jpeg;base64,' + this.fileByteArray
-              );
-              break;
+            }
+            i++;
           }
-        }
-        this.disableNavigation = false;
-      },
-      error => {
-        this.displayMessage('Error', this.errorlabels.error, error);
-      },
-      () => {}
-    );
+          this.fileIndex = i;
+          this.fileExtension = fileMeta.docName.substring(
+            fileMeta.docName.indexOf(".") + 1
+          );
+          this.fileExtension = this.fileExtension.toLowerCase();
+          if (this.fileByteArray) {
+            switch (this.fileExtension) {
+              case "pdf":
+                this.flag = false;
+                this.fileUrl =
+                  "data:application/pdf;base64," + this.fileByteArray;
+                break;
+              default:
+                this.flag = true;
+                this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+                  "data:image/jpeg;base64," + this.fileByteArray
+                );
+                break;
+            }
+          }
+          this.disableNavigation = false;
+        },
+        (error) => {
+          this.displayMessage("Error", this.errorlabels.error, error);
+        },
+        () => {}
+      );
     this.subscriptions.push(subs);
   }
 
@@ -634,7 +743,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   clickOnButton(i) {
-    document.getElementById('file_' + i).click();
+    document.getElementById("file_" + i).click();
   }
 
   /**
@@ -644,9 +753,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   handleFileInput(event: any, docName: string, docCode: string) {
-    const extensionRegex = new RegExp('(?:' + this.allowedFilesHtml.replace(/,/g, '|') + ')');
+    const extensionRegex = new RegExp(
+      "(?:" + this.allowedFilesHtml.replace(/,/g, "|") + ")"
+    );
     const oldFileExtension = this.fileExtension;
-    this.fileExtension = event.target.files[0].name.substring(event.target.files[0].name.indexOf('.') + 1);
+    this.fileExtension = event.target.files[0].name.substring(
+      event.target.files[0].name.indexOf(".") + 1
+    );
     this.fileExtension = this.fileExtension.toLowerCase();
     let allowedFileUploaded: Boolean = false;
     this.disableNavigation = true;
@@ -656,13 +769,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       allowedFileUploaded = true;
       if (
         event.target.files[0].name.length <
-        this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_file_name_lenght)
+        this.config.getConfigByKey(
+          appConstants.CONFIG_KEYS
+            .preregistration_document_alllowe_file_name_lenght
+        )
       ) {
         if (
           event.target.files[0].size <
-          this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_file_size)
+          this.config.getConfigByKey(
+            appConstants.CONFIG_KEYS.preregistration_document_alllowe_file_size
+          )
         ) {
-          this.getBase64(event.target.files[0]).then(data => {
+          this.getBase64(event.target.files[0]).then((data) => {
             this.fileByteArray = data;
           });
           if (!this.documentType && !this.documentCategory) {
@@ -708,7 +826,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   }
 
@@ -725,8 +843,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let i = -1;
     this.documentCategory = event.source.placeholder;
     this.documentType = event.source.value;
-    this.selectedDocument.docCatCode = JSON.parse(JSON.stringify(this.documentCategory));
-    this.selectedDocument.docTypeCode = JSON.parse(JSON.stringify(this.documentType));
+    this.selectedDocument.docCatCode = JSON.parse(
+      JSON.stringify(this.documentCategory)
+    );
+    this.selectedDocument.docTypeCode = JSON.parse(
+      JSON.stringify(this.documentType)
+    );
     if (this.selectedDocuments.length > 0) {
       for (let document of this.selectedDocuments) {
         i++;
@@ -742,8 +864,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     }
 
     this.selectedDocument = {
-      docCatCode: '',
-      docTypeCode: ''
+      docCatCode: "",
+      docTypeCode: "",
     };
 
     this.documentIndex = index;
@@ -775,8 +897,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   removeFilePreview() {
-    this.fileName = '';
-    this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+    this.fileName = "";
+    this.fileUrl = this.domSanitizer.bypassSecurityTrustResourceUrl("");
     this.fileIndex = -1;
   }
 
@@ -790,7 +912,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.documentUploadRequestBody.docCatCode = docCode;
     this.documentUploadRequestBody.langCode = this.primaryLang;
     this.documentUploadRequestBody.docTypCode = docName;
-    this.documentRequest = new RequestModel(appConstants.IDS.documentUpload, this.documentUploadRequestBody, {});
+    this.documentRequest = new RequestModel(
+      appConstants.IDS.documentUpload,
+      this.documentUploadRequestBody,
+      {}
+    );
     this.documentCategory = null;
     this.documentType = null;
   }
@@ -802,29 +928,40 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   sendFile(event) {
-    this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DTO_KEY, JSON.stringify(this.documentRequest));
-    this.formData.append(appConstants.DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY, event.target.files.item(0));
-
-    const subs = this.dataStorageService.sendFile(this.formData, this.users[0].preRegId).subscribe(
-      response => {
-        if (response[appConstants.RESPONSE]) {
-          this.updateUsers(response);
-        } else {
-          this.displayMessage(this.fileUploadLanguagelabels.uploadDocuments.error, this.errorlabels.error);
-        }
-      },
-      error => {
-        this.displayMessage(
-          this.fileUploadLanguagelabels.uploadDocuments.error,
-          this.fileUploadLanguagelabels.uploadDocuments.msg7,
-          error
-        );
-      },
-      () => {
-        this.fileInputVariable.nativeElement.value = '';
-        this.disableNavigation = false;
-      }
+    this.formData.append(
+      appConstants.DOCUMENT_UPLOAD_REQUEST_DTO_KEY,
+      JSON.stringify(this.documentRequest)
     );
+    this.formData.append(
+      appConstants.DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY,
+      event.target.files.item(0)
+    );
+
+    const subs = this.dataStorageService
+      .sendFile(this.formData, this.users[0].preRegId)
+      .subscribe(
+        (response) => {
+          if (response[appConstants.RESPONSE]) {
+            this.updateUsers(response);
+          } else {
+            this.displayMessage(
+              this.fileUploadLanguagelabels.uploadDocuments.error,
+              this.errorlabels.error
+            );
+          }
+        },
+        (error) => {
+          this.displayMessage(
+            this.fileUploadLanguagelabels.uploadDocuments.error,
+            this.fileUploadLanguagelabels.uploadDocuments.msg7,
+            error
+          );
+        },
+        () => {
+          this.fileInputVariable.nativeElement.value = "";
+          this.disableNavigation = false;
+        }
+      );
     this.formData = new FormData();
     this.subscriptions.push(subs);
   }
@@ -849,8 +986,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
+     
     for (let file of this.users[0].files.documentsMetaData) {
-      if (file.docCatCode == this.userFile[0].docCatCode || file.docCatCode == null || file.docCatCode == '') {
+      if (
+        file.docCatCode == this.userFile[0].docCatCode ||
+        file.docCatCode == null ||
+        file.docCatCode == ""
+      ) {
         this.users[this.step].files.documentsMetaData[i] = this.userFile[0];
         break;
       }
@@ -860,11 +1002,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.users[this.step].files.documentsMetaData.push(this.userFile[0]);
     }
     this.userFile = [];
-    this.registration.updateUser(this.registration.getUsers().length - 1, this.users[this.step]);
   }
 
   openFile() {
-    const file = new Blob(this.users[0].files[0][0].multipartFile, { type: 'application/pdf' });
+    const file = new Blob(this.users[0].files[0][0].multipartFile, {
+      type: "application/pdf",
+    });
     const fileUrl = URL.createObjectURL(file);
     window.open(fileUrl);
   }
@@ -877,69 +1020,74 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   sameAsChange(event, fileMetadata) {
     this.disableNavigation = true;
-    if (event.value == '') {
-      let arr = fileMetadata.filter(ent => ent.docCatCode === 'POA');
-      const subs = this.dataStorageService.deleteFile(arr[0].documentId, arr[0].prereg_id).subscribe(
-        res => {
-          if (res[appConstants.RESPONSE]) {
-            this.sameAsselected = false;
-            this.registration.setSameAs(event.value);
-            this.removePOADocument();
-            let index: number;
-            this.LOD.filter((ele, i) => {
-              if (ele.code === 'POA') index = i;
-            });
-            this.LOD[index].selectedDocName = '';
-          }
-          this.disableNavigation = false;
-        },
-        err => {
-          this.disableNavigation = false;
-          this.displayMessage(
-            this.fileUploadLanguagelabels.uploadDocuments.error,
-            this.fileUploadLanguagelabels.uploadDocuments.msg9,
-            err
-          );
-        }
-      );
-      this.subscriptions.push(subs);
-    } else {
-      const subs = this.dataStorageService.copyDocument(event.value, this.users[0].preRegId).subscribe(
-        response => {
-          if (response[appConstants.RESPONSE]) {
-            this.registration.setSameAs(event.value);
-            this.removePOADocument();
-            this.updateUsers(response);
-            let index: number;
-            let poaTypes = [];
-            this.LOD.filter((ele, i) => {
-              if (ele.code === 'POA') {
-                index = i;
-                poaTypes.push(ele);
-              }
-            });
-            let docList = poaTypes[0].documentTypes.filter(
-              element => element.code === response['response']['docTypCode']
-            );
-            this.documentName = docList[0].code;
-            this.LOD[index].selectedDocName = this.documentName;
-          } else {
-            this.sameAs = this.registration.getSameAs();
-            this.sameAsselected = false;
+    if (event.value == "") {
+      let arr = fileMetadata.filter((ent) => ent.docCatCode === "POA");
+      console.log(arr);
+      const subs = this.dataStorageService
+        .deleteFile(arr[0].documentId,this.preRegId)
+        .subscribe(
+          (res) => {
+            if (res[appConstants.RESPONSE]) {
+              this.sameAsselected = false;
+              this.registration.setSameAs(event.value);
+              this.removePOADocument();
+              let index: number;
+              this.LOD.filter((ele, i) => {
+                if (ele.code === "POA") index = i;
+              });
+              this.LOD[index].selectedDocName = "";
+            }
+            this.disableNavigation = false;
+          },
+          (err) => {
+            this.disableNavigation = false;
             this.displayMessage(
               this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.fileUploadLanguagelabels.uploadDocuments.msg9
+              this.fileUploadLanguagelabels.uploadDocuments.msg9,
+              err
             );
           }
-        },
-        err => {
-          this.displayMessage(
-            this.fileUploadLanguagelabels.uploadDocuments.error,
-            this.fileUploadLanguagelabels.uploadDocuments.msg8,
-            err
-          );
-        }
-      );
+        );
+      this.subscriptions.push(subs);
+    } else {
+      const subs = this.dataStorageService
+        .copyDocument(event.value, this.users[0].preRegId)
+        .subscribe(
+          (response) => {
+            if (response[appConstants.RESPONSE]) {
+              this.registration.setSameAs(event.value);
+              this.removePOADocument();
+              this.updateUsers(response);
+              let index: number;
+              let poaTypes = [];
+              this.LOD.filter((ele, i) => {
+                if (ele.code === "POA") {
+                  index = i;
+                  poaTypes.push(ele);
+                }
+              });
+              let docList = poaTypes[0].documentTypes.filter(
+                (element) => element.code === response["response"]["docTypCode"]
+              );
+              this.documentName = docList[0].code;
+              this.LOD[index].selectedDocName = this.documentName;
+            } else {
+              this.sameAs = this.registration.getSameAs();
+              this.sameAsselected = false;
+              this.displayMessage(
+                this.fileUploadLanguagelabels.uploadDocuments.error,
+                this.fileUploadLanguagelabels.uploadDocuments.msg9
+              );
+            }
+          },
+          (err) => {
+            this.displayMessage(
+              this.fileUploadLanguagelabels.uploadDocuments.error,
+              this.fileUploadLanguagelabels.uploadDocuments.msg8,
+              err
+            );
+          }
+        );
       this.subscriptions.push(subs);
       this.sameAsselected = true;
       this.disableNavigation = false;
@@ -956,7 +1104,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let i = 0;
     if (this.users[0].files.documentsMetaData) {
       for (let file of this.users[0].files.documentsMetaData) {
-        if (file.docCatCode == 'POA') {
+        if (file.docCatCode == "POA") {
           this.users[0].files.documentsMetaData.splice(i, 1);
         }
         i++;
@@ -965,7 +1113,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   ifDisabled(category) {
-    this.users[0].files[0].documentsMetaData.forEach(element => {
+    this.users[0].files[0].documentsMetaData.forEach((element) => {
       if ((element.docCatCode = category)) {
         return true;
       }
@@ -979,9 +1127,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onBack() {
-    this.registration.changeMessage({ modifyUser: 'true' });
-    let url = Utils.getURL(this.router.url, 'demographic');
-    this.router.navigateByUrl(url);
+    localStorage.setItem("modifyUser", "true");
+    let url = Utils.getURL(this.router.url, "demographic");
+    this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
 
   /**
@@ -990,9 +1138,52 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    localStorage.setItem('modifyDocument', 'false');
-    let url = Utils.getURL(this.router.url, 'summary/preview');
-    this.router.navigateByUrl(url);
+    let displayedDocCatCode = [];
+    let uploadDocumentsCatCode = [];
+    let requiredDocuments = [];
+    this.isDocUploadRequired = [];
+//     this.getUserFiles();
+//     console.log(this.userFile);
+    this.LOD.forEach((document) => {
+      displayedDocCatCode.push(document.code);
+    });
+    console.log(displayedDocCatCode);
+    this.uiFields.forEach((field) => {
+      if (field.required) {
+        requiredDocuments.push(field.id);
+      }
+    });
+//     this.userFile.filter(file=>{
+//      if(file.docCatCode !== undefined){
+//        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
+//         uploadDocumentsCatCode.push(file.docCatCode);
+//        }
+//      }
+//     });
+    console.log(uploadDocumentsCatCode);
+    console.log(requiredDocuments);
+    displayedDocCatCode.forEach((docCat) => {
+      requiredDocuments.forEach((reqDoc) => {
+        if (docCat === reqDoc) {
+          if (uploadDocumentsCatCode.indexOf(docCat) < 0) {
+            this.isDocUploadRequired.push(docCat);
+          }
+        }
+      });
+    });
+    console.log(this.isDocUploadRequired);
+    /*if (this.isDocUploadRequired.length > 0) {
+      let message = "please upload ";
+      let docList = "";
+      for (let i = 0; i < this.isDocUploadRequired.length; i++) {
+        docList = docList + this.isDocUploadRequired[i] + " ,";
+      }
+      this.displayMessage("Required", message + docList);
+    } else {*/
+      localStorage.setItem("modifyDocument", "false");
+      let url = Utils.getURL(this.router.url, "summary");
+      this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    /*}*/
   }
 
   /**
@@ -1028,17 +1219,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (
       error &&
       error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode === appConstants.ERROR_CODES.tokenExpired
+      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+        appConstants.ERROR_CODES.tokenExpired
     ) {
       message = this.errorlabels.tokenExpiredLogout;
-      title = '';
+      title = "";
     }
     const messageObj = {
-      case: 'MESSAGE',
+      case: "MESSAGE",
       title: title,
-      message: message
+      message: message,
     };
-    this.openDialog(messageObj, '250px');
+    this.openDialog(messageObj, "250px");
   }
 
   /**
@@ -1052,7 +1244,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
-      data: data
+      data: data,
     });
     return dialogRef;
   }
@@ -1062,7 +1254,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
 

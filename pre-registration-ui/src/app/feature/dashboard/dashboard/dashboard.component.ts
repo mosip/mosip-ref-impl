@@ -13,7 +13,6 @@ import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
 
 import { FileModel } from 'src/app/shared/models/demographic-model/file.model';
 import { Applicant } from 'src/app/shared/models/dashboard-model/dashboard.modal';
-import { UserModel } from 'src/app/shared/models/demographic-model/user.modal';
 import * as appConstants from '../../../app.constants';
 import Utils from 'src/app/app.util';
 import { ConfigService } from 'src/app/core/services/config.service';
@@ -22,7 +21,7 @@ import { FilesModel } from 'src/app/shared/models/demographic-model/files.model'
 import { LogService } from 'src/app/shared/logger/log.service';
 import LanguageFactory from 'src/assets/i18n';
 import { Subscription } from 'rxjs';
-// import { ErrorService } from 'src/app/shared/error/error.service';
+import { NotificationDtoModel } from 'src/app/shared/models/notification-model/notification-dto.model';
 
 /**
  * @description This is the dashbaord component which displays all the users linked to the login id
@@ -59,9 +58,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   isFetched = false;
   allApplicants: any[];
   users: Applicant[] = [];
-  selectedUsers: Applicant[] = [];
+  selectedUsers = [];
   titleOnError = '';
   subscriptions: Subscription[] = [];
+
+  name = '';
 
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -88,6 +89,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   ) {
     this.translate.use(this.primaryLangCode);
     localStorage.setItem('modifyDocument', 'false');
+    localStorage.removeItem("addingUserFromPreview");
+    localStorage.removeItem("muiltyAppointment");
+    localStorage.removeItem("modifyMultipleAppointment");
   }
 
   /**
@@ -96,7 +100,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   ngOnInit() {
-    this.loginId = this.regService.getLoginId();
+    this.loginId = localStorage.getItem('loginId');
     this.initUsers();
     const subs = this.autoLogout.currentMessageAutoLogout.subscribe(message => (this.message = message));
     this.subscriptions.push(subs);
@@ -112,6 +116,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let response = factory.getCurrentlanguage();
     this.secondaryLanguagelabels = response['dashboard'].discard;
     this.regService.setSameAs('');
+    this.name = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
   }
 
   /**
@@ -121,11 +128,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   initUsers() {
     this.getUsers();
-  }
-
-  flushArrays() {
-    this.regService.flushUsers();
-    this.bookingService.flushNameList();
   }
 
   /**
@@ -152,15 +154,13 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
           this.allApplicants =
             applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails];
-          this.bookingService.addApplicants(
-            applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails]
-          );
           for (
             let index = 0;
             index <
             applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails].length;
             index++
           ) {
+            localStorage.setItem('noOfApplicant',applicants[appConstants.RESPONSE][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails].length);
             const applicant = this.createApplicant(applicants, index);
             this.users.push(applicant);
           }
@@ -248,7 +248,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let primaryIndex = 0;
     let secondaryIndex = 1;
     let lang =
-      applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][0]['language'];
+      applicantResponse['demographicMetadata'][this.name][0]['language'];
     if (lang !== this.primaryLangCode) {
       primaryIndex = 1;
       secondaryIndex = 0;
@@ -260,7 +260,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     const applicant: Applicant = {
       applicationID: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.preId],
       name:
-        applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][primaryIndex][
+        applicantResponse['demographicMetadata'][this.name][primaryIndex][
           'value'
         ],
       appointmentDateTime: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto]
@@ -275,7 +275,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       status: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode],
       regDto: applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto],
       nameInSecondaryLanguage:
-        applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.fullname][
+        applicantResponse['demographicMetadata'][this.name][
           secondaryIndex
         ]['value'],
       postalCode: applicantResponse['demographicMetadata'][appConstants.DASHBOARD_RESPONSE_KEYS.applicant.postalCode]
@@ -290,10 +290,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onNewApplication() {
-    this.flushArrays();
-    this.regService.changeMessage({ modifyUser: 'false' });
+    localStorage.setItem('modifyUser','false');
+    localStorage.setItem('newApplicant','true');
     if (this.loginId) {
-      this.router.navigate(['pre-registration', 'demographic']);
+      this.router.navigateByUrl(`${this.primaryLangCode}/pre-registration/demographic/new`);
       this.isNewApplication = true;
     } else {
       this.router.navigate(['/']);
@@ -303,7 +303,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
-      data: data
+      data: data,
+      restoreFocus: false
     });
     return dialogRef;
   }
@@ -362,7 +363,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    this.bookingService.addApplicants(this.allApplicants);
   }
 
   deletePreregistration(element: any) {
@@ -375,6 +375,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           index = this.selectedUsers.indexOf(element);
           this.selectedUsers.splice(index, 1);
           if (this.users.length == 0) {
+            localStorage.setItem('noOfApplicant','0');
             this.onNewApplication();
             localStorage.setItem('newApplicant', 'true');
           } else {
@@ -401,6 +402,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   }
 
   cancelAppointment(element: any) {
+    const preRegId = element.applicationID;
+    const appointmentDate = element.appointmentDate
+    const appointmentDateTime = element.appointmentTime
     element.regDto.pre_registration_id = element.applicationID;
     const subs = this.dataStorageService
       .cancelAppointment(new RequestModel(appConstants.IDS.booking, element.regDto), element.applicationID)
@@ -411,6 +415,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
               this.secondaryLanguagelabels.title_success,
               this.secondaryLanguagelabels.cancelAppointment.msg_deleted
             );
+           // this.sendNotification(preRegId,appointmentDate,appointmentDateTime);
             const index = this.users.indexOf(element);
             this.users[index].status = appConstants.APPLICATION_STATUS_CODES.pending;
             this.users[index].appointmentDate = '-';
@@ -439,14 +444,14 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       if (selectedOption && Number(selectedOption) === 1) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe(confirm => {
-          if (confirm) {
+          if (confirm !== 'Cancel') {
             this.deletePreregistration(element);
           }
         });
       } else if (selectedOption && Number(selectedOption) === 2) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe(confirm => {
-          if (confirm) {
+          if (confirm !== 'Cancel') {
             this.cancelAppointment(element);
           }
         });
@@ -471,30 +476,29 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onModifyInformation(user: Applicant) {
-    this.flushArrays();
     const preId = user.applicationID;
-    this.regService.changeMessage({ modifyUser: 'true' });
+    localStorage.setItem('modifyUser','true');
     this.disableModifyDataButton = true;
-    const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
-      response => this.setUserFiles(response),
-      error => {
-        this.loggerService.error('dashboard error', error);
-        this.disableModifyDataButton = false;
-        this.onError(error);
-      },
-      () => {
-        this.addtoNameList(user);
-        this.dataStorageService.getUser(preId).subscribe(
-          response => {
-            this.onModification(response, preId);
-          },
-          error => {
-            this.onError(error);
-          }
-        );
-      }
-    );
-    this.subscriptions.push(subs);
+    this.onModification(preId);
+    // const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
+    //   response => this.setUserFiles(response),
+    //   error => {
+    //     this.loggerService.error('dashboard error', error);
+    //     this.disableModifyDataButton = false;
+    //     this.onError(error);
+    //   },
+    //   () => {
+    //     this.dataStorageService.getUser(preId).subscribe(
+    //       response => {
+    //         this.onModification(response, preId);
+    //       },
+    //       error => {
+    //         this.onError(error);
+    //       }
+    //     );
+    //   }
+    // );
+    // this.subscriptions.push(subs);
   }
 
   /**
@@ -505,12 +509,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @param {string} preId
    * @memberof DashBoardComponent
    */
-  private onModification(response: any, preId: string) {
-    const request = response[appConstants.RESPONSE];
+  private onModification(preId: string) {
     this.disableModifyDataButton = true;
-    this.regService.addUser(new UserModel(preId, request, this.userFiles));
     this.fetchedDetails = true;
-    this.router.navigate(['pre-registration', 'demographic']);
+    this.router.navigate([this.primaryLangCode,'pre-registration', 'demographic',preId]);
   }
 
   /**
@@ -539,13 +541,22 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onModifyMultipleAppointment() {
-    this.flushArrays();
-    for (let index = 0; index < this.selectedUsers.length; index++) {
-      this.addtoNameList(this.selectedUsers[index]);
-    }
     let url = '';
-    url = Utils.getURL(this.router.url, 'pre-registration/booking/pick-center');
-    this.router.navigateByUrl(url);
+    localStorage.setItem("modifyMultipleAppointment","true");
+    if(this.selectedUsers.length === 1){
+      url = Utils.getURL(this.router.url, `pre-registration/booking/${this.selectedUsers[0].applicationID}/pick-center`,1);
+      this.router.navigateByUrl(url);
+    } else {
+      let selectedPrids = [];
+      this.selectedUsers.forEach(id =>{
+      selectedPrids.push(id.applicationID);
+      });
+      console.log(selectedPrids);
+      localStorage.setItem("multiappointment",JSON.stringify(selectedPrids));
+      url = Utils.getURL(this.router.url, `pre-registration/booking/multiappointment/pick-center`,1);
+      this.router.navigateByUrl(url);
+    }
+  
   }
 
   /**
@@ -555,34 +566,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   onAcknowledgementView(user: Applicant) {
-    this.flushArrays();
-    this.addtoNameList(user);
+    console.log(user);
     let url = '';
-    url = Utils.getURL(this.router.url, 'pre-registration/summary/acknowledgement');
+    url = Utils.getURL(this.router.url, `pre-registration/summary/${user.applicationID}/acknowledgement`,1);
     this.router.navigateByUrl(url);
-  }
-
-  /**
-   * @description This method add the user details to shared service name list array.
-   *
-   * @param {Applicant} user
-   * @memberof DashBoardComponent
-   */
-  addtoNameList(user: Applicant) {
-    const preId = user.applicationID;
-    const fullName = user.name;
-    const regDto = user.regDto;
-    const status = user.status;
-    const postalCode = user.postalCode;
-    const nameInSecondaryLanguage = user.nameInSecondaryLanguage;
-    this.bookingService.addNameList({
-      fullName: fullName,
-      preRegId: preId,
-      regDto: regDto,
-      status: status,
-      postalCode: postalCode,
-      fullNameSecondaryLang: nameInSecondaryLanguage
-    });
   }
 
   setUserFiles(response) {
@@ -642,9 +629,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   private async onError(error?: any) {
     await this.getErrorLabels();
-    let message = this.errorLanguagelabels.error;
-    // this.titleOnError = this.errorLanguagelabels.errorLabel;
-    // this.errorService.onError(this.titleOnError, message, error, this.errorLanguagelabels);
+    let message = this.errorLanguagelabels.error;;
     this.titleOnError = this.errorLanguagelabels.errorLabel;
     if (
       error &&
@@ -667,6 +652,34 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  async sendNotification(prid,appDate,appDateTime) {
+    let userDetails;
+    this.dataStorageService.getUser(prid).subscribe(response => {
+      if(response[appConstants.RESPONSE]){
+        userDetails = response[appConstants.RESPONSE].demographicDetails.identity;
+        console.log(userDetails);
+        const notificationDto = new NotificationDtoModel(
+          userDetails['fullName'][0].value,
+          prid,
+          appDate,
+          appDateTime,
+          userDetails.phone,
+          userDetails.email,
+          null,
+          true
+        );
+        console.log(notificationDto);
+       const model = new RequestModel(appConstants.IDS.notification, notificationDto);
+       let notificationRequest = new FormData();
+       notificationRequest.append(appConstants.notificationDtoKeys.notificationDto, JSON.stringify(model).trim());
+       notificationRequest.append(appConstants.notificationDtoKeys.langCode, localStorage.getItem('langCode'));
+       const subs = this.dataStorageService.sendNotification(notificationRequest).subscribe(response => {
+         console.log(response);
+       });
+      }
+    });
+    }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());

@@ -37,12 +37,12 @@
         <mat-card>
           <div class="card-header">
             <span class="checkbox"
-              ><mat-checkbox *ngIf="!isBookingAllowed(user)" (change)="onSelectUser(user, $event)"
-                >{{ 'dashboard.card.text_app_id' | translate }}
+              ><mat-checkbox   (change)="onSelectUser(user, $event)"
+                >
               </mat-checkbox></span
             >
             <span class="checkbox"
-              ><strong>{{ user.applicationID }}</strong>
+              >{{ 'dashboard.card.text_app_id' | translate }}&nbsp;&nbsp;<strong> {{ user.applicationID }}</strong>
               <mat-icon class="icon" matTooltip="{{ 'helpText.applicationId' | translate }}" [inline]="true"
                 >help_outline</mat-icon
               >

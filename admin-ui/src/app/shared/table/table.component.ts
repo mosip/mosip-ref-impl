@@ -25,7 +25,10 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() buttonList: [];
   @Input() sortData: SortModel[];
   @Input() noDataFlag: boolean;
+  @Input() showRadioButton: boolean = false;
   @Output() sort = new EventEmitter();
+  @Output() selectedCenterDetail = new EventEmitter();
+  
   tableData = [];
   columnsOfTableData = [];
   sortStatusArray: string[] = [];
@@ -90,6 +93,10 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
+  selectedCenter(data: any) {
+    this.selectedCenterDetail.emit(data);
+  }
+
   getTableRowData(data: any, index: number, columnName: string) {
     const routeIndex = this.router.url.lastIndexOf('/');
     this.currentRoute = this.router.url.slice(0, routeIndex);
@@ -112,6 +119,7 @@ export class TableComponent implements OnInit, OnChanges {
       }
     }
   }
+
   sortColumn(columnName: string, columnIndex: number) {
     this.auditService.audit(13, 'ADM-093', {
       masterdataName: this.router.url.split('/')[3],

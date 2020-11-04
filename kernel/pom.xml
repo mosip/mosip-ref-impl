@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
-	<version>0.9.1</version>
+	<version>1.1.2</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>Parent project of MOSIP Kernel for Philippines</description>
@@ -59,16 +59,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- maven -->
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.version>3.7.0</maven.compiler.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.version>3.8.0</maven.compiler.version>
 		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
 		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
 		<maven.surefire.plugin.version>2.9</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.1</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
-		<maven.javadoc.version>3.0.1</maven.javadoc.version>
+		<maven.javadoc.version>3.2.0</maven.javadoc.version>
 		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
+		<sonar.skip>true</sonar.skip>
 
 		<!-- spring -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
@@ -121,7 +122,7 @@
 		<json.version>20180813</json.version>
 
 		<!-- kernel -->
-		<kernel-core.version>1.0.9-SNAPSHOT</kernel-core.version>
+		<kernel-core.version>1.1.2</kernel-core.version>
 
 		<!-- utilities -->
 		<commons-math3>3.6.1</commons-math3>
@@ -182,7 +183,6 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -211,14 +211,15 @@
 							</execution>
 					    </executions>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven.javadoc.version}</version>
+				<plugin>	
+					<groupId>org.apache.maven.plugins</groupId>	
+					<artifactId>maven-compiler-plugin</artifactId>	
+					<version>${maven.compiler.version}</version>	
+					<configuration>	
+						<source>${maven.compiler.source}</source>	
+						<target>${maven.compiler.target}</target>	
+					</configuration>	
 				</plugin>
-			</plugins>
-		</pluginManagement>
-		<plugins>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -281,12 +282,11 @@
                         </execution>
                   </executions>
                 </plugin>
-
-              <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-javadoc-plugin</artifactId>
-                  <version>2.9.1</version>
-                  <executions>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.version}</version>
+				<executions>
                         <execution>
                           <id>attach-javadocs</id>
                           <goals>
@@ -294,10 +294,12 @@
                           </goals>
                         </execution>
                   </executions>
-                  <configuration>
-                          <additionalJOption>-Xdoclint:none</additionalJOption>
-                  </configuration>
-                </plugin>
+				<configuration>
+					<aggregate>true</aggregate>
+					<doclint>none</doclint>
+				</configuration>
+			</plugin>
+
                 <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-gpg-plugin</artifactId>

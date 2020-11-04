@@ -57,14 +57,25 @@
   padding: 1rem 0rem 1rem 0rem;
   /* margin-top: 1rem; */
   margin-bottom: 2rem;
-  width: 50%;
+   width: 50%;
   /* margin-left: 2%; */
   float: left;
 }
+
 /* .user__container:focus-within {
   box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.3);
 } */
-
+.user_container_single_form{
+  font-size: 0.8rem;
+  /* box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.3); */
+  padding: 1rem 0rem 1rem 0rem;
+  /* margin-top: 1rem; */
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  /* margin-left: 2%; */
+  float: left;
+}
 .user__container h6 {
   font-weight: bold;
   color: #2f3033;
@@ -78,20 +89,16 @@
   flex-wrap: wrap;
   font-family: "Roboto", sans-serif;
 }
-::ng-deep .mat-form-field-label .mat-select-placeholder {
-  margin-top: 5px !important;
+
+/* ::ng-deep .mat-form-field-label .mat-select-placeholder {
+
+} */
+.mat-input-element {
+  padding: 2.5px !important;
 }
-.user__form> .text-field {
-  width: 95%;
-  padding: 4px 20px !important;
-}
-.user__form > .dropdown-field {
-  width: 95%;
-  padding: 4px 20px !important;
-}
-.user__form > .date-field {
-  width: 95%;
-  padding: 4px 20px !important;
+::ng-deep.mat-select-value {
+  padding: 2px !important;
+  /* line-height: 20px !important; */
 }
 
 ::ng-deep.mat-datepicker-content .mat-calendar {
@@ -109,11 +116,13 @@
 
 .primary-errors{
   font-size: 9.5px;
-  margin-left: 22px;
+
+  margin-left: 5px;
 }
 .secondary-errors{
   font-size: 9.5px;
-  margin-right: 22px;
+  margin-right: 5px;
+
 }
 ::ng-deep svg.mat-datepicker-toggle-default-icon {
   padding-bottom: 10px !important;

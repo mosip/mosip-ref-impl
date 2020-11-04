@@ -581,7 +581,9 @@
     "slotNotAvailable": "Appointment booking/re-booking cannot be done as the requested slot is not available. Please select another slot or try again later",
     "timeExpired_1": "Appointment cannot be reschedule within ",
     "timeExpired_2": " hours of booking",
-    "errorLabel": "ERROR"
+    "errorLabel": "ERROR",
+    "regCenterNotavailabe":"Registration center is not available.",
+    "centerDetailsNotAvailable":"No Slots Available, Appointment booking/re-booking cannot be done. Please try again later."
   },
   "residentTypesMapping": {
     "NFR": "National",

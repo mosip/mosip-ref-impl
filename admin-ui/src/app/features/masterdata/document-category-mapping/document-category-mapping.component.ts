@@ -79,20 +79,25 @@ export class DocumentCategoryMappingComponent implements OnInit {
       };
     });
     console.log("newMappedDoc>>>",newMappedDoc);
-    for (const mapKey of newMappedDoc) {
-      const mapDoc = mapKey;
-      if (unMappedDoc) {
-        const unMapDoc = unMappedDoc.map((doc: any) => {
-          return doc.name;
-        }).indexOf(mapDoc.name);
-        console.log("unMapDoc>>>",unMapDoc);
-        if(unMapDoc >= 0) {
-          unMappedDoc.splice(unMapDoc, 1);
-          this.unMappedDocList = unMappedDoc;
-          this.unMappedDocCount = this.unMappedDocList.length;
+    if(newMappedDoc.length > 0){
+      for (const mapKey of newMappedDoc) {
+        const mapDoc = mapKey;
+        if (unMappedDoc) {
+          const unMapDoc = unMappedDoc.map((doc: any) => {
+            return doc.name;
+          }).indexOf(mapDoc.name);
+          console.log("unMapDoc>>>",unMapDoc);
+          if(unMapDoc >= 0) {
+            unMappedDoc.splice(unMapDoc, 1);
+            this.unMappedDocList = unMappedDoc;
+            this.unMappedDocCount = this.unMappedDocList.length;
+          }
         }
       }
-    }
+    }else{
+      this.unMappedDocList = unMappedDoc;
+      this.unMappedDocCount = this.unMappedDocList.length;
+    }    
     this.mappedDocList = newMappedDoc;
     this.mappedDocCount = this.mappedDocList.length;
   }

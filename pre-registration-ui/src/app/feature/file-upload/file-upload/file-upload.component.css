@@ -278,9 +278,19 @@ mat-select:focus {
 .spacer {
   flex: 1 1 auto;
 }
-::ng-deep .mat-form-field-hide-placeholder .mat-select-placeholder {
+
+ .mat-form-field-hide-placeholder .mat-select-placeholder {
   padding: 5px !important;
 }
-::ng-deep .mat-select-value-text {
-  line-height: 23px !important;
+.mat-select-value {
+   padding: 2px !important;
+   line-height: 23px !important;
+}
+
+.spinner {
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18vw;
+  display: flex;
+
 }

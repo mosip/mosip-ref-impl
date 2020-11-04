@@ -1,4 +1,4 @@
-<mat-card class="time-selection__title-card">
+<mat-card class="time-selection__title-card" *ngIf="availabilityData.length !== 0" >
   <mat-card-header>
     <p class="time-selection__title-card-text">
       {{ 'timeSelection.title_book' | translate }}
@@ -12,8 +12,8 @@
   <mat-spinner [diameter]="50"></mat-spinner>
 </div>
 <div *ngIf="!spinner">
-  <mat-card class="time-selection__date-card">
-    <div *ngIf="availabilityData.length !== 0">
+  <mat-card class="time-selection__date-card" *ngIf="availabilityData.length !== 0">
+    <div>
       <div class="container">
         <div class="time-selection__arrow-text">
           <p (click)="scrollLeft()">{{ 'timeSelection.text_prev' | translate }}</p>
@@ -44,8 +44,9 @@
       </div>
     </div>
   </mat-card>
-  <div class="time-seelection__slot-groups-div">
+  <div class="time-seelection__slot-groups-div" *ngIf="availabilityData.length !== 0">
     <a
+    *ngIf="morningSlotAvailable" 
       (click)="tabSelected('morning')"
       [ngClass]="
         activeTab === 'morning' ? 'time-seelection__slot-groups-div-selected' : 'time-seelection__slot-groups-div a'
@@ -53,6 +54,7 @@
       >{{ 'timeSelection.text_morning' | translate }}</a
     >
     <a
+      *ngIf="afternoonSlotAvailable" 
       (click)="tabSelected('afternoon')"
       [ngClass]="
         activeTab === 'afternoon' ? 'time-seelection__slot-groups-div-selected' : 'time-seelection__slot-groups-div a'
@@ -87,7 +89,7 @@
         </div>
       </div>
     </mat-card>
-    <mat-card class="time-selection__names-container">
+    <mat-card class="time-selection__names-container" *ngIf="availabilityData.length>0 && showsNamesContainer" >
       <div>
         <div
           *ngIf="availabilityData[selectedTile] !== undefined && selectedCard !== undefined"
@@ -100,7 +102,8 @@
             availabilityData[selectedTile].timeSlots[selectedCard].displayTime
           }}</span
           >,
-          <span class="time-selection__names-header-day-text">{{ 'timeSelection.text_morning' | translate }}</span>
+          <span *ngIf="activeTab === 'morning'"  class="time-selection__names-header-day-text">{{ 'timeSelection.text_morning' | translate }}</span>
+          <span *ngIf="activeTab === 'afternoon'"class="time-selection__names-header-day-text">{{ 'timeSelection.text_afternoon' | translate }}</span>
         </div>
         <div *ngIf="availabilityData[selectedTile] !== undefined && selectedCard !== undefined">
           <table class="time-selection__name-list">

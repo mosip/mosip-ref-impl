@@ -141,6 +141,7 @@ img {
 
 .user__name--wordwrap {
   max-width: 20px;
+  font-size: 11px;
 }
 
 .modify-app-img {
