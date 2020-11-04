@@ -101,7 +101,7 @@ jobs:
         mvn -B deploy -s $GITHUB_WORKSPACE/settings.xml SNAPSHOT --file pom.xml
       env:
         GPG_TTY: $(tty)
-        	
+        
     - name: Analyze with SonarCloud
       run: |
         cd kernel
