@@ -94,7 +94,7 @@ jobs:
       run: |
         cd kernel
         mvn -B package -s $GITHUB_WORKSPACE/settings.xml --file pom.xml
-        
+
     - name: Publish the maven package
       run: |
         cd kernel && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
