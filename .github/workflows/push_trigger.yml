@@ -112,8 +112,6 @@ jobs:
 
 
   docker-pre-registration-booking-service:
-    needs: build-pre-registration-booking-service
-
     runs-on: ubuntu-latest
     env:
       NAMESPACE: mosipdev
