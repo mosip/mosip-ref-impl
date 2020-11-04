@@ -371,7 +371,8 @@ public class IdaController {
 								    replace("$type",env.getProperty("ida.request.captureFinger.type")).
 								    replace("$bioSubType",getBioSubType(getFingerCount(), env.getProperty("ida.request.captureFinger.bioSubType"))).
 								    replace("$name",env.getProperty("ida.request.captureFinger.name")).
-								    replace("$value",env.getProperty("ida.request.captureFinger.value"));
+								    replace("$value",env.getProperty("ida.request.captureFinger.value")).
+								    replace("$env",env.getProperty("ida.request.captureFinger.env"));
 		
 		return capturebiometrics(requestBody);
 	}	
@@ -412,7 +413,8 @@ public class IdaController {
 								    replace("$type",env.getProperty("ida.request.captureIris.type")).
 								    replace("$bioSubType",getBioSubType(getIrisCount(), env.getProperty("ida.request.captureIris.bioSubType"))).
 								    replace("$name",env.getProperty("ida.request.captureIris.name")).
-								    replace("$value",env.getProperty("ida.request.captureIris.value"));
+								    replace("$value",env.getProperty("ida.request.captureIris.value")).
+								    replace("$env",env.getProperty("ida.request.captureIris.env"));
 		
 		return capturebiometrics(requestBody);
 	}
@@ -434,7 +436,8 @@ public class IdaController {
 									    replace("$type",env.getProperty("ida.request.captureFace.type")).
 									    replace("$bioSubType",getBioSubType(getFaceCount(), env.getProperty("ida.request.captureFace.bioSubType"))).
 									    replace("$name",env.getProperty("ida.request.captureFace.name")).
-									    replace("$value",env.getProperty("ida.request.captureFace.value"));		
+									    replace("$value",env.getProperty("ida.request.captureFace.value")).
+									    replace("$env",env.getProperty("ida.request.captureFace.env"));		
 
 		return capturebiometrics(requestBody);
 	}
@@ -592,7 +595,8 @@ public class IdaController {
 		authRequestDTO.setIndividualId(idValue.getText());
 		// Set Individual Id type
 		authRequestDTO.setIndividualIdType(idTypebox.getValue());
-
+		authRequestDTO.setEnv(env.getProperty("ida.request.captureFinger.env"));
+		authRequestDTO.setDomainUri(env.getProperty("ida.request.captureFinger.domainUri"));
 		RequestDTO requestDTO = new RequestDTO();
 		requestDTO.setTimestamp(getUTCCurrentDateTimeISOString());
 

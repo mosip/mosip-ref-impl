@@ -69,6 +69,7 @@
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<maven.javadoc.version>3.2.0</maven.javadoc.version>
 		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
+		<sonar.skip>true</sonar.skip>
 
 		<!-- spring -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
@@ -183,7 +184,6 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -212,9 +212,15 @@
 							</execution>
 					    </executions>
 				</plugin>
-			</plugins>
-		</pluginManagement>
-		<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.version}</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
+				</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -281,6 +287,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven.javadoc.version}</version>
+				<executions>
+                        <execution>
+                          <id>attach-javadocs</id>
+                          <goals>
+                                <goal>jar</goal>
+                          </goals>
+                        </execution>
+                  </executions>
 				<configuration>
 					<aggregate>true</aggregate>
 					<doclint>none</doclint>
