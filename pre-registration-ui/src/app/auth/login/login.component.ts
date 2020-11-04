@@ -192,9 +192,11 @@ export class LoginComponent implements OnInit {
       this.languages.push(
         appConstants.languageMapping[this.primaryLangFromConfig].langName
       );
-      this.languages.push(
-        appConstants.languageMapping[this.secondaryLangFromConfig].langName
-      );
+      if(this.primaryLang !== this.secondaryLang){
+        this.languages.push(
+          appConstants.languageMapping[this.secondaryLangFromConfig].langName
+        );
+      }
     }
     this.translate.addLangs([
       this.primaryLangFromConfig,
