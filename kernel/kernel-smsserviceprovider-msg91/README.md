@@ -1,7 +1,17 @@
 ## kernel-smsserviceprovider-msg91
 
  [Background & Design]()
- 
+
+ **Implementation**
+This service is provided as a reference implementation so the adopters could change this code to support their respective service provider.
+
+```
+io.mosip.kernel.core.notification.spi.SMSServiceProvider
+
+```
+The above interface is implemented in this service. Adopters are expected to be compliant to the interface  and add their implementation in the SMSServiceProviderImpl.java or create equivalent impl.
+
+Its expected that the adopters do not change the controller and the REST api.
 
  [API Documentation ]
  
