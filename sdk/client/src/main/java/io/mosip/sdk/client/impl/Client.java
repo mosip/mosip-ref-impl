@@ -35,7 +35,7 @@ public class Client implements IBioApi {
 	private static final boolean rest = true;
 
 	/* "http://localhost:9099/" */
-	private static final String host = System.getenv("mosip.sdk.host");
+	private static final String host = System.getenv("mosip.sdk.biosdk.host");
 
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
