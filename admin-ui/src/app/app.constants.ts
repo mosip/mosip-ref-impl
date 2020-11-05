@@ -351,7 +351,7 @@ export const ListViewIdKeyMapping = {
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },
-  'blacklisted-words': { idKey: 'word', auditEventId: 'ADM-070' },
+  'blacklisted-words': { idKey: 'word', auditEventId: 'ADM-070'},
   'document-type': { idKey: 'code', auditEventId: 'ADM-071' },
   location: { idKey: 'postalCode', auditEventId: 'ADM-072' },
   'device-specs': { idKey: 'id', auditEventId: 'ADM-073' },

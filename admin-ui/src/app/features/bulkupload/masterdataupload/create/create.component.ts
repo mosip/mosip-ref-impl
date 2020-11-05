@@ -40,7 +40,7 @@ export class CreateComponent {
   initializeForm() {
     this.uploadForm = this.formBuilder.group({
       category : ['masterdata'],
-      files: [''],
+      files: ['', [Validators.required]],
       operation: ['', [Validators.required]],
       tableName: ['', [Validators.required]],
     });
@@ -55,23 +55,32 @@ export class CreateComponent {
   }
 
   submit(){
-    let data = {};
-    data = {
-      case: 'CONFIRMATION',
-      title: "Confirm Bulk Master Data Upload",
-      message: "Bulk "+this.uploadForm.get('operation').value+" on "+this.uploadForm.get('tableName').value+" will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
-      yesBtnTxt: "CONFIRM",
-      noBtnTxt: "CANCEL"
-    };
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '450px',
-      data
-    });
-    dialogRef.afterClosed().subscribe(response => {   
-      if(response){
-        this.saveData();
-      }      
-    });    
+    console.log("this.uploadForm.valid>>>"+this.uploadForm.valid);
+    if (this.uploadForm.valid) {
+      let data = {};
+      data = {
+        case: 'CONFIRMATION',
+        title: "Confirm Bulk Master Data Upload",
+        message: "Bulk "+this.uploadForm.get('operation').value+" on "+this.uploadForm.get('tableName').value+" will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
+        yesBtnTxt: "CONFIRM",
+        noBtnTxt: "CANCEL"
+      };
+      const dialogRef = this.dialog.open(DialogComponent, {
+        width: '450px',
+        data
+      });
+      dialogRef.afterClosed().subscribe(response => {   
+        if(response){
+          this.saveData();
+        }      
+      });  
+    } else {
+      for (const i in this.uploadForm.controls) {
+        if (this.uploadForm.controls[i]) {
+          this.uploadForm.controls[i].markAsTouched();
+        }
+      }
+    }  
   }
 
   saveData(){
@@ -89,11 +98,11 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    if(uploadResponse.response.status == "FAILED"){
+    if(uploadResponse.errors){
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: uploadResponse.response.message,
+        message: uploadResponse.errors[0].message,
         btnTxt: "DONE"
       };
     }else{
