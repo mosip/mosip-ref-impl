@@ -27,9 +27,9 @@ import java.util.Map;
  * 
  */
 @Component
-public class SampleSDK implements IBioApi {
+public class Client implements IBioApi {
 
-	Logger LOGGER = LoggerFactory.getLogger(SampleSDK.class);
+	Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
 	private static final String API_VERSION = "0.9";
 	private static final boolean rest = true;
