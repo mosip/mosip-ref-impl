@@ -91,7 +91,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   firstFile: Boolean = true;
   noneApplicant = {
     demographicMetadata: {
-      fullName: [
+      name: [
         {
           language: "",
           value: "None",
