@@ -62,7 +62,7 @@
 		<icu.version>63.1</icu.version>
 		<sonar.coverage.exclusions>**/code/**,**/config/**,**/dao/**,**/dto/**,**/entity/**,**/errorcodes/**,**/exception/**,**/exception/system/**,**/exception/util/**,**/repository/**,**/*Config.java,**/*Application.java,**/batchjob/**,**/util/**,**/stateUtil/**</sonar.coverage.exclusions>
 		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>
-		
+		<mockito.version>2.23.4</mockito.version>
 		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
 		<maven.war.plugin.version>3.1.0</maven.war.plugin.version> 
 		
