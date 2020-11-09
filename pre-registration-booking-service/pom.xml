@@ -50,7 +50,7 @@
 		<jackson.version>2.9.5</jackson.version>
 
 		<!-- Swagger -->
-		<swagger.version>3.0.0-SNAPSHOT</swagger.version>
+		<swagger.version>2 2.5.0 </swagger.version>
 		
 
 		<!-- Data Access -->
