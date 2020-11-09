@@ -118,7 +118,7 @@ export const navItems = [
       {
         displayName: 'menuItems.item6.subItem3',
         icon: null,
-        route: '/admin/keymanager/generatecsr3',
+        route: '/admin/keymanager/getcertificate',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
@@ -363,7 +363,8 @@ export const ListViewIdKeyMapping = {
   'center-type': { idKey: 'code', auditEventId: 'ADM-079' },
   holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' },
   masterdataupload : { idKey: 'transcationId', auditEventId: 'ADM-081' },
-  packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' }
+  packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' },
+  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' }
   
 };
 
