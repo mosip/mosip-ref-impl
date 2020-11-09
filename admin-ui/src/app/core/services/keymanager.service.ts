@@ -13,8 +13,8 @@ export class KeymanagerService {
 
   private BASE_URL = this.appService.getConfig().baseUrl;
 
-  getUploadDetails(request: RequestModel, bulkuploadtype : any, pageStart : any, pageFetch : any): Observable<any> {
-    return this.http.get(this.BASE_URL + 'admin'  + '/bulkupload/getAllTransactions?category='+bulkuploadtype+'&pageNumber='+Number(pageStart)+'&pageSize='+Number(pageFetch));
+  getCertificate(request: RequestModel, applicationId : any, pageStart : any, pageFetch : any, referenceId : any): Observable<any> {
+    return this.http.get(this.BASE_URL + 'keymanager'  + '/getCertificate?applicationId='+applicationId+'&referenceId='+referenceId);
   }
 
 
