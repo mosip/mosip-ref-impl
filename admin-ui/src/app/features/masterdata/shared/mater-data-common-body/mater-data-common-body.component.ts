@@ -242,7 +242,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }
     }
   }
-
+  
   getDeviceTypes() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
     let filterRequest = new FilterRequest([filterObject], this.primaryLang);
