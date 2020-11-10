@@ -1,2 +1,5 @@
-﻿id,name,descr,user_id,is_active,cr_by,cr_dtimes
-549850,Device Provider,Device Provider,admin,TRUE,admin,now()
+id,name,descr,user_id,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+mpolicygroup_default_auth,mpolicygroup_default_auth,mpolicygroup_default_auth,admin,TRUE,admin,now(),admin,now()
+mpolicygroup_deafult_abis,mpolicygroup_deafult_abis,mpolicygroup_deafult_abis,admin,TRUE,admin,now(),admin,now()
+mpolicygroup_deafult_print,mpolicygroup_deafult_print,mpolicygroup_deafult_print,admin,TRUE,admin,now(),admin,now()
+549850,Device Provider,Device Provider,admin,TRUE,admin,now(),admin,now()

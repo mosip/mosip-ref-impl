@@ -1,2 +1,5 @@
-﻿id,policy_group_id,name,address,contact_no,email_id,certificate_alias,user_id,partner_type_code,approval_status,is_active,cr_by,cr_dtimes
-Smartx,549850,SmartX ORG,Address,9903445446,info@smartx.io,NULL,admin,Device_Provider,Activated,TRUE,admin,now()
+id,policy_group_id,name,address,contact_no,email_id,certificate_alias,user_id,partner_type_code,approval_status,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+mpartner_default_auth,mpolicygroup_default_auth,mpartner_default_auth,mpartner_default_auth,9232121212,info@mosip.io,,mpartner_default_auth,Online_Verification_Partner,Activated,TRUE,admin,now(),admin,now()
+mpartner_default_abis,mpolicygroup_deafult_abis,mpartner_deafult_abis,mpolicygroup_deafult_abis,9232121212,absi@mosip.io,,mpolicygroup_deafult_abis,ABIS,Activated,TRUE,admin,now(),admin,now()
+mpartner_default_print,mpolicygroup_deafult_print,mpartner_deafult_print,mpolicygroup_deafult_print,9232121212,print@mosip.io,,mpolicygroup_deafult_print,Credential_Partner,Activated,TRUE,admin,now(),admin,now()
+Smartx,549850,SmartX ORG,Address,9903445446,info@smartx.io,NULL,admin,Device_Provider,Activated,TRUE,admin,now(),admin,now()
