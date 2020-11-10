@@ -21,6 +21,15 @@
         },
         {
           "label": {
+            "eng": "Location Data",
+            "ara": "بيانات الموقع",
+            "fra": "Données de localisation"
+          },
+          "actionURL": "admin/masterdata/location/view",
+          "auditEventId": "ADM-015"
+        },
+        {
+          "label": {
             "eng": "Gender",
             "ara": "جنس",
             "fra": "Le sexe"
