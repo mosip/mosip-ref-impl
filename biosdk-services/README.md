@@ -21,3 +21,7 @@ for example (in case of Mock SDK)
 ```properties
 mosip.sdk.biosdk.lib=io.mosip.mock.sdk.impl.SampleSDK
 ```
+
+## Swagger
+
+<host>/swagger-ui.html
