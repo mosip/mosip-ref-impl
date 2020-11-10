@@ -114,6 +114,10 @@ jobs:
   build-pre-registration-booking-service:
 
     runs-on: ubuntu-latest
+    env: 
+      NAMESPACE: ${{ secrets. dev_namespace_docker_hub }}
+      SERVICE_NAME: pre-registration-booking-service
+      SERVICE_LOCATION: pre-registration-booking-service
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
