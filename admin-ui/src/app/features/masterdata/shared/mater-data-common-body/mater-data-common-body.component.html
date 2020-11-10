@@ -1,6 +1,6 @@
 <div class="flex-body">
     <mat-card>
-        <mat-card-content class="forms-container">
+        <mat-card-content class="forms-container" *ngIf="pageName !=='Location'">
             <div class="primary-form">
                 <strong class="title">{{'center.language' | translate }}</strong>
                 <span
@@ -399,6 +399,64 @@
                 </div>
             </div>
         </mat-card-content>
+        <mat-card-content class="forms-container" *ngIf="pageName ==='Location'">
+          <div class="primary-form">
+            <strong class="title">{{'center.language' | translate }}</strong>
+            <span
+              *ngIf="!disableForms && pageName !=='Blacklisted Word'"
+              matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
+              (click)="openKeyboard('primary')"
+              style="float: right; color: grey; cursor: pointer;"
+              ><i class="material-icons">keyboard</i></span
+            >
+            <hr />
+            <br /><br />
+            <mat-form-field>
+              <mat-select
+                id="hierarchyLevel"
+                placeholder="Hierarchy Level"
+                [value]="primaryData.hierarchyLevel"
+                >
+                <mat-option
+                  *ngFor="let data of dropDownValues.hierarchyLevelCode.primary"
+                  (onSelectionChange)="
+                    captureDropDownValue($event, 'hierarchyLevel', 'primary')
+                  "
+                  [value]="data.locationHierarchylevel"
+                >
+                  {{ data.locationHierarchyName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+          <div *ngIf="showSecondaryForm && pageName !=='Blacklisted Word'" class="secondary-form">
+            <strong class="title">{{ languageNames[secondaryLang] }}</strong>
+            <span
+              *ngIf="!disableForms"
+              matTooltip="{{languageNames['keyboard-tooltip'] | translate }}"
+              (click)="openKeyboard('secondary')"
+              style="float: right; color: grey; cursor: pointer;"
+              ><i class="material-icons">keyboard</i></span
+            >
+            <hr />
+            <br /><br />
+            <mat-form-field>
+              <mat-select
+                id="hierarchyLevel"
+                placeholder="Hierarchy Level"
+                [value]="secondaryData.hierarchyLevel"
+                >
+                <mat-option
+                  *ngFor="let data of dropDownValues.hierarchyLevelCode.secondary"
+                  [value]="data.locationHierarchylevel"
+                >
+                  {{ data.locationHierarchyName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          </mat-card-content>
         <mat-card-actions class="action-buttons">
         <button id="createButton" mat-raised-button (click)="submit()">
         Save
