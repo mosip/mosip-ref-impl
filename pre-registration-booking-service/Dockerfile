@@ -33,7 +33,7 @@ ENV artifactory_url_env=${artifactory_url}
 # environment variable to pass iam_adapter url, at docker runtime
 ENV iam_adapter_url_env=${iam_adapter_url}
 
-copy ./target/pre-registration-booking-service-*.jar pre-registration-booking-service.jar
+ADD ./target/pre-registration-booking-service-*.jar pre-registration-booking-service.jar
 
 #ADD http://13.71.87.138:8040/artifactory/libs-release-local/io/mosip/kernel/kernel-ref-idobjectvalidator/0.9.1/kernel-ref-idobjectvalidator-0.9.1.jar kernel-ref-idobjectvalidator-0.9.1.jar
 
@@ -42,7 +42,7 @@ EXPOSE 9095
 CMD if [ "$is_glowroot_env" = "present" ]; then \
     wget "${artifactory_url_env}"/artifactory/libs-snapshot-local/io/mosip/kernel/kernel-ref-idobjectvalidator/kernel-ref-idobjectvalidator.jar kernel-ref-idobjectvalidator.jar ; \
     wget "${iam_adapter_url_env}" -O kernel-auth-adapter.jar; \
-    wget "${artifactory_url_env}"/artifactory/libs-release-local/io/mosip/testing/glowroot.zip ; \
+    wget "${artifactory_url_env}"/artifactory/libs-release-local/io/mosip/testing/glowroot.zip ; \e
     apt-get update && apt-get install -y unzip ; \
     unzip glowroot.zip ; \
     rm -rf glowroot.zip ; \
