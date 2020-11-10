@@ -232,7 +232,7 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION:  
+          docker push $IMAGE_ID:$VERSION  
         
   build-admin-ui:
     runs-on: ubuntu-latest
