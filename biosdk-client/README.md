@@ -4,12 +4,12 @@ This library provides methods to connect with SDK serivces for Bio SDK related f
 
 ## Configuration
 ```properties
-mosip.sdk.biosdk.host=<Bio SDK services host url>
+mosip.biosdk.service=<Bio SDK service url>
 ```
 
 for example
 ```properties
-mosip.sdk.biosdk.host=http://localhost:9099/
+mosip.biosdk.service=http://localhost:9099/biosdk-service/
 ```
 
 ## Build
