@@ -2,9 +2,9 @@ FROM openjdk:11
 
 ARG biosdk_jar_path
 
-#ARG biosdk_class
+ARG biosdk_class
 
-ENV biosdk_class=${biosdk_class}
+ENV biosdk_class=$biosdk_class
 
 copy ./target/services-*.jar services.jar
 
