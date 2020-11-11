@@ -29,6 +29,7 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 import {
   MatKeyboardRef,
   MatKeyboardComponent,
@@ -859,14 +860,15 @@ export class CreateComponent {
 
   getRegistrationCenterTypes() {
     let filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcentertypes', request)
       .subscribe(response => {
         this.dropDownValues.centerTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, [optinalFilterObject]);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcentertypes', request)

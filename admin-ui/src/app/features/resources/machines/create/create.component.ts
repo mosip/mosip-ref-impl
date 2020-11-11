@@ -27,6 +27,7 @@ import { MachineService } from 'src/app/core/services/machines.service';
 import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 
 import {
   MatKeyboardRef,
@@ -192,14 +193,15 @@ export class CreateComponent {
 
   getMachinespecifications() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [OptionalFilterValuesModel]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinespecifications', request)
       .subscribe(response => {
         this.dropDownValues.machineTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinespecifications', request)
