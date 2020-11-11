@@ -759,7 +759,7 @@ export class CreateComponent {
       lunchEndTime: [''],
       workingDays: [[], [Validators.required]],
       exceptionalHolidays: [[]],
-      isActive: [{ value: false, disabled: true }]
+      isActive: [{ value: false}]
     });
     
   }
@@ -791,7 +791,7 @@ export class CreateComponent {
       lunchEndTime: [{ value: '', disabled: true }],
       workingDays: [{ value: [], disabled: true}],
       exceptionalHolidays: [[]],
-      isActive: [{ value: false}]
+      isActive: [{ value: false, disabled: true }]
     });
    
   }
