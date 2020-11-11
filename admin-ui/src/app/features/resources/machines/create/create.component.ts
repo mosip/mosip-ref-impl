@@ -194,7 +194,7 @@ export class CreateComponent {
   getMachinespecifications() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
     let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [OptionalFilterValuesModel]);
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinespecifications', request)
