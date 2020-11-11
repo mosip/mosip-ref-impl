@@ -33,7 +33,7 @@ ENV artifactory_url_env=${artifactory_url}
 # environment variable to pass iam_adapter url, at docker runtime
 ENV iam_adapter_url_env=${iam_adapter_url}
 
-copy ./target/pre-registration-booking-service-*.jar /pre-registration-booking-service.jar/
+copy ./target/pre-registration-booking-service-*.jar pre-registration-booking-service.jar
 
 #ADD http://13.71.87.138:8040/artifactory/libs-release-local/io/mosip/kernel/kernel-ref-idobjectvalidator/0.9.1/kernel-ref-idobjectvalidator-0.9.1.jar kernel-ref-idobjectvalidator-0.9.1.jar
 
