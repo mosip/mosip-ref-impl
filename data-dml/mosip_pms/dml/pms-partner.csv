@@ -2,3 +2,4 @@ id,policy_group_id,name,address,contact_no,email_id,certificate_alias,user_id,pa
 mpartner-default-auth,mpolicygroup-default-auth,mpartner-default-auth,mpartner-default-auth,9232121212,info@mosip.io,,mpartner-default-auth,Online_Verification_Partner,Activated,TRUE,admin,now(),admin,now()
 mpartner-default-abis,mpolicygroup-deafult-abis,mpartner-default-abis,mpartner-default-abis,9232121212,absi@mosip.io,,mpartner-default-abis,ABIS,Activated,TRUE,admin,now(),admin,now()
 mpartner-default-print,mpolicygroup-deafult-print,mpartner-default-print,mpartner-default-print,9232121212,print@mosip.io,,mpartner-default-print,Credential_Partner,Activated,TRUE,admin,now(),admin,now()
+MOSIP.PROXY.SBI,NULL,MOSIP.PROXY.SBI,MOSIP.PROXY.SBI,9232121212,proxy@mosip.io,,MOSIP.PROXY.SBI,Device_Provider,Activated,TRUE,admin,now(),admin,now()
