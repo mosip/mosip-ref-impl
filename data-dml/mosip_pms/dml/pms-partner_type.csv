@@ -5,3 +5,4 @@ Credential_Partner,Credential_Partner,TRUE,superadmin,now(),TRUE
 Partner_Admin,Partner_Admin,TRUE,superadmin,now(),FALSE
 FTM_Provider,FTM_Provider,TRUE,superadmin,now(),FALSE
 Online_Verification_Partner,Online_Verification_Partner,TRUE,superadmin,now(),TRUE
+ABIS,ABIS,TRUE,superadmin,now(),TRUE
