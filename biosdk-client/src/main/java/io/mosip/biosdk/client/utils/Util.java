@@ -1,13 +1,12 @@
 package io.mosip.biosdk.client.utils;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +23,7 @@ public class Util {
                                              Map<String, String> headersMap, Class<?> responseClass) {
         ResponseEntity<?> response = null;
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(mediaType);
