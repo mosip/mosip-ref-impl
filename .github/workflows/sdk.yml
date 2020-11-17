@@ -31,7 +31,8 @@ jobs:
       - name: Setup branch name
         run: |
           echo "::set-env name=BRANCH_NAME::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
-          echo ${{ env.BRANCH_NAME }}
+          echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
+          echo $BRANCH_NAME
 
       - name: Setup settings.xml
         run: |
