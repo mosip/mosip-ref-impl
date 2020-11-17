@@ -1033,9 +1033,9 @@ export class CreateComponent {
       let existingHolidays = this.primaryForm.controls.exceptionalHolidays.value;
       existingHolidays.splice(i, 1);
       this.primaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
-      existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
+      /*existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
       existingHolidays.splice(i, 1);
-      this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+      this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);*/
     }
   }
 
