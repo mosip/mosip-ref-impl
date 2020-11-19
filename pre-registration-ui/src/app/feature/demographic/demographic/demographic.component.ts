@@ -980,6 +980,7 @@ export class DemographicComponent
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
       });
+      this.currentAge = "";
       this.age.nativeElement.value = "";
     }
   }
