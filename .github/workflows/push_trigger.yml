@@ -257,11 +257,16 @@ jobs:
       - name: npm build
         run: cd ${{ env.SERVICE_LOCATION }} && npm run-script build -- --prod --base-href . --output-path=dist
       
+      - name: Setup branch and env 
+        run: |
+         # Strip git ref prefix from version
+         echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
+         echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
       - name: setup environment
         run: |
           # Strip git ref prefix from version
-          echo "::set-env name=BRANCH_NAME::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
-          echo ${{ env.BRANCH_NAME }}
+          echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
+          echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
       
       - name: Build image
         run: |
@@ -304,12 +309,15 @@ jobs:
       
       - name: npm build
         run: cd ${{ env.SERVICE_LOCATION }} && npm run-script build -- --prod --base-href . --output-path=dist
-
+      - name: Setup branch and env 
+        run: |
+          # Strip git ref prefix from version
+          echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
+          echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
       - name: setup environment
         run: |
           # Strip git ref prefix from version
-          echo "::set-env name=BRANCH_NAME::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
-          echo ${{ env.BRANCH_NAME }}
+          echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
       
       - name: Build image
         run: |
