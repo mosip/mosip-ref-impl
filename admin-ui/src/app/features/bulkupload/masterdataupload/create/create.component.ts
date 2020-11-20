@@ -98,11 +98,11 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    if(uploadResponse.errors){
+    if(uploadResponse.response.status == "FAILED"){
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: uploadResponse.errors[0].message,
+        message: uploadResponse.response.statusDescription,
         btnTxt: "DONE"
       };
     }else{
