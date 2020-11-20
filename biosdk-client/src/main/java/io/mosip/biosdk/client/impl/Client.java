@@ -38,7 +38,7 @@ public class Client implements IBioApi {
 	private static final boolean rest = true;
 
 	/* "http://localhost:9099/biosdk-service" */
-	private static final String host = System.getenv("mosip.biosdk.service");
+	private static final String host = System.getenv("mosip_biosdk_service");
 
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
@@ -51,7 +51,7 @@ public class Client implements IBioApi {
 		try {
 			JSONObject js = new JSONObject(responseBody);
 			Gson gson = new Gson();
-			sdkInfo = gson.fromJson(js.getString("response"), SDKInfo.class);
+			sdkInfo = gson.fromJson(js.get("response").toString(), SDKInfo.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -73,7 +73,7 @@ public class Client implements IBioApi {
 		try {
 			JSONObject js = new JSONObject(responseBody);
 			Gson gson = new Gson();
-			qualityCheck = gson.fromJson(js.getString("response"), QualityCheck.class);
+			qualityCheck = gson.fromJson(js.get("response").toString(), QualityCheck.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			response.setStatusCode(500);
@@ -99,7 +99,7 @@ public class Client implements IBioApi {
 		try {
 			JSONObject js = new JSONObject(responseBody);
 			Gson gson = new Gson();
-			matchDescisions = gson.fromJson(js.getString("response"), MatchDecision[].class);
+			matchDescisions = gson.fromJson(js.get("response").toString(), MatchDecision[].class);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			response.setStatusCode(500);
@@ -129,7 +129,7 @@ public class Client implements IBioApi {
 		try {
 			JSONObject js = new JSONObject(responseBody);
 			gson = new Gson();
-			resBiometricRecord = gson.fromJson(js.getString("response"), BiometricRecord.class);
+			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			response.setStatusCode(500);
@@ -153,7 +153,7 @@ public class Client implements IBioApi {
 		try {
 			JSONObject js = new JSONObject(responseBody);
 			Gson gson = new Gson();
-			resBiometricRecord = gson.fromJson(js.getString("response"), BiometricRecord.class);
+			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			response.setStatusCode(500);
@@ -179,7 +179,7 @@ public class Client implements IBioApi {
 		try {
 			JSONObject js = new JSONObject(responseBody);
 			Gson gson = new Gson();
-			resBiometricRecord = gson.fromJson(js.getString("response"), BiometricRecord.class);
+			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
