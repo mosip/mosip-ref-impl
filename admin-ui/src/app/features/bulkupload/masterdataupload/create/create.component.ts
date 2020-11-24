@@ -128,10 +128,10 @@ export class CreateComponent {
     });
     dialogRef.afterClosed().subscribe(response => {   
       if(uploadResponse.errors.length > 0){
-        self.uploadForm.get('files').setValue("");
+        self.uploadForm.get('files').setValue(null);
       }else{
         if(uploadResponse.response.status == "FAILED"){
-          self.uploadForm.get('files').setValue("");
+          self.uploadForm.get('files').setValue(null);
         }else{
           self.location.back();
         }
