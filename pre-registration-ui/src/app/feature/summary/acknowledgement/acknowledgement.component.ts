@@ -127,8 +127,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           nameList.postalCode =
             user["request"].demographicDetails.identity.postalCode;
           nameList.registrationCenter = "";
-          this.applicantContactDetails[0] =  user["request"].demographicDetails.identity.phone;
-          this.applicantContactDetails[1] =  user["request"].demographicDetails.identity.email;
+          this.applicantContactDetails[1] =  user["request"].demographicDetails.identity.phone;
+          this.applicantContactDetails[0] =  user["request"].demographicDetails.identity.email;
           await this.getAppointmentDetails(nameList.preRegId).then(
             (appointmentDetails) => {
               nameList.regDto = appointmentDetails;
