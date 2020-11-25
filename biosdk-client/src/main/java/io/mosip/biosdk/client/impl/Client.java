@@ -86,7 +86,6 @@ public class Client implements IBioApi {
 	public Response<MatchDecision[]> match(BiometricRecord sample, BiometricRecord[] gallery,
 										   List<BiometricType> modalitiesToMatch, Map<String, String> flags) {
 		Response<MatchDecision[]> response = new Response<>();
-		response.setStatusCode(200);
 		MatchRequestDto matchRequestDto = new MatchRequestDto();
 		matchRequestDto.setSample(sample);
 		matchRequestDto.setGallery(gallery);
@@ -95,24 +94,26 @@ public class Client implements IBioApi {
 
 		ResponseEntity<?> responseEntity = Util.restRequest(host+"/match", HttpMethod.POST, MediaType.APPLICATION_JSON, matchRequestDto, null, String.class);
 		String responseBody = responseEntity.getBody().toString();
-		MatchDecision[] matchDescisions = new MatchDecision[0];
 		try {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
-			matchDescisions = gson.fromJson(js.get("response").toString(), MatchDecision[].class);
+			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
+			response.setStatusCode(((Long)jsonResponse.get("statusCode")).intValue());
+			response.setStatusMessage(
+				jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
+			);
+			response.setResponse(gson.fromJson(jsonResponse.get("response").toString(), MatchDecision[].class));
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		response.setResponse(matchDescisions);
 		return response;
 	}
 
 	@Override
 	public Response<BiometricRecord> extractTemplate(BiometricRecord sample, List<BiometricType> modalitiesToExtract, Map<String, String> flags) {
 		Response<BiometricRecord> response = new Response<>();
-		response.setStatusCode(200);
 		ExtractTemplateRequestDto extractTemplateRequestDto = new ExtractTemplateRequestDto();
 		extractTemplateRequestDto.setSample(sample);
 		extractTemplateRequestDto.setModalitiesToExtract(modalitiesToExtract);
@@ -124,19 +125,17 @@ public class Client implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
-			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
+			response = gson.fromJson(js.get("response").toString(), Response.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		response.setResponse(resBiometricRecord);
 		return response;
 	}
 
 	@Override
 	public Response<BiometricRecord> segment(BiometricRecord biometricRecord, List<BiometricType> modalitiesToSegment, Map<String, String> flags) {
 		Response<BiometricRecord> response = new Response<>();
-		response.setStatusCode(200);
 		SegmentRequestDto segmentRequestDto = new SegmentRequestDto();
 		segmentRequestDto.setSample(biometricRecord);
 		segmentRequestDto.setModalitiesToSegment(modalitiesToSegment);
@@ -149,12 +148,11 @@ public class Client implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
-			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
+			response = gson.fromJson(js.get("response").toString(), Response.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		response.setResponse(resBiometricRecord);
 		return response;
 	}
 

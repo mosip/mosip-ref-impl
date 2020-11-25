@@ -71,7 +71,7 @@ public class MainController {
         response.setVersion(version);
         response.setResponsetime(serviceUtil.getCurrentResponseTime());
         response.setResponse(
-            iBioApi.match(request.getSample(), request.getGallery(), request.getModalitiesToMatch(), request.getFlags()).getResponse()
+            iBioApi.match(request.getSample(), request.getGallery(), request.getModalitiesToMatch(), request.getFlags())
         );
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
     }
@@ -86,7 +86,7 @@ public class MainController {
         response.setVersion(version);
         response.setResponsetime(serviceUtil.getCurrentResponseTime());
         response.setResponse(
-            iBioApi.checkQuality(request.getSample(), request.getModalitiesToCheck(), request.getFlags()).getResponse()
+            iBioApi.checkQuality(request.getSample(), request.getModalitiesToCheck(), request.getFlags())
         );
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
     }
@@ -101,7 +101,7 @@ public class MainController {
         response.setVersion(version);
         response.setResponsetime(serviceUtil.getCurrentResponseTime());
         response.setResponse(
-            iBioApi.extractTemplate(request.getSample(), request.getModalitiesToExtract(), request.getFlags()).getResponse()
+            iBioApi.extractTemplate(request.getSample(), request.getModalitiesToExtract(), request.getFlags())
         );
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
     }
@@ -138,7 +138,7 @@ public class MainController {
         response.setVersion(version);
         response.setResponsetime(serviceUtil.getCurrentResponseTime());
         response.setResponse(
-            iBioApi.segment(request.getSample(), request.getModalitiesToSegment(), request.getFlags()).getResponse()
+            iBioApi.segment(request.getSample(), request.getModalitiesToSegment(), request.getFlags())
         );
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
     }
