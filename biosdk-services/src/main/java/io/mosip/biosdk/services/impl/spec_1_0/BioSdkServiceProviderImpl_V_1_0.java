@@ -14,6 +14,7 @@ import io.mosip.kernel.core.logger.spi.Logger;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import static io.mosip.biosdk.services.constants.AppConstants.LOGGER_IDTYPE;
 import static io.mosip.biosdk.services.constants.AppConstants.LOGGER_SESSIONID;
@@ -33,6 +34,9 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 
     @Autowired
     private Utils serviceUtil;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private Gson gson;

@@ -27,6 +27,8 @@
         <!-- Mosip kernel -->
         <kernel.bioapi.version>1.1.2</kernel.bioapi.version>
         <kernel.logger.logback.version>1.1.2</kernel.logger.logback.version>
+        <kernel.core.version>1.1.2</kernel.core.version>
+        <kernel.auth.adapter.version>1.1.2</kernel.auth.adapter.version>
 
         <sdk.common.version>1.1.2-SNAPSHOT</sdk.common.version>
     </properties>
@@ -102,6 +104,16 @@
             <groupId>io.mosip.kernel</groupId>
             <artifactId>kernel-logger-logback</artifactId>
             <version>${kernel.logger.logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.mosip.kernel</groupId>
+            <artifactId>kernel-core</artifactId>
+            <version>${kernel.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.mosip.kernel</groupId>
+            <artifactId>kernel-auth-adapter</artifactId>
+            <version>${kernel.auth.adapter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

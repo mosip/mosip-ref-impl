@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,15 @@ public class MainController {
     @ApiOperation(value = "Service status")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Service is running...") })
     public ResponseEntity<String> status() {
+        Date d = new Date();
+        return ResponseEntity.status(HttpStatus.OK).body("Service is running... "+d.toString());
+    }
+
+    @PreAuthorize("hasAnyRole('REGISTRATION_PROCESSOR')")
+    @GetMapping(path = "/s")
+    @ApiOperation(value = "Service status 1")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Service is running...") })
+    public ResponseEntity<String> status1() {
         Date d = new Date();
         return ResponseEntity.status(HttpStatus.OK).body("Service is running... "+d.toString());
     }
