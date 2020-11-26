@@ -1,4 +1,4 @@
-package io.mosip.biosdk.services.dto;
+package io.mosip.biosdk.services.impl.spec_1_0.dto.request;
 
 import io.mosip.kernel.biometrics.constant.BiometricType;
 import io.mosip.kernel.biometrics.entities.BiometricRecord;
@@ -14,8 +14,11 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @ToString
-public class ExtractTemplateRequestDto {
+public class ConvertFormatRequestDto {
     private BiometricRecord sample;
-    private List<BiometricType> modalitiesToExtract;
-    private Map<String, String> flags;
+    private String sourceFormat;
+    private String targetFormat;
+    private Map<String, String> sourceParams;
+    private Map<String, String> targetParams;
+    private List<BiometricType> modalitiesToConvert;
 }

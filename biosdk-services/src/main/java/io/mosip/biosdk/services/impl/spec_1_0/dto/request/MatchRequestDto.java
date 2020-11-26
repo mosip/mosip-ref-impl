@@ -1,4 +1,4 @@
-package io.mosip.biosdk.services.dto;
+package io.mosip.biosdk.services.impl.spec_1_0.dto.request;
 
 import io.mosip.kernel.biometrics.constant.BiometricType;
 import io.mosip.kernel.biometrics.entities.BiometricRecord;
@@ -14,8 +14,10 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @ToString
-public class CheckQualityRequestDto {
+public class MatchRequestDto {
     private BiometricRecord sample;
-    private List<BiometricType> modalitiesToCheck;
+    private BiometricRecord[] gallery;
+    private List<BiometricType> modalitiesToMatch;
     private Map<String, String> flags;
 }
+

@@ -1,4 +1,4 @@
-package io.mosip.biosdk.services.dto;
+package io.mosip.biosdk.services.impl.spec_1_0.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

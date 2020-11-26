@@ -195,7 +195,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.mosip.biosdk.client.impl.Client</mainClass>
+                            <mainClass>io.mosip.biosdk.client.impl.spec_1_0.Client</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
