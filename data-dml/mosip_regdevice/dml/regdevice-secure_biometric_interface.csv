@@ -1,0 +1,4 @@
+id,sw_binary_hash,sw_version,device_detail_id,sw_cr_dtimes,sw_expiry_dtimes,approval_status,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+44541bbe-12a7-4cde-ba86-4da06c1d7622,0x737472696e67,MOSIP.FACE.1.0.0.0,mdevice_detail_default_face,1/10/2020 8:56,1/10/2025 8:56,Activated,TRUE,admin,now(),admin,now()
+e8e50c9c-d92a-47a8-80e8-bd73af59244b,0x737472696e67,MOSIP.SLAP.1.0.0.0,mdevice_detail_default_finger,1/10/2020 8:56,1/10/2025 8:56,Activated,TRUE,admin,now(),admin,now()
+8f0140db-3c90-410a-8872-96bf7f1fde81,0x737472696e67,MOSIP.IRIS.1.0.0.0,mdevice_detail_default_iris,1/10/2020 8:56,1/10/2025 8:56,Activated,TRUE,admin,now(),admin,now()

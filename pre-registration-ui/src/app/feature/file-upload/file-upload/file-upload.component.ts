@@ -89,17 +89,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   applicants: any[] = [];
   allowedFiles: string[];
   firstFile: Boolean = true;
-  noneApplicant = {
-    demographicMetadata: {
-      fullName: [
-        {
-          language: "",
-          value: "None",
-        },
-      ],
-    },
-    preRegistrationId: "",
-  };
+  // noneApplicant = {
+  //   demographicMetadata: {
+  //     name: [
+  //       {
+  //         language: "",
+  //         value: "None",
+  //       },
+  //     ],
+  //   },
+  //   preRegistrationId: "",
+  // };
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
@@ -263,9 +263,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   private setNoneApplicant() {
+    const noneApplicant = {
+      demographicMetadata: {
+        [this.name]: [
+          {
+            language: "",
+            value: "None",
+          },
+        ],
+      },
+      preRegistrationId: "",
+    };
     let i: number = 0;
     const temp = JSON.parse(
-      JSON.stringify(this.allApplicants.push(this.noneApplicant))
+      JSON.stringify(this.allApplicants.push(noneApplicant))
     );
 
     let noneCount: Boolean = this.isNoneAvailable();
@@ -274,7 +285,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       if (this.users) {
         if (applicant.preRegistrationId == this.preRegId) {
           this.allApplicants.splice(i, 1);
-          this.allApplicants.push(this.noneApplicant);
+          this.allApplicants.push(noneApplicant);
           console.log(JSON.stringify(this.allApplicants));
           this.removeExtraNone();
         }

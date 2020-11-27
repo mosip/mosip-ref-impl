@@ -17,6 +17,7 @@ import { AuditService } from 'src/app/core/services/audit.service';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 import { Location } from '@angular/common';
 import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import Utils from '../../../../app.utils';
@@ -185,14 +186,16 @@ export class CreateComponent{
 
   getCenterDetails() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
+
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcenters', request)
       .subscribe(response => {
         this.dropDownValues.regCenterCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcenters', request)
@@ -204,14 +207,15 @@ export class CreateComponent{
 
   getDevicespecifications() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicespecifications', request)
       .subscribe(response => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicespecifications', request)
@@ -467,7 +471,7 @@ export class CreateComponent{
   }
 
   copyDataToSecondaryForm(fieldName: string, value: string) {
-    if (this.primaryForm.controls[fieldName].valid) {
+    if (this.primaryForm.controls[fieldName]) {
       this.secondaryForm.controls[fieldName].setValue(value);
     } else {
       this.secondaryForm.controls[fieldName].setValue('');
@@ -496,7 +500,7 @@ export class CreateComponent{
       this.primaryLang,
       this.primaryForm.controls.deviceSpecId.value,
       "",           
-      true,               
+      this.primaryForm.controls.isActive.value,               
     );
     const secondaryObject = new DeviceModel(
       this.secondaryForm.controls.zone.value,
@@ -508,7 +512,7 @@ export class CreateComponent{
       this.secondaryLang,
       this.secondaryForm.controls.deviceSpecId.value, 
       "",     
-      true,  
+      this.secondaryForm.controls.isActive.value,  
     );
     const primaryRequest = new RequestModel(
       appConstants.registrationDeviceCreateId,
@@ -519,10 +523,8 @@ export class CreateComponent{
       .createDevice(primaryRequest)
       .subscribe(createResponse => {
         if (!createResponse.errors) {
-          if (this.secondaryForm.valid) {
             if (this.showSecondaryForm) {
               secondaryObject.id = createResponse.response.id;
-              secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,
@@ -554,15 +556,7 @@ export class CreateComponent{
                         this.router.navigateByUrl('admin/resources/devices/view');
                       });
             }
-          } else {
-            this.showMessage('update-success', createResponse.response)
-            .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/devices/view');
-                    });
-          }
+        
         } else {
           this.showMessage('create-error');
         }
@@ -582,7 +576,7 @@ export class CreateComponent{
       this.primaryLang,
       this.primaryForm.controls.deviceSpecId.value,
       this.data[0].id,           
-      true,               
+      this.primaryForm.controls.isActive.value,             
     );
     const secondaryObject = new DeviceModel(
       this.secondaryForm.controls.zone.value,
@@ -594,7 +588,7 @@ export class CreateComponent{
       this.secondaryLang,
       this.secondaryForm.controls.deviceSpecId.value, 
       this.data[0].id,     
-      true,  
+      this.secondaryForm.controls.isActive.value, 
     );
     const primaryRequest = new RequestModel(
       appConstants.registrationDeviceCreateId,
@@ -604,13 +598,10 @@ export class CreateComponent{
     this.dataStorageService
       .updateData(primaryRequest)
       .subscribe(updateResponse => {
-        console.log('Primary Response' + updateResponse);
         if (!updateResponse.errors) {
-          if (this.secondaryForm.valid) {
+          console.log("this.secondaryForm.valid>>>"+this.secondaryForm.valid);
             if (this.showSecondaryForm) {
-              console.log('inside secondary block');
               secondaryObject.id = updateResponse.response.id;
-              secondaryObject.isActive = false;
               const secondaryRequest = new RequestModel(
               appConstants.registrationDeviceCreateId,
               null,
@@ -620,7 +611,6 @@ export class CreateComponent{
               this.dataStorageService
               .updateData(secondaryRequest)
               .subscribe(secondaryResponse => {
-                console.log('Secondary Response' + secondaryResponse);
                 if (!secondaryResponse.errors) {
                   this.showMessage('update-success', updateResponse.response)
                     .afterClosed()
@@ -633,8 +623,7 @@ export class CreateComponent{
                   this.showMessage('update-error');
                 }
               });
-            }
-          } else {
+            }else {
             this.showMessage('update-success', updateResponse.response)
             .afterClosed()
                     .subscribe(() => {

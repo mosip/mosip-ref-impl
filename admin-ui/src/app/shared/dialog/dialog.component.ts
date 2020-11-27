@@ -21,6 +21,7 @@ import Utils from 'src/app/app.utils';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { TranslateService } from '@ngx-translate/core';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 
 @Component({
   selector: 'app-dialog',
@@ -429,12 +430,14 @@ export class DialogComponent implements OnInit {
       'unique',
       value === undefined || value === null ? '' : value
     );
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
     this.filters = [this.filterModel];
     this.filtersRequest = new FilterRequest(
       this.filters,
       this.routeParts === 'blacklisted-words'
         ? 'all'
-        : this.config.getConfig().primaryLangCode
+        : this.config.getConfig().primaryLangCode,
+      [optinalFilterObject]
     );
     this.requestModel = new RequestModel('', null, this.filtersRequest);
     console.log(this.requestModel);

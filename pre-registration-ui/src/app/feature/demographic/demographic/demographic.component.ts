@@ -976,10 +976,12 @@ export class DemographicComponent
         this.hasDobChanged();
       }
     } else {
+      console.log(this.currentAge);
       this.userForm.controls["dateOfBirth"].markAsTouched();
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
       });
+      this.currentAge = "";
       this.age.nativeElement.value = "";
     }
   }
