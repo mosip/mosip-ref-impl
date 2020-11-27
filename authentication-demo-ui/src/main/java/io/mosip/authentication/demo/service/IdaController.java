@@ -515,7 +515,7 @@ public class IdaController {
 			Map e = (Map) data.get(j);			
 			Map errorMap = (Map) e.get("error");
 			error = errorMap.get("errorCode").toString();		
-			if (error.equals("0")) {
+			if (error.equals("0") || error.equals("100")) {
 				responsetextField.setText("Capture Success");
 				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
 				ObjectMapper objectMapper = new ObjectMapper();
