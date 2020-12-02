@@ -143,7 +143,6 @@ export class CenterSelectionComponent
           locationNames.push(response[appConstants.RESPONSE]['locations'][0]['name']);
         }
       });
-    });
     console.log(locationNames);
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
@@ -166,6 +165,7 @@ export class CenterSelectionComponent
         }
       });
     this.subscriptions.push(subs);
+    });
   }
 
   setSearchClick(flag: boolean) {
