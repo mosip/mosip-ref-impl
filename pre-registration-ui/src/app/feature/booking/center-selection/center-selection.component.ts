@@ -119,7 +119,7 @@ export class CenterSelectionComponent
 
   getRecommendedCenters() {
     console.log(this.users.length);
-    let pincodes = [];
+    let locationCodes = [];
     const locationHierarchy = JSON.parse(localStorage.getItem("locationHierarchy"));
     const locationHierarchyLevel = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
@@ -129,13 +129,13 @@ export class CenterSelectionComponent
     console.log(locationHierarchyLevel+ ">>>>" + locationType);
     this.users.forEach((user) => {
        if(typeof (user.request.demographicDetails.identity[locationType]) === "object"){
-         pincodes.push(user.request.demographicDetails.identity[locationType][0].value);
+        locationCodes.push(user.request.demographicDetails.identity[locationType][0].value);
        } else if(typeof (user.request.demographicDetails.identity[locationType]) === "string"){
-        pincodes.push(user.request.demographicDetails.identity[locationType]);
+        locationCodes.push(user.request.demographicDetails.identity[locationType]);
        }
     });
     const locationNames = [];
-    pincodes.forEach(pins => {
+    locationCodes.forEach(pins => {
       this.dataService.getLocationOnLocationCodeAndLangCode(pins,this.primaryLang).subscribe( response=>{
         console.log(response[appConstants.RESPONSE]);
         if(response[appConstants.RESPONSE]){
@@ -151,7 +151,7 @@ export class CenterSelectionComponent
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
         ),
-        pincodes
+        locationNames
       )
       .subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
