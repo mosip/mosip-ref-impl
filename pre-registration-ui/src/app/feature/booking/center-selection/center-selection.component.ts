@@ -141,6 +141,7 @@ export class CenterSelectionComponent
         console.log(name);
         locationNames.push(name)
       });
+    });
     console.log(locationNames);
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
@@ -163,7 +164,6 @@ export class CenterSelectionComponent
         }
       });
     this.subscriptions.push(subs);
-    });
   }
   
    async getLocationNames(locationCode){
