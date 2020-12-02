@@ -331,6 +331,17 @@ export class DataStorageService {
     );
   }
 
+  getLocationOnLocationCodeAndLangCode(locationCode, langCode) {
+    const url =
+      this.BASE_URL +
+      appConstants.APPEND_URL.master_data +
+      "locations/" +
+      locationCode +
+      "/" +
+      langCode;
+    return this.httpClient.get(url);
+  }
+
   recommendedCenters(
     langCode: string,
     locationHierarchyCode: number,
@@ -486,8 +497,8 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
-     const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-   // const url = "assets/identity-spec.json";
+    //  const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    const url = "assets/identity-spec.json";
     return this.httpClient.get(url);
   }
 
@@ -514,7 +525,10 @@ export class DataStorageService {
 
   getDynamicFieldsandValues(langCode) {
     // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-    const url = this.BASE_URL + appConstants.APPEND_URL.master_data + `dynamicfields?langCode=${langCode}`;
+    const url =
+      this.BASE_URL +
+      appConstants.APPEND_URL.master_data +
+      `dynamicfields?langCode=${langCode}`;
     console.log(url);
     return this.httpClient.get(url);
   }
