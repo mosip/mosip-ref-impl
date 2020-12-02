@@ -144,6 +144,7 @@ export class CenterSelectionComponent
         }
       });
     });
+    console.log(locationNames);
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
       .recommendedCenters(
