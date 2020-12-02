@@ -49,7 +49,7 @@ export class CenterSelectionComponent
   primaryLang = localStorage.getItem("langCode");
   workingDays: string;
   preRegId = [];
-
+  locationNames = [];
   constructor(
     public dialog: MatDialog,
     private service: BookingService,
@@ -135,14 +135,10 @@ export class CenterSelectionComponent
         locationCodes.push(user.request.demographicDetails.identity[locationType]);
        }
     });
-    const locationNames = [];
     locationCodes.forEach(async pins => {
-     await this.getLocationNames(pins).then(name => {
-        console.log(name);
-        locationNames.push(name)
-      });
+     await this.getLocationNames(pins);
     });
-    console.log(locationNames);
+    console.log(this.locationNames);
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
       .recommendedCenters(
@@ -150,7 +146,7 @@ export class CenterSelectionComponent
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
         ),
-        locationNames
+        this.locationNames
       )
       .subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
@@ -166,12 +162,13 @@ export class CenterSelectionComponent
     this.subscriptions.push(subs);
   }
   
-   async getLocationNames(locationCode){
+    getLocationNames(locationCode){
      return new Promise(resolve => {
       this.dataService.getLocationOnLocationCodeAndLangCode(locationCode ,this.primaryLang).subscribe(response=>{
         console.log(response[appConstants.RESPONSE]);
         if(response[appConstants.RESPONSE]){
           console.log(response[appConstants.RESPONSE]['locations'][0]['name']);
+          this.locationNames.push(response[appConstants.RESPONSE]['locations'][0]['name']);
           resolve(response[appConstants.RESPONSE]['locations'][0]['name']);
         }
       });
