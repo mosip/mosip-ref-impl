@@ -497,8 +497,8 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
-    //  const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-    const url = "assets/identity-spec.json";
+      const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    //const url = "assets/identity-spec.json";
     return this.httpClient.get(url);
   }
 
