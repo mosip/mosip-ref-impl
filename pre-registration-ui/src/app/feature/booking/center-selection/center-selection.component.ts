@@ -14,6 +14,7 @@ import * as appConstants from "./../../../app.constants";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
 import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
+import { resolve } from "url";
 
 @Component({
   selector: "app-center-selection",
@@ -136,12 +137,9 @@ export class CenterSelectionComponent
     });
     const locationNames = [];
     locationCodes.forEach(pins => {
-      this.dataService.getLocationOnLocationCodeAndLangCode(pins,this.primaryLang).subscribe( response=>{
-        console.log(response[appConstants.RESPONSE]);
-        if(response[appConstants.RESPONSE]){
-          console.log(response[appConstants.RESPONSE]['locations'][0]['name']);
-          locationNames.push(response[appConstants.RESPONSE]['locations'][0]['name']);
-        }
+      this.getLocationNames(pins).then(name => {
+        console.log(name);
+        locationNames.push(name)
       });
     console.log(locationNames);
     this.REGISTRATION_CENTRES = [];
@@ -167,6 +165,18 @@ export class CenterSelectionComponent
     this.subscriptions.push(subs);
     });
   }
+  
+   async getLocationNames(locationCode){
+     return new Promise(resolve => {
+      this.dataService.getLocationOnLocationCodeAndLangCode(locationCode ,this.primaryLang).subscribe(response=>{
+        console.log(response[appConstants.RESPONSE]);
+        if(response[appConstants.RESPONSE]){
+          console.log(response[appConstants.RESPONSE]['locations'][0]['name']);
+          resolve(response[appConstants.RESPONSE]['locations'][0]['name']);
+        }
+      });
+     });
+   }
 
   setSearchClick(flag: boolean) {
     this.searchClick = flag;
