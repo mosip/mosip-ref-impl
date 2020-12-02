@@ -347,6 +347,7 @@ export class DataStorageService {
     locationHierarchyCode: number,
     data: string[]
   ) {
+    console.log(data);
     let url =
       this.BASE_URL +
       appConstants.APPEND_URL.master_data +
