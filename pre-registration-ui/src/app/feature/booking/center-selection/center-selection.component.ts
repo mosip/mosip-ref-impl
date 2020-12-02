@@ -169,9 +169,9 @@ export class CenterSelectionComponent
         if(response[appConstants.RESPONSE]){
           console.log(response[appConstants.RESPONSE]['locations'][0]['name']);
           this.locationNames.push(response[appConstants.RESPONSE]['locations'][0]['name']);
-          resolve(response[appConstants.RESPONSE]['locations'][0]['name']);
         }
       });
+        resolve(true);
      });
    }
 
