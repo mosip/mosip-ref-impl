@@ -136,8 +136,8 @@ export class CenterSelectionComponent
        }
     });
     const locationNames = [];
-    locationCodes.forEach(pins => {
-      this.getLocationNames(pins).then(name => {
+    locationCodes.forEach(async pins => {
+     await this.getLocationNames(pins).then(name => {
         console.log(name);
         locationNames.push(name)
       });
