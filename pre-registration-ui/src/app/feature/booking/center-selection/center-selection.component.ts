@@ -124,7 +124,7 @@ export class CenterSelectionComponent
     const locationHierarchyLevel = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
     );
-    const locationType = locationHierarchy[locationHierarchyLevel];
+    const locationType = locationHierarchy[Number(locationHierarchyLevel)-1];
     console.log(locationHierarchy);
     console.log(locationHierarchyLevel+ ">>>>" + locationType);
     this.users.forEach((user) => {
