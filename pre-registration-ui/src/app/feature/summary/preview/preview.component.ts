@@ -358,7 +358,7 @@ export class PreviewComponent implements OnInit {
     this.navigateBack();
   }
 
-  private locCodeToName(locationCode: string, language: string): string {
+   locCodeToName(locationCode: string, language: string): string {
     let locationName = "";
     if (language === localStorage.getItem("langCode")) {
       this.primaryLocations.forEach((loc) => {
