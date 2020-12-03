@@ -257,7 +257,7 @@ export class PreviewComponent implements OnInit {
   }
 
   setFieldValues() {
-    let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields);
+    let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
     fields.forEach((field) => {
       this.previewData[field].forEach((element) => {
         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
