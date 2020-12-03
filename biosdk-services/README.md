@@ -14,14 +14,14 @@ Run the Dockerfile by providing biosdk_jar_path argument where biosdk_jar_path i
 Run the docker image by providing biosdk_class as environment variable where biosdk_class is the path of the class that implements IBioApi interface methods
 
 ```properties
-mosip.sdk.biosdk.lib=<path of the class that implements IBioApi interface methods>
+biosdk_class=<path of the class that implements IBioApi interface methods>
   ```
 
 for example (in case of Mock SDK)
 ```properties
-mosip.sdk.biosdk.lib=io.mosip.mock.sdk.impl.SampleSDK
+biosdk_class=io.mosip.mock.sdk.impl.SampleSDK
 ```
 
 ## Swagger
 
-<host>/swagger-ui.html
+<host>/biosdk-service/swagger-ui.html
