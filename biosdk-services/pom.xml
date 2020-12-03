@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>services</artifactId>
+    <artifactId>biosdk-services</artifactId>
     <groupId>io.mosip.biosdk</groupId>
     <version>1.1.3-rc1</version>
     <name>biosdk-services</name>

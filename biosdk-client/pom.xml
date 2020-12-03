@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>client</artifactId>
+    <artifactId>biosdk-client</artifactId>
     <groupId>io.mosip.biosdk</groupId>
     <version>1.1.3-rc1</version>
-    <name>client</name>
+    <name>biosdk-client</name>
 
     <description>Sample implementation of biometrics SDK client</description>
     <url>https://github.com/mosip/mosip-ref-impl</url>
