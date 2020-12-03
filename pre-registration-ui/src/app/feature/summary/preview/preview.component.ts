@@ -257,7 +257,7 @@ export class PreviewComponent implements OnInit {
   }
 
   setFieldValues() {
-    let fields = appConstants.previewFields;
+    let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
     fields.forEach((field) => {
       this.previewData[field].forEach((element) => {
         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
@@ -361,6 +361,7 @@ export class PreviewComponent implements OnInit {
     if (language === localStorage.getItem("langCode")) {
       this.primaryLocations.forEach((loc) => {
         if (loc.code === locationCode) {
+          console.log(loc.name);
           locationName = loc.name;
         }
       });
