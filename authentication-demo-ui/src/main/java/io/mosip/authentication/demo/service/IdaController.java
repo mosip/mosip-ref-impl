@@ -1,16 +1,17 @@
 package io.mosip.authentication.demo.service;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -95,8 +97,6 @@ public class IdaController {
 
 	@Autowired
 	private Environment env;
-
-	private static final String ASYMMETRIC_ALGORITHM_NAME = "RSA";
 
 	private static final String SSL = "SSL";
 
@@ -515,7 +515,7 @@ public class IdaController {
 			Map e = (Map) data.get(j);			
 			Map errorMap = (Map) e.get("error");
 			error = errorMap.get("errorCode").toString();		
-			if (error.equals("0")) {
+			if (error.equals("0") || error.equals("100")) {
 				responsetextField.setText("Capture Success");
 				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -692,9 +692,8 @@ public class IdaController {
 
 		byte[] encryptedIdentityBlock = cryptoUtil.symmetricEncrypt(identityBlock.getBytes(), secretKey);
 		encryptionResponseDto.setEncryptedIdentity(Base64.encodeBase64URLSafeString(encryptedIdentityBlock));
-		String publicKeyStr = getPublicKey(identityBlock, isInternal);
-		PublicKey publicKey = KeyFactory.getInstance(ASYMMETRIC_ALGORITHM_NAME)
-				.generatePublic(new X509EncodedKeySpec(CryptoUtil.decodeBase64(publicKeyStr)));
+		
+		PublicKey publicKey = getPublicKey(identityBlock, isInternal);
 		byte[] encryptedSessionKeyByte = cryptoUtil.asymmetricEncrypt((secretKey.getEncoded()), publicKey);
 		encryptionResponseDto.setEncryptedSessionKey(Base64.encodeBase64URLSafeString(encryptedSessionKeyByte));
 		byte[] byteArr = cryptoUtil.symmetricEncrypt(
@@ -704,8 +703,8 @@ public class IdaController {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String getPublicKey(String data, boolean isInternal)
-			throws KeyManagementException, RestClientException, NoSuchAlgorithmException {
+	public PublicKey getPublicKey(String data, boolean isInternal)
+			throws KeyManagementException, RestClientException, NoSuchAlgorithmException, CertificateException {
 		RestTemplate restTemplate = createTemplate();
 
 		CryptomanagerRequestDto request = new CryptomanagerRequestDto();
@@ -716,14 +715,25 @@ public class IdaController {
 		String utcTime = getUTCCurrentDateTimeISOString();
 		request.setTimeStamp(utcTime);
 		Map<String, String> uriParams = new HashMap<>();
-		uriParams.put("appId", "IDA");
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(
-						env.getProperty("ida.publickey.url") + "/IDA")
-				.queryParam("timeStamp", getUTCCurrentDateTimeISOString())
+						env.getProperty("ida.certificate.url"))
+				.queryParam("applicationId", "IDA")
 				.queryParam("referenceId", publicKeyId);
 		ResponseEntity<Map> response = restTemplate.exchange(builder.build(uriParams), HttpMethod.GET, null, Map.class);
-		return (String) ((Map<String, Object>) response.getBody().get("response")).get("publicKey");
+		String certificate =  (String) ((Map<String, Object>) response.getBody().get("response")).get("certificate");
+		
+		String certificateTrimmed = trimBeginEnd(certificate);
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		X509Certificate x509cert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(java.util.Base64.getDecoder().decode(certificateTrimmed)));
+		return x509cert.getPublicKey();
+	}
+	
+	public static String trimBeginEnd(String pKey) {
+		pKey = pKey.replaceAll("-*BEGIN([^-]*)-*(\r?\n)?", "");
+		pKey = pKey.replaceAll("-*END([^-]*)-*(\r?\n)?", "");
+		pKey = pKey.replaceAll("\\s", "");
+		return pKey;
 	}
 
 	private RestTemplate createTemplate() throws KeyManagementException, NoSuchAlgorithmException {
