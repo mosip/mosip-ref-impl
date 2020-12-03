@@ -256,33 +256,33 @@ export class PreviewComponent implements OnInit {
     );
   }
 
-  setFieldValues() {
-    let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
-    console.log(fields);
-    fields.forEach((field) => {
-      this.previewData.forEach((element) => {
-        console.log(element);
-        if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
-          element.name = this.locCodeToName(element.value, element.language);
-        }
-        else if(field === appConstants.controlTypeResidenceStatus){
-            this.residenceStatus.forEach(status => {
-            if(status.code === element.value && element.language === status.langCode){
-              element.name = status.name;
-            }
-          });
-        }
-        else if(field === appConstants.controlTypeGender){
-          this.genders.filter(gender => {
-            if(gender.code === element.value && element.language === gender.langCode){
-              element.name = gender.genderName;
-            }
-          });
-        }
-      });
-    });
+//   setFieldValues() {
+//     let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
+//     console.log(fields);
+//     fields.forEach((field) => {
+//       this.previewData.forEach((element) => {
+//         console.log(element);
+//         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
+//           element.name = this.locCodeToName(element.value, element.language);
+//         }
+//         else if(field === appConstants.controlTypeResidenceStatus){
+//             this.residenceStatus.forEach(status => {
+//             if(status.code === element.value && element.language === status.langCode){
+//               element.name = status.name;
+//             }
+//           });
+//         }
+//         else if(field === appConstants.controlTypeGender){
+//           this.genders.filter(gender => {
+//             if(gender.code === element.value && element.language === gender.langCode){
+//               element.name = gender.genderName;
+//             }
+//           });
+//         }
+//       });
+//     });
     
-  }
+//   }
 
   documentsMapping() {
     this.documentMapObject = [];
