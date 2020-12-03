@@ -260,7 +260,8 @@ export class PreviewComponent implements OnInit {
     let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
     console.log(fields);
     fields.forEach((field) => {
-      this.previewData[field].forEach((element) => {
+      this.previewData.forEach((element) => {
+        console.log(element);
         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
           element.name = this.locCodeToName(element.value, element.language);
         }
