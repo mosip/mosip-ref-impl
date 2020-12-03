@@ -73,7 +73,7 @@ export class PreviewComponent implements OnInit {
     this.previewData.primaryAddress = this.combineAddress(0);
     //this.previewData.secondaryAddress = this.combineAddress(1);
     this.formatDob(this.previewData.dateOfBirth);
-    this.setFieldValues();
+//     this.setFieldValues();
     this.getSecondaryLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
@@ -256,31 +256,33 @@ export class PreviewComponent implements OnInit {
     );
   }
 
-  setFieldValues() {
-    let fields = appConstants.previewFields;
-    fields.forEach((field) => {
-      this.previewData[field].forEach((element) => {
-        if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
-          element.name = this.locCodeToName(element.value, element.language);
-        }
-        else if(field === appConstants.controlTypeResidenceStatus){
-            this.residenceStatus.forEach(status => {
-            if(status.code === element.value && element.language === status.langCode){
-              element.name = status.name;
-            }
-          });
-        }
-        else if(field === appConstants.controlTypeGender){
-          this.genders.filter(gender => {
-            if(gender.code === element.value && element.language === gender.langCode){
-              element.name = gender.genderName;
-            }
-          });
-        }
-      });
-    });
+//   setFieldValues() {
+//     let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
+//     console.log(fields);
+//     fields.forEach((field) => {
+//       this.previewData.forEach((element) => {
+//         console.log(element);
+//         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
+//           element.name = this.locCodeToName(element.value, element.language);
+//         }
+//         else if(field === appConstants.controlTypeResidenceStatus){
+//             this.residenceStatus.forEach(status => {
+//             if(status.code === element.value && element.language === status.langCode){
+//               element.name = status.name;
+//             }
+//           });
+//         }
+//         else if(field === appConstants.controlTypeGender){
+//           this.genders.filter(gender => {
+//             if(gender.code === element.value && element.language === gender.langCode){
+//               element.name = gender.genderName;
+//             }
+//           });
+//         }
+//       });
+//     });
     
-  }
+//   }
 
   documentsMapping() {
     this.documentMapObject = [];
@@ -356,11 +358,12 @@ export class PreviewComponent implements OnInit {
     this.navigateBack();
   }
 
-  private locCodeToName(locationCode: string, language: string): string {
+   locCodeToName(locationCode: string, language: string): string {
     let locationName = "";
     if (language === localStorage.getItem("langCode")) {
       this.primaryLocations.forEach((loc) => {
         if (loc.code === locationCode) {
+          console.log(loc.name);
           locationName = loc.name;
         }
       });
