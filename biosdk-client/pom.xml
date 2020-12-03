@@ -4,14 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-    <parent>
-        <groupId>io.mosip.sdk</groupId>
-        <artifactId>sdk-parent</artifactId>
-        <version>1.1.3-rc1</version>
-    </parent>
-
     <artifactId>client</artifactId>
+    <groupId>io.mosip.biosdk</groupId>
     <version>1.1.3-rc1</version>
     <name>client</name>
 
@@ -29,19 +23,19 @@
         <maven.javadoc.version>3.2.0</maven.javadoc.version>
         <maven.assembly.version>3.3.0</maven.assembly.version>
 
+        <!-- Lombok -->
+        <lombok.version>1.18.8</lombok.version>
+
         <!-- Core -->
         <springframework.version>5.1.9.RELEASE</springframework.version>
         <spring.boot.version>2.0.2.RELEASE</spring.boot.version>
-
-        <sdk.common.version>1.1.3-rc1</sdk.common.version>
-
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.mosip.kernel</groupId>
             <artifactId>kernel-biometrics-api</artifactId>
-            <version>${kernel.bioapi.version}</version>
+            <version>${kernel.biometricsdk.version}</version>
         </dependency>
 
         <dependency>
