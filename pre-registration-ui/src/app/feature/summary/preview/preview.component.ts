@@ -242,14 +242,13 @@ export class PreviewComponent implements OnInit {
   }
 
   convertLocationCodeToLocationName(){
-   this.locationHeirarchy.forEach(location =>{
-     this.user.request.demographicDetails.identity[location][0].value = 
-     this.locCodeToName(this.user.request.demographicDetails.identity[location][0].value,this.primaryLanguage);
+   this.locationHeirarchy.forEach(location => {
+     this.getLocations(this.user.request.demographicDetails.identity[location][0].value,this.primaryLanguage).then(
+       val =>  this.user.request.demographicDetails.identity[location][0].value = val);
      if(this.primaryLanguage != this.secondaryLanguage){
-      this.user.request.demographicDetails.identity[location][1].value = 
-      this.locCodeToName(this.user.request.demographicDetails.identity[location][1].value,this.secondaryLanguage);
+      this.getLocations(this.user.request.demographicDetails.identity[location][1].value,this.secondaryLanguage).then();
      }
-   })
+   });
   }
 
   formatDob(dob: string) {
@@ -340,13 +339,8 @@ export class PreviewComponent implements OnInit {
     this.navigateBack();
   }
 
-   locCodeToName(locationCode: string, language: string): string {
-    let locationName;
-     this.getLocations(locationCode,language).then(location => locationName = location );
-     return locationName;
-  }
 
-  private getLocations(locationCode,langCode) {
+   getLocations(locationCode,langCode) {
     return new Promise((resolve) => {
       this.dataStorageService
         .getLocationsHierarchyByLangCode(langCode, locationCode)
