@@ -244,29 +244,29 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  convertLocationCodeToLocationName() {
-    this.locationHeirarchy.forEach((location) => {
-      this.getLocations(
-        this.user.request.demographicDetails.identity[location][0].value,
-        this.primaryLanguage
-      ).then(
-        (val) =>
-          (this.user.request.demographicDetails.identity[
-            location
-          ][0].value = val)
-      );
-      if (this.primaryLanguage != this.secondaryLanguage) {
-        this.getLocations(
-          this.user.request.demographicDetails.identity[location][1].value,
-          this.secondaryLanguage
-        ).then((val) => (val) =>
-          (this.user.request.demographicDetails.identity[
-            location
-          ][0].value = val)
-        );
-      }
-    });
-  }
+//   convertLocationCodeToLocationName() {
+//     this.locationHeirarchy.forEach((location) => {
+//       this.getLocations(
+//         this.user.request.demographicDetails.identity[location][0].value,
+//         this.primaryLanguage
+//       ).then(
+//         (val) =>
+//           (this.user.request.demographicDetails.identity[
+//             location
+//           ][0].value = val)
+//       );
+//       if (this.primaryLanguage != this.secondaryLanguage) {
+//         this.getLocations(
+//           this.user.request.demographicDetails.identity[location][1].value,
+//           this.secondaryLanguage
+//         ).then((val) => (val) =>
+//           (this.user.request.demographicDetails.identity[
+//             location
+//           ][0].value = val)
+//         );
+//       }
+//     });
+//   }
 
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
