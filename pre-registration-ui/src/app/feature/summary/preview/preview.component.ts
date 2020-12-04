@@ -61,7 +61,7 @@ export class PreviewComponent implements OnInit {
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
-    this.locationData();
+    // this.locationData();
     await this.getIdentityJsonFormat();
     await this.getResidentDetails();
     await this.getGenderDetails();
@@ -359,22 +359,21 @@ export class PreviewComponent implements OnInit {
   }
 
    locCodeToName(locationCode: string, language: string): string {
-    let locationName = "";
-    if (language === localStorage.getItem("langCode")) {
-      this.primaryLocations.forEach((loc) => {
-        if (loc.code === locationCode) {
-          console.log(loc.name);
-          locationName = loc.name;
-        }
-      });
-    } else {
-      this.secondaryLocations.forEach((loc) => {
-        if (loc.code === locationCode) {
-          locationName = loc.name;
-        }
-      });
-    }
+   let locationName = this.getLocationNames(locationCode,language);
     return locationName;
+  }
+
+  getLocationNames(locationCode,langCode) {
+    let locationName = "";
+      this.dataStorageService
+        .getLocationOnLocationCodeAndLangCode(locationCode,langCode)
+        .subscribe((response) => {
+          console.log(response[appConstants.RESPONSE]);
+          if (response[appConstants.RESPONSE]) {
+            locationName = response[appConstants.RESPONSE]["locations"][0]["name"];
+          }
+        });
+        return locationName;
   }
 
   private getLocations(langCode) {
