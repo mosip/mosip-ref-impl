@@ -61,7 +61,7 @@ export class PreviewComponent implements OnInit {
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
-    // this.locationData();
+    this.locationData();
     await this.getIdentityJsonFormat();
     await this.getResidentDetails();
     await this.getGenderDetails();
@@ -73,7 +73,7 @@ export class PreviewComponent implements OnInit {
     this.previewData.primaryAddress = this.combineAddress(0);
     //this.previewData.secondaryAddress = this.combineAddress(1);
     this.formatDob(this.previewData.dateOfBirth);
-//     this.setFieldValues();
+    // this.setFieldValues();
     this.getSecondaryLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
@@ -256,33 +256,33 @@ export class PreviewComponent implements OnInit {
     );
   }
 
-//   setFieldValues() {
-//     let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
-//     console.log(fields);
-//     fields.forEach((field) => {
-//       this.previewData.forEach((element) => {
-//         console.log(element);
-//         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
-//           element.name = this.locCodeToName(element.value, element.language);
-//         }
-//         else if(field === appConstants.controlTypeResidenceStatus){
-//             this.residenceStatus.forEach(status => {
-//             if(status.code === element.value && element.language === status.langCode){
-//               element.name = status.name;
-//             }
-//           });
-//         }
-//         else if(field === appConstants.controlTypeGender){
-//           this.genders.filter(gender => {
-//             if(gender.code === element.value && element.language === gender.langCode){
-//               element.name = gender.genderName;
-//             }
-//           });
-//         }
-//       });
-//     });
+  // setFieldValues() {
+  //   let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
+  //   console.log('>>>>'+this.previewData)
+  //   fields.forEach((field) => {
+  //     this.previewData.forEach((element) => {
+  //       console.log(element);
+  //       if(JSON.parse(localStorage.getItem('locationHierarchy')).includes(field)){
+  //         element.name = this.locCodeToName(element.value, element.language);
+  //       }
+  //       else if(field === appConstants.controlTypeResidenceStatus){
+  //           this.residenceStatus.forEach(status => {
+  //           if(status.code === element.value && element.language === status.langCode){
+  //             element.name = status.name;
+  //           }
+  //         });
+  //       }
+  //       else if(field === appConstants.controlTypeGender){
+  //         this.genders.filter(gender => {
+  //           if(gender.code === element.value && element.language === gender.langCode){
+  //             element.name = gender.genderName;
+  //           }
+  //         });
+  //       }
+  //     });
+  //   });
     
-//   }
+  // }
 
   documentsMapping() {
     this.documentMapObject = [];
@@ -359,33 +359,36 @@ export class PreviewComponent implements OnInit {
   }
 
    locCodeToName(locationCode: string, language: string): string {
-   let locationName = this.getLocationNames(locationCode,language);
-    return locationName;
+    let locationName;
+    // if (language === localStorage.getItem("langCode")) {
+    //   this.primaryLocations.forEach((loc) => {
+    //     if (loc.code === locationCode) {
+    //       console.log(loc.name);
+    //       locationName = loc.name;
+    //     }
+    //   });
+    // } else {
+    //   this.secondaryLocations.forEach((loc) => {
+    //     if (loc.code === locationCode) {
+    //       locationName = loc.name;
+    //     }
+    //   });
+    // }
+    //
+     this.getLocations(locationCode,language).then(location => locationName = location );
+     return locationName;
   }
 
-  getLocationNames(locationCode,langCode) {
-    let locationName = "";
-      this.dataStorageService
-        .getLocationOnLocationCodeAndLangCode(locationCode,langCode)
-        .subscribe((response) => {
-          console.log(response[appConstants.RESPONSE]);
-          if (response[appConstants.RESPONSE]) {
-            locationName = response[appConstants.RESPONSE]["locations"][0]["name"];
-          }
-        });
-        return locationName;
-  }
-
-  private getLocations(langCode) {
+  private getLocations(locationCode,langCode) {
     return new Promise((resolve) => {
-      const countryCode = this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_country_code
-      );
+      // const countryCode = this.configService.getConfigByKey(
+      //   appConstants.CONFIG_KEYS.mosip_country_code
+      // );
       this.dataStorageService
-        .getLocationsHierarchyByLangCode(langCode, countryCode)
+        .getLocationsHierarchyByLangCode(langCode, locationCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            const locations = response[appConstants.RESPONSE].locations;
+            const locations = response[appConstants.RESPONSE]["locations"][0]["name"];
             resolve(locations);
           }
         });
