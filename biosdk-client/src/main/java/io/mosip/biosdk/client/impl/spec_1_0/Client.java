@@ -1,4 +1,4 @@
-package io.mosip.biosdk.client.impl;
+package io.mosip.biosdk.client.impl.spec_1_0;
 
 import com.google.gson.Gson;
 import io.mosip.biosdk.client.dto.*;
@@ -31,7 +31,8 @@ public class Client implements IBioApi {
 
 	Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
-	private static final String API_VERSION = "0.9";
+	private static final String VERSION = "1.0";
+	private static final String BIOSDK_SPEC_VERSION = "0.9";
 	private static final boolean rest = true;
 
 	/* "http://localhost:9099/biosdk-service" */
@@ -39,10 +40,12 @@ public class Client implements IBioApi {
 
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
+
 		InitRequestDto initRequestDto = new InitRequestDto();
 		initRequestDto.setInitParams(initParams);
 
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, initRequestDto, null, String.class);
+		RequestDto requestDto = generateNewRequestDto(initRequestDto);
+		ResponseEntity<?> responseEntity = Util.restRequest(host+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 		String responseBody = responseEntity.getBody().toString();
 		SDKInfo sdkInfo = null;
 		try {
@@ -180,6 +183,15 @@ public class Client implements IBioApi {
 			throw new RuntimeException(e);
 		}
 		return resBiometricRecord;
+	}
+
+	private RequestDto generateNewRequestDto(Object body){
+		Gson gson = new Gson();
+		RequestDto requestDto = new RequestDto();
+		requestDto.setVersion(VERSION);
+		requestDto.setBiosdkSpecVersion(BIOSDK_SPEC_VERSION);
+		requestDto.setRequest(Util.base64Encode(gson.toJson(body)));
+		return requestDto;
 	}
 
 

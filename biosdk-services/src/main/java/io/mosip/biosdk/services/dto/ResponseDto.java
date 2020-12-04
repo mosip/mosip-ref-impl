@@ -1,5 +1,6 @@
 package io.mosip.biosdk.services.dto;
 
+import io.mosip.biosdk.services.impl.spec_1_0.dto.request.ExceptionJsonInfoDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
