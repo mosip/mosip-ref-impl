@@ -62,7 +62,7 @@
                       {{ previewData[field.id] }}
                     </td>
                     <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic'">
-                      {{ locCodeToName(previewData[field.id][0].value,primaryLanguage) }}
+                      {{ previewData[field.id][0].value }}
                     </td>
                   </div>
                 </div>
@@ -167,7 +167,7 @@
                       {{ previewData[field.id] }}
                     </td>
                     <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic'">
-                      {{ locCodeToName(previewData[field.id][1].value,secondaryLanguage) }}
+                      {{ previewData[field.id][1].value }}
                     </td>
                   </div>
                 </div>

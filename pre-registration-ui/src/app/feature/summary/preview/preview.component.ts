@@ -61,11 +61,11 @@ export class PreviewComponent implements OnInit {
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
-    this.locationData();
     await this.getIdentityJsonFormat();
     await this.getResidentDetails();
     await this.getGenderDetails();
     await this.getUserInfo();
+    await this.convertLocationCodeToLocationName();
     await this.getUserFiles();
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
@@ -73,7 +73,6 @@ export class PreviewComponent implements OnInit {
     this.previewData.primaryAddress = this.combineAddress(0);
     //this.previewData.secondaryAddress = this.combineAddress(1);
     this.formatDob(this.previewData.dateOfBirth);
-//     this.setFieldValues();
     this.getSecondaryLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
@@ -134,7 +133,10 @@ export class PreviewComponent implements OnInit {
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
             dynamicField.forEach((res) => {
-              if (field.id === res.name && res.langCode === this.primaryLanguage) {
+              if (
+                field.id === res.name &&
+                res.langCode === this.primaryLanguage
+              ) {
                 this.filterOnLangCode(
                   this.primaryLanguage,
                   res.name,
@@ -242,6 +244,30 @@ export class PreviewComponent implements OnInit {
     });
   }
 
+  convertLocationCodeToLocationName() {
+    this.locationHeirarchy.forEach((location) => {
+      this.getLocations(
+        this.user.request.demographicDetails.identity[location][0].value,
+        this.primaryLanguage
+      ).then(
+        (val) =>
+          (this.user.request.demographicDetails.identity[
+            location
+          ][0].value = val)
+      );
+      if (this.primaryLanguage != this.secondaryLanguage) {
+        this.getLocations(
+          this.user.request.demographicDetails.identity[location][1].value,
+          this.secondaryLanguage
+        ).then((val) => (val) =>
+          (this.user.request.demographicDetails.identity[
+            location
+          ][0].value = val)
+        );
+      }
+    });
+  }
+
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
     this.dateOfBirthPrimary = Utils.getBookingDateTime(
@@ -255,34 +281,6 @@ export class PreviewComponent implements OnInit {
       localStorage.getItem("secondaryLangCode")
     );
   }
-
-//   setFieldValues() {
-//     let fields = this.configService.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_preview_fields).toString().split(',');
-//     console.log(fields);
-//     fields.forEach((field) => {
-//       this.previewData.forEach((element) => {
-//         console.log(element);
-//         if(!(field === appConstants.controlTypeResidenceStatus || field === appConstants.controlTypeGender)){
-//           element.name = this.locCodeToName(element.value, element.language);
-//         }
-//         else if(field === appConstants.controlTypeResidenceStatus){
-//             this.residenceStatus.forEach(status => {
-//             if(status.code === element.value && element.language === status.langCode){
-//               element.name = status.name;
-//             }
-//           });
-//         }
-//         else if(field === appConstants.controlTypeGender){
-//           this.genders.filter(gender => {
-//             if(gender.code === element.value && element.language === gender.langCode){
-//               element.name = gender.genderName;
-//             }
-//           });
-//         }
-//       });
-//     });
-    
-//   }
 
   documentsMapping() {
     this.documentMapObject = [];
@@ -349,7 +347,7 @@ export class PreviewComponent implements OnInit {
   modifyDemographic() {
     const url = Utils.getURL(this.router.url, "demographic", 3);
     localStorage.setItem("modifyUserFromPreview", "true");
-    localStorage.setItem('modifyUser','true');
+    localStorage.setItem("modifyUser", "true");
     this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
 
@@ -358,35 +356,14 @@ export class PreviewComponent implements OnInit {
     this.navigateBack();
   }
 
-   locCodeToName(locationCode: string, language: string): string {
-    let locationName = "";
-    if (language === localStorage.getItem("langCode")) {
-      this.primaryLocations.forEach((loc) => {
-        if (loc.code === locationCode) {
-          console.log(loc.name);
-          locationName = loc.name;
-        }
-      });
-    } else {
-      this.secondaryLocations.forEach((loc) => {
-        if (loc.code === locationCode) {
-          locationName = loc.name;
-        }
-      });
-    }
-    return locationName;
-  }
-
-  private getLocations(langCode) {
+  getLocations(locationCode, langCode) {
     return new Promise((resolve) => {
-      const countryCode = this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_country_code
-      );
       this.dataStorageService
-        .getLocationsHierarchyByLangCode(langCode, countryCode)
+        .getLocationsHierarchyByLangCode(langCode, locationCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            const locations = response[appConstants.RESPONSE].locations;
+            const locations =
+              response[appConstants.RESPONSE]["locations"][0]["name"];
             resolve(locations);
           }
         });
@@ -427,14 +404,14 @@ export class PreviewComponent implements OnInit {
       });
     });
   }
-  async locationData() {
-    await this.getLocations(localStorage.getItem("langCode")).then(
-      (value) => (this.primaryLocations = value)
-    );
-    this.getLocations(localStorage.getItem("secondaryLangCode")).then(
-      (value) => (this.secondaryLocations = value)
-    );
-  }
+  // async locationData() {
+  //   await this.getLocations(localStorage.getItem("langCode")).then(
+  //     (value) => (this.primaryLocations = value)
+  //   );
+  //   this.getLocations(localStorage.getItem("secondaryLangCode")).then(
+  //     (value) => (this.secondaryLocations = value)
+  //   );
+  // }
 
   enableContinue(): boolean {
     let flag = true;
@@ -456,9 +433,11 @@ export class PreviewComponent implements OnInit {
   navigateDashboard() {
     localStorage.setItem("newApplicant", "true");
     localStorage.setItem("modifyUserFromPreview", "false");
-    localStorage.setItem('modifyUser','false');
-    localStorage.setItem('addingUserFromPreview','true');
-    this.router.navigate([`${this.primaryLanguage}/pre-registration/demographic/new`]);
+    localStorage.setItem("modifyUser", "false");
+    localStorage.setItem("addingUserFromPreview", "true");
+    this.router.navigate([
+      `${this.primaryLanguage}/pre-registration/demographic/new`,
+    ]);
   }
 
   navigateBack() {
