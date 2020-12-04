@@ -65,7 +65,7 @@ export class PreviewComponent implements OnInit {
     await this.getResidentDetails();
     await this.getGenderDetails();
     await this.getUserInfo();
-    await this.convertLocationCodeToLocationName();
+//     await this.convertLocationCodeToLocationName();
     await this.getUserFiles();
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
