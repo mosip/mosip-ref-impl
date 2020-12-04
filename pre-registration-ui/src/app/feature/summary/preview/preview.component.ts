@@ -246,7 +246,8 @@ export class PreviewComponent implements OnInit {
      this.getLocations(this.user.request.demographicDetails.identity[location][0].value,this.primaryLanguage).then(
        val =>  this.user.request.demographicDetails.identity[location][0].value = val);
      if(this.primaryLanguage != this.secondaryLanguage){
-      this.getLocations(this.user.request.demographicDetails.identity[location][1].value,this.secondaryLanguage).then();
+      this.getLocations(this.user.request.demographicDetails.identity[location][1].value,this.secondaryLanguage).then(
+      val =>  this.user.request.demographicDetails.identity[location][1].value = val);
      }
    });
   }
