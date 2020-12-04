@@ -61,7 +61,7 @@ export class PreviewComponent implements OnInit {
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
-    this.locationData();
+    // this.locationData();
     await this.getIdentityJsonFormat();
     await this.getResidentDetails();
     await this.getGenderDetails();
