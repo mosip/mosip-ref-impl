@@ -1,6 +1,7 @@
 package io.mosip.biosdk.client.impl.spec_1_0;
 
 import com.google.gson.Gson;
+import io.mosip.biosdk.client.config.LoggerConfig;
 import io.mosip.biosdk.client.dto.*;
 import io.mosip.biosdk.client.utils.Util;
 import io.mosip.kernel.biometrics.constant.BiometricType;
@@ -10,15 +11,18 @@ import io.mosip.kernel.biometrics.model.QualityCheck;
 import io.mosip.kernel.biometrics.model.Response;
 import io.mosip.kernel.biometrics.model.SDKInfo;
 import io.mosip.kernel.biometrics.spi.IBioApi;
+import io.mosip.kernel.core.logger.spi.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 
 import java.util.List;
 import java.util.Map;
+
+import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_IDTYPE;
+import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_SESSIONID;
 
 /**
  * The Class BioApiImpl.
@@ -27,9 +31,9 @@ import java.util.Map;
  * @author Manoj SP
  * 
  */
-public class Client implements IBioApi {
+public class Client_V_1_0 implements IBioApi {
 
-	Logger LOGGER = LoggerFactory.getLogger(Client.class);
+	private Logger logger = LoggerConfig.logConfig(Client_V_1_0.class);
 
 	private static final String VERSION = "1.0";
 	private static final String BIOSDK_SPEC_VERSION = "0.9";
@@ -40,15 +44,18 @@ public class Client implements IBioApi {
 
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
-
-		InitRequestDto initRequestDto = new InitRequestDto();
-		initRequestDto.setInitParams(initParams);
-
-		RequestDto requestDto = generateNewRequestDto(initRequestDto);
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-		String responseBody = responseEntity.getBody().toString();
 		SDKInfo sdkInfo = null;
 		try {
+			InitRequestDto initRequestDto = new InitRequestDto();
+			initRequestDto.setInitParams(initParams);
+
+			RequestDto requestDto = generateNewRequestDto(initRequestDto);
+			ResponseEntity<?> responseEntity = Util.restRequest(host+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()){
+				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			}
+			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();

@@ -88,7 +88,7 @@
         <dependency>
             <groupId>io.mosip.kernel</groupId>
             <artifactId>kernel-biometrics-api</artifactId>
-            <version>${kernel.bioapi.version}</version>
+            <version>${kernel.biometricsdk.version}</version>
         </dependency>
         <dependency>
             <groupId>io.mosip.kernel</groupId>

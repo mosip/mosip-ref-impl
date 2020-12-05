@@ -36,9 +36,6 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     private Utils serviceUtil;
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
     private Gson gson;
 
     @Override
