@@ -1,18 +1,17 @@
 package io.mosip.kernel.idobjectvalidator.impl;
 
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.ID_OBJECT_PARSING_FAILED;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.SIMPLE_TYPE_VALUE_PATH;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.SIMPLE_TYPE_LANGUAGE_PATH;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.JSON_PATH_WILDCARD_SEARCH;
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.ID_OBJECT_VALIDATION_FAILED;
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOB_FORMAT;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOC_TYPE_SCHEMA_FORMAT;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_DOB_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_GENDER_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_GENDER_VALUE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_RESIDENCE_STATUS_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_RESIDENCE_STATUS_VALUE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.JSON_PATH_WILDCARD_SEARCH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.LOCATION_NA;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_CATEGORIES_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_DOCUMENT_TYPES_URI;
@@ -23,6 +22,8 @@ import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValida
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATIONS_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATIONS_URI;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTERDATA_LOCATION_HIERARCHY_URI;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.SIMPLE_TYPE_LANGUAGE_PATH;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.SIMPLE_TYPE_VALUE_PATH;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +32,7 @@ import java.time.format.ResolverStyle;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,6 +50,7 @@ import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -80,13 +83,13 @@ import net.minidev.json.JSONArray;
  *
  * @author Manoj SP
  */
-//@Lazy
+@Lazy
 @RefreshScope
 @Component
 @ConfigurationProperties("mosip.kernel.idobjectvalidator.locationhierarchy")
 public class IdObjectReferenceValidator implements IdObjectValidator {
 
-	private Map<String, String> mapping;
+	private Map<String, String> mapping = Collections.emptyMap();
 
 	private static final String INDIVIDUAL_TYPES = "individualTypes";
 
@@ -261,10 +264,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				ArrayList<LinkedHashMap<String, Object>> response = responseBody.getResponse().get(DOCUMENTCATEGORIES);
 				docCatMap = new HashSetValuedHashMap<>(response.size());
 				IntStream.range(0, response.size()).filter(index -> (Boolean) response.get(index).get(IS_ACTIVE))
-						.forEach(index -> {
-							docCatMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
-									String.valueOf(response.get(index).get(CODE)));
-						});
+						.forEach(index -> docCatMap.put(String.valueOf(response.get(index).get(LANG_CODE)),
+								String.valueOf(response.get(index).get(CODE))));
 			}
 		}
 	}
@@ -525,7 +526,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				&& Objects.nonNull(env.getProperty(MASTERDATA_DOCUMENT_TYPES_URI))) {
 			IdObjectReferenceValidatorDocumentMapping.getAllMapping().entrySet().stream()
 					.filter(entry -> docTypeMap.containsKey(entry.getKey())).forEach(entry -> {
-						JsonPath jsonPath = JsonPath.compile("identity." + entry.getValue() + ".type");
+						JsonPath jsonPath = JsonPath.compile(String.format(DOC_TYPE_SCHEMA_FORMAT, entry.getValue()));
 						Object value = jsonPath.read(identityString, READ_OPTIONS);
 						if (Objects.nonNull(value) && !docTypeMap.get(entry.getKey()).contains(value)) {
 							errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), String

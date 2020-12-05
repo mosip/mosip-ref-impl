@@ -11,6 +11,7 @@ public class IdObjectReferenceValidatorConstant {
 	public static final String IDENTITY_ARRAY_VALUE_FIELD = "value";
 	public static final String MASTERDATA_LANGUAGE_PATH = "response.languages.*";
 	public static final String MASTERDATA_LOCATIONS_PATH = "locations.*";
+	public static final String DOC_TYPE_SCHEMA_FORMAT = "identity.%s.type";
 	public static final String JSON_PATH_WILDCARD_SEARCH = "*.%s";
 	public static final String SIMPLE_TYPE_VALUE_PATH = "%s.*.value";
 	public static final String SIMPLE_TYPE_LANGUAGE_PATH = "%s.*.language";
