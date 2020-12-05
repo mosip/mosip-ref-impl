@@ -27,8 +27,7 @@
         <lombok.version>1.18.8</lombok.version>
 
         <!-- Core -->
-        <springframework.version>5.1.9.RELEASE</springframework.version>
-        <spring.boot.version>2.0.2.RELEASE</spring.boot.version>
+        <springframework.version>5.0.6.RELEASE</springframework.version>
     </properties>
 
     <dependencies>
