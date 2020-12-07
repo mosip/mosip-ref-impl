@@ -15,7 +15,6 @@ import io.mosip.kernel.core.logger.spi.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 
 import java.util.List;
@@ -71,15 +70,19 @@ public class Client_V_1_0 implements IBioApi {
 	public Response<QualityCheck> checkQuality(BiometricRecord sample, List<BiometricType> modalitiesToCheck, Map<String, String> flags) {
 		Response<QualityCheck> response = new Response<>();
 		response.setStatusCode(200);
-		CheckQualityRequestDto checkQualityRequestDto = new CheckQualityRequestDto();
-		checkQualityRequestDto.setSample(sample);
-		checkQualityRequestDto.setModalitiesToCheck(modalitiesToCheck);
-		checkQualityRequestDto.setFlags(flags);
-
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/check-quality", HttpMethod.POST, MediaType.APPLICATION_JSON, checkQualityRequestDto, null, String.class);
-		String responseBody = responseEntity.getBody().toString();
 		QualityCheck qualityCheck = null;
 		try {
+			CheckQualityRequestDto checkQualityRequestDto = new CheckQualityRequestDto();
+			checkQualityRequestDto.setSample(sample);
+			checkQualityRequestDto.setModalitiesToCheck(modalitiesToCheck);
+			checkQualityRequestDto.setFlags(flags);
+			RequestDto requestDto = generateNewRequestDto(checkQualityRequestDto);
+			ResponseEntity<?> responseEntity = Util.restRequest(host+"/check-quality", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()){
+				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			}
+			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
@@ -96,15 +99,20 @@ public class Client_V_1_0 implements IBioApi {
 	public Response<MatchDecision[]> match(BiometricRecord sample, BiometricRecord[] gallery,
 										   List<BiometricType> modalitiesToMatch, Map<String, String> flags) {
 		Response<MatchDecision[]> response = new Response<>();
-		MatchRequestDto matchRequestDto = new MatchRequestDto();
-		matchRequestDto.setSample(sample);
-		matchRequestDto.setGallery(gallery);
-		matchRequestDto.setModalitiesToMatch(modalitiesToMatch);
-		matchRequestDto.setFlags(flags);
-
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/match", HttpMethod.POST, MediaType.APPLICATION_JSON, matchRequestDto, null, String.class);
-		String responseBody = responseEntity.getBody().toString();
 		try {
+			MatchRequestDto matchRequestDto = new MatchRequestDto();
+			matchRequestDto.setSample(sample);
+			matchRequestDto.setGallery(gallery);
+			matchRequestDto.setModalitiesToMatch(modalitiesToMatch);
+			matchRequestDto.setFlags(flags);
+
+			RequestDto requestDto = generateNewRequestDto(matchRequestDto);
+			ResponseEntity<?> responseEntity = Util.restRequest(host+"/match", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()){
+				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			}
+			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
@@ -124,14 +132,20 @@ public class Client_V_1_0 implements IBioApi {
 	@Override
 	public Response<BiometricRecord> extractTemplate(BiometricRecord sample, List<BiometricType> modalitiesToExtract, Map<String, String> flags) {
 		Response<BiometricRecord> response = new Response<>();
-		ExtractTemplateRequestDto extractTemplateRequestDto = new ExtractTemplateRequestDto();
-		extractTemplateRequestDto.setSample(sample);
-		extractTemplateRequestDto.setModalitiesToExtract(modalitiesToExtract);
-		extractTemplateRequestDto.setFlags(flags);
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/extract-template", HttpMethod.POST, MediaType.APPLICATION_JSON, extractTemplateRequestDto, null, String.class);
-		String responseBody = responseEntity.getBody().toString();
-		BiometricRecord resBiometricRecord = null;
 		try {
+			ExtractTemplateRequestDto extractTemplateRequestDto = new ExtractTemplateRequestDto();
+			extractTemplateRequestDto.setSample(sample);
+			extractTemplateRequestDto.setModalitiesToExtract(modalitiesToExtract);
+			extractTemplateRequestDto.setFlags(flags);
+
+			RequestDto requestDto = generateNewRequestDto(extractTemplateRequestDto);
+			ResponseEntity<?> responseEntity = Util.restRequest(host+"/extract-template", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()){
+				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			}
+			String responseBody = responseEntity.getBody().toString();
+			BiometricRecord resBiometricRecord = null;
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
@@ -146,15 +160,20 @@ public class Client_V_1_0 implements IBioApi {
 	@Override
 	public Response<BiometricRecord> segment(BiometricRecord biometricRecord, List<BiometricType> modalitiesToSegment, Map<String, String> flags) {
 		Response<BiometricRecord> response = new Response<>();
-		SegmentRequestDto segmentRequestDto = new SegmentRequestDto();
-		segmentRequestDto.setSample(biometricRecord);
-		segmentRequestDto.setModalitiesToSegment(modalitiesToSegment);
-		segmentRequestDto.setFlags(flags);
-
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/segment", HttpMethod.POST, MediaType.APPLICATION_JSON, segmentRequestDto, null, String.class);
-		String responseBody = responseEntity.getBody().toString();
-		BiometricRecord resBiometricRecord = null;
 		try {
+			SegmentRequestDto segmentRequestDto = new SegmentRequestDto();
+			segmentRequestDto.setSample(biometricRecord);
+			segmentRequestDto.setModalitiesToSegment(modalitiesToSegment);
+			segmentRequestDto.setFlags(flags);
+
+			RequestDto requestDto = generateNewRequestDto(segmentRequestDto);
+			ResponseEntity<?> responseEntity = Util.restRequest(host+"/segment", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()){
+				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			}
+			String responseBody = responseEntity.getBody().toString();
+			BiometricRecord resBiometricRecord = null;
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
@@ -169,18 +188,23 @@ public class Client_V_1_0 implements IBioApi {
 	@Override
 	public BiometricRecord convertFormat(BiometricRecord sample, String sourceFormat, String targetFormat,
 			Map<String, String> sourceParams, Map<String, String> targetParams, List<BiometricType> modalitiesToConvert) {
-		ConvertFormatRequestDto convertFormatRequestDto = new ConvertFormatRequestDto();
-		convertFormatRequestDto.setSample(sample);
-		convertFormatRequestDto.setSourceFormat(sourceFormat);
-		convertFormatRequestDto.setTargetFormat(targetFormat);
-		convertFormatRequestDto.setSourceParams(sourceParams);
-		convertFormatRequestDto.setTargetParams(targetParams);
-		convertFormatRequestDto.setModalitiesToConvert(modalitiesToConvert);
-
-		ResponseEntity<?> responseEntity = Util.restRequest(host+"/convert-format", HttpMethod.POST, MediaType.APPLICATION_JSON, convertFormatRequestDto, null, String.class);
-		String responseBody = responseEntity.getBody().toString();
 		BiometricRecord resBiometricRecord = null;
 		try {
+			ConvertFormatRequestDto convertFormatRequestDto = new ConvertFormatRequestDto();
+			convertFormatRequestDto.setSample(sample);
+			convertFormatRequestDto.setSourceFormat(sourceFormat);
+			convertFormatRequestDto.setTargetFormat(targetFormat);
+			convertFormatRequestDto.setSourceParams(sourceParams);
+			convertFormatRequestDto.setTargetParams(targetParams);
+			convertFormatRequestDto.setModalitiesToConvert(modalitiesToConvert);
+
+			RequestDto requestDto = generateNewRequestDto(convertFormatRequestDto);
+			ResponseEntity<?> responseEntity = Util.restRequest(host+"/convert-format", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()){
+				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			}
+			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
