@@ -31,6 +31,7 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -377,58 +378,66 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				&& Objects.nonNull(env.getProperty(MASTERDATA_LOCATIONS_URI))
 				&& Objects.nonNull(env.getProperty(MASTERDATA_LOCATION_HIERARCHY_URI))) {
 			mapping.entrySet().stream().forEach(fieldEntry -> {
-				String field = String.format(JSON_PATH_WILDCARD_SEARCH, fieldEntry.getValue());
-				JsonPath jsonPath = JsonPath.compile(field);
-				JSONArray fieldData = jsonPath.read(identityString,
-						Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
-				final String fieldValuePath = String.format(SIMPLE_TYPE_VALUE_PATH, field);
-				final String fieldLangPath = String.format(SIMPLE_TYPE_LANGUAGE_PATH, field);
-				fieldData.stream().forEach(data -> {
-					String extractedLang = null;
-					String extractedValue = null;
-					JSONArray pathList = null;
+				Arrays.asList(fieldEntry.getValue().split(",")).stream()
+						.map(field -> String.format(JSON_PATH_WILDCARD_SEARCH, field)).forEach(field -> {
+							JsonPath jsonPath = JsonPath.compile(field);
+							JSONArray fieldData = jsonPath.read(identityString,
+									Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
+							final String fieldValuePath = String.format(SIMPLE_TYPE_VALUE_PATH, field);
+							final String fieldLangPath = String.format(SIMPLE_TYPE_LANGUAGE_PATH, field);
+							fieldData.stream().forEach(data -> {
+								String extractedLang = null;
+								String extractedValue = null;
+								JSONArray pathList = null;
 
-					if (data instanceof JSONArray) {
-						JSONArray fieldLang = JsonPath.compile(fieldLangPath).read(identityString,
-								Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
-						extractedLang = fieldLang.get(0).toString();
-						JsonPath valuePath = JsonPath.compile(fieldValuePath);
-						JSONArray fieldValue = valuePath.read(identityString,
-								Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
-						extractedValue = fieldValue.get(0).toString();
-						pathList = valuePath.read(identityString, Configuration.defaultConfiguration()
-								.addOptions(Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST));
-					} else if (data instanceof String) {
-						extractedValue = data.toString();
-						pathList = jsonPath.read(identityString, Configuration.defaultConfiguration()
-								.addOptions(Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST));
-					}
+								if (data instanceof JSONArray) {
+									JSONArray fieldLang = JsonPath.compile(fieldLangPath).read(identityString,
+											Configuration.defaultConfiguration()
+													.addOptions(Option.SUPPRESS_EXCEPTIONS));
+									extractedLang = fieldLang.get(0).toString();
+									JsonPath valuePath = JsonPath.compile(fieldValuePath);
+									JSONArray fieldValue = valuePath.read(identityString, Configuration
+											.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
+									extractedValue = fieldValue.get(0).toString();
+									pathList = valuePath.read(identityString, Configuration.defaultConfiguration()
+											.addOptions(Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST));
+								} else if (data instanceof String) {
+									extractedValue = data.toString();
+									pathList = jsonPath.read(identityString, Configuration.defaultConfiguration()
+											.addOptions(Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST));
+								}
 
-					Set<String> hierarchyList = Objects.nonNull(extractedLang)
-							? locationHierarchyDetails.get(fieldEntry.getKey()).get(extractedLang)
-							: new HashSet<>(locationHierarchyDetails.get(fieldEntry.getKey()).values());
-					if (hierarchyList.isEmpty()) {
-						JSONArray langPathList = JsonPath.compile(fieldLangPath).read(identityString, Configuration
-								.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST));
-						String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
-								convertToPath(String.valueOf(langPathList.get(0))));
-						errorList.removeIf(serviceError -> serviceError.getMessage().equals(errorMessage));
-						errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), errorMessage));
-					} else {
-						boolean result = Objects.nonNull(extractedLang)
-								? locationDetails.get(hierarchyList.iterator().next()).get(extractedLang)
-										.contains(extractedValue)
-								: hierarchyList.stream().map(hierarchy -> locationDetails.get(hierarchy).values())
-										.flatMap(Collection::stream).collect(Collectors.toSet())
-										.contains(extractedValue);
-						if (!result) {
-							String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
-									convertToPath(String.valueOf(pathList.get(0))));
-							errorList.removeIf(serviceError -> serviceError.getMessage().equals(errorMessage));
-							errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), errorMessage));
-						}
-					}
-				});
+								Set<String> hierarchyList = Objects.nonNull(extractedLang)
+										? locationHierarchyDetails.get(fieldEntry.getKey()).get(extractedLang)
+										: new HashSet<>(locationHierarchyDetails.get(fieldEntry.getKey()).values());
+								if (hierarchyList.isEmpty()) {
+									JSONArray langPathList = JsonPath.compile(fieldLangPath).read(identityString,
+											Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS,
+													Option.AS_PATH_LIST));
+									String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
+											convertToPath(String.valueOf(langPathList.get(0))));
+									errorList.removeIf(serviceError -> serviceError.getMessage().equals(errorMessage));
+									errorList.add(
+											new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), errorMessage));
+								} else {
+									boolean result = Objects.nonNull(extractedLang)
+											? locationDetails.get(hierarchyList.iterator().next()).get(extractedLang)
+													.contains(extractedValue)
+											: hierarchyList.stream()
+													.map(hierarchy -> locationDetails.get(hierarchy).values())
+													.flatMap(Collection::stream).collect(Collectors.toSet())
+													.contains(extractedValue);
+									if (!result) {
+										String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
+												convertToPath(String.valueOf(pathList.get(0))));
+										errorList.removeIf(
+												serviceError -> serviceError.getMessage().equals(errorMessage));
+										errorList.add(
+												new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), errorMessage));
+									}
+								}
+							});
+						});
 			});
 		}
 	}
