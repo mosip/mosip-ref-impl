@@ -6,8 +6,6 @@ import io.mosip.biosdk.services.constants.ErrorMessages;
 import io.mosip.biosdk.services.dto.*;
 import io.mosip.biosdk.services.exceptions.BioSDKException;
 import io.mosip.biosdk.services.factory.BioSdkServiceFactory;
-import io.mosip.biosdk.services.impl.BioSdkServiceImpl;
-import io.mosip.biosdk.services.impl.spec_1_0.dto.request.*;
 import io.mosip.biosdk.services.spi.BioSdkServiceProvider;
 import io.mosip.biosdk.services.utils.Utils;
 import io.mosip.kernel.biometrics.spi.IBioApi;
@@ -45,9 +43,6 @@ public class MainController {
 
     @Autowired
     private Utils serviceUtil;
-
-    @Autowired
-    private BioSdkServiceImpl bioSdkServiceImpl;
 
     @Autowired
     private IBioApi iBioApi;

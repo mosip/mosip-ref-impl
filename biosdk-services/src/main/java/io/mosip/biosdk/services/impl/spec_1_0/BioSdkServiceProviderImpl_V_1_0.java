@@ -58,7 +58,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
             sdkInfo = iBioApi.init(initRequestDto.getInitParams());
         } catch (RuntimeException e){
             e.printStackTrace();
-            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", e.getMessage());
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.getMessage());
         }
         return sdkInfo;
