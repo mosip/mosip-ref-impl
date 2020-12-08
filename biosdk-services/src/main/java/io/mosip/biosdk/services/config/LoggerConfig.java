@@ -21,8 +21,8 @@ public final class LoggerConfig {
 		mosipRollingFileAppender = new RollingFileAppender();
 		mosipRollingFileAppender.setAppend(true);
 		mosipRollingFileAppender.setAppenderName("fileappender");
-		mosipRollingFileAppender.setFileName("/home/logs/preregistration.log");
-		mosipRollingFileAppender.setFileNamePattern("/home/logs/preregistration-%d{yyyy-MM-dd}-%i.log");
+		mosipRollingFileAppender.setFileName("./logs/biosdk-service.log");
+		mosipRollingFileAppender.setFileNamePattern("./logs/biosdk-service-%d{yyyy-MM-dd}-%i.log");
 		mosipRollingFileAppender.setImmediateFlush(true);
 		mosipRollingFileAppender.setMaxFileSize("50mb");
 //		mosipRollingFileAppender.setMaxHistory(3);
