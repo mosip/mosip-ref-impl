@@ -11,4 +11,3 @@ PMS,1095,TRUE,mosipadmin,now()
 DATASHARE,1095,TRUE,mosipadmin,now()
 CREDENTIAL_SERVICE,1095,TRUE,mosipadmin,now()
 RESIDENT,1095,TRUE,mosipadmin,now()
-
