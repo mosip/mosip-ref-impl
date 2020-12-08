@@ -2,7 +2,7 @@ package io.mosip.biosdk.services.utils;
 
 public enum ErrorCode {
 
-    NO_PROVIDERS("BIO_SDK_001", "No Bio SDK service provided implementations found");
+    NO_PROVIDERS("BIO_SDK_001", "No Bio SDK service provider implementations found for given version");
 
     private String errorCode;
     private String errorMessage;

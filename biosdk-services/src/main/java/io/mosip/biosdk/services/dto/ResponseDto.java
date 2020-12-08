@@ -1,6 +1,5 @@
 package io.mosip.biosdk.services.dto;
 
-import io.mosip.biosdk.services.impl.spec_1_0.dto.request.ExceptionJsonInfoDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +27,5 @@ public class ResponseDto<T> {
 
     /** The error details. */
     @ApiModelProperty(value = "Error Details", position = 5)
-    private List<ExceptionJsonInfoDto> errors;
+    private List<ErrorDto> errors;
 }

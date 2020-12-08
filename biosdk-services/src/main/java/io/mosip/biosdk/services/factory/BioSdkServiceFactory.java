@@ -1,5 +1,6 @@
 package io.mosip.biosdk.services.factory;
 
+import io.mosip.biosdk.services.exceptions.BioSDKException;
 import io.mosip.biosdk.services.spi.BioSdkServiceProvider;
 import io.mosip.biosdk.services.utils.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,6 @@ public class BioSdkServiceFactory {
                 return provider;
             }
         }
-        throw new RuntimeException(ErrorCode.NO_PROVIDERS.getErrorCode()+" "+ErrorCode.NO_PROVIDERS.getErrorMessage());
+        throw new BioSDKException(ErrorCode.NO_PROVIDERS.getErrorCode(), ErrorCode.NO_PROVIDERS.getErrorMessage());
     }
 }

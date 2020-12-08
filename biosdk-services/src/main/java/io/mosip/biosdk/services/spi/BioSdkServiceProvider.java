@@ -3,17 +3,17 @@ package io.mosip.biosdk.services.spi;
 import io.mosip.biosdk.services.dto.RequestDto;
 
 public interface BioSdkServiceProvider {
-    String getSpecVersion();
+    Object getSpecVersion();
 
-    String init(RequestDto request);
+    Object init(RequestDto request);
 
-    String checkQuality(RequestDto request);
+    Object checkQuality(RequestDto request);
 
-    String match(RequestDto request);
+    Object match(RequestDto request);
 
-    String extractTemplate(RequestDto request);
+    Object extractTemplate(RequestDto request);
 
-    String segment(RequestDto request);
+    Object segment(RequestDto request);
 
-    String convertFormat(RequestDto request);
+    Object convertFormat(RequestDto request);
 }

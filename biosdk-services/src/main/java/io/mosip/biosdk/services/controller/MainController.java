@@ -2,8 +2,11 @@ package io.mosip.biosdk.services.controller;
 
 import com.google.gson.Gson;
 import io.mosip.biosdk.services.config.LoggerConfig;
+import io.mosip.biosdk.services.constants.ErrorMessages;
 import io.mosip.biosdk.services.dto.*;
+import io.mosip.biosdk.services.exceptions.BioSDKException;
 import io.mosip.biosdk.services.factory.BioSdkServiceFactory;
+import io.mosip.biosdk.services.impl.BioSdkServiceImpl;
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.*;
 import io.mosip.biosdk.services.spi.BioSdkServiceProvider;
 import io.mosip.biosdk.services.utils.Utils;
@@ -13,6 +16,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static io.mosip.biosdk.services.constants.AppConstants.LOGGER_IDTYPE;
@@ -38,6 +45,9 @@ public class MainController {
 
     @Autowired
     private Utils serviceUtil;
+
+    @Autowired
+    private BioSdkServiceImpl bioSdkServiceImpl;
 
     @Autowired
     private IBioApi iBioApi;
@@ -69,94 +79,144 @@ public class MainController {
     @ApiOperation(value = "Initialization")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Initialization successful") })
     public ResponseEntity<String> init(
-            @Validated @RequestBody(required = true) String request,
+            @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"", request);
-        RequestDto requestDto = gson.fromJson(request, RequestDto.class);
-        BioSdkServiceProvider bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(requestDto.getVersion());
+        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(bioSdkServiceProviderImpl.init(requestDto));
-        } catch (RuntimeException e){
-            e.printStackTrace();
-            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"", e.getMessage());
-            return ResponseEntity.status(HttpStatus.OK).body(bioSdkServiceProviderImpl.init(requestDto));
+            responseDto.setVersion(request.getVersion());
+            BioSdkServiceProvider bioSdkServiceProviderImpl = null;
+            bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
+            responseDto.setResponse(bioSdkServiceProviderImpl.init(request));
+        } catch (BioSDKException e) {
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
+            ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
+            responseDto.getErrors().add(errorDto);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
         }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
     @PostMapping(path = "/match", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Match")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Match successful") })
     public ResponseEntity<String> match(
-            @Validated @RequestBody(required = true) MatchRequestDto request,
+            @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        ResponseDto response = new ResponseDto();
-        response.setResponsetime(serviceUtil.getCurrentResponseTime());
-        response.setResponse(
-            iBioApi.match(request.getSample(), request.getGallery(), request.getModalitiesToMatch(), request.getFlags())
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
+        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+        try {
+            responseDto.setVersion(request.getVersion());
+            BioSdkServiceProvider bioSdkServiceProviderImpl = null;
+            bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
+            responseDto.setResponse(bioSdkServiceProviderImpl.match(request));
+        } catch (BioSDKException e) {
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
+            ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
+            responseDto.getErrors().add(errorDto);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
     @PostMapping(path = "/check-quality", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Check quality")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Check successful") })
     public ResponseEntity<String> checkQuality(
-            @Validated @RequestBody(required = true) CheckQualityRequestDto request,
+            @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        ResponseDto response = new ResponseDto();
-        response.setResponsetime(serviceUtil.getCurrentResponseTime());
-        response.setResponse(
-            iBioApi.checkQuality(request.getSample(), request.getModalitiesToCheck(), request.getFlags())
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
+        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+        try {
+            responseDto.setVersion(request.getVersion());
+            BioSdkServiceProvider bioSdkServiceProviderImpl = null;
+            bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
+            responseDto.setResponse(bioSdkServiceProviderImpl.match(request));
+        } catch (BioSDKException e) {
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
+            ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
+            responseDto.getErrors().add(errorDto);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
     @PostMapping(path = "/extract-template", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Extract template")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Extract successful") })
     public ResponseEntity<String> extractTemplate(
-            @Validated @RequestBody(required = true) ExtractTemplateRequestDto request,
+            @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        ResponseDto response = new ResponseDto();
-        response.setResponsetime(serviceUtil.getCurrentResponseTime());
-        response.setResponse(
-            iBioApi.extractTemplate(request.getSample(), request.getModalitiesToExtract(), request.getFlags())
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
+        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+        try {
+            responseDto.setVersion(request.getVersion());
+            BioSdkServiceProvider bioSdkServiceProviderImpl = null;
+            bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
+            responseDto.setResponse(bioSdkServiceProviderImpl.extractTemplate(request));
+        } catch (BioSDKException e) {
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
+            ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
+            responseDto.getErrors().add(errorDto);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
     @PostMapping(path = "/convert-format", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Convert format")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Convert successful") })
     public ResponseEntity<String> convertFormat(
-            @Validated @RequestBody(required = true) ConvertFormatRequestDto request,
+            @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        ResponseDto response = new ResponseDto();
-        response.setResponsetime(serviceUtil.getCurrentResponseTime());
-        response.setResponse(
-            iBioApi.convertFormat(
-                    request.getSample(),
-                    request.getSourceFormat(),
-                    request.getTargetFormat(),
-                    request.getSourceParams(),
-                    request.getTargetParams(),
-                    request.getModalitiesToConvert()
-            )
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
+        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+        try {
+            responseDto.setVersion(request.getVersion());
+            BioSdkServiceProvider bioSdkServiceProviderImpl = null;
+            bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
+            responseDto.setResponse(bioSdkServiceProviderImpl.convertFormat(request));
+        } catch (BioSDKException e) {
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
+            ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
+            responseDto.getErrors().add(errorDto);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
     @PostMapping(path = "/segment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Segment")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Segment successful") })
     public ResponseEntity<String> segment(
-            @Validated @RequestBody(required = true) SegmentRequestDto request,
+            @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        ResponseDto response = new ResponseDto();
-        response.setResponsetime(serviceUtil.getCurrentResponseTime());
-        response.setResponse(
-            iBioApi.segment(request.getSample(), request.getModalitiesToSegment(), request.getFlags())
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(response));
+        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+        try {
+            responseDto.setVersion(request.getVersion());
+            BioSdkServiceProvider bioSdkServiceProviderImpl = null;
+            bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
+            responseDto.setResponse(bioSdkServiceProviderImpl.segment(request));
+        } catch (BioSDKException e) {
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
+            ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
+            responseDto.getErrors().add(errorDto);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
+    }
+
+    private ResponseDto generateResponseTemplate(String version){
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setVersion(version);
+        responseDto.setResponsetime(serviceUtil.getCurrentResponseTime());
+        responseDto.setErrors(new ArrayList<ErrorDto>());
+        responseDto.setResponse("");
+        return responseDto;
+    }
+
+    private String getVersion(String request) throws BioSDKException{
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject js = (JSONObject) parser.parse(request);
+            return js.get("version").toString();
+        } catch (ParseException e) {
+            throw new BioSDKException(ErrorMessages.UNCHECKED_EXCEPTION.toString(), e.getMessage());
+        }
     }
 }

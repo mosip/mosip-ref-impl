@@ -11,7 +11,6 @@ import lombok.ToString;
 @ToString
 public class RequestDto {
     private String version;
-    private String biosdkSpecVersion;
     private String request;
     private Boolean encryption;
     private String hmac;

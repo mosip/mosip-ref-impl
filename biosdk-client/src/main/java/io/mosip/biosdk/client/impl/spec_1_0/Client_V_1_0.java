@@ -49,9 +49,10 @@ public class Client_V_1_0 implements IBioApi {
 			initRequestDto.setInitParams(initParams);
 
 			RequestDto requestDto = generateNewRequestDto(initRequestDto);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/init");
 			ResponseEntity<?> responseEntity = Util.restRequest(host+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
@@ -77,9 +78,10 @@ public class Client_V_1_0 implements IBioApi {
 			checkQualityRequestDto.setModalitiesToCheck(modalitiesToCheck);
 			checkQualityRequestDto.setFlags(flags);
 			RequestDto requestDto = generateNewRequestDto(checkQualityRequestDto);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/check-quality");
 			ResponseEntity<?> responseEntity = Util.restRequest(host+"/check-quality", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
@@ -107,9 +109,10 @@ public class Client_V_1_0 implements IBioApi {
 			matchRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(matchRequestDto);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/match");
 			ResponseEntity<?> responseEntity = Util.restRequest(host+"/match", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
@@ -139,9 +142,10 @@ public class Client_V_1_0 implements IBioApi {
 			extractTemplateRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(extractTemplateRequestDto);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/extract-template");
 			ResponseEntity<?> responseEntity = Util.restRequest(host+"/extract-template", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
@@ -167,9 +171,10 @@ public class Client_V_1_0 implements IBioApi {
 			segmentRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(segmentRequestDto);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/segment");
 			ResponseEntity<?> responseEntity = Util.restRequest(host+"/segment", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
@@ -199,9 +204,10 @@ public class Client_V_1_0 implements IBioApi {
 			convertFormatRequestDto.setModalitiesToConvert(modalitiesToConvert);
 
 			RequestDto requestDto = generateNewRequestDto(convertFormatRequestDto);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/convert-format");
 			ResponseEntity<?> responseEntity = Util.restRequest(host+"/convert-format", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
@@ -220,7 +226,6 @@ public class Client_V_1_0 implements IBioApi {
 		Gson gson = new Gson();
 		RequestDto requestDto = new RequestDto();
 		requestDto.setVersion(VERSION);
-		requestDto.setBiosdkSpecVersion(BIOSDK_SPEC_VERSION);
 		requestDto.setRequest(Util.base64Encode(gson.toJson(body)));
 		return requestDto;
 	}
