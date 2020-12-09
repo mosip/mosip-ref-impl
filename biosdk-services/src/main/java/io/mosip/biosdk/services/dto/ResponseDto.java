@@ -27,5 +27,5 @@ public class ResponseDto<T> {
 
     /** The error details. */
     @ApiModelProperty(value = "Error Details", position = 5)
-    private List<ExceptionJsonInfoDto> errors;
+    private List<ErrorDto> errors;
 }

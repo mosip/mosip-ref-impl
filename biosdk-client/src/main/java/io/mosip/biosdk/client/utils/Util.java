@@ -15,6 +15,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.Map;
 
 public class Util {
@@ -59,5 +60,9 @@ public class Util {
 
         requestFactory.setHttpClient(httpClient);
         return new RestTemplate(requestFactory);
+    }
+
+    public static String base64Encode(String data){
+        return Base64.getEncoder().encodeToString(data.getBytes());
     }
 }
