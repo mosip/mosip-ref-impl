@@ -123,7 +123,7 @@ public class MainController {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
             bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
-            responseDto.setResponse(bioSdkServiceProviderImpl.match(request));
+            responseDto.setResponse(bioSdkServiceProviderImpl.checkQuality(request));
         } catch (BioSDKException e) {
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
             ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());

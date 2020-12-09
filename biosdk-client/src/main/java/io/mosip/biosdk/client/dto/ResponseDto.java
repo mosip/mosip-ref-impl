@@ -15,5 +15,5 @@ public class ResponseDto<T> {
     private String version;
     private String responsetime;
     private T response;
-    private List<ExceptionJsonInfoDto> errors;
+    private List<ErrorDto> errors;
 }

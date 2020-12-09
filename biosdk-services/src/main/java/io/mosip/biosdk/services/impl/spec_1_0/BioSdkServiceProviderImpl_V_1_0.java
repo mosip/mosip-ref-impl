@@ -56,7 +56,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
         try {
             sdkInfo = iBioApi.init(initRequestDto.getInitParams());
-        } catch (RuntimeException e){
+        } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.getMessage());
@@ -77,7 +77,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
                     checkQualityRequestDto.getModalitiesToCheck(),
                     checkQualityRequestDto.getFlags()
             );
-        } catch (RuntimeException e){
+        } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"checkQuality: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.toString()+" "+e.getMessage());
@@ -99,7 +99,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
                     matchRequestDto.getModalitiesToMatch(),
                     matchRequestDto.getFlags()
             );
-        } catch (RuntimeException e){
+        } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.toString()+" "+e.getMessage());
@@ -112,17 +112,17 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         Response response;
         String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"extractTemplate: ", "decoding successful");
-        ExtractTemplateRequestDto matchRequestDto = gson.fromJson(decryptedRequest, ExtractTemplateRequestDto.class);
+        ExtractTemplateRequestDto extractTemplateRequestDto = gson.fromJson(decryptedRequest, ExtractTemplateRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"extractTemplate: ", "json to dto successful");
         try {
             response = iBioApi.extractTemplate(
-                    matchRequestDto.getSample(),
-                    matchRequestDto.getModalitiesToExtract(),
-                    matchRequestDto.getFlags()
+                    extractTemplateRequestDto.getSample(),
+                    extractTemplateRequestDto.getModalitiesToExtract(),
+                    extractTemplateRequestDto.getFlags()
             );
-        } catch (RuntimeException e){
+        } catch (Throwable e){
             e.printStackTrace();
-            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", e.toString()+" "+e.getMessage());
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"extractTemplate: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.toString()+" "+e.getMessage());
         }
         return response;
@@ -132,18 +132,18 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     public Object segment(RequestDto request) {
         Response response;
         String decryptedRequest = decode(request.getRequest());
-        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "decoding successful");
-        SegmentRequestDto matchRequestDto = gson.fromJson(decryptedRequest, SegmentRequestDto.class);
-        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
+        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"segment: ", "decoding successful");
+        SegmentRequestDto segmentRequestDto = gson.fromJson(decryptedRequest, SegmentRequestDto.class);
+        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"segment: ", "json to dto successful");
         try {
             response = iBioApi.segment(
-                    matchRequestDto.getSample(),
-                    matchRequestDto.getModalitiesToSegment(),
-                    matchRequestDto.getFlags()
+                    segmentRequestDto.getSample(),
+                    segmentRequestDto.getModalitiesToSegment(),
+                    segmentRequestDto.getFlags()
             );
-        } catch (RuntimeException e){
+        } catch (Throwable e){
             e.printStackTrace();
-            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", e.toString()+" "+e.getMessage());
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"segment: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.toString()+" "+e.getMessage());
         }
         return response;
@@ -153,21 +153,21 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     public Object convertFormat(RequestDto request) {
         BiometricRecord biometricRecord;
         String decryptedRequest = decode(request.getRequest());
-        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "decoding successful");
-        ConvertFormatRequestDto matchRequestDto = gson.fromJson(decryptedRequest, ConvertFormatRequestDto.class);
-        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
+        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"convertFormat: ", "decoding successful");
+        ConvertFormatRequestDto convertFormatRequestDto = gson.fromJson(decryptedRequest, ConvertFormatRequestDto.class);
+        logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"convertFormat: ", "json to dto successful");
         try {
             biometricRecord = iBioApi.convertFormat(
-                    matchRequestDto.getSample(),
-                    matchRequestDto.getSourceFormat(),
-                    matchRequestDto.getTargetFormat(),
-                    matchRequestDto.getSourceParams(),
-                    matchRequestDto.getTargetParams(),
-                    matchRequestDto.getModalitiesToConvert()
+                    convertFormatRequestDto.getSample(),
+                    convertFormatRequestDto.getSourceFormat(),
+                    convertFormatRequestDto.getTargetFormat(),
+                    convertFormatRequestDto.getSourceParams(),
+                    convertFormatRequestDto.getTargetParams(),
+                    convertFormatRequestDto.getModalitiesToConvert()
             );
-        } catch (RuntimeException e){
+        } catch (Throwable e){
             e.printStackTrace();
-            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", e.toString()+" "+e.getMessage());
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"convertFormat: ", e.toString()+" "+e.getMessage());
             throw new BioSDKException(ErrorMessages.BIOSDK_LIB_EXCEPTION.toString(), ErrorMessages.BIOSDK_LIB_EXCEPTION.getMessage()+": "+e.toString()+" "+e.getMessage());
         }
         return biometricRecord;
