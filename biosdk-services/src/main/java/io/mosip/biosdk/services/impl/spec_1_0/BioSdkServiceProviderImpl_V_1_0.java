@@ -50,7 +50,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Override
     public Object init(RequestDto request){
         SDKInfo sdkInfo = null;
-        String decryptedRequest = decrypt(request.getRequest(), request.getSessionKey(), request.getHmac());
+        String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "decoding successful");
         InitRequestDto initRequestDto = gson.fromJson(decryptedRequest, InitRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
@@ -67,7 +67,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Override
     public Object checkQuality(RequestDto request) {
         Response response;
-        String decryptedRequest = decrypt(request.getRequest(), request.getSessionKey(), request.getHmac());
+        String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"checkQuality: ", "decoding successful");
         CheckQualityRequestDto checkQualityRequestDto = gson.fromJson(decryptedRequest, CheckQualityRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"checkQuality: ", "json to dto successful");
@@ -88,7 +88,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Override
     public Object match(RequestDto request) {
         Response response;
-        String decryptedRequest = decrypt(request.getRequest(), request.getSessionKey(), request.getHmac());
+        String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", "decoding successful");
         MatchRequestDto matchRequestDto = gson.fromJson(decryptedRequest, MatchRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", "json to dto successful");
@@ -110,7 +110,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Override
     public Object extractTemplate(RequestDto request) {
         Response response;
-        String decryptedRequest = decrypt(request.getRequest(), request.getSessionKey(), request.getHmac());
+        String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"extractTemplate: ", "decoding successful");
         ExtractTemplateRequestDto matchRequestDto = gson.fromJson(decryptedRequest, ExtractTemplateRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"extractTemplate: ", "json to dto successful");
@@ -131,7 +131,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Override
     public Object segment(RequestDto request) {
         Response response;
-        String decryptedRequest = decrypt(request.getRequest(), request.getSessionKey(), request.getHmac());
+        String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "decoding successful");
         SegmentRequestDto matchRequestDto = gson.fromJson(decryptedRequest, SegmentRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
@@ -152,7 +152,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Override
     public Object convertFormat(RequestDto request) {
         BiometricRecord biometricRecord;
-        String decryptedRequest = decrypt(request.getRequest(), request.getSessionKey(), request.getHmac());
+        String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "decoding successful");
         ConvertFormatRequestDto matchRequestDto = gson.fromJson(decryptedRequest, ConvertFormatRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
@@ -173,15 +173,13 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         return biometricRecord;
     }
 
-    private String decrypt(String data, String sessionKey, String hmac){
-        return Utils.base64Decode(data);
-    }
-
-    private ResponseDto generateResponseTemplate(RequestDto requestDto){
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setVersion(requestDto.getVersion());
-        responseDto.setResponsetime(serviceUtil.getCurrentResponseTime());
-        responseDto.setErrors(new ArrayList<ErrorDto>());
-        return responseDto;
+    private String decode(String data){
+        try {
+            return Utils.base64Decode(data);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,ErrorMessages.INVALID_REQUEST_BODY.toString(), e.toString()+" "+e.getMessage());
+            throw new BioSDKException(ErrorMessages.INVALID_REQUEST_BODY.toString(), ErrorMessages.INVALID_REQUEST_BODY.getMessage()+": "+e.toString()+" "+e.getMessage());
+        }
     }
 }

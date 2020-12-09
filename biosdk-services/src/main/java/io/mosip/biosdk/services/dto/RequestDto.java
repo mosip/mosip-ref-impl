@@ -12,7 +12,4 @@ import lombok.ToString;
 public class RequestDto {
     private String version;
     private String request;
-    private Boolean encryption;
-    private String hmac;
-    private String sessionKey;
 }
