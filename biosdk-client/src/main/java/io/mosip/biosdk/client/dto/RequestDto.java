@@ -11,8 +11,5 @@ import lombok.ToString;
 @ToString
 public class RequestDto {
     private String version;
-    private boolean encryption = false;
-    private String hmac;
-    private String sessionKey;
     private String request;
 }

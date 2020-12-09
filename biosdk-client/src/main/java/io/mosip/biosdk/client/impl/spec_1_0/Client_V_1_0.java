@@ -1,6 +1,7 @@
 package io.mosip.biosdk.client.impl.spec_1_0;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import io.mosip.biosdk.client.config.LoggerConfig;
 import io.mosip.biosdk.client.dto.*;
 import io.mosip.biosdk.client.utils.Util;
@@ -17,6 +18,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,8 @@ public class Client_V_1_0 implements IBioApi {
 	/* "http://localhost:9099/biosdk-service" */
 	private static final String host = System.getenv("mosip_biosdk_service");
 
+	Type errorDtoListType = new TypeToken<List<ErrorDto>>(){}.getType();
+
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
 		SDKInfo sdkInfo = null;
@@ -56,9 +60,13 @@ public class Client_V_1_0 implements IBioApi {
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
-			JSONParser parser = new JSONParser();
+            JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
+
+            /* Error handler */
+            errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+
 			sdkInfo = gson.fromJson(js.get("response").toString(), SDKInfo.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -88,6 +96,10 @@ public class Client_V_1_0 implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
+
+			/* Error handler */
+			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+
 			qualityCheck = gson.fromJson(js.get("response").toString(), QualityCheck.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -119,12 +131,20 @@ public class Client_V_1_0 implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
+
+			/* Error handler */
+			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+
 			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
-			response.setStatusCode(((Long)jsonResponse.get("statusCode")).intValue());
+			response.setStatusCode(
+				jsonResponse.get("statusCode") != null ? ((Long)jsonResponse.get("statusCode")).intValue() : null
+			);
 			response.setStatusMessage(
 				jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
 			);
-			response.setResponse(gson.fromJson(jsonResponse.get("response").toString(), MatchDecision[].class));
+			response.setResponse(
+				gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null, MatchDecision[].class)
+			);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -153,6 +173,10 @@ public class Client_V_1_0 implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
+
+			/* Error handler */
+			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+
 			response = gson.fromJson(js.get("response").toString(), Response.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -182,6 +206,10 @@ public class Client_V_1_0 implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
+
+			/* Error handler */
+			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+
 			response = gson.fromJson(js.get("response").toString(), Response.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -214,6 +242,10 @@ public class Client_V_1_0 implements IBioApi {
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 			Gson gson = new Gson();
+
+			/* Error handler */
+			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+
 			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -230,5 +262,12 @@ public class Client_V_1_0 implements IBioApi {
 		return requestDto;
 	}
 
+	private void errorHandler(List<ErrorDto> errors){
+	    if(errors != null){
+	        for (ErrorDto errorDto: errors){
+                throw new RuntimeException(errorDto.getCode()+" ---> "+errorDto.getMessage());
+            }
+        }
+    }
 
 }
