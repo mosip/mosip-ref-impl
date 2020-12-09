@@ -1,4 +1,4 @@
-package io.mosip.biosdk.services.dto;
+package io.mosip.biosdk.services.impl.spec_1_0.dto.request;
 
 import io.mosip.kernel.biometrics.constant.BiometricType;
 import io.mosip.kernel.biometrics.entities.BiometricRecord;
