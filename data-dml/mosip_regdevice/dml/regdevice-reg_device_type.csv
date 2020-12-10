@@ -1,4 +1,4 @@
 ﻿code,name,descr,is_active,cr_by,cr_dtimes
-Finger,Finger,Fingerprint Biometric,TRUE,now(),now()
-Face,Face,Face Biometric,TRUE,now(),now()
-Iris,Iris,Iris Biomertric,TRUE,now(),now()
+Finger,Finger,Fingerprint Biometric,TRUE,superadmin,now()
+Face,Face,Face Biometric,TRUE,superadmin,now()
+Iris,Iris,Iris Biomertric,TRUE,superadmin,now()
