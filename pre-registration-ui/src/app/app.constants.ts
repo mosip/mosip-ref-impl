@@ -116,7 +116,8 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
   google_recaptcha_site_key: 'google.recaptcha.site.key',
   mosip_adult_age:'mosip.adult.age',
-  mosip_idschema_version:'mosip.idschema.version'
+  mosip_idschema_version:'mosip.idschema.version',
+  preregistration_preview_fields:'preregistration.preview.fields'
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {
@@ -180,7 +181,6 @@ export const notificationDtoKeys = {
   file: 'attachment'
 };
 
-export const previewFields = ['region', 'province', 'city', 'zone', 'gender', 'residenceStatus'];
 
 export const DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY = 'file';
 export const DOCUMENT_UPLOAD_REQUEST_DTO_KEY = 'Document request';

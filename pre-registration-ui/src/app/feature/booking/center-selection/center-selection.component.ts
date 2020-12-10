@@ -14,6 +14,7 @@ import * as appConstants from "./../../../app.constants";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
 import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
+import { resolve } from "url";
 
 @Component({
   selector: "app-center-selection",
@@ -48,7 +49,8 @@ export class CenterSelectionComponent
   primaryLang = localStorage.getItem("langCode");
   workingDays: string;
   preRegId = [];
-
+  locationNames = [];
+  locationCodes = [];
   constructor(
     public dialog: MatDialog,
     private service: BookingService,
@@ -117,12 +119,50 @@ export class CenterSelectionComponent
     this.errorlabels = response["error"];
   }
 
-  getRecommendedCenters() {
+  async getRecommendedCenters() {
     console.log(this.users.length);
-    let pincodes = [];
+    const locationHierarchy = JSON.parse(
+      localStorage.getItem("locationHierarchy")
+    );
+    const locationHierarchyLevel = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
+    );
+    const locationType = locationHierarchy[Number(locationHierarchyLevel) - 1];
+    console.log(locationHierarchy);
+    console.log(locationHierarchyLevel + ">>>>" + locationType);
     this.users.forEach((user) => {
-      pincodes.push(user.request.demographicDetails.identity.postalCode);
+      if (
+        typeof user.request.demographicDetails.identity[locationType] ===
+        "object"
+      ) {
+        this.locationCodes.push(
+          user.request.demographicDetails.identity[locationType][0].value
+        );
+      } else if (
+        typeof user.request.demographicDetails.identity[locationType] ===
+        "string"
+      ) {
+        this.locationCodes.push(
+          user.request.demographicDetails.identity[locationType]
+        );
+      }
     });
+    await this.getLocationNamesByCodes();
+    this.getRecommendedCentersApiCall();
+  }
+
+  getLocationNamesByCodes() {
+    return new Promise((resolve) => {
+      this.locationCodes.forEach(async (pins,index) => {
+        await this.getLocationNames(pins);
+        if(index===this.locationCodes.length-1){
+          resolve(true);
+        }
+      });
+    });
+  }
+
+  getRecommendedCentersApiCall() {
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
       .recommendedCenters(
@@ -130,7 +170,7 @@ export class CenterSelectionComponent
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
         ),
-        pincodes
+        this.locationNames
       )
       .subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
@@ -144,6 +184,26 @@ export class CenterSelectionComponent
         }
       });
     this.subscriptions.push(subs);
+  }
+
+
+  getLocationNames(locationCode) {
+    return new Promise((resolve) => {
+      this.dataService
+        .getLocationOnLocationCodeAndLangCode(locationCode, this.primaryLang)
+        .subscribe((response) => {
+          console.log(response[appConstants.RESPONSE]);
+          if (response[appConstants.RESPONSE]) {
+            console.log(
+              response[appConstants.RESPONSE]["locations"][0]["name"]
+            );
+            this.locationNames.push(
+              response[appConstants.RESPONSE]["locations"][0]["name"]
+            );
+            resolve(true);
+          }
+        });
+    });
   }
 
   setSearchClick(flag: boolean) {

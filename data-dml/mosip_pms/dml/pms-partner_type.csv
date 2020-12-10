@@ -1,9 +1,9 @@
 code,partner_description,is_active,cr_by,cr_dtimes,is_policy_required
-Auth_Partner,Auth_Partner,TRUE,superadmin,now(),TRUE
-Device_Provider,Device_Provider,TRUE,superadmin,now(),FALSE
-Credential_Partner,Credential_Partner,TRUE,superadmin,now(),TRUE
-Partner_Admin,Partner_Admin,TRUE,superadmin,now(),FALSE
-FTM_Provider,FTM_Provider,TRUE,superadmin,now(),FALSE
-Online_Verification_Partner,Online_Verification_Partner,TRUE,superadmin,now(),TRUE
-ABIS,ABIS,TRUE,superadmin,now(),TRUE
-Manual_Adjudication,Manual_Adjudication,TRUE,superadmin,now(),TRUE
+Auth_Partner,Auth Partner,TRUE,superadmin,now(),TRUE
+Device_Provider,Device Provider,TRUE,superadmin,now(),FALSE
+Credential_Partner,Credential Partner,TRUE,superadmin,now(),TRUE
+Partner_Admin,Partner Admin,TRUE,superadmin,now(),FALSE
+FTM_Provider,FTM Provider,TRUE,superadmin,now(),FALSE
+Online_Verification Partner,Online_Verification_Partner,TRUE,superadmin,now(),TRUE
+ABIS_Partner,ABIS Partner,TRUE,superadmin,now(),TRUE
+Manual_Adjudication,Manual Adjudication,TRUE,superadmin,now(),TRUE
