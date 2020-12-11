@@ -7,7 +7,7 @@ import io.mosip.kernel.logger.logback.factory.Logfactory;
 public final class LoggerConfig {
 	
 	/**
-	 * Instantiates a new pre-reg  logger.
+	 * Instantiates a new biosdk service  logger.
 	 */
 	private LoggerConfig() {
 
@@ -15,23 +15,22 @@ public final class LoggerConfig {
 
 	
 	/** The mosip rolling file appender. */
-	private static RollingFileAppender mosipRollingFileAppender;
+	private final static RollingFileAppender MOSIP_ROLLING_APPENDER = new RollingFileAppender();
 	
 	static {
-		mosipRollingFileAppender = new RollingFileAppender();
-		mosipRollingFileAppender.setAppend(true);
-		mosipRollingFileAppender.setAppenderName("fileappender");
-		mosipRollingFileAppender.setFileName("./logs/biosdk-service.log");
-		mosipRollingFileAppender.setFileNamePattern("./logs/biosdk-service-%d{yyyy-MM-dd}-%i.log");
-		mosipRollingFileAppender.setImmediateFlush(true);
-		mosipRollingFileAppender.setMaxFileSize("50mb");
+        MOSIP_ROLLING_APPENDER.setAppend(true);
+        MOSIP_ROLLING_APPENDER.setAppenderName("org.apache.log4j.RollingFileAppender");
+        MOSIP_ROLLING_APPENDER.setFileName("./logs/biosdk-service.log");
+        MOSIP_ROLLING_APPENDER.setFileNamePattern("./logs/biosdk-service-%d{yyyy-MM-dd}-%i.log");
+        MOSIP_ROLLING_APPENDER.setImmediateFlush(true);
+        MOSIP_ROLLING_APPENDER.setMaxFileSize("50mb");
 //		mosipRollingFileAppender.setMaxHistory(3);
-		mosipRollingFileAppender.setPrudent(false);
+        MOSIP_ROLLING_APPENDER.setPrudent(false);
 //		mosipRollingFileAppender.setTotalCap("50mb");
 	}
 	
 	public static Logger logConfig(Class<?> clazz) {
-		return Logfactory.getDefaultRollingFileLogger(mosipRollingFileAppender, clazz);
+		return Logfactory.getDefaultRollingFileLogger(MOSIP_ROLLING_APPENDER, clazz);
 	}
 
 }

@@ -1,6 +1,7 @@
 package io.mosip.biosdk.services.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.mosip.biosdk.services.config.LoggerConfig;
 import io.mosip.biosdk.services.constants.ErrorMessages;
 import io.mosip.biosdk.services.dto.*;
@@ -50,8 +51,7 @@ public class MainController {
     @Autowired
     private BioSdkServiceFactory bioSdkServiceFactory;
 
-    @Autowired
-    private Gson gson;
+    private Gson gson = new GsonBuilder().serializeNulls().create();;
 
     @GetMapping(path = "/")
     @ApiOperation(value = "Service status")
