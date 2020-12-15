@@ -4,6 +4,6 @@ Device_Provider,Device Provider,TRUE,superadmin,now(),FALSE
 Credential_Partner,Credential Partner,TRUE,superadmin,now(),TRUE
 Partner_Admin,Partner Admin,TRUE,superadmin,now(),FALSE
 FTM_Provider,FTM Provider,TRUE,superadmin,now(),FALSE
-Online_Verification Partner,Online_Verification_Partner,TRUE,superadmin,now(),TRUE
+Online_Verification_Partner,Online_Verification_Partner,TRUE,superadmin,now(),TRUE
 ABIS_Partner,ABIS Partner,TRUE,superadmin,now(),TRUE
 Manual_Adjudication,Manual Adjudication,TRUE,superadmin,now(),TRUE
