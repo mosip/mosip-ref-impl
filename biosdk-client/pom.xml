@@ -48,6 +48,18 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-security</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-test</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-jpa</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
