@@ -65,7 +65,7 @@ export class PreviewComponent implements OnInit {
     await this.getResidentDetails();
     await this.getGenderDetails();
     await this.getUserInfo();
-    await this.convertLocationCodeToLocationName();
+//     await this.convertLocationCodeToLocationName();
     await this.getUserFiles();
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
@@ -133,7 +133,10 @@ export class PreviewComponent implements OnInit {
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
             dynamicField.forEach((res) => {
-              if (field.id === res.name && res.langCode === this.primaryLanguage) {
+              if (
+                field.id === res.name &&
+                res.langCode === this.primaryLanguage
+              ) {
                 this.filterOnLangCode(
                   this.primaryLanguage,
                   res.name,
@@ -241,16 +244,29 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  convertLocationCodeToLocationName(){
-   this.locationHeirarchy.forEach(location => {
-     this.getLocations(this.user.request.demographicDetails.identity[location][0].value,this.primaryLanguage).then(
-       val =>  this.user.request.demographicDetails.identity[location][0].value = val);
-     if(this.primaryLanguage != this.secondaryLanguage){
-      this.getLocations(this.user.request.demographicDetails.identity[location][1].value,this.secondaryLanguage).then(
-      val =>  this.user.request.demographicDetails.identity[location][1].value = val);
-     }
-   });
-  }
+//   convertLocationCodeToLocationName() {
+//     this.locationHeirarchy.forEach((location) => {
+//       this.getLocations(
+//         this.user.request.demographicDetails.identity[location][0].value,
+//         this.primaryLanguage
+//       ).then(
+//         (val) =>
+//           (this.user.request.demographicDetails.identity[
+//             location
+//           ][0].value = val)
+//       );
+//       if (this.primaryLanguage != this.secondaryLanguage) {
+//         this.getLocations(
+//           this.user.request.demographicDetails.identity[location][1].value,
+//           this.secondaryLanguage
+//         ).then((val) => (val) =>
+//           (this.user.request.demographicDetails.identity[
+//             location
+//           ][0].value = val)
+//         );
+//       }
+//     });
+//   }
 
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
@@ -331,7 +347,7 @@ export class PreviewComponent implements OnInit {
   modifyDemographic() {
     const url = Utils.getURL(this.router.url, "demographic", 3);
     localStorage.setItem("modifyUserFromPreview", "true");
-    localStorage.setItem('modifyUser','true');
+    localStorage.setItem("modifyUser", "true");
     this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
 
@@ -340,14 +356,14 @@ export class PreviewComponent implements OnInit {
     this.navigateBack();
   }
 
-
-   getLocations(locationCode,langCode) {
+  getLocations(locationCode, langCode) {
     return new Promise((resolve) => {
       this.dataStorageService
         .getLocationsHierarchyByLangCode(langCode, locationCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            const locations = response[appConstants.RESPONSE]["locations"][0]["name"];
+            const locations =
+              response[appConstants.RESPONSE]["locations"][0]["name"];
             resolve(locations);
           }
         });
@@ -417,9 +433,11 @@ export class PreviewComponent implements OnInit {
   navigateDashboard() {
     localStorage.setItem("newApplicant", "true");
     localStorage.setItem("modifyUserFromPreview", "false");
-    localStorage.setItem('modifyUser','false');
-    localStorage.setItem('addingUserFromPreview','true');
-    this.router.navigate([`${this.primaryLanguage}/pre-registration/demographic/new`]);
+    localStorage.setItem("modifyUser", "false");
+    localStorage.setItem("addingUserFromPreview", "true");
+    this.router.navigate([
+      `${this.primaryLanguage}/pre-registration/demographic/new`,
+    ]);
   }
 
   navigateBack() {

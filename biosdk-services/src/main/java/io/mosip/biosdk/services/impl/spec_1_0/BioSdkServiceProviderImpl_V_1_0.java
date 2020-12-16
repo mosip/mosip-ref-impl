@@ -1,6 +1,7 @@
 package io.mosip.biosdk.services.impl.spec_1_0;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.mosip.biosdk.services.config.LoggerConfig;
 import io.mosip.biosdk.services.constants.ErrorMessages;
 import io.mosip.biosdk.services.dto.ErrorDto;
@@ -39,8 +40,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     @Autowired
     private Utils serviceUtil;
 
-    @Autowired
-    private Gson gson;
+    private Gson gson = new GsonBuilder().serializeNulls().create();
 
     @Override
     public String getSpecVersion() {

@@ -1,6 +1,7 @@
 package io.mosip.biosdk.client.impl.spec_1_0;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import io.mosip.biosdk.client.config.LoggerConfig;
 import io.mosip.biosdk.client.dto.*;
@@ -42,6 +43,7 @@ public class Client_V_1_0 implements IBioApi {
 
 	/* "http://localhost:9099/biosdk-service" */
 	private static final String host = System.getenv("mosip_biosdk_service");
+	private Gson gson = new GsonBuilder().serializeNulls().create();
 
 	Type errorDtoListType = new TypeToken<List<ErrorDto>>(){}.getType();
 
@@ -62,7 +64,6 @@ public class Client_V_1_0 implements IBioApi {
 			String responseBody = responseEntity.getBody().toString();
             JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
-			Gson gson = new Gson();
 
             /* Error handler */
             errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
@@ -95,7 +96,6 @@ public class Client_V_1_0 implements IBioApi {
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
-			Gson gson = new Gson();
 
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
@@ -130,7 +130,6 @@ public class Client_V_1_0 implements IBioApi {
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
-			Gson gson = new Gson();
 
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
@@ -172,7 +171,6 @@ public class Client_V_1_0 implements IBioApi {
 			BiometricRecord resBiometricRecord = null;
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
-			Gson gson = new Gson();
 
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
@@ -205,7 +203,6 @@ public class Client_V_1_0 implements IBioApi {
 			BiometricRecord resBiometricRecord = null;
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
-			Gson gson = new Gson();
 
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
