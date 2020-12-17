@@ -13,6 +13,7 @@ import { SideMenuService } from '../services/side-menu.service';
 import { NavItem } from '../../core/nav-item';
 import { AuditService } from '../services/audit.service';
 import { RolesService } from '../services/roles.service';
+import * as $ from 'jquery' 
 
 @Component({
   selector: 'app-side-menu',
@@ -27,6 +28,7 @@ export class SideMenuComponent implements OnInit {
   @Input() screenResize: number;
   @Output() closeNav = new EventEmitter<any>();
   locationUrl: any;
+  isCollapsed: boolean = true;
 
   constructor(
     private sideMenuService: SideMenuService,
@@ -46,8 +48,15 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
+  toggleCollapse() {
+    if(this.isCollapsed){
+      this.isCollapsed = false;
+    }else{
+      this.isCollapsed = true;
+    }
+  }
+
   onItemSelected(item: any) {
-    console.log('item', item);
     const itemName = item.route.split('/')[item.route.split('/').length - 1];
     this.auditService.audit(1, item.auditEventId, itemName);
     if (this.screenResize < 840) {

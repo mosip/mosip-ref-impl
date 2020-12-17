@@ -28,7 +28,7 @@ export class PacketStatusComponent implements OnInit {
 
   id = '';
   error = false;
-
+  errorMessage = '';
   constructor(
     private translate: TranslateService,
     private appService: AppConfigService,
@@ -51,9 +51,12 @@ export class PacketStatusComponent implements OnInit {
   }
 
   search() {
+    this.data = null;
+    this.errorMessage = '';
     if (this.id.length !== 29) {
       this.error = true;
     } else {
+      console.log('this.id>>>'+this.id);
       this.dataStorageService.getPacketStatus(this.id).subscribe(response => {
         console.log(response);
         if (response['response'] != null) {
@@ -71,7 +74,8 @@ export class PacketStatusComponent implements OnInit {
         }
        } else if (response['errors'] != null) {
           console.log('error has occured');
-          this.dialog
+          this.errorMessage = this.messages.errorMessages.message;
+          /*this.dialog
             .open(DialogComponent, {
                data: {
                 case: 'MESSAGE',
@@ -85,7 +89,7 @@ export class PacketStatusComponent implements OnInit {
             .afterClosed()
             .subscribe(result => {
               console.log('dialog is closed from view component');
-            });
+            });*/
         }
       });
     }
