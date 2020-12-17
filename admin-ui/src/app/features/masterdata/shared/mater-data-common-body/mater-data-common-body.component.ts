@@ -320,12 +320,12 @@ export class MaterDataCommonBodyComponent implements OnInit {
     this.dataStorageService
       .getDropDownValuesForMasterData('locations/'+this.primaryLang)
       .subscribe(response => {
-        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations;
+        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations.sort((a, b) => { return a.locationHierarchylevel - b.locationHierarchylevel;});
       });
     this.dataStorageService
       .getDropDownValuesForMasterData('locations/'+this.secondaryLang)
       .subscribe(response => {
-        this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations;
+        this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations.sort((a, b) => { return a.locationHierarchylevel - b.locationHierarchylevel;});
       });
   }
 

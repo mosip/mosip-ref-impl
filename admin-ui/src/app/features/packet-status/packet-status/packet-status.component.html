@@ -10,7 +10,7 @@
         <mat-error style="margin-left: 30px ;font-size: 9.5px" *ngIf="error">{{'packet-status.error' | translate}}</mat-error>
     </mat-card>
     <mat-card *ngIf="showDetails" style="border-radius: 0;">
-        <div class="packet-status__details-container">
+        <div class="packet-status__details-container" *ngIf="data">
             <div><img src="./assets/images/Packet_Status.png" alt="" height="100px" width="100px"></div>
             <div>
                 <table>
@@ -44,6 +44,16 @@
                          </p>
                     </li>
                 </ul>
+            </div>
+        </div>
+        <div class="packet-status__details-container" *ngIf="errorMessage">
+            <div><img src="./assets/images/Packet_Status.png" alt="" height="100px" width="100px"></div>
+            <div>
+                <table>
+                    <tr>
+                        <td><strong>{{errorMessage}}</strong></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </mat-card>
