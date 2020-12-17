@@ -56,6 +56,12 @@ export class CreateComponent {
     }
   }
 
+  onFileClick(event){
+    event.target.value = '';
+    this.fileName = '';
+    this.fileCount =  0;
+  }
+
   submit(){
     let data = {};
     data = {
@@ -95,7 +101,6 @@ export class CreateComponent {
     let data = {};
     let self = this;
     let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
-    console.log("statusDescription>>>"+statusDescription);
     if(uploadResponse.response.status == "FAILED"){
       for( let prop in statusDescription ){
         console.log( statusDescription[prop] );

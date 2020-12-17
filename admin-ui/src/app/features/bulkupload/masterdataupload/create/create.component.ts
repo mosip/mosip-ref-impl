@@ -54,8 +54,12 @@ export class CreateComponent {
     }
   }
 
+  onFileClick(event){
+    event.target.value = ''
+    this.fileName = '';
+  }
+
   submit(){
-    console.log("this.uploadForm.valid>>>"+this.uploadForm.valid);
     if (this.uploadForm.valid) {
       let data = {};
       data = {
@@ -98,11 +102,15 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    if(uploadResponse.errors){
+    let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
+    if(uploadResponse.response.status == "FAILED"){
+      for( let prop in statusDescription ){
+        console.log( statusDescription[prop] );
+      }
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: uploadResponse.errors[0].message,
+        message: uploadResponse.response.statusDescription,
         btnTxt: "DONE"
       };
     }else{
