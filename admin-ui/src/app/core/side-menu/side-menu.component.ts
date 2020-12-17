@@ -13,7 +13,6 @@ import { SideMenuService } from '../services/side-menu.service';
 import { NavItem } from '../../core/nav-item';
 import { AuditService } from '../services/audit.service';
 import { RolesService } from '../services/roles.service';
-import * as $ from 'jquery' 
 
 @Component({
   selector: 'app-side-menu',

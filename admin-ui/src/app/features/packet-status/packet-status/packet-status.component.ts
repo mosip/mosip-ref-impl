@@ -4,7 +4,6 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-packet-status',
