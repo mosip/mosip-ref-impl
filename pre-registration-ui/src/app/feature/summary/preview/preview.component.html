@@ -8,7 +8,7 @@
     <mat-card-content>
       <div class="preview__body-content-container">
         <div
-          [ngClass]="
+                [ngClass]="
             primaryLanguage === 'ara' ? 'preview__body-content-div right spacing' : 'preview__body-content-div'
           "
         >
@@ -102,22 +102,22 @@
         <div *ngIf="primaryLanguage == secondaryLanguage">
           <div class="preview__modify-div">
               <span
-                (click)="modifyDemographic()"
-                class="preview__modify-div-span"
-                matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
-                ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
+                      (click)="modifyDemographic()"
+                      class="preview__modify-div-span"
+                      matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
+              ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
               >
-            </div>
+          </div>
         </div>
         <div *ngIf="primaryLanguage != secondaryLanguage" [ngClass]="secondaryLanguage === 'ara' ? 'preview__body-content-div right' : 'preview__body-content-div'">
           <div>
             <div class="preview__modify-div">
               <span>{{ secondaryLanguagelabels.language }}</span>
               <span
-                (click)="modifyDemographic()"
-                class="preview__modify-div-span"
-                matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
-                ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
+                      (click)="modifyDemographic()"
+                      class="preview__modify-div-span"
+                      matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
+              ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
               >
             </div>
             <h3>{{ secondaryLanguagelabels.subheading_information }}</h3>
@@ -132,7 +132,7 @@
                   {{ previewData[field.id] }}
                 </td>
                 <td *ngIf="previewData[field.id]">
-                  {{ previewData[field.id][0].value }}
+                  {{ previewData[field.id][1].value }}
                 </td>
               </div>
               <div *ngIf="field.controlType == 'dropdown'">
@@ -167,7 +167,7 @@
                       {{ previewData[field.id] }}
                     </td>
                     <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic'">
-                      {{ previewData[field.id][0].value }}
+                      {{ previewData[field.id][1].value }}
                     </td>
                   </div>
                 </div>
@@ -247,7 +247,7 @@
               <tr>
                 <td>{{ secondaryLanguagelabels.label_pin }}</td>
                 <td>:</td>
-                <td>{{ previewData.referenceIdentityNumber }}</td> 
+                <td>{{ previewData.referenceIdentityNumber }}</td>
               </tr>
             </table>
           </div> -->
@@ -257,10 +257,10 @@
     <div class="preview__footer-header">
       <span>{{ 'preview.title_document' | translate }}</span>
       <span
-        (click)="modifyDocument()"
-        class="preview__modify-file"
-        matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"
-        ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
+              (click)="modifyDocument()"
+              class="preview__modify-file"
+              matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"
+      ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
       >
     </div>
     <mat-card-footer class="preview__footer-container">
@@ -290,9 +290,9 @@
   <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
   <span class="spacer"></span>
   <button
-    matTooltip="{{ 'helpText.add_applicant' | translate }}"
-    (click)="navigateDashboard()"
-    class="user-book_later-btn"
+          matTooltip="{{ 'helpText.add_applicant' | translate }}"
+          (click)="navigateDashboard()"
+          class="user-book_later-btn"
   >
     {{ 'preview.action_add_applicant' | translate }}
   </button>

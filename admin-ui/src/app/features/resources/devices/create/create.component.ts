@@ -17,6 +17,7 @@ import { AuditService } from 'src/app/core/services/audit.service';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 import { Location } from '@angular/common';
 import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import Utils from '../../../../app.utils';
@@ -185,14 +186,16 @@ export class CreateComponent{
 
   getCenterDetails() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
+
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcenters', request)
       .subscribe(response => {
         this.dropDownValues.regCenterCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcenters', request)
@@ -204,14 +207,15 @@ export class CreateComponent{
 
   getDevicespecifications() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicespecifications', request)
       .subscribe(response => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicespecifications', request)

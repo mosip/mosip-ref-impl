@@ -349,6 +349,7 @@ export class DemographicComponent
           ...response["response"]["idSchema"]["locationHierarchy"],
         ];
         console.log(this.locationHeirarchy);
+        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchy));
         this.identityData.forEach((obj) => {
           if (
             obj.inputRequired === true &&
@@ -770,7 +771,7 @@ export class DemographicComponent
         } else if (control.controlType === "dropdown") {
           if (this.locationHeirarchy.includes(control.id)) {
             this.dropdownApiCall(control);
-            if (control.id === "postalCode") {
+            if (control.type === "string") {
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
               );
@@ -779,7 +780,7 @@ export class DemographicComponent
                   this.user.request.demographicDetails.identity[`${control.id}`]
                 );
               }
-            } else {
+            } else if(control.type === 'simpleType') {
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[control.id][index]
                   .value
@@ -976,10 +977,12 @@ export class DemographicComponent
         this.hasDobChanged();
       }
     } else {
+      console.log(this.currentAge);
       this.userForm.controls["dateOfBirth"].markAsTouched();
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
       });
+      this.currentAge = "";
       this.age.nativeElement.value = "";
     }
   }
@@ -1379,7 +1382,6 @@ export class DemographicComponent
    */
   private createIdentityJSONDynamic() {
     const identityObj = { IDSchemaVersion: "" };
-    const stringField = ["dateOfBirth", "postalCode", "email", "phone"];
     this.identityData.forEach((field) => {
       if (
         field.inputRequired === true &&
@@ -1388,10 +1390,10 @@ export class DemographicComponent
         if (!field.inputRequired) {
           identityObj[field.id] = "";
         } else {
-          if (stringField.includes(field.id)) {
-            identityObj[field.id] = "";
-          } else {
+          if (field.type === 'simpleType') {
             identityObj[field.id] = [];
+          } else if (field.type === 'string'){
+            identityObj[field.id] = "";
           }
         }
       }

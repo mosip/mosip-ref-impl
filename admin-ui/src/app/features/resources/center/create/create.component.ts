@@ -29,6 +29,7 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 import {
   MatKeyboardRef,
   MatKeyboardComponent,
@@ -758,7 +759,7 @@ export class CreateComponent {
       lunchEndTime: [''],
       workingDays: [[], [Validators.required]],
       exceptionalHolidays: [[]],
-      isActive: [{ value: false, disabled: true }]
+      isActive: [{ value: false}]
     });
     
   }
@@ -790,7 +791,7 @@ export class CreateComponent {
       lunchEndTime: [{ value: '', disabled: true }],
       workingDays: [{ value: [], disabled: true}],
       exceptionalHolidays: [[]],
-      isActive: [{ value: false}]
+      isActive: [{ value: false, disabled: true }]
     });
    
   }
@@ -859,14 +860,15 @@ export class CreateComponent {
 
   getRegistrationCenterTypes() {
     let filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcentertypes', request)
       .subscribe(response => {
         this.dropDownValues.centerTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, [optinalFilterObject]);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('registrationcentertypes', request)
@@ -1031,9 +1033,9 @@ export class CreateComponent {
       let existingHolidays = this.primaryForm.controls.exceptionalHolidays.value;
       existingHolidays.splice(i, 1);
       this.primaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
-      existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
+      /*existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
       existingHolidays.splice(i, 1);
-      this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);
+      this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);*/
     }
   }
 

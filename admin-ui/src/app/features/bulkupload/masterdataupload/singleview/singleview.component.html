@@ -48,7 +48,7 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Date and Time</mat-label>
-              <input matInput placeholder="Table Name" value="{{data.timeStamp | formatDate}}" readonly>
+              <input matInput placeholder="Table Name" value="{{data.timeStamp | date:'short'}}" readonly>
             </mat-form-field> 
           </div> 
           <div style="width: 10%">
