@@ -592,7 +592,8 @@
                       'endTime',
                       'more'
                     );
-                    calculateWorkingHours()
+                    calculateWorkingHours();
+                    validateAndLoadLunchTime('lunchStartTime')
                   "
                 >
                   <mat-option
@@ -624,7 +625,8 @@
                       'endTime',
                       'startTime',
                       'less'
-                    )
+                    );
+                    validateAndLoadLunchTime('lunchEndTime')
                   "
                 >
                   <mat-option
@@ -659,7 +661,6 @@
                 }}</mat-label>
                 <mat-select
                   formControlName="lunchStartTime"
-                  (click)="validateAndLoadLunchTime('lunchStartTime')"
                   (selectionChange)="
                     copyDataToSecondaryForm(
                       'lunchStartTime',
@@ -679,7 +680,6 @@
                 <mat-label>{{ "center.lunch-end-time" | translate }}</mat-label>
                 <mat-select
                   formControlName="lunchEndTime"
-                  (click)="validateAndLoadLunchTime('lunchEndTime')"
                   (selectionChange)="
                     copyDataToSecondaryForm(
                       'lunchEndTime',

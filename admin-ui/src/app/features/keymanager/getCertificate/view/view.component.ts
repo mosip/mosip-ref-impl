@@ -11,6 +11,7 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-view',
@@ -30,7 +31,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   errorMessages: any;
   noData = false;
   filtersApplied = false;
-
+  createForm: FormGroup;
   constructor(
     private keymanagerService: KeymanagerService,
     private appService: AppConfigService,
@@ -38,6 +39,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     private translateService: TranslateService,
+    private formBuilder: FormBuilder,
     private auditService: AuditService
   ) {
     this.getCertificateCofig();
@@ -48,6 +50,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
+        this.createForm = this.formBuilder.group({
+          applicationId : [''],
+          referenceId: ['']
+        });
         this.getCertificate();
       }
     });
@@ -102,6 +108,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   }*/
 
   getCertificate() {
+    let self = this;
+    console.log("applicationId>>>"+self.createForm.get('applicationId').value);
+    console.log("referenceId>>>"+self.createForm.get('referenceId').value);
     this.datas = [];
     this.noData = false;
     this.filtersApplied = false;
@@ -120,7 +129,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     console.log("filters>>>"+JSON.stringify(filters));
     console.log(JSON.stringify(this.requestModel));
     this.keymanagerService
-      .getCertificate(this.requestModel, "", filters.pagination.pageStart, filters.pagination.pageFetch, "")
+      .getCertificate(this.requestModel, self.createForm.get('applicationId').value, filters.pagination.pageStart, filters.pagination.pageFetch, self.createForm.get('referenceId').value)
       .subscribe(({ response, errors }) => {
         console.log("response>>>"+response);
         if (response != null) {
