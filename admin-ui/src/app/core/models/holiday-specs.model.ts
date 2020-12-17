@@ -7,6 +7,6 @@ export class HolidaySpecsModel {
 		public locationCode: string,
 		public langCode: string,        
 		public isActive?: boolean,
-		public id?: string
+		public holidayId?: string
     ) {}
 }

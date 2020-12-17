@@ -49,6 +49,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   regCenterId;
   primaryLangCode;
   name = "";
+  applicantContactDetails = [];
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
@@ -126,6 +127,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           nameList.postalCode =
             user["request"].demographicDetails.identity.postalCode;
           nameList.registrationCenter = "";
+          this.applicantContactDetails[1] =  user["request"].demographicDetails.identity.phone;
+          this.applicantContactDetails[0] =  user["request"].demographicDetails.identity.email;
           await this.getAppointmentDetails(nameList.preRegId).then(
             (appointmentDetails) => {
               nameList.regDto = appointmentDetails;
@@ -286,7 +289,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   automaticNotification() {
     setTimeout(() => {
-      this.sendNotification([], false);
+      this.sendNotification(this.applicantContactDetails, false);
     }, 500);
   }
 

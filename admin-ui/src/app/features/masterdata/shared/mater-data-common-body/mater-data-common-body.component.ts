@@ -23,6 +23,7 @@ import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
 import * as appConstants from '../../../../app.constants';
+import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
 
 @Component({
   selector: 'app-mater-data-common-body',
@@ -245,14 +246,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
   
   getDeviceTypes() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicetypes', request)
       .subscribe(response => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('devicetypes', request)
@@ -264,14 +266,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
   getMachineTypes() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang);
+    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
+    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
     let request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinetypes', request)
       .subscribe(response => {
         this.dropDownValues.machineTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang);
+    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
     request = new RequestModel('', null, filterRequest);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes('machinetypes', request)

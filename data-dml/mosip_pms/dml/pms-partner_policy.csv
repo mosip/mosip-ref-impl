@@ -1,0 +1,8 @@
+policy_api_key,part_id,policy_id,valid_from_datetime,valid_to_datetime,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+mpolicy_part_auth_api,mpartner-default-auth,mpolicy-default-auth,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_abis_api,mpartner-default-abis,mpolicy-default-abis,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_qrcode_api,mpartner-default-print,mpolicy-default-qrcode,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_euin_api,mpartner-default-print,mpolicy-default-euin,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_reprint_api,mpartner-default-print,mpolicy-default-reprint,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_resident_api,mpartner-default-resident,mpolicy-default-resident,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_adjudica_api,mpartner-default-adjudication,mpolicy-default-adjudication,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
