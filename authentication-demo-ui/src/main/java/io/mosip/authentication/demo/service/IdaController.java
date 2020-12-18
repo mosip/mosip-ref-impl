@@ -95,6 +95,8 @@ import javafx.scene.text.Font;
 @Component
 public class IdaController {
 
+	private static final String DEFAULT_SUBID = "0";
+
 	@Autowired
 	private Environment env;
 
@@ -379,21 +381,25 @@ public class IdaController {
 	
 	
 	private String getFingerDeviceSubId() {
-		return "0";
+		return env.getProperty("finger.device.subid",DEFAULT_SUBID);
 	}
 	
 	private String getIrisDeviceSubId() {
-		if(irisCount.getSelectionModel().getSelectedIndex() == 0) {
-			return String.valueOf(1);
-		} else if(irisCount.getSelectionModel().getSelectedIndex() == 1) {
-			return String.valueOf(2);
-		} else {
-			return String.valueOf(3);
+		String irisSubId = env.getProperty("iris.device.subid");
+		if(irisSubId == null) {
+			if(irisCount.getSelectionModel().getSelectedIndex() == 0) {
+				irisSubId = String.valueOf(1);
+			} else if(irisCount.getSelectionModel().getSelectedIndex() == 1) {
+				irisSubId = String.valueOf(2);
+			} else {
+				irisSubId = String.valueOf(3);
+			}
 		}
+		return irisSubId;
 	}
 
 	private String getFaceDeviceSubId() {
-		return "0";
+		return env.getProperty("face.device.subid",DEFAULT_SUBID);
 	}
 	
 	private String captureIris() throws Exception {
@@ -515,7 +521,7 @@ public class IdaController {
 			Map e = (Map) data.get(j);			
 			Map errorMap = (Map) e.get("error");
 			error = errorMap.get("errorCode").toString();		
-			if (error.equals("0") || error.equals("100")) {
+			if (error.equals(DEFAULT_SUBID) || error.equals("100")) {
 				responsetextField.setText("Capture Success");
 				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
 				ObjectMapper objectMapper = new ObjectMapper();
