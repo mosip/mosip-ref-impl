@@ -18,7 +18,7 @@
           <div [formGroup]="uploadForm" class="primary-form" *ngIf="uploadForm">
             <div class="custom-file-input">
               <input type="button" value="Choose File" class="browseInput">
-              <input type="file" multiple="multiple" #fileInput (change)="onFileSelect($event)" placeholder="Upload file..." />
+              <input type="file" multiple="multiple" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
               <input type="text" [value]="fileName" placeholder="Upload Your File">                
             </div>           
           </div> 

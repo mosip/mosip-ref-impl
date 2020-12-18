@@ -27,6 +27,7 @@ export class SideMenuComponent implements OnInit {
   @Input() screenResize: number;
   @Output() closeNav = new EventEmitter<any>();
   locationUrl: any;
+  isCollapsed: boolean = true;
 
   constructor(
     private sideMenuService: SideMenuService,
@@ -46,8 +47,15 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
+  toggleCollapse() {
+    if(this.isCollapsed){
+      this.isCollapsed = false;
+    }else{
+      this.isCollapsed = true;
+    }
+  }
+
   onItemSelected(item: any) {
-    console.log('item', item);
     const itemName = item.route.split('/')[item.route.split('/').length - 1];
     this.auditService.audit(1, item.auditEventId, itemName);
     if (this.screenResize < 840) {

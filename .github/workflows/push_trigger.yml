@@ -101,6 +101,7 @@ jobs:
     - name: Publish the maven package
       run: |
         cd kernel && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+        cd ..
         cd pre-registration-booking-service && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -344,7 +345,7 @@ jobs:
 
 # This workflow contains a single job called "build"
   build-keycloak:
-    
+
     runs-on: ubuntu-latest
     env:
       NAMESPACE: ${{ secrets. dev_namespace_docker_hub }}
@@ -356,8 +357,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      
-      - name: Setup branch and env 
+
+      - name: Setup branch and env
         run: |
           # Strip git ref prefix from version
           echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
@@ -366,19 +367,19 @@ jobs:
         run: |
           # Strip git ref prefix from version
           echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
-      
+
       - name: Build image
         run: |
           cd "./${{env.SERVICE_LOCATION}}"
           docker build . --file Dockerfile --tag ${{ env.SERVICE_NAME }}
-      
+
       - name: Log into registry
         run: echo "${{ secrets.release_docker_hub }}" | docker login -u ${{ secrets.actor_docker_hub }} --password-stdin
-        
+
       - name: Push image
         run: |
           IMAGE_ID=$NAMESPACE/$SERVICE_NAME
-          
+
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           VERSION=$BRANCH_NAME

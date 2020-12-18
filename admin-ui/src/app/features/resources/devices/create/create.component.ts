@@ -396,8 +396,8 @@ export class CreateComponent{
   submit() {
     if (!this.disableForms) {
       this.auditService.audit(17, 'ADM-097');
-      this.onCreate();
-      /*if (this.primaryForm.valid) {
+      //this.onCreate();
+      if (this.primaryForm.valid) {
         for (const i in this.secondaryForm.controls) {
           if (this.secondaryForm.controls[i]) {
             this.secondaryForm.controls[i].markAsTouched();
@@ -411,7 +411,7 @@ export class CreateComponent{
             this.secondaryForm.controls[i].markAsTouched();
           }
         }
-      }*/
+      }
     } else {
       this.disableForms = false;
       this.primaryForm.enable();
@@ -420,7 +420,6 @@ export class CreateComponent{
       }
     }
   }
-
   onCreate() {
     let data = {};
     if (this.secondaryForm.controls.name.value === '' && this.showSecondaryForm

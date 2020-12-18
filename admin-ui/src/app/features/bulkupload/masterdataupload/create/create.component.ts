@@ -54,9 +54,13 @@ export class CreateComponent {
     }
   }
 
+  onFileClick(event){
+    event.target.value = ''
+    this.fileName = '';
+  }
+
   submit(){
-    /*console.log("this.uploadForm.valid>>>"+this.uploadForm.valid);*/
-    /*if (this.uploadForm.valid) {*/
+    if (this.uploadForm.valid) {
       let data = {};
       data = {
         case: 'CONFIRMATION',
@@ -74,13 +78,13 @@ export class CreateComponent {
           this.saveData();
         }      
       });  
-    /*} else {
+    } else {
       for (const i in this.uploadForm.controls) {
         if (this.uploadForm.controls[i]) {
           this.uploadForm.controls[i].markAsTouched();
         }
       }
-    } */ 
+    }  
   }
 
   saveData(){
@@ -98,45 +102,35 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    if(uploadResponse.errors.length > 0){
+    let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
+    if(uploadResponse.response.status == "FAILED"){
+      for( let prop in statusDescription ){
+        console.log( statusDescription[prop] );
+      }
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: uploadResponse.errors[0].message,
+        message: uploadResponse.response.statusDescription,
         btnTxt: "DONE"
       };
     }else{
-      if(uploadResponse.response.status == "FAILED"){
-        data = {
-          case: 'MESSAGE',
-          title: "Failure !",
-          message: uploadResponse.response.statusDescription,
-          btnTxt: "DONE"
-        };
-      }else{
-        data = {
-          case: 'MESSAGE',
-          title: "Success",
-          message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
-          btnTxt: "DONE"
-        };
-      }
+      data = {
+        case: 'MESSAGE',
+        title: "Success",
+        message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
+        btnTxt: "DONE"
+      };
     }
+      
     const dialogRef = self.dialog.open(DialogComponent, {
       width: '550px',
       data
     });
     dialogRef.afterClosed().subscribe(response => {   
-      if(uploadResponse.errors.length > 0){
-        self.uploadForm.get('files').setValue(null);
+      if(uploadResponse.response.status == "FAILED"){
       }else{
-        if(uploadResponse.response.status == "FAILED"){
-          self.uploadForm.get('files').setValue(null);
-        }else{
-          self.location.back();
-        }
-      }
-           
+        self.location.back();
+      }     
     });
   }
   cancel() {

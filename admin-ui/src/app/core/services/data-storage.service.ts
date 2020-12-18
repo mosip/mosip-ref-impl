@@ -24,7 +24,6 @@ export class DataStorageService {
     locationCode: string,
     langCode: string
   ): Observable<any> {
-    console.log('getImmediateChildren>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +

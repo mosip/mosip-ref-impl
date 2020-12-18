@@ -1,11 +1,10 @@
 <ul>
-  <li>
-    <a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active" (click)="onItemSelected(item)"
-      class="menu-list-item" [style.marginTop.px]="index == 0 ? 25:0">
+  <li class="nav-header" *ngIf = "item?.children">
+    <a mat-list-item class="menu-list-item" [style.marginTop.px]="index == 0 ? 25:0" (click)="toggleCollapse()">
       <span *ngIf="item?.icon" class="routeIcon"><img src="{{item?.icon}}" style="margin-right: 5px;" alt="Icon"></span>&nbsp;
       <span class="menu-list-text">{{ item?.displayName | translate }}</span>
     </a>
-    <ul>
+    <ul class="nav nav-list" *ngIf="!isCollapsed">
       <ng-container *ngFor="let subItem of item?.children;let i=index">
         <li *ngIf="rolesService.checkRole(subItem)"><a mat-list-item [routerLink]="[subItem?.route]" routerLinkActive="list-item-active"
             (click)="onItemSelected(subItem)" class="menu-list-item">
@@ -14,6 +13,13 @@
         </li>
       </ng-container>
     </ul>
+  </li>
+  <li class="nav-header" *ngIf = "!item?.children">
+    <a mat-list-item [routerLink]="[item?.route]" routerLinkActive="list-item-active" (click)="onItemSelected(item)"
+      class="menu-list-item" [style.marginTop.px]="index == 0 ? 25:0">
+      <span *ngIf="item?.icon" class="routeIcon"><img src="{{item?.icon}}" style="margin-right: 5px;" alt="Icon"></span>&nbsp;
+      <span class="menu-list-text">{{ item?.displayName | translate }}</span>
+    </a>
   </li>
 </ul>
 <!-- <nav>
