@@ -43,6 +43,10 @@ TRUNCATE TABLE pms.partner_policy_request cascade ;
 
 \COPY pms.partner_policy_request (id,part_id,policy_id,request_datetimes,request_detail,status_code,cr_by,cr_dtimes,upd_by,upd_dtimes) FROM './dml/pms-partner_policy_request.csv' delimiter ',' HEADER  csv;
 
+----- TRUNCATE pms.partner_policy_credential_type TABLE Data and It's reference Data and COPY Data from CSV file -----
+TRUNCATE TABLE pms.partner_policy_credential_type cascade ;
+
+\COPY pms.partner_policy_credential_type (part_id,policy_id,credential_type,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes,is_deleted,del_dtimes) FROM './dml/pms-partner_policy_credential_type.csv' delimiter ',' HEADER  csv;
 
 ------------------------------------------- History Table Loading ----------------------------------
 
@@ -59,21 +63,3 @@ TRUNCATE TABLE pms.auth_policy_h cascade ;
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
