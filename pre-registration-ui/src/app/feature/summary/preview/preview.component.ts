@@ -70,7 +70,7 @@ export class PreviewComponent implements OnInit {
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
     this.calculateAge();
-    this.previewData.primaryAddress = this.combineAddress(0);
+    //this.previewData.primaryAddress = this.combineAddress(0);
     //this.previewData.secondaryAddress = this.combineAddress(1);
     this.formatDob(this.previewData.dateOfBirth);
     this.getSecondaryLanguageLabels();
