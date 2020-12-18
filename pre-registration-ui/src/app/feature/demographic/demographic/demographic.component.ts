@@ -166,7 +166,7 @@ export class DemographicComponent
   primarydropDownFields = {};
   secondaryDropDownLables = {};
   secondaryuserForm = false;
-  locationHeirarchy = [];
+  locationHeirarchies = [];
   validationMessage: any;
   dynamicFields = [];
   dynamicFieldAndValues = [];
@@ -345,11 +345,19 @@ export class DemographicComponent
         // this.identityData = response["identity"];
         // this.locationHeirarchy = [...response["locationHierarchy"]];
         this.identityData = response["response"]["idSchema"]["identity"];
-        this.locationHeirarchy = [
+        let locationHeirarchiesFromJson = [
           ...response["response"]["idSchema"]["locationHierarchy"],
         ];
-        console.log(this.locationHeirarchy);
-        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchy));
+        if (Array.isArray(locationHeirarchiesFromJson[0])) {
+          this.locationHeirarchies = locationHeirarchiesFromJson;  
+        } else {
+          let hierarchiesArray = [];
+          hierarchiesArray.push(locationHeirarchiesFromJson);
+          this.locationHeirarchies = hierarchiesArray;
+        }
+        console.log(this.locationHeirarchies);
+        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchies[0]));
+        
         this.identityData.forEach((obj) => {
           if (
             obj.inputRequired === true &&
@@ -452,6 +460,32 @@ export class DemographicComponent
     });
   }
 
+  isThisFieldInLocationHeirarchies = (fieldId) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items.length > 0 ? true: false;
+  }
+
+  getIndexInLocationHeirarchy = (fieldId) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items.indexOf(fieldId);
+  }
+
+  getLocationNameFromIndex = (fieldId, fieldIndex) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items[fieldIndex];
+  }
+
+  getLocationHierarchy = (fieldId) => {
+    let items = [];
+    this.locationHeirarchies.forEach(locationHeirarchy => {
+      let filteredItems = locationHeirarchy.filter(item => item == fieldId);
+      if (filteredItems.length > 0) {
+        items = locationHeirarchy;
+      }
+    });
+    return items;
+  }
+
   /**
 
    *
@@ -461,12 +495,12 @@ export class DemographicComponent
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
   dropdownApiCall(controlObject: any) {
-    if (this.locationHeirarchy.includes(controlObject.id)) {
-      if (this.locationHeirarchy.indexOf(controlObject.id) !== 0) {
+    if (this.isThisFieldInLocationHeirarchies(controlObject.id)) {
+      if (this.getIndexInLocationHeirarchy(controlObject.id) !== 0) {
         this.primarydropDownFields[controlObject.id] = [];
-        const location = this.locationHeirarchy.indexOf(controlObject.id);
-        const parentLocation = this.locationHeirarchy[location - 1];
-        let locationCode = this.userForm.get(`${parentLocation}`).value;
+        const locationIndex = this.getIndexInLocationHeirarchy(controlObject.id);
+        const parentLocationName = this.getLocationNameFromIndex(controlObject.id, locationIndex - 1);
+        let locationCode = this.userForm.get(`${parentLocationName}`).value;
         this.loadLocationData(locationCode, controlObject.id);
       }
     }
@@ -521,10 +555,13 @@ export class DemographicComponent
    */
   private async setLocations() {
     await this.getLocationMetadataHirearchy();
-    this.loadLocationData(
-      this.uppermostLocationHierarchy,
-      this.locationHeirarchy[0]
-    );
+    this.locationHeirarchies.forEach(locationHeirarchy => {
+      this.loadLocationData(
+        this.uppermostLocationHierarchy,
+        locationHeirarchy[0]
+      );
+    }, this);
+    
   }
   /**
    * @description This is to reset the input values
@@ -533,8 +570,8 @@ export class DemographicComponent
    * @param fieldName location dropdown control Name
    */
   resetLocationFields(fieldName: string) {
-    if (this.locationHeirarchy.includes(fieldName)) {
-      const locationFields = [...this.locationHeirarchy];
+    if (this.isThisFieldInLocationHeirarchies(fieldName)) {
+      const locationFields = this.getLocationHierarchy(fieldName);
       const index = locationFields.indexOf(fieldName);
       for (let i = index + 1; i < locationFields.length; i++) {
         this.userForm.controls[locationFields[i]].setValue("");
@@ -570,7 +607,6 @@ export class DemographicComponent
                   valueName: element.name,
                   languageCode: this.primaryLang,
                 };
-
                 this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
               });
             }
@@ -641,20 +677,20 @@ export class DemographicComponent
       this.dataStorageService
         .getDynamicFieldsandValues(lang)
         .subscribe((response) => {
-          console.log(response);
+          //console.log(response);
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
-            console.log(field);
+            //console.log(field);
             dynamicField.forEach((res) => {
-              console.log(res);
+              //console.log(res);
               if (field.id === res.name && res.langCode === this.primaryLang) {
-                console.log(res["fieldVal"]);
+                //console.log(res["fieldVal"]);
                 this.filterOnLangCode(
                   this.primaryLang,
                   res.name,
                   res["fieldVal"]
                 );
-                console.log(this.primarydropDownFields);
+                //console.log(this.primarydropDownFields);
               }
               if (this.primaryLang !== this.secondaryLang) {
                 if (
@@ -769,7 +805,7 @@ export class DemographicComponent
             );
           }
         } else if (control.controlType === "dropdown") {
-          if (this.locationHeirarchy.includes(control.id)) {
+          if (this.isThisFieldInLocationHeirarchies(control.id)) {
             this.dropdownApiCall(control);
             if (control.type === "string") {
               this.userForm.controls[`${control.id}`].setValue(
@@ -971,13 +1007,13 @@ export class DemographicComponent
       if (this.primaryLang !== this.secondaryLang) {
         this.transUserForm.controls["dateOfBirth"].setValue(newDate);
       }
-      console.log(this.userForm);
+      //console.log(this.userForm);
       if (this.dataModification) {
-        console.log(newDate);
+        //console.log(newDate);
         this.hasDobChanged();
       }
     } else {
-      console.log(this.currentAge);
+      //console.log(this.currentAge);
       this.userForm.controls["dateOfBirth"].markAsTouched();
       this.userForm.controls["dateOfBirth"].setErrors({
         incorrect: true,
@@ -1028,9 +1064,9 @@ export class DemographicComponent
   private filterOnLangCode(langCode: string, field: string, entityArray: any) {
     return new Promise((resolve, reject) => {
       if (entityArray) {
-        console.log(entityArray);
+        //console.log(entityArray);
         entityArray.filter((element: any) => {
-          console.log(element);
+          //console.log(element);
           if (element.langCode === langCode) {
             let codeValue: CodeValueModal;
             if (element.genderName) {
@@ -1213,9 +1249,9 @@ export class DemographicComponent
     if (this.userForm.valid) {
       const identity = this.createIdentityJSONDynamic();
       const request = this.createRequestJSON(identity);
-      console.log(request);
+      //console.log(request);
       const responseJSON = this.createResponseJSON(identity);
-      console.log(responseJSON);
+      //console.log(responseJSON);
       this.dataUploadComplete = false;
       if (this.dataModification) {
         this.subscriptions.push(
