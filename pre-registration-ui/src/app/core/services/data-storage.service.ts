@@ -498,7 +498,7 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
-      const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
     //const url = "assets/identity-spec.json";
     return this.httpClient.get(url);
   }
@@ -532,5 +532,13 @@ export class DataStorageService {
       `dynamicfields?langCode=${langCode}`;
     console.log(url);
     return this.httpClient.get(url);
+  }
+
+  updateDocRefId(fileDocumentId, preId, docRefId) {
+    const url = `${this.BASE_URL}${this.PRE_REG_URL}` +
+      `${appConstants.APPEND_URL.updateDocRefId}${fileDocumentId}` +
+      `?${appConstants.PARAMS_KEYS.preRegistrationId}=${preId}`+
+      `&${appConstants.PARAMS_KEYS.docRefId}=${docRefId}`;
+    return this.httpClient.put(url, {});
   }
 }

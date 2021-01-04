@@ -75,6 +75,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     docCatCode: "",
     docTypCode: "",
     langCode: "",
+    docRefId: "",
   };
   files: FilesModel;
   documentCategoryDto: DocumentCategoryDTO = {
@@ -106,7 +107,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   preRegId: number;
   isDocUploadRequired = [];
   name:"";
-  
+
   constructor(
     private registration: RegistrationService,
     private dataStorageService: DataStorageService,
@@ -218,7 +219,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (!response["errors"]) {
       this.userFile = response[appConstants.RESPONSE][appConstants.METADATA];
     } else {
-      let fileModel: FileModel = new FileModel("", "", "", "", "", "", "");
+      let fileModel: FileModel = new FileModel("", "", "", "", "", "", "", "");
       if(this.userFile.length === 0){
         this.userFile.push(fileModel);
       }
@@ -244,6 +245,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           if (ele.code === fileMetadata[index].docCatCode) {
             indice = index;
             indexLOD = i;
+            ele.selectedDocRefId = fileMetadata[index].docRefId
+              ? fileMetadata[index].docRefId
+              : "";
             arr.push(ele);
           }
         });
@@ -252,6 +256,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             (ele) => ele.code === fileMetadata[indice].docTypCode
           );
           this.LOD[indexLOD].selectedDocName = temp[0].code;
+          this.LOD[indexLOD].selectedDocRefId = arr[0].selectedDocRefId
+            ? arr[0].selectedDocRefId
+            : "";
         }
       }
     } else return;
@@ -394,7 +401,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       for (let name of applicant) {
         if (
           name["demographicMetadata"][name][j].language != this.primaryLang
-        ) {
+          ) {
           allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
         j++;
@@ -763,7 +770,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  handleFileInput(event: any, docName: string, docCode: string) {
+  handleFileInput(event: any, docName: string, docCode: string, docRefId: string) {
     const extensionRegex = new RegExp(
       "(?:" + this.allowedFilesHtml.replace(/,/g, "|") + ")"
     );
@@ -795,7 +802,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.fileByteArray = data;
           });
           if (!this.documentType && !this.documentCategory) {
-            this.setJsonString(docName, docCode);
+            this.setJsonString(docName, docCode, docRefId);
           }
           this.sendFile(event);
         } else {
@@ -826,6 +833,46 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   /**
+   *@description method gets called when a value in "docRefId" textbox is changed.
+   *
+   * @param {*} event
+   * @memberof FileUploadComponent
+   */
+  handleDocRefInput(event: any, docCode: string) {
+    console.log(`starting in handleDocRefInput`);
+    const docRefId = event.target.value;
+    console.log(`docRefId: ${docRefId}`);
+    for (let file of this.users[0].files.documentsMetaData) {
+      if (file.docCatCode == docCode) {
+        let documentId = file.documentId;
+        console.log(`documentId: ${documentId}`);
+        console.log(`preRegId: ${this.preRegId}`);
+        this.disableNavigation = true;
+        const subs = this.dataStorageService
+          .updateDocRefId(documentId, this.preRegId, docRefId)
+          .subscribe(
+            (response) => {
+              this.disableNavigation = false;
+              if (response[appConstants.RESPONSE]) {
+                //docRedId saved
+              } else {
+                this.displayMessage(
+                  this.fileUploadLanguagelabels.uploadDocuments.error,
+                  this.errorlabels.error
+                );
+              }
+            },
+            (error) => {
+              this.disableNavigation = false;
+              this.displayMessage("Error", this.errorlabels.error, error);
+            }
+          );
+        this.subscriptions.push(subs);
+      }
+    }
+  }
+
+  /**
    *@description method to get base 64 of a file
    *
    * @param {*} file
@@ -850,6 +897,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   selectChange(event, index: number) {
     this.enableBrowseButtonList[index] = true;
+    this.LOD[index].selectedDocRefId = "";
     let found = false;
     let i = -1;
     this.documentCategory = event.source.placeholder;
@@ -880,7 +928,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     };
 
     this.documentIndex = index;
-    this.setJsonString(this.documentType, this.documentCategory);
+    this.setJsonString(this.documentType, this.documentCategory, "");
   }
 
   /**
@@ -919,10 +967,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  setJsonString(docName: string, docCode: string) {
+  setJsonString(docName: string, docCode: string, docRefId: string) {
     this.documentUploadRequestBody.docCatCode = docCode;
     this.documentUploadRequestBody.langCode = this.primaryLang;
     this.documentUploadRequestBody.docTypCode = docName;
+    this.documentUploadRequestBody.docRefId = docRefId;
     this.documentRequest = new RequestModel(
       appConstants.IDS.documentUpload,
       this.documentUploadRequestBody,
@@ -994,10 +1043,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile[0].docTypCode = fileResponse.response.docTypCode;
     this.userFile[0].multipartFile = this.fileByteArray;
     this.userFile[0].prereg_id = this.users[0].preRegId;
+    this.userFile[0].docRefId = fileResponse.response.docRefId;
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
-     
+
     for (let file of this.users[0].files.documentsMetaData) {
       if (
         file.docCatCode == this.userFile[0].docCatCode ||
@@ -1047,6 +1097,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 if (ele.code === "POA") index = i;
               });
               this.LOD[index].selectedDocName = "";
+              this.LOD[index].selectedDocRefId = "";
             }
             this.disableNavigation = false;
           },
@@ -1082,6 +1133,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               );
               this.documentName = docList[0].code;
               this.LOD[index].selectedDocName = this.documentName;
+              this.LOD[index].selectedDocRefId = "";
             } else {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
@@ -1153,8 +1205,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let uploadDocumentsCatCode = [];
     let requiredDocuments = [];
     this.isDocUploadRequired = [];
-//     this.getUserFiles();
-//     console.log(this.userFile);
+    //     this.getUserFiles();
+    //     console.log(this.userFile);
     this.LOD.forEach((document) => {
       displayedDocCatCode.push(document.code);
     });
@@ -1164,13 +1216,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         requiredDocuments.push(field.id);
       }
     });
-//     this.userFile.filter(file=>{
-//      if(file.docCatCode !== undefined){
-//        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
-//         uploadDocumentsCatCode.push(file.docCatCode);
-//        }
-//      }
-//     });
+    //     this.userFile.filter(file=>{
+    //      if(file.docCatCode !== undefined){
+    //        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
+    //         uploadDocumentsCatCode.push(file.docCatCode);
+    //        }
+    //      }
+    //     });
     console.log(uploadDocumentsCatCode);
     console.log(requiredDocuments);
     displayedDocCatCode.forEach((docCat) => {
@@ -1191,9 +1243,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       }
       this.displayMessage("Required", message + docList);
     } else {*/
-      localStorage.setItem("modifyDocument", "false");
-      let url = Utils.getURL(this.router.url, "summary");
-      this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    localStorage.setItem("modifyDocument", "false");
+    let url = Utils.getURL(this.router.url, "summary");
+    this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     /*}*/
   }
 
@@ -1264,6 +1316,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.LOD[index].selectedDocName = event.value;
   }
 
+  changeDocRefId(event, index: number) {
+    this.LOD[index].selectedDocRefId = event.target.value;
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
@@ -1273,6 +1329,7 @@ export interface DocumentUploadRequestDTO {
   docCatCode: string;
   docTypCode: string;
   langCode: string;
+  docRefId: string;
 }
 
 export interface DocumentCategoryDTO {
@@ -1288,6 +1345,7 @@ export interface DocumentCategory {
   name: string;
   documentTypes?: DocumentCategory[];
   selectedDocName?: string;
+  selectedDocRefId: string;
 }
 
 export interface Applicants {
@@ -1306,6 +1364,7 @@ export interface ProofOfAddress {
   docCatCode: string;
   docTypCode: string;
   docFileFormat?: string;
+  docRefId: string;
 }
 
 export interface DemographicMetaData {

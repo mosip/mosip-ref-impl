@@ -42,6 +42,7 @@ export const APPEND_URL = {
   getApplicantType: 'getApplicantType',
   post_document: 'documents/',
   document: 'documents/preregistration/',
+  updateDocRefId: 'documents/document/',
   document_copy: 'document/documents/copy',
   nearby_registration_centers: 'getcoordinatespecificregistrationcenters/',
   registration_centers_by_name: 'registrationcenters/',
@@ -69,7 +70,8 @@ export const PARAMS_KEYS = {
   getAvailabilityData: 'registration_center_id',
   catCode: 'catCode',
   sourcePrId: 'sourcePrId',
-  POA: 'POA'
+  POA: 'POA',
+  docRefId: 'docRefId'
 };
 
 export const ERROR_CODES = {
