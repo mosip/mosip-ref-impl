@@ -231,7 +231,10 @@ mat-select:focus {
 .file-upload__or {
   width: 33%;
 }
-
+.file-upload__docrefid {
+  width: 33%;
+  padding-left: 10px;
+}
 .file-upload__or {
   padding-left: 1rem;
 }
