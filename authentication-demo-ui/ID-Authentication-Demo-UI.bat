@@ -1,3 +1,2 @@
-# Note: Use -Dfinger.device.subid=1 added to support fingerprint slab device. For single fingerprint auth that argument can be removed
-java -Dida.request.captureFinger.deviceId=<finger.device.id> -Dida.request.captureIris.deviceId=<iris.device.id> -Dida.request.captureFace.deviceId=<face.device.id> -Dmosip.base.url=<ida-base-url> -DmispLicenseKey=<misp.license.key> -DpartnerId=<partner.id> -DpartnerApiKey=<partner.api.key> -Dfinger.device.subid=<finger.device.subid> -jar ./target/authentication-demo-ui-1.2.0-SNAPSHOT.jar
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:8000 -Dida.request.captureFinger.deviceId=2 -Dida.request.captureIris.deviceId=1 -Dida.request.captureFace.deviceId=3 -Dmosip.base.url=https://qa.mosip.net -DmispLicenseKey=aSUsAU33tZvGhRidJbGhz9OP08GFi78WonkhbDdypijRZTzpm1 -DpartnerId=1117 -DpartnerApiKey=56809554 -Dfinger.device.subid=1 -jar ./target/authentication-demo-ui-1.1.4-SNAPSHOT.jar
 
