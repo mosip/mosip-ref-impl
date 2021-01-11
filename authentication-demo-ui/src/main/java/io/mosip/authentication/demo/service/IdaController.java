@@ -607,7 +607,7 @@ public class IdaController {
 		return sign(reqJson, false);
 	}
 	
-	public String sign(@RequestBody String data, boolean isPayloadRequired)
+	public String sign(String data, boolean isPayloadRequired)
 			throws KeyManagementException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		turnOffSslChecking();
 		RestTemplate restTemplate = new RestTemplate();
