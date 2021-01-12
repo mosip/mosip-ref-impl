@@ -26,6 +26,7 @@ import org.springframework.security.web.firewall.HttpFirewall;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(2)
 public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	
