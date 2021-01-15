@@ -35,7 +35,7 @@ import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_SESSIONID;
  */
 public class Client_V_1_0 implements IBioApi {
 
-	private Logger logger = LoggerConfig.logConfig(Client_V_1_0.class);
+	private static Logger logger = LoggerConfig.logConfig(Client_V_1_0.class);
 
 	private static final String VERSION = "1.0";
 	private static final String BIOSDK_SPEC_VERSION = "0.9";
