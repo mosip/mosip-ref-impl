@@ -40,6 +40,7 @@ public class BookingApplication {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		System.out.println("Booking service started...");
 		SpringApplication.run(BookingApplication.class, args);
 	}
 }
