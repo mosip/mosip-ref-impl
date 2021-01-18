@@ -4,9 +4,6 @@
  */
 package io.mosip.preregistration.booking.service.util;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -73,7 +70,6 @@ import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.TimeSpanException;
 import io.mosip.preregistration.core.code.StatusCodes;
 import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
-import io.mosip.preregistration.core.common.dto.DeleteBookingDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
@@ -89,7 +85,6 @@ import io.mosip.preregistration.core.exception.NotificationException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.UUIDGeneratorUtil;
 import io.mosip.preregistration.core.util.ValidationUtil;
-//import io.mosip.preregistration.demographic.service.DemographicServiceIntf;
 
 /**
  * This class provides the utility methods for Booking application.
@@ -103,12 +98,9 @@ import io.mosip.preregistration.core.util.ValidationUtil;
 @Component
 public class BookingServiceUtil {
 
-	/**
-	 * Autowired reference for {@link #restTemplateBuilder}
-	 */
 	@Autowired
 	@Qualifier("restTemplate")
-	RestTemplate restTemplate;
+	private RestTemplate restTemplate;
 
 	/**
 	 * Reference for ${regCenter.url} from property file
