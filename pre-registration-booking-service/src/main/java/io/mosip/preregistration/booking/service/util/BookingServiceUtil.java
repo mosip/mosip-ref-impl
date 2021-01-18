@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -106,10 +107,8 @@ public class BookingServiceUtil {
 	 * Autowired reference for {@link #restTemplateBuilder}
 	 */
 	@Autowired
+	@Qualifier("restTemplate")
 	RestTemplate restTemplate;
-
-//	@Autowired
-//	private DemographicServiceIntf demographicServiceIntf;
 
 	/**
 	 * Reference for ${regCenter.url} from property file
@@ -201,7 +200,7 @@ public class BookingServiceUtil {
 	public boolean updateDemographicStatus(String preId, String status) {
 		log.info("sessionId", "idType", "id", "In callUpdateStatusRestService method of Booking Service Util");
 		String userId = authUserDetails().getUserId();
-		MainResponseDTO<String> updatePreRegistrationStatus = updatePreRegistrationStatus(preId,status);
+		MainResponseDTO<String> updatePreRegistrationStatus = updatePreRegistrationStatus(preId, status);
 		if (updatePreRegistrationStatus.getErrors() != null) {
 			throw new DemographicStatusUpdationException(updatePreRegistrationStatus.getErrors().get(0).getErrorCode(),
 					updatePreRegistrationStatus.getErrors().get(0).getMessage());
@@ -634,7 +633,7 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<PreRegistartionStatusDTO> getApplicationStatus(String preRegId) {
 		MainResponseDTO<PreRegistartionStatusDTO> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/"+preRegId;
+		String url = preRegResourceUrl + "/applications/status/" + preRegId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
@@ -646,13 +645,14 @@ public class BookingServiceUtil {
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
 				System.out.println(responseEntity.getBody().getErrors());
 				response.setErrors(responseEntity.getBody().getErrors());
-			}else {
+			} else {
 				response.setResponse(responseEntity.getBody().getResponse());
 			}
-			
+
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
-			log.debug("sessionId", "idType", "id", "demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
+			log.debug("sessionId", "idType", "id",
+					"demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
 			throw new RestClientException("rest call failed");
 		}
 		return response;
@@ -660,7 +660,7 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> updatePreRegistrationStatus(String preRegId, String status) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/"+preRegId;
+		String url = preRegResourceUrl + "/applications/status/" + preRegId;
 		MultiValueMap<String, String> paramStatus = new LinkedMultiValueMap<>();
 		paramStatus.add("statusCode", status);
 		HttpHeaders headers = new HttpHeaders();
@@ -672,14 +672,15 @@ public class BookingServiceUtil {
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-			response.setErrors(responseEntity.getBody().getErrors());
-			}else {
+				response.setErrors(responseEntity.getBody().getErrors());
+			} else {
 				response.setResponse(responseEntity.getBody().getResponse());
 			}
-			
+
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
-			log.debug("sessionId", "idType", "id", "demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
+			log.debug("sessionId", "idType", "id",
+					"demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
 			throw new RestClientException("rest call failed");
 		}
 		return response;
