@@ -99,7 +99,7 @@ import io.mosip.preregistration.core.util.ValidationUtil;
 public class BookingServiceUtil {
 
 	@Autowired
-	@Qualifier("restTemplate")
+	//@Qualifier("restTemplate")
 	private RestTemplate restTemplate;
 
 	/**
