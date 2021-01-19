@@ -1,4 +1,4 @@
-package io.mosip.preregistration.application.security;
+package io.mosip.preregistration.booking.security;
 
 import java.util.List;
 
