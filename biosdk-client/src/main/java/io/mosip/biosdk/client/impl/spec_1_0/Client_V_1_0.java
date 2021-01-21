@@ -175,7 +175,16 @@ public class Client_V_1_0 implements IBioApi {
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
-			response = gson.fromJson(js.get("response").toString(), Response.class);
+			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
+			response.setStatusCode(
+					jsonResponse.get("statusCode") != null ? ((Long)jsonResponse.get("statusCode")).intValue() : null
+			);
+			response.setStatusMessage(
+					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
+			);
+			response.setResponse(
+					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null, BiometricRecord.class)
+			);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -207,7 +216,16 @@ public class Client_V_1_0 implements IBioApi {
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
-			response = gson.fromJson(js.get("response").toString(), Response.class);
+			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
+			response.setStatusCode(
+					jsonResponse.get("statusCode") != null ? ((Long)jsonResponse.get("statusCode")).intValue() : null
+			);
+			response.setStatusMessage(
+					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
+			);
+			response.setResponse(
+					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null, BiometricRecord.class)
+			);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
