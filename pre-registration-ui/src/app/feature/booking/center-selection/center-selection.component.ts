@@ -16,6 +16,8 @@ import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
 import { resolve } from "url";
 
+import {PageEvent} from '@angular/material/paginator';
+
 @Component({
   selector: "app-center-selection",
   templateUrl: "./center-selection.component.html",
@@ -51,6 +53,12 @@ export class CenterSelectionComponent
   preRegId = [];
   locationNames = [];
   locationCodes = [];
+  // MatPaginator Inputs
+  totalItems = 0;
+  defaultPageSize = 10;
+  pageSize = this.defaultPageSize;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 15, 20];
   constructor(
     public dialog: MatDialog,
     private service: BookingService,
@@ -79,7 +87,27 @@ export class CenterSelectionComponent
     const subs = this.dataService
       .getLocationTypeData()
       .subscribe((response) => {
-        this.locationTypes = response[appConstants.RESPONSE]["locations"];
+        //get all location types from db
+        let allLocationTypes = response[appConstants.RESPONSE]["locations"];
+        console.log(`allLocationTypes: ${allLocationTypes}`);
+        //get the recommended loc hierachy code to which booking centers are mapped
+        const recommendedLocCode = this.configService.getConfigByKey(
+          appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
+        );
+        console.log(`recommendedLocCode: ${recommendedLocCode}`);
+        //now filter out only those hierachies which are higher than the recommended loc hierachy code
+        //ex: if locHierachy is ["Country","Region","Province","City","PostalCode"] and the
+        //recommended loc hierachy code is 3 for "City", then show only "Country","Region","Province"
+        //in the Search dropdown. There are no booking centers mapped to "PostalCode", so don't include it.
+        this.locationTypes = allLocationTypes.filter(
+          (locType) =>
+            locType.locationHierarchylevel <= Number(recommendedLocCode)
+        );
+        //sort the filtered array in ascending order of hierarchyLevel
+        this.locationTypes.sort(function (a, b) {
+          return a.locationHierarchylevel - b.locationHierarchylevel;
+        });
+        //console.log(this.locationTypes);
       });
     this.subscriptions.push(subs);
     console.log(this.users);
@@ -229,18 +257,48 @@ export class CenterSelectionComponent
   prevStep() {
     this.step--;
   }
-
-  showResults() {
+  resetPagination() {
+    this.totalItems = 0;
+    this.pageSize = this.defaultPageSize;
+    this.pageIndex = 0;
+  }
+  
+  showResults(pageEvent) {
+    console.log("showResults")
+    console.log(pageEvent);
     this.REGISTRATION_CENTRES = [];
     if (this.locationType !== null && this.searchText !== null) {
       this.showMap = false;
+      if (pageEvent) {
+        this.pageSize = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+      }
+      const response = this.dataService
+      .getRegistrationCentersByNamePageWise(
+        this.locationType.locationHierarchylevel,
+        this.searchText,
+        this.pageIndex,
+        this.pageSize
+      );
+      console.log(response);
+      if (response[appConstants.RESPONSE]) {
+        this.totalItems = response[appConstants.RESPONSE].totalItems;
+        this.displayResults(response[appConstants.RESPONSE]);
+      } else {
+        this.showMessage = true;
+        this.selectedCentre = null;
+      }
+      /*
       const subs = this.dataService
-        .getRegistrationCentersByName(
+        .getRegistrationCentersByNamePageWise(
           this.locationType.locationHierarchylevel,
-          this.searchText
+          this.searchText,
+          1,
+          10
         )
         .subscribe(
           (response) => {
+            console.log(response);
             if (response[appConstants.RESPONSE]) {
               this.displayResults(response[appConstants.RESPONSE]);
             } else {
@@ -253,7 +311,7 @@ export class CenterSelectionComponent
             this.displayMessageError("Error", this.errorlabels.error, error);
           }
         );
-      this.subscriptions.push(subs);
+      this.subscriptions.push(subs);*/
     }
   }
 
@@ -366,7 +424,11 @@ export class CenterSelectionComponent
   }
 
   async displayResults(response: any) {
-    this.REGISTRATION_CENTRES = response["registrationCenters"];
+    if (response["registrationCenters"]) {
+      this.REGISTRATION_CENTRES = response["registrationCenters"];
+    } else if (response["data"]) {
+      this.REGISTRATION_CENTRES = response["data"];
+    }
     await this.getWorkingDays();
     this.showTable = true;
     if (this.REGISTRATION_CENTRES) {

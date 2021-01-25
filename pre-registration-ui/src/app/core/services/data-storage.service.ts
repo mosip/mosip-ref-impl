@@ -7,6 +7,7 @@ import { Applicant } from "../../shared/models/dashboard-model/dashboard.modal";
 import { ConfigService } from "./config.service";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 
+import stubResults from "./stubResults.json";
 /**
  * @description This class is responsible for sending or receiving data to the service.
  *
@@ -193,6 +194,25 @@ export class DataStorageService {
     );
   }
 
+  getRegistrationCentersByNamePageWise(locType: string, text: string, pageNumber: number, pageSize: number) {
+    let url = this.BASE_URL +
+    this.PRE_REG_URL + '/proxy' +
+    appConstants.APPEND_URL.master_data +
+    appConstants.APPEND_URL.registration_centers_by_name +
+    "page/" +
+    localStorage.getItem("langCode") +
+    "/" +
+    locType +
+    "/" +
+    text + "?" +
+    "pageNumber=" + pageNumber + 
+    "&pageSize=" + pageSize;
+    //+ "&orderBy={asc/desc}&sortBy={sortField}";
+    console.log(url);
+    return stubResults;
+    //return this.httpClient.get(url);
+  }
+
   getLocationTypeData() {
     return this.httpClient.get(
       this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
@@ -367,6 +387,7 @@ export class DataStorageService {
     if (url.charAt(url.length - 1) === "&") {
       url = url.substring(0, url.length - 1);
     }
+    console.log(url);
     return this.httpClient.get(url);
   }
 
