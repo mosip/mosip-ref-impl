@@ -16,7 +16,7 @@ import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
 import { resolve } from "url";
 
-import { PageEvent } from "@angular/material/paginator";
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: "app-center-selection",
@@ -89,7 +89,7 @@ export class CenterSelectionComponent
       .subscribe((response) => {
         //get all location types from db
         this.allLocationTypes = response[appConstants.RESPONSE]["locations"];
-        console.log(`allLocationTypes: ${this.allLocationTypes}`);
+        console.log(`allLocationTypes: ${this.allLocationTypes}`);        
         //get the recommended loc hierachy code to which booking centers are mapped
         const recommendedLocCode = this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
@@ -158,9 +158,8 @@ export class CenterSelectionComponent
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
     );
     let minusValue = this.allLocationTypes.length - locationHierarchy.length;
-    console.log(minusValue);
-    const locationType =
-      locationHierarchy[Number(locationHierarchyLevel) - minusValue];
+     console.log(minusValue);
+    const locationType = locationHierarchy[Number(locationHierarchyLevel) - minusValue];
     console.log(locationHierarchy);
     console.log(locationHierarchyLevel + ">>>>" + locationType);
     this.users.forEach((user) => {
@@ -188,9 +187,9 @@ export class CenterSelectionComponent
 
   getLocationNamesByCodes() {
     return new Promise((resolve) => {
-      this.locationCodes.forEach(async (pins, index) => {
+      this.locationCodes.forEach(async (pins,index) => {
         await this.getLocationNames(pins);
-        if (index === this.locationCodes.length - 1) {
+        if(index===this.locationCodes.length-1){
           resolve(true);
         }
       });
@@ -221,6 +220,7 @@ export class CenterSelectionComponent
     this.subscriptions.push(subs);
   }
 
+  
   getLocationNames(locationCode) {
     return new Promise((resolve) => {
       this.dataService
@@ -435,10 +435,7 @@ export class CenterSelectionComponent
           .getWorkingDays(center.id, this.primaryLang)
           .subscribe((response) => {
             center.workingDays = "";
-            if (
-              response[appConstants.RESPONSE] &&
-              response[appConstants.RESPONSE]["workingdays"]
-            ) {
+            if (response[appConstants.RESPONSE] && response[appConstants.RESPONSE]["workingdays"]) {
               response[appConstants.RESPONSE]["workingdays"].forEach((day) => {
                 if (
                   day.working === true ||
@@ -449,7 +446,7 @@ export class CenterSelectionComponent
                 }
               });
             }
-
+            
             this.isWorkingDaysAvailable = true;
             resolve(true);
           });
