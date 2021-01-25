@@ -1,0 +1,10 @@
+{
+    "/proxyapi": {
+      "target": "https://dev.mosip.net/",
+      "secure": true,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/proxyapi": ""
+      }
+    }
+  }
