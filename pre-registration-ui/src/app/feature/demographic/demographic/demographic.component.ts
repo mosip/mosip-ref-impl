@@ -39,6 +39,7 @@ import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/
 import { Subscription } from "rxjs";
 import { ValueConverter } from "@angular/compiler/src/render3/view/template";
 import { Engine, Rule } from 'json-rules-engine';
+import moment from 'moment';
 
 /**
  * @description This component takes care of the demographic page.
@@ -1066,29 +1067,27 @@ export class DemographicComponent
     this.date = this.dd.nativeElement.value;
     this.month = this.mm.nativeElement.value;
     this.year = this.yyyy.nativeElement.value;
-    this.DOB_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_DOB];
-    const newDate = this.year + "/" + this.month + "/" + this.date;
-    const dobRegex = new RegExp(this.DOB_PATTERN);
-    if (dobRegex.test(newDate)) {
-      this.currentAge = this.calculateAge(newDate).toString();
-      this.age.nativeElement.value = this.currentAge;
-      this.userForm.controls["dateOfBirth"].setValue(newDate);
-      if (this.primaryLang !== this.secondaryLang) {
-        this.transUserForm.controls["dateOfBirth"].setValue(newDate);
+    if (this.date !== "" && this.month !== "" && this.year !== "") {
+      const newDate = this.year + "/" + this.month + "/" + this.date;
+      console.log(newDate);
+      if (moment(newDate,'YYYY/MM/DD',true).isValid()) {
+        this.currentAge = this.calculateAge(newDate).toString();
+        this.age.nativeElement.value = this.currentAge;
+        this.userForm.controls["dateOfBirth"].setValue(newDate);
+        if (this.primaryLang !== this.secondaryLang) {
+          this.transUserForm.controls["dateOfBirth"].setValue(newDate);
+        }
+        if (this.dataModification) {
+          this.hasDobChanged();
+        }
+      } else {
+        this.userForm.controls["dateOfBirth"].markAsTouched();
+        this.userForm.controls["dateOfBirth"].setErrors({
+          incorrect: true,
+        });
+        this.currentAge = "";
+        this.age.nativeElement.value = "";
       }
-      //console.log(this.userForm);
-      if (this.dataModification) {
-        //console.log(newDate);
-        this.hasDobChanged();
-      }
-    } else {
-      //console.log(this.currentAge);
-      this.userForm.controls["dateOfBirth"].markAsTouched();
-      this.userForm.controls["dateOfBirth"].setErrors({
-        incorrect: true,
-      });
-      this.currentAge = "";
-      this.age.nativeElement.value = "";
     }
   }
 

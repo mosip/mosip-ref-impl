@@ -50,7 +50,6 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 			if (cookies != null) {
 				for (Cookie cookie : cookies) {
 					if (cookie.getName().contains("Authorization")) {
-						System.out.println(cookie.getValue());
 						token = cookie.getValue();
 						LOGGER.info("Token from the cookie:" + token);
 					}
