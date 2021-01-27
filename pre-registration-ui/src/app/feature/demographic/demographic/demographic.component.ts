@@ -38,6 +38,8 @@ import LanguageFactory from "src/assets/i18n";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
 import { ValueConverter } from "@angular/compiler/src/render3/view/template";
+import { Engine, Rule } from 'json-rules-engine';
+import moment from 'moment';
 
 /**
  * @description This component takes care of the demographic page.
@@ -65,7 +67,7 @@ export class DemographicComponent
   keyboardSecondaryLang =
     appConstants.virtual_keyboard_languages[this.secondaryLang];
 
-  files: FilesModel;
+    files: FilesModel;
   agePattern: string;
   MOBILE_PATTERN: string;
   MOBILE_LENGTH: string;
@@ -93,7 +95,7 @@ export class DemographicComponent
   hierarchyAvailable = true;
   isConsentMessage = false;
   isReadOnly = false;
-
+  
   step: number = 0;
   id: number;
   oldAge: number;
@@ -162,6 +164,7 @@ export class DemographicComponent
 
   identityData = [];
   uiFields = [];
+  jsonRulesEngine = new Engine();
   primaryuserForm = false;
   primarydropDownFields = {};
   secondaryDropDownLables = {};
@@ -221,8 +224,9 @@ export class DemographicComponent
     if (!this.dataModification) {
       if (this.isConsentMessage) this.consentDeclaration();
     }
+    this.showHideFormFields();
   }
-
+  
   /**
 
    * @description This will return the json object of label of demographic in the primary language.
@@ -355,7 +359,6 @@ export class DemographicComponent
           hierarchiesArray.push(locationHeirarchiesFromJson);
           this.locationHeirarchies = hierarchiesArray;
         }
-        console.log(this.locationHeirarchies);
         localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchies[0]));
         
         this.identityData.forEach((obj) => {
@@ -543,6 +546,73 @@ export class DemographicComponent
           this.userForm.controls[`${fieldName}`].value
         );
       }
+    }
+  }
+
+  /**
+   * This function will reset the value of the hidden field in the form.
+   * @param uiField 
+   */
+  resetHiddenField = (uiField) => {
+    this.userForm.controls[uiField.id].setValue("");
+    if (this.primaryLang !== this.secondaryLang){
+      if (this.transUserForm && this.transUserForm.controls[`${uiField.id}`]) {
+        this.transUserForm.controls[`${uiField.id}`].setValue("");
+      }  
+    }
+  }
+
+  /**
+   * This function looks for "visibleCondition" attribute for each field in UI Specs.
+   * Using "json-rules-engine", these conditions are evaluated 
+   * and fields are shown/hidden in the UI form.
+   */
+  showHideFormFields() {
+    if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
+      //populate form data in json for json-rules-engine to evalatute the conditions
+      const identityFormData = this.createIdentityJSONDynamic();
+      //for each uiField in UI specs, check of any visibleCondition is given
+      //if yes, then evaluate it with json-rules-engine
+      this.uiFields.forEach(uiField => {
+        //if no visibleCondition is given, then show the field
+        if (!uiField.visibleCondition || uiField.visibleCondition == "") {
+          uiField.isVisible = true;
+        }
+        else {
+          let resetFieldToBlank = this.resetHiddenField;
+          let visibilityRule = new Rule({
+            conditions: uiField.visibleCondition,
+            onSuccess() {
+              //in visibleCondition is statisfied then show the field
+              uiField.isVisible = true;
+            },
+            onFailure() {
+              //in visibleCondition is not statisfied then hide the field
+              uiField.isVisible = false;
+              resetFieldToBlank(uiField);
+            },
+            event: {
+              type: "message",
+              params: {
+                data: ""
+              }
+            }
+          });
+          this.jsonRulesEngine.addRule(visibilityRule);
+          //evaluate the visibleCondition
+          this.jsonRulesEngine
+            .run(identityFormData)
+            .then(results => {
+              results.events.map(event => console.log('jsonRulesEngine run successfully', event.params.data));
+              this.jsonRulesEngine.removeRule(visibilityRule);
+            })
+            .catch((error) => {
+              console.log('err is', error);
+              this.jsonRulesEngine.removeRule(visibilityRule);
+            });
+        }
+      }, this.resetHiddenField
+      );
     }
   }
 
@@ -997,29 +1067,27 @@ export class DemographicComponent
     this.date = this.dd.nativeElement.value;
     this.month = this.mm.nativeElement.value;
     this.year = this.yyyy.nativeElement.value;
-    this.DOB_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_DOB];
-    const newDate = this.year + "/" + this.month + "/" + this.date;
-    const dobRegex = new RegExp(this.DOB_PATTERN);
-    if (dobRegex.test(newDate)) {
-      this.currentAge = this.calculateAge(newDate).toString();
-      this.age.nativeElement.value = this.currentAge;
-      this.userForm.controls["dateOfBirth"].setValue(newDate);
-      if (this.primaryLang !== this.secondaryLang) {
-        this.transUserForm.controls["dateOfBirth"].setValue(newDate);
+    if (this.date !== "" && this.month !== "" && this.year !== "") {
+      const newDate = this.year + "/" + this.month + "/" + this.date;
+      console.log(newDate);
+      if (moment(newDate,'YYYY/MM/DD',true).isValid()) {
+        this.currentAge = this.calculateAge(newDate).toString();
+        this.age.nativeElement.value = this.currentAge;
+        this.userForm.controls["dateOfBirth"].setValue(newDate);
+        if (this.primaryLang !== this.secondaryLang) {
+          this.transUserForm.controls["dateOfBirth"].setValue(newDate);
+        }
+        if (this.dataModification) {
+          this.hasDobChanged();
+        }
+      } else {
+        this.userForm.controls["dateOfBirth"].markAsTouched();
+        this.userForm.controls["dateOfBirth"].setErrors({
+          incorrect: true,
+        });
+        this.currentAge = "";
+        this.age.nativeElement.value = "";
       }
-      //console.log(this.userForm);
-      if (this.dataModification) {
-        //console.log(newDate);
-        this.hasDobChanged();
-      }
-    } else {
-      //console.log(this.currentAge);
-      this.userForm.controls["dateOfBirth"].markAsTouched();
-      this.userForm.controls["dateOfBirth"].setErrors({
-        incorrect: true,
-      });
-      this.currentAge = "";
-      this.age.nativeElement.value = "";
     }
   }
 
