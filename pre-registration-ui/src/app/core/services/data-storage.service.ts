@@ -7,7 +7,6 @@ import { Applicant } from "../../shared/models/dashboard-model/dashboard.modal";
 import { ConfigService } from "./config.service";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 
-import stubResults from "./stubResults.json";
 /**
  * @description This class is responsible for sending or receiving data to the service.
  *
@@ -204,13 +203,12 @@ export class DataStorageService {
     "/" +
     locType +
     "/" +
-    text + "?" +
+    encodeURIComponent(text) + "/?" +
     "pageNumber=" + pageNumber + 
-    "&pageSize=" + pageSize;
-    //+ "&orderBy={asc/desc}&sortBy={sortField}";
+    "&pageSize=" + pageSize +
+    "&orderBy=desc&sortBy=createdDateTime";
     console.log(url);
-    return stubResults;
-    //return this.httpClient.get(url);
+    return this.httpClient.get(url);
   }
 
   getLocationTypeData() {

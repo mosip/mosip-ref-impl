@@ -89,7 +89,8 @@ export class CenterSelectionComponent
       .subscribe((response) => {
         //get all location types from db
         let allLocationTypes = response[appConstants.RESPONSE]["locations"];
-        console.log(`allLocationTypes: ${allLocationTypes}`);
+        console.log(`allLocationTypes: `);
+        console.log(allLocationTypes);
         //get the recommended loc hierachy code to which booking centers are mapped
         const recommendedLocCode = this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
@@ -148,6 +149,7 @@ export class CenterSelectionComponent
   }
 
   async getRecommendedCenters() {
+    this.totalItems = 0;
     console.log(this.users.length);
     const locationHierarchy = JSON.parse(
       localStorage.getItem("locationHierarchy")
@@ -214,7 +216,6 @@ export class CenterSelectionComponent
     this.subscriptions.push(subs);
   }
 
-
   getLocationNames(locationCode) {
     return new Promise((resolve) => {
       this.dataService
@@ -258,14 +259,14 @@ export class CenterSelectionComponent
     this.step--;
   }
   resetPagination() {
+    console.log("resetPagination");
     this.totalItems = 0;
     this.pageSize = this.defaultPageSize;
     this.pageIndex = 0;
+    this.getRecommendedCenters();
   }
-  
+
   showResults(pageEvent) {
-    console.log("showResults")
-    console.log(pageEvent);
     this.REGISTRATION_CENTRES = [];
     if (this.locationType !== null && this.searchText !== null) {
       this.showMap = false;
@@ -273,45 +274,33 @@ export class CenterSelectionComponent
         this.pageSize = pageEvent.pageSize;
         this.pageIndex = pageEvent.pageIndex;
       }
-      const response = this.dataService
-      .getRegistrationCentersByNamePageWise(
-        this.locationType.locationHierarchylevel,
-        this.searchText,
-        this.pageIndex,
-        this.pageSize
-      );
-      console.log(response);
-      if (response[appConstants.RESPONSE]) {
-        this.totalItems = response[appConstants.RESPONSE].totalItems;
-        this.displayResults(response[appConstants.RESPONSE]);
-      } else {
-        this.showMessage = true;
-        this.selectedCentre = null;
-      }
-      /*
       const subs = this.dataService
         .getRegistrationCentersByNamePageWise(
           this.locationType.locationHierarchylevel,
           this.searchText,
-          1,
-          10
+          this.pageIndex,
+          this.pageSize
         )
         .subscribe(
           (response) => {
             console.log(response);
             if (response[appConstants.RESPONSE]) {
+              this.totalItems = response[appConstants.RESPONSE].totalItems;
               this.displayResults(response[appConstants.RESPONSE]);
+              this.showMessage = false;
             } else {
+              this.totalItems = 0;
               this.showMessage = true;
               this.selectedCentre = null;
             }
           },
           (error) => {
             this.showMessage = true;
+            this.totalItems = 0;
             this.displayMessageError("Error", this.errorlabels.error, error);
           }
         );
-      this.subscriptions.push(subs);*/
+      this.subscriptions.push(subs);
     }
   }
 
@@ -444,15 +433,18 @@ export class CenterSelectionComponent
           .getWorkingDays(center.id, this.primaryLang)
           .subscribe((response) => {
             center.workingDays = "";
-            response[appConstants.RESPONSE]["workingdays"].forEach((day) => {
-              if (
-                day.working === true ||
-                ((day.working === null || day.working === undefined) &&
-                  day.globalWorking === true)
-              ) {
-                center.workingDays = center.workingDays + day.name + ", ";
-              }
-            });
+            if (response[appConstants.RESPONSE] && response[appConstants.RESPONSE]["workingdays"]) {
+              response[appConstants.RESPONSE]["workingdays"].forEach((day) => {
+                if (
+                  day.working === true ||
+                  ((day.working === null || day.working === undefined) &&
+                    day.globalWorking === true)
+                ) {
+                  center.workingDays = center.workingDays + day.name + ", ";
+                }
+              });
+            }
+            
             this.isWorkingDaysAvailable = true;
             resolve(true);
           });
