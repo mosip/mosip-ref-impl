@@ -7,6 +7,7 @@ import { Applicant } from "../../shared/models/dashboard-model/dashboard.modal";
 import { ConfigService } from "./config.service";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 
+import stubResults from "./stubResults.json";
 /**
  * @description This class is responsible for sending or receiving data to the service.
  *
