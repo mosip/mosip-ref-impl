@@ -171,7 +171,7 @@
           </li>
         </ul>
       </div>
-      <span  *ngIf="!showMessage && !searchClick && this.totalItems !== 0">
+      <span  *ngIf="this.totalItems !== 0">
         <mat-paginator 
           [length]="this.totalItems"
           [pageSize]="this.pageSize"
