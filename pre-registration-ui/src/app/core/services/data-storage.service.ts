@@ -220,6 +220,16 @@ export class DataStorageService {
     );
   }
 
+  getLocationInfoForLocCode(locCode: string, langCode: string) {
+    let url = this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
+    appConstants.APPEND_URL.master_data +
+    "locations/info/" +
+    locCode + "/" + 
+    langCode;
+    console.log(url);
+    return this.httpClient.get(url);
+  }
+
   getLocationsHierarchyByLangCode(langCode: string, locCode: string) {
     return this.httpClient.get(
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
