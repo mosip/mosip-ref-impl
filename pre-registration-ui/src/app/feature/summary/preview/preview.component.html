@@ -58,10 +58,13 @@
                         </div>
                       </div>
                     </td>
+                    <td *ngIf="isThisFieldInLocationHeirarchies(field.id)">
+                      {{ this.getLocationName(previewData[field.id][0].value, this.primaryLanguage ) }}
+                    </td>
                     <td *ngIf="previewData[field.id].length > 2">
                       {{ previewData[field.id] }}
                     </td>
-                    <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic'">
+                    <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic' && !isThisFieldInLocationHeirarchies(field.id)">
                       {{ previewData[field.id][0].value }}
                     </td>
                   </div>
@@ -163,10 +166,13 @@
                         </div>
                       </div>
                     </td>
+                    <td *ngIf="isThisFieldInLocationHeirarchies(field.id)">
+                      {{ this.getLocationName(previewData[field.id][0].value, this.secondaryLanguage ) }}
+                    </td>
                     <td *ngIf="previewData[field.id].length > 2">
                       {{ previewData[field.id] }}
                     </td>
-                    <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic'">
+                    <td *ngIf="previewData[field.id] && field.fieldType != 'dynamic' && !isThisFieldInLocationHeirarchies(field.id)">
                       {{ previewData[field.id][1].value }}
                     </td>
                   </div>
