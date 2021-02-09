@@ -426,7 +426,7 @@ export class DataStorageService {
     return this.httpClient.get(url);
   }
 
-  sendOtp(userId: string) {
+  sendOtp(userId: string,langCode: string) {
     const req = {
       userId: userId,
     };
@@ -437,7 +437,7 @@ export class DataStorageService {
       this.BASE_URL +
       this.PRE_REG_URL +
       appConstants.APPEND_URL.auth +
-      appConstants.APPEND_URL.send_otp;
+      appConstants.APPEND_URL.send_otp + "/" + langCode;
     return this.httpClient.post(url, obj);
   }
 
