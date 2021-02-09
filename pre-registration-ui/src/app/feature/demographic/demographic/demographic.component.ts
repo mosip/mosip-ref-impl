@@ -40,7 +40,7 @@ import { Subscription } from "rxjs";
 import { ValueConverter } from "@angular/compiler/src/render3/view/template";
 import { Engine, Rule } from 'json-rules-engine';
 import moment from 'moment';
-
+import identityStubJson from "../../../../assets/identity-spec.json";
 /**
  * @description This component takes care of the demographic page.
  * @author Shashank Agrawal
@@ -345,6 +345,7 @@ export class DemographicComponent
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
+        //response = identityStubJson;
         console.log(response);
         // this.identityData = response["identity"];
         // this.locationHeirarchy = [...response["locationHierarchy"]];
@@ -367,6 +368,41 @@ export class DemographicComponent
             obj.controlType !== null &&
             !(obj.controlType === "fileupload")
           ) {
+            if (obj.id == "email") {
+              obj["required"] = false;
+              obj["visibleCondition"] = {
+                "all": [
+                  {
+                    "fact": "identity",
+                    "operator": "equal",
+                    "value": "MLE",
+                    "path": "$.gender.0.value"
+                  },
+                  {
+                    "fact": "identity",
+                    "operator": "equal",
+                    "value": "NFR",
+                    "path": "$.residenceStatus.0.value"
+                  }
+                ]
+              }
+              obj["requiredCondition"] = {
+                "all": [
+                  {
+                    "fact": "identity",
+                    "operator": "equal",
+                    "value": "MLE",
+                    "path": "$.gender.0.value"
+                  },
+                  {
+                    "fact": "identity",
+                    "operator": "equal",
+                    "value": "NFR",
+                    "path": "$.residenceStatus.0.value"
+                  }
+                ]
+              }
+            }
             this.uiFields.push(obj);
           }
         });
@@ -397,42 +433,7 @@ export class DemographicComponent
       if (this.primaryLang !== this.secondaryLang) {
         this.transUserForm.addControl(control.id, new FormControl(""));
       }
-      if (control.required) {
-        this.userForm.controls[`${control.id}`].setValidators(
-          Validators.required
-        );
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators(
-            Validators.required
-          );
-        }
-      }
-      if (control.validators !== null && control.validators.length > 0) {
-        this.userForm.controls[`${control.id}`].setValidators([
-          Validators.pattern(control.validators[0].validator),
-        ]);
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators([
-            Validators.pattern(control.validators[0].validator),
-          ]);
-        }
-      }
-      if (
-        control.required &&
-        control.validators !== null &&
-        control.validators.length > 0
-      ) {
-        this.userForm.controls[`${control.id}`].setValidators([
-          Validators.required,
-          Validators.pattern(control.validators[0].validator),
-        ]);
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators([
-            Validators.required,
-            Validators.pattern(control.validators[0].validator),
-          ]);
-        }
-      }
+      this.addValidators(control);
       if (this.uiFields.length === index + 1) {
         this.primaryuserForm = true;
         if (this.primaryLang !== this.secondaryLang) {
@@ -440,6 +441,53 @@ export class DemographicComponent
         }
       }
     });
+  }
+
+  addValidators = (control: any) => {
+    this.userForm.controls[`${control.id}`].clearValidators();
+    this.userForm.controls[`${control.id}`].updateValueAndValidity();
+    if (this.primaryLang !== this.secondaryLang) {
+      this.transUserForm.controls[`${control.id}`].clearValidators();
+      this.transUserForm.controls[`${control.id}`].updateValueAndValidity();
+    }
+    
+    console.log(`${control.id} is required: ${control.required}`);
+    if (control.required) {
+      this.userForm.controls[`${control.id}`].setValidators(
+        Validators.required
+      );
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators(
+          Validators.required
+        );
+      }
+    }
+    if (control.validators !== null && control.validators.length > 0) {
+      this.userForm.controls[`${control.id}`].setValidators([
+        Validators.pattern(control.validators[0].validator),
+      ]);
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators([
+          Validators.pattern(control.validators[0].validator),
+        ]);
+      }
+    }
+    if (control.required &&
+      control.validators !== null &&
+      control.validators.length > 0) {
+      this.userForm.controls[`${control.id}`].setValidators([
+        Validators.required,
+        Validators.pattern(control.validators[0].validator),
+      ]);
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators([
+          Validators.required,
+          Validators.pattern(control.validators[0].validator),
+        ]);
+      }
+    }
+    console.log(this.userForm.controls[`${control.id}`]);
+    
   }
 
   /**
@@ -568,53 +616,108 @@ export class DemographicComponent
    * and fields are shown/hidden in the UI form.
    */
   showHideFormFields() {
-    if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
-      //populate form data in json for json-rules-engine to evalatute the conditions
-      const identityFormData = this.createIdentityJSONDynamic();
-      //for each uiField in UI specs, check of any visibleCondition is given
-      //if yes, then evaluate it with json-rules-engine
-      this.uiFields.forEach(uiField => {
-        //if no visibleCondition is given, then show the field
-        if (!uiField.visibleCondition || uiField.visibleCondition == "") {
-          uiField.isVisible = true;
-        }
-        else {
-          let resetFieldToBlank = this.resetHiddenField;
-          let visibilityRule = new Rule({
-            conditions: uiField.visibleCondition,
-            onSuccess() {
-              //in visibleCondition is statisfied then show the field
-              uiField.isVisible = true;
-            },
-            onFailure() {
-              //in visibleCondition is not statisfied then hide the field
-              uiField.isVisible = false;
-              resetFieldToBlank(uiField);
-            },
-            event: {
-              type: "message",
-              params: {
-                data: ""
-              }
+    console.log("showHideFormFields");
+    //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
+    console.log("creating rules for json-rules-engine");
+    //populate form data in json for json-rules-engine to evalatute the conditions
+    const identityFormData = this.createIdentityJSONDynamic();
+    //for each uiField in UI specs, check of any "visibleCondition" is given
+    //if yes, then evaluate it with json-rules-engine
+    this.uiFields.forEach(uiField => {
+      //if no "visibleCondition" is given, then show the field
+      if (!uiField.visibleCondition || uiField.visibleCondition == "") {
+        uiField.isVisible = true;
+      }
+      else {
+        let resetFieldToBlank = this.resetHiddenField;
+        let visibilityRule = new Rule({
+          conditions: uiField.visibleCondition,
+          onSuccess() {
+            //in "visibleCondition" is statisfied then show the field
+            uiField.isVisible = true;
+          },
+          onFailure() {
+            //in "visibleCondition" is not statisfied then hide the field
+            uiField.isVisible = false;
+            resetFieldToBlank(uiField);
+          },
+          event: {
+            type: "message",
+            params: {
+              data: ""
             }
+          }
+        });
+        this.jsonRulesEngine.addRule(visibilityRule);
+        //evaluate the visibleCondition
+        this.jsonRulesEngine
+          .run(identityFormData)
+          .then(results => {
+            results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
+            this.jsonRulesEngine.removeRule(visibilityRule);
+          })
+          .catch((error) => {
+            console.log('err is', error);
+            this.jsonRulesEngine.removeRule(visibilityRule);
           });
-          this.jsonRulesEngine.addRule(visibilityRule);
-          //evaluate the visibleCondition
-          this.jsonRulesEngine
-            .run(identityFormData)
-            .then(results => {
-              results.events.map(event => console.log('jsonRulesEngine run successfully', event.params.data));
-              this.jsonRulesEngine.removeRule(visibilityRule);
-            })
-            .catch((error) => {
-              console.log('err is', error);
-              this.jsonRulesEngine.removeRule(visibilityRule);
-            });
-        }
-      }, this.resetHiddenField
-      );
-    }
+      }
+    }, this.resetHiddenField
+    );
+    this.processConditionalRequiredValidations(identityFormData);
+    //}
   }
+
+  /**
+   * This function looks for "requiredCondition" attribute for each field in UI Specs.
+   * Using "json-rules-engine", these conditions are evaluated 
+   * and fields are conditionally validated as required or not in the UI form.
+   */
+  processConditionalRequiredValidations(identityFormData) {
+    console.log("processConditionalRequiredValidations");
+    //for each uiField in UI specs, check of any "requiredCondition" is given
+    //if yes, then evaluate it with json-rules-engine
+    this.uiFields.forEach(uiField => {
+      //if no "requiredCondition" is given, then nothing is to be done
+      if (uiField.requiredCondition && uiField.requiredCondition != "") {
+        let validators = this.addValidators;
+        let requiredRule = new Rule({
+          conditions: uiField.requiredCondition,
+          onSuccess() {
+            //in "requiredCondition" is statisfied then validate the field as required
+            uiField.required = true;
+            console.log("success");
+            validators(uiField);
+          },
+          onFailure() {
+            //in "requiredCondition" is not statisfied then validate the field as not required
+            uiField.required = false;
+            console.log("failure");
+            
+            validators(uiField);
+          },
+          event: {
+            type: "message",
+            params: {
+              data: ""
+            }
+          }
+        });
+        this.jsonRulesEngine.addRule(requiredRule);
+        //evaluate the visibleCondition
+        this.jsonRulesEngine
+          .run(identityFormData)
+          .then(results => {
+            results.events.map(event => console.log('jsonRulesEngine for requiredConditions run successfully', event.params.data));
+            this.jsonRulesEngine.removeRule(requiredRule);
+          })
+          .catch((error) => {
+            console.log('err is', error);
+            this.jsonRulesEngine.removeRule(requiredRule);
+          });
+      }
+    }, this.addValidators);
+  }
+  
 
   /**
    * @description This sets the top location hierachy,
