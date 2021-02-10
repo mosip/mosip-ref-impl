@@ -76,13 +76,8 @@ export class CenterSelectionComponent
     await this.getUserInfo(this.preRegId);
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
-    const subs = this.dataService
-      .getLocationTypeData()
-      .subscribe((response) => {
-        this.locationTypes = response[appConstants.RESPONSE]["locations"];
-      });
-    this.subscriptions.push(subs);
-    console.log(this.users);
+    await this.getLocationLevels();
+    console.log(this.locationTypes);
     this.getRecommendedCenters();
     this.getErrorLabels();
   }
@@ -109,6 +104,14 @@ export class CenterSelectionComponent
             []
           )
         );
+      });
+    });
+  }
+    getLocationLevels() {
+    return new Promise((resolve) => {
+       this.dataService.getLocationTypeData().subscribe((response) => {
+        this.locationTypes = response[appConstants.RESPONSE]["locations"];
+         resolve(true);
       });
     });
   }
