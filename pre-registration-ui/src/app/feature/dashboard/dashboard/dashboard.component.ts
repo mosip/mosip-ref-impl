@@ -64,7 +64,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   name = "";
   identityData: any;
-  locationHeirarchy: any[];
+  locationHeirarchies: any[];
 
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -132,14 +132,18 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       // this.identityData = response["identity"];
       // this.locationHeirarchy = [...response["locationHierarchy"]];
       this.identityData = response["response"]["idSchema"]["identity"];
-      this.locationHeirarchy = [
-        ...response["response"]["idSchema"]["locationHierarchy"],
-      ];
-      console.log(this.locationHeirarchy);
-      localStorage.setItem(
-        "locationHierarchy",
-        JSON.stringify(this.locationHeirarchy)
-      );
+      let locationHeirarchiesFromJson = [
+          ...response["response"]["idSchema"]["locationHierarchy"],
+        ];
+        if (Array.isArray(locationHeirarchiesFromJson[0])) {
+          this.locationHeirarchies = locationHeirarchiesFromJson;  
+        } else {
+          let hierarchiesArray = [];
+          hierarchiesArray.push(locationHeirarchiesFromJson);
+          this.locationHeirarchies = hierarchiesArray;
+        }
+        console.log(this.locationHeirarchies);
+        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchies[0]));
     });
   }
 
