@@ -48,7 +48,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const copiedReq = req.clone({
-      withCredentials: true,
+      withCredentials: false,
     });
     return next.handle(copiedReq).pipe(
       catchError((error: HttpErrorResponse) => {
