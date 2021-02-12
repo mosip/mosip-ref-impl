@@ -1,10 +1,36 @@
 package io.mosip.biosdk.client.impl.spec_1_0;
 
+import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_IDTYPE;
+import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_SESSIONID;
+
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import io.mosip.biosdk.client.config.LoggerConfig;
-import io.mosip.biosdk.client.dto.*;
+import io.mosip.biosdk.client.dto.CheckQualityRequestDto;
+import io.mosip.biosdk.client.dto.ConvertFormatRequestDto;
+import io.mosip.biosdk.client.dto.ErrorDto;
+import io.mosip.biosdk.client.dto.ExtractTemplateRequestDto;
+import io.mosip.biosdk.client.dto.InitRequestDto;
+import io.mosip.biosdk.client.dto.MatchRequestDto;
+import io.mosip.biosdk.client.dto.RequestDto;
+import io.mosip.biosdk.client.dto.SegmentRequestDto;
 import io.mosip.biosdk.client.utils.Util;
 import io.mosip.kernel.biometrics.constant.BiometricType;
 import io.mosip.kernel.biometrics.entities.BiometricRecord;
@@ -14,26 +40,25 @@ import io.mosip.kernel.biometrics.model.Response;
 import io.mosip.kernel.biometrics.model.SDKInfo;
 import io.mosip.kernel.biometrics.spi.IBioApi;
 import io.mosip.kernel.core.logger.spi.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.springframework.http.*;
-
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-
-import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_IDTYPE;
-import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_SESSIONID;
 
 /**
  * The Class BioApiImpl.
  * 
  * @author Sanjay Murali
  * @author Manoj SP
+ * @author Ankit
+ * @author Loganathan Sekar
  * 
  */
 public class Client_V_1_0 implements IBioApi {
+
+	private static final String FORMAT_SUFFIX = ".format";
+
+	private static final String DEFAULT = "DEFAULT";
+
+	private static final String FORMAT_URL_PREFIX = "format.url.";
+
+	private static final String MOSIP_BIOSDK_SERVICE = "mosip_biosdk_service";
 
 	private static Logger logger = LoggerConfig.logConfig(Client_V_1_0.class);
 
@@ -41,22 +66,70 @@ public class Client_V_1_0 implements IBioApi {
 	private static final String BIOSDK_SPEC_VERSION = "0.9";
 	private static final boolean rest = true;
 
-	/* "http://localhost:9099/biosdk-service" */
-	private static final String host = System.getenv("mosip_biosdk_service");
 	private Gson gson = new GsonBuilder().serializeNulls().create();
 
 	Type errorDtoListType = new TypeToken<List<ErrorDto>>(){}.getType();
 
+	private Map<String, String> sdkUrlsMap;
+
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
+		sdkUrlsMap = getSdkUrls(initParams);
+		List<SDKInfo> sdkInfos = sdkUrlsMap.values()
+											.stream()
+											.map(sdkUrl -> initForSdkUrl(initParams, sdkUrl))
+											.collect(Collectors.toList());
+		return getAggregatedSdkInfo(sdkInfos);
+	}
+
+	private SDKInfo getAggregatedSdkInfo(List<SDKInfo> sdkInfos) {
+		SDKInfo sdkInfo;
+		if(!sdkInfos.isEmpty()) {
+			sdkInfo = sdkInfos.get(0);
+			if(sdkInfos.size() == 1) {
+				return sdkInfo;
+			} else {
+				return getAggregatedSdkInfo(sdkInfos, sdkInfo);
+			}
+		} else {
+			sdkInfo = null;
+		}
+		return sdkInfo;
+	}
+
+	private SDKInfo getAggregatedSdkInfo(List<SDKInfo> sdkInfos, SDKInfo sdkInfo) {
+		String organization = sdkInfo.getProductOwner() == null ? null : sdkInfo.getProductOwner().getOrganization();
+		String type = sdkInfo.getProductOwner() == null ? null : sdkInfo.getProductOwner().getType();
+		SDKInfo aggregatedSdkInfo = new SDKInfo(sdkInfo.getApiVersion(), sdkInfo.getSdkVersion(), organization, type);
+		sdkInfos.forEach(info -> addOtherSdkInfoDetails(info, aggregatedSdkInfo));
+		return aggregatedSdkInfo;
+	}
+
+	private void addOtherSdkInfoDetails(SDKInfo sdkInfo, SDKInfo aggregatedSdkInfo) {
+		if(sdkInfo.getOtherInfo() != null) {
+			aggregatedSdkInfo.getOtherInfo().putAll(sdkInfo.getOtherInfo());
+		}
+		if(sdkInfo.getSupportedMethods() != null) {
+			aggregatedSdkInfo.getSupportedMethods().putAll(sdkInfo.getSupportedMethods());
+		}
+		if(sdkInfo.getSupportedModalities() != null) {
+			List<BiometricType> supportedModalities = aggregatedSdkInfo.getSupportedModalities();
+			supportedModalities.addAll(sdkInfo.getSupportedModalities()
+					.stream()
+					.filter(s -> !supportedModalities.contains(s))
+					.collect(Collectors.toList()));
+		}
+	}
+
+	private SDKInfo initForSdkUrl(Map<String, String> initParams, String sdkServiceUrl) {
 		SDKInfo sdkInfo = null;
 		try {
 			InitRequestDto initRequestDto = new InitRequestDto();
 			initRequestDto.setInitParams(initParams);
 
 			RequestDto requestDto = generateNewRequestDto(initRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/init");
-			ResponseEntity<?> responseEntity = Util.restRequest(host+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", sdkServiceUrl+"/init");
+			ResponseEntity<?> responseEntity = Util.restRequest(sdkServiceUrl+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
@@ -76,6 +149,40 @@ public class Client_V_1_0 implements IBioApi {
 		return sdkInfo;
 	}
 
+	private Map<String, String> getSdkUrls(Map<String, String> initParams) {
+		Map<String, String> sdkUrls = new HashMap<>(initParams.entrySet()
+				.stream()
+				.filter(entry -> entry.getKey().contains(FORMAT_URL_PREFIX))
+				.collect(Collectors.toMap(entry -> entry.getKey()
+						.substring(FORMAT_URL_PREFIX.length()), Entry::getValue)));
+		String defaultSdkServiceUrl = getDefaultSdkServiceUrl();
+		if(defaultSdkServiceUrl != null) {
+			sdkUrls.put(DEFAULT, defaultSdkServiceUrl);
+		}
+		return sdkUrls;
+	}
+	
+	private String getSdkServiceUrl(BiometricType modality, Map<String, String> flags) {
+		String key = modality.name() + FORMAT_SUFFIX;
+		if(flags != null && flags.containsKey(key)) {
+			String format = flags.get(key);
+			Optional<String> urlForFormat = sdkUrlsMap.entrySet()
+						.stream()
+						.filter(e -> e.getKey().equalsIgnoreCase(format))
+						.findAny()
+						.map(Entry::getValue);
+			if(urlForFormat.isPresent()) {
+				return sdkUrlsMap.get(urlForFormat.get());
+			}
+		}
+		return sdkUrlsMap.get(DEFAULT);
+	}
+
+	private String getDefaultSdkServiceUrl() {
+		/* "http://localhost:9099/biosdk-service" */
+		return System.getenv(MOSIP_BIOSDK_SERVICE);
+	}
+
 	@Override
 	public Response<QualityCheck> checkQuality(BiometricRecord sample, List<BiometricType> modalitiesToCheck, Map<String, String> flags) {
 		Response<QualityCheck> response = new Response<>();
@@ -87,8 +194,9 @@ public class Client_V_1_0 implements IBioApi {
 			checkQualityRequestDto.setModalitiesToCheck(modalitiesToCheck);
 			checkQualityRequestDto.setFlags(flags);
 			RequestDto requestDto = generateNewRequestDto(checkQualityRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/check-quality");
-			ResponseEntity<?> responseEntity = Util.restRequest(host+"/check-quality", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			String url = getSdkServiceUrl(modalitiesToCheck.get(0), flags)+"/check-quality";
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
@@ -121,8 +229,9 @@ public class Client_V_1_0 implements IBioApi {
 			matchRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(matchRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/match");
-			ResponseEntity<?> responseEntity = Util.restRequest(host+"/match", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			String url = getSdkServiceUrl(modalitiesToMatch.get(0), flags)+"/match";
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
@@ -161,8 +270,9 @@ public class Client_V_1_0 implements IBioApi {
 			extractTemplateRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(extractTemplateRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/extract-template");
-			ResponseEntity<?> responseEntity = Util.restRequest(host+"/extract-template", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			String url = getSdkServiceUrl(modalitiesToExtract.get(0), flags)+"/extract-template";
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
@@ -202,8 +312,9 @@ public class Client_V_1_0 implements IBioApi {
 			segmentRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(segmentRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/segment");
-			ResponseEntity<?> responseEntity = Util.restRequest(host+"/segment", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			String url = getSdkServiceUrl(modalitiesToSegment.get(0), flags)+"/segment";
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
@@ -247,8 +358,8 @@ public class Client_V_1_0 implements IBioApi {
 			convertFormatRequestDto.setModalitiesToConvert(modalitiesToConvert);
 
 			RequestDto requestDto = generateNewRequestDto(convertFormatRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", host+"/convert-format");
-			ResponseEntity<?> responseEntity = Util.restRequest(host+"/convert-format", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", getDefaultSdkServiceUrl()+"/convert-format");
+			ResponseEntity<?> responseEntity = Util.restRequest(getDefaultSdkServiceUrl()+"/convert-format", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
