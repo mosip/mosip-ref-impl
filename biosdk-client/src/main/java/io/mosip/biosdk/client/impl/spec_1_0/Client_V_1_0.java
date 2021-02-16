@@ -177,22 +177,24 @@ public class Client_V_1_0 implements IBioApi {
 	}
 	
 	private String getSdkServiceUrl(BiometricType modality, Map<String, String> flags) {
-		String key = modality.name() + FORMAT_SUFFIX;
-		if(flags != null) {
-			Optional<String> formatFromFlag = flags.entrySet()
-						.stream()
-						.filter(e -> e.getKey().equalsIgnoreCase(key))
-						.findAny()
-						.map(Entry::getValue);
-			if(formatFromFlag.isPresent()) {
-				String format = formatFromFlag.get();
-				Optional<String> urlForFormat = sdkUrlsMap.entrySet()
-						.stream()
-						.filter(e -> e.getKey().equalsIgnoreCase(format))
-						.findAny()
-						.map(Entry::getValue);
-				if(urlForFormat.isPresent()) {
-					return urlForFormat.get();
+		if(modality != null) {
+			String key = modality.name() + FORMAT_SUFFIX;
+			if(flags != null) {
+				Optional<String> formatFromFlag = flags.entrySet()
+							.stream()
+							.filter(e -> e.getKey().equalsIgnoreCase(key))
+							.findAny()
+							.map(Entry::getValue);
+				if(formatFromFlag.isPresent()) {
+					String format = formatFromFlag.get();
+					Optional<String> urlForFormat = sdkUrlsMap.entrySet()
+							.stream()
+							.filter(e -> e.getKey().equalsIgnoreCase(format))
+							.findAny()
+							.map(Entry::getValue);
+					if(urlForFormat.isPresent()) {
+						return urlForFormat.get();
+					}
 				}
 			}
 		}
