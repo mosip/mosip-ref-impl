@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
@@ -54,7 +55,7 @@ public class Client_V_1_0 implements IBioApi {
 
 	private static final String FORMAT_SUFFIX = ".format";
 
-	private static final String DEFAULT = "DEFAULT";
+	private static final String DEFAULT = "default";
 
 	private static final String FORMAT_URL_PREFIX = "format.url.";
 
@@ -155,31 +156,54 @@ public class Client_V_1_0 implements IBioApi {
 				.filter(entry -> entry.getKey().contains(FORMAT_URL_PREFIX))
 				.collect(Collectors.toMap(entry -> entry.getKey()
 						.substring(FORMAT_URL_PREFIX.length()), Entry::getValue)));
-		String defaultSdkServiceUrl = getDefaultSdkServiceUrl();
-		if(defaultSdkServiceUrl != null) {
-			sdkUrls.put(DEFAULT, defaultSdkServiceUrl);
+		if(!sdkUrls.containsKey(DEFAULT)) {
+			//If default is not specified in configuration, try getting it from env.
+			String defaultSdkServiceUrl = getDefaultSdkServiceUrlFromEnv();
+			if(defaultSdkServiceUrl != null) {
+				sdkUrls.put(DEFAULT, defaultSdkServiceUrl);
+			}
+		}
+		
+		//There needs a default URL to be used when no format is specified.
+		if(!sdkUrls.containsKey(DEFAULT) && !sdkUrls.isEmpty()) {
+			//Take any first url and set it to default
+			sdkUrls.put(DEFAULT, sdkUrls.values().iterator().next());
+		}
+		
+		if(sdkUrls.isEmpty()) {
+			throw new IllegalStateException("No valid sdk service url configured");
 		}
 		return sdkUrls;
 	}
 	
 	private String getSdkServiceUrl(BiometricType modality, Map<String, String> flags) {
 		String key = modality.name() + FORMAT_SUFFIX;
-		if(flags != null && flags.containsKey(key)) {
-			String format = flags.get(key);
-			Optional<String> urlForFormat = sdkUrlsMap.entrySet()
+		if(flags != null) {
+			Optional<String> formatFromFlag = flags.entrySet()
+						.stream()
+						.filter(e -> e.getKey().equalsIgnoreCase(key))
+						.findAny()
+						.map(Entry::getValue);
+			if(formatFromFlag.isPresent()) {
+				String format = formatFromFlag.get();
+				Optional<String> urlForFormat = sdkUrlsMap.entrySet()
 						.stream()
 						.filter(e -> e.getKey().equalsIgnoreCase(format))
 						.findAny()
 						.map(Entry::getValue);
-			if(urlForFormat.isPresent()) {
-				return sdkUrlsMap.get(urlForFormat.get());
+				if(urlForFormat.isPresent()) {
+					return urlForFormat.get();
+				}
 			}
 		}
+		return getDefaultSdkServiceUrl();
+	}
+	
+	private String getDefaultSdkServiceUrl() {
 		return sdkUrlsMap.get(DEFAULT);
 	}
 
-	private String getDefaultSdkServiceUrl() {
-		/* "http://localhost:9099/biosdk-service" */
+	private String getDefaultSdkServiceUrlFromEnv() {
 		return System.getenv(MOSIP_BIOSDK_SERVICE);
 	}
 
@@ -270,7 +294,7 @@ public class Client_V_1_0 implements IBioApi {
 			extractTemplateRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(extractTemplateRequestDto);
-			String url = getSdkServiceUrl(modalitiesToExtract.get(0), flags)+"/extract-template";
+			String url = getSdkServiceUrl(modalitiesToExtract, flags)+"/extract-template";
 			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
 			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
@@ -300,6 +324,24 @@ public class Client_V_1_0 implements IBioApi {
 			throw new RuntimeException(e);
 		}
 		return response;
+	}
+
+	private String getSdkServiceUrl(List<BiometricType> modalitiesToExtract, Map<String, String> flags) {
+		if(modalitiesToExtract != null && !modalitiesToExtract.isEmpty()) {
+			return getSdkServiceUrl(modalitiesToExtract.get(0), flags);
+		} else {
+			Set<String> keySet = flags.keySet();
+			for(String key: keySet) {
+				if(key.toLowerCase().contains(BiometricType.FINGER.name().toLowerCase())) {
+					return getSdkServiceUrl(BiometricType.FINGER, flags);
+				} else if(key.toLowerCase().contains(BiometricType.IRIS.name().toLowerCase())) {
+					return getSdkServiceUrl(BiometricType.IRIS, flags);
+				} else if(key.toLowerCase().contains(BiometricType.FACE.name().toLowerCase())) {
+					return getSdkServiceUrl(BiometricType.FACE, flags);
+				}
+			}
+		}
+		return getDefaultSdkServiceUrl();
 	}
 
 	@Override
@@ -358,8 +400,9 @@ public class Client_V_1_0 implements IBioApi {
 			convertFormatRequestDto.setModalitiesToConvert(modalitiesToConvert);
 
 			RequestDto requestDto = generateNewRequestDto(convertFormatRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", getDefaultSdkServiceUrl()+"/convert-format");
-			ResponseEntity<?> responseEntity = Util.restRequest(getDefaultSdkServiceUrl()+"/convert-format", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			String url = getDefaultSdkServiceUrl()+"/convert-format";
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()){
 				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
