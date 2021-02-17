@@ -37,6 +37,16 @@
                 />
               </mat-form-field>
             </ng-container>
+            <ng-container *ngIf="field.controlType === 'checkbox' && field.isVisible == true">
+                <mat-checkbox
+                  formControlName="{{ field.id }}"
+                  (change)="showHideFormFields();copyToSecondaryFormNonDropDown(field.id, $event)"
+                  >
+                  <mat-label>{{ field.labelName[primaryLang] }}
+                    <span *ngIf="field.required" class="required-annotation">*</span>
+                  </mat-label>
+                </mat-checkbox>
+            </ng-container>
             <ng-container *ngIf="field.controlType === 'dropdown' && field.isVisible == true">
               <mat-form-field [ngClass]="'dropdown-field'">
                 <mat-label
@@ -222,6 +232,16 @@
                   [readonly]="getReadOnlyfields(field.id)"
                 />
               </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="field.controlType === 'checkbox' && field.isVisible == true">
+              <mat-checkbox
+                formControlName="{{ field.id }}"
+                [disabled]="true"
+                >
+                <mat-label>{{ field.labelName[secondaryLang] }}
+                  <span *ngIf="field.required" class="required-annotation">*</span>
+                </mat-label>
+              </mat-checkbox>
             </ng-container>
             <ng-container *ngIf="field.controlType === 'dropdown' && field.isVisible == true">
               <mat-form-field [ngClass]="'dropdown-field'">
