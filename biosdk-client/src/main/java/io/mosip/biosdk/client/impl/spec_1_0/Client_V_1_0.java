@@ -64,8 +64,6 @@ public class Client_V_1_0 implements IBioApi {
 	private static Logger logger = LoggerConfig.logConfig(Client_V_1_0.class);
 
 	private static final String VERSION = "1.0";
-	private static final String BIOSDK_SPEC_VERSION = "0.9";
-	private static final boolean rest = true;
 
 	private Gson gson = new GsonBuilder().serializeNulls().create();
 
@@ -304,7 +302,6 @@ public class Client_V_1_0 implements IBioApi {
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
-			BiometricRecord resBiometricRecord = null;
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 
@@ -364,7 +361,6 @@ public class Client_V_1_0 implements IBioApi {
 				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
-			BiometricRecord resBiometricRecord = null;
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 
