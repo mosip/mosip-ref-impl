@@ -84,8 +84,34 @@ export class CenterSelectionComponent
     await this.getUserInfo(this.preRegId);
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
-    await this.getLocationLevels();
-    console.log(this.locationTypes);
+    const subs = this.dataService
+      .getLocationTypeData()
+      .subscribe((response) => {
+        //get all location types from db
+        let allLocationTypes = response[appConstants.RESPONSE]["locations"];
+        console.log(`allLocationTypes: `);
+        console.log(allLocationTypes);
+        //get the recommended loc hierachy code to which booking centers are mapped
+        const recommendedLocCode = this.configService.getConfigByKey(
+          appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
+        );
+        console.log(`recommendedLocCode: ${recommendedLocCode}`);
+        //now filter out only those hierachies which are higher than the recommended loc hierachy code
+        //ex: if locHierachy is ["Country","Region","Province","City","PostalCode"] and the
+        //recommended loc hierachy code is 3 for "City", then show only "Country","Region","Province"
+        //in the Search dropdown. There are no booking centers mapped to "PostalCode", so don't include it.
+        this.locationTypes = allLocationTypes.filter(
+          (locType) =>
+            locType.locationHierarchylevel <= Number(recommendedLocCode)
+        );
+        //sort the filtered array in ascending order of hierarchyLevel
+        this.locationTypes.sort(function (a, b) {
+          return a.locationHierarchylevel - b.locationHierarchylevel;
+        });
+        //console.log(this.locationTypes);
+      });
+    this.subscriptions.push(subs);
+    console.log(this.users);
     this.getRecommendedCenters();
     this.getErrorLabels();
   }
@@ -115,14 +141,6 @@ export class CenterSelectionComponent
       });
     });
   }
-    getLocationLevels() {
-    return new Promise((resolve) => {
-       this.dataService.getLocationTypeData().subscribe((response) => {
-        this.locationTypes = response[appConstants.RESPONSE]["locations"];
-         resolve(true);
-      });
-    });
-  }
 
   getErrorLabels() {
     let factory = new LanguageFactory(this.primaryLang);
@@ -139,9 +157,7 @@ export class CenterSelectionComponent
     const locationHierarchyLevel = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
     );
-    let minusValue = this.locationTypes.length - locationHierarchy.length;
-     console.log(minusValue);
-    const locationType = locationHierarchy[Number(locationHierarchyLevel) - minusValue];
+    const locationType = locationHierarchy[Number(locationHierarchyLevel) - 1];
     console.log(locationHierarchy);
     console.log(locationHierarchyLevel + ">>>>" + locationType);
     this.users.forEach((user) => {
