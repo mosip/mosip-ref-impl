@@ -141,6 +141,14 @@ export class CenterSelectionComponent
       });
     });
   }
+    getLocationLevels() {
+    return new Promise((resolve) => {
+       this.dataService.getLocationTypeData().subscribe((response) => {
+        this.locationTypes = response[appConstants.RESPONSE]["locations"];
+         resolve(true);
+      });
+    });
+  }
 
   getErrorLabels() {
     let factory = new LanguageFactory(this.primaryLang);
