@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.1.4-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
 
 	<developers>
@@ -37,8 +37,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.1.4-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.1.4-SNAPSHOT</kernel.core.version>
+		<pre.registration.core.version>1.2.0-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.2.0-SNAPSHOT</kernel.core.version>
 
 		<!-- Core -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
@@ -218,6 +218,21 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>1.2.3</version>
+		</dependency>
+			<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>asm</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>json-smart</artifactId>
+			<version>2.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>

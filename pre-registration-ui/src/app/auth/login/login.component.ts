@@ -381,7 +381,7 @@ export class LoginComponent implements OnInit {
       }
 
       this.dataService
-        .sendOtp(this.inputContactDetails)
+        .sendOtp(this.inputContactDetails,this.primaryLang)
         .subscribe((response) => {});
 
       // dynamic update of button text for Resend and Verify
