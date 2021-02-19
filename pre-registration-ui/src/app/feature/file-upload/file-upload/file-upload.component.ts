@@ -1133,7 +1133,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               );
               this.documentName = docList[0].code;
               this.LOD[index].selectedDocName = this.documentName;
-              this.LOD[index].selectedDocRefId = "";
+              this.LOD[index].selectedDocRefId = response["response"]["docRefId"];
             } else {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
