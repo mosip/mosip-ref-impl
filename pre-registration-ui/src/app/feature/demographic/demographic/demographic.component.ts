@@ -373,7 +373,7 @@ export class DemographicComponent
         });
         this.dynamicFields = this.uiFields.filter(
           (fields) =>
-            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+            ((fields.controlType === "dropdown" || fields.controlType === "button" ) && fields.fieldType === "dynamic")
         );
         console.log(this.dynamicFields);
         this.setDropDownArrays();
@@ -457,7 +457,7 @@ export class DemographicComponent
    */
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
-      if (control.controlType === "dropdown") {
+      if (control.controlType === "dropdown" || control.controlType === "button") {
         this.primarydropDownFields[control.id] = [];
         if (this.primaryLang !== this.secondaryLang) {
           this.secondaryDropDownLables[control.id] = [];
@@ -747,7 +747,9 @@ export class DemographicComponent
                   valueName: element.name,
                   languageCode: this.primaryLang,
                 };
-                this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
+                if (this.primarydropDownFields[`${fieldName}`]) {
+                  this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
+                }
               });
             }
           },
@@ -769,9 +771,11 @@ export class DemographicComponent
                     valueName: element.name,
                     languageCode: this.secondaryLang,
                   };
-                  this.secondaryDropDownLables[`${fieldName}`].push(
-                    codeValueModal
-                  );
+                  if (this.secondaryDropDownLables[`${fieldName}`]) {
+                    this.secondaryDropDownLables[`${fieldName}`].push(
+                      codeValueModal
+                    );
+                  }
                 });
               }
             },
@@ -912,7 +916,7 @@ export class DemographicComponent
       this.uiFields.forEach((control) => {
          if (this.user.request.demographicDetails.identity[control.id]) {
         if (
-          control.controlType !== "dropdown" &&
+          (control.controlType !== "dropdown" && control.controlType !== "button") &&
           !appConstants.TRANSLITERATE_FIELDS.includes(control.id)
         ) {
           if (control.id === "dateOfBirth") {
@@ -945,7 +949,7 @@ export class DemographicComponent
               ].value
             );
           }
-        } else if (control.controlType === "dropdown") {
+        } else if (control.controlType === "dropdown" || control.controlType === "button") {
           if (this.isThisFieldInLocationHeirarchies(control.id)) {
             this.dropdownApiCall(control);
             if (control.type === "string") {
