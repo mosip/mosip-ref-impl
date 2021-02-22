@@ -375,3 +375,29 @@ mat-icon {
     font-size: 0.8rem;
   }
 }
+.btn_grp {
+  display: flex;
+  margin-bottom: 6px;
+  margin-top: 6px;
+  border: 0px;
+}
+
+.btn_grp mat-button-toggle {
+  font-weight: inherit;
+  font-size: 0.7rem; 
+  margin-right: 10px;
+  color: black;
+  border-radius: 0%;
+  box-shadow: 1px 1px 1px 1px rgba(107, 106, 106, 0.068);
+}
+
+.btn_grp .mat-button-toggle-checked {
+  background-color: white;
+  font-weight: bolder;
+  color: #fd518c;
+}
+
+.form_checkBox{
+  margin-bottom: 6px;
+  margin-top: 6px; 
+}
