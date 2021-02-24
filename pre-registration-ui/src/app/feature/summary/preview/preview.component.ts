@@ -82,6 +82,14 @@ export class PreviewComponent implements OnInit {
     this.getSecondaryLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
+    //remove blank fields
+    let updatedUIFields = [];
+    this.uiFields.forEach((control) => {
+      if (this.previewData[control.id]) {
+        updatedUIFields.push(control);
+      }
+    });
+    this.uiFields = updatedUIFields;
     //console.log("populateLocationInfoArray");
     await this.populateLocationInfoArray();
     //console.log(this.primaryLangLocInfo);

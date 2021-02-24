@@ -31,7 +31,7 @@ export class CenterSelectionComponent
   isWorkingDaysAvailable = false;
   canDeactivateFlag = true;
   locationTypes = [];
-
+  allLocationTypes = [];
   locationType = null;
   searchText = null;
   showTable = false;
@@ -88,9 +88,8 @@ export class CenterSelectionComponent
       .getLocationTypeData()
       .subscribe((response) => {
         //get all location types from db
-        let allLocationTypes = response[appConstants.RESPONSE]["locations"];
-        console.log(`allLocationTypes: `);
-        console.log(allLocationTypes);
+        this.allLocationTypes = response[appConstants.RESPONSE]["locations"];
+        console.log(`allLocationTypes: ${this.allLocationTypes}`);        
         //get the recommended loc hierachy code to which booking centers are mapped
         const recommendedLocCode = this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
@@ -100,7 +99,7 @@ export class CenterSelectionComponent
         //ex: if locHierachy is ["Country","Region","Province","City","PostalCode"] and the
         //recommended loc hierachy code is 3 for "City", then show only "Country","Region","Province"
         //in the Search dropdown. There are no booking centers mapped to "PostalCode", so don't include it.
-        this.locationTypes = allLocationTypes.filter(
+        this.locationTypes = this.allLocationTypes.filter(
           (locType) =>
             locType.locationHierarchylevel <= Number(recommendedLocCode)
         );
@@ -109,10 +108,11 @@ export class CenterSelectionComponent
           return a.locationHierarchylevel - b.locationHierarchylevel;
         });
         //console.log(this.locationTypes);
+        this.getRecommendedCenters();
       });
     this.subscriptions.push(subs);
     console.log(this.users);
-    this.getRecommendedCenters();
+    //this.getRecommendedCenters();
     this.getErrorLabels();
   }
 
@@ -157,10 +157,13 @@ export class CenterSelectionComponent
     const locationHierarchyLevel = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
     );
-    const locationType = locationHierarchy[Number(locationHierarchyLevel) - 1];
+    let minusValue = this.allLocationTypes.length - locationHierarchy.length;
+     console.log(minusValue);
+    const locationType = locationHierarchy[Number(locationHierarchyLevel) - minusValue];
     console.log(locationHierarchy);
     console.log(locationHierarchyLevel + ">>>>" + locationType);
     this.users.forEach((user) => {
+      console.log(user);
       if (
         typeof user.request.demographicDetails.identity[locationType] ===
         "object"
@@ -177,6 +180,7 @@ export class CenterSelectionComponent
         );
       }
     });
+    console.log(this.locationCodes);
     await this.getLocationNamesByCodes();
     this.getRecommendedCentersApiCall();
   }
@@ -219,16 +223,13 @@ export class CenterSelectionComponent
   getLocationNames(locationCode) {
     return new Promise((resolve) => {
       this.dataService
-        .getLocationOnLocationCodeAndLangCode(locationCode, this.primaryLang)
+        .getLocationInfoForLocCode(locationCode, this.primaryLang)
         .subscribe((response) => {
           console.log(response[appConstants.RESPONSE]);
           if (response[appConstants.RESPONSE]) {
-            console.log(
-              response[appConstants.RESPONSE]["locations"][0]["name"]
-            );
-            this.locationNames.push(
-              response[appConstants.RESPONSE]["locations"][0]["name"]
-            );
+            let locName = response[appConstants.RESPONSE]["name"];
+            console.log(locName);
+            this.locationNames.push(locName);
             resolve(true);
           }
         });

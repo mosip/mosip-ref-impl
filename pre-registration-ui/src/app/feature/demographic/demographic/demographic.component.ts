@@ -914,6 +914,7 @@ export class DemographicComponent
         secondaryIndex = 0;
       }
       this.uiFields.forEach((control) => {
+         if (this.user.request.demographicDetails.identity[control.id]) {
         if (
           (control.controlType !== "dropdown" && control.controlType !== "button") &&
           !appConstants.TRANSLITERATE_FIELDS.includes(control.id)
@@ -987,6 +988,7 @@ export class DemographicComponent
             }
           }
         }
+         }
       });
     }
   }
@@ -1560,6 +1562,7 @@ export class DemographicComponent
    */
   private createIdentityJSONDynamic() {
     const identityObj = { IDSchemaVersion: "" };
+    const newIdentityObj = { IDSchemaVersion: "" };
     this.identityData.forEach((field) => {
       if (
         field.inputRequired === true &&
@@ -1567,6 +1570,7 @@ export class DemographicComponent
       ) {
         if (!field.inputRequired) {
           identityObj[field.id] = "";
+          newIdentityObj[field.id] = "";
         } else {
           if (field.type === 'simpleType') {
             identityObj[field.id] = [];
@@ -1582,7 +1586,27 @@ export class DemographicComponent
       const element = keyArr[index];
       this.createAttributeArray(element, identityObj);
     }
-    const identityRequest = { identity: identityObj };
+  //  const identityRequest = { identity: identityObj };
+    //now remove the blank fields from the identityObj
+    console.log(identityObj);
+    for (let index = 0; index < keyArr.length; index++) {
+      const element = keyArr[index];
+      if (typeof identityObj[element] === "object") {
+        let elementValue = identityObj[element];
+        if (elementValue && elementValue.length > 0) {
+          if (elementValue[0].value !== "" && elementValue[0].value !== null && elementValue[0].value !== undefined ) {
+            newIdentityObj[element] = elementValue;
+          }
+        }
+      } else if (typeof identityObj[element] === "string") {
+        let elementValue = identityObj[element];
+        if (elementValue !== "" && elementValue !== null && elementValue !== undefined) {
+          newIdentityObj[element] = elementValue;
+        }
+      }
+    }
+    console.log(newIdentityObj);
+    const identityRequest = { identity: newIdentityObj };
     return identityRequest;
   }
 

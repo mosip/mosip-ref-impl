@@ -38,11 +38,6 @@
             (focusout)="changeDocRefId($event, i)"
             (input)="changeDocRefId($event, i)"
             placeholder=""
-            [disabled]="
-              (document.code === 'POA' && sameAsselected) ||
-              !document.selectedDocName ||
-              document.selectedDocName === ''
-            "
             (change)="handleDocRefInput($event, document.code)"
             #keyboardRef
             #input
