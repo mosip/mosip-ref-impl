@@ -220,7 +220,6 @@ export class CenterSelectionComponent
     this.subscriptions.push(subs);
   }
 
-  
   getLocationNames(locationCode) {
     return new Promise((resolve) => {
       this.dataService
