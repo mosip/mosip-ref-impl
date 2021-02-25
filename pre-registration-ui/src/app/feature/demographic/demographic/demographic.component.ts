@@ -902,13 +902,13 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
-      /*if (
+      if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
       ) {
         index = 1;
         secondaryIndex = 0;
-      }*/
+      }
       if (this.primaryLang === this.secondaryLang) {
         index = 0;
         secondaryIndex = 0;
