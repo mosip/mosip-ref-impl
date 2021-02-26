@@ -2,17 +2,21 @@
 
 To start off we will be needing a Virtual Machine (VM) of at least 1 core processor and 4 GB memory with Red Hat OS installed. Please follow the following steps after the pre-requisites are met.
 
-- Install GIT – GIT is a version control software, we will be using it to download the source code on our system. Follow the following steps to install GIT on your system.
-  - yum update (to update all the RHEL packages)
-  - yum install git (to install git)
-  - git --version (to verify if git is installed or not)
-- Install Docker – Dockeris thesoftware used to create a runnable image from the existing source code. Follow the following steps to install Docker on your system.
-  - yum install docker (to install docker)
-  - docker --version (to verify if docker is installed on your system)
-- Install node.js – To build the angular code using angular cli that runs on node. Follow the following steps to install node.js on your system.
-  - yum install rh-nodejs8 (to install node )
+- *Install GIT* 
+  - yum update 
+  - yum install git 
+  - git --version
+
+
+- *Install Docker* 
+  - yum install docker 
+  - docker --version 
+
+- *Install nodejs* – To build the angular code using angular cli that runs on node
+  - yum install rh-nodejs8 
   - scl enable rh-nodejs8 bash (to add node.js to environment)
-  - node --version (to verify node.js is working)
+  - node --version 
+  
 - Install angular cli – To install angular cli for building the code into deployable artifacts. Follow the following steps to install angular cli on your system.
   - npm install -g @angular/cli (to install angular cli)
   - ng --version (to verify angular is installed in system)
