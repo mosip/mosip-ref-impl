@@ -12,4 +12,5 @@ public class EncryptionResponseDto {
 	String encryptedSessionKey;
 	String encryptedIdentity;
 	String requestHMAC;
+	String thumbprint;
 }

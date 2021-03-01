@@ -846,6 +846,7 @@ export class CreateComponent {
 
   getStubbedData() {
     this.getRegistrationCenterTypes();
+    this.getLocationHierarchyLevels();
     this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
       if (response.response.locations) {
         this.dropDownValues.holidayZone.primary =
@@ -857,6 +858,15 @@ export class CreateComponent {
         this.dropDownValues.holidayZone.secondary =
         response.response.locations;
       }
+    });
+  }
+
+  getLocationHierarchyLevels() {
+    this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
+      console.log("response.response.locationHierarchyLevels.primary>>>"+response.response.locationHierarchyLevels);
+    });
+    this.dataStorageService.getLocationHierarchyLevels(this.secondaryLang).subscribe(response => {
+      console.log("response.response.locationHierarchyLevels.secondary>>>"+response.response.locationHierarchyLevels);
     });
   }
 

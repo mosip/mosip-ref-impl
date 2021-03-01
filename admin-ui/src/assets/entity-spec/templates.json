@@ -63,7 +63,7 @@
   "columnsToDisplay": [
     {
       "name": "id",
-      "showInListView": "true",
+      "showInListView": "false",
       "showInSingleView": "false",
       "label": {
         "eng": "Template ID",
@@ -173,7 +173,7 @@
     },
     {
       "name": "moduleName",
-      "showInListView": "false",
+      "showInListView": "true",
       "showInSingleView": "false",
       "label": {
         "eng": "Module Name",
@@ -291,21 +291,6 @@
       "datePicker": "false",
       "apiName": "templates",
       "fieldName": "name",
-      "methodCallName": ""
-    },
-    {
-      "filtername": "moduleId",
-      "filterlabel": {
-        "eng": "Module Id",
-        "ara": "معرف الوحدة النمطية",
-        "fra": "ID module"
-      },
-      "filterType": "equals",
-      "autocomplete": "false",
-      "dropdown": "true",
-      "datePicker": "false",
-      "apiName": "templates",
-      "fieldName": "moduleId",
       "methodCallName": ""
     },
     {

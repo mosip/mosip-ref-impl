@@ -38,7 +38,9 @@ import LanguageFactory from "src/assets/i18n";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
 import { ValueConverter } from "@angular/compiler/src/render3/view/template";
-
+import { Engine, Rule } from 'json-rules-engine';
+import moment from 'moment';
+import identityStubJson from "../../../../assets/identity-spec.json";
 /**
  * @description This component takes care of the demographic page.
  * @author Shashank Agrawal
@@ -65,7 +67,7 @@ export class DemographicComponent
   keyboardSecondaryLang =
     appConstants.virtual_keyboard_languages[this.secondaryLang];
 
-  files: FilesModel;
+    files: FilesModel;
   agePattern: string;
   MOBILE_PATTERN: string;
   MOBILE_LENGTH: string;
@@ -93,7 +95,7 @@ export class DemographicComponent
   hierarchyAvailable = true;
   isConsentMessage = false;
   isReadOnly = false;
-
+  
   step: number = 0;
   id: number;
   oldAge: number;
@@ -162,11 +164,12 @@ export class DemographicComponent
 
   identityData = [];
   uiFields = [];
+  jsonRulesEngine = new Engine();
   primaryuserForm = false;
   primarydropDownFields = {};
   secondaryDropDownLables = {};
   secondaryuserForm = false;
-  locationHeirarchy = [];
+  locationHeirarchies = [];
   validationMessage: any;
   dynamicFields = [];
   dynamicFieldAndValues = [];
@@ -221,8 +224,9 @@ export class DemographicComponent
     if (!this.dataModification) {
       if (this.isConsentMessage) this.consentDeclaration();
     }
+    this.showHideFormFields();
   }
-
+  
   /**
 
    * @description This will return the json object of label of demographic in the primary language.
@@ -341,15 +345,23 @@ export class DemographicComponent
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
+        //response = identityStubJson;
         console.log(response);
         // this.identityData = response["identity"];
         // this.locationHeirarchy = [...response["locationHierarchy"]];
         this.identityData = response["response"]["idSchema"]["identity"];
-        this.locationHeirarchy = [
+        let locationHeirarchiesFromJson = [
           ...response["response"]["idSchema"]["locationHierarchy"],
         ];
-        console.log(this.locationHeirarchy);
-        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchy));
+        if (Array.isArray(locationHeirarchiesFromJson[0])) {
+          this.locationHeirarchies = locationHeirarchiesFromJson;  
+        } else {
+          let hierarchiesArray = [];
+          hierarchiesArray.push(locationHeirarchiesFromJson);
+          this.locationHeirarchies = hierarchiesArray;
+        }
+        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchies[0]));
+        
         this.identityData.forEach((obj) => {
           if (
             obj.inputRequired === true &&
@@ -386,42 +398,7 @@ export class DemographicComponent
       if (this.primaryLang !== this.secondaryLang) {
         this.transUserForm.addControl(control.id, new FormControl(""));
       }
-      if (control.required) {
-        this.userForm.controls[`${control.id}`].setValidators(
-          Validators.required
-        );
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators(
-            Validators.required
-          );
-        }
-      }
-      if (control.validators !== null && control.validators.length > 0) {
-        this.userForm.controls[`${control.id}`].setValidators([
-          Validators.pattern(control.validators[0].validator),
-        ]);
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators([
-            Validators.pattern(control.validators[0].validator),
-          ]);
-        }
-      }
-      if (
-        control.required &&
-        control.validators !== null &&
-        control.validators.length > 0
-      ) {
-        this.userForm.controls[`${control.id}`].setValidators([
-          Validators.required,
-          Validators.pattern(control.validators[0].validator),
-        ]);
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators([
-            Validators.required,
-            Validators.pattern(control.validators[0].validator),
-          ]);
-        }
-      }
+      this.addValidators(control);
       if (this.uiFields.length === index + 1) {
         this.primaryuserForm = true;
         if (this.primaryLang !== this.secondaryLang) {
@@ -429,6 +406,43 @@ export class DemographicComponent
         }
       }
     });
+  }
+
+  addValidators = (control: any) => {
+    if (control.required) {
+      this.userForm.controls[`${control.id}`].setValidators(
+        Validators.required
+      );
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators(
+          Validators.required
+        );
+      }
+    }
+    if (control.validators !== null && control.validators.length > 0) {
+      this.userForm.controls[`${control.id}`].setValidators([
+        Validators.pattern(control.validators[0].validator),
+      ]);
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators([
+          Validators.pattern(control.validators[0].validator),
+        ]);
+      }
+    }
+    if (control.required &&
+      control.validators !== null &&
+      control.validators.length > 0) {
+      this.userForm.controls[`${control.id}`].setValidators([
+        Validators.required,
+        Validators.pattern(control.validators[0].validator),
+      ]);
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators([
+          Validators.required,
+          Validators.pattern(control.validators[0].validator),
+        ]);
+      }
+    }
   }
 
   /**
@@ -452,6 +466,32 @@ export class DemographicComponent
     });
   }
 
+  isThisFieldInLocationHeirarchies = (fieldId) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items.length > 0 ? true: false;
+  }
+
+  getIndexInLocationHeirarchy = (fieldId) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items.indexOf(fieldId);
+  }
+
+  getLocationNameFromIndex = (fieldId, fieldIndex) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items[fieldIndex];
+  }
+
+  getLocationHierarchy = (fieldId) => {
+    let items = [];
+    this.locationHeirarchies.forEach(locationHeirarchy => {
+      let filteredItems = locationHeirarchy.filter(item => item == fieldId);
+      if (filteredItems.length > 0) {
+        items = locationHeirarchy;
+      }
+    });
+    return items;
+  }
+
   /**
 
    *
@@ -461,12 +501,12 @@ export class DemographicComponent
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
   dropdownApiCall(controlObject: any) {
-    if (this.locationHeirarchy.includes(controlObject.id)) {
-      if (this.locationHeirarchy.indexOf(controlObject.id) !== 0) {
+    if (this.isThisFieldInLocationHeirarchies(controlObject.id)) {
+      if (this.getIndexInLocationHeirarchy(controlObject.id) !== 0) {
         this.primarydropDownFields[controlObject.id] = [];
-        const location = this.locationHeirarchy.indexOf(controlObject.id);
-        const parentLocation = this.locationHeirarchy[location - 1];
-        let locationCode = this.userForm.get(`${parentLocation}`).value;
+        const locationIndex = this.getIndexInLocationHeirarchy(controlObject.id);
+        const parentLocationName = this.getLocationNameFromIndex(controlObject.id, locationIndex - 1);
+        let locationCode = this.userForm.get(`${parentLocationName}`).value;
         this.loadLocationData(locationCode, controlObject.id);
       }
     }
@@ -513,6 +553,140 @@ export class DemographicComponent
   }
 
   /**
+   * This function will reset the value of the hidden field in the form.
+   * @param uiField 
+   */
+  resetHiddenField = (uiField) => {
+    this.userForm.controls[uiField.id].reset();
+    this.userForm.controls[uiField.id].setValue("");
+    if (this.primaryLang !== this.secondaryLang){
+      if (this.transUserForm && this.transUserForm.controls[`${uiField.id}`]) {
+        this.transUserForm.controls[`${uiField.id}`].reset();
+        this.transUserForm.controls[`${uiField.id}`].setValue("");
+      }  
+    }
+  }
+
+  /**
+   * This function looks for "visibleCondition" attribute for each field in UI Specs.
+   * Using "json-rules-engine", these conditions are evaluated 
+   * and fields are shown/hidden in the UI form.
+   */
+  showHideFormFields() {
+    console.log("showHideFormFields");
+    //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
+      //populate form data in json for json-rules-engine to evalatute the conditions
+      const identityFormData = this.createIdentityJSONDynamic();
+      //for each uiField in UI specs, check of any "visibleCondition" is given
+      //if yes, then evaluate it with json-rules-engine
+      this.uiFields.forEach(uiField => {
+        //if no "visibleCondition" is given, then show the field
+        if (!uiField.visibleCondition || uiField.visibleCondition == "") {
+          uiField.isVisible = true;
+        }
+        else {
+          const resetHiddenFieldFunc = this.resetHiddenField;
+          let visibilityRule = new Rule({
+            conditions: uiField.visibleCondition,
+            onSuccess() {
+              //in "visibleCondition" is statisfied then show the field
+              uiField.isVisible = true;
+            },
+            onFailure() {
+              //in "visibleCondition" is not statisfied then hide the field
+              uiField.isVisible = false;
+              resetHiddenFieldFunc(uiField);
+            },
+            event: {
+              type: "message",
+              params: {
+                data: ""
+              }
+            }
+          });
+          this.jsonRulesEngine.addRule(visibilityRule);
+          //evaluate the visibleCondition
+          this.jsonRulesEngine
+            .run(identityFormData)
+            .then(results => {
+              results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
+              this.jsonRulesEngine.removeRule(visibilityRule);
+            })
+            .catch((error) => {
+              console.log('err is', error);
+              this.jsonRulesEngine.removeRule(visibilityRule);
+            });
+        }
+      }, this.resetHiddenField
+      );
+      this.processConditionalRequiredValidations(identityFormData);
+    //}
+  }
+
+  /**
+   * This function will reset the value of the hidden field in the form.
+   * @param uiField 
+   */
+  removeValidators = (uiField) => {
+    this.userForm.controls[`${uiField.id}`].clearValidators();
+    this.userForm.controls[`${uiField.id}`].updateValueAndValidity();
+    if (this.primaryLang !== this.secondaryLang) {
+      this.transUserForm.controls[`${uiField.id}`].clearValidators();
+      this.transUserForm.controls[`${uiField.id}`].updateValueAndValidity();
+    }
+  }
+
+  /**
+   * This function looks for "requiredCondition" attribute for each field in UI Specs.
+   * Using "json-rules-engine", these conditions are evaluated 
+   * and fields are conditionally validated as required or not in the UI form.
+   */
+  processConditionalRequiredValidations(identityFormData) {
+    console.log("processing requiredCondition");
+    //for each uiField in UI specs, check of any "requiredCondition" is given
+    //if yes, then evaluate it with json-rules-engine
+    this.uiFields.forEach(uiField => {
+      //if no "requiredCondition" is given, then nothing is to be done
+      if (uiField.requiredCondition && uiField.requiredCondition != "") {
+        const addValidatorsFunc = this.addValidators;
+        const removeValidatorFunc = this.removeValidators;
+        let requiredRule = new Rule({
+          conditions: uiField.requiredCondition,
+          onSuccess() {
+            //in "requiredCondition" is statisfied then validate the field as required
+            uiField.required = true;
+            addValidatorsFunc(uiField);
+          },
+          onFailure() {
+            //in "requiredCondition" is not statisfied then validate the field as not required
+            uiField.required = false;
+            removeValidatorFunc(uiField);
+          },
+          event: {
+            type: "message",
+            params: {
+              data: ""
+            }
+          }
+        });
+        this.jsonRulesEngine.addRule(requiredRule);
+        //evaluate the visibleCondition
+        this.jsonRulesEngine
+          .run(identityFormData)
+          .then(results => {
+            results.events.map(event => console.log('jsonRulesEngine for requiredConditions run successfully', event.params.data));
+            this.jsonRulesEngine.removeRule(requiredRule);
+          })
+          .catch((error) => {
+            console.log('err is', error);
+            this.jsonRulesEngine.removeRule(requiredRule);
+          });
+      }
+    }, this);
+  }
+  
+
+  /**
    * @description This sets the top location hierachy,
    * if update set the regions also.
    *
@@ -521,10 +695,13 @@ export class DemographicComponent
    */
   private async setLocations() {
     await this.getLocationMetadataHirearchy();
-    this.loadLocationData(
-      this.uppermostLocationHierarchy,
-      this.locationHeirarchy[0]
-    );
+    this.locationHeirarchies.forEach(locationHeirarchy => {
+      this.loadLocationData(
+        this.uppermostLocationHierarchy,
+        locationHeirarchy[0]
+      );
+    }, this);
+    
   }
   /**
    * @description This is to reset the input values
@@ -533,8 +710,8 @@ export class DemographicComponent
    * @param fieldName location dropdown control Name
    */
   resetLocationFields(fieldName: string) {
-    if (this.locationHeirarchy.includes(fieldName)) {
-      const locationFields = [...this.locationHeirarchy];
+    if (this.isThisFieldInLocationHeirarchies(fieldName)) {
+      const locationFields = this.getLocationHierarchy(fieldName);
       const index = locationFields.indexOf(fieldName);
       for (let i = index + 1; i < locationFields.length; i++) {
         this.userForm.controls[locationFields[i]].setValue("");
@@ -570,7 +747,6 @@ export class DemographicComponent
                   valueName: element.name,
                   languageCode: this.primaryLang,
                 };
-
                 this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
               });
             }
@@ -641,20 +817,20 @@ export class DemographicComponent
       this.dataStorageService
         .getDynamicFieldsandValues(lang)
         .subscribe((response) => {
-          console.log(response);
+          //console.log(response);
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
-            console.log(field);
+            //console.log(field);
             dynamicField.forEach((res) => {
-              console.log(res);
+              //console.log(res);
               if (field.id === res.name && res.langCode === this.primaryLang) {
-                console.log(res["fieldVal"]);
+                //console.log(res["fieldVal"]);
                 this.filterOnLangCode(
                   this.primaryLang,
                   res.name,
                   res["fieldVal"]
                 );
-                console.log(this.primarydropDownFields);
+                //console.log(this.primarydropDownFields);
               }
               if (this.primaryLang !== this.secondaryLang) {
                 if (
@@ -769,7 +945,7 @@ export class DemographicComponent
             );
           }
         } else if (control.controlType === "dropdown") {
-          if (this.locationHeirarchy.includes(control.id)) {
+          if (this.isThisFieldInLocationHeirarchies(control.id)) {
             this.dropdownApiCall(control);
             if (control.type === "string") {
               this.userForm.controls[`${control.id}`].setValue(
@@ -961,29 +1137,27 @@ export class DemographicComponent
     this.date = this.dd.nativeElement.value;
     this.month = this.mm.nativeElement.value;
     this.year = this.yyyy.nativeElement.value;
-    this.DOB_PATTERN = this.config[appConstants.CONFIG_KEYS.mosip_regex_DOB];
-    const newDate = this.year + "/" + this.month + "/" + this.date;
-    const dobRegex = new RegExp(this.DOB_PATTERN);
-    if (dobRegex.test(newDate)) {
-      this.currentAge = this.calculateAge(newDate).toString();
-      this.age.nativeElement.value = this.currentAge;
-      this.userForm.controls["dateOfBirth"].setValue(newDate);
-      if (this.primaryLang !== this.secondaryLang) {
-        this.transUserForm.controls["dateOfBirth"].setValue(newDate);
+    if (this.date !== "" && this.month !== "" && this.year !== "") {
+      const newDate = this.year + "/" + this.month + "/" + this.date;
+      console.log(newDate);
+      if (moment(newDate,'YYYY/MM/DD',true).isValid()) {
+        this.currentAge = this.calculateAge(newDate).toString();
+        this.age.nativeElement.value = this.currentAge;
+        this.userForm.controls["dateOfBirth"].setValue(newDate);
+        if (this.primaryLang !== this.secondaryLang) {
+          this.transUserForm.controls["dateOfBirth"].setValue(newDate);
+        }
+        if (this.dataModification) {
+          this.hasDobChanged();
+        }
+      } else {
+        this.userForm.controls["dateOfBirth"].markAsTouched();
+        this.userForm.controls["dateOfBirth"].setErrors({
+          incorrect: true,
+        });
+        this.currentAge = "";
+        this.age.nativeElement.value = "";
       }
-      console.log(this.userForm);
-      if (this.dataModification) {
-        console.log(newDate);
-        this.hasDobChanged();
-      }
-    } else {
-      console.log(this.currentAge);
-      this.userForm.controls["dateOfBirth"].markAsTouched();
-      this.userForm.controls["dateOfBirth"].setErrors({
-        incorrect: true,
-      });
-      this.currentAge = "";
-      this.age.nativeElement.value = "";
     }
   }
 
@@ -1028,9 +1202,9 @@ export class DemographicComponent
   private filterOnLangCode(langCode: string, field: string, entityArray: any) {
     return new Promise((resolve, reject) => {
       if (entityArray) {
-        console.log(entityArray);
+        //console.log(entityArray);
         entityArray.filter((element: any) => {
-          console.log(element);
+          //console.log(element);
           if (element.langCode === langCode) {
             let codeValue: CodeValueModal;
             if (element.genderName) {
@@ -1213,9 +1387,9 @@ export class DemographicComponent
     if (this.userForm.valid) {
       const identity = this.createIdentityJSONDynamic();
       const request = this.createRequestJSON(identity);
-      console.log(request);
+      //console.log(request);
       const responseJSON = this.createResponseJSON(identity);
-      console.log(responseJSON);
+      //console.log(responseJSON);
       this.dataUploadComplete = false;
       if (this.dataModification) {
         this.subscriptions.push(
