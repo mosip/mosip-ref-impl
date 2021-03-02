@@ -40,7 +40,7 @@ import { Subscription } from "rxjs";
 import { ValueConverter } from "@angular/compiler/src/render3/view/template";
 import { Engine, Rule } from 'json-rules-engine';
 import moment from 'moment';
-
+import identityStubJson from "../../../../assets/identity-spec.json";
 /**
  * @description This component takes care of the demographic page.
  * @author Shashank Agrawal
@@ -345,6 +345,7 @@ export class DemographicComponent
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
+        //response = identityStubJson;
         console.log(response);
         // this.identityData = response["identity"];
         // this.locationHeirarchy = [...response["locationHierarchy"]];
@@ -372,7 +373,7 @@ export class DemographicComponent
         });
         this.dynamicFields = this.uiFields.filter(
           (fields) =>
-            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+            ((fields.controlType === "dropdown" || fields.controlType === "button" ) && fields.fieldType === "dynamic")
         );
         console.log(this.dynamicFields);
         this.setDropDownArrays();
@@ -397,42 +398,7 @@ export class DemographicComponent
       if (this.primaryLang !== this.secondaryLang) {
         this.transUserForm.addControl(control.id, new FormControl(""));
       }
-      if (control.required) {
-        this.userForm.controls[`${control.id}`].setValidators(
-          Validators.required
-        );
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators(
-            Validators.required
-          );
-        }
-      }
-      if (control.validators !== null && control.validators.length > 0) {
-        this.userForm.controls[`${control.id}`].setValidators([
-          Validators.pattern(control.validators[0].validator),
-        ]);
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators([
-            Validators.pattern(control.validators[0].validator),
-          ]);
-        }
-      }
-      if (
-        control.required &&
-        control.validators !== null &&
-        control.validators.length > 0
-      ) {
-        this.userForm.controls[`${control.id}`].setValidators([
-          Validators.required,
-          Validators.pattern(control.validators[0].validator),
-        ]);
-        if (this.primaryLang !== this.secondaryLang) {
-          this.transUserForm.controls[`${control.id}`].setValidators([
-            Validators.required,
-            Validators.pattern(control.validators[0].validator),
-          ]);
-        }
-      }
+      this.addValidators(control);
       if (this.uiFields.length === index + 1) {
         this.primaryuserForm = true;
         if (this.primaryLang !== this.secondaryLang) {
@@ -440,6 +406,43 @@ export class DemographicComponent
         }
       }
     });
+  }
+
+  addValidators = (control: any) => {
+    if (control.required) {
+      this.userForm.controls[`${control.id}`].setValidators(
+        Validators.required
+      );
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators(
+          Validators.required
+        );
+      }
+    }
+    if (control.validators !== null && control.validators.length > 0) {
+      this.userForm.controls[`${control.id}`].setValidators([
+        Validators.pattern(control.validators[0].validator),
+      ]);
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators([
+          Validators.pattern(control.validators[0].validator),
+        ]);
+      }
+    }
+    if (control.required &&
+      control.validators !== null &&
+      control.validators.length > 0) {
+      this.userForm.controls[`${control.id}`].setValidators([
+        Validators.required,
+        Validators.pattern(control.validators[0].validator),
+      ]);
+      if (this.primaryLang !== this.secondaryLang) {
+        this.transUserForm.controls[`${control.id}`].setValidators([
+          Validators.required,
+          Validators.pattern(control.validators[0].validator),
+        ]);
+      }
+    }
   }
 
   /**
@@ -454,7 +457,7 @@ export class DemographicComponent
    */
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
-      if (control.controlType === "dropdown") {
+      if (control.controlType === "dropdown" || control.controlType === "button") {
         this.primarydropDownFields[control.id] = [];
         if (this.primaryLang !== this.secondaryLang) {
           this.secondaryDropDownLables[control.id] = [];
@@ -554,9 +557,11 @@ export class DemographicComponent
    * @param uiField 
    */
   resetHiddenField = (uiField) => {
+    this.userForm.controls[uiField.id].reset();
     this.userForm.controls[uiField.id].setValue("");
     if (this.primaryLang !== this.secondaryLang){
       if (this.transUserForm && this.transUserForm.controls[`${uiField.id}`]) {
+        this.transUserForm.controls[`${uiField.id}`].reset();
         this.transUserForm.controls[`${uiField.id}`].setValue("");
       }  
     }
@@ -568,28 +573,29 @@ export class DemographicComponent
    * and fields are shown/hidden in the UI form.
    */
   showHideFormFields() {
-    if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
+    console.log("showHideFormFields");
+    //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
       //populate form data in json for json-rules-engine to evalatute the conditions
       const identityFormData = this.createIdentityJSONDynamic();
-      //for each uiField in UI specs, check of any visibleCondition is given
+      //for each uiField in UI specs, check of any "visibleCondition" is given
       //if yes, then evaluate it with json-rules-engine
       this.uiFields.forEach(uiField => {
-        //if no visibleCondition is given, then show the field
+        //if no "visibleCondition" is given, then show the field
         if (!uiField.visibleCondition || uiField.visibleCondition == "") {
           uiField.isVisible = true;
         }
         else {
-          let resetFieldToBlank = this.resetHiddenField;
+          const resetHiddenFieldFunc = this.resetHiddenField;
           let visibilityRule = new Rule({
             conditions: uiField.visibleCondition,
             onSuccess() {
-              //in visibleCondition is statisfied then show the field
+              //in "visibleCondition" is statisfied then show the field
               uiField.isVisible = true;
             },
             onFailure() {
-              //in visibleCondition is not statisfied then hide the field
+              //in "visibleCondition" is not statisfied then hide the field
               uiField.isVisible = false;
-              resetFieldToBlank(uiField);
+              resetHiddenFieldFunc(uiField);
             },
             event: {
               type: "message",
@@ -603,7 +609,7 @@ export class DemographicComponent
           this.jsonRulesEngine
             .run(identityFormData)
             .then(results => {
-              results.events.map(event => console.log('jsonRulesEngine run successfully', event.params.data));
+              results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
               this.jsonRulesEngine.removeRule(visibilityRule);
             })
             .catch((error) => {
@@ -613,8 +619,72 @@ export class DemographicComponent
         }
       }, this.resetHiddenField
       );
+      this.processConditionalRequiredValidations(identityFormData);
+    //}
+  }
+
+  /**
+   * This function will reset the value of the hidden field in the form.
+   * @param uiField 
+   */
+  removeValidators = (uiField) => {
+    this.userForm.controls[`${uiField.id}`].clearValidators();
+    this.userForm.controls[`${uiField.id}`].updateValueAndValidity();
+    if (this.primaryLang !== this.secondaryLang) {
+      this.transUserForm.controls[`${uiField.id}`].clearValidators();
+      this.transUserForm.controls[`${uiField.id}`].updateValueAndValidity();
     }
   }
+
+  /**
+   * This function looks for "requiredCondition" attribute for each field in UI Specs.
+   * Using "json-rules-engine", these conditions are evaluated 
+   * and fields are conditionally validated as required or not in the UI form.
+   */
+  processConditionalRequiredValidations(identityFormData) {
+    console.log("processing requiredCondition");
+    //for each uiField in UI specs, check of any "requiredCondition" is given
+    //if yes, then evaluate it with json-rules-engine
+    this.uiFields.forEach(uiField => {
+      //if no "requiredCondition" is given, then nothing is to be done
+      if (uiField.requiredCondition && uiField.requiredCondition != "") {
+        const addValidatorsFunc = this.addValidators;
+        const removeValidatorFunc = this.removeValidators;
+        let requiredRule = new Rule({
+          conditions: uiField.requiredCondition,
+          onSuccess() {
+            //in "requiredCondition" is statisfied then validate the field as required
+            uiField.required = true;
+            addValidatorsFunc(uiField);
+          },
+          onFailure() {
+            //in "requiredCondition" is not statisfied then validate the field as not required
+            uiField.required = false;
+            removeValidatorFunc(uiField);
+          },
+          event: {
+            type: "message",
+            params: {
+              data: ""
+            }
+          }
+        });
+        this.jsonRulesEngine.addRule(requiredRule);
+        //evaluate the visibleCondition
+        this.jsonRulesEngine
+          .run(identityFormData)
+          .then(results => {
+            results.events.map(event => console.log('jsonRulesEngine for requiredConditions run successfully', event.params.data));
+            this.jsonRulesEngine.removeRule(requiredRule);
+          })
+          .catch((error) => {
+            console.log('err is', error);
+            this.jsonRulesEngine.removeRule(requiredRule);
+          });
+      }
+    }, this);
+  }
+  
 
   /**
    * @description This sets the top location hierachy,
@@ -677,7 +747,9 @@ export class DemographicComponent
                   valueName: element.name,
                   languageCode: this.primaryLang,
                 };
-                this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
+                if (this.primarydropDownFields[`${fieldName}`]) {
+                  this.primarydropDownFields[`${fieldName}`].push(codeValueModal);
+                }
               });
             }
           },
@@ -699,9 +771,11 @@ export class DemographicComponent
                     valueName: element.name,
                     languageCode: this.secondaryLang,
                   };
-                  this.secondaryDropDownLables[`${fieldName}`].push(
-                    codeValueModal
-                  );
+                  if (this.secondaryDropDownLables[`${fieldName}`]) {
+                    this.secondaryDropDownLables[`${fieldName}`].push(
+                      codeValueModal
+                    );
+                  }
                 });
               }
             },
@@ -828,13 +902,13 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
-      /*if (
+      if (
         this.user.request.demographicDetails.identity.fullName[0].language !==
         this.primaryLang
       ) {
         index = 1;
         secondaryIndex = 0;
-      }*/
+      }
       if (this.primaryLang === this.secondaryLang) {
         index = 0;
         secondaryIndex = 0;
@@ -842,7 +916,7 @@ export class DemographicComponent
       this.uiFields.forEach((control) => {
          if (this.user.request.demographicDetails.identity[control.id]) {
         if (
-          control.controlType !== "dropdown" &&
+          (control.controlType !== "dropdown" && control.controlType !== "button") &&
           !appConstants.TRANSLITERATE_FIELDS.includes(control.id)
         ) {
           if (control.id === "dateOfBirth") {
@@ -875,7 +949,7 @@ export class DemographicComponent
               ].value
             );
           }
-        } else if (control.controlType === "dropdown") {
+        } else if (control.controlType === "dropdown" || control.controlType === "button") {
           if (this.isThisFieldInLocationHeirarchies(control.id)) {
             this.dropdownApiCall(control);
             if (control.type === "string") {
@@ -1454,11 +1528,7 @@ export class DemographicComponent
         );
       }
     } else if (typeof identity[element] === "string") {
-      if (element === appConstants.IDSchemaVersionLabel) {
-        attr = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
-      } else {
         attr = this.userForm.controls[`${element}`].value;
-      }
     }
     identity[element] = attr;
   }
@@ -1487,8 +1557,8 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   private createIdentityJSONDynamic() {
-    const identityObj = { IDSchemaVersion: "" };
-    const newIdentityObj = { IDSchemaVersion: "" };
+    const identityObj = {};
+    const newIdentityObj = {};
     this.identityData.forEach((field) => {
       if (
         field.inputRequired === true &&
@@ -1504,20 +1574,32 @@ export class DemographicComponent
             identityObj[field.id] = "";
           }
         }
+      } else {
+        if (field.id == appConstants.IDSchemaVersionLabel) {
+          if (field.type === 'string') {
+            identityObj[field.id] = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
+          } else if (field.type === 'number') {
+            identityObj[field.id] = Number(this.config[appConstants.CONFIG_KEYS.mosip_idschema_version]);
+          }  
+        }
       }
     });
 
     let keyArr: any[] = Object.keys(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
-      this.createAttributeArray(element, identityObj);
+      if (element != appConstants.IDSchemaVersionLabel) {
+        this.createAttributeArray(element, identityObj);
+      }
     }
-  //  const identityRequest = { identity: identityObj };
+    //const identityRequest = { identity: identityObj };
     //now remove the blank fields from the identityObj
     console.log(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
-      if (typeof identityObj[element] === "object") {
+      if (element == appConstants.IDSchemaVersionLabel) {
+        newIdentityObj[element] = identityObj[element];
+      } else if (typeof identityObj[element] === "object") {
         let elementValue = identityObj[element];
         if (elementValue && elementValue.length > 0) {
           if (elementValue[0].value !== "" && elementValue[0].value !== null && elementValue[0].value !== undefined ) {
