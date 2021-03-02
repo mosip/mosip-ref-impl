@@ -1528,11 +1528,7 @@ export class DemographicComponent
         );
       }
     } else if (typeof identity[element] === "string") {
-      if (element === appConstants.IDSchemaVersionLabel) {
-        attr = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
-      } else {
         attr = this.userForm.controls[`${element}`].value;
-      }
     }
     identity[element] = attr;
   }
@@ -1561,8 +1557,8 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   private createIdentityJSONDynamic() {
-    const identityObj = { IDSchemaVersion: "" };
-    const newIdentityObj = { IDSchemaVersion: "" };
+    const identityObj = {};
+    const newIdentityObj = {};
     this.identityData.forEach((field) => {
       if (
         field.inputRequired === true &&
@@ -1578,20 +1574,32 @@ export class DemographicComponent
             identityObj[field.id] = "";
           }
         }
+      } else {
+        if (field.id == appConstants.IDSchemaVersionLabel) {
+          if (field.type === 'string') {
+            identityObj[field.id] = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
+          } else if (field.type === 'number') {
+            identityObj[field.id] = Number(this.config[appConstants.CONFIG_KEYS.mosip_idschema_version]);
+          }  
+        }
       }
     });
 
     let keyArr: any[] = Object.keys(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
-      this.createAttributeArray(element, identityObj);
+      if (element != appConstants.IDSchemaVersionLabel) {
+        this.createAttributeArray(element, identityObj);
+      }
     }
-  //  const identityRequest = { identity: identityObj };
+    //const identityRequest = { identity: identityObj };
     //now remove the blank fields from the identityObj
     console.log(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
-      if (typeof identityObj[element] === "object") {
+      if (element == appConstants.IDSchemaVersionLabel) {
+        newIdentityObj[element] = identityObj[element];
+      } else if (typeof identityObj[element] === "object") {
         let elementValue = identityObj[element];
         if (elementValue && elementValue.length > 0) {
           if (elementValue[0].value !== "" && elementValue[0].value !== null && elementValue[0].value !== undefined ) {
