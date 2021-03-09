@@ -210,6 +210,8 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async ngOnInit() {
+    const languages = ["eng","ara","fra"];
+    localStorage.setItem("dataCaptureLanguages", JSON.stringify(languages));
     this.initialization();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
@@ -222,7 +224,7 @@ export class DemographicComponent
     this.initForm();
     await this.setFormControlValues();
     if (!this.dataModification) {
-      if (this.isConsentMessage) this.consentDeclaration();
+      if (this.isConsentMessage) this.consentMultiLangDeclaration(); /*this.consentDeclaration();*/ 
     }
     this.showHideFormFields();
   }
@@ -249,9 +251,10 @@ export class DemographicComponent
           (response) => {
             this.isConsentMessage = true;
             if (response && response[appConstants.RESPONSE])
-              this.consentMessage = response["response"][
+              /*this.consentMessage = response["response"][
                 "templates"
-              ][0].fileText.split("\n");
+              ][0].fileText.split("\n");*/
+              this.consentMessage = response["response"]["templates"];
             else if (response[appConstants.NESTED_ERROR])
               this.onError(this.errorlabels.error, "");
             resolve(true);
@@ -330,6 +333,35 @@ export class DemographicComponent
       };
       this.dialog.open(DialougComponent, {
         width: "550px",
+        data: data,
+        disableClose: true,
+      });
+    }
+  }
+
+   private consentMultiLangDeclaration() {
+    if (this.demographiclabels) {
+      let newDataStructure = [];
+      const dataCaptureLanguages = JSON.parse(localStorage.getItem("dataCaptureLanguages"));
+      this.consentMessage.forEach((obj) => {
+        if(dataCaptureLanguages.includes(obj.langCode)){
+          let factory = new LanguageFactory(obj.langCode);
+          let labels = factory.getCurrentlanguage()["demographic"];
+          let structure = {};
+          structure["fileText"] = obj.fileText.split("\n");
+          structure["labels"] = labels;
+          structure["langCode"] = obj.langCode;
+          newDataStructure.push(structure);
+        }
+      });
+      const data = {
+        case: "CONSENTPOPUPMULTILANG",
+        data : newDataStructure,
+        userPrefferedlangCode : localStorage.getItem("langCode")
+      };
+      this.dialog.open(DialougComponent, {
+        width: "950px",
+        height:"590px",
         data: data,
         disableClose: true,
       });

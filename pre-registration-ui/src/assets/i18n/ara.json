@@ -362,13 +362,14 @@
     "message": "تم إرسال تفاصيل هوية وتاريخ Pre-Registration إلى معرف البريد الإلكتروني المسجل ورقم الهاتف",
     "label_name": "اسم",
     "label_pre_id": "معرف التسجيل المسبق",
-    "label_reg_cntr": "مركز التسجيل",
+    "label_reg_cntr": "اسم المركز",
     "label_cntr_contact_number": "رقم مركز الاتصال",
     "label_appointment_date_time": "موعد ووقت الموعد",
     "container_guideline": "المبادئ التوجيهية الهامة",
     "action_send": "إرسال EMAIL / SMS",
     "action_download": "تحميل PDF",
-    "action_print": "طباعة"
+    "action_print": "طباعة",
+    "label_reg_cntr_dtl": "عنوان المركز"
   },
   "preview": {
     "title_preview": "معاينة",

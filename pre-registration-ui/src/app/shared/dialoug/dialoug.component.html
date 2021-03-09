@@ -134,6 +134,55 @@
   </div>
 </div>
 
+<div class="consent-popup-parent" *ngIf="input.case === 'CONSENTPOPUPMULTILANG'">
+
+  <div class="div-bottom-spacing">
+    <span class="consent-popup-title" mat-dialog-title>Consent</span>
+    <span>
+      <button class="consent-popup-cross" mat-dialog-actions (click)="onNoClick(); userRedirection()" cdkFocusInitial>
+        <mat-icon class="consent-popup-cross-icon">close</mat-icon>
+      </button>
+    </span>
+  </div>
+
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel *ngFor="let item of input.data; let isFirst = first" [expanded]="isFirst">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="consent-popup-title" mat-dialog-title>{{ item.labels.consent.title }}</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <h3 class="consent-popup-subtitle" mat-dialog-title>{{ item.labels.consent.subtitle }}</h3>
+        <div mat-dialog-content class="consentpopup-content">
+          <div *ngFor="let message of item.fileText">
+            <div>{{ message }}</div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-checkbox (change)="onSelectCheckbox()" class="checkbox-accept">
+    <div *ngFor="let item of input.data;let last = last;" class="content-display-iniline-block">{{ item.labels.consent.checkCondition }} <span *ngIf="!last">&nbsp;&nbsp;/&nbsp;&nbsp;</span></div>
+  </mat-checkbox>
+
+  <div *ngFor="let item of input.data">
+    <div mat-dialog-actions *ngIf="item.langCode === input.userPrefferedlangCode">
+      <button
+        class="accept-button"
+        [ngClass]="isChecked ? 'accept-button-disabled' : 'accept-button'"
+        [disabled]="isChecked"
+        mat-button
+        (click)="onNoClick(item.labels.consent.acceptButton)"
+        cdkFocusInitial
+      >
+        {{ item.labels.consent.acceptButton }}
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="logout-pre-message" *ngIf="input.case === 'POPUP'">
   <div mat-dialog-content class="consentpopup-content">
     <p>{{ input.content }}</p>

@@ -25,8 +25,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   secondaryLanguagelabels: any;
   secondaryLang = localStorage.getItem("secondaryLangCode");
   usersInfo = [];
+  finalUsersInfoDetails = {};
   secondaryLanguageRegistrationCenter: any;
   guidelines = [];
+  guidelinesDetails = [];
   opt = {};
   fileBlob: Blob;
   showSpinner: boolean = true;
@@ -45,6 +47,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     registrationCenter: "",
     bookingData: "",
     postalCode: "",
+    langCode: "",
   };
   regCenterId;
   primaryLangCode;
@@ -77,8 +80,12 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     await this.getUserInfo(this.preRegId);
-    await this.getRegCenterDetails();
-    console.log(this.usersInfo);
+    let i, self = this;
+    for (i = 0; i < self.usersInfo.length; i++) {
+      await this.getRegCenterDetails(self.usersInfo[i].langCode, i);
+      await this.getLabelDetails(self.usersInfo[i].langCode, i);
+    }
+
     let notificationTypes = this.configService
       .getConfigByKey(appConstants.CONFIG_KEYS.mosip_notification_type)
       .split("|");
@@ -99,46 +106,55 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.bookingService.resetSendNotification();
       this.automaticNotification();
     }
-
-
+    await this.manipulateUserInfo();
   }
+
   getUserInfo(preRegId) {
     let self = this;
     return new Promise((resolve) => {
       preRegId.forEach(async (prid: any, index) => {
+
         await this.getUserDetails(prid).then(async (user) => {
-          const nameList: NameList = {
-            preRegId: "",
-            fullName: "",
-            fullNameSecondaryLang: "",
-            regDto: "",
-            status: "",
-            registrationCenter: "",
-            bookingData: "",
-            postalCode: "",
-          };
-          nameList.preRegId = user["request"].preRegistrationId;
-          nameList.status = user["request"].statusCode;
-          nameList.fullName =
-            user["request"].demographicDetails.identity[self.name][0].value;
-          if(user["request"].demographicDetails.identity[self.name][1])
-            nameList.fullNameSecondaryLang =
-              user["request"].demographicDetails.identity[self.name][1].value;
-          nameList.postalCode =
-            user["request"].demographicDetails.identity.postalCode;
-          nameList.registrationCenter = "";
-          this.applicantContactDetails[1] =  user["request"].demographicDetails.identity.phone;
-          this.applicantContactDetails[0] =  user["request"].demographicDetails.identity.email;
-          await this.getAppointmentDetails(nameList.preRegId).then(
+          let regDto;
+
+          await this.getAppointmentDetails(prid).then(
             (appointmentDetails) => {
-              nameList.regDto = appointmentDetails;
+              regDto = appointmentDetails;
             }
           );
-          this.usersInfo.push(nameList);
+
+          let i, self = this;
+          for (i = 0; i < user["request"].demographicDetails.identity.gender.length; i++) {
+            const nameList: NameList = {
+              preRegId: "",
+              fullName: "",
+              fullNameSecondaryLang: "",
+              regDto: "",
+              status: "",
+              registrationCenter: "",
+              bookingData: "",
+              postalCode: "",
+              langCode : "",
+              labelDetails : [],
+            };
+            nameList.preRegId = user["request"].preRegistrationId;
+            nameList.status = user["request"].statusCode;
+            nameList.fullName = user["request"].demographicDetails.identity[self.name][i].value;
+            nameList.postalCode = user["request"].demographicDetails.identity.postalCode;
+            nameList.registrationCenter = "";
+            nameList.langCode = user["request"].demographicDetails.identity.gender[i].language;
+            nameList.regDto = regDto;
+            self.usersInfo.push(nameList);
+          }
+
+          this.applicantContactDetails[1] =  user["request"].demographicDetails.identity.phone;
+          this.applicantContactDetails[0] =  user["request"].demographicDetails.identity.email;
         });
+
         if (index === preRegId.length - 1) {
           resolve(true);
         }
+
       });
     });
   }
@@ -160,27 +176,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     });
   }
 
-  // getUserInfo(preRegId) {
-  //   preRegId.forEach(prid => {
-  //     return new Promise((resolve)=> {
-  //       this.dataStorageService.getUser(prid).subscribe(
-  //         response => {
-  //         if(response[appConstants.RESPONSE]!== null){
-  //           this.nameList.preRegId = response[appConstants.RESPONSE].preRegistrationId;
-  //           this.nameList.status = response[appConstants.RESPONSE].statusCode;
-  //           this.nameList.fullName = response[appConstants.RESPONSE].demographicDetails.identity.fullName[0].value;
-  //           this.nameList.fullNameSecondaryLang =
-  //           response[appConstants.RESPONSE].demographicDetails.identity.fullName[1].value;
-  //           this.nameList.postalCode = response[appConstants.RESPONSE].demographicDetails.identity.postalCode;
-  //           this.nameList.registrationCenter = '';
-  //         }
-  //         resolve(true);
-  //         });
-  //     });
-
-  //   });
-  // }
-
   getAppointmentDetails(preRegId) {
     return new Promise((resolve) => {
       this.dataStorageService
@@ -193,26 +188,65 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         });
     });
   }
-  getRegCenterDetails() {
+
+  getRegCenterDetails(langCode, index) {
     return new Promise((resolve) => {
       this.dataStorageService
-        .getRegistrationCentersById(this.regCenterId, this.primaryLangCode)
+        .getRegistrationCentersById(this.regCenterId, langCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            console.log(response[appConstants.RESPONSE]);
-            for (let i = 0; i < this.usersInfo.length; i++) {
-              this.usersInfo[i].registrationCenter =
-                response[appConstants.RESPONSE].registrationCenters[0];
-            }
-
+            this.usersInfo[index].registrationCenter = response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
         });
     });
   }
+
+  getLabelDetails(langCode, index) {
+    let factory = new LanguageFactory(langCode);
+    let response = factory.getCurrentlanguage();
+    this.usersInfo[index].labelDetails.push(response["acknowledgement"]);
+  }
+
+  manipulateUserInfo(){
+    let i, j, self = this, preRegIdLabels = [], appDateLabels = [], contactPhoneLabels = [], messages = [], labelNames = [], nameValues = [], labelRegCntrs = [], regCntrNames = [], appLangCode = [], labelRegCntrDtl = [], RegCntrDtl = [];   
+    self.finalUsersInfoDetails["qrCodeBlob"] = self.usersInfo[0].qrCodeBlob;
+    self.finalUsersInfoDetails["preRegId"] = self.usersInfo[0].preRegId;
+    self.finalUsersInfoDetails["bookingTimePrimary"] = self.usersInfo[0].bookingTimePrimary; 
+    self.finalUsersInfoDetails["bookingDataPrimary"] = self.usersInfo[0].bookingDataPrimary;
+    self.finalUsersInfoDetails["contactPhone"] = self.usersInfo[0].registrationCenter.contactPhone;
+    for (i = 0; i < self.usersInfo.length; i++) {
+      preRegIdLabels.push(self.usersInfo[i].labelDetails[0].label_pre_id);
+      appDateLabels.push(self.usersInfo[i].labelDetails[0].label_appointment_date_time);
+      contactPhoneLabels.push(self.usersInfo[i].labelDetails[0].label_cntr_contact_number);
+      messages.push(self.usersInfo[i].labelDetails[0].message);
+      labelNames.push(self.usersInfo[i].labelDetails[0].label_name);     
+      nameValues.push(self.usersInfo[i].fullName); 
+      labelRegCntrs.push(self.usersInfo[i].labelDetails[0].label_reg_cntr);
+      regCntrNames.push(self.usersInfo[i].registrationCenter.name);
+      appLangCode.push(self.usersInfo[i].langCode);
+      /*labelRegCntrDtl.push(self.usersInfo[i].labelDetails[0].label_reg_cntr_dtl);
+      RegCntrDtl.push(self.usersInfo[i].registrationCenter.name);*/
+    }
+    self.finalUsersInfoDetails["appLangCode"] = appLangCode;
+    self.finalUsersInfoDetails["preRegIdLabels"] = JSON.stringify(preRegIdLabels).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["appDateLabels"] = JSON.stringify(appDateLabels).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["contactPhoneLabels"] = JSON.stringify(contactPhoneLabels).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["messages"] = JSON.stringify(messages).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["labelNames"] = JSON.stringify(labelNames).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["nameValues"] = JSON.stringify(nameValues).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["labelRegCntrs"] = JSON.stringify(labelRegCntrs).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["regCntrNames"] = JSON.stringify(regCntrNames).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    for (j = 0; j < self.guidelines.length; j++) {
+      if(appLangCode.includes(self.guidelines[j].langCode)){
+        self.finalUsersInfoDetails[self.guidelines[j].langCode] = self.guidelines[j].fileText.split("\n");
+      }
+    }
+  }
+
   async apiCalls() {
     return new Promise(async (resolve, reject) => {
-      if (!this.usersInfo[0].registrationCenter) {
+      /*if (!this.usersInfo[0].registrationCenter) {
         await this.getRegistrationCenterInPrimaryLanguage(
           this.usersInfo[0].regDto.registration_center_id,
           localStorage.getItem("langCode")
@@ -226,12 +260,12 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           this.usersInfo[0].registrationCenter.id,
           this.secondaryLang
         );
-      }
+      }*/
       this.formatDateTime();
       await this.qrCodeForUser();
-      let factory = new LanguageFactory(this.secondaryLang);
+     /* let factory = new LanguageFactory(this.secondaryLang);
       let response = factory.getCurrentlanguage();
-      this.secondaryLanguagelabels = response["acknowledgement"];
+      this.secondaryLanguagelabels = response["acknowledgement"];*/
 
       await this.getTemplate();
       this.showSpinner = false;
@@ -330,9 +364,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       const subs = this.dataStorageService
         .getGuidelineTemplate("Onscreen-Acknowledgement")
         .subscribe((response) => {
-          this.guidelines = response["response"]["templates"][0].fileText.split(
-            "\n"
-          );
+          this.guidelines = response["response"]["templates"];
           resolve(true);
         });
       this.subscriptions.push(subs);

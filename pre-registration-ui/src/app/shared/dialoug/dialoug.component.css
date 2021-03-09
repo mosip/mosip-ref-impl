@@ -43,7 +43,7 @@
 }
 .consentpopup-content {
   font-size: 0.8rem;
-  max-height: 100px;
+  max-height: 200px;
 }
 .consentpopup-content::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -91,4 +91,10 @@
  .mat-input-element {
   padding: 5px !important;
 
+}
+.div-bottom-spacing{
+  padding-bottom: 20px;
+}
+.content-display-iniline-block{
+  display:inline-block;
 }

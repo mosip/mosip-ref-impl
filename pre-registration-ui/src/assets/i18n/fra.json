@@ -363,13 +363,14 @@
     "message": "L'identifiant de pré-enregistrement et les détails du rendez-vous ont été envoyés à l'identifiant et au numéro de téléphone de l'e-mail enregistré.",
     "label_name": "prénom",
     "label_pre_id": "ID de pré-inscription",
-    "label_reg_cntr": "Centre d'inscription",
+    "label_reg_cntr": "Nom du centre",
     "label_cntr_contact_number": "Numéro de contact du centre",
     "label_appointment_date_time": "Date et heure du rendez-vous",
     "container_guideline": "Directives importantes",
     "action_send": "ENVOYER EMAIL / SMS",
     "action_download": "TÉLÉCHARGER LE FICHIER PDF",
-    "action_print": "IMPRESSION"
+    "action_print": "IMPRESSION",
+    "label_reg_cntr_dtl": "Adresse du centre"
   },
   "preview": {
     "title_preview": "Aperçu",
