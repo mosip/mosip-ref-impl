@@ -25,9 +25,8 @@ export class AutoLogoutService {
   isActive = false;
 
   timer = new UserIdleConfig();
-  secondaryLanguagelabels: any;
-  primaryLang = localStorage.getItem('langCode');
-  secondaryLang = localStorage.getItem('secondaryLangCode');
+  languagelabels: any;
+  langCode = localStorage.getItem('langCode');
 
   idle: number;
   timeout: number;
@@ -59,10 +58,9 @@ export class AutoLogoutService {
         this.configservice.getConfigByKey(appConstants.CONFIG_KEYS.mosip_preregistration_auto_logout_ping)
       ));
 
-    this.primaryLang = langCode;
-    let factory = new LanguageFactory(this.primaryLang);
+    let factory = new LanguageFactory(langCode);
     let response = factory.getCurrentlanguage();
-    this.secondaryLanguagelabels = response['autologout'];
+    this.languagelabels = response['autologout'];
   }
 
   setisActive(value: boolean) {
@@ -152,7 +150,7 @@ export class AutoLogoutService {
   openPopUp() {
     const data = {
       case: 'POPUP',
-      content: this.secondaryLanguagelabels.preview
+      content: this.languagelabels.preview
     };
     this.dialogref = this.dialog.open(DialougComponent, {
       width: '550px',
@@ -162,7 +160,7 @@ export class AutoLogoutService {
   popUpPostLogOut() {
     const data = {
       case: 'POSTLOGOUT',
-      contentLogout: this.secondaryLanguagelabels.post
+      contentLogout: this.languagelabels.post
     };
     this.dialogreflogout = this.dialog.open(DialougComponent, {
       width: '550px',

@@ -10,8 +10,5 @@ export class FooterComponent implements OnInit {
   constructor(private dataService: DataStorageService) {}
 
   ngOnInit() {
-    this.dataService.getConfig().subscribe(res => {
-      this.appVersion = res['response']['preregistration.ui.version'];
-    });
-  }
+   }
 }

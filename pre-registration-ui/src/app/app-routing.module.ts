@@ -10,13 +10,13 @@ import { AuthGuardService } from './auth/auth-guard.service';
  * @description These are the routes.
  */
 const appRoutes: Routes = [
-  { path: ':primaryLang/dashboard', loadChildren: './feature/dashboard/dashboard.module#DashboardModule' },
+  { path: ':userPreferredLanguage/dashboard', loadChildren: './feature/dashboard/dashboard.module#DashboardModule' },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'contact', component: ContactComponent },
 
   {
-    path: ':primaryLang/pre-registration',
+    path: ':userPreferredLanguage/pre-registration',
     component: ParentComponent,
     canActivate: [AuthGuardService],
     children: [

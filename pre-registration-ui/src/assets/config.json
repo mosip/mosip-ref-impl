@@ -1,4 +1,4 @@
 {
-  "BASE_URL": "https://localhost:4200/proxyapi",
+  "BASE_URL": "https://localhost:4200/proxyapi/",
   "PRE_REG_URL": "preregistration/v1/"
 }
