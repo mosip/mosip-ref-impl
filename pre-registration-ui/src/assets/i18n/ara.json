@@ -471,6 +471,13 @@
     "error": {
       "error": "خطأ في الخادم الداخلي. من فضلك حاول مرة أخرى بعد بعض من الوقت.",
       "button_ok": "حسنا"
+    },
+    "dataCaptureLanguage":{
+      "title":"اختار اللغة",
+      "message":["الرجاء تحديد أي","لغات لإدخال البيانات.","إلزامي للمقيم للاختيار وفقًا لإرشادات الحكومة.","سيؤدي ترتيب الاختيار إلى عرض صفحة للبيانات الديموغرافية."],
+      "error_text":["الرجاء تحديد الحد الأدنى","لغات لإدخال البيانات."],
+      "cancel_btn":"يلغي",
+      "submit_btn":"يقدم"
     }
   },
   "timeSelection": {
@@ -527,7 +534,7 @@
     "action_add": "إضافة",
     "action_close": "قريب",
     "action_add_to_slot": "أضف إلى الفتحة",
-    "navigation_alert": "Are you sure you would like to navigate away as data entered will not be saved. Please confirm(ARA)"
+    "navigation_alert": "هل أنت متأكد من رغبتك في التنقل بعيدًا حيث لن يتم حفظ البيانات التي تم إدخالها. يرجى تأكيد"
   },
   "centerSelection": {
     "title": " موعد الكتاب ",

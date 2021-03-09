@@ -11,12 +11,7 @@ import {
   RecaptchaModule,
   RECAPTCHA_LANGUAGE,
 } from "ng-recaptcha";
-import { ConfigService } from "../core/services/config.service";
-import * as appConstants from "../app.constants";
 import { CaptchaComponent } from './captcha/captcha.component';
-export const language = new ConfigService().getConfigByKey(
-  appConstants.CONFIG_KEYS.mosip_primary_language
-);
 @NgModule({
   declarations: [LoginComponent, CaptchaComponent],
   imports: [
@@ -29,11 +24,6 @@ export const language = new ConfigService().getConfigByKey(
     CoreModule,
     RecaptchaModule
   ],
-  providers: [
-    {
-      provide: RECAPTCHA_LANGUAGE,
-      useValue: language,
-    },
-  ],
+  providers: [],
 })
 export class AuthModule {}

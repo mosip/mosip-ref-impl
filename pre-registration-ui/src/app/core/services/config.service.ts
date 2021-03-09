@@ -7,7 +7,7 @@ export class ConfigService {
   configs = {};
 
   public setConfig(configJson: any) {
-    localStorage.setItem('config',JSON.stringify(configJson.response));
+    localStorage.setItem('config',JSON.stringify(configJson.response.configParams));
 
   }
 

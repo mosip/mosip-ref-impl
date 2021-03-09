@@ -34,13 +34,12 @@ export class DialougComponent implements OnInit {
   addedList = [];
   disableAddButton = true;
   disableSend = true;
-
+  selectedLanguage = [];
+  disablelanguageSubmitBtn = true;
   constructor(
     public dialogRef: MatDialogRef<DialougComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData | any,
     private authService: AuthService,
-    private location: Location,
-    private regService: RegistrationService,
     private config: ConfigService,
     private router: Router,
     private dialogBox: MatDialog,
@@ -49,6 +48,10 @@ export class DialougComponent implements OnInit {
 
   ngOnInit() {
     this.input = this.data;
+    if (this.input.case === "LANGUAGE_CAPTURE") {
+      this.selectedLanguage = [...this.input.mandatoryLanguages];
+      this.enableDataCaptureSubmitBtn();
+    }
   }
 
   onNoClick(input): void {
@@ -104,6 +107,30 @@ export class DialougComponent implements OnInit {
     this.isChecked = !this.isChecked;
   }
 
+  onSelectLanguage(lang, event) {
+    if (event && event.checked) {
+      this.selectedLanguage.push(lang);
+    } else {
+      this.selectedLanguage.splice(this.selectedLanguage.indexOf(lang), 1);
+    }
+    this.enableDataCaptureSubmitBtn();
+  }
+
+    enableDataCaptureSubmitBtn(){
+      if (
+        this.selectedLanguage.length >= Number(this.input.minLanguage) &&
+        this.selectedLanguage.length <= Number(this.input.maxLanguage)
+      ) {
+        console.log(this.input.minLanguage);
+        this.disablelanguageSubmitBtn = false;
+      } else {
+        this.disablelanguageSubmitBtn = true;
+      }
+  }
+
+  collectDataCaptureLanguage() {
+    this.dialogRef.close(this.selectedLanguage);
+  }
   async userRedirection() {
     let url = this.routerService.getPreviousUrl();
     if (
@@ -172,17 +199,17 @@ export class DialougComponent implements OnInit {
   redirectingUser() {
     let url = this.routerService.getPreviousUrl();
     console.log(url);
-    let preRegId = ''
-    if(url){
+    let preRegId = "";
+    if (url) {
       preRegId = url.split("/")[4];
     }
-    if (localStorage.getItem("addingUserFromPreview") === "true"){
+    if (localStorage.getItem("addingUserFromPreview") === "true") {
       this.router.navigate([
         `${localStorage.getItem(
           "langCode"
         )}/pre-registration/summary/${preRegId}/preview`,
       ]);
-     }else
+    } else
       this.router.navigate([`${localStorage.getItem("langCode")}/dashboard`]);
   }
 }

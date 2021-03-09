@@ -473,6 +473,13 @@
     "error": {
       "error": "Erreur Interne du Serveur. Veuillez réessayer après un certain temps.",
       "button_ok": "D'accord"
+    },
+    "dataCaptureLanguage":{
+      "title":"Choisir la langue",
+      "message":["Veuillez sélectionner un","langues pour la saisie des données.","est obligatoire pour le résident de choisir selon les directives gouvernementales.","L'ordre de sélection mènera à la page vue pour les données démographiques."],
+      "error_text":["Veuillez sélectionner le minimum","langues pour la saisie des données."],
+      "cancel_btn":"Annuler",
+      "submit_btn":"nous faire parvenir"
     }
   },
   "timeSelection": {
@@ -532,7 +539,7 @@
     "action_add": "Ajouter",
     "action_close": "Fermer",
     "action_add_to_slot": "Ajouter à la fente",
-    "navigation_alert": "Are you sure you would like to navigate away as data entered will not be saved. Please confirm(FRA)"
+    "navigation_alert": "Êtes-vous sûr de vouloir quitter le site car les données saisies ne seront pas enregistrées. Veuillez confirmer"
   },
   "centerSelection": {
     "title": " Rendez-vous du livre ",

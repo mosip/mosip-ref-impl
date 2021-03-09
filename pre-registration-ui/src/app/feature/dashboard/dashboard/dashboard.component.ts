@@ -6,7 +6,6 @@ import { MatDialog, MatCheckboxChange } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { RegistrationService } from "src/app/core/services/registration.service";
-import { BookingService } from "../../booking/booking.service";
 import { AutoLogoutService } from "src/app/core/services/auto-logout.service";
 
 import { DialougComponent } from "src/app/shared/dialoug/dialoug.component";
@@ -22,6 +21,7 @@ import { LogService } from "src/app/shared/logger/log.service";
 import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
 import { NotificationDtoModel } from "src/app/shared/models/notification-model/notification-dto.model";
+import { element } from "@angular/core/src/render3";
 
 /**
  * @description This is the dashbaord component which displays all the users linked to the login id
@@ -44,11 +44,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   userFiles: FilesModel = new FilesModel(this.userFile);
   loginId = "";
   message = {};
-
-  primaryLangCode = localStorage.getItem("langCode");
-  secondaryLangCode = localStorage.getItem("secondaryLangCode");
+  userPreferredLangCode = localStorage.getItem("userPrefLanguage");
   textDir = localStorage.getItem("dir");
-  secondaryLanguagelabels: any;
   errorLanguagelabels: any;
   disableModifyDataButton = false;
   disableModifyAppointmentButton = true;
@@ -61,11 +58,16 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   selectedUsers = [];
   titleOnError = "";
   subscriptions: Subscription[] = [];
-
+  languagelabels;
+  dataCaptureLabels;
   name = "";
   identityData: any;
   locationHeirarchies: any[];
-
+  mandatoryLanguages;
+  optionalLanguages;
+  minLanguage ;
+  maxLanguage ;
+  isNavigateToDemographic: any;
   /**
    * @description Creates an instance of DashBoardComponent.
    * @param {Router} router
@@ -83,13 +85,12 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private dataStorageService: DataStorageService,
     private regService: RegistrationService,
-    private bookingService: BookingService,
     private autoLogout: AutoLogoutService,
     private translate: TranslateService,
     private configService: ConfigService,
-    private loggerService: LogService // private errorService: ErrorService
+    private loggerService: LogService
   ) {
-    this.translate.use(this.primaryLangCode);
+    this.translate.use(this.userPreferredLangCode);
     localStorage.setItem("modifyDocument", "false");
     localStorage.removeItem("addingUserFromPreview");
     localStorage.removeItem("muiltyAppointment");
@@ -109,41 +110,58 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     );
     this.subscriptions.push(subs);
     if (!this.message["timerFired"]) {
-      this.autoLogout.getValues(this.primaryLangCode);
+      this.autoLogout.getValues(this.userPreferredLangCode);
       this.autoLogout.setValues();
       this.autoLogout.keepWatching();
     } else {
-      this.autoLogout.getValues(this.primaryLangCode);
+      this.autoLogout.getValues(this.userPreferredLangCode);
       this.autoLogout.continueWatching();
     }
-    let factory = new LanguageFactory(this.primaryLangCode);
+    let factory = new LanguageFactory(this.userPreferredLangCode);
     let response = factory.getCurrentlanguage();
-    this.secondaryLanguagelabels = response["dashboard"].discard;
+    this.languagelabels = response["dashboard"].discard;
+    this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
     this.regService.setSameAs("");
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     this.getIdentityJsonFormat();
+    this.setLanguageConfiguration();
+  }
+
+  setLanguageConfiguration() {
+    this.mandatoryLanguages = this.configService
+      .getConfigByKey("mosip.mandatory.languages")
+      .split(",");
+    this.optionalLanguages = this.configService
+      .getConfigByKey("mosip.optional.languages")
+      .split(",");
+    this.minLanguage = Number(
+      this.configService.getConfigByKey("mosip.min.languages.count")
+    );
+    this.maxLanguage = Number(
+      this.configService.getConfigByKey("mosip.max.languages.count")
+    );
   }
 
   getIdentityJsonFormat() {
     this.dataStorageService.getIdentityJson().subscribe((response) => {
-      console.log(response);
-      // this.identityData = response["identity"];
-      // this.locationHeirarchy = [...response["locationHierarchy"]];
       this.identityData = response["response"]["idSchema"]["identity"];
       let locationHeirarchiesFromJson = [
-          ...response["response"]["idSchema"]["locationHierarchy"],
-        ];
-        if (Array.isArray(locationHeirarchiesFromJson[0])) {
-          this.locationHeirarchies = locationHeirarchiesFromJson;  
-        } else {
-          let hierarchiesArray = [];
-          hierarchiesArray.push(locationHeirarchiesFromJson);
-          this.locationHeirarchies = hierarchiesArray;
-        }
-        console.log(this.locationHeirarchies);
-        localStorage.setItem("locationHierarchy",JSON.stringify(this.locationHeirarchies[0]));
+        ...response["response"]["idSchema"]["locationHierarchy"],
+      ];
+      if (Array.isArray(locationHeirarchiesFromJson[0])) {
+        this.locationHeirarchies = locationHeirarchiesFromJson;
+      } else {
+        let hierarchiesArray = [];
+        hierarchiesArray.push(locationHeirarchiesFromJson);
+        this.locationHeirarchies = hierarchiesArray;
+      }
+      localStorage.setItem("schema", JSON.stringify(this.identityData));
+      localStorage.setItem(
+        "locationHierarchy",
+        JSON.stringify(this.locationHeirarchies[0])
+      );
     });
   }
 
@@ -266,7 +284,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.regDate
       ],
       "",
-      this.primaryLangCode
+      this.userPreferredLangCode
     );
     let appointmentDate = date;
     return appointmentDate;
@@ -315,24 +333,22 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicantResponse[
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.demographicMetadata
       ];
-
-    let primaryIndex = 0;
-    let secondaryIndex = 1;
-    let lang =
-      applicantResponse["demographicMetadata"][this.name][0]["language"];
-    if (lang !== this.primaryLangCode) {
-      primaryIndex = 1;
-      secondaryIndex = 0;
-    }
-    if (this.primaryLangCode === this.secondaryLangCode) {
-      primaryIndex = 0;
-      secondaryIndex = 0;
+    let dataAvailableLanguage = [];
+    this.name = "fullName";
+    demographicMetadata[this.name].forEach((element) => {
+      dataAvailableLanguage.push(element["language"]);
+    });
+    let languageIndex;
+    if (dataAvailableLanguage.includes(this.userPreferredLangCode)) {
+      languageIndex = dataAvailableLanguage.indexOf(this.userPreferredLangCode);
+    } else {
+      languageIndex = 0;
     }
     const applicant: Applicant = {
       applicationID:
         applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.preId],
       name:
-        applicantResponse["demographicMetadata"][this.name][primaryIndex][
+        applicantResponse["demographicMetadata"][this.name][languageIndex][
           "value"
         ],
       appointmentDateTime: applicantResponse[
@@ -358,10 +374,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         applicantResponse[
           appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto
         ],
-      nameInSecondaryLanguage:
-        applicantResponse["demographicMetadata"][this.name][secondaryIndex][
-          "value"
-        ],
       postalCode:
         applicantResponse["demographicMetadata"][
           appConstants.DASHBOARD_RESPONSE_KEYS.applicant.postalCode
@@ -376,24 +388,70 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    *
    * @memberof DashBoardComponent
    */
-  onNewApplication() {
-    localStorage.setItem("modifyUser", "false");
-    localStorage.setItem("newApplicant", "true");
-    if (this.loginId) {
-      this.router.navigateByUrl(
-        `${this.primaryLangCode}/pre-registration/demographic/new`
+  async onNewApplication() {
+    if (
+      this.optionalLanguages.length > 0 &&
+      this.maxLanguage !== this.minLanguage
+    ) {
+      await this.getDataCaptureLanguages();
+    } else if (this.mandatoryLanguages.length > 0) {
+      localStorage.setItem(
+        "dataCaptureLanguages",
+        JSON.stringify(this.mandatoryLanguages)
       );
-      this.isNewApplication = true;
-    } else {
-      this.router.navigate(["/"]);
+      this.isNavigateToDemographic = true;
+    }
+    if (this.isNavigateToDemographic) {
+      let dataCaptureLanguagesLabels = [];
+      JSON.parse(localStorage.getItem("dataCaptureLanguages")).forEach(
+        (langCode) => {
+          JSON.parse(localStorage.getItem("languageLables")).filter(
+            (element) => {
+              if (element.languageCode === langCode) {
+                console.log(element.valueName);
+                dataCaptureLanguagesLabels.push(element.valueName);
+              }
+            }
+          );
+        }
+      );
+      localStorage.setItem("dataCaptureLanguagesLabels",JSON.stringify(dataCaptureLanguagesLabels));
+      localStorage.setItem("modifyUser", "false");
+      localStorage.setItem("newApplicant", "true");
+      if (this.loginId) {
+        this.router.navigateByUrl(
+          `${this.userPreferredLangCode}/pre-registration/demographic/new`
+        );
+        this.isNewApplication = true;
+      } else {
+        this.router.navigate(["/"]);
+      }
     }
   }
 
-  openDialog(data, width) {
+  getDataCaptureLanguages() {
+    return new Promise((resolve) => {
+      let dialogRef = this.dataCaptureDialog();
+      dialogRef.afterClosed().subscribe((res) => {
+        console.log(res);
+        if (res == undefined) {
+          this.isNavigateToDemographic = false;
+        } else {
+          localStorage.setItem("dataCaptureLanguages", JSON.stringify(res));
+          this.isNavigateToDemographic = true;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  openDialog(data, width, height?, panelClass?) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
+      height: height,
       data: data,
       restoreFocus: false,
+      panelClass: panelClass,
     });
     return dialogRef;
   }
@@ -425,22 +483,84 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     if (Number(selectedOption) === 1) {
       body = {
         case: "CONFIRMATION",
-        title: this.secondaryLanguagelabels.title_confirm,
-        message: this.secondaryLanguagelabels.deletePreregistration.msg_confirm,
-        yesButtonText: this.secondaryLanguagelabels.button_confirm,
-        noButtonText: this.secondaryLanguagelabels.button_cancel,
+        title: this.languagelabels.title_confirm,
+        message: this.languagelabels.deletePreregistration.msg_confirm,
+        yesButtonText: this.languagelabels.button_confirm,
+        noButtonText: this.languagelabels.button_cancel,
       };
     } else {
       body = {
         case: "CONFIRMATION",
-        title: this.secondaryLanguagelabels.title_confirm,
-        message: this.secondaryLanguagelabels.cancelAppointment.msg_confirm,
-        yesButtonText: this.secondaryLanguagelabels.button_confirm,
-        noButtonText: this.secondaryLanguagelabels.button_cancel,
+        title: this.languagelabels.title_confirm,
+        message: this.languagelabels.cancelAppointment.msg_confirm,
+        yesButtonText: this.languagelabels.button_confirm,
+        noButtonText: this.languagelabels.button_cancel,
       };
     }
     const dialogRef = this.openDialog(body, "250px");
     return dialogRef;
+  }
+
+  dataCaptureDialog() {
+    let body = {};
+    body = {
+      case: "LANGUAGE_CAPTURE",
+      title: this.dataCaptureLabels.title,
+      languages: JSON.parse(localStorage.getItem("languageLables")),
+      mandatoryLanguages: this.mandatoryLanguages,
+      minLanguage: this.minLanguage,
+      maxLanguage: this.maxLanguage,
+      message: this.getDataCaptureMessage(),
+      cancelButtonText: this.dataCaptureLabels.cancel_btn,
+      submitButtonText: this.dataCaptureLabels.submit_btn,
+      errorText:
+        this.dataCaptureLabels.error_text[0] +
+        " " +
+        this.minLanguage +
+        " " +
+        this.dataCaptureLabels.error_text[1],
+    };
+    const dialogRef = this.openDialog(body, "550px", "350px", "data-capture");
+    return dialogRef;
+  }
+
+  getDataCaptureMessage() {
+    let message = "";
+    if (this.mandatoryLanguages.length > 0) {
+      message =
+        this.dataCaptureLabels.message[0] +
+        " " +
+        this.minLanguage +
+        " " +
+        this.dataCaptureLabels.message[1] +
+        " " +
+        this.getLanguageConcatinatedString() +
+        " " +
+        this.dataCaptureLabels.message[2] +
+        this.dataCaptureLabels.message[3];
+    } else {
+      message =
+        this.dataCaptureLabels.message[0] +
+        " " +
+        this.minLanguage +
+        " " +
+        this.dataCaptureLabels.message[1] +
+        this.dataCaptureLabels.message[3];
+    }
+    return message;
+  }
+
+  getLanguageConcatinatedString() {
+    let mandatoryLang = "";
+    this.mandatoryLanguages.forEach((lang) => {
+      JSON.parse(localStorage.getItem("languageLables")).filter((element) => {
+        if (element.languageCode === lang) {
+          mandatoryLang = mandatoryLang + ", " + element.valueName;
+        }
+      });
+    });
+    console.log(mandatoryLang);
+    return mandatoryLang.substring(1, mandatoryLang.length);
   }
 
   removeApplicant(preRegId: string) {
@@ -471,23 +591,21 @@ export class DashBoardComponent implements OnInit, OnDestroy {
               localStorage.setItem("newApplicant", "true");
             } else {
               this.displayMessage(
-                this.secondaryLanguagelabels.title_success,
-                this.secondaryLanguagelabels.deletePreregistration.msg_deleted
+                this.languagelabels.title_success,
+                this.languagelabels.deletePreregistration.msg_deleted
               );
             }
           } else {
             this.displayMessage(
-              this.secondaryLanguagelabels.title_error,
-              this.secondaryLanguagelabels.deletePreregistration
-                .msg_could_not_deleted
+              this.languagelabels.title_error,
+              this.languagelabels.deletePreregistration.msg_could_not_deleted
             );
           }
         },
         () => {
           this.displayMessage(
-            this.secondaryLanguagelabels.title_error,
-            this.secondaryLanguagelabels.deletePreregistration
-              .msg_could_not_deleted
+            this.languagelabels.title_error,
+            this.languagelabels.deletePreregistration.msg_could_not_deleted
           );
         }
       );
@@ -508,8 +626,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         (response) => {
           if (!response["errors"]) {
             this.displayMessage(
-              this.secondaryLanguagelabels.title_success,
-              this.secondaryLanguagelabels.cancelAppointment.msg_deleted
+              this.languagelabels.title_success,
+              this.languagelabels.cancelAppointment.msg_deleted
             );
             // this.sendNotification(preRegId,appointmentDate,appointmentDateTime);
             const index = this.users.indexOf(element);
@@ -519,16 +637,15 @@ export class DashBoardComponent implements OnInit, OnDestroy {
             this.users[index].appointmentTime = "";
           } else {
             this.displayMessage(
-              this.secondaryLanguagelabels.title_error,
-              this.secondaryLanguagelabels.cancelAppointment
-                .msg_could_not_deleted
+              this.languagelabels.title_error,
+              this.languagelabels.cancelAppointment.msg_could_not_deleted
             );
           }
         },
         () => {
           this.displayMessage(
-            this.secondaryLanguagelabels.title_error,
-            this.secondaryLanguagelabels.cancelAppointment.msg_could_not_deleted
+            this.languagelabels.title_error,
+            this.languagelabels.cancelAppointment.msg_could_not_deleted
           );
         }
       );
@@ -578,25 +695,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     localStorage.setItem("modifyUser", "true");
     this.disableModifyDataButton = true;
     this.onModification(preId);
-    // const subs = this.dataStorageService.getUserDocuments(preId).subscribe(
-    //   response => this.setUserFiles(response),
-    //   error => {
-    //     this.loggerService.error('dashboard error', error);
-    //     this.disableModifyDataButton = false;
-    //     this.onError(error);
-    //   },
-    //   () => {
-    //     this.dataStorageService.getUser(preId).subscribe(
-    //       response => {
-    //         this.onModification(response, preId);
-    //       },
-    //       error => {
-    //         this.onError(error);
-    //       }
-    //     );
-    //   }
-    // );
-    // this.subscriptions.push(subs);
   }
 
   /**
@@ -611,7 +709,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     this.disableModifyDataButton = true;
     this.fetchedDetails = true;
     this.router.navigate([
-      this.primaryLangCode,
+      this.userPreferredLangCode,
       "pre-registration",
       "demographic",
       preId,
@@ -736,7 +834,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   private getErrorLabels() {
-    let factory = new LanguageFactory(this.primaryLangCode);
+    let factory = new LanguageFactory(this.userPreferredLangCode);
     let response = factory.getCurrentlanguage();
     this.errorLanguagelabels = response["error"];
   }

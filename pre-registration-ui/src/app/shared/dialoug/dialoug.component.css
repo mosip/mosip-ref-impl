@@ -1,4 +1,4 @@
-::ng-deep .mat-dialog-container {
+::ng-deep.mat-dialog-container {
   padding: 10px 1.5rem 1.5rem 1.7rem;
   border-radius: 0px;
 }
@@ -88,7 +88,7 @@
   margin-bottom: 15px;
 }
 
- .mat-input-element {
+.mat-input-element {
   padding: 5px !important;
 
 }
@@ -97,4 +97,54 @@
 }
 .content-display-iniline-block{
   display:inline-block;
+}
+
+::ng-deep.data-capture .mat-dialog-container {
+  display: block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  overflow: auto;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0px !important;
+}
+.select-lang-header {
+  background-color: #fd518c;
+  font-size: 16px;
+  color: white;
+  padding: 10px;
+  font-weight: 500;
+  height: 45px;
+}
+.select-lang-body {
+  margin: 7px;
+  padding: 8px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 300;
+  height: 230px;
+}
+.language-selection-section {
+  margin-left: 30px;
+  margin-right: 15px;
+  margin-top: 20px;
+  display: inline-flex;
+  justify-content: space-between;
+}
+.lang-selection-footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.lang-selection-footer-btn-cancel {
+  margin-right: 4px;
+  border: 1px solid #ff4081;
+  color: #ff4081;
+  background-color: whit;
+}
+.lang-selection-footer-btn-submit {
+  background-color: #ff4081;
+  border: none;
+  color: white;
 }

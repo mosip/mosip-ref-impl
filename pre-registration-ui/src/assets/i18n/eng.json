@@ -469,6 +469,13 @@
     "error": {
       "error": "Internal server error. Please try again after  some time.",
       "button_ok": "OK"
+    },
+    "dataCaptureLanguage":{
+      "title":"Select Language",
+      "message":["Please select any","languages for data entry.","is mandatory for the resident to select as per government guidelines.","The order of selection will lead to page view for demographic data."],
+      "error_text":["Please select minimum","languages for data entry."],
+      "cancel_btn":"Cancel",
+      "submit_btn":"Submit"
     }
   },
   "timeSelection": {

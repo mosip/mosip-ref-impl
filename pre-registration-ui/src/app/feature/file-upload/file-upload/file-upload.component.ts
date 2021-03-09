@@ -69,7 +69,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   documentName: string;
   flag: boolean;
   zoom: number = 0.5;
-  primaryLang = localStorage.getItem("langCode");
+  userPrefLanguage = localStorage.getItem("userPrefLanguage");
 
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: "",
@@ -90,17 +90,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   applicants: any[] = [];
   allowedFiles: string[];
   firstFile: Boolean = true;
-  // noneApplicant = {
-  //   demographicMetadata: {
-  //     name: [
-  //       {
-  //         language: "",
-  //         value: "None",
-  //       },
-  //     ],
-  //   },
-  //   preRegistrationId: "",
-  // };
+  
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
@@ -141,7 +131,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.sameAsselected = true;
     }
-    let factory = new LanguageFactory(this.primaryLang);
+    let factory = new LanguageFactory(this.userPrefLanguage);
     let response = factory.getCurrentlanguage();
     if (response["message"])
       this.fileUploadLanguagelabels = response["message"];
@@ -173,7 +163,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   private async initiateComponent() {
-    this.translate.use(this.primaryLang);
+    this.translate.use(this.userPrefLanguage);
     this.isModify = localStorage.getItem("modifyDocument");
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
@@ -400,7 +390,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     for (let applicant of allApplicants) {
       for (let name of applicant) {
         if (
-          name["demographicMetadata"][name][j].language != this.primaryLang
+          name["demographicMetadata"][name][j].language != this.userPrefLanguage
           ) {
           allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
@@ -447,7 +437,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
     for (let language of this.users[0].request.demographicDetails.identity
       .residenceStatus) {
-      if (language.language === this.primaryLang) {
+      if (language.language === this.userPrefLanguage) {
         requestDTO.value = language.value;
       }
     }
@@ -969,7 +959,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   setJsonString(docName: string, docCode: string, docRefId: string) {
     this.documentUploadRequestBody.docCatCode = docCode;
-    this.documentUploadRequestBody.langCode = this.primaryLang;
+    this.documentUploadRequestBody.langCode = this.userPrefLanguage;
     this.documentUploadRequestBody.docTypCode = docName;
     this.documentUploadRequestBody.docRefId = docRefId;
     this.documentRequest = new RequestModel(
@@ -1201,48 +1191,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    let displayedDocCatCode = [];
-    let uploadDocumentsCatCode = [];
-    let requiredDocuments = [];
-    this.isDocUploadRequired = [];
-    //     this.getUserFiles();
-    //     console.log(this.userFile);
-    this.LOD.forEach((document) => {
-      displayedDocCatCode.push(document.code);
-    });
-    console.log(displayedDocCatCode);
-    this.uiFields.forEach((field) => {
-      if (field.required) {
-        requiredDocuments.push(field.id);
-      }
-    });
-    //     this.userFile.filter(file=>{
-    //      if(file.docCatCode !== undefined){
-    //        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
-    //         uploadDocumentsCatCode.push(file.docCatCode);
-    //        }
-    //      }
-    //     });
-    console.log(uploadDocumentsCatCode);
-    console.log(requiredDocuments);
-    displayedDocCatCode.forEach((docCat) => {
-      requiredDocuments.forEach((reqDoc) => {
-        if (docCat === reqDoc) {
-          if (uploadDocumentsCatCode.indexOf(docCat) < 0) {
-            this.isDocUploadRequired.push(docCat);
-          }
-        }
-      });
-    });
-    console.log(this.isDocUploadRequired);
-    /*if (this.isDocUploadRequired.length > 0) {
-      let message = "please upload ";
-      let docList = "";
-      for (let i = 0; i < this.isDocUploadRequired.length; i++) {
-        docList = docList + this.isDocUploadRequired[i] + " ,";
-      }
-      this.displayMessage("Required", message + docList);
-    } else {*/
     localStorage.setItem("modifyDocument", "false");
     let url = Utils.getURL(this.router.url, "summary");
     this.router.navigateByUrl(url + `/${this.preRegId}/preview`);

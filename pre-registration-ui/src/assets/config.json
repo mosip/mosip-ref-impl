@@ -1,4 +1,4 @@
 {
-  "BASE_URL": "https://dev.mosip.net/",
+  "BASE_URL": "https://localhost:4200/proxyapi/",
   "PRE_REG_URL": "preregistration/v1/"
 }
