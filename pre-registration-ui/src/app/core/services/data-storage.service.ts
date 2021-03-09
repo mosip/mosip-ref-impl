@@ -55,6 +55,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.applicants +
       appConstants.APPENDER +
       preRegId;
+    console.log("url>>>>"+url);
     return this.httpClient.get(url);
   }
 
@@ -414,8 +415,7 @@ export class DataStorageService {
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
-      "templates/" +
-      localStorage.getItem("langCode") +
+      "templates/templatetypecodes" +
       "/" +
       templateType;
     return this.httpClient.get(url);

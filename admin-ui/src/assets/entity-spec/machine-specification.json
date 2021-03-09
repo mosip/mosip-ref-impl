@@ -299,7 +299,7 @@
       },
       "filterType": "equals",
       "autocomplete": "false",
-      "dropdown": "false",
+      "dropdown": "true",
       "datePicker": "false",
       "apiName": "machinetypes",
       "fieldName": "name",

@@ -35,8 +35,11 @@ export class DataStorageService {
   }
 
   getStubbedDataForDropdowns(langCode: string): Observable<any> {
-    console.log('getStubbedDataForDropdowns>>>');
     return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'locations/level/' + langCode);
+  }
+
+  getLocationHierarchyLevels(langCode: string): Observable<any> {
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'locationHierarchyLevels/' + langCode);
   }
 
   createCenter(data: RequestModel): Observable<any> {

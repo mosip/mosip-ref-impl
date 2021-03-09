@@ -17,11 +17,14 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'src/app/app-config.service';
 import * as appConstants from 'src/app/app.constants';
+import jwt_decode from "jwt-decode";
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthInterceptor implements HttpInterceptor {
   errorMessages: any;
+  decoded: any;
 
   constructor(
     private redirectService: LoginRedirectService,
@@ -46,6 +49,8 @@ export class AuthInterceptor implements HttpInterceptor {
             console.log(event);
             if (event.url.split('/').includes('validateToken')) {
                 if (event.body.response) {
+                  this.decoded = jwt_decode(event.body.response.token);
+                  this.headerService.setDisplayUserName(this.decoded["name"]);
                   this.headerService.setUsername(event.body.response.userId);
                   this.headerService.setRoles(event.body.response.role);
                 }

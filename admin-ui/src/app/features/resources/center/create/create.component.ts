@@ -598,6 +598,8 @@ export class CreateComponent {
     this.primaryForm.controls.endTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].centerEndTime)
     );
+    console.log("this.data[0].lunchStartTime>>>>"+Utils.convertTimeTo12Hours(this.data[0].lunchStartTime));
+    console.log("this.data[0].lunchEndTime>>>>"+Utils.convertTimeTo12Hours(this.data[0].lunchEndTime));
     this.primaryForm.controls.lunchStartTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchStartTime)
     );
@@ -844,6 +846,7 @@ export class CreateComponent {
 
   getStubbedData() {
     this.getRegistrationCenterTypes();
+    this.getLocationHierarchyLevels();
     this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
       if (response.response.locations) {
         this.dropDownValues.holidayZone.primary =
@@ -855,6 +858,15 @@ export class CreateComponent {
         this.dropDownValues.holidayZone.secondary =
         response.response.locations;
       }
+    });
+  }
+
+  getLocationHierarchyLevels() {
+    this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
+      console.log("response.response.locationHierarchyLevels.primary>>>"+response.response.locationHierarchyLevels);
+    });
+    this.dataStorageService.getLocationHierarchyLevels(this.secondaryLang).subscribe(response => {
+      console.log("response.response.locationHierarchyLevels.secondary>>>"+response.response.locationHierarchyLevels);
     });
   }
 
@@ -894,6 +906,7 @@ export class CreateComponent {
   }
 
   calculateWorkingHours() {
+    console.log("calculateWorkingHours>>>>");
     if (
       this.primaryForm.controls.startTime.value &&
       this.primaryForm.controls.endTime.value
@@ -938,6 +951,7 @@ export class CreateComponent {
           const endIndex = x.indexOf(this.primaryForm.controls.endTime.value);
           this.dropDownValues.lunchStartTime = x.slice(startIndex, endIndex);
         }
+        console.log("this.dropDownValues.lunchStartTime>>>"+this.dropDownValues.lunchStartTime);
       } else if (fieldName === 'lunchEndTime') {
         const x = [...this.allSlots];
         const endIndex = x.indexOf(this.primaryForm.controls.endTime.value);

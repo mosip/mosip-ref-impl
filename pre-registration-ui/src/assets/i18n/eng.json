@@ -360,13 +360,14 @@
     "message": "The Pre-Registration id and Appointment details have been sent to the registered email id and phone number",
     "label_name": "Name",
     "label_pre_id": "Pre Registration ID",
-    "label_reg_cntr": "Registration Center",
+    "label_reg_cntr": "Center Name",
     "label_cntr_contact_number": "Center Contact Number",
     "label_appointment_date_time": "Appointment Date & Time",
     "container_guideline": "Important Guidelines",
     "action_send": "SEND EMAIL/SMS",
     "action_download": "DOWNLOAD PDF",
-    "action_print": "PRINT"
+    "action_print": "PRINT",
+    "label_reg_cntr_dtl": "Center Address"
   },
   "preview": {
     "title_preview": "Preview",
