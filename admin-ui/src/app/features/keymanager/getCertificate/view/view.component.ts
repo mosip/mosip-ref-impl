@@ -11,7 +11,7 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-view',

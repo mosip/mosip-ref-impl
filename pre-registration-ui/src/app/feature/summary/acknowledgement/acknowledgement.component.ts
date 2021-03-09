@@ -110,7 +110,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(preRegId) {
-    let self = this;
     return new Promise((resolve) => {
       preRegId.forEach(async (prid: any, index) => {
 
@@ -209,7 +208,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   manipulateUserInfo(){
-    let i, j, self = this, preRegIdLabels = [], appDateLabels = [], contactPhoneLabels = [], messages = [], labelNames = [], nameValues = [], labelRegCntrs = [], regCntrNames = [], appLangCode = [], labelRegCntrDtl = [], RegCntrDtl = [];   
+    let i, j, self = this, preRegIdLabels = [], appDateLabels = [], contactPhoneLabels = [], messages = [], labelNames = [], nameValues = [], labelRegCntrs = [], regCntrNames = [], appLangCode = [];   /*, labelRegCntrDtl = [], RegCntrDtl = []*/
     self.finalUsersInfoDetails["qrCodeBlob"] = self.usersInfo[0].qrCodeBlob;
     self.finalUsersInfoDetails["preRegId"] = self.usersInfo[0].preRegId;
     self.finalUsersInfoDetails["bookingTimePrimary"] = self.usersInfo[0].bookingTimePrimary; 
