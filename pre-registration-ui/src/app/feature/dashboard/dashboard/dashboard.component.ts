@@ -127,7 +127,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     this.getIdentityJsonFormat();
-    this.setLanguageConfiguration();
+   // this.setLanguageConfiguration();
   }
 
   setLanguageConfiguration() {
@@ -335,7 +335,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.demographicMetadata
       ];
     let dataAvailableLanguage = [];
-    this.name = "fullName";
     demographicMetadata[this.name].forEach((element) => {
       dataAvailableLanguage.push(element["language"]);
     });
