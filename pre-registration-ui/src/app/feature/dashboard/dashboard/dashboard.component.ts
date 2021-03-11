@@ -391,7 +391,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   async onNewApplication() {
     if (
       this.optionalLanguages.length > 0 &&
-      this.maxLanguage !== this.minLanguage
+      this.maxLanguage !== this.mandatoryLanguages.length
     ) {
       await this.getDataCaptureLanguages();
     } else if (this.mandatoryLanguages.length > 0) {
