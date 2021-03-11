@@ -12,10 +12,8 @@ import Utils from "src/app/app.util";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "./../../../app.constants";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
-import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";;
 
-import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: "app-center-selection",
@@ -41,6 +39,7 @@ export class CenterSelectionComponent
   bookingDataList = [];
   errorlabels: any;
   step = 0;
+  textDir = localStorage.getItem("dir");
   showDescription = false;
   mapProvider = "OSM";
   searchTextFlag = false;
@@ -139,9 +138,9 @@ export class CenterSelectionComponent
   }
 
   getErrorLabels() {
-    let factory = new LanguageFactory(this.userPreferredLangCode);
-    let response = factory.getCurrentlanguage();
-    this.errorlabels = response["error"];
+    this.dataService.getI18NLanguageFiles("default").subscribe((response) => {
+      this.errorlabels = response["error"];
+    });
   }
 
   async getRecommendedCenters() {

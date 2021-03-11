@@ -17,7 +17,6 @@ import { MatDialog } from "@angular/material";
 import { FilesModel } from "src/app/shared/models/demographic-model/files.model";
 import { LogService } from "src/app/shared/logger/log.service";
 import Utils from "src/app/app.util";
-import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -26,6 +25,7 @@ import { Subscription } from "rxjs";
   styleUrls: ["./file-upload.component.css"],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
+  textDir = localStorage.getItem("dir");
   selected = [];
   @ViewChild("fileUpload")
   fileInputVariable: ElementRef;
@@ -130,19 +130,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.sameAsselected = false;
     } else {
       this.sameAsselected = true;
-    }
-    let factory = new LanguageFactory(this.userPrefLanguage);
-    let response = factory.getCurrentlanguage();
-    if (response["message"])
+    }this.dataStorageService
+    .getI18NLanguageFiles(this.userPrefLanguage)
+    .subscribe((response) => {
+      if (response["message"])
       this.fileUploadLanguagelabels = response["message"];
     if (response["error"]) this.errorlabels = response["error"];
+    });
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
   }
 
   async getIdentityJsonFormat() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         this.identityData = response["response"]["idSchema"]["identity"];
         this.identityData.forEach((obj) => {

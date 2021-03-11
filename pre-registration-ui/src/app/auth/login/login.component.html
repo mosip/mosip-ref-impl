@@ -33,8 +33,8 @@
             >
               <mat-option
                 *ngFor="let lang of languageCodeValue"
-                [value]="lang.languageCode"
-                >{{ lang.valueName }}</mat-option
+                [value]="lang.code"
+                >{{ lang.value }}</mat-option
               >
             </mat-select>
           </mat-form-field>
@@ -62,7 +62,7 @@
         <div *ngIf="captchaError" class="error" style="margin-left: 55px">
           {{ "recaptcha.errorMessage" | translate }}
         </div>
-        <div *ngIf="showOTP" style="max-width: 250px">
+        <div [dir]="dir" *ngIf="showOTP" style="max-width: 250px">
           <mat-form-field appearance="outline">
             <input
               autofocus="autofocus"

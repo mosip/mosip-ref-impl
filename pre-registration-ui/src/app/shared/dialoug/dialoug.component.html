@@ -243,10 +243,10 @@
     >
       <section>
         <mat-checkbox
-          (change)="onSelectLanguage(lang.languageCode, $event)"
-          [checked]="input.mandatoryLanguages.includes(lang.languageCode)"
-          [disabled]="input.mandatoryLanguages.includes(lang.languageCode)"
-          >{{ lang.valueName }}</mat-checkbox
+          (change)="onSelectLanguage(lang.code, $event)"
+          [checked]="input.mandatoryLanguages.includes(lang.code)"
+          [disabled]="input.mandatoryLanguages.includes(lang.code)"
+          >{{ lang.value }}</mat-checkbox
         >
       </section>
     </div>

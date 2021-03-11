@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { AuthService } from "src/app/auth/auth.service";
-import { Location } from "@angular/common";
-import { RegistrationService } from "src/app/core/services/registration.service";
 import * as appConstants from "../../app.constants";
 import { ConfigService } from "src/app/core/services/config.service";
 import { Router } from "@angular/router";
@@ -132,7 +130,6 @@ export class DialougComponent implements OnInit {
     this.dialogRef.close(this.selectedLanguage);
   }
   async userRedirection() {
-    let url = this.routerService.getPreviousUrl();
     if (
       localStorage.getItem("newApplicant") === "true" &&
       localStorage.getItem("addingUserFromPreview") === "true"

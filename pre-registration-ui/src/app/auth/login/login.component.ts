@@ -8,8 +8,6 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { RegistrationService } from "src/app/core/services/registration.service";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "../../app.constants";
-import LanguageFactory from "../../../assets/i18n";
-import { CodeValueModal } from "src/app/shared/models/demographic-model/code.value.modal";
 
 @Component({
   selector: "app-login",
@@ -32,7 +30,7 @@ export class LoginComponent implements OnInit {
   showContactDetails = true;
   showOTP = false;
   disableVerify = false;
-  secondaryLanguagelabels: any;
+  Languagelabels: any;
   loggedOutLang: string;
   errorMessage: string;
   minutes: string;
@@ -47,13 +45,14 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha: boolean = true;
   captchaError: boolean;
-  mandatoryLanguages;
-  optionalLanguages;
-  minLanguage ;
-  maxLanguage;
+  mandatoryLanguages = ["eng"];
+  optionalLanguages = ["ara", "fra"];
+  minLanguage = 1;
+  maxLanguage = 3;
   languageSelectionArray = [];
   userPreferredLanguage: string;
   langCode: string;
+  LanguageCodelabels;
   languageCodeValue: any = [];
   constructor(
     private authService: AuthService,
@@ -68,11 +67,18 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadDefaultConfig();
     this.loadConfigs();
     if (this.authService.isAuthenticated()) {
       this.authService.onLogout();
     }
     localStorage.setItem("dir", this.dir);
+  }
+
+  loadDefaultConfig() {
+    this.dataService.getI18NLanguageFiles("default").subscribe((response) => {
+      this.LanguageCodelabels = response["languages"];
+    });
   }
 
   loadConfigs() {
@@ -83,38 +89,20 @@ export class LoginComponent implements OnInit {
         ...this.optionalLanguages,
       ];
       localStorage.setItem("langCode", this.languageSelectionArray[0]);
-      this.setLanguageLabels(response["response"]["languages"]);
       this.translate.use(localStorage.getItem("langCode"));
       this.router.navigate([`${localStorage.getItem("langCode")}`]);
       this.setTimer();
-      this.loadLanguagesWithConfig();
       this.isCaptchaEnabled();
+      this.loadLanguagesWithConfig();
     });
   }
-  setLanguageLabels(languages) {
-    languages.forEach((element) => {
-      if (this.languageSelectionArray.includes(element.code)) {
-        let codeValue: CodeValueModal = {
-          languageCode: element.code,
-          valueCode: element.name,
-          valueName: element.nativeName,
-        };
-        this.languageCodeValue.push(codeValue);
-      }
-    });
 
-    localStorage.setItem(
-      "languageLables",
-      JSON.stringify(this.languageCodeValue)
-    );
-  }
   loadLanguagesWithConfig() {
     this.loadValidationMessages();
-    this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
-    this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
-    this.minLanguage = Number(this.configService.getConfigByKey('mosip.min.languages.count'));
-    this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max.languages.count'));
-    console.log(this.mandatoryLanguages);
+    // this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
+    // this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
+    // this.minLanguage = Number(this.configService.getConfigByKey('mosip.min.languages.count'));
+    // this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max.languages.count'));
     this.languageSelectionArray = [
       ...this.mandatoryLanguages,
       ...this.optionalLanguages,
@@ -123,12 +111,27 @@ export class LoginComponent implements OnInit {
       "availableLanguages",
       JSON.stringify(this.languageSelectionArray)
     );
+    this.prepareDropdownLabelArray();
     this.selectedLanguage = localStorage.getItem("langCode");
     this.authService.userPreferredLang = this.selectedLanguage;
     this.userPreferredLanguage = this.selectedLanguage;
     localStorage.setItem("userPrefLanguage", this.userPreferredLanguage);
     this.translate.use(this.userPreferredLanguage);
     this.showSpinner = false;
+  }
+
+  prepareDropdownLabelArray() {
+    this.languageSelectionArray.forEach((language) => {
+      let codevalue = {
+        code: language,
+        value: this.LanguageCodelabels[language].nativeName,
+      };
+      this.languageCodeValue.push(codevalue);
+    });
+    localStorage.setItem(
+      "languageCodeValue",
+      JSON.stringify(this.languageCodeValue)
+    );
   }
 
   isCaptchaEnabled() {
@@ -154,10 +157,12 @@ export class LoginComponent implements OnInit {
   }
 
   loadValidationMessages() {
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
-    console.log(response);
-    this.validationMessages = response["login"];
+    this.dataService
+      .getI18NLanguageFiles(localStorage.getItem("langCode"))
+      .subscribe((response) => {
+        this.Languagelabels = response;
+        this.validationMessages = this.Languagelabels["login"];
+      });
   }
 
   setLanguageDirection(userSelectedLanguage) {
@@ -307,7 +312,7 @@ export class LoginComponent implements OnInit {
 
       this.dataService
         .sendOtp(this.inputContactDetails, this.userPreferredLanguage)
-        .subscribe((response) => {});
+        .subscribe(() => {});
 
       // dynamic update of button text for Resend and Verify
     } else if (this.showVerify && this.errorMessage === undefined) {
@@ -329,7 +334,7 @@ export class LoginComponent implements OnInit {
               this.showOtpMessage();
             }
           },
-          (error) => {
+          () => {
             this.disableVerify = false;
             this.showErrorMessage();
           }
@@ -375,8 +380,7 @@ export class LoginComponent implements OnInit {
 
   showOtpMessage() {
     this.inputOTP = "";
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
+    let response = this.Languagelabels;
     let otpmessage = response["message"]["login"]["msg3"];
     const message = {
       case: "MESSAGE",
@@ -389,8 +393,7 @@ export class LoginComponent implements OnInit {
   }
 
   showErrorMessage() {
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
+    let response = this.Languagelabels;
     let errormessage = response["error"]["error"];
     const message = {
       case: "MESSAGE",

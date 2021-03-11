@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStorageService } from '../services/data-storage.service';
-import LanguageFactory from 'src/assets/i18n';
 
 @Component({
   selector: 'app-faq',
@@ -16,9 +15,11 @@ export class FaqComponent implements OnInit {
 
   ngOnInit() {
     this.langCode = localStorage.getItem('langCode');
-    let factory = new LanguageFactory(this.langCode);
-    let response = factory.getCurrentlanguage();
-    this.data = response['faq']['questions'];
-    this.answerTranslation = response['faq']['answer'];
+    this.dataStorageService
+    .getI18NLanguageFiles(this.langCode)
+    .subscribe((response) => {
+      this.data = response['faq']['questions'];
+      this.answerTranslation = response['faq']['answer'];
+    });
   }
 }

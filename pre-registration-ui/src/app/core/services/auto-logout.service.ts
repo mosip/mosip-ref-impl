@@ -6,7 +6,7 @@ import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
 import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from 'src/app/core/services/config.service';
 import * as appConstants from 'src/app/app.constants';
-import LanguageFactory from 'src/assets/i18n';
+import { DataStorageService } from './data-storage.service';
 
 /**
  * @description This class is responsible for auto logging out user when he is inactive for a
@@ -38,7 +38,8 @@ export class AutoLogoutService {
     private userIdle: UserIdleService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private configservice: ConfigService
+    private configservice: ConfigService,
+    private dataStorageService: DataStorageService
   ) {}
 
   /**
@@ -47,7 +48,7 @@ export class AutoLogoutService {
    * @returns void
    * @memberof AutoLogoutService
    */
-  getValues(langCode: string) {
+  getValues(langCode) {
     (this.idle = Number(
       this.configservice.getConfigByKey(appConstants.CONFIG_KEYS.mosip_preregistration_auto_logout_idle)
     )),
@@ -58,9 +59,12 @@ export class AutoLogoutService {
         this.configservice.getConfigByKey(appConstants.CONFIG_KEYS.mosip_preregistration_auto_logout_ping)
       ));
 
-    let factory = new LanguageFactory(langCode);
-    let response = factory.getCurrentlanguage();
-    this.languagelabels = response['autologout'];
+      this.dataStorageService
+      .getI18NLanguageFiles(langCode)
+      .subscribe((response) => {
+        this.languagelabels = response['autologout'];
+      });
+    
   }
 
   setisActive(value: boolean) {
@@ -141,17 +145,14 @@ export class AutoLogoutService {
   }
 
   /**
-   * @description This methoed opens a pop up when user idle has been detected for given time...
-   *
-   * @returns void
+   * @description This methoed opens a pop up when user idle has been detected for given time.id
    * @memberof AutoLogoutService
    */
 
   openPopUp() {
     const data = {
       case: 'POPUP',
-      content: this.languagelabels.preview
-    };
+      content: this   };
     this.dialogref = this.dialog.open(DialougComponent, {
       width: '550px',
       data: data

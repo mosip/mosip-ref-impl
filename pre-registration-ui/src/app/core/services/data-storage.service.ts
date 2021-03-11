@@ -35,6 +35,10 @@ export class DataStorageService {
   BASE_URL = this.appConfigService.getConfig()["BASE_URL"];
   PRE_REG_URL = this.appConfigService.getConfig()["PRE_REG_URL"];
 
+  getI18NLanguageFiles(langCode:string){
+   return this.httpClient.get(`./assets/i18n/${langCode}.json`);
+  }
+
   getUsers(userId: string) {
     let url =
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;

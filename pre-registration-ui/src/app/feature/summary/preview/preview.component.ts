@@ -6,7 +6,6 @@ import { RegistrationService } from "src/app/core/services/registration.service"
 import { TranslateService } from "@ngx-translate/core";
 import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
-import LanguageFactory from "src/assets/i18n";
 import { ConfigService } from "src/app/core/services/config.service";
 import { CodeValueModal } from "src/app/shared/models/demographic-model/code.value.modal";
 import { LocDetailModal } from "src/app/shared/models/loc.detail.modal";
@@ -60,8 +59,6 @@ export class PreviewComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.primaryLanguage = localStorage.getItem("langCode");
-    this.secondaryLanguage = localStorage.getItem("secondaryLangCode");
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
@@ -69,17 +66,12 @@ export class PreviewComponent implements OnInit {
     await this.getResidentDetails();
     await this.getGenderDetails();
     await this.getUserInfo();
-//     await this.convertLocationCodeToLocationName();
     await this.getUserFiles();
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
-    //console.log("previewData");
-    //console.log(this.previewData);
     this.calculateAge();
-    //this.previewData.primaryAddress = this.combineAddress(0);
-    //this.previewData.secondaryAddress = this.combineAddress(1);
     this.formatDob(this.previewData.dateOfBirth);
-    this.getSecondaryLanguageLabels();
+    this.getPrimaryAndSecondaryLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
     //remove blank fields
@@ -90,10 +82,7 @@ export class PreviewComponent implements OnInit {
       }
     });
     this.uiFields = updatedUIFields;
-    //console.log("populateLocationInfoArray");
     await this.populateLocationInfoArray();
-    //console.log(this.primaryLangLocInfo);
-    //console.log(this.secondaryLangLocInfo);
   }
 
   async getIdentityJsonFormat() {
@@ -274,30 +263,6 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-//   convertLocationCodeToLocationName() {
-//     this.locationHeirarchy.forEach((location) => {
-//       this.getLocations(
-//         this.user.request.demographicDetails.identity[location][0].value,
-//         this.primaryLanguage
-//       ).then(
-//         (val) =>
-//           (this.user.request.demographicDetails.identity[
-//             location
-//           ][0].value = val)
-//       );
-//       if (this.primaryLanguage != this.secondaryLanguage) {
-//         this.getLocations(
-//           this.user.request.demographicDetails.identity[location][1].value,
-//           this.secondaryLanguage
-//         ).then((val) => (val) =>
-//           (this.user.request.demographicDetails.identity[
-//             location
-//           ][0].value = val)
-//         );
-//       }
-//     });
-//   }
-
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
     this.dateOfBirthPrimary = Utils.getBookingDateTime(
@@ -349,20 +314,13 @@ export class PreviewComponent implements OnInit {
     return address;
   }
 
-  getSecondaryLanguageLabels() {
-    let factory = new LanguageFactory(
-      localStorage.getItem("secondaryLangCode")
-    );
-    let response = factory.getCurrentlanguage();
-    this.secondaryLanguagelabels = response["preview"];
-    this.residentTypeMapping.secondary = response["residentTypesMapping"];
-  }
-
-  getPrimaryLanguageData() {
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
-    this.sameAs = response["sameAs"];
-    this.residentTypeMapping.primary = response["residentTypesMapping"];
+  getPrimaryAndSecondaryLanguageLabels() {
+    this.dataStorageService.getI18NLanguageFiles(localStorage.getItem("langCode")).subscribe(response =>{
+      this.secondaryLanguagelabels = response["preview"];
+      this.residentTypeMapping.secondary = response["residentTypesMapping"];
+      this.sameAs = response["sameAs"];
+      this.residentTypeMapping.primary = response["residentTypesMapping"];
+    });
   }
 
   calculateAge() {

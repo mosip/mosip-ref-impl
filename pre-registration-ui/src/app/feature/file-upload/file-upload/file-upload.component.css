@@ -139,8 +139,9 @@ mat-select:focus {
 }
 
 .file-upload__body__document-type {
-  padding: 10px 0px;
+  padding: 10px 15px;
   min-height: 100px;
+
 }
 
 .file-upload__body__document-name {
@@ -230,10 +231,12 @@ mat-select:focus {
 .file-upload__input,
 .file-upload__or {
   width: 33%;
+  padding-left: 10px;
 }
 .file-upload__docrefid {
   width: 33%;
   padding-left: 10px;
+  padding-right: 10px;
 }
 .file-upload__or {
   padding-left: 1rem;

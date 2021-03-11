@@ -20,7 +20,6 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { ConfigService } from "src/app/core/services/config.service";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
 
-import LanguageFactory from "src/assets/i18n";
 import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
 import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
@@ -35,6 +34,7 @@ export class TimeSelectionComponent
   implements OnInit, OnDestroy {
   @ViewChild("widgetsContent", { read: ElementRef }) public widgetsContent;
   @ViewChild("cardsContent", { read: ElementRef }) public cardsContent;
+  textDir = localStorage.getItem("dir");
   registrationCenter: String;
   selectedCard: number;
   selectedTile = 0;
@@ -106,11 +106,14 @@ export class TimeSelectionComponent
       );
     }
     this.getSlotsforCenter(this.registrationCenter);
-    let factory = new LanguageFactory(this.userPreferredLangCode);
-    let response = factory.getCurrentlanguage();
-    this.languagelabels = response["timeSelection"].booking;
-    this.errorlabels = response["error"];
-    this.DAYS = response["DAYS"];
+    this.dataService
+      .getI18NLanguageFiles(this.userPreferredLangCode)
+      .subscribe((response) => {
+        this.languagelabels = response["timeSelection"].booking;
+        this.errorlabels = response["error"];
+        this.DAYS = response["DAYS"];
+      });
+  
   }
 
   getUserInfo(preRegId) {
@@ -475,9 +478,6 @@ export class TimeSelectionComponent
             .afterClosed()
             .subscribe(() => {
               this.temp.forEach((name) => {
-                const booking = this.bookingDataList.filter(
-                  (element) => element.preRegistrationId === name.preRegId
-                );
               });
               this.bookingService.setSendNotification(true);
               const url = Utils.getURL(this.router.url, "summary", 3);
