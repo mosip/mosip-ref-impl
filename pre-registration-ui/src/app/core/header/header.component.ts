@@ -5,9 +5,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatDialog } from "@angular/material";
 import { DialougComponent } from "src/app/shared/dialoug/dialoug.component";
 import { Subscription } from "rxjs";
-import LanguageFactory from "src/assets/i18n";
 import { DataStorageService } from "../services/data-storage.service";
-import { ConfigService } from "../services/config.service";
 
 @Component({
   selector: "app-header",
@@ -24,6 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private router: Router,
     private dialog: MatDialog,
+    private dataStorageService: DataStorageService
   ) {}
 
   ngOnInit() {
@@ -53,14 +52,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   showMessage() {
-    let factory = new LanguageFactory(
-      localStorage.getItem("userPrefLanguage")
-    );
-    let response = factory.getCurrentlanguage();
-    const Languagelabels = response["login"]["logout_msg"];
+    let languagelabels ;
+    this.dataStorageService
+    .getI18NLanguageFiles(localStorage.getItem("userPrefLanguage"))
+    .subscribe((response) => {
+      languagelabels = response["login"]["logout_msg"];
+    });
+
     const data = {
       case: "MESSAGE",
-      message: Languagelabels,
+      message: languagelabels,
     };
     this.dialog
       .open(DialougComponent, {

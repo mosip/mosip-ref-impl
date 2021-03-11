@@ -210,8 +210,8 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async ngOnInit() {
-    const languages = ["eng","ara","fra"];
-    localStorage.setItem("dataCaptureLanguages", JSON.stringify(languages));
+    // const languages = ["eng","ara","fra"];
+    // localStorage.setItem("dataCaptureLanguages", JSON.stringify(languages));
     this.initialization();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();

@@ -18,10 +18,8 @@ import { ConfigService } from "src/app/core/services/config.service";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
 import { FilesModel } from "src/app/shared/models/demographic-model/files.model";
 import { LogService } from "src/app/shared/logger/log.service";
-import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
 import { NotificationDtoModel } from "src/app/shared/models/notification-model/notification-dto.model";
-import { element } from "@angular/core/src/render3";
 
 /**
  * @description This is the dashbaord component which displays all the users linked to the login id
@@ -63,10 +61,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   name = "";
   identityData: any;
   locationHeirarchies: any[];
-  mandatoryLanguages;
-  optionalLanguages;
-  minLanguage ;
-  maxLanguage ;
+  mandatoryLanguages = ["eng"];
+  optionalLanguages = ["ara", "fra"];
+  minLanguage = 1;
+  maxLanguage = 3;
   isNavigateToDemographic: any;
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -117,10 +115,13 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       this.autoLogout.getValues(this.userPreferredLangCode);
       this.autoLogout.continueWatching();
     }
-    let factory = new LanguageFactory(this.userPreferredLangCode);
-    let response = factory.getCurrentlanguage();
-    this.languagelabels = response["dashboard"].discard;
-    this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
+    this.dataStorageService
+      .getI18NLanguageFiles(this.userPreferredLangCode)
+      .subscribe((response) => {
+        this.languagelabels = response["dashboard"].discard;
+        this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
+        this.errorLanguagelabels = response["error"];
+      });
     this.regService.setSameAs("");
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
@@ -405,17 +406,19 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       let dataCaptureLanguagesLabels = [];
       JSON.parse(localStorage.getItem("dataCaptureLanguages")).forEach(
         (langCode) => {
-          JSON.parse(localStorage.getItem("languageLables")).filter(
+          JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
             (element) => {
-              if (element.languageCode === langCode) {
-                console.log(element.valueName);
-                dataCaptureLanguagesLabels.push(element.valueName);
+              if (langCode === element.code) {
+                dataCaptureLanguagesLabels.push(element.value);
               }
             }
           );
         }
       );
-      localStorage.setItem("dataCaptureLanguagesLabels",JSON.stringify(dataCaptureLanguagesLabels));
+      localStorage.setItem(
+        "dataCaptureLanguagesLabels",
+        JSON.stringify(dataCaptureLanguagesLabels)
+      );
       localStorage.setItem("modifyUser", "false");
       localStorage.setItem("newApplicant", "true");
       if (this.loginId) {
@@ -506,7 +509,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     body = {
       case: "LANGUAGE_CAPTURE",
       title: this.dataCaptureLabels.title,
-      languages: JSON.parse(localStorage.getItem("languageLables")),
+      languages: JSON.parse(localStorage.getItem("languageCodeValue")),
       mandatoryLanguages: this.mandatoryLanguages,
       minLanguage: this.minLanguage,
       maxLanguage: this.maxLanguage,
@@ -553,11 +556,13 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   getLanguageConcatinatedString() {
     let mandatoryLang = "";
     this.mandatoryLanguages.forEach((lang) => {
-      JSON.parse(localStorage.getItem("languageLables")).filter((element) => {
-        if (element.languageCode === lang) {
-          mandatoryLang = mandatoryLang + ", " + element.valueName;
+      JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
+        (element) => {
+          if (lang == element.code) {
+            mandatoryLang = mandatoryLang + ", " + element.value;
+          }
         }
-      });
+      );
     });
     console.log(mandatoryLang);
     return mandatoryLang.substring(1, mandatoryLang.length);
@@ -613,9 +618,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   }
 
   cancelAppointment(element: any) {
-    const preRegId = element.applicationID;
-    const appointmentDate = element.appointmentDate;
-    const appointmentDateTime = element.appointmentTime;
     element.regDto.pre_registration_id = element.applicationID;
     const subs = this.dataStorageService
       .cancelAppointment(
@@ -833,11 +835,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @returns the `Promise`
    * @memberof DashBoardComponent
    */
-  private getErrorLabels() {
-    let factory = new LanguageFactory(this.userPreferredLangCode);
-    let response = factory.getCurrentlanguage();
-    this.errorLanguagelabels = response["error"];
-  }
 
   /**
    * @description This is a dialoug box whenever an erroe comes from the server, it will appear.
@@ -846,7 +843,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   private async onError(error?: any) {
-    await this.getErrorLabels();
     let message = this.errorLanguagelabels.error;
     this.titleOnError = this.errorLanguagelabels.errorLabel;
     if (
@@ -903,11 +899,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           appConstants.notificationDtoKeys.langCode,
           localStorage.getItem("langCode")
         );
-        const subs = this.dataStorageService
-          .sendNotification(notificationRequest)
-          .subscribe((response) => {
-            console.log(response);
-          });
       }
     });
   }

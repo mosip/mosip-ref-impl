@@ -1,4 +1,4 @@
-<div class="dashboard-body">
+<div [dir]="textDir" class="dashboard-body">
   <!--  [dir]="textDir"-->
   <div class="heading-row">
     <div class="heading">
@@ -12,7 +12,7 @@
       >
         <!-- class="modify-app-btn" -->
         <!-- mat-button -->
-        <button
+        <button style="margin-left: 20px;"
           [disabled]="disableModifyAppointmentButton"
           class="btn_axn-sec page_btn mar_right-30"
           (click)="onModifyMultipleAppointment()"

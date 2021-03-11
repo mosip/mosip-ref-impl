@@ -9,7 +9,6 @@ import { NotificationDtoModel } from "src/app/shared/models/notification-model/n
 import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
-import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
 import { ConfigService } from "src/app/core/services/config.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -68,9 +67,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     if (this.router.url.includes("multiappointment")) {
-      this.preRegId = [
-        ...JSON.parse(localStorage.getItem("multiappointment")),
-      ];
+      this.preRegId = [...JSON.parse(localStorage.getItem("multiappointment"))];
     } else {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = [param["appId"]];
@@ -80,7 +77,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     await this.getUserInfo(this.preRegId);
-    let i, self = this;
+    let i,
+      self = this;
     for (i = 0; i < self.usersInfo.length; i++) {
       await this.getRegCenterDetails(self.usersInfo[i].langCode, i);
       await this.getLabelDetails(self.usersInfo[i].langCode, i);
@@ -112,18 +110,20 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   getUserInfo(preRegId) {
     return new Promise((resolve) => {
       preRegId.forEach(async (prid: any, index) => {
-
         await this.getUserDetails(prid).then(async (user) => {
           let regDto;
 
-          await this.getAppointmentDetails(prid).then(
-            (appointmentDetails) => {
-              regDto = appointmentDetails;
-            }
-          );
+          await this.getAppointmentDetails(prid).then((appointmentDetails) => {
+            regDto = appointmentDetails;
+          });
 
-          let i, self = this;
-          for (i = 0; i < user["request"].demographicDetails.identity.gender.length; i++) {
+          let i,
+            self = this;
+          for (
+            i = 0;
+            i < user["request"].demographicDetails.identity.gender.length;
+            i++
+          ) {
             const nameList: NameList = {
               preRegId: "",
               fullName: "",
@@ -133,27 +133,31 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               registrationCenter: "",
               bookingData: "",
               postalCode: "",
-              langCode : "",
-              labelDetails : [],
+              langCode: "",
+              labelDetails: [],
             };
             nameList.preRegId = user["request"].preRegistrationId;
             nameList.status = user["request"].statusCode;
-            nameList.fullName = user["request"].demographicDetails.identity[self.name][i].value;
-            nameList.postalCode = user["request"].demographicDetails.identity.postalCode;
+            nameList.fullName =
+              user["request"].demographicDetails.identity[self.name][i].value;
+            nameList.postalCode =
+              user["request"].demographicDetails.identity.postalCode;
             nameList.registrationCenter = "";
-            nameList.langCode = user["request"].demographicDetails.identity.gender[i].language;
+            nameList.langCode =
+              user["request"].demographicDetails.identity.gender[i].language;
             nameList.regDto = regDto;
             self.usersInfo.push(nameList);
           }
 
-          this.applicantContactDetails[1] =  user["request"].demographicDetails.identity.phone;
-          this.applicantContactDetails[0] =  user["request"].demographicDetails.identity.email;
+          this.applicantContactDetails[1] =
+            user["request"].demographicDetails.identity.phone;
+          this.applicantContactDetails[0] =
+            user["request"].demographicDetails.identity.email;
         });
 
         if (index === preRegId.length - 1) {
           resolve(true);
         }
-
       });
     });
   }
@@ -194,7 +198,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         .getRegistrationCentersById(this.regCenterId, langCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            this.usersInfo[index].registrationCenter = response[appConstants.RESPONSE].registrationCenters[0];
+            this.usersInfo[index].registrationCenter =
+              response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
         });
@@ -202,25 +207,45 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   getLabelDetails(langCode, index) {
-    let factory = new LanguageFactory(langCode);
-    let response = factory.getCurrentlanguage();
-    this.usersInfo[index].labelDetails.push(response["acknowledgement"]);
+    this.dataStorageService
+      .getI18NLanguageFiles(langCode)
+      .subscribe((response) => {
+        this.usersInfo[index].labelDetails.push(response["acknowledgement"]);
+      });
   }
 
-  manipulateUserInfo(){
-    let i, j, self = this, preRegIdLabels = [], appDateLabels = [], contactPhoneLabels = [], messages = [], labelNames = [], nameValues = [], labelRegCntrs = [], regCntrNames = [], appLangCode = [];   /*, labelRegCntrDtl = [], RegCntrDtl = []*/
+  manipulateUserInfo() {
+    let i,
+      j,
+      self = this,
+      preRegIdLabels = [],
+      appDateLabels = [],
+      contactPhoneLabels = [],
+      messages = [],
+      labelNames = [],
+      nameValues = [],
+      labelRegCntrs = [],
+      regCntrNames = [],
+      appLangCode = []; /*, labelRegCntrDtl = [], RegCntrDtl = []*/
     self.finalUsersInfoDetails["qrCodeBlob"] = self.usersInfo[0].qrCodeBlob;
     self.finalUsersInfoDetails["preRegId"] = self.usersInfo[0].preRegId;
-    self.finalUsersInfoDetails["bookingTimePrimary"] = self.usersInfo[0].bookingTimePrimary; 
-    self.finalUsersInfoDetails["bookingDataPrimary"] = self.usersInfo[0].bookingDataPrimary;
-    self.finalUsersInfoDetails["contactPhone"] = self.usersInfo[0].registrationCenter.contactPhone;
+    self.finalUsersInfoDetails["bookingTimePrimary"] =
+      self.usersInfo[0].bookingTimePrimary;
+    self.finalUsersInfoDetails["bookingDataPrimary"] =
+      self.usersInfo[0].bookingDataPrimary;
+    self.finalUsersInfoDetails["contactPhone"] =
+      self.usersInfo[0].registrationCenter.contactPhone;
     for (i = 0; i < self.usersInfo.length; i++) {
       preRegIdLabels.push(self.usersInfo[i].labelDetails[0].label_pre_id);
-      appDateLabels.push(self.usersInfo[i].labelDetails[0].label_appointment_date_time);
-      contactPhoneLabels.push(self.usersInfo[i].labelDetails[0].label_cntr_contact_number);
+      appDateLabels.push(
+        self.usersInfo[i].labelDetails[0].label_appointment_date_time
+      );
+      contactPhoneLabels.push(
+        self.usersInfo[i].labelDetails[0].label_cntr_contact_number
+      );
       messages.push(self.usersInfo[i].labelDetails[0].message);
-      labelNames.push(self.usersInfo[i].labelDetails[0].label_name);     
-      nameValues.push(self.usersInfo[i].fullName); 
+      labelNames.push(self.usersInfo[i].labelDetails[0].label_name);
+      nameValues.push(self.usersInfo[i].fullName);
       labelRegCntrs.push(self.usersInfo[i].labelDetails[0].label_reg_cntr);
       regCntrNames.push(self.usersInfo[i].registrationCenter.name);
       appLangCode.push(self.usersInfo[i].langCode);
@@ -228,44 +253,63 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       RegCntrDtl.push(self.usersInfo[i].registrationCenter.name);*/
     }
     self.finalUsersInfoDetails["appLangCode"] = appLangCode;
-    self.finalUsersInfoDetails["preRegIdLabels"] = JSON.stringify(preRegIdLabels).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["appDateLabels"] = JSON.stringify(appDateLabels).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["contactPhoneLabels"] = JSON.stringify(contactPhoneLabels).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["messages"] = JSON.stringify(messages).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["labelNames"] = JSON.stringify(labelNames).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["nameValues"] = JSON.stringify(nameValues).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["labelRegCntrs"] = JSON.stringify(labelRegCntrs).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
-    self.finalUsersInfoDetails["regCntrNames"] = JSON.stringify(regCntrNames).replace(/\[/g, '').replace(/,/g, ' / ').replace(/"/g, ' ').replace(/]/g, '');
+    self.finalUsersInfoDetails["preRegIdLabels"] = JSON.stringify(
+      preRegIdLabels
+    )
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["appDateLabels"] = JSON.stringify(appDateLabels)
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["contactPhoneLabels"] = JSON.stringify(
+      contactPhoneLabels
+    )
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["messages"] = JSON.stringify(messages)
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["labelNames"] = JSON.stringify(labelNames)
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["nameValues"] = JSON.stringify(nameValues)
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["labelRegCntrs"] = JSON.stringify(labelRegCntrs)
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
+    self.finalUsersInfoDetails["regCntrNames"] = JSON.stringify(regCntrNames)
+      .replace(/\[/g, "")
+      .replace(/,/g, " / ")
+      .replace(/"/g, " ")
+      .replace(/]/g, "");
     for (j = 0; j < self.guidelines.length; j++) {
-      if(appLangCode.includes(self.guidelines[j].langCode)){
-        self.finalUsersInfoDetails[self.guidelines[j].langCode] = self.guidelines[j].fileText.split("\n");
+      if (appLangCode.includes(self.guidelines[j].langCode)) {
+        self.finalUsersInfoDetails[
+          self.guidelines[j].langCode
+        ] = self.guidelines[j].fileText.split("\n");
       }
     }
   }
 
   async apiCalls() {
-    return new Promise(async (resolve, reject) => {
-      /*if (!this.usersInfo[0].registrationCenter) {
-        await this.getRegistrationCenterInPrimaryLanguage(
-          this.usersInfo[0].regDto.registration_center_id,
-          localStorage.getItem("langCode")
-        );
-        await this.getRegistrationCenterInSecondaryLanguage(
-          this.usersInfo[0].regDto.registration_center_id,
-          this.secondaryLang
-        );
-      } else {
-        await this.getRegistrationCenterInSecondaryLanguage(
-          this.usersInfo[0].registrationCenter.id,
-          this.secondaryLang
-        );
-      }*/
+    return new Promise(async (resolve) => {
       this.formatDateTime();
       await this.qrCodeForUser();
-     /* let factory = new LanguageFactory(this.secondaryLang);
-      let response = factory.getCurrentlanguage();
-      this.secondaryLanguagelabels = response["acknowledgement"];*/
-
       await this.getTemplate();
       this.showSpinner = false;
       resolve(true);
@@ -273,7 +317,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   async qrCodeForUser() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.usersInfo.forEach(async (user) => {
         await this.generateQRCode(user);
         if (this.usersInfo.indexOf(user) === this.usersInfo.length - 1) {
@@ -330,7 +374,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     centerId: string,
     langCode: string
   ) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const subs = this.dataStorageService
         .getRegistrationCenterByIdAndLangCode(centerId, langCode)
         .subscribe((response) => {
@@ -346,7 +390,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     centerId: string,
     langCode: string
   ) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const subs = this.dataStorageService
         .getRegistrationCenterByIdAndLangCode(centerId, langCode)
         .subscribe((response) => {
@@ -359,7 +403,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   getTemplate() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const subs = this.dataStorageService
         .getGuidelineTemplate("Onscreen-Acknowledgement")
         .subscribe((response) => {
@@ -426,13 +470,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   async generateQRCode(name) {
     const index = this.usersInfo.indexOf(name);
     if (!this.usersInfo[index].qrCodeBlob) {
-      return new Promise((resolve, reject) => {
-        const subs = this.dataStorageService
-          .generateQRCode(name.preRegId)
-          .subscribe((response) => {
-            this.usersInfo[index].qrCodeBlob = response["response"].qrcode;
-            resolve(true);
-          });
+      return new Promise((resolve) => {
       });
     }
   }
@@ -474,7 +512,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       );
       const subs = this.dataStorageService
         .sendNotification(this.notificationRequest)
-        .subscribe((response) => {});
+        .subscribe(() => {});
       this.subscriptions.push(subs);
       this.notificationRequest = new FormData();
     });
