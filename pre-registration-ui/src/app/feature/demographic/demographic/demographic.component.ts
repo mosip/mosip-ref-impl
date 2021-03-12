@@ -683,14 +683,18 @@ export class DemographicComponent
    * @param uiField 
    */
   resetHiddenField = (uiField) => {
-    this.userForm.controls[uiField.id].reset();
-    this.userForm.controls[uiField.id].setValue("");
-    //if (this.firstDataCaptureLang !== this.secondaryLang){
-      // if (this.transUserForm && this.transUserForm.controls[`${uiField.id}`]) {
-      //   this.transUserForm.controls[`${uiField.id}`].reset();
-      //   this.transUserForm.controls[`${uiField.id}`].setValue("");
-      // }  
-    //}
+    this.dataCaptureLanguages.forEach((language, i) => {
+      let controlId = "";
+      if (this.isControlInMultiLang(uiField) ) {
+        controlId = uiField.id + "_" + language;
+        this.userForm.controls[controlId].reset();
+        this.userForm.controls[controlId].setValue("");
+      } else if (i == 0) {
+        controlId = uiField.id;
+        this.userForm.controls[controlId].reset();
+        this.userForm.controls[controlId].setValue("");
+      }
+    });
   }
 
   /**
@@ -702,7 +706,7 @@ export class DemographicComponent
     console.log("showHideFormFields");
     //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
       //populate form data in json for json-rules-engine to evalatute the conditions
-      //const identityFormData = this.createIdentityJSONDynamic();
+      const identityFormData = this.createIdentityJSONDynamic();
       //for each uiField in UI specs, check of any "visibleCondition" is given
       //if yes, then evaluate it with json-rules-engine
       this.uiFields.forEach(uiField => {
@@ -710,42 +714,42 @@ export class DemographicComponent
         if (!uiField.visibleCondition || uiField.visibleCondition == "") {
           uiField.isVisible = true;
         }
-        // else {
-        //   const resetHiddenFieldFunc = this.resetHiddenField;
-        //   let visibilityRule = new Rule({
-        //     conditions: uiField.visibleCondition,
-        //     onSuccess() {
-        //       //in "visibleCondition" is statisfied then show the field
-        //       uiField.isVisible = true;
-        //     },
-        //     onFailure() {
-        //       //in "visibleCondition" is not statisfied then hide the field
-        //       uiField.isVisible = false;
-        //       resetHiddenFieldFunc(uiField);
-        //     },
-        //     event: {
-        //       type: "message",
-        //       params: {
-        //         data: ""
-        //       }
-        //     }
-        //   });
-        //   this.jsonRulesEngine.addRule(visibilityRule);
-        //   //evaluate the visibleCondition
-        //   this.jsonRulesEngine
-        //     .run(identityFormData)
-        //     .then(results => {
-        //       results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
-        //       this.jsonRulesEngine.removeRule(visibilityRule);
-        //     })
-        //     .catch((error) => {
-        //       console.log('err is', error);
-        //       this.jsonRulesEngine.removeRule(visibilityRule);
-        //     });
-        // }
+        else {
+          const resetHiddenFieldFunc = this.resetHiddenField;
+          let visibilityRule = new Rule({
+            conditions: uiField.visibleCondition,
+            onSuccess() {
+              //in "visibleCondition" is statisfied then show the field
+              uiField.isVisible = true;
+            },
+            onFailure() {
+              //in "visibleCondition" is not statisfied then hide the field
+              uiField.isVisible = false;
+              resetHiddenFieldFunc(uiField);
+            },
+            event: {
+              type: "message",
+              params: {
+                data: ""
+              }
+            }
+          });
+          this.jsonRulesEngine.addRule(visibilityRule);
+          //evaluate the visibleCondition
+          this.jsonRulesEngine
+            .run(identityFormData)
+            .then(results => {
+              results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
+              this.jsonRulesEngine.removeRule(visibilityRule);
+            })
+            .catch((error) => {
+              console.log('err is', error);
+              this.jsonRulesEngine.removeRule(visibilityRule);
+            });
+        }
       }, this.resetHiddenField
       );
-      //this.processConditionalRequiredValidations(identityFormData);
+      this.processConditionalRequiredValidations(identityFormData);
     //}
   }
 
@@ -754,12 +758,18 @@ export class DemographicComponent
    * @param uiField 
    */
   removeValidators = (uiField) => {
-    this.userForm.controls[`${uiField.id}`].clearValidators();
-    this.userForm.controls[`${uiField.id}`].updateValueAndValidity();
-    // if (this.firstDataCaptureLang !== this.secondaryLang) {
-    //   this.transUserForm.controls[`${uiField.id}`].clearValidators();
-    //   this.transUserForm.controls[`${uiField.id}`].updateValueAndValidity();
-    // }
+    this.dataCaptureLanguages.forEach((language, i) => {
+      let controlId = "";
+      if (this.isControlInMultiLang(uiField) ) {
+        controlId = uiField.id + "_" + language;
+        this.userForm.controls[controlId].clearValidators();
+        this.userForm.controls[controlId].updateValueAndValidity();
+      } else if (i == 0) {
+        controlId = uiField.id;
+        this.userForm.controls[controlId].clearValidators();
+        this.userForm.controls[controlId].updateValueAndValidity();
+      }
+    });
   }
 
   /**
@@ -776,13 +786,23 @@ export class DemographicComponent
       if (uiField.requiredCondition && uiField.requiredCondition != "") {
         const addValidatorsFunc = this.addValidators;
         const removeValidatorFunc = this.removeValidators;
+        const isControlInMultiLangFunc = this.isControlInMultiLang;
+        const dataCaptureLanguages = this.dataCaptureLanguages;
         let requiredRule = new Rule({
           conditions: uiField.requiredCondition,
           onSuccess() {
             //in "requiredCondition" is statisfied then validate the field as required
             uiField.required = true;
-            addValidatorsFunc(uiField, 
-              "eng");
+            dataCaptureLanguages.forEach((language, i) => {
+              let controlId = "";
+              if (isControlInMultiLangFunc(uiField) ) {
+                controlId = uiField.id + "_" + language;
+                addValidatorsFunc(uiField, controlId);
+              } else if (i == 0) {
+                controlId = uiField.id;
+                addValidatorsFunc(uiField, controlId);
+              }
+            });
           },
           onFailure() {
             //in "requiredCondition" is not statisfied then validate the field as not required
