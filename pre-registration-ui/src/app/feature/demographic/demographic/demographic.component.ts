@@ -542,7 +542,7 @@ export class DemographicComponent
   isControlInMultiLang(control: any) {
     if (control.controlType !== "date" && control.controlType !== "dropdown" 
           && control.controlType !== "button" && control.controlType !== "checkbox"
-          && control.controlType !== "email" && control.controlType !== "phone" ) {
+          && (control.controlType === 'textbox' && control.type !== 'string') ) {
       return true;
     } 
     return false;      

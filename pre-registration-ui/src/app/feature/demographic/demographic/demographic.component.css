@@ -412,7 +412,6 @@ mat-icon {
   width: 400px;
   margin: 10px;
   position:relative;
-  border: 1px solid lightgrey;
   min-width: 95%;
 }
 .fieldHeader {
