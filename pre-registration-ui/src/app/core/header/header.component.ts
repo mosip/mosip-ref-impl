@@ -57,25 +57,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     .getI18NLanguageFiles(localStorage.getItem("userPrefLanguage"))
     .subscribe((response) => {
       languagelabels = response["login"]["logout_msg"];
+      const data = {
+        case: "MESSAGE",
+        message: languagelabels,
+      };
+      this.dialog
+        .open(DialougComponent, {
+          width: "350px",
+          data: data,
+        })
+        .afterClosed()
+        .subscribe((response) => {
+          if (response) {
+            localStorage.removeItem("loggedOutLang");
+            localStorage.removeItem("loggedOut");
+            this.authService.onLogout();
+          }
+        });
     });
-
-    const data = {
-      case: "MESSAGE",
-      message: languagelabels,
-    };
-    this.dialog
-      .open(DialougComponent, {
-        width: "350px",
-        data: data,
-      })
-      .afterClosed()
-      .subscribe((response) => {
-        if (response) {
-          localStorage.removeItem("loggedOutLang");
-          localStorage.removeItem("loggedOut");
-          this.authService.onLogout();
-        }
-      });
   }
 
   ngOnDestroy() {
