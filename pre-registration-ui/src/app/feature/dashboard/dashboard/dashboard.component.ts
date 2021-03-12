@@ -61,10 +61,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   name = "";
   identityData: any;
   locationHeirarchies: any[];
-  mandatoryLanguages = ["eng"];
-  optionalLanguages = ["ara", "fra"];
-  minLanguage = 1;
-  maxLanguage = 3;
+  mandatoryLanguages;
+  optionalLanguages;
+  minLanguage;
+  maxLanguage;
   isNavigateToDemographic: any;
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -127,7 +127,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     this.getIdentityJsonFormat();
-   // this.setLanguageConfiguration();
+    this.setLanguageConfiguration();
   }
 
   setLanguageConfiguration() {
