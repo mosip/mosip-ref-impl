@@ -35,15 +35,16 @@
                           </mat-label>
                           <input matInput [formControlName]="field.id + '_' + dataCaptureLanguage"
                             (change)="showHideFormFields()"
-                            (focusout)="copyToSecondaryFormNonDropDown(dataCaptureLanguage, $event)"
-                            (input)="copyToSecondaryFormNonDropDown(dataCaptureLanguage, $event)" #keyboardRef #input />
+                            (focusout)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)"
+                            (input)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)" #keyboardRef
+                            #input />
                         </mat-form-field>
                       </ng-container>
                       <!-- Add CheckBox only once, but show Labels in all dataCaptureLanguages -->
                       <ng-container *ngIf="field.controlType === 'checkbox' && field.isVisible == true">
                         <span *ngIf="i == 0">
                           <mat-checkbox class="form_checkBox" [formControlName]="field.id"
-                            (change)="showHideFormFields();copyToSecondaryFormNonDropDown(field.id, $event)">
+                            (change)="showHideFormFields();">
                             <span *ngFor="let lang of dataCaptureLanguages;index as langIndex">
                               <span *ngIf="langIndex !== 0"> / </span>
                               <mat-label class="form_checkBox">{{field.labelName[lang]}}</mat-label>
@@ -54,8 +55,8 @@
                       <!-- Add Button Options in  only one language on mouse over other lang are shown -->
                       <ng-container *ngIf="field.controlType === 'button' && field.isVisible == true">
                         <span *ngIf="i == 0">
-                          <mat-button-toggle-group class="btn_grp" [formControlName]="field.id" (change)="showHideFormFields();
-                              copyDataToSecondaryForm()">
+                          <mat-button-toggle-group class="btn_grp" [formControlName]="field.id"
+                            (change)="showHideFormFields();">
                             <ng-container *ngFor="let dropdown of selectOptionsDataArray[field.id]">
                               <span *ngIf="dropdown.languageCode === dataCaptureLanguage">
                                 <mat-button-toggle class="btn_grp mat-button-toggle" value="{{dropdown.valueCode}}"
@@ -82,11 +83,7 @@
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
-                            <mat-select formControlName="{{ field.id }}" (focus)="dropdownApiCall(field)"
-                              (selectionChange)="
-                                copyDataToSecondaryForm(
-                                field.id,
-                                userForm.get(field.id).value)" #dropdown>
+                            <mat-select formControlName="{{ field.id }}" (focus)="dropdownApiCall(field)" #dropdown>
                               <mat-option *ngIf="!(
                                 selectOptionsDataArray[field.id]?.length > 0 &&
                                 selectOptionsDataArray[field.id] !== null)">
@@ -163,9 +160,7 @@
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
-                            <input matInput [formControlName]="field.id" (change)="showHideFormFields()"
-                              (focusout)="copyToSecondaryFormNonDropDown(dataCaptureLanguage, $event)"
-                              (input)="copyToSecondaryFormNonDropDown(dataCaptureLanguage, $event)" #keyboardRef
+                            <input matInput [formControlName]="field.id" (change)="showHideFormFields()" #keyboardRef
                               #input />
                           </mat-form-field>
                         </span>
