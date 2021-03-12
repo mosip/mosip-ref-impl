@@ -443,7 +443,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     //   }
     // }
     requestDTO.value = this.users[0].request.demographicDetails.identity
-    .residenceStatus[0].language;
+    .residenceStatus[0].value;
     requestArray.attributes.push(requestDTO);
 
     DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;
