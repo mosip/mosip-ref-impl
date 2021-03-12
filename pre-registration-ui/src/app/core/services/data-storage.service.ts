@@ -566,7 +566,7 @@ export class DataStorageService {
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
@@ -576,7 +576,7 @@ export class DataStorageService {
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
   

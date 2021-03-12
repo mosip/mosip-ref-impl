@@ -26,6 +26,7 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
@@ -84,6 +85,7 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
@@ -101,6 +103,7 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
@@ -119,6 +122,7 @@
           "controlType": "textbox",
           "inputRequired": true,
           "fieldType": "default",
+          "transliteration": true,
           "type": "simpleType",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }

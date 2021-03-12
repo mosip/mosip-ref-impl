@@ -100,14 +100,13 @@ export class DemographicComponent
   hierarchyAvailable = true;
   isConsentMessage = false;
   isReadOnly = false;
-  
   step: number = 0;
   id: number;
   oldAge: number;
   oldKeyBoardIndex: number;
   numberOfApplicants: number;
   userForm = new FormGroup({});
-  transUserForm = new FormGroup({});
+  //transUserForm = new FormGroup({});
   maxDate = new Date(Date.now());
   preRegId = "";
   loginId = "";
@@ -165,6 +164,7 @@ export class DemographicComponent
   uiFields = [];
   alignmentGroups = [];
   uiFieldsForAlignmentGroups = [];
+  uiFieldsWithTransliteration = [];
   jsonRulesEngine = new Engine();
   primaryuserForm = false;
   selectOptionsDataArray = new Map();
@@ -211,7 +211,7 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async ngOnInit() {
-    this.initialization();
+    await this.initialization();
     await this.initializeDataCaptureLanguages();
     //set translation service
     this.translate.use(this.dataCaptureLanguages[0]);
@@ -236,11 +236,22 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
-      if (this.user.request["dataCaptureLanguages"]) {
-        this.dataCaptureLanguages = this.user.request["dataCaptureLanguages"];
-      } else {
-        //TODO temp hardcoding till services are updated
-        this.dataCaptureLanguages = ["eng","ara", "fra"];
+      const identityObj = this.user.request.demographicDetails.identity;
+      if (identityObj) {
+        let keyArr: any[] = Object.keys(identityObj);
+        for (let index = 0; index < keyArr.length; index++) {
+          const elementKey = keyArr[index];
+          let dataArr = identityObj[elementKey];
+          if (Array.isArray(dataArr)) {
+            dataArr.forEach(dataArrElement => {
+              if (!this.dataCaptureLanguages.includes(dataArrElement.language)){
+                this.dataCaptureLanguages.push(dataArrElement.language);
+              }
+            });
+          }
+        }
+      } else if (this.user.request.langCode) {
+        this.dataCaptureLanguages = [this.user.request.langCode];
       }
       this.dataCaptureLanguages.forEach(
         (langCode) => {
@@ -291,7 +302,7 @@ export class DemographicComponent
                 "templates"
               ][0].fileText.split("\n");*/
               this.consentMessage = response["response"]["templates"];
-              console.log(this.consentMessage);
+              //console.log(this.consentMessage);
             }
             else if (response[appConstants.NESTED_ERROR])
               this.onError(this.errorlabels.error, "");
@@ -318,7 +329,7 @@ export class DemographicComponent
       this.isNewApplicant = true;
     }
     if (localStorage.getItem("modifyUser") === "true") {
-      console.log(localStorage.getItem("modifyUser"));
+      //console.log(localStorage.getItem("modifyUser"));
       this.dataModification = true;
       await this.getPreRegId();
       await this.getUserInfo(this.preRegId);
@@ -333,7 +344,7 @@ export class DemographicComponent
     return new Promise((resolve) => {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = param["appId"];
-        console.log(this.preRegId);
+        //console.log(this.preRegId);
         resolve(true);
       });
     });
@@ -448,6 +459,9 @@ export class DemographicComponent
                 this.alignmentGroups.push(obj.alignmentGroup);
               }
             }
+            if (obj.transliteration && obj.transliteration === true) {
+              this.uiFieldsWithTransliteration.push(obj);
+            }
             this.uiFields.push(obj);
           }
         });
@@ -493,14 +507,6 @@ export class DemographicComponent
     });
   }
 
-  // filterRows(uiFields: Array<any>, startingIndex) {
-  //   return uiFields.filter((item, index) => index >= startingIndex && index < startingIndex + 3);
-  // }
-
-  // filterRows(uiFields: Array<any>, alignmentGroup) {
-  //   uiFieldsForAlignmentGroups = [];
-  //   uiFields.filter(uiField => uiField.alignmentGroup == alignmentGroup);
-  //   }
   /**
    * @description This will initialize the demographic form and
    * if update set the inital values of the attributes.
@@ -647,23 +653,6 @@ export class DemographicComponent
   }
 
   /**
-   * @description this method will copy dropdown values from its
-   * respective dropdown inputs to it's ssecondary input
-   *
-   * @param fieldName input field
-   * @param fieldValue input field value
-   */
-  copyDataToSecondaryForm(fieldName: string, fieldValue: string) {
-    // if (this.firstDataCaptureLang !== this.secondaryLang) {
-    //   this.secondaryDropDownLables[fieldName].forEach((element) => {
-    //     if (element.valueCode === fieldValue) {
-    //       this.transUserForm.controls[fieldName].setValue(fieldValue);
-    //     }
-    //   });
-    // }
-  }
-
-  /**
 
    * @description This method will copy non dropdown field values
    * from primary form to secondary form
@@ -671,19 +660,22 @@ export class DemographicComponent
    * @param fieldName input field name
    * @param event event type
    */
-  copyToSecondaryFormNonDropDown(fieldName: string, event: Event) {
-    // const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
-    // if(this.firstDataCaptureLang !== this.secondaryLang){
-    //   if (transliterate.includes(fieldName)) {
-    //     if (event.type === "focusout") {
-    //       this.onTransliteration(fieldName, fieldName);
-    //     }
-    //   } else {
-    //     this.transUserForm.controls[`${fieldName}`].setValue(
-    //       this.userForm.controls[`${fieldName}`].value
-    //     );
-    //   }
-    // }
+  transliterateFieldValue(uiFieldId: string, fromLang: string, event: Event) {
+    let filteredList = this.uiFieldsWithTransliteration.filter(field => field.id == uiFieldId);
+    //get index of the fromLang
+    let indexOfFromLang = this.dataCaptureLanguages.indexOf(fromLang);
+    if (filteredList.length > 0 && indexOfFromLang === 0) {
+      if (event.type === "focusout") {
+        let fromFieldName =  uiFieldId + "_" + fromLang;
+        this.dataCaptureLanguages.forEach(dataCaptureLanguage => {
+          if (dataCaptureLanguage !== fromLang) {
+            const toLang = dataCaptureLanguage;
+            const toFieldName =  uiFieldId + "_" + toLang;
+            this.onTransliteration(fromLang, toLang, fromFieldName, toFieldName);
+          }
+        });
+      }
+    }
   }
 
   /**
@@ -1004,7 +996,6 @@ export class DemographicComponent
       });
     } else {
       this.loggerService.info("user", this.user);
-      console.log("user", this.user);
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
@@ -1170,7 +1161,7 @@ export class DemographicComponent
         if (this.dataModification) {
           this.hasDobChanged();
         }
-        console.log(this.userForm);
+        //console.log(this.userForm);
       } else {
         this.dd.nativeElement.value = "";
         this.mm.nativeElement.value = "";
@@ -1198,7 +1189,7 @@ export class DemographicComponent
     this.year = this.yyyy.nativeElement.value;
     if (this.date !== "" && this.month !== "" && this.year !== "") {
       const newDate = this.year + "/" + this.month + "/" + this.date;
-      console.log(newDate);
+      //console.log(newDate);
       if (moment(newDate,'YYYY/MM/DD',true).isValid()) {
         this.currentAge = this.calculateAge(newDate).toString();
         this.age.nativeElement.value = this.currentAge;
@@ -1400,8 +1391,7 @@ export class DemographicComponent
    *
    *
    * @param field Input control name
-   */
-
+  
   getReadOnlyfields(field: string) {
     const transliterate = [...appConstants.TRANSLITERATE_FIELDS];
     if (transliterate.includes(field)) {
@@ -1409,7 +1399,8 @@ export class DemographicComponent
     } else {
       return true;
     }
-  }
+  } */
+
 
   /**
    * @description This is used for the tranliteration.
@@ -1419,39 +1410,30 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
 
-  onTransliteration(fromControl: any, toControl: any) {
-    if (this.userForm.controls[`${fromControl}`].value) {
-      // const request: any = {
-      //   from_field_lang: this.dataCaptureLanguages[0],
-      //   from_field_value: this.userForm.controls[`${fromControl}`].value,
-      //   to_field_lang: this.secondaryLang,
-      // };
-      // if (this.firstDataCaptureLang === this.secondaryLang) {
-      //   this.transUserForm.controls[toControl].patchValue(
-      //     this.userForm.controls[`${fromControl}`].value
-      //   );
-      //   return;
-      // }
-
-      // this.subscriptions.push(
-      //   this.dataStorageService.getTransliteration(request).subscribe(
-      //     (response) => {
-      //       if (response[appConstants.RESPONSE])
-      //         this.transUserForm.controls[`${toControl}`].patchValue(
-      //           response[appConstants.RESPONSE].to_field_value
-      //         );
-      //       else {
-      //         this.onError(this.errorlabels.error, "");
-      //       }
-      //     },
-      //     (error) => {
-      //       this.onError(this.errorlabels.error, error);
-      //       this.loggerService.error(error);
-      //     }
-      //   )
-      // );
-    } else {
-      //this.transUserForm.controls[`${toControl}`].patchValue("");
+  onTransliteration(fromLang: string, toLang: string, fromFieldName: string, toFieldName: string) {
+    if (this.userForm.controls[fromFieldName].value !== "") {
+      const request: any = {
+        from_field_lang: fromLang,
+        from_field_value: this.userForm.controls[fromFieldName].value,
+        to_field_lang: toLang,
+      };
+      this.subscriptions.push(
+        this.dataStorageService.getTransliteration(request).subscribe(
+          (response) => {
+            if (response[appConstants.RESPONSE])
+              this.userForm.controls[toFieldName].patchValue(
+                response[appConstants.RESPONSE].to_field_value
+              );
+            else {
+              //this.onError(this.errorlabels.error, "");
+            }
+          },
+          (error) => {
+            this.onError(this.errorlabels.error, error);
+            this.loggerService.error(error);
+          }
+        )
+      );
     }
   }
 
@@ -1601,25 +1583,11 @@ export class DemographicComponent
   private createAttributeArray(element: string, identity) {
     let attr: any;
     if (typeof identity[element] === "object") {
-      console.log(`element: is object`);
-      //let forms = [];
-      //let formControlNames = "";
-      //const transliterateField = [...appConstants.TRANSLITERATE_FIELDS];
-      // if (transliterateField.includes(element)) {
-      //   forms = ["userForm", "transUserForm"];
-      //   formControlNames = element;
-      // } else {
-      //   forms = ["userForm", "userForm"];
-      //   formControlNames = element;
-      // }
       attr = [];
       for (let index = 0; index < this.dataCaptureLanguages.length; index++) {
         const languageCode = this.dataCaptureLanguages[index];
-        //const form = forms["userForm"];
         let controlId = element + "_" + languageCode;
-        console.log(`controlId: ${controlId}`);
         if (this["userForm"].controls[`${controlId}`]) {
-          console.log(`exists`);
           attr.push(
             new AttributeModel(
               languageCode,
@@ -1627,7 +1595,6 @@ export class DemographicComponent
             )
           );
         } else {
-          console.log(`not exists`);
           controlId = element;
           if (this["userForm"].controls[`${controlId}`]) {
             attr.push(
@@ -1637,13 +1604,10 @@ export class DemographicComponent
               )
             );
           }
-        }
-        
+        }  
       }
     } else if (typeof identity[element] === "string") {
-      console.log(`element: is string`);
       if (this.userForm.controls[`${element}`]) {
-        console.log(`exists`);
         attr = this.userForm.controls[`${element}`].value;
       }
     }
@@ -1710,9 +1674,7 @@ export class DemographicComponent
         this.createAttributeArray(element, identityObj);
       }
     }
-    //const identityRequest = { identity: identityObj };
     //now remove the blank fields from the identityObj
-    console.log(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
       if (element == appConstants.IDSchemaVersionLabel) {
