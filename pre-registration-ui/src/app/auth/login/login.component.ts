@@ -46,10 +46,10 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha: boolean = true;
   captchaError: boolean;
-  mandatoryLanguages = ["eng"];
-  optionalLanguages = ["ara", "fra"];
-  minLanguage = 1;
-  maxLanguage = 3;
+  mandatoryLanguages;
+  optionalLanguages;
+  minLanguage;
+  maxLanguage;
   languageSelectionArray = [];
   userPreferredLanguage: string;
   langCode: string;
@@ -85,25 +85,26 @@ export class LoginComponent implements OnInit {
   loadConfigs() {
     this.dataService.getConfig().subscribe((response) => {
       this.configService.setConfig(response);
-      this.languageSelectionArray = [
-        ...this.mandatoryLanguages,
-        ...this.optionalLanguages,
-      ];
-      localStorage.setItem("langCode", this.languageSelectionArray[0]);
-      this.translate.use(localStorage.getItem("langCode"));
-      this.router.navigate([`${localStorage.getItem("langCode")}`]);
       this.setTimer();
       this.isCaptchaEnabled();
       this.loadLanguagesWithConfig();
+      localStorage.setItem("langCode", this.languageSelectionArray[0]);
+      this.router.navigate([`${localStorage.getItem("langCode")}`]);
+      this.selectedLanguage = localStorage.getItem("langCode");
+      this.authService.userPreferredLang = this.selectedLanguage;
+      this.userPreferredLanguage = this.selectedLanguage;
+      localStorage.setItem("userPrefLanguage", this.userPreferredLanguage);
+      this.translate.use(this.userPreferredLanguage);
+      this.showSpinner = false;
     });
   }
 
   loadLanguagesWithConfig() {
     this.loadValidationMessages();
-    // this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
-    // this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
-    // this.minLanguage = Number(this.configService.getConfigByKey('mosip.min.languages.count'));
-    // this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max.languages.count'));
+    this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
+    this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
+    this.minLanguage = Number(this.configService.getConfigByKey('mosip.min.languages.count'));
+    this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max.languages.count'));
     this.languageSelectionArray = [
       ...this.mandatoryLanguages,
       ...this.optionalLanguages,
@@ -116,12 +117,6 @@ export class LoginComponent implements OnInit {
       JSON.stringify(this.languageSelectionArray)
     );
     this.prepareDropdownLabelArray();
-    this.selectedLanguage = localStorage.getItem("langCode");
-    this.authService.userPreferredLang = this.selectedLanguage;
-    this.userPreferredLanguage = this.selectedLanguage;
-    localStorage.setItem("userPrefLanguage", this.userPreferredLanguage);
-    this.translate.use(this.userPreferredLanguage);
-    this.showSpinner = false;
   }
 
   prepareDropdownLabelArray() {
