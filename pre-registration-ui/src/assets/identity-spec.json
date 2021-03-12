@@ -26,6 +26,7 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
@@ -84,6 +85,7 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
@@ -101,12 +103,45 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
-          "required": false
+          "required": false,
+           "visibleCondition": {
+            "all": [
+              {
+                "fact": "identity",
+                "operator": "equal",
+                "value": "MLE",
+                "path": "$.gender.0.value"
+              },
+              {
+                "fact": "identity",
+                "operator": "equal",
+                "value": "FR",
+                "path": "$.residenceStatus.0.value"
+              }
+            ]
+          },
+          "requiredCondition": {
+            "all": [
+              {
+                "fact": "identity",
+                "operator": "equal",
+                "value": "MLE",
+                "path": "$.gender.0.value"
+              },
+              {
+                "fact": "identity",
+                "operator": "equal",
+                "value": "FR",
+                "path": "$.residenceStatus.0.value"
+              }
+            ]
+          }
         },
         {
           "id": "addressLine3",
@@ -119,6 +154,7 @@
           "controlType": "textbox",
           "inputRequired": true,
           "fieldType": "default",
+          "transliteration": true,
           "type": "simpleType",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
