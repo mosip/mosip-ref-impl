@@ -12,7 +12,7 @@
       {{ "login.sub_text" | translate }}
       <span class="boldText"> {{ "login.sub_text_UID" | translate }} </span>
     </div>
-    <div style="margin-left: 20px">
+    <div >
       <div
         style="width: 38vw; max-width: 323px"
         [ngClass]="
@@ -21,7 +21,7 @@
             : 'form_fields_wrapper'
         "
       >
-        <div style="max-width: 250px" *ngIf="showLanguageDropDown" >
+        <div  *ngIf="showLanguageDropDown" >
           <mat-form-field appearance="outline">
             <mat-select
               disableOptionCentering
@@ -41,7 +41,7 @@
         </div>
 
         <div *ngIf="showContactDetails">
-          <div [dir]="dir" style="max-width: 250px">
+          <div [dir]="dir" >
             <mat-form-field appearance="outline">
               <input
                 class="input_pri"
@@ -62,7 +62,7 @@
         <div *ngIf="captchaError" class="error" style="margin-left: 55px">
           {{ "recaptcha.errorMessage" | translate }}
         </div>
-        <div [dir]="dir" *ngIf="showOTP" style="max-width: 250px">
+        <div [dir]="dir" *ngIf="showOTP" >
           <mat-form-field appearance="outline">
             <input
               autofocus="autofocus"

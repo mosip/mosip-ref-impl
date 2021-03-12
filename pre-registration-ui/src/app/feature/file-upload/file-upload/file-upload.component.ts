@@ -436,13 +436,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
     requestDTO.attribute =
       appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    for (let language of this.users[0].request.demographicDetails.identity
-      .residenceStatus) {
-      if (language.language === this.userPrefLanguage) {
-        requestDTO.value = language.value;
-      }
-    }
-
+    // for (let language of this.users[0].request.demographicDetails.identity
+    //   .residenceStatus) {
+    //   if (language.language === this.userPrefLanguage) {
+    //     requestDTO.value = language.value;
+    //   }
+    // }
+    requestDTO.value = this.users[0].request.demographicDetails.identity
+    .residenceStatus[0].language;
     requestArray.attributes.push(requestDTO);
 
     DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;

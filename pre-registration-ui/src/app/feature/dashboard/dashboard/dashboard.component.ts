@@ -63,8 +63,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   locationHeirarchies: any[];
   mandatoryLanguages = ["eng"];
   optionalLanguages = ["ara", "fra"];
-  minLanguage = 2;
-  maxLanguage = 2;
+  minLanguage = 1;
+  maxLanguage = 3;
   isNavigateToDemographic: any;
   /**
    * @description Creates an instance of DashBoardComponent.

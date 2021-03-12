@@ -26,27 +26,27 @@ export class CanDeactivateGuardService
       let message;
       let ok_text;
       let no_text;
-      this.dataStorageService
+      return new Promise((resolve) => {
+       this.dataStorageService
         .getI18NLanguageFiles(this.langCode)
         .subscribe((response) => {
           message = response["dialog"]["navigation_alert"];
           ok_text = response["dialog"]["action_ok"];
           no_text = response["dialog"]["title_discard"];
+          const body = {
+            case: "CONFIRMATION",
+            message: message,
+            yesButtonText: ok_text,
+            noButtonText: no_text,
+          };
+          this.dialog
+            .open(DialougComponent, { width: "250px", data: body })
+            .beforeClosed()
+            .subscribe((res) => {
+              if (res === true) resolve(true);
+              else resolve(false);
+            });
         });
-      return new Promise((resolve) => {
-        const body = {
-          case: "CONFIRMATION",
-          message: message,
-          yesButtonText: ok_text,
-          noButtonText: no_text,
-        };
-        this.dialog
-          .open(DialougComponent, { width: "250px", data: body })
-          .beforeClosed()
-          .subscribe((res) => {
-            if (res === true) resolve(true);
-            else resolve(false);
-          });
       });
     } else return true;
   }
