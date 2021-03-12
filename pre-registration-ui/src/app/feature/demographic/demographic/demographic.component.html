@@ -27,7 +27,7 @@
                     <!-- Create form fields to capture data in all chosen dataCaptureLanguages -->
                     <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as i">
                       <!-- Add TextBox for each dataCaptureLanguage -->
-                      <ng-container *ngIf="field.controlType === 'textbox'">
+                      <ng-container *ngIf="field.controlType === 'textbox' && field.type !== 'string'">
                         <mat-form-field [ngClass]="'text-field'">
                           <!-- Again Label is required at each TextBox level too -->
                           <mat-label>
@@ -153,7 +153,7 @@
                       </ng-container>
                       <!-- Add Phone and Email in only one lang -->
                       <ng-container
-                        *ngIf="(field.controlType === 'phone' || field.controlType === 'email')">
+                        *ngIf="(field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0">
                           <mat-form-field [ngClass]="'text-field'">
                             <!-- Again Label is required at each TextBox level too -->
@@ -187,7 +187,7 @@
                       </span>
                       <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown' 
                         || field.controlType === 'button' || field.controlType === 'checkbox'
-                        || field.controlType === 'email' || field.controlType === 'phone'">
+                        || (field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0">
                           <mat-error class="primary-errors" *ngIf="
                           primaryuserForm &&
