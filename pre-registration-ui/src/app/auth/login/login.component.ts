@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
   mandatoryLanguages = ["eng"];
   optionalLanguages = ["ara", "fra"];
   minLanguage = 1;
-  maxLanguage = 1;
+  maxLanguage = 3;
   languageSelectionArray = [];
   userPreferredLanguage: string;
   langCode: string;
