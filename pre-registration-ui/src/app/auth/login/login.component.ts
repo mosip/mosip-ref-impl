@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
   minutes: string;
   seconds: string;
   showSpinner = true;
+  showLanguageDropDown = true;
   validationMessages = {};
   textDir = localStorage.getItem("dir");
   LANGUAGE_ERROR_TEXT =
@@ -48,7 +49,7 @@ export class LoginComponent implements OnInit {
   mandatoryLanguages = ["eng"];
   optionalLanguages = ["ara", "fra"];
   minLanguage = 1;
-  maxLanguage = 3;
+  maxLanguage = 1;
   languageSelectionArray = [];
   userPreferredLanguage: string;
   langCode: string;
@@ -107,6 +108,9 @@ export class LoginComponent implements OnInit {
       ...this.mandatoryLanguages,
       ...this.optionalLanguages,
     ];
+    this.maxLanguage == 1
+      ? (this.showLanguageDropDown = false)
+      : (this.showLanguageDropDown = true);
     localStorage.setItem(
       "availableLanguages",
       JSON.stringify(this.languageSelectionArray)

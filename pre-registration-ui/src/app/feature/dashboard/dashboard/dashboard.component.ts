@@ -63,8 +63,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   locationHeirarchies: any[];
   mandatoryLanguages = ["eng"];
   optionalLanguages = ["ara", "fra"];
-  minLanguage = 1;
-  maxLanguage = 3;
+  minLanguage = 2;
+  maxLanguage = 2;
   isNavigateToDemographic: any;
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -390,15 +390,23 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   async onNewApplication() {
     if (
+      this.maxLanguage > 1 &&
       this.optionalLanguages.length > 0 &&
       this.maxLanguage !== this.mandatoryLanguages.length
     ) {
       await this.getDataCaptureLanguages();
     } else if (this.mandatoryLanguages.length > 0) {
-      localStorage.setItem(
-        "dataCaptureLanguages",
-        JSON.stringify(this.mandatoryLanguages)
-      );
+      if (this.maxLanguage == 1) {
+        localStorage.setItem(
+          "dataCaptureLanguages",
+          JSON.stringify(this.mandatoryLanguages[0])
+        );
+      } else {
+        localStorage.setItem(
+          "dataCaptureLanguages",
+          JSON.stringify(this.mandatoryLanguages)
+        );
+      }
       this.isNavigateToDemographic = true;
     }
     if (this.isNavigateToDemographic) {
