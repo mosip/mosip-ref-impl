@@ -28,21 +28,23 @@
                     <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as i">
                       <!-- Add TextBox for each dataCaptureLanguage -->
                       <ng-container *ngIf="field.controlType === 'textbox' && field.type !== 'string'">
-                        <mat-form-field [ngClass]="'text-field'">
-                          <!-- Again Label is required at each TextBox level too -->
-                          <mat-label>
-                            {{field.labelName[dataCaptureLanguage]}}
-                          </mat-label>
-                          <input matInput [formControlName]="field.id + '_' + dataCaptureLanguage"
-                            (change)="showHideFormFields()"
-                            (focusout)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)"
-                            (input)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)" #keyboardRef
-                            #input />
-                        </mat-form-field>
+                        <div [dir]="textDirection[i]">
+                          <mat-form-field [ngClass]="'text-field'">
+                            <!-- Again Label is required at each TextBox level too -->
+                            <mat-label>
+                              {{field.labelName[dataCaptureLanguage]}}
+                            </mat-label>
+                            <input matInput [formControlName]="field.id + '_' + dataCaptureLanguage"
+                              (change)="showHideFormFields()"
+                              (focusout)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)"
+                              (input)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)" #keyboardRef
+                              #input />
+                          </mat-form-field>
+                        </div>
                       </ng-container>
                       <!-- Add CheckBox only once, but show Labels in all dataCaptureLanguages -->
                       <ng-container *ngIf="field.controlType === 'checkbox'">
-                        <span *ngIf="i == 0">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-checkbox class="form_checkBox" [formControlName]="field.id"
                             (change)="showHideFormFields();">
                             <span *ngFor="let lang of dataCaptureLanguages;index as langIndex">
@@ -54,7 +56,7 @@
                       </ng-container>
                       <!-- Add Button Options in  only one language on mouse over other lang are shown -->
                       <ng-container *ngIf="field.controlType === 'button'">
-                        <span *ngIf="i == 0">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-button-toggle-group class="btn_grp" [formControlName]="field.id"
                             (change)="showHideFormFields();">
                             <ng-container *ngFor="let dropdown of selectOptionsDataArray[field.id]">
@@ -67,18 +69,19 @@
                             </ng-container>
                           </mat-button-toggle-group>
                           <br>
-                          <span *ngFor="let option of selectOptionsDataArray[field.id]">
-                            <span
-                              *ngIf="option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
-                              <span class="selectedOption">{{option.valueName}}<p></p></span>
+                          <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
+                            <span *ngFor="let option of selectOptionsDataArray[field.id]">
+                              <span
+                                *ngIf="option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
+                                <span class="selectedOption">{{option.valueName}}</span>
+                              </span>
                             </span>
-
                           </span>
                         </span>
                       </ng-container>
                       <!-- Add Dropdown Options in  only one language on mouse over other lang are shown-->
                       <ng-container *ngIf="field.controlType === 'dropdown'">
-                        <span *ngIf="i == 0">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-form-field [ngClass]="'dropdown-field'">
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
@@ -100,18 +103,19 @@
                             </mat-select>
                           </mat-form-field>
                           <br>
-                          <span *ngFor="let option of selectOptionsDataArray[field.id]">
-                            <span
-                              *ngIf="option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
-                              <span class="selectedOption">{{option.valueName}}<p></p></span>
+                          <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
+                            <span *ngFor="let option of selectOptionsDataArray[field.id]">
+                              <span
+                                *ngIf="option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
+                                <span class="selectedOption">{{option.valueName}}</span>
+                              </span>
                             </span>
-
                           </span>
                         </span>
                       </ng-container>
                       <!-- Add Date fields-->
                       <ng-container *ngIf="field.controlType === 'date'">
-                        <span *ngIf="i == 0">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <div class="user__age-or-date">
                             <div class="user__date">
                               <mat-form-field>
@@ -146,15 +150,14 @@
                               (userForm.get(field.id).touched &&
                                 userForm.get(field.id).hasError('incorrect')) ||
                               (userForm.get(field.id).touched &&
-                                !userForm.get(field.id).valid)">
+                                !userForm.get(field.id).valid)" [dir]="textDirection[i]">
                             {{ "demographic.validation.DOB_validation" | translate }}
                           </div>
                         </span>
                       </ng-container>
                       <!-- Add Phone and Email in only one lang -->
-                      <ng-container
-                        *ngIf="(field.controlType === 'textbox' && field.type === 'string')">
-                        <span *ngIf="i == 0">
+                      <ng-container *ngIf="(field.controlType === 'textbox' && field.type === 'string')">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-form-field [ngClass]="'text-field'">
                             <!-- Again Label is required at each TextBox level too -->
                             <mat-label>
@@ -166,7 +169,7 @@
                         </span>
                       </ng-container>
                       <!-- Error handling for various types -->
-                      <span *ngIf="field.controlType === 'textbox'">
+                      <span *ngIf="field.controlType === 'textbox'" [dir]="textDirection[i]">
                         <mat-error class="primary-errors" *ngIf="
                           primaryuserForm &&
                           userForm.get(field.id + '_' + dataCaptureLanguage) &&
@@ -188,7 +191,7 @@
                       <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown' 
                         || field.controlType === 'button' || field.controlType === 'checkbox'
                         || (field.controlType === 'textbox' && field.type === 'string')">
-                        <span *ngIf="i == 0">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-error class="primary-errors" *ngIf="
                           primaryuserForm &&
                           userForm.get(field.id) &&

@@ -61,11 +61,12 @@ export class DemographicComponent
   langCode = localStorage.getItem("langCode");
   dataCaptureLanguages = [];  
   dataCaptureLanguagesLabels = []; 
+  textDirection = [];
   ltrLangs = this.configService
       .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
       .split(",");
-  textDir = localStorage.getItem("dir");
-  secTextDir = localStorage.getItem("secondaryDir");
+  //textDir = localStorage.getItem("dir");
+  //secTextDir = localStorage.getItem("secondaryDir");
   //firstDataCaptureLang = this.dataCaptureLanguages[0];
   //secondaryLang = localStorage.getItem("secondaryLangCode");
   //languages = this.dataCaptureLanguages;
@@ -232,6 +233,16 @@ export class DemographicComponent
     if (!this.dataModification) {
       this.dataCaptureLanguages = JSON.parse(localStorage.getItem("dataCaptureLanguages"));  
       this.dataCaptureLanguagesLabels = JSON.parse(localStorage.getItem("dataCaptureLanguagesLabels")); 
+      this.dataCaptureLanguages.forEach(
+        (langCode) => {
+          //set the language direction as well
+          if (this.ltrLangs.includes(langCode)) {
+            this.textDirection.push("ltr");
+          } else {
+            this.textDirection.push("rtl");
+          }
+        }
+      );
     } else {
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
@@ -262,6 +273,12 @@ export class DemographicComponent
               }
             }
           );
+          //set the language direction as well
+          if (this.ltrLangs.includes(langCode)) {
+            this.textDirection.push("ltr");
+          } else {
+            this.textDirection.push("rtl");
+          }
         }
       );
     }
@@ -269,6 +286,9 @@ export class DemographicComponent
     console.log(this.dataCaptureLanguages);
     console.log("dataCaptureLanguagesLabels");
     console.log(this.dataCaptureLanguagesLabels);
+    
+    console.log("textDirection");
+    console.log(this.textDirection);
   }
   /**
 
