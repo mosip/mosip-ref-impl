@@ -23,7 +23,7 @@
                     </span>
                     <span *ngIf="field.required" class="required-annotation">*</span>
                   </div>
-                  <div class="fieldContent">
+                  <div class="fieldContent" [ngStyle]="field.containerStyle">
                     <!-- Create form fields to capture data in all chosen dataCaptureLanguages -->
                     <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as i">
                       <!-- Add TextBox for each dataCaptureLanguage -->

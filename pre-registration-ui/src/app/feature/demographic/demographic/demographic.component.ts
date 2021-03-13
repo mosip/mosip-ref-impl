@@ -433,8 +433,6 @@ export class DemographicComponent
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         //response = identityStubJson;
         console.log(response);
-        // this.identityData = response["identity"];
-        // this.locationHeirarchy = [...response["locationHierarchy"]];
         this.identityData = response["response"]["idSchema"]["identity"];
         let locationHeirarchiesFromJson = [
           ...response["response"]["idSchema"]["locationHierarchy"],
@@ -454,22 +452,16 @@ export class DemographicComponent
             obj.controlType !== null &&
             !(obj.controlType === "fileupload")
           ) {
-            if (obj.alignmentGroup && obj.alignmentGroup != null) {
-              if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
-                this.alignmentGroups.push(obj.alignmentGroup);
-              }
-            }
             if (obj.transliteration && obj.transliteration === true) {
               this.uiFieldsWithTransliteration.push(obj);
             }
             this.uiFields.push(obj);
           }
         });
-        //to be backward compatible with UI specs adding this
-        if (this.alignmentGroups.length == 0) {
-          this.setDefaultAlignmentGroups();        
-        }
-        this.alignmentGroups.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+        //set the alignmentGroups for UI rendering, by default, 3 containers with multilang controls will appear in a row
+        //you can update this by combining controls using "alignmentGroup", "containerStyle" and "headerStyle" in UI specs.
+        this.setAlignmentGroups();        
+        //this.alignmentGroups.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
         this.alignmentGroups.map(alignmentGroup => {
           this.uiFieldsForAlignmentGroups[alignmentGroup] = [];
           let uiFieldsFiltered = this.uiFields.filter(uiField => uiField.alignmentGroup == alignmentGroup);
@@ -489,19 +481,27 @@ export class DemographicComponent
     });
   }
 
-  setDefaultAlignmentGroups() {
+  setAlignmentGroups() {
     let rowIndex = 0;
     let counter = 0;
     this.uiFields.forEach((obj, index) => {
-      if (counter % 3 === 0) {
-        rowIndex = rowIndex + 1;
-      }
-      let alignmentGroup = "row" + rowIndex;
-      counter = counter + 1;  
-      obj["alignmentGroup"] = alignmentGroup;
       if (obj.alignmentGroup && obj.alignmentGroup != null) {
         if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
           this.alignmentGroups.push(obj.alignmentGroup);
+        }
+      }
+      else {
+        if (counter % 3 === 0) {
+          rowIndex = rowIndex + 1;
+        }
+        let alignmentGroup = "defaultrow" + rowIndex;
+        counter = counter + 1;  
+        obj["alignmentGroup"] = alignmentGroup;
+        if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
+          this.alignmentGroups.push(obj.alignmentGroup);
+          if (obj.containerStyle != null || obj.headerStyle != null) {
+            rowIndex = rowIndex + 1;
+          }
         }
       }
     });

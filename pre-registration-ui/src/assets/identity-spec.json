@@ -26,12 +26,21 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "alignmentGroup": "name",
           "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
+          "containerStyle": {
+            "width": "170%",
+            "min-width": "170%"
+          },
+          "headerStyle": {
+            "width": "170%",
+            "min-width": "170%"
+          },
           "required": true
         },
         {
@@ -88,6 +97,7 @@
           "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
+          "alignmentGroup": "address",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
@@ -106,6 +116,7 @@
           "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
+          "alignmentGroup": "address",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
@@ -153,6 +164,7 @@
           },
           "controlType": "textbox",
           "inputRequired": true,
+          "alignmentGroup": "address",
           "fieldType": "default",
           "transliteration": true,
           "type": "simpleType",
@@ -172,6 +184,7 @@
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
+          "alignmentGroup": "address",
           "required": true
         },
         {
@@ -186,6 +199,7 @@
           "inputRequired": true,
           "fieldType": "default",
           "type": "simpleType",
+          "alignmentGroup": "address",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
@@ -199,6 +213,7 @@
           "inputRequired": true,
           "fieldType": "default",
           "type": "simpleType",
+          "alignmentGroup": "address",
           "validators": [
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
@@ -211,6 +226,7 @@
           "controlType": "dropdown",
           "inputRequired": true,
           "fieldType": "default",
+          "alignmentGroup": "address",
           "type": "simpleType",
           "validators": [],
           "required": true
@@ -225,6 +241,7 @@
           },
           "controlType": "dropdown",
           "inputRequired": true,
+          "alignmentGroup": "address",
           "fieldType": "default",
           "type": "string",
           "validators": [
@@ -240,7 +257,7 @@
           "id": "phone",
           "description": "phone",
           "labelName": { "eng": "Phone", "ara": "هاتف", "fra": "Téléphone" },
-          "controlType": "phone",
+          "controlType": "textbox",
           "inputRequired": true,
           "fieldType": "default",
           "type": "string",
@@ -251,6 +268,7 @@
               "arguments": []
             }
           ],
+          "alignmentGroup": "phonemail",
           "required": true
         },
         {
@@ -261,7 +279,7 @@
             "ara": "البريد الإلكتروني",
             "fra": "Email"
           },
-          "controlType": "email",
+          "controlType": "textbox",
           "inputRequired": true,
           "fieldType": "default",
           "type": "string",
@@ -272,6 +290,7 @@
               "arguments": []
             }
           ],
+          "alignmentGroup": "phonemail",
           "required": true
         },
         {
