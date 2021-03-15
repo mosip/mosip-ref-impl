@@ -99,11 +99,11 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     };
 
     await this.apiCalls();
-
     if (this.bookingService.getSendNotification()) {
       this.bookingService.resetSendNotification();
       this.automaticNotification();
     }
+
     await this.manipulateUserInfo();
   }
 
@@ -454,21 +454,23 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   async generateQRCode(name) {
-    try{
+    try {
       const index = this.usersInfo.indexOf(name);
       if (!this.usersInfo[index].qrCodeBlob) {
-        return new Promise((resolve) => {
-        });
+        return new Promise((resolve) => {});
       }
-    }catch(ex){
-      console.log("this.usersInfo[index].qrCodeBlob>>>"+ex.messages);
+    } catch (ex) {
+      console.log("this.usersInfo[index].qrCodeBlob>>>" + ex.messages);
     }
   }
 
   async sendNotification(applicantNumber, additionalRecipient: boolean) {
     this.fileBlob = await this.createBlob();
+    let notificationObject = {};
+    let preRegId;
     this.usersInfo.forEach((user) => {
-      const notificationDto = new NotificationDtoModel(
+      preRegId = user.preRegId;
+      notificationObject[user.langCode] = new NotificationDtoModel(
         user.fullName,
         user.preRegId,
         user.bookingData
@@ -482,30 +484,29 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         additionalRecipient,
         false
       );
-      console.log(notificationDto);
-      const model = new RequestModel(
-        appConstants.IDS.notification,
-        notificationDto
-      );
-      this.notificationRequest.append(
-        appConstants.notificationDtoKeys.notificationDto,
-        JSON.stringify(model).trim()
-      );
-      this.notificationRequest.append(
-        appConstants.notificationDtoKeys.langCode,
-        localStorage.getItem("langCode")
-      );
-      this.notificationRequest.append(
-        appConstants.notificationDtoKeys.file,
-        this.fileBlob,
-        `${user.preRegId}.pdf`
-      );
-      const subs = this.dataStorageService
-        .sendNotification(this.notificationRequest)
-        .subscribe(() => {});
-      this.subscriptions.push(subs);
-      this.notificationRequest = new FormData();
     });
+    const model = new RequestModel(
+      appConstants.IDS.notification,
+      notificationObject
+    );
+    this.notificationRequest.append(
+      appConstants.notificationDtoKeys.notificationDto,
+      JSON.stringify(model).trim()
+    );
+    this.notificationRequest.append(
+      appConstants.notificationDtoKeys.langCode,
+      Object.keys(notificationObject).join(",")
+    );
+    this.notificationRequest.append(
+      appConstants.notificationDtoKeys.file,
+      this.fileBlob,
+      `${preRegId}.pdf`
+    );
+    const subs = this.dataStorageService
+      .sendNotification(this.notificationRequest)
+      .subscribe(() => {});
+    this.subscriptions.push(subs);
+    this.notificationRequest = new FormData();
   }
 
   ngOnDestroy() {
