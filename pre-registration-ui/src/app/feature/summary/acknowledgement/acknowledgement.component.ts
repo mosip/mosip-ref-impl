@@ -21,11 +21,8 @@ import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
   styleUrls: ["./acknowledgement.component.css"],
 })
 export class AcknowledgementComponent implements OnInit, OnDestroy {
-  secondaryLanguagelabels: any;
-  secondaryLang = localStorage.getItem("secondaryLangCode");
   usersInfo = [];
   finalUsersInfoDetails = {};
-  secondaryLanguageRegistrationCenter: any;
   guidelines = [];
   guidelinesDetails = [];
   opt = {};
@@ -356,37 +353,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  async getRegistrationCenterInSecondaryLanguage(
-    centerId: string,
-    langCode: string
-  ) {
-    return new Promise((resolve) => {
-      const subs = this.dataStorageService
-        .getRegistrationCenterByIdAndLangCode(centerId, langCode)
-        .subscribe((response) => {
-          this.secondaryLanguageRegistrationCenter =
-            response["response"]["registrationCenters"][0];
-          resolve(true);
-        });
-      this.subscriptions.push(subs);
-    });
-  }
-
-  async getRegistrationCenterInPrimaryLanguage(
-    centerId: string,
-    langCode: string
-  ) {
-    return new Promise((resolve) => {
-      const subs = this.dataStorageService
-        .getRegistrationCenterByIdAndLangCode(centerId, langCode)
-        .subscribe((response) => {
-          this.usersInfo[0].registrationCenter =
-            response["response"]["registrationCenters"][0];
-          resolve(true);
-        });
-      this.subscriptions.push(subs);
-    });
-  }
 
   getTemplate() {
     return new Promise((resolve) => {
