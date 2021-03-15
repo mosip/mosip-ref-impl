@@ -698,7 +698,6 @@ export class DemographicComponent
    * and fields are conditionally validated as required or not in the UI form.
    */
   processConditionalRequiredValidations(identityFormData) {
-    console.log("processing requiredCondition");
     //for each uiField in UI specs, check of any "requiredCondition" is given
     //if yes, then evaluate it with json-rules-engine
     this.uiFields.forEach(uiField => {
@@ -1694,23 +1693,40 @@ export class DemographicComponent
    * @param {number} index
    * @memberof DemographicComponent
    */
-  onKeyboardDisplay(formControlName: string, index: number) {
+   openKeyboard(controlName: string, langCode: string) {
     let control: AbstractControl;
-    let lang: string;
-    // if (this.userForm.controls[formControlName]) {
-    //   control = this.userForm.controls[formControlName];
-    //   lang = appConstants.virtual_keyboard_languages[this.dataCaptureLanguages[0]];
-    //  }
-    if (this.oldKeyBoardIndex == index && this.matKeyboardService.isOpened) {
-      this.matKeyboardService.dismiss();
-    } else {
-      let el: ElementRef;
-      this.oldKeyBoardIndex = index;
-      el = this._attachToElementMesOne._results[index];
-      el.nativeElement.focus();
-      this._keyboardRef = this.matKeyboardService.open(lang);
-      this._keyboardRef.instance.setInputInstance(el);
-      this._keyboardRef.instance.attachControl(control);
+    let formControlName = controlName + "_" + langCode;
+    let multiLangControls = [];
+    let keyArr: any[] = Object.keys(this.userForm.controls);
+    keyArr.forEach(key => {
+      this.uiFields.forEach((control) => {
+        this.dataCaptureLanguages.forEach((language, i) => {
+          if (this.isControlInMultiLang(control) && !multiLangControls.includes(key) ) {
+            const controlId = control.id + "_" + language;
+            if (controlId == key) {
+              multiLangControls.push(key);
+            }
+          }
+        }); 
+      });  
+    });
+    let index = multiLangControls.indexOf(formControlName);
+    if (index > -1) {
+      let lang = langCode.substring(0,2);
+      if (this.userForm.controls[formControlName]) {
+        control = this.userForm.controls[formControlName];
+      }
+      if (this.oldKeyBoardIndex == index && this.matKeyboardService.isOpened) {
+        this.matKeyboardService.dismiss();
+      } else {
+        let el: ElementRef;
+        this.oldKeyBoardIndex = index;
+        el = this._attachToElementMesOne._results[index];
+        el.nativeElement.focus();
+        this._keyboardRef = this.matKeyboardService.open(lang);
+        this._keyboardRef.instance.setInputInstance(el);
+        this._keyboardRef.instance.attachControl(control);
+      }
     }
   }
 

@@ -135,7 +135,7 @@
                 "fact": "identity",
                 "operator": "equal",
                 "value": "FR",
-                "path": "$.fullName.0.value"
+                "path": "$.residenceStatus.0.value"
               }
             ]
           },
