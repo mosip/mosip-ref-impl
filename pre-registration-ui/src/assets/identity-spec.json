@@ -30,9 +30,19 @@
           "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
-          "validators": [
-            { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
-          ],
+          "validators": {
+            "eng": {
+              "type": "regex",
+              "validator": "^(?=.{0,50}$).*",
+              "arguments": []
+            },
+            "ara": {
+              "type": "regex",
+              "validator": "^[A-Z]+$",
+              "arguments": []
+            },
+            "fra": { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
+          },
           "containerStyle": {
             "width": "170%",
             "min-width": "170%"
@@ -121,7 +131,7 @@
             { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
           ],
           "required": false,
-           "visibleCondition": {
+          "visibleCondition": {
             "all": [
               {
                 "fact": "identity",
