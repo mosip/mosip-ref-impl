@@ -499,10 +499,14 @@ export class DemographicComponent
       );
     }
     let validatorRegex = null;
-    if (control.validators !== null && Array.isArray(control.validators) && control.validators.length > 0) {
-      validatorRegex = control.validators[0].validator;
-    } else if (typeof control.validators === "object" && control.validators[languageCode]) {
-      validatorRegex = control.validators[languageCode].validator;
+    if (control.validators !== null && control.validators.length > 0) {
+      let filteredList = control.validators.filter(validator => validator.langCode === languageCode);
+      if (filteredList.length > 0) {
+        validatorRegex = filteredList[0].validator;
+      }
+      else {
+        validatorRegex = control.validators[0].validator;  
+      }     
     }
     if (validatorRegex !== null) {
       this.userForm.controls[`${controlId}`].setValidators([
@@ -520,7 +524,7 @@ export class DemographicComponent
   setDropDownArrays() {
     this.getIntialDropDownArrays();
   }
-  
+
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
       if (control.controlType === "dropdown" || control.controlType === "button") {
@@ -577,16 +581,17 @@ export class DemographicComponent
 
   transliterateFieldValue(uiFieldId: string, fromLang: string, event: Event) {
     let filteredList = this.uiFieldsWithTransliteration.filter(field => field.id == uiFieldId);
-    //get index of the fromLang
-    let indexOfFromLang = this.dataCaptureLanguages.indexOf(fromLang);
-    if (filteredList.length > 0 && indexOfFromLang === 0) {
+    if (filteredList.length > 0) {
       if (event.type === "focusout") {
         let fromFieldName =  uiFieldId + "_" + fromLang;
         this.dataCaptureLanguages.forEach(dataCaptureLanguage => {
           if (dataCaptureLanguage !== fromLang) {
             const toLang = dataCaptureLanguage;
             const toFieldName =  uiFieldId + "_" + toLang;
-            this.onTransliteration(fromLang, toLang, fromFieldName, toFieldName);
+            const toFieldValue = this.userForm.controls[toFieldName].value;
+            if (toFieldValue === "") {
+              this.onTransliteration(fromLang, toLang, fromFieldName, toFieldName);
+            }
           }
         });
       }

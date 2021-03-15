@@ -30,19 +30,11 @@
           "transliteration": true,
           "fieldType": "default",
           "type": "simpleType",
-          "validators": {
-            "eng": {
-              "type": "regex",
-              "validator": "^(?=.{0,50}$).*",
-              "arguments": []
-            },
-            "ara": {
-              "type": "regex",
-              "validator": "^[A-Z]+$",
-              "arguments": []
-            },
-            "fra": { "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] }
-          },
+          "validators": [
+            { "langCode": "eng", "type": "regex", "validator": "^(?=.{0,50}$).*", "arguments": [] },
+            { "langCode": "ara", "type": "regex", "validator": "^[A-Z]+$", "arguments": [] },
+            { "langCode": "fra", "type": "regex", "validator": "^[A-Z]+$", "arguments": [] }
+          ],
           "containerStyle": {
             "width": "170%",
             "min-width": "170%"
@@ -143,7 +135,7 @@
                 "fact": "identity",
                 "operator": "equal",
                 "value": "FR",
-                "path": "$.residenceStatus.0.value"
+                "path": "$.fullName.0.value"
               }
             ]
           },
