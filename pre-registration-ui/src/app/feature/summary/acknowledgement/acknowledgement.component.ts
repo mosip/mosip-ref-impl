@@ -99,7 +99,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     };
 
     await this.apiCalls();
-    this.automaticNotification();
+    if (this.bookingService.getSendNotification()) {
+      this.bookingService.resetSendNotification();
+      this.automaticNotification();
+    }
 
     await this.manipulateUserInfo();
   }
