@@ -49,7 +49,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     langCode: "",
   };
   regCenterId;
-  primaryLangCode;
+  langCode;
   name = "";
   applicantContactDetails = [];
   constructor(
@@ -62,7 +62,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.translate.use(localStorage.getItem("langCode"));
-    this.primaryLangCode = localStorage.getItem("langCode");
+    this.langCode = localStorage.getItem("langCode");
   }
 
   async ngOnInit() {
@@ -309,7 +309,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   async apiCalls() {
     return new Promise(async (resolve) => {
       this.formatDateTime();
-      await this.qrCodeForUser();
+      //await this.qrCodeForUser();
       await this.getTemplate();
       this.showSpinner = false;
       resolve(true);
@@ -338,14 +338,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         this.usersInfo[i].bookingTimePrimary = Utils.formatTime(
           this.usersInfo[i].regDto.time_slot_from
         );
-        this.usersInfo[i].bookingDataSecondary = Utils.getBookingDateTime(
-          this.usersInfo[i].regDto.appointment_date,
-          this.usersInfo[i].regDto.time_slot_from,
-          localStorage.getItem("secondaryLangCode")
-        );
-        this.usersInfo[i].bookingTimeSecondary = Utils.formatTime(
-          this.usersInfo[i].regDto.time_slot_from
-        );
       } else {
         const date = this.usersInfo[i].bookingData.split(",");
         this.usersInfo[i].bookingDataPrimary = Utils.getBookingDateTime(
@@ -354,12 +346,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           localStorage.getItem("langCode")
         );
         this.usersInfo[i].bookingTimePrimary = Utils.formatTime(date[1]);
-        this.usersInfo[i].bookingDataSecondary = Utils.getBookingDateTime(
-          date[0],
-          date[1],
-          localStorage.getItem("secondaryLangCode")
-        );
-        this.usersInfo[i].bookingTimeSecondary = Utils.formatTime(date[1]);
       }
     }
   }
@@ -468,10 +454,14 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   async generateQRCode(name) {
-    const index = this.usersInfo.indexOf(name);
-    if (!this.usersInfo[index].qrCodeBlob) {
-      return new Promise((resolve) => {
-      });
+    try{
+      const index = this.usersInfo.indexOf(name);
+      if (!this.usersInfo[index].qrCodeBlob) {
+        return new Promise((resolve) => {
+        });
+      }
+    }catch(ex){
+      console.log("this.usersInfo[index].qrCodeBlob>>>"+ex.messages);
     }
   }
 
