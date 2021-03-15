@@ -412,7 +412,6 @@ mat-icon {
   width: 400px;
   margin: 10px;
   position:relative;
-  border: 1px solid lightgrey;
   min-width: 95%;
 }
 .fieldHeader {
@@ -424,7 +423,9 @@ mat-icon {
 }
 .fieldContent {
   padding: 10px;
+  box-shadow:         1px 1px 1px 1px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  
 }
 .selectedOption {
-  padding-left: 10px;
+  padding: 10px;
 }
