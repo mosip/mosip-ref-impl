@@ -319,7 +319,7 @@
               </mat-error>
             </mat-form-field>
             <div class="flex-display">
-              <mat-form-field class="left-sizing">
+              <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 1)">
                 <mat-label>{{ "center.region" | translate }}</mat-label>
                 <mat-select
                   formControlName="region"
@@ -344,7 +344,7 @@
                   {{ "center.validationMessages.region.required" | translate }}
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="right-sizing">
+              <mat-form-field class="right-sizing" *ngIf="lessThanEqual(locCode, 2)">
                 <mat-label>{{ "center.province" | translate }}</mat-label>
                 <mat-select
                   formControlName="province"
@@ -373,7 +373,7 @@
               </mat-form-field>
             </div>
             <div class="flex-display">
-              <mat-form-field class="left-sizing">
+              <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 3)">
                 <mat-label>{{ "center.city" | translate }}</mat-label>
                 <mat-select
                   formControlName="city"
@@ -397,7 +397,7 @@
                   {{ "center.validationMessages.city.required" | translate }}
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="right-sizing">
+              <mat-form-field class="right-sizing" *ngIf="lessThanEqual(locCode, 4)">
                 <mat-label>{{ "center.laa" | translate }}</mat-label>
                 <mat-select
                   formControlName="laa"
@@ -423,7 +423,7 @@
               </mat-form-field>
             </div>
             <div class="flex-display">
-              <mat-form-field class="left-sizing">
+              <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 5)">
                 <mat-label>{{ "center.postal-code" | translate }}</mat-label>
                 <mat-select
                   formControlName="postalCode"
@@ -1015,7 +1015,7 @@
               </mat-error>
             </mat-form-field>
             <div class="flex-display">
-              <mat-form-field class="left-sizing">
+              <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 1)">
                 <mat-label>{{ secondaryLanguageLabels["region"] }}</mat-label>
                 <mat-select formControlName="region">
                   <mat-option
@@ -1026,7 +1026,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field class="right-sizing">
+              <mat-form-field class="right-sizing" *ngIf="lessThanEqual(locCode, 2)">
                 <mat-label>{{ secondaryLanguageLabels["province"] }}</mat-label>
                 <mat-select formControlName="province">
                   <mat-option
@@ -1039,7 +1039,7 @@
               </mat-form-field>
             </div>
             <div class="flex-display">
-              <mat-form-field class="left-sizing">
+              <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 3)">
                 <mat-label>{{ secondaryLanguageLabels["city"] }}</mat-label>
                 <mat-select formControlName="city">
                   <mat-option
@@ -1050,7 +1050,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field class="right-sizing">
+              <mat-form-field class="right-sizing" *ngIf="lessThanEqual(locCode, 4)">
                 <mat-label>{{ secondaryLanguageLabels["laa"] }}</mat-label>
                 <mat-select formControlName="laa">
                   <mat-option
@@ -1063,7 +1063,7 @@
               </mat-form-field>
             </div>
             <div class="flex-display">
-              <mat-form-field class="left-sizing">
+              <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 5)">
                 <mat-label>{{
                   secondaryLanguageLabels["postal-code"]
                 }}</mat-label>
