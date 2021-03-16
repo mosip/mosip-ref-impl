@@ -11,11 +11,11 @@
           <!-- Create as rows as many as alignmentGroups in UI specs -->
           <span *ngFor="let alignmentGroup of alignmentGroups">
             <div class="rowContainer">
-              <span *ngFor="let field of uiFieldsForAlignmentGroups[alignmentGroup]">
+              <span *ngFor="let field of uiFieldsForAlignmentGroups[alignmentGroup];index as j">
                 <div class="fieldContainer" [ngStyle]="field.containerStyle" *ngIf="field.isVisible == true">
                   <div class="fieldHeader" [ngStyle]="field.headerStyle">
                     <!-- Create container header with labels in all chosen dataCaptureLanguages -->
-                    <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as i">
+                    <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages">
                       <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
                         field.labelName[dataCaptureLanguage] }}</mat-label>
                       <span *ngIf="i+1 < dataCaptureLanguages.length;else showColon"> / </span>
@@ -38,7 +38,13 @@
                               (change)="showHideFormFields()"
                               (focusout)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)"
                               (input)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)" #keyboardRef
-                              #input/>
+                              #input />
+                            <i *ngIf="textDirection[i] === 'ltr'"
+                              style="padding: 0px; float: right; color: grey; cursor: pointer;" matSuffix
+                              class="material-icons" (click)="openKeyboard(field.id, dataCaptureLanguage)">keyboard</i>
+                            <i *ngIf="textDirection[i] === 'rtl'"
+                              style="padding: 0px; float: left; color: grey; cursor: pointer;" matSuffix
+                              class="material-icons" (click)="openKeyboard(field.id, dataCaptureLanguage)">keyboard</i>
                           </mat-form-field>
                         </div>
                       </ng-container>
@@ -163,7 +169,7 @@
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
-                            <input matInput [formControlName]="field.id" (change)="showHideFormFields()" #keyboardRef
+                            <input matInput [formControlName]="field.id" (change)="showHideFormFields()"
                               #input />
                           </mat-form-field>
                         </span>
