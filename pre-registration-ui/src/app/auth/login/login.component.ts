@@ -8,6 +8,7 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { RegistrationService } from "src/app/core/services/registration.service";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "../../app.constants";
+import stubConfig from "../../../assets/stub-config.json";
 
 @Component({
   selector: "app-login",
@@ -84,6 +85,7 @@ export class LoginComponent implements OnInit {
 
   loadConfigs() {
     this.dataService.getConfig().subscribe((response) => {
+      //response = stubConfig;
       this.configService.setConfig(response);
       this.setTimer();
       this.isCaptchaEnabled();
