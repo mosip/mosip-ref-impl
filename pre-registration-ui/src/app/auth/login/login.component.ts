@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
 
   loadConfigs() {
     this.dataService.getConfig().subscribe((response) => {
-      //response = stubConfig;
+      response = stubConfig;
       this.configService.setConfig(response);
       this.appVersion = this.configService.getConfigByKey('preregistration.ui.version');
       this.setTimer();
@@ -95,16 +95,17 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("langCode", this.languageSelectionArray[0]);
       this.router.navigate([`${localStorage.getItem("langCode")}`]);
       this.selectedLanguage = localStorage.getItem("langCode");
+      this.setLanguageDirection(this.selectedLanguage);
       this.authService.userPreferredLang = this.selectedLanguage;
       this.userPreferredLanguage = this.selectedLanguage;
       localStorage.setItem("userPrefLanguage", this.userPreferredLanguage);
       this.translate.use(this.userPreferredLanguage);
+      this.loadValidationMessages();
       this.showSpinner = false;
     });
   }
 
   loadLanguagesWithConfig() {
-    this.loadValidationMessages();
     this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
     this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");
     this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
@@ -165,6 +166,8 @@ export class LoginComponent implements OnInit {
     this.dataService
       .getI18NLanguageFiles(localStorage.getItem("langCode"))
       .subscribe((response) => {
+        console.log(localStorage.getItem("langCode"));
+        console.log(response);
         this.Languagelabels = response;
         this.validationMessages = this.Languagelabels["login"];
       });
@@ -386,6 +389,7 @@ export class LoginComponent implements OnInit {
   showOtpMessage() {
     this.inputOTP = "";
     let response = this.Languagelabels;
+    console.log(response);
     let otpmessage = response["message"]["login"]["msg3"];
     const message = {
       case: "MESSAGE",

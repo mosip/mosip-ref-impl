@@ -476,8 +476,8 @@
     },
     "dataCaptureLanguage":{
       "title":"Choisir la langue",
-      "message":["Veuillez sélectionner un","langues pour la saisie des données.","est obligatoire pour le résident de choisir selon les directives gouvernementales.","L'ordre de sélection mènera à la page vue pour les données démographiques."],
-      "error_text":["Veuillez sélectionner le minimum","langues pour la saisie des données."],
+      "message":["Veuillez sélectionner","Vous pouvez sélectionner le minimum ","langues pour la saisie des données.","est obligatoire pour le résident de choisir selon les directives gouvernementales.","L'ordre de sélection mènera à la page vue pour les données démographiques."],
+      "error_text":["Vous pouvez sélectionner au plus","langues pour la saisie des données."],
       "cancel_btn":"Annuler",
       "submit_btn":"nous faire parvenir"
     }
