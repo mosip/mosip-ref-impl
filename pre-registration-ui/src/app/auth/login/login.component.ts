@@ -16,6 +16,7 @@ import stubConfig from "../../../assets/stub-config.json";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
+  appVersion;
   inputPlaceholderContact = "Email ID or Phone Number";
   inputPlaceholderOTP = "Enter OTP";
   disableBtn = false;
@@ -87,6 +88,7 @@ export class LoginComponent implements OnInit {
     this.dataService.getConfig().subscribe((response) => {
       //response = stubConfig;
       this.configService.setConfig(response);
+      this.appVersion = this.configService.getConfigByKey('preregistration.ui.version');
       this.setTimer();
       this.isCaptchaEnabled();
       this.loadLanguagesWithConfig();
