@@ -399,7 +399,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       if (this.maxLanguage == 1) {
         localStorage.setItem(
           "dataCaptureLanguages",
-          JSON.stringify(this.mandatoryLanguages[0])
+          JSON.stringify([this.mandatoryLanguages[0]])
         );
       } else {
         localStorage.setItem(
@@ -526,7 +526,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       errorText:
         this.dataCaptureLabels.error_text[0] +
         " " +
-        this.minLanguage +
+        this.maxLanguage +
         " " +
         this.dataCaptureLabels.error_text[1],
     };
@@ -536,27 +536,15 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   getDataCaptureMessage() {
     let message = "";
-    if (this.mandatoryLanguages.length > 0) {
-      message =
-        this.dataCaptureLabels.message[0] +
-        " " +
-        this.minLanguage +
-        " " +
-        this.dataCaptureLabels.message[1] +
-        " " +
-        this.getLanguageConcatinatedString() +
-        " " +
-        this.dataCaptureLabels.message[2] +
-        this.dataCaptureLabels.message[3];
+    if (this.minLanguage == this.maxLanguage) {
+      message = `${this.dataCaptureLabels.message[0]} ${this.minLanguage} ${this.dataCaptureLabels.message[3]}`;
     } else {
-      message =
-        this.dataCaptureLabels.message[0] +
-        " " +
-        this.minLanguage +
-        " " +
-        this.dataCaptureLabels.message[1] +
-        this.dataCaptureLabels.message[3];
-    }
+      message = `${this.dataCaptureLabels.message[1]} ${this.minLanguage} ${this.dataCaptureLabels.message[2]} ${this.maxLanguage} ${this.dataCaptureLabels.message[3]}`;
+    } 
+    if (this.mandatoryLanguages.length > 0) {
+      message += ` ${this.getLanguageConcatinatedString()} ${this.dataCaptureLabels.message[4]}`; 
+    }  
+    message += ` ${this.dataCaptureLabels.message[5]}`; 
     return message;
   }
 
@@ -571,7 +559,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         }
       );
     });
-    console.log(mandatoryLang);
     return mandatoryLang.substring(1, mandatoryLang.length);
   }
 
