@@ -14,7 +14,7 @@
         >
           <table class="row" *ngFor="let controlId of controlIds">
             <tr>
-              <td *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index">
+              <td *ngFor="let dataCaptureLanguage of dataCaptureLanguages">
                 {{ControlIdLabelObjects[controlId][dataCaptureLanguage]}}
 
                 <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div> 
