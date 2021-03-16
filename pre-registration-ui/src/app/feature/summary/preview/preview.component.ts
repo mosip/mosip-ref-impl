@@ -111,6 +111,15 @@ export class PreviewComponent implements OnInit {
     await this.populateLocationInfoArray();
   }
 
+  checkArray(data, controlId){
+    let result = false;
+    if(Array.isArray(data)){
+      result = true;
+    }
+    /*console.log("controlId>>>"+controlId);*/
+    return result;
+  }
+
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
@@ -370,9 +379,7 @@ export class PreviewComponent implements OnInit {
         .getLocationsHierarchyByLangCode(langCode, locationCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            const locations =
-              response[appConstants.RESPONSE]["locations"][0]["name"];
-            resolve(locations);
+            return response[appConstants.RESPONSE]["locations"][0]["name"];
           }
         });
     });
