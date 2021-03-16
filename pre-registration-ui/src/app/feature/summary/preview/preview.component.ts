@@ -17,23 +17,13 @@ import { LocDetailModal } from "src/app/shared/models/loc.detail.modal";
 })
 export class PreviewComponent implements OnInit {
   previewData: any;
-  secondaryLanguagelabels: any;
-  primaryLanguage;
-  secondaryLanguage;
-  dateOfBirthPrimary: string = "";
-  dateOfBirthSecondary: string = "";
+  Language;
   user: UserModel;
   preRegId: string;
   files: any;
   documentTypes = [];
   documentMapObject = [];
   sameAs = "";
-  residentTypeMapping = {
-    primary: {},
-    secondary: {},
-  };
-  primaryLocations;
-  secondaryLocations;
   residenceStatus: any;
   genders: any;
 
@@ -41,11 +31,8 @@ export class PreviewComponent implements OnInit {
   uiFields = [];
   locationHeirarchy = [];
   locationHeirarchies = [];
-  primaryLangLocInfo = [];
-  secondaryLangLocInfo = [];
   dynamicFields = [];
-  primarydropDownFields = {};
-  secondaryDropDownFields = {};
+  dropDownFields = {};
   dataCaptureLanguages = [];
   controlIds = [];
   ControlIdLabelObjects = {};
@@ -62,6 +49,7 @@ export class PreviewComponent implements OnInit {
   }
 
   async ngOnInit() {
+    let self = this;
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
@@ -89,13 +77,14 @@ export class PreviewComponent implements OnInit {
     } else if (this.user.request.langCode) {
       this.dataCaptureLanguages = [this.user.request.langCode];
     }
+
     this.calculateAge();
     this.formatDob(this.previewData.dateOfBirth);
-    this.getPrimaryAndSecondaryLanguageLabels();
+    this.getLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
     //remove blank fields
-    let updatedUIFields = [], self = this, tempObj = {};
+    let updatedUIFields = [], tempObj = {};
     this.uiFields.forEach((control) => {
       if (this.previewData[control.id]) {
         self.controlIds.push(control.id);
@@ -107,8 +96,16 @@ export class PreviewComponent implements OnInit {
         updatedUIFields.push(control);
       }
     });
+    let locName = "", label = "";
+    for (let i = 0; i < self.controlIds.length; i++) {
+      label = self.controlIds[i];
+      if(["region","province","city","zone"].includes(label)){
+        for (let j = 0; j < self.previewData[label].length; j++) {
+          self.fetchLocationName(self.previewData[label][j].value, self.previewData[label][j].language, j, label);
+        }
+      }
+    }
     this.uiFields = updatedUIFields;
-    await this.populateLocationInfoArray();
   }
 
   checkArray(data, controlId){
@@ -116,7 +113,6 @@ export class PreviewComponent implements OnInit {
     if(Array.isArray(data)){
       result = true;
     }
-    /*console.log("controlId>>>"+controlId);*/
     return result;
   }
 
@@ -152,7 +148,6 @@ export class PreviewComponent implements OnInit {
             fields.controlType === "dropdown" && fields.fieldType === "dynamic"
         );
         this.getIntialDropDownArrays();
-        this.setDynamicFieldValues();
         resolve(true);
       });
     });
@@ -161,56 +156,8 @@ export class PreviewComponent implements OnInit {
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
       if (control.controlType === "dropdown") {
-        this.primarydropDownFields[control.id] = [];
-        if (this.primaryLanguage != this.secondaryLanguage) {
-          this.secondaryDropDownFields[control.id] = [];
-        }
+        this.dropDownFields[control.id] = [];
       }
-    });
-  }
-
-  private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues(this.primaryLanguage);
-    if (this.primaryLanguage !== this.secondaryLanguage) {
-      await this.getDynamicFieldValues(this.secondaryLanguage);
-    }
-  }
-
-  getDynamicFieldValues(lang) {
-    return new Promise((resolve) => {
-      this.dataStorageService
-        .getDynamicFieldsandValues(lang)
-        .subscribe((response) => {
-          console.log(response);
-          let dynamicField = response[appConstants.RESPONSE]["data"];
-          this.dynamicFields.forEach((field) => {
-            dynamicField.forEach((res) => {
-              if (
-                field.id === res.name &&
-                res.langCode === this.primaryLanguage
-              ) {
-                this.filterOnLangCode(
-                  this.primaryLanguage,
-                  res.name,
-                  res["fieldVal"]
-                );
-              }
-              if (this.primaryLanguage !== this.secondaryLanguage) {
-                if (
-                  field.id === res.name &&
-                  res.langCode === this.secondaryLanguage
-                ) {
-                  this.filterOnLangCode(
-                    this.secondaryLanguage,
-                    res.name,
-                    res["fieldVal"]
-                  );
-                }
-              }
-            });
-          });
-        });
-      resolve(true);
     });
   }
 
@@ -238,11 +185,6 @@ export class PreviewComponent implements OnInit {
                 valueName: element.value,
                 languageCode: element.langCode,
               };
-            }
-            if (langCode === this.primaryLanguage) {
-              this.primarydropDownFields[field].push(codeValue);
-            } else {
-              this.secondaryDropDownFields[field].push(codeValue);
             }
             resolve(true);
           }
@@ -299,7 +241,7 @@ export class PreviewComponent implements OnInit {
 
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
-    this.dateOfBirthPrimary = Utils.getBookingDateTime(
+    this.previewData.dateOfBirth = Utils.getBookingDateTime(
       dob,
       "",
       localStorage.getItem("langCode")
@@ -331,24 +273,9 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  combineAddress(index: number) {
-    const address =
-      this.previewData.addressLine1[index].value +
-      (this.previewData.addressLine2[index].value
-        ? ", " + this.previewData.addressLine2[index].value
-        : "") +
-      (this.previewData.addressLine3[index].value
-        ? ", " + this.previewData.addressLine3[index].value
-        : "");
-    return address;
-  }
-
-  getPrimaryAndSecondaryLanguageLabels() {
+  getLanguageLabels() {
     this.dataStorageService.getI18NLanguageFiles(localStorage.getItem("langCode")).subscribe(response =>{
-      this.secondaryLanguagelabels = response["preview"];
-      this.residentTypeMapping.secondary = response["residentTypesMapping"];
       this.sameAs = response["sameAs"];
-      this.residentTypeMapping.primary = response["residentTypesMapping"];
     });
   }
 
@@ -373,17 +300,6 @@ export class PreviewComponent implements OnInit {
     this.navigateBack();
   }
 
-  getLocations(locationCode, langCode) {
-    return new Promise((resolve) => {
-      this.dataStorageService
-        .getLocationsHierarchyByLangCode(langCode, locationCode)
-        .subscribe((response) => {
-          if (response[appConstants.RESPONSE]) {
-            return response[appConstants.RESPONSE]["locations"][0]["name"];
-          }
-        });
-    });
-  }
   private getGenderDetails() {
     return new Promise((resolve) => {
       this.dataStorageService.getGenderDetails().subscribe((response) => {
@@ -419,15 +335,7 @@ export class PreviewComponent implements OnInit {
       });
     });
   }
-  // async locationData() {
-  //   await this.getLocations(localStorage.getItem("langCode")).then(
-  //     (value) => (this.primaryLocations = value)
-  //   );
-  //   this.getLocations(localStorage.getItem("secondaryLangCode")).then(
-  //     (value) => (this.secondaryLocations = value)
-  //   );
-  // }
-
+ 
   enableContinue(): boolean {
     let flag = true;
     this.documentMapObject.forEach((object) => {
@@ -445,73 +353,14 @@ export class PreviewComponent implements OnInit {
     return flag;
   }
 
-  isThisFieldInLocationHeirarchies = (fieldId) => {
-    let items = this.getLocationHierarchy(fieldId);
-    return items.length > 0 ? true: false;
-  }
-
-  getLocationHierarchy = (fieldId) => {
-    let items = [];
-    this.locationHeirarchies.forEach(locationHeirarchy => {
-      let filteredItems = locationHeirarchy.filter(item => item == fieldId);
-      if (filteredItems.length > 0) {
-        items = locationHeirarchy;
-      }
-    });
-    return items;
-  }
-
-  populateLocationInfoArray = async () => {
-    for await (const control of this.uiFields) {
-      if (control.controlType === "dropdown" && this.isThisFieldInLocationHeirarchies(control.id) 
-      && control.type === 'simpleType') {
-        const locCode = this.previewData[control.id][0].value;
-        if (locCode) {
-          let langCode = this.primaryLanguage;
-          await this.fetchLocationName(locCode, langCode );
-          if (this.primaryLanguage != this.secondaryLanguage) {
-            langCode = this.secondaryLanguage;
-            await this.fetchLocationName(locCode, langCode );
-          }  
-        }    
-      }
-    }    
-  }
-  
-  getLocationName = (locCode: string, langCode: string) => {
-    if (langCode == this.primaryLanguage && this.primaryLangLocInfo) {
-      let filteredArr = this.primaryLangLocInfo.filter(locInfo => locInfo.locCode == locCode && locInfo.langCode == langCode);
-      if (filteredArr.length > 0) {
-        return filteredArr[0].locName;
-      }   
-    }
-    else if (langCode == this.secondaryLanguage && this.secondaryLangLocInfo && this.primaryLanguage != this.secondaryLanguage) {
-      let filteredArr = this.secondaryLangLocInfo.filter(locInfo => locInfo.locCode == locCode && locInfo.langCode == langCode);
-      if (filteredArr.length > 0) {
-        return filteredArr[0].locName;
-      }   
-    }
-  }
-
-  fetchLocationName = async (locCode: string, langCode: string) => {
-    await this.dataStorageService.getLocationInfoForLocCode(locCode, langCode).subscribe((response) => {
-      if (response[appConstants.RESPONSE]) {
-        let locName =
-          response[appConstants.RESPONSE][
-            "name"
-          ];
-          let obj : LocDetailModal = {
-            locCode: locCode,
-            langCode: langCode,
-            locName: locName
-          }
-          if (langCode == this.primaryLanguage) {
-            this.primaryLangLocInfo.push(obj);
-          }
-          else if (langCode == this.secondaryLanguage) {
-            this.secondaryLangLocInfo.push(obj);
-          }  
-      }
+  private fetchLocationName(locCode: string, langCode: string, index : number, controlName : string) {
+    let self = this;
+    return new Promise((resolve) => {
+      this.dataStorageService.getLocationInfoForLocCode(locCode, langCode).subscribe((response) => {
+        if (response[appConstants.RESPONSE]) {
+          self.previewData[controlName][index]["label"] = response[appConstants.RESPONSE]["name"];
+        }
+      });
     });
   }
 
@@ -521,7 +370,7 @@ export class PreviewComponent implements OnInit {
     localStorage.setItem("modifyUser", "false");
     localStorage.setItem("addingUserFromPreview", "true");
     this.router.navigate([
-      `${this.primaryLanguage}/pre-registration/demographic/new`,
+      `${this.Language}/pre-registration/demographic/new`,
     ]);
   }
 

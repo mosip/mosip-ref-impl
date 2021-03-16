@@ -194,3 +194,12 @@
     width: 100%;
   }
 }
+
+td > div{
+  padding-top:8px;
+  padding-bottom:8px;
+}
+.emptydiv{
+  visibility: hidden;
+  height: 35px;
+}
