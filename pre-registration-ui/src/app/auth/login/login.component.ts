@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha: boolean = true;
   captchaError: boolean;
-  mandatoryLanguages;
-  optionalLanguages;
+  mandatoryLanguages = [];
+  optionalLanguages = [];
   minLanguage;
   maxLanguage;
   languageSelectionArray = [];
@@ -104,7 +104,9 @@ export class LoginComponent implements OnInit {
   loadLanguagesWithConfig() {
     this.loadValidationMessages();
     this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
+    this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");
     this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
+    this.optionalLanguages = this.optionalLanguages.filter(item => item != "");
     this.minLanguage = Number(this.configService.getConfigByKey('mosip.min.languages.count'));
     this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max.languages.count'));
     this.languageSelectionArray = [
