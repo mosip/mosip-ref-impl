@@ -360,8 +360,7 @@ export class DataStorageService {
     return this.httpClient.post(
       this.BASE_URL +
         this.PRE_REG_URL +
-        appConstants.APPEND_URL.notification +
-        appConstants.APPEND_URL.send_notification,
+        appConstants.APPEND_URL.notification,
       data
     );
   }

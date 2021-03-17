@@ -50,7 +50,7 @@ export const APPEND_URL = {
   booking_availability: 'appointment/availability/',
   delete_application: 'applications/',
   qr_code: 'qrCode/generate',
-  notification: 'notification/',
+  notification: 'notification',
   send_notification: 'notify',
   master_data: '/masterdata/',
   auth: 'login/',
