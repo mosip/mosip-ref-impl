@@ -106,12 +106,12 @@ export class LoginComponent implements OnInit {
   }
 
   loadLanguagesWithConfig() {
-    this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory.languages').split(',');
+    this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory-languages').split(',');
     this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");
-    this.optionalLanguages = this.configService.getConfigByKey('mosip.optional.languages').split(',');
+    this.optionalLanguages = this.configService.getConfigByKey('mosip.optional-languages').split(',');
     this.optionalLanguages = this.optionalLanguages.filter(item => item != "");
-    this.minLanguage = Number(this.configService.getConfigByKey('mosip.min.languages.count'));
-    this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max.languages.count'));
+    this.minLanguage = Number(this.configService.getConfigByKey('mosip.min-languages.count'));
+    this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max-languages.count'));
     this.languageSelectionArray = [
       ...this.mandatoryLanguages,
       ...this.optionalLanguages,

@@ -132,18 +132,18 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   setLanguageConfiguration() {
     this.mandatoryLanguages = this.configService
-      .getConfigByKey("mosip.mandatory.languages")
+      .getConfigByKey("mosip.mandatory-languages")
       .split(",");
     this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");  
     this.optionalLanguages = this.configService
-      .getConfigByKey("mosip.optional.languages")
+      .getConfigByKey("mosip.optional-languages")
       .split(",");
     this.optionalLanguages = this.optionalLanguages.filter(item => item != "");  
     this.minLanguage = Number(
-      this.configService.getConfigByKey("mosip.min.languages.count")
+      this.configService.getConfigByKey("mosip.min-languages.count")
     );
     this.maxLanguage = Number(
-      this.configService.getConfigByKey("mosip.max.languages.count")
+      this.configService.getConfigByKey("mosip.max-languages.count")
     );
   }
 
