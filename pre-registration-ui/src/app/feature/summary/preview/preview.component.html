@@ -4,54 +4,64 @@
       <div class="preview__header">
         <p>{{ 'preview.title_preview' | translate }}</p>
       </div>
+
+      <div class="preview__modify-div">
+          <span
+                  (click)="modifyDemographic()"
+                  class="preview__modify-div-span"
+                  matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
+          ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
+          >
+      </div>
     </mat-card-header>
     <mat-card-content>
       <div class="preview__body-content-container">
         <div class = "preview__body-content-div">
           <table class="row" *ngFor="let controlId of controlIds">
             <tr>
-              <td *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
-                <h5>{{ControlIdLabelObjects[controlId][dataCaptureLanguage]}} <i *ngIf="!last">/</i></h5>
+              <i *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
+                <td>{{ControlIdLabelObjects[controlId][dataCaptureLanguage]}} <i> : </i></td>
 
                 <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div> 
                 <ng-template #content>
 
-                  <div *ngIf="controlId === 'gender'">
-                    <div *ngFor="let genderType of genders">
-                      <div *ngIf = "genderType.langCode === dataCaptureLanguage">
+                  <td *ngIf="controlId === 'gender'">
+                    <i *ngFor="let genderType of genders">
+                      <i *ngIf = "genderType.langCode === dataCaptureLanguage">
                         <div  *ngIf = "previewData[controlId][i].value === genderType.code">
-                          {{genderType.genderName}} <i *ngIf="!last">/</i>
+                          {{genderType.genderName}} <!-- <i *ngIf="!last">/</i> -->
                         </div>
-                      </div>
-                    </div>
-                  </div>
+                      </i>
+                    </i>
+                  </td>
 
-                  <div *ngIf="controlId === 'residenceStatus'">
-                    <div *ngFor="let residentType of residenceStatus">
-                      <div *ngIf = "residentType.langCode === dataCaptureLanguage">
+                  <td *ngIf="controlId === 'residenceStatus'">
+                    <i *ngFor="let residentType of residenceStatus">
+                      <i *ngIf = "residentType.langCode === dataCaptureLanguage">
                         <div  *ngIf = "previewData[controlId][i].value === residentType.code">
-                          {{residentType.name}} <i *ngIf="!last">/</i>
+                          {{residentType.name}} <!-- <i *ngIf="!last">/</i> -->
                         </div>
-                      </div>
-                    </div>
-                  </div>
+                      </i>
+                    </i>
+                  </td>
 
-                  <div *ngIf="controlId !== 'gender'">
+                  <td *ngIf="controlId !== 'gender'">
                     <div *ngIf="controlId !== 'residenceStatus'">
                       <div *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></div>
-                      <ng-template #displayLabel>{{previewData[controlId][i].label}} <i *ngIf="!last">/</i></ng-template>
-                      <ng-template #displayValue>{{previewData[controlId][i].value}} <i *ngIf="!last">/</i></ng-template>
+                      <ng-template #displayLabel>{{previewData[controlId][i].label}} <!-- <i *ngIf="!last">/</i> --></ng-template>
+                      <ng-template #displayValue>{{previewData[controlId][i].value}} <!-- <i *ngIf="!last">/</i> --></ng-template>
                     </div>
-                  </div>
+                  </td>
 
                 </ng-template>
                 <ng-template #other_content>
-                  <div *ngIf="first">
+                  <td>
                     {{previewData[controlId]}}
-                  </div>
-                  <div *ngIf="!first" class="emptydiv"></div>
+                  </td>
+                  <!-- <td *ngIf="!first" class="emptydiv"></td> -->
                 </ng-template>
-              </td>
+                <i *ngIf="!last">/</i>
+              </i>
             </tr>
           </table>
 
