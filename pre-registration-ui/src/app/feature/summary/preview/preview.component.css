@@ -107,6 +107,9 @@
   width: 100%;
   margin-top: 9.5px;
   cursor: pointer;
+  margin-right: 25px;
+  font-weight: 600;
+  color: #838383;
 }
 
 .preview__modify-div-span {
@@ -193,4 +196,14 @@
   .preview__body-content-div {
     width: 100%;
   }
+}
+
+td > div{
+  padding-top:8px;
+  padding-bottom:8px;
+  display: inline;
+}
+.emptydiv{
+  visibility: hidden;
+  height: 35px;
 }

@@ -31,21 +31,22 @@
 }
 
 .heading {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   text-align: center;
-  font-weight: 400;
+  font-weight: 600;
   
 }
 
 .subHeading {
   font-size: 1.2rem;
   text-align: center;
-  font-weight: 300;
+  font-weight: 250;
 }
 
 mat-form-field {
   width: 100%;
   height: 100%;
+  font-size: 13px;
 }
 
 .pinkBg {
@@ -73,7 +74,6 @@ button {
   padding: 8px;
   visibility: hidden;
 }
-
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: lightgrey;
 }
@@ -81,11 +81,11 @@ button {
 ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
   color: lightgrey;
   border-bottom: 2px solid #22a8c9;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 1px;
+  border-bottom-right-radius: 1px;
 }
 ::ng-deep.mat-form-field-wrapper {
-  padding-bottom: 0.65em !important;
+  padding-bottom: 0.5em !important;
 }
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: white !important;

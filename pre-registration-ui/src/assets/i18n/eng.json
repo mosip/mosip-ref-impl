@@ -323,23 +323,9 @@
       "alertMessageThird": "You will be redirected to ‘Preview Page’ due to not accepting Terms & Conditions"
     },
     "validation": {
-      "name_required": "Please enter valid name",
-      "age_validation": "Age should be less than 150",
-      "gender_validation": "Please select gender",
-      "nationality_validation": "Please select Residence Status",
       "DOB_validation": "Enter Valid date of birth or age",
-      "date_required": "Enter 2 numeric digits for date",
-      "month_required": "Enter 2 numeric digits for month",
-      "year_required": "Enter 4 numeric digits for year",
-      "address_required": "Please enter valid address",
-      "region_required": "Please select a Region",
-      "province_required": "Please select a Province",
-      "city_required": "Please select a city",
-      "admin_required": "Please select zone",
-      "postal_code_required": "Please enter valid postalCode",
-      "mobile_required": "Please enter valid mobile number",
-      "email_required": "Please enter valid email id",
-      "pin_required": "Please enter valid Reference Identity Number"
+      "requiredMessage":"Is required",
+      "InvalidMessage":"Is Invalid"
     }
   },
   "documents": {
@@ -360,13 +346,14 @@
     "message": "The Pre-Registration id and Appointment details have been sent to the registered email id and phone number",
     "label_name": "Name",
     "label_pre_id": "Pre Registration ID",
-    "label_reg_cntr": "Registration Center",
+    "label_reg_cntr": "Center Name",
     "label_cntr_contact_number": "Center Contact Number",
     "label_appointment_date_time": "Appointment Date & Time",
     "container_guideline": "Important Guidelines",
     "action_send": "SEND EMAIL/SMS",
     "action_download": "DOWNLOAD PDF",
-    "action_print": "PRINT"
+    "action_print": "PRINT",
+    "label_reg_cntr_dtl": "Center Address"
   },
   "preview": {
     "title_preview": "Preview",
@@ -468,6 +455,13 @@
     "error": {
       "error": "Internal server error. Please try again after  some time.",
       "button_ok": "OK"
+    },
+    "dataCaptureLanguage":{
+      "title":"Select Language",
+      "message":["Please select","You can select minimum","and maximum" ,"languages for data entry.","is mandatory for the resident to select as per government guidelines.","The order of selection will lead to page view for demographic data."],
+      "error_text":["You can select atmost ","languages for data entry."],
+      "cancel_btn":"Cancel",
+      "submit_btn":"Submit"
     }
   },
   "timeSelection": {

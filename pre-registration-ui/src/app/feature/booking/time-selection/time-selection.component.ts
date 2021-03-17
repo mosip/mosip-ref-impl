@@ -20,7 +20,6 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { ConfigService } from "src/app/core/services/config.service";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
 
-import LanguageFactory from "src/assets/i18n";
 import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
 import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
@@ -35,6 +34,7 @@ export class TimeSelectionComponent
   implements OnInit, OnDestroy {
   @ViewChild("widgetsContent", { read: ElementRef }) public widgetsContent;
   @ViewChild("cardsContent", { read: ElementRef }) public cardsContent;
+  textDir = localStorage.getItem("dir");
   registrationCenter: String;
   selectedCard: number;
   selectedTile = 0;
@@ -49,8 +49,7 @@ export class TimeSelectionComponent
   bookingDataList = [];
   temp: NameList[] = [];
   registrationCenterLunchTime = [];
-  secondaryLang = localStorage.getItem("secondaryLangCode");
-  secondaryLanguagelabels: any;
+  languagelabels: any;
   errorlabels: any;
   showMorning: boolean;
   showAfternoon: boolean;
@@ -58,7 +57,7 @@ export class TimeSelectionComponent
   spinner = true;
   canDeactivateFlag = true;
   DAYS: any;
-  primaryLangCode = localStorage.getItem("langCode");
+  userPreferredLangCode = localStorage.getItem("userPrefLanguage");
   subscriptions: Subscription[] = [];
   preRegId: any = [];
   userInfo: any = [];
@@ -78,14 +77,12 @@ export class TimeSelectionComponent
   ) {
     super(dialog);
     smoothscroll.polyfill();
-    this.translate.use(this.primaryLangCode);
+    this.translate.use(this.userPreferredLangCode);
   }
 
   async ngOnInit() {
     if (this.router.url.includes("multiappointment")) {
-      this.preRegId = [
-        ...JSON.parse(localStorage.getItem("multiappointment")),
-      ];
+      this.preRegId = [...JSON.parse(localStorage.getItem("multiappointment"))];
     } else {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = [param["appId"]];
@@ -109,11 +106,14 @@ export class TimeSelectionComponent
       );
     }
     this.getSlotsforCenter(this.registrationCenter);
-    let factory = new LanguageFactory(this.primaryLangCode);
-    let response = factory.getCurrentlanguage();
-    this.secondaryLanguagelabels = response["timeSelection"].booking;
-    this.errorlabels = response["error"];
-    this.DAYS = response["DAYS"];
+    this.dataService
+      .getI18NLanguageFiles(this.userPreferredLangCode)
+      .subscribe((response) => {
+        this.languagelabels = response["timeSelection"].booking;
+        this.errorlabels = response["error"];
+        this.DAYS = response["DAYS"];
+      });
+  
   }
 
   getUserInfo(preRegId) {
@@ -123,7 +123,7 @@ export class TimeSelectionComponent
           this.userInfo.push(user)
         );
       }
-      resolve();
+      resolve(true);
     });
   }
 
@@ -147,7 +147,7 @@ export class TimeSelectionComponent
       this.dataService
         .getRegistrationCentersById(
           this.registrationCenter,
-          this.primaryLangCode
+          this.userPreferredLangCode
         )
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
@@ -167,7 +167,6 @@ export class TimeSelectionComponent
       const nameList: NameList = {
         preRegId: "",
         fullName: "",
-        fullNameSecondaryLang: "",
         regDto: "",
         status: "",
         registrationCenter: "",
@@ -179,9 +178,6 @@ export class TimeSelectionComponent
       nameList.status = user.request.statusCode;
       nameList.fullName =
         user["request"].demographicDetails.identity[this.name][0].value;
-      if(user["request"].demographicDetails.identity[this.name][1])
-        nameList.fullNameSecondaryLang =
-          user["request"].demographicDetails.identity[this.name][1].value;
       nameList.postalCode = user.request.demographicDetails.identity.postalCode;
       nameList.registrationCenter = regCenterInfo;
       this.names.push(nameList);
@@ -306,7 +302,7 @@ export class TimeSelectionComponent
       element.displayDate = Utils.getBookingDateTime(
         element.date,
         "",
-        this.primaryLangCode
+        this.userPreferredLangCode
       );
       let index = new Date(Date.parse(element.date)).getDay();
       element.displayDay = this.DAYS[index];
@@ -364,6 +360,7 @@ export class TimeSelectionComponent
         }
       },
       (error) => {
+        console.log(error);
         this.displayMessage("Error", this.errorlabels.error, error);
       }
     );
@@ -436,14 +433,14 @@ export class TimeSelectionComponent
         case: "CONFIRMATION",
         title: "",
         message:
-          this.secondaryLanguagelabels.deletedApplicant1[0] +
+          this.languagelabels.deletedApplicant1[0] +
           ' - "' +
           this.getNames() +
           ' ". ' +
-          this.secondaryLanguagelabels.deletedApplicant1[1] +
+          this.languagelabels.deletedApplicant1[1] +
           "?",
-        yesButtonText: this.secondaryLanguagelabels.yesButtonText,
-        noButtonText: this.secondaryLanguagelabels.noButtonText,
+        yesButtonText: this.languagelabels.yesButtonText,
+        noButtonText: this.languagelabels.noButtonText,
       };
       const dialogRef = this.dialog.open(DialougComponent, {
         width: "350px",
@@ -470,8 +467,8 @@ export class TimeSelectionComponent
         if (response[appConstants.RESPONSE]) {
           const data = {
             case: "MESSAGE",
-            title: this.secondaryLanguagelabels.title_success,
-            message: this.secondaryLanguagelabels.msg_success,
+            title: this.languagelabels.title_success,
+            message: this.languagelabels.msg_success,
           };
           this.dialog
             .open(DialougComponent, {
@@ -481,9 +478,6 @@ export class TimeSelectionComponent
             .afterClosed()
             .subscribe(() => {
               this.temp.forEach((name) => {
-                const booking = this.bookingDataList.filter(
-                  (element) => element.preRegistrationId === name.preRegId
-                );
               });
               this.bookingService.setSendNotification(true);
               const url = Utils.getURL(this.router.url, "summary", 3);
@@ -560,11 +554,11 @@ export class TimeSelectionComponent
         this.canDeactivateFlag = false;
         if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/multiappointment/pick-center`
+            `${this.userPreferredLangCode}/pre-registration/booking/multiappointment/pick-center`
           );
         } else {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+            `${this.userPreferredLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
           );
         }
       }
@@ -572,11 +566,11 @@ export class TimeSelectionComponent
         this.canDeactivateFlag = false;
         if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/multiappointment/pick-center`
+            `${this.userPreferredLangCode}/pre-registration/booking/multiappointment/pick-center`
           );
         } else {
           this.router.navigateByUrl(
-            `${this.primaryLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+            `${this.userPreferredLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
           );
         }
       }
@@ -594,7 +588,7 @@ export class TimeSelectionComponent
 
   navigateDashboard() {
     this.canDeactivateFlag = false;
-    this.router.navigate([`${this.primaryLangCode}/dashboard`]);
+    this.router.navigate([`${this.userPreferredLangCode}/dashboard`]);
   }
 
   navigateBack() {

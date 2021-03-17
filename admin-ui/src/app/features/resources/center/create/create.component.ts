@@ -80,7 +80,7 @@ export class CreateComponent {
 
   holidayDate: any;
   minDate = new Date();
-
+  locCode = 0;
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -110,7 +110,12 @@ export class CreateComponent {
     this.loadLocationData('MOR', 'region');
   }
 
+  lessThanEqual(locCode, index){
+    return index <= locCode;
+  }
+
   initializeComponent() {
+    this.locCode = 3;
     this.days = appConstants.days[this.primaryLang];
     this.secondaryDays = appConstants.days[this.secondaryLang];
     this.activatedRoute.params.subscribe(params => {
@@ -226,6 +231,24 @@ export class CreateComponent {
 
   updateData() {
     this.createUpdate = true;
+    let locationCode, secondaryLocationCode = "";
+    if(1 == this.locCode){
+      locationCode = this.primaryForm.controls.region.value;
+      secondaryLocationCode = this.secondaryForm.controls.region.value;
+    }else if(2 == this.locCode){
+      locationCode = this.primaryForm.controls.province.value;
+      secondaryLocationCode = this.secondaryForm.controls.province.value;
+    }else if(3 == this.locCode){
+      locationCode = this.primaryForm.controls.city.value;
+      secondaryLocationCode = this.secondaryForm.controls.city.value;
+    }else if(4 == this.locCode){
+      locationCode = this.primaryForm.controls.laa.value;
+      secondaryLocationCode = this.secondaryForm.controls.laa.value;
+    }else if(5 == this.locCode){
+      locationCode = this.primaryForm.controls.postalCode.value;
+      secondaryLocationCode = this.secondaryForm.controls.postalCode.value;
+    }
+
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -238,7 +261,7 @@ export class CreateComponent {
       this.primaryForm.controls.holidayZone.value,
       this.primaryLang,
       this.primaryForm.controls.latitude.value,
-      this.primaryForm.controls.postalCode.value,
+      locationCode,
       this.primaryForm.controls.longitude.value,
       Utils.convertTime(this.primaryForm.controls.lunchEndTime.value),
       Utils.convertTime(this.primaryForm.controls.lunchStartTime.value),
@@ -266,7 +289,7 @@ export class CreateComponent {
       this.secondaryForm.controls.holidayZone.value,
       this.secondaryLang,
       this.secondaryForm.controls.latitude.value,
-      this.secondaryForm.controls.postalCode.value,
+      secondaryLocationCode,
       this.secondaryForm.controls.longitude.value,
       Utils.convertTime(this.secondaryForm.controls.lunchEndTime.value),
       Utils.convertTime(this.secondaryForm.controls.lunchStartTime.value),
@@ -371,6 +394,24 @@ export class CreateComponent {
 
   saveData() {
     this.createUpdate = true;
+    let locationCode, secondaryLocationCode = "";
+    if(1 == this.locCode){
+      locationCode = this.primaryForm.controls.region.value;
+      secondaryLocationCode = this.secondaryForm.controls.region.value;
+    }else if(2 == this.locCode){
+      locationCode = this.primaryForm.controls.province.value;
+      secondaryLocationCode = this.secondaryForm.controls.province.value;
+    }else if(3 == this.locCode){
+      locationCode = this.primaryForm.controls.city.value;
+      secondaryLocationCode = this.secondaryForm.controls.city.value;
+    }else if(4 == this.locCode){
+      locationCode = this.primaryForm.controls.laa.value;
+      secondaryLocationCode = this.secondaryForm.controls.laa.value;
+    }else if(5 == this.locCode){
+      locationCode = this.primaryForm.controls.postalCode.value;
+      secondaryLocationCode = this.secondaryForm.controls.postalCode.value;
+    }
+
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
       this.primaryForm.controls.addressLine2.value,
@@ -383,7 +424,7 @@ export class CreateComponent {
       this.primaryForm.controls.holidayZone.value,
       this.primaryLang,
       this.primaryForm.controls.latitude.value,
-      this.primaryForm.controls.postalCode.value,
+      locationCode,
       this.primaryForm.controls.longitude.value,
       Utils.convertTime(this.primaryForm.controls.lunchEndTime.value),
       Utils.convertTime(this.primaryForm.controls.lunchStartTime.value),
@@ -410,7 +451,7 @@ export class CreateComponent {
       this.secondaryForm.controls.holidayZone.value,
       this.secondaryLang,
       this.secondaryForm.controls.latitude.value,
-      this.secondaryForm.controls.postalCode.value,
+      secondaryLocationCode,
       this.secondaryForm.controls.longitude.value,
       Utils.convertTime(this.secondaryForm.controls.lunchEndTime.value),
       Utils.convertTime(this.secondaryForm.controls.lunchStartTime.value),
@@ -724,6 +765,20 @@ export class CreateComponent {
   }
 
   initializePrimaryForm() {
+
+    let regionReq = [], provinceReq = [], cityReq = [], laaReq = [], postalCodeReq = [];
+    if(1 <= this.locCode){
+      regionReq = [Validators.required];
+    }if(2 <= this.locCode){
+      provinceReq = [Validators.required];
+    }if(3 <= this.locCode){
+      cityReq = [Validators.required];
+    }if(4 <= this.locCode){
+      laaReq = [Validators.required];
+    }if(5 <= this.locCode){
+      postalCodeReq = [Validators.required];
+    }
+
     this.primaryForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(128)]],
       centerTypeCode: ['', [Validators.required]],
@@ -740,11 +795,11 @@ export class CreateComponent {
       addressLine1: ['', [Validators.required, Validators.maxLength(256)]],
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
-      region: ['', [Validators.required]],
-      province: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      laa: ['', [Validators.required]],
-      postalCode: ['', [Validators.required]],
+      region: ['', regionReq],
+      province: ['', provinceReq],
+      city: ['', cityReq],
+      laa: ['', laaReq],
+      postalCode: ['', postalCodeReq],
       zone: ['', [Validators.required]],
       holidayZone: ['', [Validators.required]],
       workingHours: [{ value: '', disabled: true }],
@@ -807,6 +862,7 @@ export class CreateComponent {
   submit() {
     if (!this.disableForms) {
       this.auditService.audit(17, 'ADM-097');
+      console.log("this.primaryForm.valid>>>"+this.primaryForm.valid);
       if (this.primaryForm.valid) {
         for (const i in this.secondaryForm.controls) {
           if (this.secondaryForm.controls[i]) {
@@ -844,6 +900,7 @@ export class CreateComponent {
 
   getStubbedData() {
     this.getRegistrationCenterTypes();
+    this.getLocationHierarchyLevels();
     this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
       if (response.response.locations) {
         this.dropDownValues.holidayZone.primary =
@@ -855,6 +912,15 @@ export class CreateComponent {
         this.dropDownValues.holidayZone.secondary =
         response.response.locations;
       }
+    });
+  }
+
+  getLocationHierarchyLevels() {
+    this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
+      console.log("response.response.locationHierarchyLevels.primary>>>"+response.response.locationHierarchyLevels);
+    });
+    this.dataStorageService.getLocationHierarchyLevels(this.secondaryLang).subscribe(response => {
+      console.log("response.response.locationHierarchyLevels.secondary>>>"+response.response.locationHierarchyLevels);
     });
   }
 
@@ -894,6 +960,7 @@ export class CreateComponent {
   }
 
   calculateWorkingHours() {
+    console.log("calculateWorkingHours>>>>");
     if (
       this.primaryForm.controls.startTime.value &&
       this.primaryForm.controls.endTime.value
@@ -938,6 +1005,7 @@ export class CreateComponent {
           const endIndex = x.indexOf(this.primaryForm.controls.endTime.value);
           this.dropDownValues.lunchStartTime = x.slice(startIndex, endIndex);
         }
+        console.log("this.dropDownValues.lunchStartTime>>>"+this.dropDownValues.lunchStartTime);
       } else if (fieldName === 'lunchEndTime') {
         const x = [...this.allSlots];
         const endIndex = x.indexOf(this.primaryForm.controls.endTime.value);
@@ -966,11 +1034,17 @@ export class CreateComponent {
   }
 
   loadLocationDropDownsForUpdate(data: any) {
-    this.loadLocationData('MOR', 'region');
-    this.loadLocationData(data.regionCode, 'province');
-    this.loadLocationData(data.provinceCode, 'city');
-    this.loadLocationData(data.cityCode, 'laa');
-    this.loadLocationData(data.administrativeZoneCode, 'postalCode');
+    if(1 <= this.locCode){
+      this.loadLocationData('MOR', 'region');
+    }if(2 <= this.locCode){
+      this.loadLocationData(data.regionCode, 'province');
+    }if(3 <= this.locCode){
+      this.loadLocationData(data.provinceCode, 'city');
+    }if(4 <= this.locCode){
+      this.loadLocationData(data.cityCode, 'laa');
+    }if(5 <= this.locCode){
+      this.loadLocationData(data.administrativeZoneCode, 'postalCode');
+    }
   }
 
   scrollPage(

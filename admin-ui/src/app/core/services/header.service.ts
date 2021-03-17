@@ -8,6 +8,7 @@ export class HeaderService {
   private Username = '';
   private roles = '';
   private zone = '';
+  private displayUserName = '';
 
   constructor() { }
 
@@ -39,6 +40,14 @@ export class HeaderService {
 
   getZone(): string {
     return this.zone;
+  }
+
+  setDisplayUserName(displayUserName: string) {
+    this.displayUserName = displayUserName;
+  }
+
+  getDisplayUserName(): string {
+    return this.displayUserName;
   }
 }
 

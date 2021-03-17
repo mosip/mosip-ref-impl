@@ -1,8 +1,8 @@
 <img src="assets/ajax-loader.gif" *ngIf="disableNavigation" class="loader" />
-<div class="spinner" *ngIf="!users[0] && LOD.length > 0" >
+<div  class="spinner" *ngIf="!users[0] && LOD.length > 0" >
   <mat-spinner></mat-spinner>
 </div>
-<div class="file-upload" *ngIf="users[0]" >
+<div [dir]="textDir" class="file-upload" *ngIf="users[0]" >
   <div class="file-uploaad__header">{{ 'documents.title_document' | translate }}</div>
   <div class="file-upload__message">
     {{ 'documents.text_filetype' | translate }} : {{ allowedFilesHtml }} &nbsp;{{

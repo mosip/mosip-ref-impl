@@ -324,23 +324,9 @@
       "alertMessageThird": "ستتم إعادة توجيهك إلى صفحة المعاينة بسبب عدم قبول الشروط والأحكام"
     },
     "validation": {
-      "name_required": "الإسم الكامل ضروري",
-      "age_validation": "يجب أن يكون العمر أقل من 150",
-      "gender_validation": "يرجى تحديد الجنس",
-      "nationality_validation": "يرجى اختيار حالة الإقامة",
       "DOB_validation": "أدخل تاريخ الميلاد أو العمر الصحيح",
-      "date_required": "مطلوب رقمين التاريخ",
-      "month_required": "أدخل رقمين رقميين للشهر",
-      "year_required": "أدخل رقمين رقميين للسنة",
-      "address_required": "العنوان مطلوب",
-      "region_required": "يرجى اختيار المنطقة",
-      "province_required": "يرجى اختيار مقاطعة",
-      "city_required": "يرجى اختيار المدينة",
-      "admin_required": "يرجى اختيار المنطقة",
-      "postal_code_required": "الرجاء إدخال رمز بريدي صالح",
-      "mobile_required": "يرجى إدخال رقم هاتف محمول صحيح",
-      "email_required": "الرجاء إدخال معرف البريد الإلكتروني الصحيح",
-      "pin_required": "الرجاء إدخال رقم هوية مرجعي صالح"
+      "requiredMessage":"مطلوب",
+      "InvalidMessage":"غير صالح"
     }
   },
 
@@ -362,13 +348,14 @@
     "message": "تم إرسال تفاصيل هوية وتاريخ Pre-Registration إلى معرف البريد الإلكتروني المسجل ورقم الهاتف",
     "label_name": "اسم",
     "label_pre_id": "معرف التسجيل المسبق",
-    "label_reg_cntr": "مركز التسجيل",
+    "label_reg_cntr": "اسم المركز",
     "label_cntr_contact_number": "رقم مركز الاتصال",
     "label_appointment_date_time": "موعد ووقت الموعد",
     "container_guideline": "المبادئ التوجيهية الهامة",
     "action_send": "إرسال EMAIL / SMS",
     "action_download": "تحميل PDF",
-    "action_print": "طباعة"
+    "action_print": "طباعة",
+    "label_reg_cntr_dtl": "عنوان المركز"
   },
   "preview": {
     "title_preview": "معاينة",
@@ -470,6 +457,13 @@
     "error": {
       "error": "خطأ في الخادم الداخلي. من فضلك حاول مرة أخرى بعد بعض من الوقت.",
       "button_ok": "حسنا"
+    },
+    "dataCaptureLanguage":{
+      "title":"اختار اللغة",
+      "message":["الرجاء التحديد","يمكنك تحديد الحد الأدنى "," والحد الأقصى","لغات لإدخال البيانات.","إلزامي للمقيم للاختيار وفقًا لإرشادات الحكومة.","سيؤدي ترتيب الاختيار إلى عرض صفحة للبيانات الديموغرافية."],
+      "error_text":["يمكنك الاختيار على الأكثر","لغات لإدخال البيانات."],
+      "cancel_btn":"يلغي",
+      "submit_btn":"يقدم"
     }
   },
   "timeSelection": {
@@ -526,7 +520,7 @@
     "action_add": "إضافة",
     "action_close": "قريب",
     "action_add_to_slot": "أضف إلى الفتحة",
-    "navigation_alert": "Are you sure you would like to navigate away as data entered will not be saved. Please confirm(ARA)"
+    "navigation_alert": "هل أنت متأكد من رغبتك في التنقل بعيدًا حيث لن يتم حفظ البيانات التي تم إدخالها. يرجى تأكيد"
   },
   "centerSelection": {
     "title": " موعد الكتاب ",
