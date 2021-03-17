@@ -170,7 +170,7 @@ export class DemographicComponent
     this.config = this.configService.getConfig();
     this.getPrimaryLabels();
     await this.getConsentMessage();
-    this.validationMessage = appConstants.errorMessages;
+    // this.validationMessage = appConstants.errorMessages;
     this.initForm();
     await this.setFormControlValues();
     if (!this.dataModification) {

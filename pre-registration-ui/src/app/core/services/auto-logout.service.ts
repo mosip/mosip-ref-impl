@@ -152,7 +152,8 @@ export class AutoLogoutService {
   openPopUp() {
     const data = {
       case: 'POPUP',
-      content: this   };
+      content: this.languagelabels.preview   
+    };
     this.dialogref = this.dialog.open(DialougComponent, {
       width: '550px',
       data: data

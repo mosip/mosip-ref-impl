@@ -182,7 +182,7 @@
                           userForm.get(field.id + '_' + dataCaptureLanguage).hasError('required') &&
                           userForm.get(field.id + '_' + dataCaptureLanguage).touched">
                           {{ field.labelName[dataCaptureLanguage] }}
-                          {{ validationMessage.requiredMessage[dataCaptureLanguage] }}
+                          {{dataCaptureLanguage | validationMessage:'requiredMessage' | async }}
                         </mat-error>
                         <mat-error class="primary-errors" *ngIf="
                           primaryuserForm &&
@@ -190,8 +190,8 @@
                           userForm.get(field.id + '_' + dataCaptureLanguage).touched &&
                           userForm.get(field.id + '_' + dataCaptureLanguage).dirty &&
                           userForm.get(field.id + '_' + dataCaptureLanguage).hasError('pattern')">
-                          {{ validationMessage.InvalidStringMessage[dataCaptureLanguage] }}
                           {{ field.labelName[dataCaptureLanguage] }}
+                          {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                         </mat-error>
                       </span>
                       <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown' 
@@ -204,7 +204,7 @@
                           userForm.get(field.id).hasError('required') &&
                           userForm.get(field.id).touched">
                             {{ field.labelName[dataCaptureLanguage] }}
-                            {{ validationMessage.requiredMessage[dataCaptureLanguage] }}
+                            {{dataCaptureLanguage | validationMessage:'requiredMessage' | async }}
                           </mat-error>
                           <mat-error class="primary-errors" *ngIf="
                           primaryuserForm &&
@@ -212,8 +212,8 @@
                           userForm.get(field.id).touched &&
                           userForm.get(field.id).dirty &&
                           userForm.get(field.id).hasError('pattern')">
-                            {{ validationMessage.InvalidStringMessage[dataCaptureLanguage] }}
                             {{ field.labelName[dataCaptureLanguage] }}
+                            {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                           </mat-error>
                         </span>
                       </span>

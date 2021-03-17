@@ -326,23 +326,9 @@
       "alertMessageThird": "Vous serez redirigé vers la page de prévisualisation car vous n'acceptez pas les conditions générales."
     },
     "validation": {
-      "name_required": "Le nom complet est requis",
-      "age_validation": "L'âge devrait être inférieur à 150",
-      "gender_validation": "S'il vous plaît sélectionner le sexe",
-      "nationality_validation": "Veuillez sélectionner le statut de résidence",
       "DOB_validation": "Entrez la date de naissance ou l'âge valide",
-      "date_required": "Entrez 2 chiffres pour la date",
-      "month_required": "Entrez 2 chiffres pour le mois",
-      "year_required": "Entrez 4 chiffres pour l'année",
-      "address_required": "L'adresse est obligatoire",
-      "region_required": "Veuillez sélectionner une région",
-      "province_required": "Veuillez sélectionner une province",
-      "city_required": "Veuillez sélectionner une ville",
-      "admin_required": "Veuillez sélectionner zone",
-      "postal_code_required": "Veuillez entrer un code postal valide",
-      "mobile_required": "Veuillez entrer un numéro de téléphone valide",
-      "email_required": "S'il vous plaît entrer email id valide",
-      "pin_required": "Veuillez entrer un numéro d’identité de référence valide"
+      "requiredMessage":"Est requis",
+      "InvalidMessage":"Est invalide"
     }
   },
   "documents": {
