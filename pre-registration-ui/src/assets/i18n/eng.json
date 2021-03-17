@@ -323,23 +323,9 @@
       "alertMessageThird": "You will be redirected to ‘Preview Page’ due to not accepting Terms & Conditions"
     },
     "validation": {
-      "name_required": "Please enter valid name",
-      "age_validation": "Age should be less than 150",
-      "gender_validation": "Please select gender",
-      "nationality_validation": "Please select Residence Status",
       "DOB_validation": "Enter Valid date of birth or age",
-      "date_required": "Enter 2 numeric digits for date",
-      "month_required": "Enter 2 numeric digits for month",
-      "year_required": "Enter 4 numeric digits for year",
-      "address_required": "Please enter valid address",
-      "region_required": "Please select a Region",
-      "province_required": "Please select a Province",
-      "city_required": "Please select a city",
-      "admin_required": "Please select zone",
-      "postal_code_required": "Please enter valid postalCode",
-      "mobile_required": "Please enter valid mobile number",
-      "email_required": "Please enter valid email id",
-      "pin_required": "Please enter valid Reference Identity Number"
+      "requiredMessage":"Is required",
+      "InvalidMessage":"Is Invalid"
     }
   },
   "documents": {
