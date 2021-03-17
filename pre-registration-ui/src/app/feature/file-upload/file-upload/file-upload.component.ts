@@ -408,7 +408,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   async getApplicantTypeID() {
-    console.log("applicantTypeId");
     let requestDTO: DocumentCategoryDTO = {
       attribute: "",
       value: "",
