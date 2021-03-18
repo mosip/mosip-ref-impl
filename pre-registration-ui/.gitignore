@@ -31,3 +31,4 @@ dist/*
 coverage/*
 .editorconfig
 e2e/*
+proxy.conf.json

@@ -566,6 +566,16 @@ export class DataStorageService {
     return this.httpClient.get(url);
   }
 
+  getDynamicFieldsandValuesForAllLang(pageNumber: string) {
+    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    const url =
+      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      appConstants.APPEND_URL.master_data +
+      `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
+    //console.log(url);
+    return this.httpClient.get(url);
+  }
+
   updateDocRefId(fileDocumentId, preId, docRefId) {
     const url = `${this.BASE_URL}${this.PRE_REG_URL}` +
       `${appConstants.APPEND_URL.updateDocRefId}${fileDocumentId}` +

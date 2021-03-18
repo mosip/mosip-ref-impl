@@ -378,8 +378,8 @@ export class DemographicComponent
         console.log(this.dynamicFields);
         this.setDropDownArrays();
         this.setLocations();
-        this.setGender();
-        this.setResident();
+        // this.setGender();
+        // this.setResident();
         this.setDynamicFieldValues();
         resolve(true);
       });
@@ -810,16 +810,22 @@ export class DemographicComponent
   }
 
   private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues(this.primaryLang);
-    if (this.primaryLang !== this.secondaryLang) {
-      await this.getDynamicFieldValues(this.secondaryLang);
-    }
+    await this.getDynamicFieldValues();
+    // if (this.primaryLang !== this.secondaryLang) {
+    //   await this.getDynamicFieldValues(this.secondaryLang);
+    // }
   }
 
-  getDynamicFieldValues(lang) {
+  getDynamicFieldValues(pageNo = 0) {
+    let pageNumber;
+    if (pageNo > 0) {
+      pageNumber = 0;
+    } else {
+      pageNumber = pageNo;
+    }
     return new Promise((resolve) => {
       this.dataStorageService
-        .getDynamicFieldsandValues(lang)
+        .getDynamicFieldsandValuesForAllLang(pageNumber)
         .subscribe((response) => {
           //console.log(response);
           let dynamicField = response[appConstants.RESPONSE]["data"];
@@ -836,7 +842,6 @@ export class DemographicComponent
                 );
                 //console.log(this.primarydropDownFields);
               }
-              if (this.primaryLang !== this.secondaryLang) {
                 if (
                   field.id === res.name &&
                   res.langCode === this.secondaryLang
@@ -847,9 +852,16 @@ export class DemographicComponent
                     res["fieldVal"]
                   );
                 }
-              }
             });
           });
+          let totalPages = response[appConstants.RESPONSE]["totalPages"];
+          if (totalPages) {
+            totalPages = Number(totalPages);
+          }
+          pageNumber = pageNumber + 1;
+          if (totalPages > pageNumber) {
+            this.getDynamicFieldValues(pageNumber);
+          }
         });
       resolve(true);
     });
