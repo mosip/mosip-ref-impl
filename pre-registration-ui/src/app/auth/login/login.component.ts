@@ -8,6 +8,7 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { RegistrationService } from "src/app/core/services/registration.service";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "../../app.constants";
+import Utils from "src/app/app.util";
 import stubConfig from "../../../assets/stub-config.json";
 
 @Component({
@@ -69,22 +70,22 @@ export class LoginComponent implements OnInit {
     localStorage.clear();
   }
 
-  ngOnInit() {
-    this.loadDefaultConfig();
-    this.loadConfigs();
+  async ngOnInit() {
+    await this.loadDefaultConfig();
+    await this.loadConfigs();
     if (this.authService.isAuthenticated()) {
       this.authService.onLogout();
     }
     localStorage.setItem("dir", this.dir);
   }
 
-  loadDefaultConfig() {
+  async loadDefaultConfig() {
     this.dataService.getI18NLanguageFiles("default").subscribe((response) => {
       this.LanguageCodelabels = response["languages"];
     });
   }
 
-  loadConfigs() {
+  async loadConfigs() {
     this.dataService.getConfig().subscribe((response) => {
       //response = stubConfig;
       this.configService.setConfig(response);
@@ -123,6 +124,13 @@ export class LoginComponent implements OnInit {
       "availableLanguages",
       JSON.stringify(this.languageSelectionArray)
     );
+    this.languageSelectionArray.forEach(async lan => {
+      let localeId = lan.substring(0, 2);
+      if (localStorage.getItem(localeId) == null) {
+        //console.log(`importing localeId: ${localeId}`);
+        await Utils.localeInitializer(localeId);
+      }  
+    });
     this.prepareDropdownLabelArray();
   }
 
