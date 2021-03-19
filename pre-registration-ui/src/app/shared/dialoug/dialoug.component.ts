@@ -89,13 +89,13 @@ export class DialougComponent implements OnInit {
   }
 
   enableButton(email, mobile) {
-    if (!email.value && !mobile.value) {
+    if (!email&& !mobile) {
       this.disableSend = true;
       this.invalidApplicantEmail = false;
       this.invalidApplicantNumber = false;
-    } else if (email.value && !mobile.value && !this.invalidApplicantEmail)
+    } else if (email && !mobile && !this.invalidApplicantEmail)
       this.disableSend = false;
-    else if (mobile.value && !email.value && !this.invalidApplicantNumber)
+    else if (mobile && !email && !this.invalidApplicantNumber)
       this.disableSend = false;
     else if (!this.invalidApplicantEmail && !this.invalidApplicantNumber)
       this.disableSend = false;
