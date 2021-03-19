@@ -4,7 +4,7 @@ FROM node:12.2.0
 COPY dist .
 # get the pre-registration i18n bundle zip from artifactory
 CMD wget http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip \
-    unzip pre-registration-i18n-bundle.zip -d dist/assets/1i8n 
+    unzip pre-registration-i18n-bundle.zip -d dist/assets/1i8n \ ls
 
 
 FROM nginx
