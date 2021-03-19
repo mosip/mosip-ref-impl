@@ -8,6 +8,7 @@ on:
       - 1.0.*
       - develop
       - 1.1.*
+      - Feature_Multi_lang
   
 jobs:
   build-kernel-ref-idobjectvalidator:
