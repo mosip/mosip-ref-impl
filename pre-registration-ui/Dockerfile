@@ -2,7 +2,7 @@
 FROM node:12.2.0
 
 # get the pre-registration i18n bundle zip from artifactory
-RUN wget http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip
+CMD wget http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip
 COPY dist .
 RUN unzip pre-registration-i18n-bundle.zip -d dist/assets/1i8n 
 
