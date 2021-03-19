@@ -325,7 +325,7 @@
     "validation": {
       "DOB_validation": "Enter Valid date of birth or age",
       "requiredMessage":"Is required",
-      "InvalidMessage":"Is Invalid"
+      "InvalidMessage":"is invalid"
     }
   },
   "documents": {
@@ -339,7 +339,8 @@
     "label_sameas": "Same as",
     "text_or": "OR",
     "action_view": "preiew",
-    "OR": "OR"
+    "OR": "OR",
+    "text_docrefid": "Document Reference Id"
   },
   "acknowledgement": {
     "title": "Appointment Confirmed",
