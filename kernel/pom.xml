@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.4</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>Parent project of MOSIP Kernel for Philippines</description>
@@ -65,7 +65,7 @@
 		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
 		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
 		<maven.surefire.plugin.version>2.9</maven.surefire.plugin.version>
-		<maven.jacoco.plugin.version>0.8.1</maven.jacoco.plugin.version>
+		<maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<maven.javadoc.version>3.2.0</maven.javadoc.version>
 		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
@@ -122,7 +122,7 @@
 		<json.version>20180813</json.version>
 
 		<!-- kernel -->
-		<kernel-core.version>1.1.2</kernel-core.version>
+		<kernel-core.version>1.1.4</kernel-core.version>
 
 		<!-- utilities -->
 		<commons-math3>3.6.1</commons-math3>
@@ -167,6 +167,8 @@
 
 	<modules>
 		<module>kernel-ref-idobjectvalidator</module>
+		<module>kernel-virusscanner-clamav</module>
+		<module>kernel-smsserviceprovider-msg91</module>
 	</modules>
 
 	<dependencies>
@@ -211,14 +213,14 @@
 							</execution>
 					    </executions>
 				</plugin>
-				<plugin>	
-					<groupId>org.apache.maven.plugins</groupId>	
-					<artifactId>maven-compiler-plugin</artifactId>	
-					<version>${maven.compiler.version}</version>	
-					<configuration>	
-						<source>${maven.compiler.source}</source>	
-						<target>${maven.compiler.target}</target>	
-					</configuration>	
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.version}</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
 				</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>

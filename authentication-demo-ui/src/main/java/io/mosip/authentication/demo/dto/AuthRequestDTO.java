@@ -38,8 +38,8 @@ public class AuthRequestDTO extends BaseAuthRequestDTO {
 	/** The value for requestHMAC*/
 	private String requestHMAC;
 	
-	/** The value for keyIndex*/
-	private String keyIndex;
+	/** The value for thumbprint*/
+	private String thumbprint;
 	
 	/** The value for requestSessionKey*/
 	private String requestSessionKey;

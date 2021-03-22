@@ -32,16 +32,17 @@ export const APPEND_URL = {
   location_metadata: 'locations/locationhierarchy/',
   location_immediate_children: 'locations/immediatechildren/',
   applicants: 'applications',
-  location: 'v1/masterdata/',
-  gender: 'v1/masterdata/gendertypes',
-  resident: 'v1/masterdata/individualtypes',
+  location: '/masterdata/',
+  gender: '/masterdata/gendertypes',
+  resident: '/masterdata/individualtypes',
   transliteration: 'transliteration/transliterate',
   //applicantType: 'v1/applicanttype/',
-  applicantType: 'v1/masterdata/',
+  applicantType: '/masterdata/',
   validDocument: 'applicanttype/',
   getApplicantType: 'getApplicantType',
   post_document: 'documents/',
   document: 'documents/preregistration/',
+  updateDocRefId: 'documents/document/',
   document_copy: 'document/documents/copy',
   nearby_registration_centers: 'getcoordinatespecificregistrationcenters/',
   registration_centers_by_name: 'registrationcenters/',
@@ -51,7 +52,7 @@ export const APPEND_URL = {
   qr_code: 'qrCode/generate',
   notification: 'notification/',
   send_notification: 'notify',
-  master_data: 'v1/masterdata/',
+  master_data: '/masterdata/',
   auth: 'login/',
   cancelAppointment: 'appointment/',
   captcha:'captcha/validatecaptcha'
@@ -69,7 +70,8 @@ export const PARAMS_KEYS = {
   getAvailabilityData: 'registration_center_id',
   catCode: 'catCode',
   sourcePrId: 'sourcePrId',
-  POA: 'POA'
+  POA: 'POA',
+  docRefId: 'docRefId'
 };
 
 export const ERROR_CODES = {
@@ -116,7 +118,8 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
   google_recaptcha_site_key: 'google.recaptcha.site.key',
   mosip_adult_age:'mosip.adult.age',
-  mosip_idschema_version:'mosip.idschema.version'
+  mosip_idschema_version:'mosip.idschema.version',
+  preregistration_preview_fields:'preregistration.preview.fields'
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {
@@ -180,7 +183,6 @@ export const notificationDtoKeys = {
   file: 'attachment'
 };
 
-export const previewFields = ['region', 'province', 'city', 'zone', 'gender', 'residenceStatus'];
 
 export const DOCUMENT_UPLOAD_REQUEST_DOCUMENT_KEY = 'file';
 export const DOCUMENT_UPLOAD_REQUEST_DTO_KEY = 'Document request';

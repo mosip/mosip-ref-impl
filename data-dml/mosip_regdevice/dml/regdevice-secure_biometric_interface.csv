@@ -1,0 +1,4 @@
+﻿id,sw_binary_hash,sw_version,device_detail_id,sw_cr_dtimes,sw_expiry_dtimes,approval_status,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+618856c8-43fc-4e01-9d9b-67d20a07b352,binary data,0.9.5,mdevice_detail_default_finger,now(),10/1/2021 12:03,Activated,TRUE,superadmin,now(),superadmin,now()
+5fbe45ac-b4dc-4523-b368-c38f46633662,binary data,0.9.5,mdevice_detail_default_face,now(),10/1/2021 12:03,Activated,TRUE,superadmin,now(),superadmin,now()
+d2479cf1-4c63-420e-9480-105e744caa99,binary data,0.9.5,mdevice_detail_default_iris,now(),10/1/2021 12:03,Activated,TRUE,superadmin,now(),superadmin,now()

@@ -1,0 +1,53 @@
+<ng-container>
+<span><h3 class="header">Get Certificate</h3></span>
+<!-- <div id="flex-single-view" style="padding-top: 12px;">
+<div id="flex-container">
+<div id="myDiv" class="flex-body">
+  <mat-card>
+    <mat-card-content class="forms-container">
+      <div class="primary-form"> 
+        <mat-form-field>
+          <input
+            #applicationId
+            matInput
+            formControlName="applicationId"
+            placeholder="ApplicationId"
+            [value]=""
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            #referenceId
+            matInput
+            formControlName="referenceId"
+            placeholder="ReferenceId"
+            [value]=""
+          />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>
+</div> -->
+<mat-card class="mat-elevation-z5">
+  <app-toolbar
+    *ngIf="
+      actionEllipsis && actionEllipsis  && paginatorOptions
+    "
+    [buttonList]="actionEllipsis"
+    [paginationOptions]="paginatorOptions"
+    [filtersAppliedFlag]="filtersApplied"
+    (pageEvent)="pageEvent($event)"
+  ></app-toolbar>
+  <app-table
+    *ngIf="datas && displayedColumns && actionButtons"
+    [data]="datas"
+    [displayedColumns]="displayedColumns"
+    [buttonList]="actionButtons"
+    [sortData]="sortFilter"
+    [noDataFlag]="noData"
+  ></app-table>
+</mat-card>
+</ng-container>
+<!-- <ng-template #nodata><mat-spinner class="spinner-placer"></mat-spinner></ng-template> -->

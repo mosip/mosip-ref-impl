@@ -55,7 +55,7 @@
     {
       "name": "timeStamp",
       "showInListView": "",
-      "label": {"eng": "Data Time", "ara": "هاتف مُتَكَون", "fra": "Téléphone Contact"},
+      "label": {"eng": "Date Time", "ara": "هاتف مُتَكَون", "fra": "Téléphone Contact"},
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",

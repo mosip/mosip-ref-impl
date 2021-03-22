@@ -17,12 +17,19 @@
         <form [formGroup]="userForm" class="user__form">
           <h4>{{ "demographic.language" | translate }}</h4>
           <ng-container *ngFor="let field of uiFields">
-            <ng-container *ngIf="field.controlType === 'textbox'">
+            <ng-container *ngIf="field.controlType === 'textbox' && field.isVisible == true">
               <mat-form-field [ngClass]="'text-field'">
-                <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+                <mat-label
+                  >{{ field.labelName[primaryLang] }}
+                  <span *ngIf="field.required" class="required-annotation"
+                    >*</span
+                  ></mat-label
+                >
+
                 <input
                   matInput
                   formControlName="{{ field.id }}"
+                  (change)="showHideFormFields()"
                   (focusout)="copyToSecondaryFormNonDropDown(field.id, $event)"
                   (input)="copyToSecondaryFormNonDropDown(field.id, $event)"
                   #keyboardRef
@@ -30,14 +37,19 @@
                 />
               </mat-form-field>
             </ng-container>
-            <ng-container *ngIf="field.controlType === 'dropdown'">
+            <ng-container *ngIf="field.controlType === 'dropdown' && field.isVisible == true">
               <mat-form-field [ngClass]="'dropdown-field'">
-                <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+                <mat-label
+                  >{{ field.labelName[primaryLang]
+                  }}<span *ngIf="field.required" class="required-annotation"
+                    >*</span
+                  ></mat-label
+                >
                 <mat-select
                   formControlName="{{ field.id }}"
-                  (focus)="dropdownApiCall(field)"
+                  (focus)="dropdownApiCall(field)"               
                   (selectionChange)="
-                    copyDataToSecondaryForm(
+                      copyDataToSecondaryForm(
                       field.id,
                       userForm.get(field.id).value
                     )
@@ -60,14 +72,14 @@
                   <mat-option
                     *ngFor="let dropdown of primarydropDownFields[field.id]"
                     [value]="dropdown.valueCode"
-                    (click)="resetLocationFields(field.id)"
+                    (click)="resetLocationFields(field.id);showHideFormFields();"
                   >
                     {{ dropdown.valueName }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </ng-container>
-            <ng-container *ngIf="field.controlType === 'date'">
+            <ng-container *ngIf="field.controlType === 'date' && field.isVisible == true">
               <!-- <mat-form-field [ngClass]="'date-field'">
                 <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
                 <input
@@ -89,7 +101,13 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field> -->
               <br />
-              <mat-label>{{ field.labelName[primaryLang] }}</mat-label>
+              <mat-label
+                >{{ field.labelName[primaryLang] }}
+                <span *ngIf="field.required" class="required-annotation"
+                  >*</span
+                ></mat-label
+              >
+
               <div class="user__age-or-date">
                 <div class="user__date">
                   <mat-form-field>
@@ -98,6 +116,7 @@
                       placeholder="{{ 'demographic.date_dd' | translate }}"
                       #dd
                       [value]="date"
+                      (change)="showHideFormFields()"
                       (focusout)="onDOBChange()"
                     />
                   </mat-form-field>
@@ -108,6 +127,7 @@
                       [value]="month"
                       #mm
                       (focusout)="onDOBChange()"
+                      (change)="showHideFormFields()"
                     />
                   </mat-form-field>
                   <mat-form-field>
@@ -117,6 +137,7 @@
                       [value]="year"
                       #yyyy
                       (focusout)="onDOBChange()"
+                      (change)="showHideFormFields()"
                     />
                   </mat-form-field>
                 </div>
@@ -131,6 +152,7 @@
                       placeholder="{{ 'demographic.label_age' | translate }}"
                       [value]="currentAge"
                       #age
+                      (change)="showHideFormFields()"
                       (focusout)="onAgeChange()"
                     />
                   </mat-form-field>
@@ -186,9 +208,14 @@
         <form [formGroup]="transUserForm" class="user__form">
           <h4>{{ secondaryLanguagelabels.language }}</h4>
           <ng-container *ngFor="let field of uiFields">
-            <ng-container *ngIf="field.controlType === 'textbox'">
+            <ng-container *ngIf="field.controlType === 'textbox' && field.isVisible == true">
               <mat-form-field [ngClass]="'text-field'">
-                <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+                <mat-label
+                  >{{ field.labelName[secondaryLang] }}
+                  <span *ngIf="field.required" class="required-annotation"
+                    >*</span
+                  ></mat-label
+                >
                 <input
                   matInput
                   formControlName="{{ field.id }}"
@@ -196,9 +223,14 @@
                 />
               </mat-form-field>
             </ng-container>
-            <ng-container *ngIf="field.controlType === 'dropdown'">
+            <ng-container *ngIf="field.controlType === 'dropdown' && field.isVisible == true">
               <mat-form-field [ngClass]="'dropdown-field'">
-                <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+                <mat-label
+                  >{{ field.labelName[secondaryLang] }}
+                  <span *ngIf="field.required" class="required-annotation"
+                    >*</span
+                  ></mat-label
+                >
                 <mat-select
                   formControlName="{{ field.id }}"
                   #dropdown
@@ -222,7 +254,7 @@
                 </mat-select>
               </mat-form-field>
             </ng-container>
-            <ng-container *ngIf="field.controlType === 'date'">
+            <ng-container *ngIf="field.controlType === 'date' && field.isVisible == true">
               <!-- <mat-form-field >
               <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
               <input
@@ -233,7 +265,13 @@
               />
             </mat-form-field> -->
               <br />
-              <mat-label>{{ field.labelName[secondaryLang] }}</mat-label>
+              <mat-label
+                >{{ field.labelName[secondaryLang]
+                }}<span *ngIf="field.required" class="required-annotation"
+                  >*</span
+                ></mat-label
+              >
+
               <div class="user__age-or-date">
                 <div class="user__date">
                   <mat-form-field>

@@ -1,16 +1,20 @@
 package io.mosip.authentication.demo.service;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +32,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -37,6 +43,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -64,13 +72,16 @@ import io.mosip.authentication.demo.dto.AuthTypeDTO;
 import io.mosip.authentication.demo.dto.CryptomanagerRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionResponseDto;
+import io.mosip.authentication.demo.dto.JWTSignatureRequestDto;
+import io.mosip.authentication.demo.dto.JWTSignatureResponseDto;
 import io.mosip.authentication.demo.dto.OtpRequestDTO;
 import io.mosip.authentication.demo.dto.RequestDTO;
 import io.mosip.authentication.demo.helper.CryptoUtility;
 import io.mosip.kernel.core.http.RequestWrapper;
+import io.mosip.kernel.core.http.ResponseWrapper;
 import io.mosip.kernel.core.util.CryptoUtil;
 import io.mosip.kernel.core.util.DateUtils;
-import io.mosip.kernel.core.util.HMACUtils;
+import io.mosip.kernel.core.util.HMACUtils2;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -93,10 +104,14 @@ import javafx.scene.text.Font;
 @Component
 public class IdaController {
 
+	private static final String DEFAULT_SUBID = "0";
+
 	@Autowired
 	private Environment env;
-
-	private static final String ASYMMETRIC_ALGORITHM_NAME = "RSA";
+	
+	/** The sign refid. */
+	@Value("${mosip.sign.refid:SIGN}")
+	private String signRefid;
 
 	private static final String SSL = "SSL";
 
@@ -379,21 +394,25 @@ public class IdaController {
 	
 	
 	private String getFingerDeviceSubId() {
-		return "0";
+		return env.getProperty("finger.device.subid",DEFAULT_SUBID);
 	}
 	
 	private String getIrisDeviceSubId() {
-		if(irisCount.getSelectionModel().getSelectedIndex() == 0) {
-			return String.valueOf(1);
-		} else if(irisCount.getSelectionModel().getSelectedIndex() == 1) {
-			return String.valueOf(2);
-		} else {
-			return String.valueOf(3);
+		String irisSubId = env.getProperty("iris.device.subid");
+		if(irisSubId == null) {
+			if(irisCount.getSelectionModel().getSelectedIndex() == 0) {
+				irisSubId = String.valueOf(1);
+			} else if(irisCount.getSelectionModel().getSelectedIndex() == 1) {
+				irisSubId = String.valueOf(2);
+			} else {
+				irisSubId = String.valueOf(3);
+			}
 		}
+		return irisSubId;
 	}
 
 	private String getFaceDeviceSubId() {
-		return "0";
+		return env.getProperty("face.device.subid",DEFAULT_SUBID);
 	}
 	
 	private String captureIris() throws Exception {
@@ -515,7 +534,7 @@ public class IdaController {
 			Map e = (Map) data.get(j);			
 			Map errorMap = (Map) e.get("error");
 			error = errorMap.get("errorCode").toString();		
-			if (error.equals("0")) {
+			if (error.equals(DEFAULT_SUBID) || error.equals("100")) {
 				responsetextField.setText("Capture Success");
 				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -553,7 +572,11 @@ public class IdaController {
 
 		try {
 			RestTemplate restTemplate = createTemplate();
-			HttpEntity<OtpRequestDTO> httpEntity = new HttpEntity<>(otpRequestDTO);
+			String reqJson = mapper.writeValueAsString(otpRequestDTO);
+			HttpHeaders httpHeaders = new HttpHeaders();
+			httpHeaders.add("signature", getSignature(reqJson));
+			httpHeaders.add("Content-type", MediaType.APPLICATION_JSON_VALUE);
+			HttpEntity<String> httpEntity = new HttpEntity<>(reqJson,httpHeaders);
 			ResponseEntity<Map> response = restTemplate.exchange(
 					env.getProperty("ida.otp.url"),
 					HttpMethod.POST, httpEntity, Map.class);
@@ -574,10 +597,51 @@ public class IdaController {
 				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			}
 
-		} catch (KeyManagementException | NoSuchAlgorithmException e) {
+		} catch (KeyManagementException | NoSuchAlgorithmException | JsonProcessingException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	}	
+
+	private String getSignature(String reqJson) throws KeyManagementException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		return sign(reqJson, false);
+	}
+	
+	public String sign(String data, boolean isPayloadRequired)
+			throws KeyManagementException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		turnOffSslChecking();
+		RestTemplate restTemplate = new RestTemplate();
+		ClientHttpRequestInterceptor interceptor = new ClientHttpRequestInterceptor() {
+
+			@Override
+			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+					throws IOException {
+				String authToken = generateAuthToken();
+				if (authToken != null && !authToken.isEmpty()) {
+					request.getHeaders().set("Cookie", "Authorization=" + authToken);
+				}
+				return execution.execute(request, body);
+			}
+		};
+
+		restTemplate.setInterceptors(Collections.singletonList(interceptor));
+
+		JWTSignatureRequestDto request = new JWTSignatureRequestDto();
+		request.setApplicationId("IDA");
+		request.setDataToSign(CryptoUtil.encodeBase64(data.getBytes("UTF-8")));
+		request.setIncludeCertHash(true);
+		request.setIncludeCertificate(true);
+		request.setIncludePayload(isPayloadRequired);
+		request.setReferenceId(signRefid);
+		RequestWrapper<JWTSignatureRequestDto> requestWrapper = new RequestWrapper<>();
+		requestWrapper.setRequest(request);
+		HttpEntity<RequestWrapper<JWTSignatureRequestDto>> requestEntity = new HttpEntity<>(requestWrapper);
+		ResponseEntity<ResponseWrapper<JWTSignatureResponseDto>> exchange = restTemplate.exchange(
+				env.getProperty("ida.internal.jwtSign.url"), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<ResponseWrapper<JWTSignatureResponseDto>>() {
+				});
+		return exchange.getBody().getResponse().getJwtSignedData();
+	}
+
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
@@ -631,13 +695,20 @@ public class IdaController {
 		authRequestDTO.setConsentObtained(true);
 		authRequestDTO.setId(getAuthRequestId());
 		authRequestDTO.setVersion("1.0");
+		authRequestDTO.setThumbprint(kernelEncrypt.getThumbprint());
 
 		Map<String, Object> authRequestMap = mapper.convertValue(authRequestDTO, Map.class);
 		authRequestMap.replace("request", kernelEncrypt.getEncryptedIdentity());
 		authRequestMap.replace("requestSessionKey", kernelEncrypt.getEncryptedSessionKey());
 		authRequestMap.replace("requestHMAC", kernelEncrypt.getRequestHMAC());
 		RestTemplate restTemplate = createTemplate();
-		HttpEntity<Map> httpEntity = new HttpEntity<>(authRequestMap);
+		
+		String reqJson = mapper.writeValueAsString(authRequestMap);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("signature", getSignature(reqJson));
+		httpHeaders.add("Content-type", MediaType.APPLICATION_JSON_VALUE);
+		HttpEntity<String> httpEntity = new HttpEntity<>(reqJson,httpHeaders);
+		
 		String url = getUrl();
 		System.out.println("Auth URL: " + url);
 		System.out.println("Auth Request : \n" + new ObjectMapper().writeValueAsString(authRequestMap));
@@ -692,20 +763,27 @@ public class IdaController {
 
 		byte[] encryptedIdentityBlock = cryptoUtil.symmetricEncrypt(identityBlock.getBytes(), secretKey);
 		encryptionResponseDto.setEncryptedIdentity(Base64.encodeBase64URLSafeString(encryptedIdentityBlock));
-		String publicKeyStr = getPublicKey(identityBlock, isInternal);
-		PublicKey publicKey = KeyFactory.getInstance(ASYMMETRIC_ALGORITHM_NAME)
-				.generatePublic(new X509EncodedKeySpec(CryptoUtil.decodeBase64(publicKeyStr)));
+		
+		X509Certificate certificate = getCertificate(identityBlock, isInternal);
+		PublicKey publicKey = certificate.getPublicKey();
 		byte[] encryptedSessionKeyByte = cryptoUtil.asymmetricEncrypt((secretKey.getEncoded()), publicKey);
 		encryptionResponseDto.setEncryptedSessionKey(Base64.encodeBase64URLSafeString(encryptedSessionKeyByte));
 		byte[] byteArr = cryptoUtil.symmetricEncrypt(
-				HMACUtils.digestAsPlainText(HMACUtils.generateHash(identityBlock.getBytes())).getBytes(), secretKey);
+				HMACUtils2.digestAsPlainText(identityBlock.getBytes()).getBytes(), secretKey);
 		encryptionResponseDto.setRequestHMAC(Base64.encodeBase64URLSafeString(byteArr));
+		
+		String thumbprint = CryptoUtil.encodeBase64(getCertificateThumbprint(certificate));
+		encryptionResponseDto.setThumbprint(thumbprint);
 		return encryptionResponseDto;
 	}
 
+	private byte[] getCertificateThumbprint(Certificate cert) throws CertificateEncodingException {
+		return DigestUtils.sha256(cert.getEncoded());
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String getPublicKey(String data, boolean isInternal)
-			throws KeyManagementException, RestClientException, NoSuchAlgorithmException {
+	public X509Certificate getCertificate(String data, boolean isInternal)
+			throws KeyManagementException, RestClientException, NoSuchAlgorithmException, CertificateException {
 		RestTemplate restTemplate = createTemplate();
 
 		CryptomanagerRequestDto request = new CryptomanagerRequestDto();
@@ -716,14 +794,25 @@ public class IdaController {
 		String utcTime = getUTCCurrentDateTimeISOString();
 		request.setTimeStamp(utcTime);
 		Map<String, String> uriParams = new HashMap<>();
-		uriParams.put("appId", "IDA");
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(
-						env.getProperty("ida.publickey.url") + "/IDA")
-				.queryParam("timeStamp", getUTCCurrentDateTimeISOString())
+						env.getProperty("ida.certificate.url"))
+				.queryParam("applicationId", "IDA")
 				.queryParam("referenceId", publicKeyId);
 		ResponseEntity<Map> response = restTemplate.exchange(builder.build(uriParams), HttpMethod.GET, null, Map.class);
-		return (String) ((Map<String, Object>) response.getBody().get("response")).get("publicKey");
+		String certificate =  (String) ((Map<String, Object>) response.getBody().get("response")).get("certificate");
+		
+		String certificateTrimmed = trimBeginEnd(certificate);
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		X509Certificate x509cert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(java.util.Base64.getDecoder().decode(certificateTrimmed)));
+		return x509cert;
+	}
+	
+	public static String trimBeginEnd(String pKey) {
+		pKey = pKey.replaceAll("-*BEGIN([^-]*)-*(\r?\n)?", "");
+		pKey = pKey.replaceAll("-*END([^-]*)-*(\r?\n)?", "");
+		pKey = pKey.replaceAll("\\s", "");
+		return pKey;
 	}
 
 	private RestTemplate createTemplate() throws KeyManagementException, NoSuchAlgorithmException {
@@ -738,8 +827,6 @@ public class IdaController {
 				if (authToken != null && !authToken.isEmpty()) {
 					request.getHeaders().set("Cookie", "Authorization=" + authToken);
 					request.getHeaders().set("Authorization", "Authorization=" + authToken);
-					request.getHeaders().set("signature", "eyJ4NWMiOlsiTUlJRFpUQ0NBazJnQXdJQkFnSUVYVmp0VkRBTkJna3Foa2lHOXcwQkFRc0ZBREJqTVFzd0NRWURWUVFHRXdKSlRqRUxNQWtHQTFVRUNCTUNTMEV4RWpBUUJnTlZCQWNUQ1VKaGJtZGhiRzl5WlRFT01Bd0dBMVVFQ2hNRlNVbEpWRUl4RGpBTUJnTlZCQXNUQlUxUFUwbFFNUk13RVFZRFZRUUREQXBOVDFOSlVGOVVaWE4wTUI0WERUSXdNVEF4TXpBMU16a3pObG9YRFRJek1UQXhNekExTXprek5sb3dZekVMTUFrR0ExVUVCaE1DU1U0eEN6QUpCZ05WQkFnVEFrdEJNUkl3RUFZRFZRUUhFd2xDWVc1bllXeHZjbVV4RGpBTUJnTlZCQW9UQlVsSlNWUkNNUTR3REFZRFZRUUxFd1ZOVDFOSlVERVRNQkVHQTFVRUF3d0tUVTlUU1ZCZlZHVnpkRENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFQSzk3d25namw3V0Y3RURkcENncThXSVA5Z1JhVUZ6VFU4VElhZ1d3alVmRlFpUTV0Q0s2VTdkZ1hsMmZTR1VlVEh4U1p5WWNhZk0wM3hGcUJGQytsMzU5WDFEVUx0ZW9KRWZMZENUYkRxSUdYMWFpQTlNbkVHbTB3U1pFV3duMUVxYVhQYXpMNjVPL0tQN29paVFnZmxMTGhMSW1HT0l3MzF6UDd5UVFUeCtIc0ZmU1VsbXgrc1IrZGtkQkppdkdINng3b0ZRTi90VGJXaGxwVEFpVjBFVUlWamJGS2dsS2NZeG9oWVVnOEpYbzg3S1lHRndIeHlYbnpleTU5bG04d0JnWUZiRUhoeHh1bWt4aDlrdnp0ZUVEOGdkMWdseUVXcTR4UU1QNXY2cHBndlZ4VU5Pb2c0OXRJTlkybFFubEJkalNFb2d0elN2WnRmVmV6Qmp5UE1DQXdFQUFhTWhNQjh3SFFZRFZSME9CQllFRkZOb0pYMHRTRm9WeURZa2dyRFBZL1J6dktZbk1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQlNCM1ZLdjNvRHR1ZUZvc1Q2VEJhVytaSUlSaEMwbHdIeU90QThvcVA3c2p0Q2tLUU83MU1ESFlHbXB3WlpLUnV3QXZlbEJsdGRNa2FoNWEvbmUrYjBvK0E5Qk5vREZpSDA4cFg0Q0w5ZHJFOVZOSE5XcnQ2M0RhVGE1NEVvZG91OXZUd09lcTJlUmVQWmRsZllwSi9MdE9zTkdYbTloSkZhYzNZdlpWOTgxMmxESWdWL2JDc04xOE1GK3BmakU3UW5aMDJocDJJTWt5c1NqQXlUTktVQ25ORlcvY2NYb2tsdzgzNENPcHUrd2VaaXZmUzdYZ1VjclhTb1o0ZmxaTlZ0RTlDaXZOVUhuSXlRQUcwb0JyblZla2tLbDF2RGRFR2EyT21salhrRDlOenEwRXdVVllUWERJdGMxaThacFYyQVVaVHdBUWRieUFLNi81YjNCcVlRIl0sImFsZyI6IlJTNTEyIn0.aGVsbG8gd29ybGQ.WGsSyKwBxtzt2B_mBDAbdHr4g_x0IZSXPZ2RCjWjD5Rp9wImKMeqFx0Uex7mV3D0mIaraXVMr8_WrB9bQcWOHf6sOTFfwmmmu_SgFqO9U85de0YTJbNAogBgCxzoIIkGgnRDes3SpIyw361Qy-w4kZKBezvj6z53kQB50HmcaOAPpzcPZdQGP7B_a9a-YFLnViZeOb5Ki-dhc72qw0TDXp-7HwTGERDxnvCT07pQTSyxSpgow--HPxF2cPOnRSMJ14VcA0PuJkjb8ykpMYpapMzs2KDhsYApEx7PTORW3J3izehb3BNHb4tj91t_eDo1UPc_y6ryz3BaBM6qZycTkw");
-					
 				}
 				return execution.execute(request, body);
 			}

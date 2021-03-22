@@ -24,7 +24,6 @@ export class DataStorageService {
     locationCode: string,
     langCode: string
   ): Observable<any> {
-    console.log('getImmediateChildren>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
@@ -115,7 +114,6 @@ export class DataStorageService {
     type: string,
     data: RequestModel
   ): Observable<any> {
-    console.log('getFiltersForAllMaterDataTypes>>>' + type + '<<<data>>>' + data);
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
       data
@@ -131,7 +129,6 @@ export class DataStorageService {
   }
 
   getZoneData(langCode: string): Observable<any> {
-    console.log('getZoneData>>>');
     return this.http.get(
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +

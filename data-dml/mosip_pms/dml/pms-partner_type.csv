@@ -1,0 +1,10 @@
+code,partner_description,is_active,cr_by,cr_dtimes,is_policy_required
+Auth_Partner,Auth Partner,TRUE,superadmin,now(),TRUE
+Device_Provider,Device Provider,TRUE,superadmin,now(),FALSE
+Credential_Partner,Credential Partner,TRUE,superadmin,now(),TRUE
+Partner_Admin,Partner Admin,TRUE,superadmin,now(),FALSE
+FTM_Provider,FTM Provider,TRUE,superadmin,now(),FALSE
+Online_Verification_Partner,Online_Verification_Partner,TRUE,superadmin,now(),TRUE
+ABIS_Partner,ABIS Partner,TRUE,superadmin,now(),TRUE
+Manual_Adjudication,Manual Adjudication,TRUE,superadmin,now(),TRUE
+MISP_Partner,MISP_Partner,TRUE,superadmin,now(),FALSE

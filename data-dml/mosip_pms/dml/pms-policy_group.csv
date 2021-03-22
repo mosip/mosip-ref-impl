@@ -1,0 +1,7 @@
+id,name,descr,user_id,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+mpolicygroup-default-auth,mpolicygroup-default-auth,mpolicygroup-default-auth,superadmin,TRUE,superadmin,now(),superadmin,now()
+mpolicygroup-deafult-abis,mpolicygroup-deafult-abis,mpolicygroup-deafult-abis,superadmin,TRUE,superadmin,now(),superadmin,now()
+mpolicygroup-deafult-print,mpolicygroup-deafult-print,mpolicygroup-deafult-print,superadmin,TRUE,superadmin,now(),superadmin,now()
+mpolicygroup-default-mockdevice,mmpolicygroup-default-mockdevice,mpolicygroup-default-mockdevice,superadmin,TRUE,superadmin,now(),superadmin,now()
+mpolicygroup-deafult-resident,mpolicygroup-deafult-resident,mpolicygroup-deafult-resident,superadmin,TRUE,superadmin,now(),superadmin,now()
+mpolicygroup-default-adjudication,mpolicygroup-default-adjudication, mpolicygroup-deafult-resident,superadmin,TRUE,superadmin,now(),superadmin,now()
