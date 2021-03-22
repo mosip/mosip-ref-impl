@@ -21,7 +21,6 @@ local.properties
 .loadpath
 .DS_Store
 *.log
-*.zip
 *.logs
 *.ucls
 *.useq
