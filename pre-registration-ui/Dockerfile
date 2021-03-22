@@ -14,6 +14,7 @@ COPY pre-registration-i18n-bundle.zip pre-registration-i18n-bundle.zip
 RUN mkdir i18n
 RUN unzip pre-registration-i18n-bundle.zip 
 RUN mv /pre-registration-i18n-bundle/* /i18n/
+RUN mv /i18n /dist/assets/
  
 
 
