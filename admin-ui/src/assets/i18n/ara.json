@@ -234,6 +234,7 @@
         "isActive": "الحالة",
         "zone": "منطقة",
         "publicKey": "المفتاح العمومي",
+        "signPublicKey": "توقيع المفتاح العام",
         "language": "عربى",
         "edit": "تصحيح",
         "create": "خلق",

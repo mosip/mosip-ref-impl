@@ -266,6 +266,7 @@ export class CreateComponent {
       isActive: ['', Validators.required],
       zone: ['', Validators.required],
       publicKey: ['', Validators.required],
+      signPublicKey: ['', Validators.required],
       machineSpecId: ['', Validators.required],
     });
   }
@@ -280,7 +281,8 @@ export class CreateComponent {
       zone: [{ value: '', disabled: true }],
       machineSpecId: [{ value: '', disabled: true }],
       isActive: [{ value: true, disabled: true }],
-      publicKey: ['', [Validators.required]],
+      publicKey: [''],
+      signPublicKey: [''],
     });
   }
 
@@ -326,6 +328,8 @@ export class CreateComponent {
     this.primaryForm.controls.machineSpecId.setValue(
       this.primaryData.machineSpecId
     );
+    this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
+    this.primaryForm.controls.signPublicKey.setValue(this.primaryData.signPublicKey);
   }
 
   setSecondaryData() {
@@ -349,6 +353,8 @@ export class CreateComponent {
     this.secondaryForm.controls.machineSpecId.setValue(
       this.secondaryData.machineSpecId
     );
+    this.secondaryForm.controls.publicKey.setValue(this.secondaryData.publicKey);
+    this.secondaryForm.controls.signPublicKey.setValue(this.secondaryData.signPublicKey);
   }
 
   /*setHeaderData() {
@@ -500,6 +506,7 @@ export class CreateComponent {
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
+      this.primaryForm.controls.signPublicKey.value,
       this.primaryLang,
       "0",
       this.primaryForm.controls.isActive.value,
@@ -513,6 +520,7 @@ export class CreateComponent {
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
       this.secondaryForm.controls.publicKey.value,
+      this.secondaryForm.controls.signPublicKey.value,
       this.secondaryLang,
       "0",
       this.secondaryForm.controls.isActive.value,
@@ -589,6 +597,7 @@ export class CreateComponent {
       this.primaryForm.controls.serialNumber.value,
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
+      this.primaryForm.controls.signPublicKey.value,
       this.primaryLang,
       this.data[0].id,
       this.primaryForm.controls.isActive.value,
@@ -602,6 +611,7 @@ export class CreateComponent {
       this.secondaryForm.controls.serialNumber.value,
       this.secondaryForm.controls.ipAddress.value,
       this.secondaryForm.controls.publicKey.value,
+      this.secondaryForm.controls.signPublicKey.value,
       this.secondaryLang,
       this.data[0].id,
       this.secondaryForm.controls.isActive.value,
@@ -715,6 +725,7 @@ export class CreateComponent {
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
     this.primaryForm.controls.publicKey.setValue(this.data[0].publicKey);
+    this.primaryForm.controls.signPublicKey.setValue(this.data[0].signPublicKey);
     this.primaryForm.controls.machineSpecId.setValue(
       this.data[0].machineSpecId
     );
@@ -728,7 +739,8 @@ export class CreateComponent {
     this.secondaryForm.controls.macAddress.setValue(this.data[1].macAddress);
     this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
     this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
-    this.secondaryForm.controls.publicKey.setValue(this.data[0].publicKey);
+    this.secondaryForm.controls.publicKey.setValue(this.data[1].publicKey);
+    this.secondaryForm.controls.signPublicKey.setValue(this.data[1].signPublicKey);
     this.secondaryForm.controls.machineSpecId.setValue(this.data[0].machineSpecId);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
   }

@@ -9,6 +9,7 @@ export class MachineModel {
         public serialNum: string,
         public ipAddress: string,
         public publicKey: string,
+        public signPublicKey: string,
         public langCode: string,
         public id?: string,
         public isActive?: boolean,        

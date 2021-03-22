@@ -276,10 +276,7 @@
             },
             "deviceSpecId": {
                 "required": "Device SpecId is required"
-            },
-            "publicKey": {
-                "required": "Public Key is required"
-            } 
+            }
         },
         "popupMessages": {
             "create": {
@@ -341,6 +338,7 @@
         "isActive": "Status",
         "zone": "Administrative Zone",
         "publicKey": "Public Key",
+        "signPublicKey": "Sign Public Key",
         "language": "English",
         "edit": "Edit",
         "create": "Create",
@@ -376,6 +374,12 @@
             },
             "machineSpecId": {
                 "required": "Machines Spec ID is required"
+            },
+            "publicKey": {
+                "required": "Public Key is required"
+            },
+            "signPublicKey": {
+                "required": "Sign Public Key is required"
             }
         },
         "popupMessages": {
