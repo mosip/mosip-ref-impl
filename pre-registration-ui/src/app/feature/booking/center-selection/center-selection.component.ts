@@ -138,7 +138,7 @@ export class CenterSelectionComponent
   }
 
   getErrorLabels() {
-    this.dataService.getI18NLanguageFiles("default").subscribe((response) => {
+    this.dataService.getI18NLanguageFiles(localStorage.getItem('userPrefLanguage')).subscribe((response) => {
       this.errorlabels = response["error"];
     });
   }

@@ -6,7 +6,6 @@ export const NESTED_ERROR = 'errors';
 export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
-export const DEFAULT_LANG_CODE = 'eng';
 export const IDSchemaVersionLabel = 'IDSchemaVersion';
 
 export const IDS = {
@@ -159,24 +158,6 @@ export const APPLICANT_TYPE_ATTRIBUTES = {
   biometricAvailable: 'biometricAvailable'
 };
 
-export const virtual_keyboard_languages = {
-  eng: 'en',
-  fra: 'fr',
-  ara: 'ar'
-};
-
-export const languageMapping = {
-  eng: {
-    langName: 'English'
-  },
-  ara: {
-    langName: 'عربى'
-  },
-  fra: {
-    langName: 'Français'
-  }
-};
-
 export const notificationDtoKeys = {
   notificationDto: 'NotificationRequestDTO',
   langCode: 'langCode',
@@ -193,17 +174,3 @@ export const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 
 export const controlTypeGender = 'gender';
 export const controlTypeResidenceStatus = 'residenceStatus';
-export const TRANSLITERATE_FIELDS = ["fullName","addressLine1","addressLine2","addressLine3"];
-
-export const errorMessages = {
-  requiredMessage : {
-    eng : "Is Required",
-    ara : "مطلوب",
-    fra : "Est requis"
-  },
-  InvalidStringMessage: {
-    eng : "Invalid",
-    ara : "غير صالحة",
-    fra : "Invalide"
-  }
-}
