@@ -13,7 +13,7 @@ RUN apt-get update -y && apt-get install -y\
 # get the pre-registration i18n bundle zip from artifactory
 RUN mkdir i18n
 RUN unzip pre-registration-i18n-bundle.zip -d /i18n
-CMD unzip pre-registration-i18n-bundle.zip 
+# CMD unzip pre-registration-i18n-bundle.zip 
 
 
 FROM nginx
