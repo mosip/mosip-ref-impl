@@ -937,18 +937,25 @@ export class DemographicComponent
             if(typeof(this.user.request.demographicDetails.identity[`${control.id}`]) == "object"){
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`][0].value
-              );
+              ); 
+              if (this.primaryLang !== this.secondaryLang) {
+                  this.transUserForm.controls[`${control.id}`].setValue(
+                    this.user.request.demographicDetails.identity[
+                      `${control.id}`
+                    ][1].value
+                  );
+                }
             }else{
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
-              );
-            }            
+              );         
             if (this.primaryLang !== this.secondaryLang) {
               this.transUserForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
               );
             }
           }
+         }
         } else if (appConstants.TRANSLITERATE_FIELDS.includes(control.id)) {
           this.userForm.controls[`${control.id}`].setValue(
             this.user.request.demographicDetails.identity[control.id][index]
