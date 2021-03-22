@@ -29,6 +29,20 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field  class="file-upload__docrefid">
+          <mat-label>Document Reference Id</mat-label>
+          <input
+            matInput
+            formControlName="docRefId"
+            value="{{document.selectedDocRefId}}"
+            (focusout)="changeDocRefId($event, i)"
+            (input)="changeDocRefId($event, i)"
+            placeholder=""
+            (change)="handleDocRefInput($event, document.code)"
+            #keyboardRef
+            #input
+          />
+        </mat-form-field>
         <span class="file-upload__button">
           <input
             #fileUpload
@@ -36,7 +50,7 @@
             id="file_{{ i }}"
             (click)="fileUpload.value = null"
             value=""
-            (change)="handleFileInput($event, document.selectedDocName, document.code)"
+            (change)="handleFileInput($event, document.selectedDocName, document.code, document.selectedDocRefId)"
             style="display: none;"
           />
           <input
@@ -51,7 +65,7 @@
             "
           />
         </span>
-
+        
         <span *ngIf="document.code === 'POA' && allApplicants">
           <span *ngIf="allApplicants.length > 1"> {{ 'documents.OR' | translate }}</span>
           <span *ngIf="allApplicants.length > 1">
@@ -72,7 +86,7 @@
             <mat-icon class="icon" matTooltip="{{ 'helpText.same_as' | translate }}" [inline]="true"
               >help_outline</mat-icon
             >
-          </span>
+          </span>         
         </span>
         <div class="file-upload__body__document-name">
           <div *ngFor="let file of users[0].files.documentsMetaData; let j = index">
@@ -83,8 +97,8 @@
               </span>
             </div>
           </div>
-        </div>
-      </div>
+        </div>        
+      </div>      
     </div>
     <div class="file-upload__body__2" *ngIf="this.users[0].files && fileIndex >= 0">
       <p>{{ fileName }}</p>

@@ -1,0 +1,4 @@
+﻿id,dprovider_id,dtype_code,dstype_code,make,model,partner_org_name,approval_status,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+mdevice_detail_default_face,MOSIP.PROXY.SBI,Face,Full face,MOSIP,FACE01,MOSIP,Activated,TRUE,superadmin,now(),superadmin,now()
+mdevice_detail_default_finger,MOSIP.PROXY.SBI,Finger,Slap,MOSIP,SLAP01,MOSIP,Activated,TRUE,superadmin,now(),superadmin,now()
+mdevice_detail_default_iris,MOSIP.PROXY.SBI,Iris,Double,MOSIP,IRIS01,MOSIP,Activated,TRUE,superadmin,now(),superadmin,now()

@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.mosip.kernel</groupId>
+	<parent>
+                <groupId>io.mosip.kernel</groupId>
+                <artifactId>kernel-ref-parent</artifactId>
+                <version>1.1.4</version>
+        </parent>
+
+	<artifactId>kernel-virusscanner-clamav</artifactId>
+    	<version>1.1.4</version>
+	<properties>		
+		<kernel.core.version>1.1.4</kernel.core.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.version>3.8.0</maven.compiler.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.mosip.kernel</groupId>
+			<artifactId>kernel-core</artifactId>
+			<version>${kernel.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.capybara</groupId>
+			<artifactId>clamav-client</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+	</dependencies>
+
+	</project>

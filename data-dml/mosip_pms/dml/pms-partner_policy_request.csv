@@ -1,0 +1,8 @@
+id,part_id,policy_id,request_datetimes,request_detail,status_code,cr_by,cr_dtimes,upd_by,upd_dtimes
+mpartner_policy_auth_req,mpartner-default-auth,mpolicy-default-auth,now(),mpolicy-default-auth,Approved,admin,now(),admin,now()
+mpartner_policy_abis_req,mpartner-default-abis,mpolicy-default-abis,now(),mpolicy-default-abis,Approved,admin,now(),admin,now()
+mpartner_policy_qrcode_req,mpartner-default-print,mpolicy-default-qrcode,now(),mpolicy-default-qrcode,Approved,admin,now(),admin,now()
+mpartner_policy_euin_req,mpartner-default-print,mpolicy-default-euin,now(),mpolicy-default-euin,Approved,admin,now(),admin,now()
+mpartner_policy_reprint_req,mpartner-default-print,mpolicy-default-reprint,now(),mpolicy-default-reprint,Approved,admin,now(),admin,now()
+mpartner_policy_resident_req,mpartner-default-resident,mpolicy-default-resident,now(),mpolicy-default-resident,Approved,admin,now(),admin,now()
+mpartner_policy_ajudica_req,mpartner-default-adjudication,mpolicy-default-adjudication,now(),mpolicy-default-adjudication,Approved,admin,now(),admin,now()

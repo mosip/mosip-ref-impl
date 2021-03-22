@@ -14,13 +14,15 @@ import * as appConstants from "./../../../app.constants";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
 import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
+import { resolve } from "url";
 
 @Component({
   selector: "app-center-selection",
   templateUrl: "./center-selection.component.html",
   styleUrls: ["./center-selection.component.css"],
 })
-export class CenterSelectionComponent extends BookingDeactivateGuardService
+export class CenterSelectionComponent
+  extends BookingDeactivateGuardService
   implements OnInit, OnDestroy {
   REGISTRATION_CENTRES: RegistrationCentre[] = [];
   searchClick: boolean = true;
@@ -47,7 +49,8 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
   primaryLang = localStorage.getItem("langCode");
   workingDays: string;
   preRegId = [];
-
+  locationNames = [];
+  locationCodes = [];
   constructor(
     public dialog: MatDialog,
     private service: BookingService,
@@ -64,9 +67,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
 
   async ngOnInit() {
     if (this.router.url.includes("multiappointment")) {
-      this.preRegId = [
-        ...JSON.parse(localStorage.getItem("multiappointment")),
-      ];
+      this.preRegId = [...JSON.parse(localStorage.getItem("multiappointment"))];
     } else {
       this.activatedRoute.params.subscribe((param) => {
         this.preRegId = [param["appId"]];
@@ -75,13 +76,8 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
     await this.getUserInfo(this.preRegId);
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
-    const subs = this.dataService
-      .getLocationTypeData()
-      .subscribe((response) => {
-        this.locationTypes = response[appConstants.RESPONSE]["locations"];
-      });
-    this.subscriptions.push(subs);
-    console.log(this.users);
+    await this.getLocationLevels();
+    console.log(this.locationTypes);
     this.getRecommendedCenters();
     this.getErrorLabels();
   }
@@ -111,6 +107,14 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
       });
     });
   }
+    getLocationLevels() {
+    return new Promise((resolve) => {
+       this.dataService.getLocationTypeData().subscribe((response) => {
+        this.locationTypes = response[appConstants.RESPONSE]["locations"];
+         resolve(true);
+      });
+    });
+  }
 
   getErrorLabels() {
     let factory = new LanguageFactory(this.primaryLang);
@@ -118,12 +122,52 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
     this.errorlabels = response["error"];
   }
 
-  getRecommendedCenters() {
+  async getRecommendedCenters() {
     console.log(this.users.length);
-    let pincodes = [];
+    const locationHierarchy = JSON.parse(
+      localStorage.getItem("locationHierarchy")
+    );
+    const locationHierarchyLevel = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
+    );
+    let minusValue = this.locationTypes.length - locationHierarchy.length;
+     console.log(minusValue);
+    const locationType = locationHierarchy[Number(locationHierarchyLevel) - minusValue];
+    console.log(locationHierarchy);
+    console.log(locationHierarchyLevel + ">>>>" + locationType);
     this.users.forEach((user) => {
-      pincodes.push(user.request.demographicDetails.identity.postalCode);
+      if (
+        typeof user.request.demographicDetails.identity[locationType] ===
+        "object"
+      ) {
+        this.locationCodes.push(
+          user.request.demographicDetails.identity[locationType][0].value
+        );
+      } else if (
+        typeof user.request.demographicDetails.identity[locationType] ===
+        "string"
+      ) {
+        this.locationCodes.push(
+          user.request.demographicDetails.identity[locationType]
+        );
+      }
     });
+    await this.getLocationNamesByCodes();
+    this.getRecommendedCentersApiCall();
+  }
+
+  getLocationNamesByCodes() {
+    return new Promise((resolve) => {
+      this.locationCodes.forEach(async (pins,index) => {
+        await this.getLocationNames(pins);
+        if(index===this.locationCodes.length-1){
+          resolve(true);
+        }
+      });
+    });
+  }
+
+  getRecommendedCentersApiCall() {
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
       .recommendedCenters(
@@ -131,7 +175,7 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
         ),
-        pincodes
+        this.locationNames
       )
       .subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
@@ -145,6 +189,26 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
         }
       });
     this.subscriptions.push(subs);
+  }
+
+
+  getLocationNames(locationCode) {
+    return new Promise((resolve) => {
+      this.dataService
+        .getLocationOnLocationCodeAndLangCode(locationCode, this.primaryLang)
+        .subscribe((response) => {
+          console.log(response[appConstants.RESPONSE]);
+          if (response[appConstants.RESPONSE]) {
+            console.log(
+              response[appConstants.RESPONSE]["locations"][0]["name"]
+            );
+            this.locationNames.push(
+              response[appConstants.RESPONSE]["locations"][0]["name"]
+            );
+            resolve(true);
+          }
+        });
+    });
   }
 
   setSearchClick(flag: boolean) {
@@ -249,9 +313,15 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
   changeTimeFormat(time: string): string | Number {
     let inputTime = time.split(":");
     let formattedTime: any;
-    if (Number(inputTime[0]) < 12) {
+    if (Number(inputTime[0]) < 12 && Number(inputTime[0]) > 0) {
       formattedTime = inputTime[0];
       formattedTime += ":" + inputTime[1] + " am";
+    } else if (Number(inputTime[0]) === 0) {
+      formattedTime = Number(inputTime[0]) + 12;
+      formattedTime += ":" + inputTime[1] + " am";
+    } else if (Number(inputTime[0]) === 12) {
+      formattedTime = inputTime[0];
+      formattedTime += ":" + inputTime[1] + " pm";
     } else {
       formattedTime = Number(inputTime[0]) - 12;
       formattedTime += ":" + inputTime[1] + " pm";
@@ -358,10 +428,11 @@ export class CenterSelectionComponent extends BookingDeactivateGuardService
         ) {
           this.routeDashboard();
         } else {
-          localStorage.setItem("modifyUser","true");
-          this.router.navigate([`${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`]);
+          localStorage.setItem("modifyUser", "true");
+          this.router.navigate([
+            `${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`,
+          ]);
         }
-        
       }
     });
   }

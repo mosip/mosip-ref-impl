@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>authentication-demo-ui</artifactId>
 	<name>authentication-demo-ui</name>
-	<version>1.1.2</version>
+	<version>1.1.4</version>
 	<properties>
 		<sonar.skip>true</sonar.skip>
 		<openjfx.version>11.0.2</openjfx.version>
@@ -44,21 +44,21 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.8</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-keygenerator-bouncycastle</artifactId>
-			<version>1.0.6</version>
+			<version>1.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-crypto-jce</artifactId>
-			<version>1.0.6</version>
+			<version>1.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
-			<version>1.0.6</version>
+			<version>1.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
@@ -79,7 +79,7 @@
 			<dependency>
 			    <groupId>javax.xml.bind</groupId>
 			    <artifactId>jaxb-api</artifactId>
-			</dependency>
+			</dependency>			
 			<dependency>
 			    <groupId>com.sun.xml.bind</groupId>
 			    <artifactId>jaxb-core</artifactId>
@@ -100,7 +100,7 @@
 			    <groupId>org.openjfx</groupId>
 			    <artifactId>javafx-fxml</artifactId>
 			    <version>15-ea+4</version>
-			</dependency>
+			</dependency>			
 	</dependencies>
 
 	<build>
@@ -126,7 +126,7 @@
 				<version>${maven.compiler.version}</version>
 				<configuration>
 					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
+					<target>${maven.compiler.target}</target>					
 				</configuration>
 			</plugin>
 		</plugins>

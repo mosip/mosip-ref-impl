@@ -20,6 +20,14 @@
             "title": "Bulk Upload",
             "subItem1": "Master Data",
             "subItem2": "Packets"
+        },
+        "item6": {
+            "title": "KeyManager",
+            "subItem1": "GenerateCSR",
+            "subItem2": "GenerateMasterKey",
+            "subItem3": "GetCertificate",
+            "subItem4": "UploadCertificate",
+            "subItem5": "UploadOtherDomainCertificate"
         }
     },
     "center": {

@@ -1,0 +1,7 @@
+id,policy_group_id,name,address,contact_no,email_id,certificate_alias,user_id,partner_type_code,approval_status,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes
+mpartner-default-auth,mpolicygroup-default-auth,mpartner-default-auth,mpartner-default-auth,9232121212,info@mosip.io,,mpartner-default-auth,Online_Verification_Partner,Activated,TRUE,superadmin,now(),superadmin,now()
+mpartner-default-abis,mpolicygroup-deafult-abis,mpartner-default-abis,mpartner-default-abis,9232121212,absi@mosip.io,,mpartner-default-abis,ABIS_Partner,Activated,TRUE,superadmin,now(),superadmin,now()
+mpartner-default-print,mpolicygroup-deafult-print,mpartner-default-print,mpartner-default-print,9232121212,print@mosip.io,,mpartner-default-print,Credential_Partner,Activated,TRUE,superadmin,now(),superadmin,now()
+MOSIP.PROXY.SBI,mpolicygroup-default-mockdevice,MOSIP,headoffice9,9988776655,abc@mock.co.in,,MOSIP.PROXY.SBI,Device_Provider,Activated,TRUE,superadmin,now(),superadmin,now()
+mpartner-default-resident,mpolicygroup-deafult-resident,mpartner-default-resident,mpartner-default-resident,9232121212,resident@mosip.io,,mpartner-default-resident,Credential_Partner,Activated,TRUE,superadmin,now(),superadmin,now()
+mpartner-default-adjudication,mpolicygroup-default-adjudication,mpartner-default-adjudication,mpartner-default-adjudication,9232121212,adjudication@mosip.io,,mpartner-default-adjudication,Manual_Adjudication,Activated,TRUE,superadmin,now(),superadmin,now()
