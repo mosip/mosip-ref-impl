@@ -6,8 +6,7 @@
 FROM node:12.2.0 AS add-i18n
 COPY dist dist
 # get the pre-registration i18n bundle zip from artifactory
-CMD wget home/mosip/http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip \
-    unzip pre-registration-i18n-bundle.zip -d dist/assets/i18n 
+CMD wget home/mosip/http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip
 
 
 FROM nginx
