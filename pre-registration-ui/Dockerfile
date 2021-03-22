@@ -7,6 +7,7 @@ FROM node:12.2.0 AS add-i18n
 COPY dist dist
 COPY pre-registration-i18n-bundle.zip pre-registration-i18n-bundle.zip
 # get the pre-registration i18n bundle zip from artifactory
+RUN mkdir i18n
 CMD unzip pre-registration-i18n-bundle.zip -d /i18n 
 
 
