@@ -66,8 +66,8 @@ export class PreviewComponent implements OnInit {
       this.preRegId = param["appId"];
     });
     await this.getIdentityJsonFormat();
-    await this.getResidentDetails();
-    await this.getGenderDetails();
+    // await this.getResidentDetails();
+    // await this.getGenderDetails();
     await this.getUserInfo();
 //     await this.convertLocationCodeToLocationName();
     await this.getUserFiles();
@@ -148,45 +148,55 @@ export class PreviewComponent implements OnInit {
   }
 
   private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues(this.primaryLanguage);
-    if (this.primaryLanguage !== this.secondaryLanguage) {
-      await this.getDynamicFieldValues(this.secondaryLanguage);
-    }
+    await this.getDynamicFieldValues();
   }
 
-  getDynamicFieldValues(lang) {
+  getDynamicFieldValues(pageNo = 0) {
+    let pageNumber;
+    if (pageNo > 0) {
+      pageNumber = 0;
+    } else {
+      pageNumber = pageNo;
+    }
     return new Promise((resolve) => {
       this.dataStorageService
-        .getDynamicFieldsandValues(lang)
+        .getDynamicFieldsandValuesForAllLang(pageNumber)
         .subscribe((response) => {
-          console.log(response);
+          //console.log(response);
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
+            //console.log(field);
             dynamicField.forEach((res) => {
-              if (
-                field.id === res.name &&
-                res.langCode === this.primaryLanguage
-              ) {
+              //console.log(res);
+              if (field.id === res.name && res.langCode === this.primaryLanguage) {
+                //console.log(res["fieldVal"]);
                 this.filterOnLangCode(
                   this.primaryLanguage,
                   res.name,
                   res["fieldVal"]
                 );
+                //console.log(this.primarydropDownFields);
               }
-              if (this.primaryLanguage !== this.secondaryLanguage) {
-                if (
-                  field.id === res.name &&
-                  res.langCode === this.secondaryLanguage
-                ) {
-                  this.filterOnLangCode(
-                    this.secondaryLanguage,
-                    res.name,
-                    res["fieldVal"]
-                  );
-                }
+              if (
+                field.id === res.name &&
+                res.langCode === this.secondaryLanguage
+              ) {
+                this.filterOnLangCode(
+                  this.secondaryLanguage,
+                  res.name,
+                  res["fieldVal"]
+                );
               }
             });
           });
+          let totalPages = response[appConstants.RESPONSE]["totalPages"];
+          if (totalPages) {
+            totalPages = Number(totalPages);
+          }
+          pageNumber = pageNumber + 1;
+          if (totalPages > pageNumber) {
+            this.getDynamicFieldValues(pageNumber);
+          }
         });
       resolve(true);
     });
