@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HeaderService } from '../app/core/services/header.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,13 @@ export class AppConfigService {
 
   appConfig: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private headerService: HeaderService,
+  ) { }
 
   async loadAppConfig() {
+    console.log("getUserPreferredLanguage>>>>"+this.headerService.getUserPreferredLanguage());
     this.appConfig = await this.http.get('./assets/config.json').toPromise();
     if(this.appConfig.primaryLangCode){
       this.appConfig["primaryLangCode"]= this.appConfig.primaryLangCode;

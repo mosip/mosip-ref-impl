@@ -179,14 +179,42 @@
                             <input
                             #keyboardRef
                             #publicKey
+                            (keyup)="captureValue($event, 'publicKey', 'primary')"
+                            (focus)="scrollPage(publicKey, 'primary', 'publicKey', 0)"
                             formControlName="publicKey"
                             matInput
-                            (keyup)="captureValue($event, 'publicKey', 'primary')"
                             placeholder="{{
                               'machines.publicKey' | translate
                             }}"
                           />
+                          <mat-error
+                            *ngIf="
+                              primary.publicKey.touched && primary.publicKey.hasError('required')
+                            "
+                          >
+                          {{ "machines.validationMessages.publicKey.required" | translate }}
+                          </mat-error>
+                        </mat-form-field>
 
+                        <mat-form-field>
+                            <input
+                            #keyboardRef
+                            #signPublicKey
+                            (keyup)="captureValue($event, 'signPublicKey', 'primary')"
+                            (focus)="scrollPage(signPublicKey, 'primary', 'signPublicKey', 0)"
+                            formControlName="signPublicKey"
+                            matInput
+                            placeholder="{{
+                              'machines.signPublicKey' | translate
+                            }}"
+                          />
+                          <mat-error
+                            *ngIf="
+                              primary.signPublicKey.touched && primary.signPublicKey.hasError('required')
+                            "
+                          >
+                          {{ "machines.validationMessages.signPublicKey.required" | translate }}
+                          </mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
@@ -334,32 +362,43 @@
                         </mat-select>
                       </mat-form-field>
 
+                      <mat-form-field>
+                        <input
+                          #keyboardRef
+                          #publicKey
+                          (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
+                          formControlName="publicKey"
+                          matInput
+                          placeholder="{{
+                            secondaryLanguageLabels.publicKey
+                          }}"
+                        />
+                      </mat-form-field>
 
                       <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #publicKey
-                            (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
-                            formControlName="publicKey"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.publicKey
-                            }}"
-                          />
-                        </mat-form-field>
-                        <mat-form-field>
-                          <mat-label>{{ secondaryLanguageLabels["isActive"] }}</mat-label>
-                          <mat-select formControlName="isActive">
-                            <mat-option
-                              *ngFor="let data of dropDownValues.isActive"
-                              [value]="data"
-                            >
-                              {{ data | status }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
+                        <input
+                          #keyboardRef
+                          #signPublicKey
+                          (focus)="scrollPage(signPublicKey, 'secondary', 'signPublicKey')"
+                          formControlName="signPublicKey"
+                          matInput
+                          placeholder="{{
+                            secondaryLanguageLabels.signPublicKey
+                          }}"
+                        />
+                      </mat-form-field>
 
-
+                      <mat-form-field>
+                        <mat-label>{{ secondaryLanguageLabels["isActive"] }}</mat-label>
+                        <mat-select formControlName="isActive">
+                          <mat-option
+                            *ngFor="let data of dropDownValues.isActive"
+                            [value]="data"
+                          >
+                            {{ data | status }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
                 </div>
             </mat-card-content>
             <mat-card-actions class="action-buttons">
