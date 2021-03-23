@@ -53,6 +53,7 @@ export class AuthInterceptor implements HttpInterceptor {
                   this.headerService.setDisplayUserName(this.decoded["name"]);
                   this.headerService.setUsername(event.body.response.userId);
                   this.headerService.setRoles(event.body.response.role);
+                  this.headerService.setUserPreferredLanguage(this.decoded["locale"]);
                 }
                 if (
                   event.body.errors !== null &&
