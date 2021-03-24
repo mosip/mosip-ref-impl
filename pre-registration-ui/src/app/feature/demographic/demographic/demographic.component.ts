@@ -583,6 +583,20 @@ export class DemographicComponent
   };
 
   /**
+   * This function will reset the value of the hidden field in the form.
+   * @param uiField
+   */
+   addRequiredValidator = (uiField) => {
+    this.addValidators(uiField);
+    this.userForm.controls[uiField.id].setValue(this.userForm.controls[uiField.id].value);
+    if (this.primaryLang !== this.secondaryLang) {
+      if (this.transUserForm && this.transUserForm.controls[`${uiField.id}`]) {
+        this.transUserForm.controls[`${uiField.id}`].setValue(this.transUserForm.controls[uiField.id].value);
+      }
+    }
+  };
+
+  /**
    * This function looks for "visibleCondition" attribute for each field in UI Specs.
    * Using "json-rules-engine", these conditions are evaluated
    * and fields are shown/hidden in the UI form.
@@ -666,14 +680,16 @@ export class DemographicComponent
     this.uiFields.forEach((uiField) => {
       //if no "requiredCondition" is given, then nothing is to be done
       if (uiField.requiredCondition && uiField.requiredCondition != "") {
-        const addValidatorsFunc = this.addValidators;
+        const addValidatorsFunc = this.addRequiredValidator;
         const removeValidatorFunc = this.removeValidators;
         let requiredRule = new Rule({
           conditions: uiField.requiredCondition,
           onSuccess() {
             //in "requiredCondition" is statisfied then validate the field as required
-            uiField.required = true;
-            addValidatorsFunc(uiField);
+            if (!uiField.required) {
+              uiField.required = true;
+              addValidatorsFunc(uiField);
+            }
           },
           onFailure() {
             //in "requiredCondition" is not statisfied then validate the field as not required
