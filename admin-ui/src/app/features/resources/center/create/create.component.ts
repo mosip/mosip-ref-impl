@@ -115,7 +115,7 @@ export class CreateComponent {
   }
 
   initializeComponent() {
-    this.locCode = 3;
+    this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
     this.days = appConstants.days[this.primaryLang];
     this.secondaryDays = appConstants.days[this.secondaryLang];
     this.activatedRoute.params.subscribe(params => {
