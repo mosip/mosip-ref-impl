@@ -10,6 +10,7 @@ export class HeaderService {
   private zone = '';
   private displayUserName = '';
   private userPreferredLanguage = '';
+  
   constructor() { }
 
   setUsername(username: string) {
@@ -57,8 +58,10 @@ export class HeaderService {
 
   getUserPreferredLanguage(): string {
     console.log("this.getUserPreferredLanguage>>>"+this.userPreferredLanguage);
+    this.userPreferredLanguage = "eng";
     return this.userPreferredLanguage;
   }
+
 }
 
 
