@@ -20,10 +20,14 @@ export class AppConfigService {
     if(this.appConfig.primaryLangCode){
       this.appConfig["primaryLangCode"]= this.appConfig.primaryLangCode;
       this.appConfig["secondaryLangCode"] = this.appConfig.secondaryLangCode;   
+      this.appConfig["allSupportedLanguages"] = this.appConfig.allSupportedLanguages;  
 
     	this.http.get(this.appConfig.baseUrl + 'masterdata/configs').subscribe(
 	      response => {
 	        this.appConfig["locationHierarchyLevel"]= response["response"]["locationHierarchyLevel"];
+          if (response["response"]["allSupportedLanguages"]) {
+            this.appConfig["allSupportedLanguages"]= response["response"]["allSupportedLanguages"];
+          }
 	      },
 	      error => {
 	        console.log(error);
