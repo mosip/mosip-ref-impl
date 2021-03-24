@@ -15,20 +15,21 @@ export class AppConfigService {
   ) { }
 
   async loadAppConfig() {
-    console.log("getUserPreferredLanguage>>>>"+this.headerService.getUserPreferredLanguage());
+    
     this.appConfig = await this.http.get('./assets/config.json').toPromise();
     if(this.appConfig.primaryLangCode){
       this.appConfig["primaryLangCode"]= this.appConfig.primaryLangCode;
-      this.appConfig["secondaryLangCode"] = this.appConfig.secondaryLangCode;       
-    	/*this.http.get(this.appConfig.baseUrl + 'masterdata/applicationconfigs').subscribe(
+      this.appConfig["secondaryLangCode"] = this.appConfig.secondaryLangCode;   
+
+    	this.http.get(this.appConfig.baseUrl + 'masterdata/configs').subscribe(
 	      response => {
-	        this.appConfig["primaryLangCode"]= response["response"]["primaryLangCode"];
-	        this.appConfig["secondaryLangCode"] = response["response"]["secondaryLangCode"];        
+	        this.appConfig["locationHierarchyLevel"]= response["response"]["locationHierarchyLevel"];
 	      },
 	      error => {
 	        console.log(error);
 	      }
-	    )*/;
+	    );
+
     }
   }
 
