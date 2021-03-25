@@ -16,11 +16,10 @@
 #     cp -o i18n/* /dist/assets/i18n 
 
 FROM nginx
-# install packages and create user
+
+
 RUN apt-get -y update &&\
 apt-get install -y unzip wget zip
-
-/usr/share/nginx/html
 
 COPY default.conf /etc/nginx/conf.d/
 
