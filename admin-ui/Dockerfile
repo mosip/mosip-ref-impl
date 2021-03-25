@@ -19,11 +19,12 @@ CMD wget http://artifactory-service/artifactory/libs-release-local/i18n/admin-i1
     unzip admin-i18n-bundle.zip \
     mv /admin-i18n-bundle/* /i18n/ \
     mv /admin-entity-spec-bundle/* /entity-spec/ \
-    mv -f /entity-spec /dist/assets/ \
-    mv -f /i18n /dist/assets/
+    \cp -rf /entity-spec/* /dist/assets/entity-spec/ \
+    \cp -rf /i18n/* /dist/assets/i18n/
  
 
 
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
+COPY --from=add-i18n dist dist1
 COPY --from=add-i18n dist /usr/share/nginx/html
