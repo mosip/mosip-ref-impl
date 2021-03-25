@@ -10,7 +10,7 @@ RUN apt-get update -y && apt-get install -y\
  wget\
  unzip
 # get the pre-registration i18n bundle zip from artifactory
-RUN wget http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip
+CMD wget http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip
 RUN mkdir i18n
 RUN unzip pre-registration-i18n-bundle.zip 
 RUN mv /pre-registration-i18n-bundle/* /i18n/
