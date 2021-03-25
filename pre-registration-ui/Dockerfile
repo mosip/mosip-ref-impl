@@ -28,8 +28,8 @@ COPY dist dist
 
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip pre-registration-i18n-bundle.zip;\
     unzip pre-registration-i18n-bundle.zip;\
-    cp -rf pre-registration-i18n-bundle/* /i18n ;\
-    cp -rf i18n/* /dist/assets/i18n ;\
-    cp -rf dist /usr/share/nginx/html
+    mv pre-registration-i18n-bundle/* i18n ;\
+    mv i18n/* dist/assets/i18n ;\
+    mv dist usr/share/nginx/html
 
 
