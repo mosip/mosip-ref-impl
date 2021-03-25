@@ -17,6 +17,5 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
 
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
-COPY --from=builder pre-registration-i18n-bundle pre-registration-i18n-bundle
 COPY --from=builder dist dist
 COPY dist /usr/share/nginx/html
