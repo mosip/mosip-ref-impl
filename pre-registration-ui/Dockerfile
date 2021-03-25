@@ -11,7 +11,7 @@ RUN mkdir i18n
 COPY dist dist
 # get the pre-registration i18n bundle zip from artifactory
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip pre-registration-i18n-bundle.zip; \
-    unzip pre-registration-i18n-bundle.zip
+    unzip -o pre-registration-i18n-bundle.zip -d dist/assets/i18n
 #   mv /pre-registration-i18n-bundle/* /i18n
 #   mv /i18n/* /dist/assets/ 
 
