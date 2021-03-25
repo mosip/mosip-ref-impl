@@ -20,5 +20,4 @@ CMD -q --show-progress wget http://artifactory-service/artifactory/libs-release-
 
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
-COPY --from=add-i18n dist dist1
 COPY --from=add-i18n dist /usr/share/nginx/html
