@@ -14,10 +14,10 @@ RUN wget http://artifactory-service/artifactory/libs-release-local/i18n/pre-regi
 RUN mkdir i18n
 RUN unzip pre-registration-i18n-bundle.zip 
 RUN mv /pre-registration-i18n-bundle/* /i18n/
-RUN mv /i18n /dist/assets/
+RUN mv -f /i18n /dist/assets/
  
 
 
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
-COPY --from=add-i18n dist /usr/share/nginx/htmll
+COPY --from=add-i18n dist /usr/share/nginx/html
