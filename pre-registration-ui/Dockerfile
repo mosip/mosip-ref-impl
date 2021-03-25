@@ -20,13 +20,14 @@ FROM nginx
 RUN apt-get -y update &&\
 apt-get install -y unzip wget zip
 
-ENV base_path=/usr/share/nginx/html
+/usr/share/nginx/html
 
 COPY default.conf /etc/nginx/conf.d/
 
 COPY dist dist
 
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip pre-registration-i18n-bundle.zip;\
-    cp -rf dist "${base_path}"
+    unzip -o  pre-registration-i18n-bundle.zip -d /dist/assets/i18n;\
+    cp -rf dist /usr/share/nginx/html
 
 
