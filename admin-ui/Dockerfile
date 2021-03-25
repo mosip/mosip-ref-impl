@@ -13,14 +13,14 @@ RUN apt-get update -y && apt-get install -y\
 RUN mkdir entity-spec
 RUN mkdir i18n
 # get the pre-registration i18n bundle zip from artifactory
-CMD wget http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip \
-    wget http://artifactory-service/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip \
-    unzip admin-entity-spec-bundle.zip \
-    unzip admin-i18n-bundle.zip \
-    mv /admin-i18n-bundle/* /i18n/ \
-    mv /admin-entity-spec-bundle/* /entity-spec/ \
-    cp -rf /entity-spec/* /dist/assets/entity-spec/ \
-    cp -rf /i18n/* /dist/assets/i18n/
+RUN wget http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip &&\
+    wget http://artifactory-service/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip &&\
+    unzip admin-entity-spec-bundle.zip &&\
+    unzip admin-i18n-bundle.zip &&\
+    mv /admin-i18n-bundle/* i18n/ &&\
+    mv /admin-entity-spec-bundle/* entity-spec/ &&\
+    cp -rf entity-spec/* /dist/assets/entity-spec/ &&\
+    cp -rf i18n/* /dist/assets/i18n/
  
 
 
