@@ -5,9 +5,7 @@
 # base image
 FROM ubuntu:18.04 AS build
 # install the needed packages including wget and a unzip library 
-RUN apt-get update -y && apt-get install -y 
-wget \
-unzip \
+RUN apt-get update -y && apt-get install -y wget && apt-get install -y unzip
 RUN mkdir i18n
 COPY dist dist
 # get the pre-registration i18n bundle zip from artifactory
