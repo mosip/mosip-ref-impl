@@ -10,12 +10,12 @@ RUN mkdir i18n
 COPY dist dist
 # get the pre-registration i18n bundle zip from artifactory
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip pre-registration-i18n-bundle.zip; \
-  unzip pre-registration-i18n-bundle.zip; \
-  mv /pre-registration-i18n-bundle/* /i18n
+  unzip pre-registration-i18n-bundle.zip
+#   mv /pre-registration-i18n-bundle/* /i18n
 #   mv /i18n/* /dist/assets/ 
 
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
-COPY --from=builder i18n i18n
+COPY --from=builder pre-registration-i18n-bundle pre-registration-i18n-bundle
 COPY --from=builder dist dist
 COPY dist /usr/share/nginx/html
