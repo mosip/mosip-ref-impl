@@ -126,15 +126,15 @@
                             <div class="user__date">
                               <mat-form-field>
                                 <input matInput placeholder="{{ 'demographic.date_dd' | translate }}" #dd [value]="date"
-                                  (change)="showHideFormFields()" (focusout)="onDOBChange()" />
+                                  (change)="showHideFormFields()" (focusout)="onDOBChange();showHideFormFields();" />
                               </mat-form-field>
                               <mat-form-field>
                                 <input matInput placeholder="{{ 'demographic.date_mm' | translate }}" [value]="month"
-                                  #mm (focusout)="onDOBChange()" (change)="showHideFormFields()" />
+                                  #mm (focusout)="onDOBChange();showHideFormFields();" (change)="showHideFormFields()" />
                               </mat-form-field>
                               <mat-form-field>
                                 <input matInput placeholder="{{ 'demographic.date_yyyy' | translate }}" [value]="year"
-                                  #yyyy (focusout)="onDOBChange()" (change)="showHideFormFields()" />
+                                  #yyyy (focusout)="onDOBChange();showHideFormFields();" (change)="showHideFormFields()" />
                               </mat-form-field>
                             </div>
                             <div class="user__pref">
@@ -144,7 +144,7 @@
                               <mat-form-field>
                                 <input matInput tabindex="-1" placeholder="{{ 'demographic.label_age' | translate }}"
                                   [value]="currentAge" #age (change)="showHideFormFields()"
-                                  (focusout)="onAgeChange()" />
+                                  (focusout)="onAgeChange();showHideFormFields();" />
                               </mat-form-field>
                               <div class="user__age--years">
                                 {{ "demographic.text_years" | translate }}

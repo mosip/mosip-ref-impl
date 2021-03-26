@@ -423,8 +423,8 @@ export class DemographicComponent
         );
         this.setDropDownArrays();
         this.setLocations();
-        // this.setGender();
-        // this.setResident();
+       // this.setGender();
+       // this.setResident();
         this.setDynamicFieldValues();
         resolve(true);
       });
@@ -625,7 +625,27 @@ export class DemographicComponent
     console.log("showHideFormFields");
     //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
       //populate form data in json for json-rules-engine to evalatute the conditions
-      const identityFormData = this.createIdentityJSONDynamic();
+      const identityFormData = this.createIdentityJSONDynamic(true);
+      let isChild = false;
+      let currentAge = null;
+      if (identityFormData.identity["dateOfBirth"]) {
+        let calcAge = this.calculateAge(identityFormData.identity["dateOfBirth"]);
+        if (calcAge !== "" && Number(calcAge) > -1) {
+          currentAge = Number(calcAge);
+        }
+        const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
+        if (Number(this.currentAge) > -1 && Number(this.currentAge) <= Number(ageToBeAdult)) {
+          isChild = true;
+        }
+      }
+      //console.log(`isChild: ${isChild}`);
+      let formIdentityData = {
+        "identity": {...identityFormData.identity,
+          "isChild": isChild,
+          "age": currentAge
+        }
+      };
+      console.log(formIdentityData);
       //for each uiField in UI specs, check of any "visibleCondition" is given
       //if yes, then evaluate it with json-rules-engine
       this.uiFields.forEach(uiField => {
@@ -656,7 +676,7 @@ export class DemographicComponent
           this.jsonRulesEngine.addRule(visibilityRule);
           //evaluate the visibleCondition
           this.jsonRulesEngine
-            .run(identityFormData)
+            .run(formIdentityData)
             .then(results => {
               results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
               this.jsonRulesEngine.removeRule(visibilityRule);
@@ -668,7 +688,7 @@ export class DemographicComponent
         }
       }, this.resetHiddenField
       );
-      this.processConditionalRequiredValidations(identityFormData);
+      this.processConditionalRequiredValidations(formIdentityData);
     //}
   }
 
@@ -1357,7 +1377,7 @@ export class DemographicComponent
       });
     });
     if (this.userForm.valid) {
-      const identity = this.createIdentityJSONDynamic();
+      const identity = this.createIdentityJSONDynamic(false);
       const request = this.createRequestJSON(identity);
       //console.log(request);
       const responseJSON = this.createResponseJSON(identity);
@@ -1525,7 +1545,7 @@ export class DemographicComponent
    * @returns
    * @memberof DemographicComponent
    */
-  private createIdentityJSONDynamic() {
+  private createIdentityJSONDynamic(includingBlankFields: boolean) {
     const identityObj = {};
     const newIdentityObj = {};
     this.identityData.forEach((field) => {
@@ -1549,12 +1569,11 @@ export class DemographicComponent
             identityObj[field.id] = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
           } else if (field.type === 'number') {
             identityObj[field.id] = Number(this.config[appConstants.CONFIG_KEYS.mosip_idschema_version]);
-          }  
+          } 
         }
       }
     });
-    console.log("before");
-    console.log(identityObj);
+
     let keyArr: any[] = Object.keys(identityObj);
     for (let index = 0; index < keyArr.length; index++) {
       const element = keyArr[index];
@@ -1562,27 +1581,30 @@ export class DemographicComponent
         this.createAttributeArray(element, identityObj);
       }
     }
-    //now remove the blank fields from the identityObj
-    for (let index = 0; index < keyArr.length; index++) {
-      const element = keyArr[index];
-      if (element == appConstants.IDSchemaVersionLabel) {
-        newIdentityObj[element] = identityObj[element];
-      } else if (typeof identityObj[element] === "object") {
-        let elementValue = identityObj[element];
-        if (elementValue && elementValue.length > 0) {
-          if (elementValue[0].value !== "" && elementValue[0].value !== null && elementValue[0].value !== undefined ) {
+    let identityRequest = { identity: identityObj };
+    if (!includingBlankFields) {
+      //now remove the blank fields from the identityObj
+      for (let index = 0; index < keyArr.length; index++) {
+        const element = keyArr[index];
+        if (element == appConstants.IDSchemaVersionLabel) {
+          newIdentityObj[element] = identityObj[element];
+        } else if (typeof identityObj[element] === "object") {
+          let elementValue = identityObj[element];
+          if (elementValue && elementValue.length > 0) {
+            if (elementValue[0].value !== "" && elementValue[0].value !== null && elementValue[0].value !== undefined ) {
+              newIdentityObj[element] = elementValue;
+            }
+          }
+        } else if (typeof identityObj[element] === "string") {
+          let elementValue = identityObj[element];
+          if (elementValue !== "" && elementValue !== null && elementValue !== undefined) {
             newIdentityObj[element] = elementValue;
           }
         }
-      } else if (typeof identityObj[element] === "string") {
-        let elementValue = identityObj[element];
-        if (elementValue !== "" && elementValue !== null && elementValue !== undefined) {
-          newIdentityObj[element] = elementValue;
-        }
       }
+      identityRequest = { identity: newIdentityObj };
     }
-    console.log(newIdentityObj);
-    const identityRequest = { identity: newIdentityObj };
+    console.log(identityRequest);
     return identityRequest;
   }
 

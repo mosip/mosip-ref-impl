@@ -59,6 +59,33 @@
           "type": "string",
           "validators": [],
           "required": true
+        },{
+          "id": "parentOrGuardianName",
+          "description": "parentOrGuardianName",
+          "labelName": {
+            "eng": "Parent Name",
+            "ara": "اسم الوالدين",
+            "fra": "Parent Name"
+          },
+          "controlType": "textbox",
+          "inputRequired": true,
+          "fieldType": "default",
+          "type": "simpleType",
+          "validators": [],
+          "required": false,
+          "visibleCondition": {
+            "all": [{
+              "fact": "identity",
+              "operator": "equal",
+              "value": "102",
+              "path": "$.gender.0.value"
+            }, {
+              "fact": "identity",
+              "operator": "lessThanInclusive",
+              "value": 10,
+              "path": "$.age"
+            }]
+          }
         },
         {
           "id": "gender",
@@ -66,7 +93,7 @@
           "labelName": { "eng": "Gender", "ara": "جنس", "fra": "Le genre" },
           "controlType": "button",
           "inputRequired": true,
-          "fieldType": "default",
+          "fieldType": "dynamic",
           "type": "simpleType",
           "validators": [],
           "required": true
@@ -81,7 +108,7 @@
           },
           "controlType": "dropdown",
           "inputRequired": true,
-          "fieldType": "default",
+          "fieldType": "dynamic",
           "type": "simpleType",
           "validators": [],
           "required": true
