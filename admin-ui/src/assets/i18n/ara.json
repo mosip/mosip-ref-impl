@@ -65,6 +65,7 @@
         "add-button": "إضافة",
         "datepicker-placeholder":"اختيار موعد",
         "devices-tooltip":"يتضمن الجهاز ماسحة البصمات ، ماسحة آيريس ، كاميرا ويب ، طابعة",
+        "selectLanguage": "اختار اللغة",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",

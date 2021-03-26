@@ -14,6 +14,7 @@
       <mat-card>
         <mat-card-content class="forms-container">
           <div [formGroup]="primaryForm" class="primary-form">
+            <div style="padding-bottom: 50px;"></div>   
             <span
               ><strong>{{ "center.language" | translate }}</strong></span
             >
@@ -803,6 +804,22 @@
               secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'
             "
           >
+          <mat-form-field style="padding-bottom: 10px;">
+            <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
+            <mat-select
+              formControlName="selectLanguage"
+              (selectionChange)="
+                  changeSecondaryLanguage()
+                "
+            >
+              <mat-option
+                *ngFor="let data of selectLanguagesArr"
+                [value]="data.code"
+              >
+                {{ data.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
             <span
               ><strong>{{ secondaryLanguageLabels["language"] }}</strong></span
             >

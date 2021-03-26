@@ -6,5 +6,5 @@
     "validateToken": "authmanager/authorize/admin/validateToken",
     "login": "admin/login/",
     "logout": "admin/logout/user",
-    "allSupportedLanguages": ["eng","fra","ara"]
+    "allSupportedLanguages": "eng,ara,fra"
 } 
