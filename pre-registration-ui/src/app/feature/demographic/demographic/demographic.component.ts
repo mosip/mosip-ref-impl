@@ -423,8 +423,8 @@ export class DemographicComponent
         );
         this.setDropDownArrays();
         this.setLocations();
-        this.setGender();
-        this.setResident();
+        // this.setGender();
+        // this.setResident();
         this.setDynamicFieldValues();
         resolve(true);
       });
@@ -672,6 +672,12 @@ export class DemographicComponent
     //}
   }
 
+  addRequiredValidator = (uiField, controlId, language) => {
+    this.addValidators(uiField, controlId, language);
+    //This required to force validations to apply
+    this.userForm.controls[controlId].setValue(this.userForm.controls[controlId].value);
+  };
+
   /**
    * This function will reset the value of the hidden field in the form.
    * @param uiField 
@@ -702,7 +708,7 @@ export class DemographicComponent
     this.uiFields.forEach(uiField => {
       //if no "requiredCondition" is given, then nothing is to be done
       if (uiField.requiredCondition && uiField.requiredCondition != "") {
-        const addValidatorsFunc = this.addValidators;
+        const addValidatorsFunc = this.addRequiredValidator;
         const removeValidatorFunc = this.removeValidators;
         const isControlInMultiLangFunc = this.isControlInMultiLang;
         const dataCaptureLanguages = this.dataCaptureLanguages;

@@ -25,32 +25,32 @@
                 <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div> 
                 <ng-template #content>
 
-                  <td *ngIf="controlId === 'gender'">
+                  <!-- <td *ngIf="controlId === 'gender'">
                     <i *ngFor="let genderType of genders">
                       <i *ngIf = "genderType.langCode === dataCaptureLanguage">
                         <div  *ngIf = "previewData[controlId][i].value === genderType.code">
-                          {{genderType.genderName}} <!-- <i *ngIf="!last">/</i> -->
+                          {{genderType.genderName}}// <i *ngIf="!last">/</i> 
                         </div>
                       </i>
                     </i>
-                  </td>
+                  </td> -->
 
-                  <td *ngIf="controlId === 'residenceStatus'">
+                  <!-- <td *ngIf="controlId === 'residenceStatus'">
                     <i *ngFor="let residentType of residenceStatus">
                       <i *ngIf = "residentType.langCode === dataCaptureLanguage">
                         <div  *ngIf = "previewData[controlId][i].value === residentType.code">
-                          {{residentType.name}} <!-- <i *ngIf="!last">/</i> -->
+                          {{residentType.name}} // <i *ngIf="!last">/</i> 
                         </div>
                       </i>
                     </i>
-                  </td>
+                  </td> -->
 
-                  <td *ngIf="controlId !== 'gender'">
-                    <div *ngIf="controlId !== 'residenceStatus'">
+                  <td>
+                    <!-- <div *ngIf="controlId !== 'residenceStatus'"> -->
                       <div *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></div>
                       <ng-template #displayLabel>{{previewData[controlId][i].label}} <!-- <i *ngIf="!last">/</i> --></ng-template>
                       <ng-template #displayValue>{{previewData[controlId][i].value}} <!-- <i *ngIf="!last">/</i> --></ng-template>
-                    </div>
+                    <!-- </div> -->
                   </td>
 
                 </ng-template>

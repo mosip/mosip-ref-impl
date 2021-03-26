@@ -54,8 +54,9 @@ export class PreviewComponent implements OnInit {
       this.preRegId = param["appId"];
     });
     await this.getIdentityJsonFormat();
-    await this.getResidentDetails();
-    await this.getGenderDetails();
+    // await this.getResidentDetails();
+    // await this.getGenderDetails();
+    await this.setDynamicFieldValues();
     await this.getUserInfo();
     await this.getUserFiles();
     await this.getDocumentCategories();
@@ -67,8 +68,8 @@ export class PreviewComponent implements OnInit {
         const elementKey = keyArr[index];
         let dataArr = identityObj[elementKey];
         if (Array.isArray(dataArr)) {
-          dataArr.forEach(dataArrElement => {
-            if (!this.dataCaptureLanguages.includes(dataArrElement.language)){
+          dataArr.forEach((dataArrElement) => {
+            if (!this.dataCaptureLanguages.includes(dataArrElement.language)) {
               this.dataCaptureLanguages.push(dataArrElement.language);
             }
           });
@@ -84,7 +85,8 @@ export class PreviewComponent implements OnInit {
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
     //remove blank fields
-    let updatedUIFields = [], tempObj = {};
+    let updatedUIFields = [],
+      tempObj = {};
     this.uiFields.forEach((control) => {
       if (this.previewData[control.id]) {
         self.controlIds.push(control.id);
@@ -96,21 +98,45 @@ export class PreviewComponent implements OnInit {
         updatedUIFields.push(control);
       }
     });
-    let locName = "", label = "";
+    let locations = [];
+    this.locationHeirarchies.forEach((element) => {
+      locations.push(...element);
+    });
+    let locName = "",
+      label = "";
     for (let i = 0; i < self.controlIds.length; i++) {
       label = self.controlIds[i];
-      if(["region","province","city","zone"].includes(label)){
+      updatedUIFields.forEach((control) => {
+        if (control.id === label && control.fieldType === "dynamic") {
+          this.previewData[label].forEach((ele) => {
+            this.dropDownFields[label].forEach((codeValue) => {
+              if (
+                ele.language === codeValue.languageCode &&
+                ele.value === codeValue.valueCode
+              ) {
+                ele.value = codeValue.valueName;
+                console.log(codeValue.valueName);
+              }
+            });
+          });
+        }
+      });
+      if (locations.includes(label)) {
         for (let j = 0; j < self.previewData[label].length; j++) {
-          self.fetchLocationName(self.previewData[label][j].value, self.previewData[label][j].language, j, label);
+          self.fetchLocationName(
+            self.previewData[label][j].value,
+            self.previewData[label][j].language,
+            j,
+            label
+          );
         }
       }
     }
-    this.uiFields = updatedUIFields;
   }
 
-  checkArray(data, controlId){
+  checkArray(data, controlId) {
     let result = false;
-    if(Array.isArray(data)){
+    if (Array.isArray(data)) {
       result = true;
     }
     return result;
@@ -128,12 +154,13 @@ export class PreviewComponent implements OnInit {
           ...response["response"]["idSchema"]["locationHierarchy"],
         ];
         if (Array.isArray(locationHeirarchiesFromJson[0])) {
-          this.locationHeirarchies = locationHeirarchiesFromJson;  
+          this.locationHeirarchies = locationHeirarchiesFromJson;
         } else {
-          let hierarchiesArray = [];
+          let hierarchiesArray = [];
           hierarchiesArray.push(locationHeirarchiesFromJson);
-          this.locationHeirarchies = hierarchiesArray;
+          this.locationHeirarchies = hierarchiesArray;
         }
+        console.log(...this.locationHeirarchies);
         this.identityData.forEach((obj) => {
           if (
             obj.inputRequired === true &&
@@ -145,7 +172,7 @@ export class PreviewComponent implements OnInit {
         });
         this.dynamicFields = this.uiFields.filter(
           (fields) =>
-            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+            fields.fieldType === "dynamic"
         );
         this.getIntialDropDownArrays();
         resolve(true);
@@ -155,7 +182,7 @@ export class PreviewComponent implements OnInit {
 
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
-      if (control.controlType === "dropdown") {
+      if (control.controlType === "dropdown" || control.controlType === "button") {
         this.dropDownFields[control.id] = [];
       }
     });
@@ -186,6 +213,7 @@ export class PreviewComponent implements OnInit {
                 languageCode: element.langCode,
               };
             }
+            this.dropDownFields[field].push(codeValue);
             resolve(true);
           }
         });
@@ -225,7 +253,7 @@ export class PreviewComponent implements OnInit {
       this.user.files = response[appConstants.RESPONSE][appConstants.METADATA];
     }
   }
-  
+
   getDocumentCategories() {
     const applicantcode = localStorage.getItem("applicantType");
     return new Promise((resolve) => {
@@ -273,10 +301,52 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  getLanguageLabels() {
-    this.dataStorageService.getI18NLanguageFiles(localStorage.getItem("langCode")).subscribe(response =>{
-      this.sameAs = response["sameAs"];
+  private async setDynamicFieldValues() {
+    await this.getDynamicFieldValues(null);
+  }
+
+  getDynamicFieldValues(pageNo) {
+    let pageNumber;
+    if (pageNo == null) {
+      pageNumber = 0;
+    } else {
+      pageNumber = pageNo;
+    }
+    return new Promise((resolve) => {
+      this.dataStorageService
+        .getDynamicFieldsandValuesForAllLang(pageNumber)
+        .subscribe((response) => {
+          let dynamicField = response[appConstants.RESPONSE]["data"];
+          this.dynamicFields.forEach((field) => {
+            dynamicField.forEach((res) => {
+              if (field.id === res.name) {
+                this.filterOnLangCode(
+                  res["langCode"],
+                  res.name,
+                  res["fieldVal"]
+                );
+              }
+            });
+          });
+          let totalPages = response[appConstants.RESPONSE]["totalPages"];
+          if (totalPages) {
+            totalPages = Number(totalPages);
+          }
+          pageNumber = pageNumber + 1;
+          if (totalPages > pageNumber) {
+            this.getDynamicFieldValues(pageNumber);
+          }
+        });
+      resolve(true);
     });
+  }
+
+  getLanguageLabels() {
+    this.dataStorageService
+      .getI18NLanguageFiles(localStorage.getItem("langCode"))
+      .subscribe((response) => {
+        this.sameAs = response["sameAs"];
+      });
   }
 
   calculateAge() {
@@ -335,7 +405,7 @@ export class PreviewComponent implements OnInit {
       });
     });
   }
- 
+
   enableContinue(): boolean {
     let flag = true;
     this.documentMapObject.forEach((object) => {
@@ -353,14 +423,22 @@ export class PreviewComponent implements OnInit {
     return flag;
   }
 
-  private fetchLocationName(locCode: string, langCode: string, index : number, controlName : string) {
+  private fetchLocationName(
+    locCode: string,
+    langCode: string,
+    index: number,
+    controlName: string
+  ) {
     let self = this;
     return new Promise((resolve) => {
-      this.dataStorageService.getLocationInfoForLocCode(locCode, langCode).subscribe((response) => {
-        if (response[appConstants.RESPONSE]) {
-          self.previewData[controlName][index]["label"] = response[appConstants.RESPONSE]["name"];
-        }
-      });
+      this.dataStorageService
+        .getLocationInfoForLocCode(locCode, langCode)
+        .subscribe((response) => {
+          if (response[appConstants.RESPONSE]) {
+            self.previewData[controlName][index]["label"] =
+              response[appConstants.RESPONSE]["name"];
+          }
+        });
     });
   }
 
@@ -369,9 +447,7 @@ export class PreviewComponent implements OnInit {
     localStorage.setItem("modifyUserFromPreview", "false");
     localStorage.setItem("modifyUser", "false");
     localStorage.setItem("addingUserFromPreview", "true");
-    this.router.navigate([
-      `${this.Language}/pre-registration/demographic/new`,
-    ]);
+    this.router.navigate([`${this.Language}/pre-registration/demographic/new`]);
   }
 
   navigateBack() {
