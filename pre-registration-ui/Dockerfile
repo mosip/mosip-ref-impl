@@ -4,13 +4,11 @@ RUN apt-get -y update &&\
 apt-get install -y unzip wget zip
 
 COPY dist dist
-CMD mkdir -p i18n;\
-    wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip /i18n/pre-registration-i18n-bundle.zip;\
-    cd i18n/ ;\
+CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip /dist/assets/i18n/pre-registration-i18n-bundle.zip;\
+    cd dist/assets/i18n/ ;\
     unzip pre-registration-i18n-bundle.zip;\
     mv pre-registration-i18n-bundle/* . ;\
-    rm pre-registration-i18n-bundle.zip ;\
-    cd /;\ mv i18n dist
+    rm pre-registration-i18n-bundle.zip 
  
 
 FROM nginx
