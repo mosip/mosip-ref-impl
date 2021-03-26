@@ -39,18 +39,19 @@ import { AuditService } from 'src/app/core/services/audit.service';
 import { HeaderService } from 'src/app/core/services/header.service';
 import * as centerSpecFile from '../../../../../assets/entity-spec/center.json';
 import { HolidayModel } from 'src/app/core/models/holiday-model';
+import defaultJson from "../../../../../assets/i18n/default.json";
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
+  styleUrls: ["./create.component.scss"],
   encapsulation: ViewEncapsulation.None
 })
 export class CreateComponent {
   secondaryLanguageLabels: any;
-  allSupportedLanguages: Array<string>;
   primaryLang: string;
   secondaryLang: string;
-  secondaryLanguagesArr: Array<string>;
+  selectLanguagesArr: any;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   disableForms: boolean;
@@ -105,11 +106,22 @@ export class CreateComponent {
     });
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = this.headerService.getUserPreferredLanguage();
-    this.allSupportedLanguages = this.appConfigService.getConfig()['allSupportedLanguages'];
-    this.secondaryLanguagesArr = this.allSupportedLanguages.filter(lang => lang !== this.primaryLang);
-    
+    let allSupportedLanguages = this.appConfigService.getConfig()['allSupportedLanguages'].split(',');
+    //let allSupportedLangLabels =  JSON.parse(localStorage.getItem("languageLabels"));
+    let otherLangsArr = allSupportedLanguages.filter(lang => lang !== this.primaryLang);
+    this.selectLanguagesArr = [];
+    otherLangsArr.map((language) => {
+      if (defaultJson.languages && defaultJson.languages[language]) {
+        this.selectLanguagesArr.push({
+          code: language,
+          value: defaultJson.languages[language].nativeName,
+        });
+      }
+    });
+    console.log("this.selectLanguagesArr");
+    console.log(this.selectLanguagesArr);
     // tslint:disable-next-line:no-string-literal
-    this.secondaryLang = this.secondaryLanguagesArr[0];
+    this.secondaryLang = this.selectLanguagesArr[0]["code"];
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
@@ -159,7 +171,7 @@ export class CreateComponent {
     this.dataStorageService
       .getZoneData(this.primaryLang)
       .subscribe(response => {
-        console.log(response);
+        //console.log(response);
         this.dropDownValues.zone.primary = response.response;
         if (this.dropDownValues.zone.primary.length === 1) {
           this.primaryForm.controls.zone.setValue(
@@ -172,7 +184,7 @@ export class CreateComponent {
       this.dataStorageService
       .getZoneData(this.secondaryLang)
       .subscribe(response => {
-        console.log(response);
+        //console.log(response);
         this.dropDownValues.zone.secondary = response.response;
         if (this.dropDownValues.zone.secondary.length === 1) {
           this.secondaryForm.controls.zone.setValue(
@@ -768,7 +780,7 @@ export class CreateComponent {
       .subscribe(response => {
         this.dropDownValues[fieldName].primary =
           response['response']['locations'];
-        console.log(this.dropDownValues);
+        //console.log(this.dropDownValues);
       });
     this.dataStorageService
       .getImmediateChildren(locationCode, this.secondaryLang)
@@ -834,7 +846,9 @@ export class CreateComponent {
   }
 
   initializeSecondaryForm() {
+
     this.secondaryForm = this.formBuilder.group({
+      selectLanguage: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.maxLength(128)]],
       centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],

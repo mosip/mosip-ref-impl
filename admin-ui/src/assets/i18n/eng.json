@@ -78,6 +78,7 @@
         "add-button": "Add",
         "datepicker-placeholder":"Choose a date",
         "devices-tooltip":"Device includes Fingerprint Scanner, Iris Scanner, Web Camera, Printer",
+        "selectLanguage": "Select Language",
         "validationMessages": {
             "name": {
                 "required": "Center Name is required",
@@ -148,7 +149,7 @@
             },
             "endTime": {
                 "required": "Center End Time is required"
-            }
+            } 
         },
         "popupMessages": {
             "create": {
