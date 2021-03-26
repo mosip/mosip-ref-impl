@@ -106,9 +106,9 @@ export class CreateComponent {
     });
     // tslint:disable-next-line:no-string-literal
     this.primaryLang = this.headerService.getUserPreferredLanguage();
-    let allSupportedLanguages = this.appConfigService.getConfig()['allSupportedLanguages'].split(',');
+    let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
     //let allSupportedLangLabels =  JSON.parse(localStorage.getItem("languageLabels"));
-    let otherLangsArr = allSupportedLanguages.filter(lang => lang !== this.primaryLang);
+    let otherLangsArr = supportedLanguages.filter(lang => lang !== this.primaryLang);
     this.selectLanguagesArr = [];
     otherLangsArr.map((language) => {
       if (defaultJson.languages && defaultJson.languages[language]) {
