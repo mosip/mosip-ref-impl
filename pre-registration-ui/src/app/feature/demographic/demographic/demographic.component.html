@@ -148,7 +148,7 @@
                       #dd
                       [value]="date"
                       (change)="showHideFormFields()"
-                      (focusout)="onDOBChange()"
+                      (focusout)="onDOBChange();showHideFormFields();"
                     />
                   </mat-form-field>
                   <mat-form-field>
@@ -158,7 +158,7 @@
                       [value]="month"
                       #mm
                       (focusout)="onDOBChange()"
-                      (change)="showHideFormFields()"
+                      (change)="showHideFormFields();showHideFormFields();"
                     />
                   </mat-form-field>
                   <mat-form-field>
