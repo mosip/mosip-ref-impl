@@ -17,5 +17,4 @@
 
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
-COPY --from=builder dist dist
 COPY dist /usr/share/nginx/htm
