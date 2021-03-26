@@ -27,7 +27,7 @@
             <tr *ngFor="let field of uiFields">
               <td>{{ field.labelName[primaryLanguage] }}</td>
               <td>:</td>
-              <div *ngIf="field.controlType != 'dropdown'">
+              <div *ngIf="field.controlType != 'dropdown' && field.controlType != 'button'">
                 <td *ngIf="previewData[field.id].length > 2">
                   {{ previewData[field.id] }}
                 </td>
@@ -137,7 +137,7 @@
             <tr *ngFor="let field of uiFields">
               <td>{{ field.labelName[secondaryLanguage] }}</td>
               <td>:</td>
-              <div *ngIf="field.controlType != 'dropdown'">
+              <div *ngIf="field.controlType != 'dropdown' && field.controlType != 'button'">
                 <td *ngIf="previewData[field.id].length > 2">
                   {{ previewData[field.id] }}
                 </td>
@@ -175,7 +175,7 @@
                <div> 
                     <td *ngIf="field.fieldType === 'dynamic'">
                       <div
-                        *ngFor="let dropdown of primarydropDownFields[field.id]"
+                        *ngFor="let dropdown of secondaryDropDownFields[field.id]"
                       >
                         <div
                           *ngIf="

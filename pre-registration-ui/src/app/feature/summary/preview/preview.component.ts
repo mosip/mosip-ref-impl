@@ -127,7 +127,7 @@ export class PreviewComponent implements OnInit {
         });
         this.dynamicFields = this.uiFields.filter(
           (fields) =>
-            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+             fields.fieldType === "dynamic"
         );
         this.getIntialDropDownArrays();
         this.setDynamicFieldValues();
@@ -138,7 +138,7 @@ export class PreviewComponent implements OnInit {
 
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
-      if (control.controlType === "dropdown") {
+      if (control.controlType === "dropdown" || control.controlType === "button") {
         this.primarydropDownFields[control.id] = [];
         if (this.primaryLanguage != this.secondaryLanguage) {
           this.secondaryDropDownFields[control.id] = [];
@@ -167,9 +167,9 @@ export class PreviewComponent implements OnInit {
           this.dynamicFields.forEach((field) => {
             //console.log(field);
             dynamicField.forEach((res) => {
-              //console.log(res);
+              // console.log(res);
               if (field.id === res.name && res.langCode === this.primaryLanguage) {
-                //console.log(res["fieldVal"]);
+                // console.log(res["fieldVal"]);
                 this.filterOnLangCode(
                   this.primaryLanguage,
                   res.name,
