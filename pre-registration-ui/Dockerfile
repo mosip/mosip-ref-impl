@@ -18,4 +18,4 @@ CMD mkdir -p i18n;\
 FROM nginx
 COPY default.conf /etc/nginx/conf.d/
 COPY --from=builder i18n i18n
-COPY --from=builder dist /usr/share/nginx/html
+COPY dist /usr/share/nginx/html
