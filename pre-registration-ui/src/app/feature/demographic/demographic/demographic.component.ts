@@ -610,11 +610,11 @@ export class DemographicComponent
     let currentAge = null;
     if (identityFormData.identity["dateOfBirth"]) {
       let calcAge = this.calculateAge(identityFormData.identity["dateOfBirth"]);
-      if (calcAge !== "") {
+      if (calcAge !== "" && Number(calcAge) > -1) {
         currentAge = Number(calcAge);
       }
       const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
-      if (Number(this.currentAge) <= Number(ageToBeAdult)) {
+      if (Number(this.currentAge) > -1 && Number(this.currentAge) <= Number(ageToBeAdult)) {
         isChild = true;
       }
     }
