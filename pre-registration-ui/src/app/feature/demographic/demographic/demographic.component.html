@@ -157,8 +157,8 @@
                       placeholder="{{ 'demographic.date_mm' | translate }}"
                       [value]="month"
                       #mm
-                      (focusout)="onDOBChange()"
-                      (change)="showHideFormFields();showHideFormFields();"
+                      (focusout)="onDOBChange();showHideFormFields();"
+                      (change)="showHideFormFields()"
                     />
                   </mat-form-field>
                   <mat-form-field>
