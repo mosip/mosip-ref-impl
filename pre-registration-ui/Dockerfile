@@ -7,9 +7,9 @@ apt-get install -y unzip wget zip
 
 # COPY dist dist
 
-CMD mkdir -p /i18n;\
+CMD mkdir -p i18n;\
     wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip /i18n/pre-registration-i18n-bundle.zip;\
-    cd /i18n/ ;\
+    cd i18n/ ;\
     unzip pre-registration-i18n-bundle.zip;\
     mv pre-registration-i18n-bundle/* . ;\
     rm pre-registration-i18n-bundle.zip
