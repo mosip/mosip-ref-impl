@@ -167,7 +167,7 @@
                       placeholder="{{ 'demographic.date_yyyy' | translate }}"
                       [value]="year"
                       #yyyy
-                      (focusout)="onDOBChange()"
+                      (focusout)="onDOBChange();showHideFormFields();"
                       (change)="showHideFormFields()"
                     />
                   </mat-form-field>
@@ -184,7 +184,7 @@
                       [value]="currentAge"
                       #age
                       (change)="showHideFormFields()"
-                      (focusout)="onAgeChange()"
+                      (focusout)="onAgeChange();showHideFormFields();"
                     />
                   </mat-form-field>
                   <div class="user__age--years">
