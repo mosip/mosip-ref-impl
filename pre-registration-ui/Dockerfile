@@ -7,11 +7,11 @@ COPY dist dist
 
 RUN mkdir -p /dist/assets/i18n-test
 
-ENTRYPOINT wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip /dist/assets/i18n-test/pre-registration-i18n-bundle.zip
-    cd dist/assets/i18n-test/ ;\
-    unzip pre-registration-i18n-bundle.zip;\
-    mv pre-registration-i18n-bundle/* . ;\
-    rm pre-registration-i18n-bundle.zip 
+CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip /dist/pre-registration-i18n-bundle.zip
+#     cd dist/assets/i18n-test/ ;\
+#     unzip pre-registration-i18n-bundle.zip;\
+#     mv pre-registration-i18n-bundle/* . ;\
+#     rm pre-registration-i18n-bundle.zip 
 
 
 FROM nginx
