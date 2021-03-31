@@ -4,6 +4,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { MatDialog } from '@angular/material/dialog';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-packet-status',
@@ -33,11 +34,12 @@ export class PacketStatusComponent implements OnInit {
     private appService: AppConfigService,
     private auditService: AuditService,
     private dataStorageService: DataStorageService,
+    private headerService: HeaderService,
     public dialog: MatDialog
   ) {
-    translate.use(appService.getConfig().primaryLangCode);
+    translate.use(this.headerService.getUserPreferredLanguage());
     this.translate
-    .getTranslation(this.appService.getConfig().primaryLangCode)
+    .getTranslation(this.headerService.getUserPreferredLanguage())
     .subscribe(response => {
       console.log(response);
       this.messages = response['packet-status'];
@@ -45,7 +47,6 @@ export class PacketStatusComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.auditService.audit(5, 'ADM-045');
   }
 
@@ -55,7 +56,7 @@ export class PacketStatusComponent implements OnInit {
     if (this.id.length !== 29) {
       this.error = true;
     } else {
-      console.log('this.id>>>'+this.id);
+      console.log('this.id>>>' + this.id);
       this.dataStorageService.getPacketStatus(this.id).subscribe(response => {
         console.log(response);
         if (response['response'] != null) {
