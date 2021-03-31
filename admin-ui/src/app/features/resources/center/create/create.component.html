@@ -19,7 +19,7 @@
               ><strong>{{ "center.language" | translate }}</strong></span
             >
             <span
-              *ngIf="!disableLeftForm"
+              *ngIf="!disableForms"
               matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
               (click)="openKeyboard('primary')"
               style="float: right; color: grey; cursor: pointer;"
@@ -747,7 +747,7 @@
               <mat-datepicker #picker></mat-datepicker> </mat-form-field
             >&nbsp;&nbsp;&nbsp;&nbsp;
             <button
-              [disabled]="disableLeftForm"
+              [disabled]="disableForms"
               mat-raised-button
               (click)="createExceptionalHoliday()"
             >
@@ -824,7 +824,7 @@
               ><strong>{{ secondaryLanguageLabels["language"] }}</strong></span
             >
             <span
-              *ngIf="!disableRightForm"
+              *ngIf="!disableForms"
               matTooltip="{{ secondaryLanguageLabels['keyboard-tooltip'] }}"
               (click)="openKeyboard('secondary')"
               style="float: left; color: grey; cursor: pointer;"
