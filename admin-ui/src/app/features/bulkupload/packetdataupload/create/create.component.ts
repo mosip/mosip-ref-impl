@@ -45,7 +45,7 @@ export class CreateComponent {
   initializeComponent() {
     this.initializeForm();
     this.dataService
-         .getI18NLanguageFiles(localStorage.getItem('langCode'))
+         .getI18NLanguageFiles(this.primaryLangCode)
          .subscribe((response) => {
            this.popUpMessages = response['packet-upload']['popupMessaages'];
          });
