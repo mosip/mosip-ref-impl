@@ -136,7 +136,10 @@
             },
             "endTime": {
                 "required": "مركز نهاية الوقت مطلوب"
-            }
+            },
+            "workingDays": {
+                "required": "الرجاء تحديد يوم واحد على الأقل"
+            } 
         },
         "popupMessages": {
             "create": {
