@@ -52,6 +52,7 @@ export class CreateComponent {
   primaryLang: string;
   secondaryLang: string;
   selectLanguagesArr: any;
+  langSaved: Array<string>;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   disableForms: boolean;
@@ -109,6 +110,8 @@ export class CreateComponent {
     let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
     //let allSupportedLangLabels =  JSON.parse(localStorage.getItem("languageLabels"));
     let otherLangsArr = supportedLanguages.filter(lang => lang !== this.primaryLang);
+    //this.primaryLang = "ara";
+    //otherLangsArr = ["eng","fra"]
     this.selectLanguagesArr = [];
     otherLangsArr.map((language) => {
       if (defaultJson.languages && defaultJson.languages[language]) {
@@ -118,8 +121,8 @@ export class CreateComponent {
         });
       }
     });
-    console.log("this.selectLanguagesArr");
-    console.log(this.selectLanguagesArr);
+    this.langSaved = [];
+
     // tslint:disable-next-line:no-string-literal
     this.secondaryLang = this.selectLanguagesArr[0]["code"];
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
@@ -133,8 +136,9 @@ export class CreateComponent {
     return index <= locCode;
   }
 
-  initializeComponent() {
+  async initializeComponent() {
     this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
+    //this.locCode = 5;
     this.days = appConstants.days[this.primaryLang];
     this.secondaryDays = appConstants.days[this.secondaryLang];
     this.activatedRoute.params.subscribe(params => {
@@ -142,7 +146,7 @@ export class CreateComponent {
       if (routeParts[routeParts.length - 2] === 'single-view') {
         this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers');
         this.disableForms = true;
-        this.getData(params);     
+        this.getData(params);  
       } else {
         this.auditService.audit(16, 'ADM-096');
         this.initializeheader();
@@ -152,10 +156,11 @@ export class CreateComponent {
       .getTranslation(this.secondaryLang)
       .subscribe(response => {
         this.secondaryLanguageLabels = response.center;
-        console.log(this.secondaryLanguageLabels);
+        //console.log(this.secondaryLanguageLabels);
       });
     this.initializePrimaryForm();
     this.initializeSecondaryForm();
+    this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
     this.getStubbedData();
     this.getProcessingTime();
     this.getTimeSlots();
@@ -165,6 +170,7 @@ export class CreateComponent {
       .subscribe(response => {
         this.popupMessages = response.center.popupMessages;
       });
+    console.log(`langSaved : ${this.langSaved}`);  
   }
 
   getZoneData() {
@@ -196,8 +202,10 @@ export class CreateComponent {
     }
   }
 
-  onCreate() {
+  createOrUpdate(selectedNewLangCode: string) {
     let data = {};
+    console.log("createOrUpdate");
+    console.log(this.secondaryForm.controls.name.value);
     if (
       (this.secondaryForm.controls.name.value === '' ||
       this.secondaryForm.controls.addressLine1.value === '') && this.showSecondaryForm
@@ -236,10 +244,10 @@ export class CreateComponent {
     dialogRef.afterClosed().subscribe(response => {
       if (response && this.data.length === 0) {
         this.auditService.audit(18, 'ADM-104', 'create');
-        this.saveData();
+        this.saveData(selectedNewLangCode);
       } else if (response && this.data.length !== 0) {
         this.auditService.audit(18, 'ADM-105', 'edit');
-        this.updateData();
+        this.updateData(selectedNewLangCode);
       } else if (!response && this.data.length === 0) {
         this.auditService.audit(19, 'ADM-106', 'create');
       } else if (!response && this.data.length !== 0) {
@@ -248,7 +256,7 @@ export class CreateComponent {
     });
   }
 
-  updateData() {
+  updateData(selectedNewLangCode: string) {
     this.createUpdate = true;
     let locationCode, secondaryLocationCode = "";
     if(1 == this.locCode){
@@ -349,7 +357,11 @@ export class CreateComponent {
                 this.showMessage('update-success', primaryObject)
                   .afterClosed()
                   .subscribe(() => {
-                    this.router.navigateByUrl('admin/resources/centers/view');
+                    if (selectedNewLangCode == null) {
+                      this.router.navigateByUrl('admin/resources/centers/view');
+                    } else {
+                      this.reloadSecondaryFormWithNewLang(selectedNewLangCode);
+                    }     
                   });
               } else {
                 this.showMessage('update-error');
@@ -396,7 +408,7 @@ export class CreateComponent {
         obj[day.code] = false;
       }
     });
-    console.log(obj);
+    //console.log(obj);
     return obj;
   }
 
@@ -411,7 +423,7 @@ export class CreateComponent {
     return selectedDays;
   }
 
-  saveData() {
+  saveData(selectedNewLangCode: string) {
     this.createUpdate = true;
     let locationCode, secondaryLocationCode = "";
     if(1 == this.locCode){
@@ -517,9 +529,14 @@ export class CreateComponent {
                   this.showMessage('create-success', createResponse.response)
                     .afterClosed()
                     .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/centers/view');
+                      if (selectedNewLangCode == null) {
+                        this.primaryForm.reset();
+                        this.secondaryForm.reset();
+                        this.router.navigateByUrl('admin/resources/centers/view');
+                      } else {
+                        this.reloadSecondaryFormWithNewLang(selectedNewLangCode);
+                      }
+                      
                     });
                 } else {
                   this.showMessage('create-error');
@@ -564,6 +581,9 @@ export class CreateComponent {
       response => {
         if (response.response.data) {
           this.data[0] = response.response.data[0];
+          if (response.response.data[0] && !this.langSaved.includes(this.primaryLang)) {
+            this.langSaved.push(this.primaryLang);
+          }
           this.initializeheader();
           this.setPrimaryFormValues();
           this.centerRequest.languageCode = this.secondaryLang;
@@ -579,6 +599,9 @@ export class CreateComponent {
               this.data[1] = secondaryResponse.response.data
                 ? secondaryResponse.response.data[0]
                 : {};
+                if (secondaryResponse.response.data[0] && !this.langSaved.includes(this.secondaryLang)) {
+                  this.langSaved.push(this.secondaryLang);
+                }  
               this.setSecondaryFormValues();
             });
           }
@@ -664,6 +687,8 @@ export class CreateComponent {
     this.primaryForm.controls.lunchEndTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
     );
+    console.log("working days");
+    console.log(this.data[0]);
     this.primaryForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
       this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
     this.primaryForm.controls.exceptionalHolidays.setValue(
@@ -673,6 +698,8 @@ export class CreateComponent {
   }
 
   setSecondaryFormValues() {
+    console.log("setSecondaryFormValues");
+    console.log(this.data[1]);
     if (this.data && this.data.length > 1) {
       this.secondaryForm.controls.name.setValue(
         this.data[1].name ? this.data[1].name : ''
@@ -737,7 +764,7 @@ export class CreateComponent {
     this.secondaryForm.controls.exceptionalHolidays.setValue(this.data[0].exceptionalHolidayPutPostDto ?
        [...this.data[0].exceptionalHolidayPutPostDto] : []);
     this.secondaryForm.controls.isActive.setValue(this.data[0].isActive);
-    
+    this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
   }
 
   initializeheader() {
@@ -772,6 +799,7 @@ export class CreateComponent {
   }
 
   loadLocationData(locationCode: string, fieldName: string) {
+    console.log(`loadLOcationData: ${this.disableForms}`);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
     }
@@ -846,7 +874,6 @@ export class CreateComponent {
   }
 
   initializeSecondaryForm() {
-
     this.secondaryForm = this.formBuilder.group({
       selectLanguage: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.maxLength(128)]],
@@ -887,7 +914,7 @@ export class CreateComponent {
     return this.secondaryForm.controls;
   }
 
-  submit() {
+  submit(selectedNewLangCode: string) {
     if (!this.disableForms) {
       this.auditService.audit(17, 'ADM-097');
       console.log("this.primaryForm.valid>>>"+this.primaryForm.valid);
@@ -897,7 +924,7 @@ export class CreateComponent {
             this.secondaryForm.controls[i].markAsTouched();
           }
         }
-        this.onCreate();
+        this.createOrUpdate(selectedNewLangCode);
       } else {
         for (const i in this.primaryForm.controls) {
           if (this.primaryForm.controls[i]) {
@@ -1007,6 +1034,35 @@ export class CreateComponent {
     }
   }
 
+  reloadSecondaryFormWithNewLang = (selectedNewLangCode: string) => {
+    this.secondaryLang = selectedNewLangCode;
+    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.loadLocationData('MOR', 'region');
+    this.secondaryForm.reset();
+    if (this.data && this.data.length > 1) {
+      this.data[1] = {};
+    }
+    this.initializeComponent();
+
+  }
+  handleChangeSecondaryLang = (fieldName: string) => {
+    let selectedNewLangCode = this.secondaryForm.controls[fieldName].value;
+    if (this.primaryForm.touched && this.primaryForm.valid && this.secondaryForm.touched && this.secondaryForm.valid) {
+      this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
+      this.submit(selectedNewLangCode);
+    } 
+    else if (this.secondaryForm.touched && !this.secondaryForm.valid) {
+      for (const i in this.secondaryForm.controls) {
+        if (this.secondaryForm.controls[i]) {
+          this.secondaryForm.controls[i].markAsTouched();
+        }
+      }
+    }
+    else {
+      this.reloadSecondaryFormWithNewLang(selectedNewLangCode);
+    }
+  }
+
   updateTimeSlotDropdownOptions(
     changedField: string,
     targetField: string,
@@ -1066,13 +1122,13 @@ export class CreateComponent {
   loadLocationDropDownsForUpdate(data: any) {
     if(1 <= this.locCode){
       this.loadLocationData('MOR', 'region');
-    }if(2 <= this.locCode){
+    } if(2 <= this.locCode){
       this.loadLocationData(data.regionCode, 'province');
-    }if(3 <= this.locCode){
+    } if(3 <= this.locCode){
       this.loadLocationData(data.provinceCode, 'city');
-    }if(4 <= this.locCode){
+    } if(4 <= this.locCode){
       this.loadLocationData(data.cityCode, 'laa');
-    }if(5 <= this.locCode){
+    } if(5 <= this.locCode){
       this.loadLocationData(data.administrativeZoneCode, 'postalCode');
     }
   }

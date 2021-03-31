@@ -46,7 +46,7 @@ export class AuthInterceptor implements HttpInterceptor {
       tap(
         event => {
           if (event instanceof HttpResponse) {
-            console.log(event);
+            //console.log(event);
             if (event.url.split('/').includes('validateToken')) {
                 if (event.body.response) {
                   this.decoded = jwt_decode(event.body.response.token);

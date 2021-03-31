@@ -170,6 +170,14 @@ h3 {
           text-align: right;
         }
       }
+      .secondary-form-non-ara {
+        padding-right: 25px;
+        padding-top: 30px;
+        flex: 1;
+        .mat-form-field {
+          width: 100% !important;
+        }
+      }
       .flex-display {
         display: flex;
         justify-content: space-between;

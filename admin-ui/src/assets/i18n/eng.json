@@ -149,6 +149,9 @@
             },
             "endTime": {
                 "required": "Center End Time is required"
+            },
+            "workingDays": {
+                "required": "Please select atleast one day"
             } 
         },
         "popupMessages": {
