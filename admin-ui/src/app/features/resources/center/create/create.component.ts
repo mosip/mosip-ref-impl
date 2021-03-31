@@ -710,6 +710,8 @@ export class CreateComponent {
     this.primaryForm.controls.lunchEndTime.setValue(
       Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
     );
+    console.log("working days");
+    console.log(this.data[0]);
     this.primaryForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
       this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
     this.primaryForm.controls.exceptionalHolidays.setValue(
@@ -719,6 +721,8 @@ export class CreateComponent {
   }
 
   setSecondaryFormValues() {
+    console.log("setSecondaryFormValues");
+    console.log(this.data[1]);
     if (this.data && this.data.length > 1) {
       this.secondaryForm.controls.name.setValue(
         this.data[1].name ? this.data[1].name : ''
@@ -830,6 +834,7 @@ export class CreateComponent {
   }
 
   loadLocationData(locationCode: string, fieldName: string) {
+    console.log(`loadLOcationData: ${this.disableForms}`);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
     }
