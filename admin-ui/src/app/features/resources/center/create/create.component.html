@@ -14,7 +14,6 @@
       <mat-card>
         <mat-card-content class="forms-container">
           <div [formGroup]="primaryForm" class="primary-form">
-            <div style="padding-bottom: 50px;"></div>   
             <span
               ><strong>{{ "center.language" | translate }}</strong></span
             >
@@ -372,7 +371,6 @@
                   }}
                 </mat-error>
               </mat-form-field>
-              
             </div>
             <div class="flex-display">
               <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 3)">
@@ -595,7 +593,8 @@
                       'more'
                     );
                     calculateWorkingHours();
-                    validateAndLoadLunchTime('lunchStartTime')
+                    validateAndLoadLunchStartTime();
+                    validateAndLoadLunchEndTime();
                   "
                 >
                   <mat-option
@@ -628,7 +627,8 @@
                       'startTime',
                       'less'
                     );
-                    validateAndLoadLunchTime('lunchEndTime')
+                    validateAndLoadLunchStartTime();
+                    validateAndLoadLunchEndTime();
                   "
                 >
                   <mat-option
@@ -656,6 +656,7 @@
                 placeholder="{{ 'center.working-hrs' | translate }}"
               />
             </mat-form-field>
+          
             <div class="flex-display">
               <mat-form-field class="left-sizing">
                 <mat-label>{{
@@ -667,7 +668,8 @@
                     copyDataToSecondaryForm(
                       'lunchStartTime',
                       primary.lunchStartTime.value
-                    )
+                    );
+                    validateAndLoadLunchEndTime();
                   "
                 >
                   <mat-option
@@ -678,6 +680,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+            
               <mat-form-field class="right-sizing">
                 <mat-label>{{ "center.lunch-end-time" | translate }}</mat-label>
                 <mat-select
@@ -686,7 +689,8 @@
                     copyDataToSecondaryForm(
                       'lunchEndTime',
                       primary.lunchEndTime.value
-                    )
+                    );
+                    validateAndLoadLunchStartTime();
                   "
                 >
                   <mat-option
@@ -725,8 +729,7 @@
                 primary.workingDays.touched &&
                 primary.workingDays.hasError('required')
               "
-              >{{ "center.validationMessages.workingDays.required" | translate }}
-             </mat-error
+              >{{ "center.validationMessages.workingDays.required" | translate }}</mat-error
             >
             <br />
             <mat-label>{{ "center.holidays" | translate }}</mat-label>
@@ -796,7 +799,6 @@
               </mat-select>
             </mat-form-field>
           </div>
-          
           <mat-divider [vertical]="true" [inset]="true"></mat-divider>
           <div
             *ngIf="
@@ -807,19 +809,6 @@
               secondaryLang === 'ara' ? 'secondary-form' : 'secondary-form-non-ara'
             "
           >
-          <mat-form-field style="padding-bottom: 10px;">
-            <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
-            <mat-select
-              formControlName="selectLanguage"
-              (selectionChange)="handleChangeSecondaryLang('selectLanguage')">
-              <mat-option
-                *ngFor="let data of selectLanguagesArr"
-                [value]="data.code"
-              >
-                {{ data.value }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
             <span
               ><strong>{{ secondaryLanguageLabels["language"] }}</strong></span
             >
@@ -1147,8 +1136,7 @@
                 <mat-label>{{
                   secondaryLanguageLabels["start-time"]
                 }}</mat-label>
-                <mat-select formControlName="startTime"
-                >
+                <mat-select formControlName="startTime">
                   <mat-option
                     *ngFor="let data of dropDownValues.startTime"
                     [value]="data"
@@ -1159,8 +1147,7 @@
               </mat-form-field>
               <mat-form-field class="right-sizing">
                 <mat-label>{{ secondaryLanguageLabels["end-time"] }}</mat-label>
-                <mat-select formControlName="endTime"
-                >
+                <mat-select formControlName="endTime">
                   <mat-option
                     *ngFor="let data of dropDownValues.endTime"
                     [value]="data"
@@ -1227,14 +1214,6 @@
                 </mat-list-option>
               </div>
             </mat-selection-list>
-            <mat-error
-            *ngIf="
-              secondary.workingDays.touched &&
-              secondary.workingDays.hasError('required')
-            "
-            >{{ secondaryLanguageLabels["validationMessages"]["workingDays"]["required"]}}
-           </mat-error
-          >
             <br />
             <mat-label>{{ secondaryLanguageLabels["holidays"] }}</mat-label
             >&nbsp;&nbsp;&nbsp;&nbsp; <br /><br /><br /><br /><br />
@@ -1283,7 +1262,7 @@
             id="createButton"
             mat-raised-button
             *ngIf="data.length != 0"
-            (click)="submit(null)"
+            (click)="submit()"
           >
             {{ "center.update" | translate }}
           </button>
@@ -1291,7 +1270,7 @@
             id="createButton"
             mat-raised-button
             *ngIf="data.length == 0"
-            (click)="submit(null)"
+            (click)="submit()"
           >
             {{ "center.create" | translate }}
           </button>
