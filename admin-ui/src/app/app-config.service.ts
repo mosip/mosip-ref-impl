@@ -16,7 +16,8 @@ export class AppConfigService {
     	this.http.get(this.appConfig.baseUrl + 'masterdata/applicationconfigs').subscribe(
 	      response => {
 	        this.appConfig["primaryLangCode"]= response["response"]["primaryLangCode"];
-	        this.appConfig["secondaryLangCode"] = response["response"]["secondaryLangCode"];        
+	        this.appConfig["secondaryLangCode"] = response["response"]["secondaryLangCode"];     
+		this.appConfig["version"]= response["response"]["version"];
 	      },
 	      error => {
 	        console.log(error);
