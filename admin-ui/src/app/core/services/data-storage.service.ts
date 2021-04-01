@@ -174,4 +174,8 @@ export class DataStorageService {
   getCreateUpdateSteps(entity: string) {
   return this.http.get(`./assets/create-update-steps/${entity}-steps.json`);
   }
+
+  getI18NLanguageFiles(langCode: string){
+    return this.http.get(`./assets/i18n/${langCode}.json`);
+   }
 }

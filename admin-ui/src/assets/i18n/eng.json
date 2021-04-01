@@ -228,9 +228,6 @@
     "masterdataupload": {
         "title": "Master Data Upload"
     },
-    "packetupload": {
-        "title": "Packet Upload"
-    },
     "devices": {
         "title":"Devices",
         "header": "Device",
@@ -455,6 +452,7 @@
     },
     "packet-status": {
         "header": "Packet Status",
+        "input-text": "Enter ID",
         "text": "Please enter Registration ID to check Packet Status",
         "error": "Invalid Registration ID Entered",
         "id": "Registration ID",
@@ -469,6 +467,44 @@
         "statuscheckFailed":"Failed",
         "statuscheckCompleted":"Completed"
 
+    },
+    "packet-upload":{
+      "header":"Packet Upload",
+      "singleView":{
+        "detailed-view-txt":"Detailed View",
+        "status-txt":"Status",
+        "uploadedBy-txt": "Uploaded By",
+        "count-txt":"Count",
+        "dataAndTime-txt" : "Date And Time",
+        "failureDescription-txt":"Failure Description",
+        "placeHolder1-txt":"Table Name",
+        "placeHolder2-txt":"Operations"
+      },
+      "createView":{
+        "input-btn-text":"Choose File",
+        "input-text1":"Upload file...",
+        "input-text2":"Upload Your File",
+        "upload-btn":"UPLOAD",
+        "cancle-btn":"CANCEL",
+        "popupMessaages":{
+            "popup1":{
+                "uploadConfirm":"Confirm Packet Upload",
+                "message":"Packet will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
+                "confirmBtnTxt":"CONFIRM",
+                "cancelBtnTxt":"Cancel"
+            },
+            "popup2":{
+                "title":"Failure !",
+                "btnTxt":"DONE"
+            },
+            "popup3":{
+                "title":"Success",
+                "message" :"Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID :",
+                "btnTxt":"DONE"
+            }
+     
+        }
+      }
     },
     "actionMessages" : {
         "decommission": {
