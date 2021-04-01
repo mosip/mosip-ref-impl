@@ -372,6 +372,7 @@
                   }}
                 </mat-error>
               </mat-form-field>
+              
             </div>
             <div class="flex-display">
               <mat-form-field class="left-sizing" *ngIf="lessThanEqual(locCode, 3)">
@@ -724,7 +725,8 @@
                 primary.workingDays.touched &&
                 primary.workingDays.hasError('required')
               "
-              >Please select atleast one day</mat-error
+              >{{ "center.validationMessages.workingDays.required" | translate }}
+             </mat-error
             >
             <br />
             <mat-label>{{ "center.holidays" | translate }}</mat-label>
@@ -794,6 +796,7 @@
               </mat-select>
             </mat-form-field>
           </div>
+          
           <mat-divider [vertical]="true" [inset]="true"></mat-divider>
           <div
             *ngIf="
@@ -801,17 +804,14 @@
             "
             [formGroup]="secondaryForm"
             [ngClass]="
-              secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'
+              secondaryLang === 'ara' ? 'secondary-form' : 'secondary-form-non-ara'
             "
           >
           <mat-form-field style="padding-bottom: 10px;">
             <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
             <mat-select
               formControlName="selectLanguage"
-              (selectionChange)="
-                  changeSecondaryLanguage()
-                "
-            >
+              (selectionChange)="handleChangeSecondaryLang('selectLanguage')">
               <mat-option
                 *ngFor="let data of selectLanguagesArr"
                 [value]="data.code"
@@ -1147,7 +1147,8 @@
                 <mat-label>{{
                   secondaryLanguageLabels["start-time"]
                 }}</mat-label>
-                <mat-select formControlName="startTime">
+                <mat-select formControlName="startTime"
+                >
                   <mat-option
                     *ngFor="let data of dropDownValues.startTime"
                     [value]="data"
@@ -1158,7 +1159,8 @@
               </mat-form-field>
               <mat-form-field class="right-sizing">
                 <mat-label>{{ secondaryLanguageLabels["end-time"] }}</mat-label>
-                <mat-select formControlName="endTime">
+                <mat-select formControlName="endTime"
+                >
                   <mat-option
                     *ngFor="let data of dropDownValues.endTime"
                     [value]="data"
@@ -1225,6 +1227,14 @@
                 </mat-list-option>
               </div>
             </mat-selection-list>
+            <mat-error
+            *ngIf="
+              secondary.workingDays.touched &&
+              secondary.workingDays.hasError('required')
+            "
+            >{{ secondaryLanguageLabels["validationMessages"]["workingDays"]["required"]}}
+           </mat-error
+          >
             <br />
             <mat-label>{{ secondaryLanguageLabels["holidays"] }}</mat-label
             >&nbsp;&nbsp;&nbsp;&nbsp; <br /><br /><br /><br /><br />
@@ -1273,7 +1283,7 @@
             id="createButton"
             mat-raised-button
             *ngIf="data.length != 0"
-            (click)="submit()"
+            (click)="submit(null)"
           >
             {{ "center.update" | translate }}
           </button>
@@ -1281,7 +1291,7 @@
             id="createButton"
             mat-raised-button
             *ngIf="data.length == 0"
-            (click)="submit()"
+            (click)="submit(null)"
           >
             {{ "center.create" | translate }}
           </button>

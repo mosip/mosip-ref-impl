@@ -32,7 +32,7 @@
         "fra": "modifier"
       },
       "actionURL": "",
-      "redirectURL": "/admin/masterdata/center-type/single-view/$id?editable=true",
+      "redirectURL": "/admin/masterdata/center-type/single-view/$id",
       "showIn": "Ellipsis",
       "validations": "",
       "callBackFunction": "centerEdit"

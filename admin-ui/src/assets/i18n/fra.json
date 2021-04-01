@@ -136,7 +136,10 @@
             },
             "endTime": {
                 "required": "Heure de fin de centre requise"
-            }
+            },
+            "workingDays": {
+                "required": "Veuillez sélectionner au moins un jour"
+            } 
         },
         "popupMessages": {
             "create": {
