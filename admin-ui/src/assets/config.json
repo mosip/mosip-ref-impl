@@ -5,6 +5,5 @@
     "adminUrl":"/admin-ui/",
     "validateToken": "authmanager/authorize/admin/validateToken",
     "login": "admin/login/",
-    "logout": "admin/logout/user",
-    "supportedLanguages": "eng,ara,fra"
+    "logout": "admin/logout/user"
 } 
