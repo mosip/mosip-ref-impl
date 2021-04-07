@@ -7,12 +7,13 @@ ENV base_path=/usr/share/nginx/html
 
 ENV i18n_path=${base_path}/assets/i18n
 
-COPY default.conf /etc/nginx/conf.d/
-
+COPY default.conf default.conf 
 COPY dist ${base_path}
 
-# CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip;\
-#     cd ${i18n_path} ;\
-#     unzip pre-registration-i18n-bundle.zip ;\
-#     cp -vrf  pre-registration-i18n-bundle/* . 
+CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip;\
+    cd ${i18n_path} ;\
+    unzip pre-registration-i18n-bundle.zip ;\
+    cp -vrf  pre-registration-i18n-bundle/* . 
+    cd / ;\
+    cp default.conf /etc/nginx/conf.d/
     
