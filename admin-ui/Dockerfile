@@ -1,27 +1,29 @@
-    
-# FROM nginx
-# COPY default.conf /etc/nginx/conf.d/
-# COPY dist /usr/share/nginx/html
-
 # base image
-FROM ubuntu:18.04 AS add-i18n
-COPY dist dist
+FROM nginx
+
+ENV base_path=/usr/share/nginx/html
+
+ENV i18n_path=${base_path}/assets/i18n
+
+ENV entity_spec_path=${base_path}/assets/entity-spec
+
+COPY default.conf /etc/nginx/conf.d/
+
+COPY dist ${base_path}
+
 # install the needed packages including wget and a unzip library 
 RUN apt-get update -y && apt-get install -y wget && apt-get install -y unzip
-RUN mkdir entity-spec
-RUN mkdir i18n
-# get the pre-registration i18n bundle zip from artifactory
-CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip admin-i18n-bundle.zip ;\
-    wget  -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip admin-entity-spec-bundle.zip ;\
+
+
+# get the admin i18n bundle zip from artifactory
+CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip;\
+    wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${entity_spec_path}"/admin-i18n-bundle.zip;\
+    cd ${entity_spec_path} ;\
     unzip admin-entity-spec-bundle.zip ;\
+    mv -vf /admin-entity-spec-bundle/* . ;\
+    cd ${i18n_path} ;\
     unzip admin-i18n-bundle.zip ;\
-    mv /admin-i18n-bundle/* i18n/ ;\
-    mv /admin-entity-spec-bundle/* entity-spec/ ;\
-    mv /entity-spec /dist/assets/ ;\
-    mv /i18n /dist/assets/
- 
+    mv -vf /admin-i18n-bundle/* . ;\
+   
 
 
-FROM nginx
-COPY default.conf /etc/nginx/conf.d/
-COPY --from=add-i18n dist /usr/share/nginx/html
