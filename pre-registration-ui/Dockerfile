@@ -1,7 +1,7 @@
 FROM nginx
 
 RUN apt-get -y update &&\
-apt-get install -y unzip wget zip && apt-get install -y rsync
+apt-get install -y unzip wget zip
 
 COPY dist dist
 
@@ -10,7 +10,7 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     unzip pre-registration-i18n-bundle.zip;\
     mv -f  pre-registration-i18n-bundle/* . ;\
     cd / ;\
-    rsync -nr dist/* /usr/share/nginx/html
+    cp -uvr dist/* /usr/share/nginx/html
 
 # FROM nginx
 # COPY default.conf /etc/nginx/conf.d/
