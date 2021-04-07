@@ -10,7 +10,7 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     unzip pre-registration-i18n-bundle.zip;\
     mv -f  pre-registration-i18n-bundle/* . ;\
     cd / ;\
-    mv -f dist/* /usr/share/nginx/html
+    cp -rf dist/* /usr/share/nginx/html
 
 # FROM nginx
 # COPY default.conf /etc/nginx/conf.d/
