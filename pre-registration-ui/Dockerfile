@@ -9,11 +9,11 @@ COPY default.conf /etc/nginx/conf.d/
 
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O /dist/assets/i18n/pre-registration-i18n-bundle.zip;\
     cd dist/assets/i18n/ ;\
-    unzip pre-registration-i18n-bundle.zip;\
+    unzip pre-registration-i18n-bundle.zip ;\
     mv -f  pre-registration-i18n-bundle/* . ;\
     cd / ;\
-    mv -n dist/assets/* /usr/share/nginx/html/assets
-    rm -rf dist/assets
+    mv -n dist/assets/* /usr/share/nginx/html/assets;\
+    rm -rf dist/assets ;\
     mv dist/* /usr/share/nginx/html
 # FROM nginx
 # COPY default.conf /etc/nginx/conf.d/
