@@ -37,7 +37,9 @@ import {
 } from 'ngx7-material-keyboard';
 import { AuditService } from 'src/app/core/services/audit.service';
 import * as centerSpecFile from '../../../../../assets/entity-spec/center.json';
+import { HeaderService } from 'src/app/core/services/header.service';
 import { HolidayModel } from 'src/app/core/models/holiday-model';
+import defaultJson from "../../../../../assets/i18n/default.json";
 
 @Component({
   selector: 'app-edit',
@@ -48,6 +50,7 @@ export class EditComponent {
   secondaryLanguageLabels: any;
   primaryLang: string;
   secondaryLang: string;
+  selectLanguagesArr: any;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   disableForms: boolean;
@@ -81,9 +84,11 @@ export class EditComponent {
   holidayDate: any;
   minDate = new Date();
   locCode = 0;
+  initialLocationCode: "";
   constructor(
     private location: Location,
     private translateService: TranslateService,
+    private headerService: HeaderService,
     private dataStorageService: DataStorageService,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
@@ -99,15 +104,29 @@ export class EditComponent {
         this.initializeComponent();
       }
     });
-    // tslint:disable-next-line:no-string-literal
-    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
-    // tslint:disable-next-line:no-string-literal
-    this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
+    this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
+    let supportedLanguagesArr = this.appConfigService.getConfig()['supportedLanguages'].split(',');
+    this.selectLanguagesArr = [];
+    
+    let supportedLanguages = [];
+    supportedLanguagesArr.map(lang => supportedLanguages.push(lang.trim()));
+    let otherLangsArr = supportedLanguages.filter(lang => lang !== this.primaryLang);
+    otherLangsArr.forEach((language) => {
+      if (defaultJson.languages && defaultJson.languages[language]) {
+        this.selectLanguagesArr.push({
+          code: language,
+          value: defaultJson.languages[language].nativeName,
+        });
+      }
+    });
+    console.log(this.selectLanguagesArr);
+    this.secondaryLang = this.selectLanguagesArr[0]["code"];
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
-    this.loadLocationData('MOR', 'region');
+    this.loadLocationData(this.initialLocationCode, 'region');
   }
 
   lessThanEqual(locCode, index){
@@ -559,7 +578,7 @@ export class EditComponent {
             .subscribe(secondaryResponse => {
               this.data[1] = secondaryResponse.response.data
                 ? secondaryResponse.response.data[0]
-                : {};
+                : null;
               this.setSecondaryFormValues();
             });
           }
@@ -830,6 +849,7 @@ export class EditComponent {
 
   initializeSecondaryForm() {
     this.secondaryForm = this.formBuilder.group({
+      selectLanguage: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.maxLength(128)]],
       centerTypeCode: [{ value: '', disabled: true }],
       contactPerson: ['', [Validators.maxLength(128)]],
@@ -1119,7 +1139,7 @@ export class EditComponent {
 
   loadLocationDropDownsForUpdate(data: any) {
     if(1 <= this.locCode){
-      this.loadLocationData('MOR', 'region');
+      this.loadLocationData(this.initialLocationCode, 'region');
     }if(2 <= this.locCode){
       this.loadLocationData(data.regionCode, 'province');
     }if(3 <= this.locCode){

@@ -488,15 +488,6 @@
                 </div>
               </ng-container>
             </div>
-            <br />
-            <mat-form-field>
-              <mat-label>{{ "center.isActive" | translate }}</mat-label>
-              <mat-select formControlName="isActive">
-                <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
-                  {{ data | status }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
           <mat-divider [vertical]="true" [inset]="true"></mat-divider>
         </mat-card-content>
