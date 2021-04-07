@@ -66,6 +66,7 @@
         "datepicker-placeholder":"اختيار موعد",
         "devices-tooltip":"يتضمن الجهاز ماسحة البصمات ، ماسحة آيريس ، كاميرا ويب ، طابعة",
         "selectLanguage": "اختار اللغة",
+        "editCommonDetails": "يرجى تعديل تفاصيل المركز الأخرى هنا",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",

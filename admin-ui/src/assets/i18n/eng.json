@@ -79,6 +79,7 @@
         "datepicker-placeholder":"Choose a date",
         "devices-tooltip":"Device includes Fingerprint Scanner, Iris Scanner, Web Camera, Printer",
         "selectLanguage": "Select Language",
+        "editCommonDetails": "Please edit other center details here",
         "validationMessages": {
             "name": {
                 "required": "Center Name is required",
