@@ -20,10 +20,10 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip;\
     cd ${entity_spec_path} ;\
     unzip admin-entity-spec-bundle.zip ;\
-    mv -vf /admin-entity-spec-bundle/* . ;\
+    mv -vf admin-entity-spec-bundle/* . ;\
     cd ${i18n_path} ;\
     unzip admin-i18n-bundle.zip ;\
-    mv -vf /admin-i18n-bundle/* . 
+    mv -vf admin-i18n-bundle/* . 
    
 
 
