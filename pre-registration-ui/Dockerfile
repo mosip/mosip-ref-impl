@@ -14,5 +14,5 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     cd ${i18n_path} ;\
     unzip pre-registration-i18n-bundle.zip ;\
     cp -vrf  pre-registration-i18n-bundle/* .  ;\
-    /etc/init.d/nginx restart
+    nginx -s reload
     
