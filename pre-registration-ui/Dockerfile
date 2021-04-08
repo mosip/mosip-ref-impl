@@ -14,6 +14,6 @@ COPY dist ${base_path}
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip;\
    cd ${i18n_path} ;\
    unzip pre-registration-i18n-bundle.zip ;\
-   cp -vrf  "${i18n_path}"/pre-registration-i18n-bundle/* .  ;\
-   nginx
+   cp -vrf  "${i18n_path}"/pre-registration-i18n-bundle/* . ;\
+   /bin/bash
     
