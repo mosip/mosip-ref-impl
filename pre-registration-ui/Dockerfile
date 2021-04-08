@@ -3,8 +3,7 @@ FROM nginx
 RUN apt-get -y update &&\
 apt-get install -y unzip wget zip
 
-RUN chmod 777 docker-entrypoint.sh \
-    && ln -s docker-entrypoint.sh 
+RUN chmod 777 docker-entrypoint.sh
 
 ENV base_path=/usr/share/nginx/html
 
