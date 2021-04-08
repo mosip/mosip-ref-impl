@@ -3,6 +3,9 @@ FROM nginx
 RUN apt-get -y update &&\
 apt-get install -y unzip wget zip
 
+RUN chmod 777 docker-entrypoint.sh \
+    && ln -s docker-entrypoint.sh 
+
 ENV base_path=/usr/share/nginx/html
 
 ENV i18n_path=${base_path}/assets/i18n
