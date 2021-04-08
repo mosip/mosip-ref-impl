@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM nginx
 
 RUN apt-get -y update &&\
 
@@ -14,4 +14,4 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     rm -rf pre-registration-i18n-bundle pre-registration-i18n-bundle.zip 
     mv -f *.json /usr/share/nginx/html/assets/i18n
  
-ENTRYPOINT [docker-entrypoint.sh]
+ENTRYPOINT ["docker-entrypoint.sh"]
