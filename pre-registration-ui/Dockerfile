@@ -8,6 +8,6 @@ COPY default.conf /etc/nginx/conf.d/
 COPY dist /usr/share/nginx/html
 
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O /usr/share/nginx/html/assets/i18n/pre-registration-i18n-bundle.zip;\
-    cd /usr/share/nginx/html/assets/i18n/ ;\
+    cd usr/share/nginx/html/assets/i18n/ ;\
     unzip pre-registration-i18n-bundle.zip ;\
     cp -uvrf  pre-registration-i18n-bundle/* . 
