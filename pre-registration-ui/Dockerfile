@@ -1,7 +1,6 @@
-FROM ubuntu
+FROM ngnix
 
 RUN apt-get -y update &&\
-apt-get install -y nginx &&\
 apt-get install -y unzip wget zip 
 
 ENV base_path=/usr/share/nginx/html
@@ -15,5 +14,4 @@ COPY dist ${base_path}
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip;\
    cd ${i18n_path} ;\
    unzip pre-registration-i18n-bundle.zip ;\
-   cp -vrf /pre-registration-i18n-bundle/* . ;\
-   ngnix -S reload
+   cp -vrf pre-registration-i18n-bundle/* . 
