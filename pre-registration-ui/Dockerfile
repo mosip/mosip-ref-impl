@@ -15,5 +15,5 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
    cd ${i18n_path} ;\
    unzip pre-registration-i18n-bundle.zip ;\
    cp -vrf  "${i18n_path}"/pre-registration-i18n-bundle/* . ;\
-   nginx -g  daemon off
+   exec /docker-entrypoint.sh $@
     
