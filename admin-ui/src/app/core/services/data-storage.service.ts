@@ -85,6 +85,19 @@ export class DataStorageService {
     );
   }
 
+  updateCenterLangData(data: RequestModel): Observable<any> {
+    return this.http.put(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + "registrationcenters/language",
+      data
+    );
+  }
+
+  updateCenterNonLangData(data: RequestModel): Observable<any> {
+    return this.http.put(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + "registrationcenters/nonlanguage",
+      data
+    );
+  }
   getDevicesData(request: RequestModel): Observable<any> {
     return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
   }
