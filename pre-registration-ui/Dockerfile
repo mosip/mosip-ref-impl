@@ -4,8 +4,6 @@ RUN apt-get -y update &&\
 
 apt-get install -y unzip wget zip 
 
-WORKDIR /home
-
 COPY default.conf /etc/nginx/conf.d/
 
 COPY dist /usr/share/nginx/html
@@ -13,5 +11,6 @@ COPY dist /usr/share/nginx/html
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O pre-registration-i18n-bundle.zip;\
     unzip pre-registration-i18n-bundle.zip ;\
     cp -uvrf  pre-registration-i18n-bundle/* . ;\
-    rm -rf pre-registration-i18n-bundle pre-registration-i18n-bundle.zip ;\
-    exec nginx -g 'daemon off;'
+    rm -rf pre-registration-i18n-bundle pre-registration-i18n-bundle.zip 
+ 
+ENTRYPOINT ["/bin/sh", docker-entrypoint.sh]
