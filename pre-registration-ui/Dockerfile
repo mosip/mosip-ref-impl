@@ -14,4 +14,4 @@ COPY dist ${base_path}
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip;\
    cd /;\
    unzip "${i18n_path}"/pre-registration-i18n-bundle.zip ;\
-   cp -vrf "${i18n_path}"/pre-registration-i18n-bundle/* . 
+   cp -vrf "${i18n_path}"/pre-registration-i18n-bundle/* ${i18n_path}
