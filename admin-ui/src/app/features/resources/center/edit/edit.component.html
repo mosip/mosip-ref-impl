@@ -52,7 +52,7 @@
             </div>
             <h3>{{ "center.location-details" | translate }}</h3>
             <mat-form-field>
-              <input #keyboardRef #addressline1 (focus)="scrollPage(addressline1, 'primary', 'addressLine1', 5)"
+              <input #keyboardRef #addressline1 (focus)="scrollPage(addressline1, 'primary', 'addressLine1', 2)"
                 formControlName="addressLine1" matInput placeholder="{{ 'center.address1' | translate }}" />
               <mat-error *ngIf="
                       primary.addressLine1.touched &&
@@ -74,7 +74,7 @@
             </mat-form-field>
             <div class="flex-display">
               <mat-form-field>
-                <input #keyboardRef #addressline2 (focus)="scrollPage(addressline2, 'primary', 'addressLine2', 6)"
+                <input #keyboardRef #addressline2 (focus)="scrollPage(addressline2, 'primary', 'addressLine2', 3)"
                   formControlName="addressLine2" matInput placeholder="{{ 'center.address2' | translate }}" />
                 <mat-error *ngIf="
                       primary.addressLine2.touched &&
@@ -87,7 +87,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                <input #keyboardRef #addressline3 (focus)="scrollPage(addressline3, 'primary', 'addressLine3', 7)"
+                <input #keyboardRef #addressline3 (focus)="scrollPage(addressline3, 'primary', 'addressLine3', 4)"
                   formControlName="addressLine3" matInput placeholder="{{ 'center.address3' | translate }}" />
                 <mat-error *ngIf="
                       primary.addressLine3.touched &&
@@ -140,7 +140,7 @@
             <h3>{{ secondaryLanguageLabels["center-details"] }}</h3>
             <div class="flex-display">
               <mat-form-field>
-                <input #keyboardRef #nameSecondary (focus)="scrollPage(nameSecondary, 'secondary', 'name', 8)"
+                <input #keyboardRef #nameSecondary (focus)="scrollPage(nameSecondary, 'secondary', 'name', 5)"
                   formControlName="name" matInput placeholder="{{
                     secondaryLanguageLabels['registration-center-name']
                   }}" />
@@ -169,7 +169,7 @@
                       contactPersonSecondary,
                       'secondary',
                       'contactPerson',
-                      9
+                      6
                     )
                   " formControlName="contactPerson" matInput
                   placeholder="{{ secondaryLanguageLabels['contact-person'] }}" />
@@ -192,7 +192,7 @@
                       addressline1secondary,
                       'secondary',
                       'addressLine1',
-                      10
+                      7
                     )
                   " formControlName="addressLine1" matInput placeholder="{{ secondaryLanguageLabels['address1'] }}" />
               <mat-error *ngIf="
@@ -223,7 +223,7 @@
                       addressline2secondary,
                       'secondary',
                       'addressLine2',
-                      11
+                      8
                     )
                   " formControlName="addressLine2" matInput placeholder="{{ secondaryLanguageLabels['address2'] }}" />
                 <mat-error *ngIf="
@@ -243,7 +243,7 @@
                       addressline3secondary,
                       'secondary',
                       'addressLine3',
-                      12
+                      9
                     )
                   " formControlName="addressLine3" matInput placeholder="{{ secondaryLanguageLabels['address3'] }}" />
                 <mat-error *ngIf="
@@ -297,7 +297,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                <input #keyboardRef #contactPhone (focus)="scrollPage(contactPhone, 'primary', 'contactPhone', 2)"
+                <input #keyboardRef #contactPhone 
                   formControlName="contactPhone" matInput placeholder="{{ 'center.contact-number' | translate }}" />
                 <mat-error *ngIf="
                     common.contactPhone.touched &&
@@ -314,7 +314,7 @@
             <h3>{{ "center.location-details" | translate }}</h3>
             <div class="flex-display">
               <mat-form-field>
-                <input #keyboardRef #longitude (focus)="scrollPage(longitude, 'primary', 'longitude', 3)"
+                <input #keyboardRef #longitude 
                   formControlName="longitude" matInput placeholder="{{ 'center.longitude' | translate }}" />
                 <mat-error *ngIf="
                   common.longitude.touched &&
@@ -351,7 +351,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                <input #keyboardRef #latitude (focus)="scrollPage(latitude, 'primary', 'latitude', 4)"
+                <input #keyboardRef #latitude 
                   formControlName="latitude" matInput placeholder="{{ 'center.latitude' | translate }}" />
                 <mat-error *ngIf="
                   common.latitude.touched &&
