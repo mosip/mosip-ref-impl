@@ -1,7 +1,7 @@
 {
     "primaryLangCode": "eng",
     "secondaryLangCode": "ara",
-    "baseUrl": "https://dev.mosip.net/v1/",
+    "baseUrl": "https://localhost:4200/proxyapi/",
     "adminUrl":"/admin-ui/",
     "validateToken": "authmanager/authorize/admin/validateToken",
     "login": "admin/login/",

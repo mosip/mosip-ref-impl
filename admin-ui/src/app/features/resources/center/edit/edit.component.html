@@ -8,13 +8,15 @@
     <!--Ceneter Details  -->
     <div id="myDiv" class="flex-body">
       <mat-card>
-        <mat-card-content class="forms-container" style="padding-top: 10px;">
-          <div [formGroup]="primaryForm" class="primary-form">
-            <div style="padding-bottom: 50px;"></div>   
+        <mat-card-content class="forms-container">
+          <div [formGroup]="primaryForm" [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
+            <div style="padding-bottom: 50px;"></div>
             <span><strong>{{ "center.language" | translate }}</strong></span>
-            <span *ngIf="!disableForms" matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
-              (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i
-                class="material-icons">keyboard</i></span>
+            <span *ngIf="!disablePrimaryForm" matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
+              (click)="openKeyboard('primary')" 
+              style="color: grey; cursor: pointer;"
+              [ngStyle]="isPrimaryLangRTL ? {'float':'left'} : {'float':'right'}">
+              <i class="material-icons">keyboard</i></span>
             <hr />
             <h3>{{ "center.center-details" | translate }}</h3>
             <div class="flex-display">
@@ -101,10 +103,10 @@
               </mat-form-field>
             </div>
             <mat-card-actions class="action-buttons">
-              <button id="createButton" mat-raised-button *ngIf="data.length != 0" (click)="submitLeftPanel()">
+              <button id="createButton" mat-raised-button *ngIf="data.length != 0" (click)="submitPrimaryPanel()">
                 {{ "center.update" | translate }}
               </button>
-              <button id="createButton" mat-raised-button *ngIf="data.length == 0" (click)="submitLeftPanel()">
+              <button id="createButton" mat-raised-button *ngIf="data.length == 0" (click)="submitPrimaryPanel()">
                 {{ "center.create" | translate }}
               </button>
               <button mat-raised-button (click)="cancel()">
@@ -113,29 +115,24 @@
             </mat-card-actions>
           </div>
           <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-          <div *ngIf="
-                secondaryLanguageLabels && secondaryLang && showSecondaryForm
-              " [formGroup]="secondaryForm" [ngClass]="
-                secondaryLang === 'ara' ? 'secondary-form' : 'secondary-form-non-ara'
-              ">
-              <mat-form-field style="padding-bottom: 10px;">
-                <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
-                <mat-select
-                  formControlName="selectLanguage"
-                  (selectionChange)="handleChangeSecondaryLang('selectLanguage')">
-                  <mat-option
-                    *ngFor="let data of selectLanguagesArr"
-                    [value]="data.code"
-                  >
+          <div *ngIf="secondaryLanguageLabels && secondaryLang && showSecondaryForm" [formGroup]="secondaryForm"
+            [ngClass]="isSecondaryLangRTL ? 'secondary-form' : 'secondary-form-ltr'">
+            <mat-form-field style="padding-bottom: 10px;">
+              <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
+              <mat-select formControlName="selectLanguage"
+                (selectionChange)="handleChangeSecondaryLang('selectLanguage')">
+                <mat-option *ngFor="let data of selectLanguagesArr" [value]="data.code">
                   <strong>{{ data.value }}</strong>
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-    
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
             <span><strong>{{ secondaryLanguageLabels["language"] }}</strong></span>
-            <span *ngIf="!disableForms" matTooltip="{{ secondaryLanguageLabels['keyboard-tooltip'] }}"
-              (click)="openKeyboard('secondary')" style="float: left; color: grey; cursor: pointer;"><i
-                class="material-icons">keyboard</i></span>
+            <span *ngIf="!disableSecondaryForm" matTooltip="{{ secondaryLanguageLabels['keyboard-tooltip'] }}"
+              (click)="openKeyboard('secondary')"
+              style="color: grey; cursor: pointer;"
+              [ngStyle]="isSecondaryLangRTL ? {'float':'left'} : {'float':'right'}">
+              <i class="material-icons">keyboard</i></span>
             <hr />
             <h3>{{ secondaryLanguageLabels["center-details"] }}</h3>
             <div class="flex-display">
@@ -259,14 +256,16 @@
               </mat-form-field>
             </div>
             <mat-card-actions class="action-buttons">
-              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] != null" (click)="submitRightPanel()">
-                {{ "center.update" | translate }}
+              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] != null"
+                (click)="submitSecondaryPanel()">
+                {{ secondaryLanguageLabels["update"]}}
               </button>
-              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] == null" (click)="submitRightPanel()">
-                {{ "center.create" | translate }}
+              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] == null"
+                (click)="submitSecondaryPanel()">
+                {{ secondaryLanguageLabels["create"] }}
               </button>
               <button mat-raised-button (click)="cancel()">
-                {{ "center.cancel" | translate }}
+                {{ secondaryLanguageLabels["cancel"] }}
               </button>
             </mat-card-actions>
           </div>
@@ -297,8 +296,8 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                <input #keyboardRef #contactPhone 
-                  formControlName="contactPhone" matInput placeholder="{{ 'center.contact-number' | translate }}" />
+                <input #keyboardRef #contactPhone formControlName="contactPhone" matInput
+                  placeholder="{{ 'center.contact-number' | translate }}" />
                 <mat-error *ngIf="
                     common.contactPhone.touched &&
                     common.contactPhone.hasError('maxlength')
@@ -314,8 +313,8 @@
             <h3>{{ "center.location-details" | translate }}</h3>
             <div class="flex-display">
               <mat-form-field>
-                <input #keyboardRef #longitude 
-                  formControlName="longitude" matInput placeholder="{{ 'center.longitude' | translate }}" />
+                <input #keyboardRef #longitude formControlName="longitude" matInput
+                  placeholder="{{ 'center.longitude' | translate }}" />
                 <mat-error *ngIf="
                   common.longitude.touched &&
                   common.longitude.hasError('required')
@@ -351,8 +350,8 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                <input #keyboardRef #latitude 
-                  formControlName="latitude" matInput placeholder="{{ 'center.latitude' | translate }}" />
+                <input #keyboardRef #latitude formControlName="latitude" matInput
+                  placeholder="{{ 'center.latitude' | translate }}" />
                 <mat-error *ngIf="
                   common.latitude.touched &&
                   common.latitude.hasError('required')
@@ -652,7 +651,7 @@
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-            <button [disabled]="disableForms" mat-raised-button (click)="createExceptionalHoliday()">
+            <button [disabled]="disablePrimaryForm" mat-raised-button (click)="createExceptionalHoliday()">
               {{ "center.add-button" | translate }}
             </button>
             <div style="display: flex; flex-wrap: wrap;">

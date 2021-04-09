@@ -51,10 +51,12 @@ export class EditComponent {
   secondaryLanguageLabels: any;
   primaryLang: string;
   secondaryLang: string;
+  isPrimaryLangRTL: boolean;
+  isSecondaryLangRTL: boolean;
   selectLanguagesArr: any;
+  supportedLanguages: Array<string>;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
-  disableForms: boolean;
   headerObject: HeaderModel;
   centerRequest = {} as CenterRequest;
   createUpdate = false;
@@ -64,6 +66,8 @@ export class EditComponent {
   primaryForm: FormGroup;
   secondaryForm: FormGroup;
   commonForm: FormGroup;
+  disablePrimaryForm: boolean;
+  disableSecondaryForm: boolean;
   data = [];
   popupMessages: any;
 
@@ -80,8 +84,7 @@ export class EditComponent {
   subscribed: any;
 
   days = [];
-  secondaryDays = [];
-
+  
   holidayDate: any;
   minDate = new Date();
   locCode = 0;
@@ -106,13 +109,19 @@ export class EditComponent {
       }
     });
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
-    this.primaryLang = this.headerService.getUserPreferredLanguage();
-    let supportedLanguagesArr = this.appConfigService.getConfig()['supportedLanguages'].split(',');
-    this.selectLanguagesArr = [];
     
-    let supportedLanguages = [];
-    supportedLanguagesArr.map(lang => supportedLanguages.push(lang.trim()));
-    let otherLangsArr = supportedLanguages.filter(lang => lang !== this.primaryLang);
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
+    console.log(`this.headerService.getUserPreferredLanguage(): ${this.headerService.getUserPreferredLanguage()}`);
+    this.selectLanguagesArr = [];
+    this.supportedLanguages = [];
+    this.isPrimaryLangRTL = false;
+    this.isSecondaryLangRTL = false;
+    this.disablePrimaryForm = true;
+    this.disableSecondaryForm = true;
+    
+    let supportedLanguagesArr = this.appConfigService.getConfig()['supportedLanguages'].split(',');
+    supportedLanguagesArr.map(lang => this.supportedLanguages.push(lang.trim()));
+    let otherLangsArr = this.supportedLanguages.filter(lang => lang !== this.primaryLang);
     otherLangsArr.forEach((language) => {
       if (defaultJson.languages && defaultJson.languages[language]) {
         this.selectLanguagesArr.push({
@@ -126,6 +135,16 @@ export class EditComponent {
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    
+    let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
+    let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
+    if (filteredList.length > 0) {
+      this.isPrimaryLangRTL = true;
+    }
+    filteredList = allRTLLangs.filter(langCode => langCode == this.secondaryLang);
+    if (filteredList.length > 0) {
+      this.isSecondaryLangRTL = true;
+    }
     this.loadLocationData(this.initialLocationCode, 'region');
   }
 
@@ -136,7 +155,6 @@ export class EditComponent {
   initializeComponent() {
     this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
     this.days = appConstants.days[this.primaryLang];
-    this.secondaryDays = appConstants.days[this.secondaryLang];
     this.activatedRoute.params.subscribe(params => {
       this.centerId = params.id;
       this.translateService
@@ -158,384 +176,16 @@ export class EditComponent {
           this.popupMessages = response.center.popupMessages;
         });
       this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers')
-      this.disableForms = true;
-      this.getData(params);
-    });
-  }
-
-  getZoneData() {
-    this.dataStorageService
-    .getZoneData(this.primaryLang)
-    .subscribe(response => {
-      console.log(response);
-      this.dropDownValues.zone.primary = response.response;
-      if (this.dropDownValues.zone.primary.length === 1) {
-        this.commonForm.controls.zone.setValue(
-          this.dropDownValues.zone.primary[0].code
+      this.disablePrimaryForm = true;
+      this.getPrimaryPanelData(this.primaryLang);
+      if (this.showSecondaryForm) {
+        this.secondaryForm.controls.selectLanguage.setValue(
+          this.secondaryLang
         );
-        this.commonForm.controls.zone.disable();
+        this.disableSecondaryForm = true;
+        this.getSecondaryPanelData(this.secondaryLang);
       }
     });
-  }
-
-  updateCommonData() {
-    this.createUpdate = true;
-    let locationCode = "";
-    if (1 == this.locCode) {
-      locationCode = this.commonForm.controls.region.value;
-    } else if (2 == this.locCode) {
-      locationCode = this.commonForm.controls.province.value;
-    } else if (3 == this.locCode) {
-      locationCode = this.commonForm.controls.city.value;
-    } else if (4 == this.locCode) {
-      locationCode = this.commonForm.controls.laa.value;
-    } else if (5 == this.locCode) {
-      locationCode = this.commonForm.controls.postalCode.value;
-    }
-    const nonLangFieldsObject = new CenterNonLangModel(
-      Utils.convertTime(this.commonForm.controls.endTime.value),
-      Utils.convertTime(this.commonForm.controls.startTime.value),
-      this.commonForm.controls.centerTypeCode.value,
-      this.commonForm.controls.contactPhone.value,
-      this.commonForm.controls.holidayZone.value,
-      this.commonForm.controls.latitude.value,
-      locationCode,
-      this.commonForm.controls.longitude.value,
-      Utils.convertTime(this.commonForm.controls.lunchEndTime.value),
-      Utils.convertTime(this.commonForm.controls.lunchStartTime.value),
-      '00:' + this.commonForm.controls.processingTime.value + ':00',
-      this.data[0].timeZone,
-      this.commonForm.controls.workingHours.value,
-      this.commonForm.controls.zone.value,
-      this.centerId,
-      this.commonForm.controls.noKiosk.value,
-      this.formatWorkingDays(this.commonForm.controls.workingDays.value),
-      this.commonForm.controls.exceptionalHolidays.value,
-    );
-
-    const request = new RequestModel(
-      appConstants.registrationCenterCreateId,
-      null,
-      nonLangFieldsObject
-    );
-    console.log(request);
-    this.dataStorageService.updateCenterNonLangData(request).subscribe(updateResponse => {
-      console.log('Response' + updateResponse);
-      if (!updateResponse.errors || updateResponse.errors.length === 0) {
-        this.showMessage('update-success', nonLangFieldsObject)
-        .afterClosed()
-        .subscribe(() => {
-          this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
-        });
-      } else {
-        this.showMessage('update-error');
-      }
-    });
-  }
-
-  showMessage(type: string, data?: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      data: {
-        case: 'MESSAGE',
-        title: this.popupMessages[type].title,
-        message:
-          type === 'create-success' || type === 'update-success'
-            ? this.popupMessages[type].message[0] +
-              data.id +
-              this.popupMessages[type].message[1] +
-              data.name
-            : this.popupMessages[type].message,
-        btnTxt: this.popupMessages[type].btnTxt
-      }
-    });
-    return dialogRef;
-  }
-
-  formatWorkingDays(selectedDays: string[]) {
-    const obj = {};
-    this.days.forEach(day => {
-      if (selectedDays.indexOf(day.code) >= 0) {
-        obj[day.code] = true;
-      } else {
-        obj[day.code] = false;
-      }
-    });
-    console.log(obj);
-    return obj;
-  }
-
-  reverseFormatWorkingDays(days: any) {
-    const keys = Object.keys(days);
-    const selectedDays = [];
-    keys.forEach(key => {
-      if (days[key]) {
-        selectedDays.push(key);
-      }
-    });
-    return selectedDays;
-  }
-
-  updateLeftPanelData() {
-    this.createUpdate = true;
-    const primaryObject = new CenterLangModel(
-      this.primaryForm.controls.addressLine1.value,
-      this.primaryForm.controls.addressLine2.value,
-      this.primaryForm.controls.addressLine3.value,
-      this.primaryForm.controls.contactPerson.value,
-      this.primaryLang,
-      this.primaryForm.controls.name.value,
-      this.centerId
-    );
-    const primaryRequest = new RequestModel(
-      appConstants.registrationCenterCreateId,
-      null,
-      primaryObject
-    );
-    console.log(primaryRequest);
-    this.dataStorageService
-    .updateCenterLangData(primaryRequest)
-    .subscribe(updateResponse => {
-      console.log('Primary Response' + updateResponse);
-        if (!updateResponse.errors) {
-          this.showMessage('update-success', primaryObject)
-          .afterClosed()
-          .subscribe(() => {
-            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
-          });
-      } else {
-        this.showMessage('update-error');
-      }
-    });
-  }
-
-  updateRightPanelData() {
-    this.createUpdate = true;
-    const secondaryObject = new CenterLangModel(
-      this.secondaryForm.controls.addressLine1.value,
-      this.secondaryForm.controls.addressLine2.value,
-      this.secondaryForm.controls.addressLine3.value,
-      this.secondaryForm.controls.contactPerson.value,
-      this.secondaryLang,
-      this.secondaryForm.controls.name.value,
-      this.centerId
-    );
-    const secondaryRequest = new RequestModel(
-      appConstants.registrationCenterCreateId,
-      null,
-      secondaryObject
-    );
-    console.log(secondaryRequest);
-    this.dataStorageService
-    .updateCenterLangData(secondaryRequest)
-    .subscribe(updateResponse => {
-      console.log('Secondary Response' + updateResponse);
-        if (!updateResponse.errors) {
-          this.showMessage('update-success', secondaryObject)
-          .afterClosed()
-          .subscribe(() => {
-            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
-          });
-      } else {
-        this.showMessage('update-error');
-      }
-    });
-  }
-
-  async getData(params: any) {
-    const filter = new FilterModel('id', 'equals', params.id);
-    this.centerRequest.filters = [filter];
-    this.centerRequest.languageCode = this.primaryLang;
-    this.centerRequest.sort = [];
-    this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
-    let request = new RequestModel(
-      appConstants.registrationCenterCreateId,
-      null,
-      this.centerRequest
-    );
-    this.centerService.getRegistrationCentersDetails(request).subscribe(
-      response => {
-        if (response.response.data) {
-          this.data[0] = response.response.data[0];
-          this.initializeheader();
-          this.setPrimaryFormValues();
-          this.setCommonFormValues();
-          this.centerRequest.languageCode = this.secondaryLang;
-          request = new RequestModel(
-            appConstants.registrationCenterCreateId,
-            null,
-            this.centerRequest
-          );
-          if (this.showSecondaryForm) {
-          this.centerService
-            .getRegistrationCentersDetails(request)
-            .subscribe(secondaryResponse => {
-              this.data[1] = secondaryResponse.response.data
-                ? secondaryResponse.response.data[0]
-                : null;
-              this.setSecondaryFormValues();
-            });
-          }
-          this.disableForms = false;
-          this.primaryForm.enable();
-          if (this.showSecondaryForm) {
-          this.initializeSecondaryForm();
-          this.setSecondaryFormValues();
-          }
-          this.commonForm.controls.noKiosk.enable();
-          this.commonForm.controls.isActive.enable();
-        } else {
-          this.showErrorPopup();
-        }
-      },
-      error => this.showErrorPopup()
-    );
-  }
-
-  showErrorPopup() {
-    this.dialog
-      .open(DialogComponent, {
-        width: '400px',
-        data: {
-          case: 'MESSAGE',
-          // tslint:disable-next-line:no-string-literal
-          title: this.popupMessages['noData']['title'],
-          message: this.popupMessages['noData']['message'],
-          // tslint:disable-next-line:no-string-literal
-          btnTxt: this.popupMessages['noData']['btnTxt']
-        },
-        disableClose: true
-      })
-      .afterClosed()
-      .subscribe(() =>
-        this.router.navigateByUrl(`admin/resources/centers/view`)
-      );
-  }
-
-  setPrimaryFormValues() {
-    this.primaryForm.controls.name.setValue(this.data[0].name);
-    this.primaryForm.controls.contactPerson.setValue(
-      this.data[0].contactPerson
-    );
-    this.primaryForm.controls.addressLine1.setValue(this.data[0].addressLine1);
-    this.primaryForm.controls.addressLine2.setValue(this.data[0].addressLine2);
-    this.primaryForm.controls.addressLine3.setValue(this.data[0].addressLine3);
-  }
-
-  setSecondaryFormValues() {
-    if (this.data[1]) {
-      this.secondaryForm.controls.name.setValue(
-        this.data[1].name ? this.data[1].name : ''
-      );
-      this.secondaryForm.controls.contactPerson.setValue(
-        this.data[1].contactPerson ? this.data[1].contactPerson : ''
-      );
-      this.secondaryForm.controls.addressLine1.setValue(
-        this.data[1].addressLine1 ? this.data[1].addressLine1 : ''
-      );
-      this.secondaryForm.controls.addressLine2.setValue(
-        this.data[1].addressLine2 ? this.data[1].addressLine2 : ''
-      );
-      this.secondaryForm.controls.addressLine3.setValue(
-        this.data[1].addressLine3 ? this.data[1].addressLine3 : ''
-      );
-    }
-    this.secondaryForm.controls.selectLanguage.setValue(
-      this.secondaryLang
-    );
-  }
-
-  setCommonFormValues() {
-    this.commonForm.controls.centerTypeCode.setValue(
-      this.data[0].centerTypeCode
-    );
-    this.commonForm.controls.contactPhone.setValue(this.data[0].contactPhone);
-    this.commonForm.controls.longitude.setValue(this.data[0].longitude);
-    this.commonForm.controls.latitude.setValue(this.data[0].latitude);
-    this.commonForm.controls.region.setValue(this.data[0].regionCode);
-    this.commonForm.controls.province.setValue(this.data[0].provinceCode);
-    this.commonForm.controls.city.setValue(this.data[0].cityCode);
-    this.commonForm.controls.laa.setValue(this.data[0].administrativeZoneCode);
-    this.commonForm.controls.postalCode.setValue(this.data[0].locationCode);
-    this.commonForm.controls.zone.setValue(this.data[0].zoneCode);
-    this.commonForm.controls.holidayZone.setValue(
-      this.data[0].holidayLocationCode
-    );
-    this.commonForm.controls.workingHours.setValue(
-      this.data[0].workingHours.split(':')[0]
-    );
-    this.commonForm.controls.noKiosk.setValue(this.data[0].numberOfKiosks);
-    this.commonForm.controls.processingTime.setValue(
-      Number(this.data[0].perKioskProcessTime.split(':')[1])
-    );
-    this.commonForm.controls.startTime.setValue(
-      Utils.convertTimeTo12Hours(this.data[0].centerStartTime)
-    );
-    this.commonForm.controls.endTime.setValue(
-      Utils.convertTimeTo12Hours(this.data[0].centerEndTime)
-    );
-    this.commonForm.controls.lunchStartTime.setValue(
-      Utils.convertTimeTo12Hours(this.data[0].lunchStartTime)
-    );
-    this.commonForm.controls.lunchEndTime.setValue(
-      Utils.convertTimeTo12Hours(this.data[0].lunchEndTime)
-    );
-    this.commonForm.controls.workingDays.setValue(this.data[0].workingNonWorkingDays ?
-      this.reverseFormatWorkingDays(this.data[0].workingNonWorkingDays) : []);
-    this.commonForm.controls.exceptionalHolidays.setValue(
-      this.data[0].exceptionalHolidayPutPostDto ? [...this.data[0].exceptionalHolidayPutPostDto] : []);
-    this.commonForm.controls.isActive.setValue(this.data[0].isActive);
-    this.loadLocationDropDownsForUpdate(this.data[0]);
-    this.validateAndLoadLunchStartTime();
-    this.validateAndLoadLunchEndTime();
-  }
-
-  initializeheader() {
-    if (this.data.length === 0) {
-      this.headerObject = new HeaderModel('-', '-', '-', '-', '-', '-', '-');
-    } else {
-      this.headerObject = new HeaderModel(
-        this.data[0].name,
-        this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
-        this.data[0].createdBy ? this.data[0].createdBy : '-',
-        this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
-        this.data[0].updatedBy ? this.data[0].updatedBy : '-',
-        this.data[0].id,
-        this.data[0].isActive
-      );
-    }
-  }
-
-  naviagteBack() {
-    this.location.back();
-  }
-
-  resetLocationFields(fieldName: string) {
-    const locationFields = ['region', 'province', 'city', 'laa', 'postalCode', 'zone'];
-    const index = locationFields.indexOf(fieldName);
-    for (let i = index; i < locationFields.length; i++) {
-      this.commonForm.controls[locationFields[i]].setValue('');
-      this.commonForm.controls[locationFields[i]].markAsUntouched();
-    }
-  }
-
-  loadLocationData(locationCode: string, fieldName: string) {
-    if (fieldName !== 'region' && !this.disableForms) {
-      this.resetLocationFields(fieldName);
-    }
-    this.dataStorageService
-      .getImmediateChildren(locationCode, this.primaryLang)
-      .subscribe(response => {
-        this.dropDownValues[fieldName].primary =
-          response['response']['locations'];
-        console.log(this.dropDownValues);
-      });
-    // this.dataStorageService
-    //   .getImmediateChildren(locationCode, this.secondaryLang)
-    //   .subscribe(response => {
-    //     this.dropDownValues[fieldName].secondary =
-    //       response['response']['locations'];
-    //   });
   }
 
   initializePrimaryForm() {
@@ -546,7 +196,6 @@ export class EditComponent {
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]]
     });
-    
   }
 
   initializeSecondaryForm() {
@@ -558,11 +207,9 @@ export class EditComponent {
       addressLine2: ['', [Validators.maxLength(256)]],
       addressLine3: ['', [Validators.maxLength(256)]],
     });
-   
   }
 
   initializeCommonForm() {
-
     let regionReq = [], provinceReq = [], cityReq = [], laaReq = [], postalCodeReq = [];
     if (1 <= this.locCode) {
       regionReq = [Validators.required];
@@ -607,7 +254,6 @@ export class EditComponent {
       exceptionalHolidays: [[]],
       isActive: [{ value: false}]
     });
-    
   }
 
   get primary() {
@@ -622,8 +268,472 @@ export class EditComponent {
     return this.commonForm.controls;
   }
 
-  submitLeftPanel() {
-    if (!this.disableForms) {
+  getZoneData() {
+    this.dataStorageService
+    .getZoneData(this.primaryLang)
+    .subscribe(response => {
+      console.log(response);
+      this.dropDownValues.zone.primary = response.response;
+      if (this.dropDownValues.zone.primary.length === 1) {
+        this.commonForm.controls.zone.setValue(
+          this.dropDownValues.zone.primary[0].code
+        );
+        this.commonForm.controls.zone.disable();
+      }
+    });
+  }
+
+  
+  async getPrimaryPanelData(languageCode: string) {
+    console.log("getData started");
+    console.log(`languageCode: ${languageCode}`);
+    const filter = new FilterModel('id', 'equals', this.centerId);
+    this.centerRequest.filters = [filter];
+    this.centerRequest.languageCode = languageCode;
+    this.centerRequest.sort = [];
+    this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
+    let request = new RequestModel(
+      appConstants.registrationCenterCreateId,
+      null,
+      this.centerRequest
+    );
+    this.data[0] = null;
+    
+    this.centerService.getRegistrationCentersDetails(request).subscribe(
+      response => {
+        console.log("response received");
+        console.log(response.response.data);
+        if (response.response.data) {
+          this.primaryLang = languageCode;
+          this.data[0] = response.response.data[0];
+          this.initializeheader();
+          this.setPrimaryFormValues();
+          this.setCommonFormValues();
+          this.disablePrimaryForm = false;
+        } else {
+          console.log("primary data not available");
+          this.disablePrimaryForm = false;
+          // this.supportedLanguages.map(async language => {
+          //   if (language != languageCode && this.data[0] == null) {
+          //     await this.getPrimaryPanelData(language);
+          //   }
+          // });
+          //this.showErrorPopup();
+        }
+      },
+      //error => this.showErrorPopup()
+    );
+  }
+
+  async getSecondaryPanelData (language: string) {
+    const filter = new FilterModel('id', 'equals', this.centerId);
+    this.centerRequest.filters = [filter];
+    this.centerRequest.languageCode = language;
+    this.centerRequest.sort = [];
+    this.centerRequest.pagination = { pageStart: 0, pageFetch: 10 };
+    let request = new RequestModel(
+      appConstants.registrationCenterCreateId,
+      null,
+      this.centerRequest
+    );
+    this.data[1] = null;
+    this.centerService
+      .getRegistrationCentersDetails(request)
+      .subscribe(secondaryResponse => {
+        if (secondaryResponse.response.data) {
+          this.data[1] = secondaryResponse.response.data
+            ? secondaryResponse.response.data[0]
+            : null;
+          this.setSecondaryFormValues();
+          this.disableSecondaryForm = false;
+        } else {
+          console.log("secondary data not available");
+          this.disableSecondaryForm = false;
+        
+          //this.showErrorPopup();
+        }
+      },
+      //error => this.showErrorPopup()
+      );     
+  }
+  
+  showErrorPopup() {
+    this.dialog
+      .open(DialogComponent, {
+        width: '400px',
+        data: {
+          case: 'MESSAGE',
+          // tslint:disable-next-line:no-string-literal
+          title: this.popupMessages['noData']['title'],
+          message: this.popupMessages['noData']['message'],
+          // tslint:disable-next-line:no-string-literal
+          btnTxt: this.popupMessages['noData']['btnTxt']
+        },
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe(() =>
+        this.router.navigateByUrl(`admin/resources/centers/view`)
+      );
+  }
+
+  handleChangeSecondaryLang = (fieldName: string) => {
+    let selectedNewLangCode = this.secondaryForm.controls[fieldName].value;
+    console.log(`this.secondaryForm.touched : ${this.secondaryForm.touched}`);
+    if (this.secondaryForm.touched) {
+      if (this.secondaryForm.valid) {
+        this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
+        //this.submitSecondaryPanel(selectedNewLangCode);
+        this.submitSecondaryPanel();
+      } 
+      if (!this.secondaryForm.valid) {
+        this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
+        for (const i in this.secondaryForm.controls) {
+          if (this.secondaryForm.controls[i]) {
+            this.secondaryForm.controls[i].markAsTouched();
+          }
+        }
+      }
+    }  
+    else {
+      this.reloadSecondaryFormWithNewLang(selectedNewLangCode);
+    } 
+  }
+
+  reloadSecondaryFormWithNewLang = (selectedNewLangCode: string) => {
+    this.secondaryLang = selectedNewLangCode;
+    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.secondaryForm.reset();
+    for (const i in this.secondaryForm.controls) {
+      if (this.secondaryForm.controls[i]) {
+        this.secondaryForm.controls[i].markAsPristine();
+      }
+    }
+    if (this.data && this.data.length > 1) {
+      this.data[1] = null;
+    }
+    this.translateService
+    .getTranslation(this.secondaryLang)
+    .subscribe(response => {
+      this.secondaryLanguageLabels = response.center;
+      console.log(this.secondaryLanguageLabels);
+    });
+    this.initializeSecondaryForm();
+    this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers')
+    this.secondaryForm.controls.selectLanguage.setValue(
+      this.secondaryLang
+    );
+    this.isSecondaryLangRTL = false;
+    let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
+    let filteredList = allRTLLangs.filter(langCode => langCode == this.secondaryLang);
+    if (filteredList.length > 0) {
+      this.isSecondaryLangRTL = true;
+    }
+    this.disableSecondaryForm = true;
+    this.getSecondaryPanelData(this.secondaryLang);
+  }
+
+  setPrimaryFormValues() {
+    this.primaryForm.controls.name.setValue(this.data[0].name);
+    this.primaryForm.controls.contactPerson.setValue(
+      this.data[0].contactPerson
+    );
+    this.primaryForm.controls.addressLine1.setValue(this.data[0].addressLine1);
+    this.primaryForm.controls.addressLine2.setValue(this.data[0].addressLine2);
+    this.primaryForm.controls.addressLine3.setValue(this.data[0].addressLine3);
+  }
+
+  setSecondaryFormValues() {
+    if (this.data[1]) {
+      this.secondaryForm.controls.name.setValue(
+        this.data[1].name ? this.data[1].name : ''
+      );
+      this.secondaryForm.controls.contactPerson.setValue(
+        this.data[1].contactPerson ? this.data[1].contactPerson : ''
+      );
+      this.secondaryForm.controls.addressLine1.setValue(
+        this.data[1].addressLine1 ? this.data[1].addressLine1 : ''
+      );
+      this.secondaryForm.controls.addressLine2.setValue(
+        this.data[1].addressLine2 ? this.data[1].addressLine2 : ''
+      );
+      this.secondaryForm.controls.addressLine3.setValue(
+        this.data[1].addressLine3 ? this.data[1].addressLine3 : ''
+      );
+    }
+  }
+
+  setCommonFormValues() {
+    let commonData = this.data[0];
+    // if (this.data[0] == null && this.data[1] !== null) {
+    //   commonData = this.data[1];
+    // }
+    this.commonForm.controls.centerTypeCode.setValue(
+      commonData.centerTypeCode
+    );
+    this.commonForm.controls.contactPhone.setValue(commonData.contactPhone);
+    this.commonForm.controls.longitude.setValue(commonData.longitude);
+    this.commonForm.controls.latitude.setValue(commonData.latitude);
+    this.commonForm.controls.region.setValue(commonData.regionCode);
+    this.commonForm.controls.province.setValue(commonData.provinceCode);
+    this.commonForm.controls.city.setValue(commonData.cityCode);
+    this.commonForm.controls.laa.setValue(commonData.administrativeZoneCode);
+    this.commonForm.controls.postalCode.setValue(commonData.locationCode);
+    this.commonForm.controls.zone.setValue(commonData.zoneCode);
+    this.commonForm.controls.holidayZone.setValue(
+      commonData.holidayLocationCode
+    );
+    this.commonForm.controls.workingHours.setValue(
+      commonData.workingHours.split(':')[0]
+    );
+    this.commonForm.controls.noKiosk.setValue(commonData.numberOfKiosks);
+    this.commonForm.controls.processingTime.setValue(
+      Number(commonData.perKioskProcessTime.split(':')[1])
+    );
+    this.commonForm.controls.startTime.setValue(
+      Utils.convertTimeTo12Hours(commonData.centerStartTime)
+    );
+    this.commonForm.controls.endTime.setValue(
+      Utils.convertTimeTo12Hours(commonData.centerEndTime)
+    );
+    this.commonForm.controls.lunchStartTime.setValue(
+      Utils.convertTimeTo12Hours(commonData.lunchStartTime)
+    );
+    this.commonForm.controls.lunchEndTime.setValue(
+      Utils.convertTimeTo12Hours(commonData.lunchEndTime)
+    );
+    this.commonForm.controls.workingDays.setValue(commonData.workingNonWorkingDays ?
+      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []);
+    this.commonForm.controls.exceptionalHolidays.setValue(
+      commonData.exceptionalHolidayPutPostDto ? [...commonData.exceptionalHolidayPutPostDto] : []);
+    this.commonForm.controls.isActive.setValue(commonData.isActive);
+    this.loadLocationDropDownsForUpdate(commonData);
+    this.validateAndLoadLunchStartTime();
+    this.validateAndLoadLunchEndTime();
+  }
+  
+  formatWorkingDays(selectedDays: string[]) {
+    const obj = {};
+    this.days.forEach(day => {
+      if (selectedDays.indexOf(day.code) >= 0) {
+        obj[day.code] = true;
+      } else {
+        obj[day.code] = false;
+      }
+    });
+    console.log(obj);
+    return obj;
+  }
+
+  reverseFormatWorkingDays(days: any) {
+    const keys = Object.keys(days);
+    const selectedDays = [];
+    keys.forEach(key => {
+      if (days[key]) {
+        selectedDays.push(key);
+      }
+    });
+    return selectedDays;
+  }
+
+  updatePrimaryPanelData() {
+    this.createUpdate = true;
+    const primaryObject = new CenterLangModel(
+      this.primaryForm.controls.addressLine1.value,
+      this.primaryForm.controls.addressLine2.value,
+      this.primaryForm.controls.addressLine3.value,
+      this.primaryForm.controls.contactPerson.value,
+      this.primaryLang,
+      this.primaryForm.controls.name.value,
+      this.centerId
+    );
+    const primaryRequest = new RequestModel(
+      appConstants.registrationCenterCreateId,
+      null,
+      primaryObject
+    );
+    console.log(primaryRequest);
+    this.dataStorageService
+    .updateCenterLangData(primaryRequest)
+    .subscribe(updateResponse => {
+      console.log('Primary Response' + updateResponse);
+        if (!updateResponse.errors) {
+          this.showMessage('update-success', primaryObject)
+          .afterClosed()
+          .subscribe(() => {
+            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
+          });
+      } else {
+        this.showMessage('update-error');
+      }
+    });
+  }
+
+  updateSecondaryPanelData() {
+    this.createUpdate = true;
+    const secondaryObject = new CenterLangModel(
+      this.secondaryForm.controls.addressLine1.value,
+      this.secondaryForm.controls.addressLine2.value,
+      this.secondaryForm.controls.addressLine3.value,
+      this.secondaryForm.controls.contactPerson.value,
+      this.secondaryLang,
+      this.secondaryForm.controls.name.value,
+      this.centerId
+    );
+    const secondaryRequest = new RequestModel(
+      appConstants.registrationCenterCreateId,
+      null,
+      secondaryObject
+    );
+    console.log(secondaryRequest);
+    this.dataStorageService
+    .updateCenterLangData(secondaryRequest)
+    .subscribe(updateResponse => {
+      console.log('Secondary Response' + updateResponse);
+        if (!updateResponse.errors) {
+          this.showMessage('update-success', secondaryObject)
+          .afterClosed()
+          .subscribe(() => {
+            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
+          });
+      } else {
+        this.showMessage('update-error');
+      }
+    });
+  }
+  updateCommonData() {
+    this.createUpdate = true;
+    let locationCode = "";
+    if (1 == this.locCode) {
+      locationCode = this.commonForm.controls.region.value;
+    } else if (2 == this.locCode) {
+      locationCode = this.commonForm.controls.province.value;
+    } else if (3 == this.locCode) {
+      locationCode = this.commonForm.controls.city.value;
+    } else if (4 == this.locCode) {
+      locationCode = this.commonForm.controls.laa.value;
+    } else if (5 == this.locCode) {
+      locationCode = this.commonForm.controls.postalCode.value;
+    }
+    const nonLangFieldsObject = new CenterNonLangModel(
+      Utils.convertTime(this.commonForm.controls.endTime.value),
+      Utils.convertTime(this.commonForm.controls.startTime.value),
+      this.commonForm.controls.centerTypeCode.value,
+      this.commonForm.controls.contactPhone.value,
+      this.commonForm.controls.holidayZone.value,
+      this.commonForm.controls.latitude.value,
+      locationCode,
+      this.commonForm.controls.longitude.value,
+      Utils.convertTime(this.commonForm.controls.lunchEndTime.value),
+      Utils.convertTime(this.commonForm.controls.lunchStartTime.value),
+      '00:' + this.commonForm.controls.processingTime.value + ':00',
+      this.data[0] != null ? this.data[0].timeZone : this.data[1].timeZone,
+      this.commonForm.controls.workingHours.value,
+      this.commonForm.controls.zone.value,
+      this.centerId,
+      this.commonForm.controls.noKiosk.value,
+      this.formatWorkingDays(this.commonForm.controls.workingDays.value),
+      this.commonForm.controls.exceptionalHolidays.value,
+    );
+
+    const request = new RequestModel(
+      appConstants.registrationCenterCreateId,
+      null,
+      nonLangFieldsObject
+    );
+    console.log(request);
+    this.dataStorageService.updateCenterNonLangData(request).subscribe(updateResponse => {
+      console.log('Response' + updateResponse);
+      if (!updateResponse.errors || updateResponse.errors.length === 0) {
+        if (this.data[0] != null) {
+          nonLangFieldsObject["name"] = this.data[0].name;
+        } else if (this.data[1] != null) {
+          nonLangFieldsObject["name"] = this.data[1].name;
+        }
+        
+        this.showMessage('update-success', nonLangFieldsObject)
+        .afterClosed()
+        .subscribe(() => {
+          this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
+        });
+      } else {
+        this.showMessage('update-error');
+      }
+    });
+  }
+
+  showMessage(type: string, data?: any) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '400px',
+      data: {
+        case: 'MESSAGE',
+        title: this.popupMessages[type].title,
+        message:
+          type === 'create-success' || type === 'update-success'
+            ? this.popupMessages[type].message[0] +
+              data.id +
+              this.popupMessages[type].message[1] +
+              data.name
+            : this.popupMessages[type].message,
+        btnTxt: this.popupMessages[type].btnTxt
+      }
+    });
+    return dialogRef;
+  }
+
+
+  initializeheader() {
+    if (this.data.length === 0) {
+      this.headerObject = new HeaderModel('-', '-', '-', '-', '-', '-', '-');
+    } else {
+      this.headerObject = new HeaderModel(
+        this.data[0].name,
+        this.data[0].createdDateTime ? this.data[0].createdDateTime : '-',
+        this.data[0].createdBy ? this.data[0].createdBy : '-',
+        this.data[0].updatedDateTime ? this.data[0].updatedDateTime : '-',
+        this.data[0].updatedBy ? this.data[0].updatedBy : '-',
+        this.data[0].id,
+        this.data[0].isActive
+      );
+    }
+  }
+
+  naviagteBack() {
+    this.location.back();
+  }
+
+  resetLocationFields(fieldName: string) {
+    const locationFields = ['region', 'province', 'city', 'laa', 'postalCode', 'zone'];
+    const index = locationFields.indexOf(fieldName);
+    for (let i = index; i < locationFields.length; i++) {
+      this.commonForm.controls[locationFields[i]].setValue('');
+      this.commonForm.controls[locationFields[i]].markAsUntouched();
+    }
+  }
+
+  loadLocationData(locationCode: string, fieldName: string) {
+    if (fieldName !== 'region' && !this.disablePrimaryForm) {
+      console.log("mayura");
+      console.log(this.disablePrimaryForm);
+      this.resetLocationFields(fieldName);
+    }
+    this.dataStorageService
+      .getImmediateChildren(locationCode, this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues[fieldName].primary =
+          response['response']['locations'];
+        console.log(this.dropDownValues);
+      });
+    // this.dataStorageService
+    //   .getImmediateChildren(locationCode, this.secondaryLang)
+    //   .subscribe(response => {
+    //     this.dropDownValues[fieldName].secondary =
+    //       response['response']['locations'];
+    //   });
+  }
+
+  submitPrimaryPanel() {
+    if (!this.disablePrimaryForm) {
       this.auditService.audit(17, 'ADM-097');
       console.log("this.primaryForm.valid >>> " + this.primaryForm.valid);
       if (this.primaryForm.valid) {
@@ -641,7 +751,7 @@ export class EditComponent {
         dialogRef.afterClosed().subscribe(response => {
           if (response) {
             this.auditService.audit(18, 'ADM-105', 'edit');
-            this.updateLeftPanelData();
+            this.updatePrimaryPanelData();
           } else if (!response) {
             this.auditService.audit(19, 'ADM-107', 'edit');
           }
@@ -654,19 +764,22 @@ export class EditComponent {
         }
       }
     } else {
-      this.disableForms = false;
+      this.disablePrimaryForm = false;
       this.primaryForm.enable();
     }
   }
 
-  submitRightPanel() {
-    if (!this.disableForms) {
+  submitSecondaryPanel() {
+    if (!this.disableSecondaryForm) {
       this.auditService.audit(17, 'ADM-097');
       console.log("this.secondaryForm.valid >>> " + this.secondaryForm.valid);
       if (this.secondaryForm.valid) {
         let data = {};
         if (this.data.length > 1 && this.data[1] == null) {
-          const zone = this.dropDownValues.zone.primary.filter(z => z.code === this.commonForm.controls.zone.value);
+          let selectedZone = this.data[0].zoneCode;
+          const zone = this.dropDownValues.zone.primary.filter(z => z.code === selectedZone);
+          console.log(zone);
+          console.log(selectedZone);
           data = {
             case: 'CONFIRMATION',
             title: this.popupMessages['create'].title,
@@ -690,10 +803,10 @@ export class EditComponent {
         dialogRef.afterClosed().subscribe(response => {
           if (response && this.data.length > 1 && this.data[1] == null) {
             this.auditService.audit(18, 'ADM-104', 'create');
-            this.updateRightPanelData();
+            this.updateSecondaryPanelData();
           } else if (response && this.data.length > 1 && this.data[1] !== null) {
             this.auditService.audit(18, 'ADM-105', 'edit');
-            this.updateRightPanelData();
+            this.updateSecondaryPanelData();
           } else if (!response && this.data.length > 1 && this.data[1] == null) {
             this.auditService.audit(19, 'ADM-106', 'create');
           } else if (!response && this.data.length > 1 && this.data[1] !== null) {
@@ -708,7 +821,7 @@ export class EditComponent {
         }
       }
     } else {
-      this.disableForms = false;
+      this.disableSecondaryForm = false;
       if (this.showSecondaryForm) {
         this.initializeSecondaryForm();
         this.setSecondaryFormValues();
@@ -717,7 +830,7 @@ export class EditComponent {
   }
 
   submitCommonPanel() {
-    if (!this.disableForms) {
+    if (!this.disablePrimaryForm) {
       this.auditService.audit(17, 'ADM-097');
       console.log("this.commonForm.valid >>> " + this.commonForm.valid);
       if (this.commonForm.valid) {
@@ -748,7 +861,7 @@ export class EditComponent {
         }
       }
     } else {
-      this.disableForms = false;
+      this.disablePrimaryForm = false;
       this.commonForm.enable();
       this.commonForm.controls.noKiosk.enable();
       this.commonForm.controls.isActive.enable();
@@ -951,7 +1064,7 @@ export class EditComponent {
   }
 
   deleteHoliday(i: number) {
-    if (!this.disableForms) {
+    if (!this.disablePrimaryForm) {
       let existingHolidays = this.commonForm.controls.exceptionalHolidays.value;
       existingHolidays.splice(i, 1);
       this.commonForm.controls.exceptionalHolidays.setValue(existingHolidays);
