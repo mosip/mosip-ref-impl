@@ -138,7 +138,7 @@ export class CreateComponent {
     data = {
       case: 'CONFIRMATION',
       title: this.popupMessages['create'].title,
-      message: this.popupMessages['create'].message[0] + zone[0].name + this.popupMessages['create'].message[1],
+      message: this.popupMessages['create'].message[0] + zone[0].name + this.popupMessages['create'].message[1] + this.popupMessages['create'].message[2],
       yesBtnTxt: this.popupMessages['create'].yesBtnText,
       noBtnTxt: this.popupMessages['create'].noBtnText
     };
