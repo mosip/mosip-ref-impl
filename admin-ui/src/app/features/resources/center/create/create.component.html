@@ -12,8 +12,10 @@
           <div [formGroup]="primaryForm" [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
             <span><strong>{{ "center.language" | translate }}</strong></span>
             <span *ngIf="!disableForms" matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
-              (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i
-                class="material-icons">keyboard</i></span>
+              (click)="openKeyboard('primary')" 
+              style="color: grey; cursor: pointer;"
+              [ngStyle]="isPrimaryLangRTL ? {'float':'left'} : {'float':'right'}">
+              <i class="material-icons">keyboard</i></span>
             <hr />
             <br /><br />
             <h3>{{ "center.center-details" | translate }}</h3>

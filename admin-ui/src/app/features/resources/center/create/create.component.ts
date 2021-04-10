@@ -88,6 +88,7 @@ export class CreateComponent {
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
+    this.isPrimaryLangRTL = false;
     let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
     let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
     if (filteredList.length > 0) {
