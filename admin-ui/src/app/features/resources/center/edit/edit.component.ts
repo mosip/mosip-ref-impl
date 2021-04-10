@@ -1,7 +1,5 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
   ElementRef,
   ViewChildren
 } from '@angular/core';
@@ -55,6 +53,7 @@ export class EditComponent {
   isSecondaryLangRTL: boolean;
   selectLanguagesArr: any;
   supportedLanguages: Array<string>;
+  filteredLanguages: Array<string>;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   headerObject: HeaderModel;
@@ -109,18 +108,28 @@ export class EditComponent {
       }
     });
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
+    this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
     
-    this.primaryLang = this.headerService.getUserPreferredLanguage();
-    console.log(`this.headerService.getUserPreferredLanguage(): ${this.headerService.getUserPreferredLanguage()}`);
-    this.selectLanguagesArr = [];
-    this.supportedLanguages = [];
-    this.isPrimaryLangRTL = false;
-    this.isSecondaryLangRTL = false;
     this.disablePrimaryForm = true;
     this.disableSecondaryForm = true;
     
+    //load all supported languages
+    this.supportedLanguages = [];
     let supportedLanguagesArr = this.appConfigService.getConfig()['supportedLanguages'].split(',');
     supportedLanguagesArr.map(lang => this.supportedLanguages.push(lang.trim()));
+
+    let userPreferredLanguage = this.headerService.getUserPreferredLanguage();
+    console.log(`constructor -- userPreferredLanguage: ${userPreferredLanguage}`);
+    this.loadLanguages(userPreferredLanguage);
+  }
+
+  loadLanguages(primaryLangCode: string) {
+    console.log(`loadLanguages: primary: ${primaryLangCode}`);
+    // Set the primary language
+    this.primaryLang = primaryLangCode;
+    this.translateService.use(this.primaryLang);    
+    //Set the "Select Language" dropdown options
+    this.selectLanguagesArr = [];
     let otherLangsArr = this.supportedLanguages.filter(lang => lang !== this.primaryLang);
     otherLangsArr.forEach((language) => {
       if (defaultJson.languages && defaultJson.languages[language]) {
@@ -130,12 +139,15 @@ export class EditComponent {
         });
       }
     });
+    //Set the secondary language
     this.secondaryLang = this.selectLanguagesArr[0]["code"];
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
-    translateService.use(this.primaryLang);
+    //Set the keyboard mapping
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
-    
+    // Set the language orientation LTR or RTL
+    this.isPrimaryLangRTL = false;
+    this.isSecondaryLangRTL = false;
     let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
     let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
     if (filteredList.length > 0) {
@@ -145,7 +157,29 @@ export class EditComponent {
     if (filteredList.length > 0) {
       this.isSecondaryLangRTL = true;
     }
-    this.loadLocationData(this.initialLocationCode, 'region');
+    //load weekdays label in primary language
+    this.days = appConstants.days[this.primaryLang];
+    //load secondary labels
+    this.translateService
+      .getTranslation(this.secondaryLang)
+      .subscribe(response => {
+        this.secondaryLanguageLabels = response.center;
+        //console.log(this.secondaryLanguageLabels);
+      });
+    //load popup messages labels  
+    this.translateService
+      .getTranslation(this.primaryLang)
+      .subscribe(response => {
+        this.popupMessages = response.center.popupMessages;
+      });
+    //load all the dropdowns    
+    this.loadLocationData(this.initialLocationCode, 'region');  
+    this.getRegistrationCenterTypes();
+    this.getLocationHierarchyLevels();
+    this.getHolidayZoneData();
+    this.getProcessingTime();
+    this.getTimeSlots();
+    this.getZoneData();
   }
 
   lessThanEqual(locCode, index){
@@ -153,38 +187,16 @@ export class EditComponent {
   }
 
   initializeComponent() {
-    this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
-    this.days = appConstants.days[this.primaryLang];
+    console.log(`initializeComponent -- primaryLang: ${this.primaryLang}`);
+    //this.translateService.use(this.primaryLang);
     this.activatedRoute.params.subscribe(params => {
       this.centerId = params.id;
-      this.translateService
-      .getTranslation(this.secondaryLang)
-      .subscribe(response => {
-        this.secondaryLanguageLabels = response.center;
-        console.log(this.secondaryLanguageLabels);
-      });
       this.initializePrimaryForm();
       this.initializeCommonForm();
       this.initializeSecondaryForm();
-      this.getStubbedData();
-      this.getProcessingTime();
-      this.getTimeSlots();
-      this.getZoneData();
-      this.translateService
-        .getTranslation(this.primaryLang)
-        .subscribe(response => {
-          this.popupMessages = response.center.popupMessages;
-        });
-      this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers')
-      this.disablePrimaryForm = true;
+      this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers');
+      this.filteredLanguages = this.supportedLanguages;
       this.getPrimaryPanelData(this.primaryLang);
-      if (this.showSecondaryForm) {
-        this.secondaryForm.controls.selectLanguage.setValue(
-          this.secondaryLang
-        );
-        this.disableSecondaryForm = true;
-        this.getSecondaryPanelData(this.secondaryLang);
-      }
     });
   }
 
@@ -272,7 +284,7 @@ export class EditComponent {
     this.dataStorageService
     .getZoneData(this.primaryLang)
     .subscribe(response => {
-      console.log(response);
+      //console.log(response);
       this.dropDownValues.zone.primary = response.response;
       if (this.dropDownValues.zone.primary.length === 1) {
         this.commonForm.controls.zone.setValue(
@@ -285,8 +297,8 @@ export class EditComponent {
 
   
   async getPrimaryPanelData(languageCode: string) {
-    console.log("getData started");
-    console.log(`languageCode: ${languageCode}`);
+    this.disablePrimaryForm = true;
+    console.log(`fetching data for ${languageCode}`);
     const filter = new FilterModel('id', 'equals', this.centerId);
     this.centerRequest.filters = [filter];
     this.centerRequest.languageCode = languageCode;
@@ -301,24 +313,32 @@ export class EditComponent {
     
     this.centerService.getRegistrationCentersDetails(request).subscribe(
       response => {
-        console.log("response received");
-        console.log(response.response.data);
         if (response.response.data) {
-          this.primaryLang = languageCode;
+          this.loadLanguages(languageCode);
           this.data[0] = response.response.data[0];
           this.initializeheader();
           this.setPrimaryFormValues();
           this.setCommonFormValues();
           this.disablePrimaryForm = false;
+          if (this.showSecondaryForm) {
+            this.secondaryForm.controls.selectLanguage.setValue(
+              this.secondaryLang
+            );
+            this.disableSecondaryForm = true;
+            this.getSecondaryPanelData(this.secondaryLang);
+          }
         } else {
-          console.log("primary data not available");
+          //data is not available in userPrefLanguage (login language)
+          //so fetch in next available language
           this.disablePrimaryForm = false;
-          // this.supportedLanguages.map(async language => {
-          //   if (language != languageCode && this.data[0] == null) {
-          //     await this.getPrimaryPanelData(language);
-          //   }
-          // });
-          //this.showErrorPopup();
+          let filter = this.filteredLanguages.filter(lang => lang != languageCode);
+          this.filteredLanguages = filter;
+          if (filter && filter.length > 0) {
+            let newLanguageCode = filter[0];
+            if (this.data[0] == null) {
+              this.getPrimaryPanelData(newLanguageCode);
+            }  
+          }
         }
       },
       //error => this.showErrorPopup()
@@ -347,9 +367,7 @@ export class EditComponent {
           this.setSecondaryFormValues();
           this.disableSecondaryForm = false;
         } else {
-          console.log("secondary data not available");
-          this.disableSecondaryForm = false;
-        
+          this.disableSecondaryForm = false;        
           //this.showErrorPopup();
         }
       },
@@ -379,7 +397,6 @@ export class EditComponent {
 
   handleChangeSecondaryLang = (fieldName: string) => {
     let selectedNewLangCode = this.secondaryForm.controls[fieldName].value;
-    console.log(`this.secondaryForm.touched : ${this.secondaryForm.touched}`);
     if (this.secondaryForm.touched) {
       if (this.secondaryForm.valid) {
         this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
@@ -416,7 +433,6 @@ export class EditComponent {
     .getTranslation(this.secondaryLang)
     .subscribe(response => {
       this.secondaryLanguageLabels = response.center;
-      console.log(this.secondaryLanguageLabels);
     });
     this.initializeSecondaryForm();
     this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers')
@@ -465,9 +481,6 @@ export class EditComponent {
 
   setCommonFormValues() {
     let commonData = this.data[0];
-    // if (this.data[0] == null && this.data[1] !== null) {
-    //   commonData = this.data[1];
-    // }
     this.commonForm.controls.centerTypeCode.setValue(
       commonData.centerTypeCode
     );
@@ -521,7 +534,6 @@ export class EditComponent {
         obj[day.code] = false;
       }
     });
-    console.log(obj);
     return obj;
   }
 
@@ -552,11 +564,9 @@ export class EditComponent {
       null,
       primaryObject
     );
-    console.log(primaryRequest);
     this.dataStorageService
     .updateCenterLangData(primaryRequest)
     .subscribe(updateResponse => {
-      console.log('Primary Response' + updateResponse);
         if (!updateResponse.errors) {
           this.showMessage('update-success', primaryObject)
           .afterClosed()
@@ -585,11 +595,9 @@ export class EditComponent {
       null,
       secondaryObject
     );
-    console.log(secondaryRequest);
     this.dataStorageService
     .updateCenterLangData(secondaryRequest)
     .subscribe(updateResponse => {
-      console.log('Secondary Response' + updateResponse);
         if (!updateResponse.errors) {
           this.showMessage('update-success', secondaryObject)
           .afterClosed()
@@ -627,7 +635,7 @@ export class EditComponent {
       Utils.convertTime(this.commonForm.controls.lunchEndTime.value),
       Utils.convertTime(this.commonForm.controls.lunchStartTime.value),
       '00:' + this.commonForm.controls.processingTime.value + ':00',
-      this.data[0] != null ? this.data[0].timeZone : this.data[1].timeZone,
+      this.data[0].timeZone,
       this.commonForm.controls.workingHours.value,
       this.commonForm.controls.zone.value,
       this.centerId,
@@ -641,16 +649,11 @@ export class EditComponent {
       null,
       nonLangFieldsObject
     );
-    console.log(request);
     this.dataStorageService.updateCenterNonLangData(request).subscribe(updateResponse => {
-      console.log('Response' + updateResponse);
       if (!updateResponse.errors || updateResponse.errors.length === 0) {
         if (this.data[0] != null) {
           nonLangFieldsObject["name"] = this.data[0].name;
-        } else if (this.data[1] != null) {
-          nonLangFieldsObject["name"] = this.data[1].name;
         }
-        
         this.showMessage('update-success', nonLangFieldsObject)
         .afterClosed()
         .subscribe(() => {
@@ -713,8 +716,6 @@ export class EditComponent {
 
   loadLocationData(locationCode: string, fieldName: string) {
     if (fieldName !== 'region' && !this.disablePrimaryForm) {
-      console.log("mayura");
-      console.log(this.disablePrimaryForm);
       this.resetLocationFields(fieldName);
     }
     this.dataStorageService
@@ -722,20 +723,12 @@ export class EditComponent {
       .subscribe(response => {
         this.dropDownValues[fieldName].primary =
           response['response']['locations'];
-        console.log(this.dropDownValues);
       });
-    // this.dataStorageService
-    //   .getImmediateChildren(locationCode, this.secondaryLang)
-    //   .subscribe(response => {
-    //     this.dropDownValues[fieldName].secondary =
-    //       response['response']['locations'];
-    //   });
   }
 
   submitPrimaryPanel() {
     if (!this.disablePrimaryForm) {
       this.auditService.audit(17, 'ADM-097');
-      console.log("this.primaryForm.valid >>> " + this.primaryForm.valid);
       if (this.primaryForm.valid) {
         let data = {
           case: 'CONFIRMATION',
@@ -772,14 +765,11 @@ export class EditComponent {
   submitSecondaryPanel() {
     if (!this.disableSecondaryForm) {
       this.auditService.audit(17, 'ADM-097');
-      console.log("this.secondaryForm.valid >>> " + this.secondaryForm.valid);
       if (this.secondaryForm.valid) {
         let data = {};
         if (this.data.length > 1 && this.data[1] == null) {
           let selectedZone = this.data[0].zoneCode;
           const zone = this.dropDownValues.zone.primary.filter(z => z.code === selectedZone);
-          console.log(zone);
-          console.log(selectedZone);
           data = {
             case: 'CONFIRMATION',
             title: this.popupMessages['create'].title,
@@ -832,7 +822,6 @@ export class EditComponent {
   submitCommonPanel() {
     if (!this.disablePrimaryForm) {
       this.auditService.audit(17, 'ADM-097');
-      console.log("this.commonForm.valid >>> " + this.commonForm.valid);
       if (this.commonForm.valid) {
         let data = {
           case: 'CONFIRMATION',
@@ -868,9 +857,7 @@ export class EditComponent {
     }
   }
 
-  getStubbedData() {
-    this.getRegistrationCenterTypes();
-    this.getLocationHierarchyLevels();
+  getHolidayZoneData() {
     this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
       if (response.response.locations) {
         this.dropDownValues.holidayZone.primary =
@@ -913,7 +900,6 @@ export class EditComponent {
   }
 
   calculateWorkingHours() {
-    console.log("calculateWorkingHours>>>>");
     if (
       this.commonForm.controls.startTime.value &&
       this.commonForm.controls.endTime.value
@@ -1070,9 +1056,6 @@ export class EditComponent {
       let existingHolidays = this.commonForm.controls.exceptionalHolidays.value;
       existingHolidays.splice(i, 1);
       this.commonForm.controls.exceptionalHolidays.setValue(existingHolidays);
-      /*existingHolidays = this.secondaryForm.controls.exceptionalHolidays.value;
-      existingHolidays.splice(i, 1);
-      this.secondaryForm.controls.exceptionalHolidays.setValue(existingHolidays);*/
     }
   }
 
