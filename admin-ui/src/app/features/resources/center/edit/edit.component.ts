@@ -947,7 +947,8 @@ export class EditComponent {
     if (this.commonForm.controls.startTime.value !== "" && this.commonForm.controls.startTime.valid) {
       const x = [...this.allSlots];
       let startIndex = x.indexOf(this.commonForm.controls.startTime.value) + 1;
-      if (this.commonForm.controls.lunchEndTime.value !== '' && this.commonForm.controls.lunchEndTime.valid) {
+      if (this.commonForm.controls.lunchStartTime.value != this.commonForm.controls.lunchEndTime.value 
+        && this.commonForm.controls.lunchEndTime.value !== '' && this.commonForm.controls.lunchEndTime.valid) {
         const endIndex = x.indexOf(this.commonForm.controls.lunchEndTime.value);
         this.dropDownValues.lunchStartTime = x.slice(startIndex, endIndex);
       } else {
@@ -971,7 +972,8 @@ export class EditComponent {
     if (this.commonForm.controls.endTime.value !== "" && this.commonForm.controls.endTime.valid) {
       const x = [...this.allSlots];
       const endIndex = x.indexOf(this.commonForm.controls.endTime.value);
-      if (this.commonForm.controls.lunchStartTime.value !== '' && this.commonForm.controls.lunchStartTime.valid) {
+      if (this.commonForm.controls.lunchStartTime.value != this.commonForm.controls.lunchEndTime.value 
+        && this.commonForm.controls.lunchStartTime.value !== '' && this.commonForm.controls.lunchStartTime.valid) {
         const startIndex = x.indexOf(this.commonForm.controls.lunchStartTime.value) + 1;
         this.dropDownValues.lunchEndTime = x.slice(startIndex, endIndex);  
       } else {
