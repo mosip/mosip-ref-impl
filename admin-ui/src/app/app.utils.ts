@@ -3,6 +3,7 @@ import { SortModel } from './core/models/sort.model';
 import { PaginationModel } from './core/models/pagination.model';
 import { FilterModel } from './core/models/filter.model';
 import { CenterRequest } from './core/models/centerRequest.model';
+import { CenterRequestNoLang } from './core/models/centerRequestNoLang.model';
 
 export default class Utils {
 
@@ -94,6 +95,16 @@ export default class Utils {
       this.sortFactory(queryParams.sort ? queryParams.sort : []),
       this.paginationFactory(queryParams.pagination ? queryParams.pagination : ''),
       language
+    );
+    return searchModel;
+  }
+
+  static convertFilterNoLang(queryParams: any): CenterRequestNoLang {
+    const filterFields = Object.keys(queryParams).filter(field => field !== 'sort' && field !== 'pagination');
+    const searchModel = new CenterRequestNoLang(
+      this.filterFactory(queryParams, filterFields),
+      this.sortFactory(queryParams.sort ? queryParams.sort : []),
+      this.paginationFactory(queryParams.pagination ? queryParams.pagination : '')
     );
     return searchModel;
   }
