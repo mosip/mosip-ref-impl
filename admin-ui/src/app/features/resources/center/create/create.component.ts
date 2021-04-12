@@ -88,6 +88,7 @@ export class CreateComponent {
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
+    this.isPrimaryLangRTL = false;
     let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
     let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
     if (filteredList.length > 0) {
@@ -138,7 +139,7 @@ export class CreateComponent {
     data = {
       case: 'CONFIRMATION',
       title: this.popupMessages['create'].title,
-      message: this.popupMessages['create'].message[0] + zone[0].name + this.popupMessages['create'].message[1],
+      message: this.popupMessages['create'].message[0] + zone[0].name + this.popupMessages['create'].message[1] + this.popupMessages['create'].message[2],
       yesBtnTxt: this.popupMessages['create'].yesBtnText,
       noBtnTxt: this.popupMessages['create'].noBtnText
     };
@@ -346,7 +347,7 @@ export class CreateComponent {
       lunchEndTime: [''],
       workingDays: [[], [Validators.required]],
       exceptionalHolidays: [[]],
-      isActive: [{ value: false, disabled: true}]
+      isActive: [{ value: true, disabled: true}]
     });
   }
 

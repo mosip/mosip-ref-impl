@@ -79,6 +79,7 @@
         "datepicker-placeholder":"Choose a date",
         "devices-tooltip":"Device includes Fingerprint Scanner, Iris Scanner, Web Camera, Printer",
         "selectLanguage": "Select Language",
+        "editCommonDetails": "Please edit other center details here",
         "validationMessages": {
             "name": {
                 "required": "Center Name is required",
@@ -157,7 +158,7 @@
         "popupMessages": {
             "create": {
                 "title": "Confirmation",
-                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
+                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct.", "Center ID will be generated once you Confirm"],
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
                 "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Hence Registration Center will be created/updated only for Primary language. Do you still want to continue?"

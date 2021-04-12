@@ -66,6 +66,7 @@
         "datepicker-placeholder":"Choisissez une date",
         "devices-tooltip":"L'appareil comprend un scanner d'empreintes digitales, un scanner d'iris, une caméra Web, une imprimante",
         "selectLanguage": "Choisir la langue",
+        "editCommonDetails":"Veuillez modifier les autres détails du centre ici",
         "validationMessages": {
             "name": {
                 "required": "Le nom du centre est requis",

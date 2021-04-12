@@ -120,7 +120,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.centerService
-      .getRegistrationCentersDetails(this.requestModel)
+      .getRegistrationCentersDetailsWithMissingData(this.requestModel)
       .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {
