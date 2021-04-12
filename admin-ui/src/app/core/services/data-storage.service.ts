@@ -99,7 +99,7 @@ export class DataStorageService {
     );
   }
   getDevicesData(request: RequestModel): Observable<any> {
-    return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
+    return this.http.post(this.BASE_URL + appConstants.URL.devices + "?addMissingData=true", request);
   }
 
   getMachinesData(request: RequestModel): Observable<any> {

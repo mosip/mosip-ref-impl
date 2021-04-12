@@ -20,6 +20,6 @@ export class DeviceService {
 
   getRegistrationDevicesDetails(request: RequestModel): Observable<any> {
     console.log(JSON.stringify(request));
-    return this.http.post(this.BASE_URL + URL.devices, request, httpOptions);
+    return this.http.post(this.BASE_URL + URL.devices + "?addMissingData=false", request, httpOptions);
   }
 }
