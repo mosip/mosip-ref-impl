@@ -224,6 +224,82 @@
             "title": "خطأ",
             "message": "لاتوجد بيانات",
             "btnTxt": "حسنا"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "اسم الجهاز مطلوب"
+            },
+            "serialNumber": {
+                "required": "الرقم التسلسلي مطلوب"
+            },
+            "macAddress": {
+                "required": "عنوان MAC مطلوب"
+            },
+            "ipAddress": {
+                "required": "عنوان IP مطلوب"
+            },
+            "validity": {
+                "required": "الصلاحية مطلوبة"
+            },
+            "isActive": {
+                "required": "الحالة مطلوبة"
+            },
+            "zone": {
+                "required": "المنطقة الإدارية مطلوبة"
+            },
+            "deviceSpecId": {
+                "required": "مطلوب معرف الجهاز"
+            },
+            "regCenterId": {
+                "required": "اسم المركز مطلوب"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "تأكيد",
+                "message": ["You are about to create a Registration Device in ",". Please ensure that all the information is correct. Device ID will be generated once you Confirm"],
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "تأكيد",
+                "message": "You are about to update a Registration Device. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": ["Device details are updated successfully. \n Device ID: ", " \n CenDeviceter Name: "],
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the device. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Device is created Successfully with Device ID: ", " and Device Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a device. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            }
         }
     },
     "machines": {

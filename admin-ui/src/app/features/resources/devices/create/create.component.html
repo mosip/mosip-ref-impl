@@ -85,6 +85,11 @@
                   {{ data.fieldValue }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="
+                          primary.deviceSpecId.touched && primary.deviceSpecId.hasError('required')
+                        ">
+            {{ "devices.validationMessages.deviceSpecId.required" | translate }}
+            </mat-error>
             </mat-form-field>
             <mat-form-field>
             <mat-label>{{ "center.center-name" | translate }}</mat-label>
@@ -93,7 +98,12 @@
               <mat-option *ngFor="let data of dropDownValues.regCenterCode.primary" [value]="data.fieldCode">
                 {{ data.fieldValue }}
               </mat-option>
-            </mat-select> 
+            </mat-select>
+            <mat-error *ngIf="
+                          primary.regCenterId.touched && primary.regCenterId.hasError('required')
+                        ">
+            {{ "devices.validationMessages.regCenterId.required" | translate }}
+            </mat-error> 
             </mat-form-field>
             <mat-form-field>
               <mat-label>{{ "devices.zone" | translate }}</mat-label>

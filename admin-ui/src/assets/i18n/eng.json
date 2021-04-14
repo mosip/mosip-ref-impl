@@ -278,6 +278,9 @@
             },
             "deviceSpecId": {
                 "required": "Device SpecId is required"
+            },
+            "regCenterId": {
+                "required": "Center Name is required"
             }
         },
         "popupMessages": {

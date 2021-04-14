@@ -218,6 +218,82 @@
             "title": "Erreur",
             "message": "Aucune donnée disponible",
             "btnTxt": "D'accord"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "Device Name is required"
+            },
+            "serialNumber": {
+                "required": "Serial Number is required"
+            },
+            "macAddress": {
+                "required": "MAC Address is required"
+            },
+            "ipAddress": {
+                "required": "IP Address is required"
+            },
+            "validity": {
+                "required": "Validity is required"
+            },
+            "isActive": {
+                "required": "Status is required"
+            },
+            "zone": {
+                "required": "Administrative Zone is required"
+            },
+            "deviceSpecId": {
+                "required": "Device SpecId is required"
+            },
+            "regCenterId": {
+                "required": "Center Name is required"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Registration Device in ",". Please ensure that all the information is correct. Device ID will be generated once you Confirm"],
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a Registration Device. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": ["Device details are updated successfully. \n Device ID: ", " \n CenDeviceter Name: "],
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the device. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Device is created Successfully with Device ID: ", " and Device Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a device. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            }
         }
     },
     "machines": {
