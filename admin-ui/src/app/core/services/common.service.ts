@@ -233,6 +233,7 @@ export class CommonService {
       data.ipAddress,
       data.langCode,
       data.deviceSpecId,
+      data.regCenterId,
       data.id,
       data.isActive,     
     );

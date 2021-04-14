@@ -87,6 +87,15 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
+            <mat-label>{{ "center.center-name" | translate }}</mat-label>
+            <mat-select
+              formControlName="regCenterId">
+              <mat-option *ngFor="let data of dropDownValues.regCenterCode.primary" [value]="data.fieldCode">
+                {{ data.fieldValue }}
+              </mat-option>
+            </mat-select> 
+            </mat-form-field>
+            <mat-form-field>
               <mat-label>{{ "devices.zone" | translate }}</mat-label>
               <mat-select formControlName="zone">
                 <mat-option *ngFor="let data of dropDownValues.zone.primary" [value]="data.code">
@@ -100,7 +109,7 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- <mat-form-field>
+            <!-- <mat-form-field *ngIf="!(data && data.length > 0)">
               <mat-label>{{ "devices.isActive" | translate }}</mat-label>
               <mat-select formControlName="isActive">
                 <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
