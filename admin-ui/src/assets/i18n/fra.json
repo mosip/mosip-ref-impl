@@ -221,78 +221,78 @@
         },
         "validationMessages": {
             "name": {
-                "required": "Device Name is required"
+                "required": "Le nom de l'appareil est requis"
             },
             "serialNumber": {
-                "required": "Serial Number is required"
+                "required": "Le numéro de série est requis"
             },
             "macAddress": {
-                "required": "MAC Address is required"
+                "required": "L'adresse MAC est requise"
             },
             "ipAddress": {
-                "required": "IP Address is required"
+                "required": "L'adresse IP est requise"
             },
             "validity": {
-                "required": "Validity is required"
+                "required": "La validité est requise"
             },
             "isActive": {
-                "required": "Status is required"
+                "required": "Le statut est requis"
             },
             "zone": {
-                "required": "Administrative Zone is required"
+                "required": "La zone administrative est requise"
             },
             "deviceSpecId": {
-                "required": "Device SpecId is required"
+                "required": "Device SpecId est requis"
             },
             "regCenterId": {
-                "required": "Center Name is required"
+                "required": "Le nom du centre est obligatoire"
             }
         },
         "popupMessages": {
             "create": {
                 "title": "Confirmation",
-                "message": ["You are about to create a Registration Device in ",". Please ensure that all the information is correct. Device ID will be generated once you Confirm"],
-                "yesBtnText": "Confirm",
-                "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+                "message": ["Vous êtes sur le point de créer un appareil d'enregistrement dans",". Veuillez vous assurer que toutes les informations sont correctes. L'ID de l'appareil sera généré une fois que vous aurez confirmé"],
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
+                "mandatorySecondaryFields": "Vous n'avez pas rempli les données obligatoires dans la langue secondaire. Le dispositif d'enregistrement sera créé uniquement dans la langue principale. Voulez-vous toujours continuer?"
             },
             "edit": {
                 "title": "Confirmation",
-                "message": "You are about to update a Registration Device. Please ensure that all the information is correct",
-                "yesBtnText": "Confirm",
-                "noBtnText": "Cancel",
-                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Device will be created only in Primary language. Do you still want to continue?"
+                "message": "Vous êtes sur le point de mettre à jour un appareil d'enregistrement. Veuillez vous assurer que toutes les informations sont correctes",
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
+                "mandatorySecondaryFields": "Vous n'avez pas rempli les données obligatoires dans la langue secondaire. Le dispositif d'enregistrement sera créé uniquement dans la langue principale. Voulez-vous toujours continuer?"
             },
             "update-success": {
-                "title": "Success",
-                "message": ["Device details are updated successfully. \n Device ID: ", " \n CenDeviceter Name: "],
-                "btnTxt": "Ok"
+                "title": "Succès",
+                "message": ["Les détails de l'appareil sont mis à jour avec succès. \n ID de périphérique:", "\n Nom du CenDeviceter:"],
+                "btnTxt": "D'accord"
             },
             "update-error": {
-                "title": "Error",
-                "message": "There was some issue in updating the device. Please try again",
-                "btnTxt": "Ok"
+                "title": "Erreur",
+                "message": "Un problème est survenu lors de la mise à jour de l'appareil. Veuillez réessayer",
+                "btnTxt": "D'accord"
             },
             "create-success": {
-                "title": "Success",
-                "message": ["Device is created Successfully with Device ID: ", " and Device Name: "],
-                "btnTxt": "Ok"
+                "title": "Succès",
+                "message": ["L'appareil est créé avec succès avec l'ID d'appareil:", "et nom de l'appareil:"],
+                "btnTxt": "D'accord"
             },
             "create-error": {
-                "title": "Error",
-                "message": "There was some issue in creating a device. Please try again",
-                "btnTxt": "Ok"
+                "title": "Erreur",
+                "message": "Un problème est survenu lors de la création d'un appareil. Veuillez réessayer",
+                "btnTxt": "D'accord"
             },
             "navigation-popup": {
                 "title": "Confirmation",
-                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
-                "yesBtnTxt": "Leave",
-                "noBtnTxt": "Stay"
+                "message": "Voulez-vous vraiment quitter cette page? Toutes les données non enregistrées seront perdues.",
+                "yesBtnTxt": "Quitter",
+                "noBtnTxt": "Rester"
             },
             "noData": {
-                "title": "Error",
-                "message": "No Data Found",
-                "btnTxt": "Ok"
+                "title": "Erreur",
+                "message": "Aucune donnée disponible",
+                "btnTxt": "D'accord"
             }
         }
     },
