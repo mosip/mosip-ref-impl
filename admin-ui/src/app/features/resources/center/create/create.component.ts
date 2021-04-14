@@ -347,7 +347,7 @@ export class CreateComponent {
       lunchEndTime: [''],
       workingDays: [[], [Validators.required]],
       exceptionalHolidays: [[]],
-      isActive: [{ value: true, disabled: true}]
+      //isActive: [{ value: true, disabled: true}]
     });
   }
 
@@ -372,7 +372,7 @@ export class CreateComponent {
       this.disableForms = false;
       this.primaryForm.enable();
       this.primaryForm.controls.noKiosk.enable();
-      this.primaryForm.controls.isActive.enable();
+      //this.primaryForm.controls.isActive.enable();
     }
   }
 

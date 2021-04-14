@@ -264,7 +264,7 @@ export class EditComponent {
       lunchEndTime: [''],
       workingDays: [[], [Validators.required]],
       exceptionalHolidays: [[]],
-      isActive: [{ value: false}]
+      //isActive: [{ value: false}]
     });
   }
 
@@ -519,7 +519,7 @@ export class EditComponent {
       this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []);
     this.commonForm.controls.exceptionalHolidays.setValue(
       commonData.exceptionalHolidayPutPostDto ? [...commonData.exceptionalHolidayPutPostDto] : []);
-    this.commonForm.controls.isActive.setValue(commonData.isActive);
+    //this.commonForm.controls.isActive.setValue(commonData.isActive);
     this.loadLocationDropDownsForUpdate(commonData);
     this.validateAndLoadLunchStartTime();
     this.validateAndLoadLunchEndTime();
@@ -853,7 +853,7 @@ export class EditComponent {
       this.disablePrimaryForm = false;
       this.commonForm.enable();
       this.commonForm.controls.noKiosk.enable();
-      this.commonForm.controls.isActive.enable();
+      //this.commonForm.controls.isActive.enable();
     }
   }
 
