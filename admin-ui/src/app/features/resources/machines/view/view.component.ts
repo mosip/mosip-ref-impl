@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-view',
@@ -37,6 +38,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   constructor(
     private dataStroageService: DataStorageService,
     private appService: AppConfigService,
+    private headerService: HeaderService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -44,8 +46,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     private auditService: AuditService
   ) {
     this.getMachinesConfigs();
-    this.translateService.use(appService.getConfig().primaryLangCode);
-    translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+    this.translateService.use(this.headerService.getUserPreferredLanguage());
+    translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
       console.log(response);
       this.errorMessages = response.errorPopup;
     });
@@ -73,7 +75,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   pageEvent(event: any) {
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.headerService.getUserPreferredLanguage());
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
@@ -92,7 +94,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.sortFilter.push(event);
     }
     console.log(this.sortFilter);
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.headerService.getUserPreferredLanguage());
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
     this.router.navigateByUrl('admin/resources/machines/view?' + url);
@@ -102,13 +104,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.machines = [];
     this.noData = false;
     this.filtersApplied = false;
-    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.appService.getConfig().primaryLangCode);
+    const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.headerService.getUserPreferredLanguage());
     if (filters.filters.length > 0) {
       this.filtersApplied = true;
     }
     this.sortFilter = filters.sort;
-    if(this.sortFilter.length == 0){
-      this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
+    if (this.sortFilter.length === 0) {
+      this.sortFilter.push({'sortType': 'desc', 'sortField': 'createdDateTime'});
     }
     this.requestModel = new RequestModel(null, null, filters);
     console.log(this.requestModel);
