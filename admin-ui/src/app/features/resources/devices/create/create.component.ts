@@ -516,6 +516,7 @@ export class CreateComponent{
       this.primaryForm.controls.deviceSpecId.value,
       this.primaryForm.controls.regCenterId.value,
       "",           
+      false
       //this.primaryForm.controls.isActive.value
     );
     // const secondaryObject = new DeviceModel(
