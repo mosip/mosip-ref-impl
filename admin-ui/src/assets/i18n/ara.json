@@ -375,7 +375,7 @@
             "update-success": {
                 "title": "نجاح",
                 "message": ["تم تحديث تفاصيل الجهاز بنجاح. معرف الجهاز: ", " واسم الجهاز: "],
-                "btnTxt": "Ok"
+                "btnTxt": "نعم"
             },
             "update-error": {
                 "title": "خطأ",
@@ -385,7 +385,7 @@
             "create-success": {
                 "title": "نجاح",
                 "message": ["تم إنشاء الجهاز بنجاح باستخدام معرف الجهاز: ", "واسم الجهاز: "],
-                "btnTxt": "Ok"
+                "btnTxt": "نعم"
             },
             "create-error": {
                 "title": "خطأ",
