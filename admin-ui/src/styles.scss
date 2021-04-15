@@ -160,7 +160,25 @@ h3 {
           width: 100% !important;
         }
       }
+      .primary-form-rtl {
+        padding-left: 25px;
+        padding-top: 30px;
+        text-align: right;
+        flex: 1;
+        .mat-form-field {
+          width: 100% !important;
+          text-align: right;
+        }
+      }
       .secondary-form {
+        padding-right: 25px;
+        padding-top: 30px;
+        flex: 1;
+        .mat-form-field {
+          width: 100% !important;
+        }
+      }
+      .secondary-form-ltr {
         padding-right: 25px;
         padding-top: 30px;
         flex: 1;

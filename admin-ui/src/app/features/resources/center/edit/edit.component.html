@@ -1,0 +1,690 @@
+<div id="flex-single-view" style="padding-top: 12px;">
+  <!-- <div class="navigation">
+      <span><i class="material-icons" (click) = "naviagteBack()" >keyboard_arrow_left</i></span>&nbsp;<span class="title">{{'center.center-detail-view'|translate}}</span>
+    </div> -->
+  <div id="flex-container">
+    <!--Center header  -->
+    <app-center-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-center-header>
+    <!--Ceneter Details  -->
+    <div id="myDiv" class="flex-body">
+      <mat-card>
+        <mat-card-content class="forms-container">
+          <div [formGroup]="primaryForm" [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
+            <div style="padding-bottom: 50px;"></div>
+            <span><strong>{{ "center.language" | translate }}</strong></span>
+            <span *ngIf="!disablePrimaryForm" matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
+              (click)="openKeyboard('primary')" 
+              style="color: grey; cursor: pointer;"
+              [ngStyle]="isPrimaryLangRTL ? {'float':'left'} : {'float':'right'}">
+              <i class="material-icons">keyboard</i></span>
+            <hr />
+            <h3>{{ "center.center-details" | translate }}</h3>
+            <div class="flex-display">
+              <mat-form-field>
+                <input #keyboardRef #name (focus)="scrollPage(name, 'primary', 'name', 0)" formControlName="name"
+                  matInput placeholder="{{
+                      'center.registration-center-name' | translate
+                    }}" />
+                <mat-error *ngIf="
+                      primary.name.touched && primary.name.hasError('required')
+                    ">
+                  {{ "center.validationMessages.name.required" | translate }}
+                </mat-error>
+                <mat-error *ngIf="
+                      primary.name.touched && primary.name.hasError('maxlength')
+                    ">
+                  {{ "center.validationMessages.name.max-length" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input #keyboardRef #contactPerson (focus)="
+                      scrollPage(contactPerson, 'primary', 'contactPerson', 1)
+                    " formControlName="contactPerson" matInput
+                  placeholder="{{ 'center.contact-person' | translate }}" />
+                <mat-error *ngIf="
+                      primary.contactPerson.touched &&
+                      primary.contactPerson.hasError('maxlength')
+                    ">
+                  {{
+                  "center.validationMessages.contactPerson.max-length"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <h3>{{ "center.location-details" | translate }}</h3>
+            <mat-form-field>
+              <input #keyboardRef #addressline1 (focus)="scrollPage(addressline1, 'primary', 'addressLine1', 2)"
+                formControlName="addressLine1" matInput placeholder="{{ 'center.address1' | translate }}" />
+              <mat-error *ngIf="
+                      primary.addressLine1.touched &&
+                      primary.addressLine1.hasError('required')
+                    ">
+                {{
+                "center.validationMessages.addressLine1.required" | translate
+                }}
+              </mat-error>
+              <mat-error *ngIf="
+                      primary.addressLine1.touched &&
+                      primary.addressLine1.hasError('maxlength')
+                    ">
+                {{
+                "center.validationMessages.addressLine1.max-length"
+                | translate
+                }}
+              </mat-error>
+            </mat-form-field>
+            <div class="flex-display">
+              <mat-form-field>
+                <input #keyboardRef #addressline2 (focus)="scrollPage(addressline2, 'primary', 'addressLine2', 3)"
+                  formControlName="addressLine2" matInput placeholder="{{ 'center.address2' | translate }}" />
+                <mat-error *ngIf="
+                      primary.addressLine2.touched &&
+                      primary.addressLine2.hasError('maxlength')
+                    ">
+                  {{
+                  "center.validationMessages.addressLine2.max-length"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input #keyboardRef #addressline3 (focus)="scrollPage(addressline3, 'primary', 'addressLine3', 4)"
+                  formControlName="addressLine3" matInput placeholder="{{ 'center.address3' | translate }}" />
+                <mat-error *ngIf="
+                      primary.addressLine3.touched &&
+                      primary.addressLine3.hasError('maxlength')
+                    ">
+                  {{
+                  "center.validationMessages.addressLine3.max-length"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <mat-card-actions class="action-buttons">
+              <button id="createButton" mat-raised-button *ngIf="data.length != 0" (click)="submitPrimaryPanel()">
+                {{ "center.update" | translate }}
+              </button>
+              <button id="createButton" mat-raised-button *ngIf="data.length == 0" (click)="submitPrimaryPanel()">
+                {{ "center.create" | translate }}
+              </button>
+              <button mat-raised-button (click)="cancel()">
+                {{ "center.cancel" | translate }}
+              </button>
+            </mat-card-actions>
+          </div>
+          <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+          <div *ngIf="secondaryLanguageLabels && secondaryLang && showSecondaryForm" [formGroup]="secondaryForm"
+            [ngClass]="isSecondaryLangRTL ? 'secondary-form' : 'secondary-form-ltr'">
+            <mat-form-field style="padding-bottom: 10px;">
+              <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
+              <mat-select formControlName="selectLanguage"
+                (selectionChange)="handleChangeSecondaryLang('selectLanguage')">
+                <mat-option *ngFor="let data of selectLanguagesArr" [value]="data.code">
+                  <strong>{{ data.value }}</strong>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <span><strong>{{ secondaryLanguageLabels["language"] }}</strong></span>
+            <span *ngIf="!disableSecondaryForm" matTooltip="{{ secondaryLanguageLabels['keyboard-tooltip'] }}"
+              (click)="openKeyboard('secondary')"
+              style="color: grey; cursor: pointer;"
+              [ngStyle]="isSecondaryLangRTL ? {'float':'left'} : {'float':'right'}">
+              <i class="material-icons">keyboard</i></span>
+            <hr />
+            <h3>{{ secondaryLanguageLabels["center-details"] }}</h3>
+            <div class="flex-display">
+              <mat-form-field>
+                <input #keyboardRef #nameSecondary (focus)="scrollPage(nameSecondary, 'secondary', 'name', 5)"
+                  formControlName="name" matInput placeholder="{{
+                    secondaryLanguageLabels['registration-center-name']
+                  }}" />
+                <mat-error *ngIf="
+                    secondary.name.touched && secondary.name.hasError('required')
+                  ">
+                  {{
+                  secondaryLanguageLabels["validationMessages"]["name"][
+                  "required"
+                  ]
+                  }}
+                </mat-error>
+                <mat-error *ngIf="
+                    secondary.name.touched && secondary.name.hasError('maxlength')
+                  ">
+                  {{
+                  secondaryLanguageLabels["validationMessages"]["name"][
+                  "max-length"
+                  ]
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input #keyboardRef #contactPersonSecondary (focus)="
+                    scrollPage(
+                      contactPersonSecondary,
+                      'secondary',
+                      'contactPerson',
+                      6
+                    )
+                  " formControlName="contactPerson" matInput
+                  placeholder="{{ secondaryLanguageLabels['contact-person'] }}" />
+                <mat-error *ngIf="
+                    secondary.contactPerson.touched &&
+                    secondary.contactPerson.hasError('maxlength')
+                  ">
+                  {{
+                  secondaryLanguageLabels["validationMessages"][
+                  "contactPerson"
+                  ]["max-length"]
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <h3>{{ secondaryLanguageLabels["location-details"] }}</h3>
+            <mat-form-field>
+              <input #keyboardRef #addressline1secondary (focus)="
+                    scrollPage(
+                      addressline1secondary,
+                      'secondary',
+                      'addressLine1',
+                      7
+                    )
+                  " formControlName="addressLine1" matInput placeholder="{{ secondaryLanguageLabels['address1'] }}" />
+              <mat-error *ngIf="
+                    secondary.addressLine1.touched &&
+                    secondary.addressLine1.hasError('required')
+                  ">
+                {{
+                secondaryLanguageLabels["validationMessages"]["addressLine1"][
+                "required"
+                ]
+                }}
+              </mat-error>
+              <mat-error *ngIf="
+                    secondary.addressLine1.touched &&
+                    secondary.addressLine1.hasError('maxlength')
+                  ">
+                {{
+                secondaryLanguageLabels["validationMessages"]["addressLine1"][
+                "max-length"
+                ]
+                }}
+              </mat-error>
+            </mat-form-field>
+            <div class="flex-display">
+              <mat-form-field>
+                <input #keyboardRef #addressline2secondary (focus)="
+                    scrollPage(
+                      addressline2secondary,
+                      'secondary',
+                      'addressLine2',
+                      8
+                    )
+                  " formControlName="addressLine2" matInput placeholder="{{ secondaryLanguageLabels['address2'] }}" />
+                <mat-error *ngIf="
+                    secondary.addressLine2.touched &&
+                    secondary.addressLine2.hasError('maxlength')
+                  ">
+                  {{
+                  secondaryLanguageLabels["validationMessages"]["addressLine2"][
+                  "max-length"
+                  ]
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input #keyboardRef #addressline3secondary (focus)="
+                    scrollPage(
+                      addressline3secondary,
+                      'secondary',
+                      'addressLine3',
+                      9
+                    )
+                  " formControlName="addressLine3" matInput placeholder="{{ secondaryLanguageLabels['address3'] }}" />
+                <mat-error *ngIf="
+                    secondary.addressLine3.touched &&
+                    secondary.addressLine3.hasError('maxlength')
+                  ">
+                  {{
+                  secondaryLanguageLabels["validationMessages"]["addressLine3"][
+                  "max-length"
+                  ]
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <mat-card-actions class="action-buttons">
+              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] != null"
+                (click)="submitSecondaryPanel()">
+                {{ secondaryLanguageLabels["update"]}}
+              </button>
+              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] == null"
+                (click)="submitSecondaryPanel()">
+                {{ secondaryLanguageLabels["create"] }}
+              </button>
+              <button mat-raised-button (click)="cancel()">
+                {{ secondaryLanguageLabels["cancel"] }}
+              </button>
+            </mat-card-actions>
+          </div>
+          <div [formGroup]="commonForm" [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
+            <span>
+              <h3>{{ "center.editCommonDetails" | translate }}</h3>
+            </span>
+            <hr />
+            <h3>{{ "center.center-details" | translate }}</h3>
+            <div class="flex-display">
+              <mat-form-field>
+                <mat-label>{{
+                  "center.registration-center-type" | translate
+                  }}</mat-label>
+                <mat-select formControlName="centerTypeCode">
+                  <mat-option *ngFor="let data of dropDownValues.centerTypeCode.primary" [value]="data.fieldCode">
+                    {{ data.fieldValue }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.centerTypeCode.touched &&
+                    common.centerTypeCode.hasError('required')
+                  ">
+                  {{
+                  "center.validationMessages.centerTypeCode.required"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input #keyboardRef #contactPhone formControlName="contactPhone" matInput
+                  placeholder="{{ 'center.contact-number' | translate }}" />
+                <mat-error *ngIf="
+                    common.contactPhone.touched &&
+                    common.contactPhone.hasError('maxlength')
+                  ">
+                  {{
+                  "center.validationMessages.contactPhone.max-length"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+            <h3>{{ "center.location-details" | translate }}</h3>
+            <div class="flex-display">
+              <mat-form-field>
+                <input #keyboardRef #longitude formControlName="longitude" matInput
+                  placeholder="{{ 'center.longitude' | translate }}" />
+                <mat-error *ngIf="
+                  common.longitude.touched &&
+                  common.longitude.hasError('required')
+                ">
+                  {{ "center.validationMessages.longitude.required" | translate }}
+                </mat-error>
+                <mat-error *ngIf="
+                  common.longitude.touched &&
+                  common.longitude.hasError('maxlength') &&
+                  !common.longitude.hasError('required')
+                ">
+                  {{
+                  "center.validationMessages.longitude.max-length" | translate
+                  }}
+                </mat-error>
+                <mat-error *ngIf="
+                  common.longitude.touched &&
+                  common.longitude.hasError('invalidLatLong') &&
+                  !common.longitude.hasError('required')
+                ">
+                  {{
+                  "center.validationMessages.longitude.validLatLong" | translate
+                  }}
+                </mat-error>
+                <mat-error *ngIf="
+                  common.longitude.touched &&
+                  common.longitude.hasError('invalidNumber') &&
+                  !common.longitude.hasError('required')
+                ">
+                  {{
+                  "center.validationMessages.longitude.validNumber" | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input #keyboardRef #latitude formControlName="latitude" matInput
+                  placeholder="{{ 'center.latitude' | translate }}" />
+                <mat-error *ngIf="
+                  common.latitude.touched &&
+                  common.latitude.hasError('required')
+                ">
+                  {{ "center.validationMessages.latitude.required" | translate }}
+                </mat-error>
+                <mat-error *ngIf="
+                  common.latitude.touched &&
+                  common.latitude.hasError('maxlength') &&
+                  !common.latitude.hasError('required')
+                ">
+                  {{
+                  "center.validationMessages.latitude.max-length" | translate
+                  }}
+                </mat-error>
+                <mat-error *ngIf="
+                  common.latitude.touched &&
+                  common.latitude.hasError('invalidLatLong') &&
+                  !common.latitude.hasError('required')
+                ">
+                  {{
+                  "center.validationMessages.latitude.validLatLong" | translate
+                  }}
+                </mat-error>
+                <mat-error *ngIf="
+                  common.latitude.touched &&
+                  common.latitude.hasError('invalidNumber') &&
+                  !common.latitude.hasError('required')
+                ">
+                  {{
+                  "center.validationMessages.latitude.validNumber" | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field *ngIf="lessThanEqual(locCode, 1)">
+                <mat-label>{{ "center.region" | translate }}</mat-label>
+                <mat-select formControlName="region" (selectionChange)="
+                    loadLocationData(common.region.value, 'province');
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.region.primary" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.region.touched &&
+                    common.region.hasError('required')
+                  ">
+                  {{ "center.validationMessages.region.required" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field *ngIf="lessThanEqual(locCode, 2)">
+                <mat-label>{{ "center.province" | translate }}</mat-label>
+                <mat-select formControlName="province" (selectionChange)="
+                    loadLocationData(common.province.value, 'city');
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.province.primary" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.province.touched &&
+                    common.province.hasError('required')
+                  ">
+                  {{
+                  "center.validationMessages.province.required" | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field *ngIf="lessThanEqual(locCode, 3)">
+                <mat-label>{{ "center.city" | translate }}</mat-label>
+                <mat-select formControlName="city" (selectionChange)="
+                    loadLocationData(common.city.value, 'laa');
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.city.primary" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.city.touched && common.city.hasError('required')
+                  ">
+                  {{ "center.validationMessages.city.required" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field *ngIf="lessThanEqual(locCode, 4)">
+                <mat-label>{{ "center.laa" | translate }}</mat-label>
+                <mat-select formControlName="laa" (selectionChange)="
+                    loadLocationData(common.laa.value, 'postalCode');
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.laa.primary" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.laa.touched && common.laa.hasError('required')
+                  ">
+                  {{ "center.validationMessages.laa.required" | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field *ngIf="lessThanEqual(locCode, 5)">
+                <mat-label>{{ "center.postal-code" | translate }}</mat-label>
+                <mat-select formControlName="postalCode">
+                  <mat-option *ngFor="let data of dropDownValues.postalCode.primary" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.postalCode.touched &&
+                    common.postalCode.hasError('required')
+                  ">
+                  {{
+                  "center.validationMessages.postalCode.required" | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{ "center.zone" | translate }}</mat-label>
+                <mat-select formControlName="zone">
+                  <mat-option *ngFor="let data of dropDownValues.zone.primary" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.zone.touched && common.zone.hasError('required')
+                  ">
+                  {{ "center.validationMessages.zone.required" | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+            <h3>{{ "center.operational-details" | translate }}</h3>
+            <mat-form-field>
+              <mat-label>{{ "center.holiday-zone" | translate }}</mat-label>
+              <mat-select formControlName="holidayZone">
+                <mat-option *ngFor="let data of dropDownValues.holidayZone.primary" [value]="data.code">
+                  {{ data.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="
+                  common.holidayZone.touched &&
+                  common.holidayZone.hasError('required')
+                ">
+                {{
+                "center.validationMessages.holidayZone.required" | translate
+                }}
+              </mat-error>
+            </mat-form-field>
+            <div class="flex-display">
+              <mat-form-field>
+                <input formControlName="noKiosk" matInput placeholder="{{ 'center.no-kiosk' | translate }}" />
+                <mat-error *ngIf="
+                    common.noKiosk.touched &&
+                    common.noKiosk.hasError('required')
+                  ">
+                  {{ "center.validationMessages.noKiosk.required" | translate }}
+                </mat-error>
+                <mat-error *ngIf="
+                    common.noKiosk.touched && common.noKiosk.hasError('min')
+                  ">
+                  {{ "center.validationMessages.noKiosk.min" | translate }}
+                </mat-error>
+                <mat-error *ngIf="
+                    common.noKiosk.touched &&
+                    common.noKiosk.hasError('invalidNoKiosk')
+                  ">
+                  {{
+                  "center.validationMessages.noKiosk.invalidNoKiosk"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{
+                  "center.per-kiosk-process-time" | translate
+                  }}</mat-label>
+                <mat-select formControlName="processingTime">
+                  <mat-option *ngFor="let data of dropDownValues.processingTime" [value]="data">
+                    {{ data }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.processingTime.touched &&
+                    common.processingTime.hasError('required')
+                  ">
+                  {{
+                  "center.validationMessages.processingTime.required"
+                  | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="flex-display">
+              <mat-form-field>
+                <mat-label>{{ "center.start-time" | translate }}</mat-label>
+                <mat-select formControlName="startTime" (selectionChange)="
+                    updateTimeSlotDropdownOptions(
+                      'startTime',
+                      'endTime',
+                      'more'
+                    );
+                    calculateWorkingHours();
+                    validateAndLoadLunchStartTime();
+                    validateAndLoadLunchEndTime();
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.startTime" [value]="data">
+                    {{ data }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.startTime.touched &&
+                    common.startTime.hasError('required')
+                  ">
+                  {{
+                  "center.validationMessages.startTime.required" | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{ "center.end-time" | translate }}</mat-label>
+                <mat-select formControlName="endTime" (selectionChange)="
+                    calculateWorkingHours();
+                    updateTimeSlotDropdownOptions(
+                      'endTime',
+                      'startTime',
+                      'less'
+                    );
+                    validateAndLoadLunchStartTime();
+                    validateAndLoadLunchEndTime();
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.endTime" [value]="data">
+                    {{ data }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="
+                    common.endTime.touched &&
+                    common.endTime.hasError('required')
+                  ">
+                  {{ "center.validationMessages.endTime.required" | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <mat-form-field>
+              <input formControlName="workingHours" readonly matInput
+                placeholder="{{ 'center.working-hrs' | translate }}" />
+            </mat-form-field>
+
+            <div class="flex-display">
+              <mat-form-field>
+                <mat-label>{{
+                  "center.lunch-start-time" | translate
+                  }}</mat-label>
+                <mat-select formControlName="lunchStartTime" (selectionChange)="
+                    validateAndLoadLunchEndTime();
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.lunchStartTime" [value]="data">
+                    {{ data }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>{{ "center.lunch-end-time" | translate }}</mat-label>
+                <mat-select formControlName="lunchEndTime" (selectionChange)="
+                    validateAndLoadLunchStartTime();
+                  ">
+                  <mat-option *ngFor="let data of dropDownValues.lunchEndTime" [value]="data">
+                    {{ data }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <br />
+            <mat-label>{{ "center.workingDays" | translate }}</mat-label>
+            <mat-selection-list formControlName="workingDays">
+              <div style="display: flex; flex-wrap: wrap; margin-left: -15px;">
+                <mat-list-option style="background-color: white" [checkboxPosition]="before" *ngFor="let day of days"
+                  [value]="day.code">
+                  {{ day.name }}
+                </mat-list-option>
+              </div>
+            </mat-selection-list>
+            <mat-error *ngIf="
+                common.workingDays.touched &&
+                common.workingDays.hasError('required')
+              ">{{ "center.validationMessages.workingDays.required" | translate }}</mat-error>
+            <br />
+            <mat-label>{{ "center.holidays" | translate }}</mat-label>
+            <br /><br />
+            <mat-form-field style="width: 70% !important;">
+              <input matInput [(ngModel)]="holidayDate" [min]="minDate" [ngModelOptions]="{ standalone: true }"
+                [matDatepicker]="picker" placeholder="{{ 'center.datepicker-placeholder' | translate }}" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button [disabled]="disablePrimaryForm" mat-raised-button (click)="createExceptionalHoliday()">
+              {{ "center.add-button" | translate }}
+            </button>
+            <div style="display: flex; flex-wrap: wrap;">
+              <ng-container *ngFor="
+                  let data of common.exceptionalHolidays.value;
+                  let i = index
+                ">
+                <div
+                  style="height: 30px;width: 100px;border: 1px solid #FF4081;border-radius: 30px;padding: 7px;margin: 15px;cursor: pointer;font-size: 11px;"
+                  *ngIf="common.exceptionalHolidays.value.length>=0 && data.exceptionHolidayDate!==null">
+                  <span>{{ data.exceptionHolidayDate }}</span>
+                  <div style="position: absolute;
+                  margin-left: 65px;
+                margin-top: -18px;
+                  cursor: pointer;
+                  color: #FF4081;" (click)="deleteHoliday(i)">
+                    <i class="material-icons">cancel</i>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+        </mat-card-content>
+        <mat-card-actions class="action-buttons">
+          <button id="createButton" mat-raised-button (click)="submitCommonPanel()">
+            {{ "center.update" | translate }}
+          </button>
+          <button mat-raised-button (click)="cancel()">
+            {{ "center.cancel" | translate }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

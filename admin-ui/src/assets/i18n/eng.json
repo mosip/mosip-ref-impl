@@ -79,6 +79,7 @@
         "datepicker-placeholder":"Choose a date",
         "devices-tooltip":"Device includes Fingerprint Scanner, Iris Scanner, Web Camera, Printer",
         "selectLanguage": "Select Language",
+        "editCommonDetails": "Please edit other center details here",
         "validationMessages": {
             "name": {
                 "required": "Center Name is required",
@@ -149,12 +150,15 @@
             },
             "endTime": {
                 "required": "Center End Time is required"
+            },
+            "workingDays": {
+                "required": "Please select atleast one day"
             } 
         },
         "popupMessages": {
             "create": {
                 "title": "Confirmation",
-                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
+                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct.", "Center ID will be generated once you Confirm"],
                 "yesBtnText": "Confirm",
                 "noBtnText": "Cancel",
                 "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Hence Registration Center will be created/updated only for Primary language. Do you still want to continue?"
@@ -227,9 +231,6 @@
     },
     "masterdataupload": {
         "title": "Master Data Upload"
-    },
-    "packetupload": {
-        "title": "Packet Upload"
     },
     "devices": {
         "title":"Devices",
@@ -455,6 +456,7 @@
     },
     "packet-status": {
         "header": "Packet Status",
+        "input-text": "Enter ID",
         "text": "Please enter Registration ID to check Packet Status",
         "error": "Invalid Registration ID Entered",
         "id": "Registration ID",
@@ -469,6 +471,44 @@
         "statuscheckFailed":"Failed",
         "statuscheckCompleted":"Completed"
 
+    },
+    "packet-upload":{
+      "header":"Packet Upload",
+      "singleView":{
+        "detailed-view-txt":"Detailed View",
+        "status-txt":"Status",
+        "uploadedBy-txt": "Uploaded By",
+        "count-txt":"Count",
+        "dataAndTime-txt" : "Date And Time",
+        "failureDescription-txt":"Failure Description",
+        "placeHolder1-txt":"Table Name",
+        "placeHolder2-txt":"Operations"
+      },
+      "createView":{
+        "input-btn-text":"Choose File",
+        "input-text1":"Upload file...",
+        "input-text2":"Upload Your File",
+        "upload-btn":"UPLOAD",
+        "cancle-btn":"CANCEL",
+        "popupMessaages":{
+            "popup1":{
+                "uploadConfirm":"Confirm Packet Upload",
+                "message":"Packet will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
+                "confirmBtnTxt":"CONFIRM",
+                "cancelBtnTxt":"Cancel"
+            },
+            "popup2":{
+                "title":"Failure !",
+                "btnTxt":"DONE"
+            },
+            "popup3":{
+                "title":"Success",
+                "message" :"Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID :",
+                "btnTxt":"DONE"
+            }
+     
+        }
+      }
     },
     "actionMessages" : {
         "decommission": {

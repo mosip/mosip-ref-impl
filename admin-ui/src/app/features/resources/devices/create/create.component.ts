@@ -23,6 +23,7 @@ import { CenterDropdown } from 'src/app/core/models/center-dropdown';
 import Utils from '../../../../app.utils';
 
 import { DeviceModel } from 'src/app/core/models/device.model';
+import { HeaderService } from 'src/app/core/services/header.service';
 import { DeviceService } from 'src/app/core/services/devices.service';
 import {
   MatKeyboardRef,
@@ -36,21 +37,22 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class CreateComponent{
-  secondaryLanguageLabels: any;
+  //secondaryLanguageLabels: any;
   primaryLang: string;
-  secondaryLang: string;
+  isPrimaryLangRTL: boolean;
+  //secondaryLang: string;
   dropDownValues = new CenterDropdown();
   allSlots: string[];
   disableForms: boolean;
   headerObject: HeaderModel;
   DeviceRequest = {} as DeviceRequest;
   createUpdate = false;
-  showSecondaryForm: boolean;
-  secondaryObject: any;
+  //showSecondaryForm: boolean;
+  //secondaryObject: any;
   filterGroup = new FormGroup({});
   
   primaryData: any;
-  secondaryData: any;
+  //secondaryData: any;
 
   subscribed: any;
 
@@ -59,7 +61,7 @@ export class CreateComponent{
   errorMessages: any;
 
   primaryForm: FormGroup;
-  secondaryForm: FormGroup;
+  //secondaryForm: FormGroup;
 
   data = [];
   popupMessages: any;
@@ -71,12 +73,12 @@ export class CreateComponent{
   private attachToElementMesOne: any;
 
   primaryKeyboard: string;
-  secondaryKeyboard: string;
+  //secondaryKeyboard: string;
 
   keyboardType: string;
 
   days = [];
-  secondaryDays = [];
+  //secondaryDays = [];
 
   holidayDate: any;
   minDate = new Date();
@@ -89,8 +91,10 @@ export class CreateComponent{
     private appService: AppConfigService,
     private dataStorageService: DataStorageService,
     private translateService: TranslateService,
+    private headerService: HeaderService,
     private keyboardService: MatKeyboardService,
     private dialog: MatDialog,
+    private appConfigService: AppConfigService,
     private statusPipe: StatusPipe,
     private auditService: AuditService,
     private deviceService: DeviceService,
@@ -102,13 +106,19 @@ export class CreateComponent{
       }
     });
     // tslint:disable-next-line:no-string-literal
-    this.primaryLang = appService.getConfig()['primaryLangCode'];
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     // tslint:disable-next-line:no-string-literal
-    this.secondaryLang = appService.getConfig()['secondaryLangCode'];
-    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;   
+    //this.secondaryLang = appService.getConfig()['secondaryLangCode'];
+    //this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;   
     translateService.use(this.primaryLang);
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    //this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.isPrimaryLangRTL = false;
+    let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
+    let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
+    if (filteredList.length > 0) {
+      this.isPrimaryLangRTL = true;
+    }
   }
 
   scrollPage(
@@ -127,11 +137,12 @@ export class CreateComponent{
         this.keyboardRef.instance.attachControl(
           this.primaryForm.controls[formControlName]
         );
-      } else if (type === 'secondary') {
-        this.keyboardRef.instance.attachControl(
-          this.secondaryForm.controls[formControlName]
-        );
-      }
+      }  
+      // } else if (type === 'secondary') {
+      //   this.keyboardRef.instance.attachControl(
+      //     this.secondaryForm.controls[formControlName]
+      //   );
+      // }
     }
   }
 
@@ -143,9 +154,10 @@ export class CreateComponent{
       this.keyboardType = type;
       if (type === 'primary') {
         this.keyboardRef = this.keyboardService.open(this.primaryKeyboard);
-      } else if (type === 'secondary') {
-        this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
-      }
+      } 
+      // else if (type === 'secondary') {
+      //   this.keyboardRef = this.keyboardService.open(this.secondaryKeyboard);
+      // }
       if (this.selectedField) {
         this.selectedField.focus();
       }
@@ -154,28 +166,29 @@ export class CreateComponent{
 
   initializeComponent() {
     this.days = appConstants.days[this.primaryLang];
-    this.secondaryDays = appConstants.days[this.secondaryLang];
+    //this.secondaryDays = appConstants.days[this.secondaryLang];
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
         this.auditService.audit(8, deviceSpecFile.auditEventIds[1], 'devices');
-        this.disableForms = false;
+        this.disableForms = true;
         this.getData(params);
       } else {
+        this.disableForms = false;
         this.auditService.audit(20, 'ADM-130');
         this.initializeheader();
       }
     });
-    this.translateService
-      .getTranslation(this.secondaryLang)
-      .subscribe(response => {
-        this.secondaryLanguageLabels = response.devices;
-        console.log(this.secondaryLanguageLabels);
-      });
+    // this.translateService
+    //   .getTranslation(this.secondaryLang)
+    //   .subscribe(response => {
+    //     this.secondaryLanguageLabels = response.devices;
+    //     console.log(this.secondaryLanguageLabels);
+    //   });
     this.getDevicespecifications();
     this.getZoneData();
     this.initializePrimaryForm();
-    this.initializeSecondaryForm();    
+    //this.initializeSecondaryForm();    
     this.getCenterDetails();  
     this.translateService
       .getTranslation(this.primaryLang)
@@ -195,14 +208,14 @@ export class CreateComponent{
       .subscribe(response => {
         this.dropDownValues.regCenterCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('registrationcenters', request)
-      .subscribe(response => {
-        this.dropDownValues.regCenterCode.secondary =
-          response.response.filters;
-      });
+    // filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
+    // request = new RequestModel('', null, filterRequest);
+    // this.dataStorageService
+    //   .getFiltersForAllMaterDataTypes('registrationcenters', request)
+    //   .subscribe(response => {
+    //     this.dropDownValues.regCenterCode.secondary =
+    //       response.response.filters;
+    //   });
   }
 
   getDevicespecifications() {
@@ -215,14 +228,14 @@ export class CreateComponent{
       .subscribe(response => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('devicespecifications', request)
-      .subscribe(response => {
-        this.dropDownValues.deviceTypeCode.secondary =
-          response.response.filters;
-      });
+    // filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
+    // request = new RequestModel('', null, filterRequest);
+    // this.dataStorageService
+    //   .getFiltersForAllMaterDataTypes('devicespecifications', request)
+    //   .subscribe(response => {
+    //     this.dropDownValues.deviceTypeCode.secondary =
+    //       response.response.filters;
+    //   });
   }
 
   getZoneData() {
@@ -238,20 +251,20 @@ export class CreateComponent{
           this.primaryForm.controls.zone.disable();
         }
       });
-    if (this.primaryLang !==  this.secondaryLang) {
-      this.dataStorageService
-      .getZoneData(this.secondaryLang)
-      .subscribe(response => {
-        console.log(response);
-        this.dropDownValues.zone.secondary = response.response;
-        if (this.dropDownValues.zone.secondary.length === 1) {
-          this.secondaryForm.controls.zone.setValue(
-            this.dropDownValues.zone.secondary[0].code
-          );
-          this.secondaryForm.controls.zone.disable();
-        }
-      });
-    }
+    // if (this.primaryLang !==  this.secondaryLang) {
+    //   this.dataStorageService
+    //   .getZoneData(this.secondaryLang)
+    //   .subscribe(response => {
+    //     console.log(response);
+    //     this.dropDownValues.zone.secondary = response.response;
+    //     if (this.dropDownValues.zone.secondary.length === 1) {
+    //       this.secondaryForm.controls.zone.setValue(
+    //         this.dropDownValues.zone.secondary[0].code
+    //       );
+    //       this.secondaryForm.controls.zone.disable();
+    //     }
+    //   });
+    // }
   }
 
   initializeheader() {
@@ -277,26 +290,26 @@ export class CreateComponent{
       macAddress: ['', [Validators.required]],
       ipAddress: ['', [Validators.required]],
       validity: ['', [Validators.required]],
-      isActive: [{ value: true}],
+      isActive: [{ disabled: true}],
       zone: ['', [Validators.required]],
       deviceSpecId: ['', [Validators.required]],
-      regCenterId: ['', [Validators.required]]
+      //regCenterId: ['', [Validators.required]]
     });
   }
 
-  initializeSecondaryForm() {
-    this.secondaryForm = this.formBuilder.group({
-      name: [''],
-      serialNumber: [''],
-      macAddress: [''],
-      ipAddress: [''],
-      validity: [''],
-      isActive: [{ value: true }],
-      zone: [''],
-      deviceSpecId: ['', [Validators.required]],
-      regCenterId: ['', [Validators.required]]
-    });
-  }
+  // initializeSecondaryForm() {
+  //   this.secondaryForm = this.formBuilder.group({
+  //     name: [''],
+  //     serialNumber: [''],
+  //     macAddress: [''],
+  //     ipAddress: [''],
+  //     validity: [''],
+  //     isActive: [{ value: true }],
+  //     zone: [''],
+  //     deviceSpecId: ['', [Validators.required]],
+  //     regCenterId: ['', [Validators.required]]
+  //   });
+  // }
 
   cancel() {
     this.location.back();
@@ -306,9 +319,9 @@ export class CreateComponent{
     return this.primaryForm.controls;
   }
 
-  get secondary() {
-    return this.secondaryForm.controls;
-  }
+  // get secondary() {
+  //   return this.secondaryForm.controls;
+  // }
 
   showError() {
     this.dialog.open(DialogComponent, {
@@ -333,24 +346,24 @@ export class CreateComponent{
     this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
   }
 
-  setSecondaryData() {
-    this.secondaryForm.controls.name.setValue(this.secondaryData.name);
-    this.secondaryForm.controls.serialNumber.setValue(
-      this.secondaryData.serialNum
-    );
-    this.secondaryForm.controls.macAddress.setValue(
-      this.secondaryData.macAddress
-    );
-    this.secondaryForm.controls.ipAddress.setValue(
-      this.secondaryData.ipAddress
-    );
-    this.secondaryForm.controls.validity.setValue(
-      this.secondaryData.validityDateTime
-    );
-    this.secondaryForm.controls.isActive.setValue(this.statusPipe.transform(this.secondaryData.isActive));
-    this.secondaryForm.controls.zone.setValue(this.secondaryData.zone);
-    this.secondaryForm.controls.publicKey.setValue(this.secondaryData.publicKey);
-  }
+  // setSecondaryData() {
+  //   this.secondaryForm.controls.name.setValue(this.secondaryData.name);
+  //   this.secondaryForm.controls.serialNumber.setValue(
+  //     this.secondaryData.serialNum
+  //   );
+  //   this.secondaryForm.controls.macAddress.setValue(
+  //     this.secondaryData.macAddress
+  //   );
+  //   this.secondaryForm.controls.ipAddress.setValue(
+  //     this.secondaryData.ipAddress
+  //   );
+  //   this.secondaryForm.controls.validity.setValue(
+  //     this.secondaryData.validityDateTime
+  //   );
+  //   this.secondaryForm.controls.isActive.setValue(this.statusPipe.transform(this.secondaryData.isActive));
+  //   this.secondaryForm.controls.zone.setValue(this.secondaryData.zone);
+  //   this.secondaryForm.controls.publicKey.setValue(this.secondaryData.publicKey);
+  // }
 
   setHeaderData() {
     this.headerObject = new HeaderModel(
@@ -373,7 +386,7 @@ export class CreateComponent{
     }
     this.subscribed.unsubscribe();
     if (
-      (this.primaryForm.touched || this.secondaryForm.touched) &&
+      (this.primaryForm.touched) &&
       !this.createUpdate
     ) {
       return this.dialog
@@ -394,61 +407,64 @@ export class CreateComponent{
   }
 
   submit() {
+    console.log(`submit ${this.disableForms}`);
     if (!this.disableForms) {
       this.auditService.audit(17, 'ADM-097');
       //this.onCreate();
+      console.log(this.primaryForm.valid);
       if (this.primaryForm.valid) {
-        for (const i in this.secondaryForm.controls) {
-          if (this.secondaryForm.controls[i]) {
-            this.secondaryForm.controls[i].markAsTouched();
-          }
-        }
+        // for (const i in this.secondaryForm.controls) {
+        //   if (this.secondaryForm.controls[i]) {
+        //     this.secondaryForm.controls[i].markAsTouched();
+        //   }
+        // }
+        console.log("calling on create");
         this.onCreate();
       } else {
         for (const i in this.primaryForm.controls) {
           if (this.primaryForm.controls[i]) {
             this.primaryForm.controls[i].markAsTouched();
-            this.secondaryForm.controls[i].markAsTouched();
+            //this.secondaryForm.controls[i].markAsTouched();
           }
         }
       }
     } else {
       this.disableForms = false;
       this.primaryForm.enable();
-      if (this.showSecondaryForm) {
-        this.initializeSecondaryForm();
-      }
+      // if (this.showSecondaryForm) {
+      //   this.initializeSecondaryForm();
+      // }
     }
   }
   onCreate() {
     let data = {};
-    if (this.secondaryForm.controls.name.value === '' && this.showSecondaryForm
-    ) {
+    // if (this.secondaryForm.controls.name.value === '' && this.showSecondaryForm
+    // ) {
+    //   data = {
+    //     case: 'CONFIRMATION',
+    //     title: this.popupMessages['create'].title,
+    //     message: this.popupMessages['create'].mandatorySecondaryFields,
+    //     yesBtnTxt: this.popupMessages['create'].yesBtnText,
+    //     noBtnTxt: this.popupMessages['create'].noBtnText
+    //   };
+    // }
+    console.log(this.data);
+    if (this.data.length === 0) {
       data = {
         case: 'CONFIRMATION',
         title: this.popupMessages['create'].title,
-        message: this.popupMessages['create'].mandatorySecondaryFields,
+        message: this.popupMessages['create'].message[0]+ this.primaryForm.controls.name.value + this.popupMessages['create'].message[1],
         yesBtnTxt: this.popupMessages['create'].yesBtnText,
         noBtnTxt: this.popupMessages['create'].noBtnText
       };
     } else {
-      if (this.data.length === 0) {
-        data = {
-          case: 'CONFIRMATION',
-          title: this.popupMessages['create'].title,
-          message: this.popupMessages['create'].message[0]+ this.primaryForm.controls.name.value + this.popupMessages['create'].message[1],
-          yesBtnTxt: this.popupMessages['create'].yesBtnText,
-          noBtnTxt: this.popupMessages['create'].noBtnText
-        };
-      } else {
-        data = {
-          case: 'CONFIRMATION',
-          title: this.popupMessages['edit'].title,
-          message: this.popupMessages['edit'].message,
-          yesBtnTxt: this.popupMessages['edit'].yesBtnText,
-          noBtnTxt: this.popupMessages['edit'].noBtnText
-        };
-      }
+      data = {
+        case: 'CONFIRMATION',
+        title: this.popupMessages['edit'].title,
+        message: this.popupMessages['edit'].message,
+        yesBtnTxt: this.popupMessages['edit'].yesBtnText,
+        noBtnTxt: this.popupMessages['edit'].noBtnText
+      };
     }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
@@ -469,22 +485,22 @@ export class CreateComponent{
     });
   }
 
-  copyDataToSecondaryForm(fieldName: string, value: string) {
-    if (this.primaryForm.controls[fieldName]) {
-      this.secondaryForm.controls[fieldName].setValue(value);
-    } else {
-      this.secondaryForm.controls[fieldName].setValue('');
-    }
-  }
+  // copyDataToSecondaryForm(fieldName: string, value: string) {
+  //   if (this.primaryForm.controls[fieldName]) {
+  //     this.secondaryForm.controls[fieldName].setValue(value);
+  //   } else {
+  //     this.secondaryForm.controls[fieldName].setValue('');
+  //   }
+  // }
 
-  captureValue(event: any, formControlName: string, type: string) {
-    this.secondaryForm.controls[formControlName].setValue(event.target.value);
-  }
+  // captureValue(event: any, formControlName: string, type: string) {
+  //   //this.secondaryForm.controls[formControlName].setValue(event.target.value);
+  // }
 
   captureDatePickerValue(event: any, formControlName: string, type: string) {
     /*let dateFormat = new Date(event.target.value);
     let formattedDate = dateFormat.getFullYear() + "-" + ("0"+(dateFormat.getMonth()+1)).slice(-2) + "-" + ("0" + dateFormat.getDate()).slice(-2);*/
-    this.secondaryForm.controls[formControlName].setValue(event.target.value);
+    //this.secondaryForm.controls[formControlName].setValue(event.target.value);
   }
 
   saveData() {
@@ -499,20 +515,21 @@ export class CreateComponent{
       this.primaryLang,
       this.primaryForm.controls.deviceSpecId.value,
       "",           
-      this.primaryForm.controls.isActive.value,               
+      //this.primaryForm.controls.isActive.value,
+      false               
     );
-    const secondaryObject = new DeviceModel(
-      this.secondaryForm.controls.zone.value,
-      this.secondaryForm.controls.validity.value,
-      this.secondaryForm.controls.name.value,
-      this.secondaryForm.controls.macAddress.value,
-      this.secondaryForm.controls.serialNumber.value,
-      this.secondaryForm.controls.ipAddress.value, 
-      this.secondaryLang,
-      this.secondaryForm.controls.deviceSpecId.value, 
-      "",     
-      this.secondaryForm.controls.isActive.value,  
-    );
+    // const secondaryObject = new DeviceModel(
+    //   this.secondaryForm.controls.zone.value,
+    //   this.secondaryForm.controls.validity.value,
+    //   this.secondaryForm.controls.name.value,
+    //   this.secondaryForm.controls.macAddress.value,
+    //   this.secondaryForm.controls.serialNumber.value,
+    //   this.secondaryForm.controls.ipAddress.value, 
+    //   this.secondaryLang,
+    //   this.secondaryForm.controls.deviceSpecId.value, 
+    //   "",     
+    //   this.secondaryForm.controls.isActive.value,  
+    // );
     const primaryRequest = new RequestModel(
       appConstants.registrationDeviceCreateId,
       null,
@@ -522,39 +539,46 @@ export class CreateComponent{
       .createDevice(primaryRequest)
       .subscribe(createResponse => {
         if (!createResponse.errors) {
-            if (this.showSecondaryForm) {
-              secondaryObject.id = createResponse.response.id;
-              const secondaryRequest = new RequestModel(
-              appConstants.registrationDeviceCreateId,
-              null,
-              secondaryObject
-            );
-              console.log(JSON.stringify(secondaryRequest));
-              this.dataStorageService
-              .createDevice(secondaryRequest)
-              .subscribe(secondaryResponse => {
-                console.log('Secondary Response' + secondaryResponse);
-                if (!secondaryResponse.errors) {
-                  this.showMessage('create-success', createResponse.response)
-                    .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/devices/view');
-                    });
-                } else {
-                  this.showMessage('create-error');
-                }
-              });
-            }else {
-              this.showMessage('update-success', createResponse.response)
-              .afterClosed()
-                      .subscribe(() => {
-                        this.primaryForm.reset();
-                        this.secondaryForm.reset();
-                        this.router.navigateByUrl('admin/resources/devices/view');
-                      });
-            }
+          this.showMessage('create-success', createResponse.response)
+            .afterClosed()
+            .subscribe(() => {
+              this.primaryForm.reset();
+              //this.secondaryForm.reset();
+              this.router.navigateByUrl('admin/resources/devices/view');
+            });  
+          // if (this.showSecondaryForm) {
+            //   secondaryObject.id = createResponse.response.id;
+            //   const secondaryRequest = new RequestModel(
+            //   appConstants.registrationDeviceCreateId,
+            //   null,
+            //   secondaryObject
+            // );
+            //   console.log(JSON.stringify(secondaryRequest));
+            //   this.dataStorageService
+            //   .createDevice(secondaryRequest)
+            //   .subscribe(secondaryResponse => {
+            //     console.log('Secondary Response' + secondaryResponse);
+            //     if (!secondaryResponse.errors) {
+            //       this.showMessage('create-success', createResponse.response)
+            //         .afterClosed()
+            //         .subscribe(() => {
+            //           this.primaryForm.reset();
+            //           this.secondaryForm.reset();
+            //           this.router.navigateByUrl('admin/resources/devices/view');
+            //         });
+            //     } else {
+            //       this.showMessage('create-error');
+            //     }
+            //   });
+            // }else {
+            //   this.showMessage('update-success', createResponse.response)
+            //   .afterClosed()
+            //           .subscribe(() => {
+            //             this.primaryForm.reset();
+            //             this.secondaryForm.reset();
+            //             this.router.navigateByUrl('admin/resources/devices/view');
+            //           });
+            // }
         
         } else {
           this.showMessage('create-error');
@@ -575,20 +599,20 @@ export class CreateComponent{
       this.primaryLang,
       this.primaryForm.controls.deviceSpecId.value,
       this.data[0].id,           
-      this.primaryForm.controls.isActive.value,             
+      //this.primaryForm.controls.isActive.value,             
     );
-    const secondaryObject = new DeviceModel(
-      this.secondaryForm.controls.zone.value,
-      this.secondaryForm.controls.validity.value,
-      this.secondaryForm.controls.name.value,
-      this.secondaryForm.controls.macAddress.value,
-      this.secondaryForm.controls.serialNumber.value,
-      this.secondaryForm.controls.ipAddress.value, 
-      this.secondaryLang,
-      this.secondaryForm.controls.deviceSpecId.value, 
-      this.data[0].id,     
-      this.secondaryForm.controls.isActive.value, 
-    );
+    // const secondaryObject = new DeviceModel(
+    //   this.secondaryForm.controls.zone.value,
+    //   this.secondaryForm.controls.validity.value,
+    //   this.secondaryForm.controls.name.value,
+    //   this.secondaryForm.controls.macAddress.value,
+    //   this.secondaryForm.controls.serialNumber.value,
+    //   this.secondaryForm.controls.ipAddress.value, 
+    //   this.secondaryLang,
+    //   this.secondaryForm.controls.deviceSpecId.value, 
+    //   this.data[0].id,     
+    //   this.secondaryForm.controls.isActive.value, 
+    // );
     const primaryRequest = new RequestModel(
       appConstants.registrationDeviceCreateId,
       null,
@@ -598,39 +622,46 @@ export class CreateComponent{
       .updateData(primaryRequest)
       .subscribe(updateResponse => {
         if (!updateResponse.errors) {
-          console.log("this.secondaryForm.valid>>>"+this.secondaryForm.valid);
-            if (this.showSecondaryForm) {
-              secondaryObject.id = updateResponse.response.id;
-              const secondaryRequest = new RequestModel(
-              appConstants.registrationDeviceCreateId,
-              null,
-              secondaryObject
-            );
-              console.log(JSON.stringify(secondaryRequest));
-              this.dataStorageService
-              .updateData(secondaryRequest)
-              .subscribe(secondaryResponse => {
-                if (!secondaryResponse.errors) {
-                  this.showMessage('update-success', updateResponse.response)
-                    .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/devices/view');
-                    });
-                } else {
-                  this.showMessage('update-error');
-                }
-              });
-            }else {
-            this.showMessage('update-success', updateResponse.response)
-            .afterClosed()
-                    .subscribe(() => {
-                      this.primaryForm.reset();
-                      this.secondaryForm.reset();
-                      this.router.navigateByUrl('admin/resources/devices/view');
-                    });
-          }
+          this.showMessage('update-success', updateResponse.response)
+          .afterClosed()
+          .subscribe(() => {
+            this.primaryForm.reset();
+            //this.secondaryForm.reset();
+            this.router.navigateByUrl('admin/resources/devices/view');
+          });
+          // console.log("this.secondaryForm.valid>>>"+this.secondaryForm.valid);
+          //   if (this.showSecondaryForm) {
+          //     secondaryObject.id = updateResponse.response.id;
+          //     const secondaryRequest = new RequestModel(
+          //     appConstants.registrationDeviceCreateId,
+          //     null,
+          //     secondaryObject
+          //   );
+          //     console.log(JSON.stringify(secondaryRequest));
+          //     this.dataStorageService
+          //     .updateData(secondaryRequest)
+          //     .subscribe(secondaryResponse => {
+          //       if (!secondaryResponse.errors) {
+          //         this.showMessage('update-success', updateResponse.response)
+          //           .afterClosed()
+          //           .subscribe(() => {
+          //             this.primaryForm.reset();
+          //             this.secondaryForm.reset();
+          //             this.router.navigateByUrl('admin/resources/devices/view');
+          //           });
+          //       } else {
+          //         this.showMessage('update-error');
+          //       }
+          //     });
+          //   }else {
+          //   this.showMessage('update-success', updateResponse.response)
+          //   .afterClosed()
+          //           .subscribe(() => {
+          //             this.primaryForm.reset();
+          //             this.secondaryForm.reset();
+          //             this.router.navigateByUrl('admin/resources/devices/view');
+          //           });
+          // }
         } else {
           this.showMessage('update-error');
         }
@@ -654,30 +685,30 @@ export class CreateComponent{
           this.data[0] = response.response.data[0];
           this.initializeheader();
           this.setPrimaryFormValues();
-          this.DeviceRequest.languageCode = this.secondaryLang;
-          request = new RequestModel(
-            appConstants.registrationDeviceCreateId,
-            null,
-            this.DeviceRequest
-          );
-          if (this.showSecondaryForm) {
-          this.deviceService
-            .getRegistrationDevicesDetails(request)
-            .subscribe(secondaryResponse => {
-              this.data[1] = secondaryResponse.response.data
-                ? secondaryResponse.response.data[0]
-                : {};
-              this.setSecondaryFormValues();
-            });
-          }
-          if (
-              this.activatedRoute.snapshot.queryParams.editable === 'true'
-            ) {
+          // this.DeviceRequest.languageCode = this.secondaryLang;
+          // request = new RequestModel(
+          //   appConstants.registrationDeviceCreateId,
+          //   null,
+          //   this.DeviceRequest
+          // );
+          // if (this.showSecondaryForm) {
+          // this.deviceService
+          //   .getRegistrationDevicesDetails(request)
+          //   .subscribe(secondaryResponse => {
+          //     this.data[1] = secondaryResponse.response.data
+          //       ? secondaryResponse.response.data[0]
+          //       : {};
+          //     this.setSecondaryFormValues();
+          //   });
+          // }
+          // if (
+          //     this.activatedRoute.snapshot.queryParams.editable === 'true'
+          //   ) {
               this.disableForms = false;
               this.primaryForm.enable();
-              if (this.showSecondaryForm) {
-              }
-            }
+              // if (this.showSecondaryForm) {
+              // }
+            //}
         } else {
           this.showErrorPopup();
         }
@@ -697,16 +728,16 @@ export class CreateComponent{
     this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
-  setSecondaryFormValues() {
-    this.secondaryForm.controls.zone.setValue(this.data[1].zoneCode);
-    this.secondaryForm.controls.validity.setValue(this.data[1].validityDateTime);
-    this.secondaryForm.controls.name.setValue(this.data[1].name);    
-    this.secondaryForm.controls.macAddress.setValue(this.data[1].macAddress);
-    this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
-    this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
-    this.secondaryForm.controls.deviceSpecId.setValue(this.data[1].deviceSpecId);
-    this.secondaryForm.controls.isActive.setValue(this.data[1].isActive);
-  }
+  // setSecondaryFormValues() {
+  //   this.secondaryForm.controls.zone.setValue(this.data[1].zoneCode);
+  //   this.secondaryForm.controls.validity.setValue(this.data[1].validityDateTime);
+  //   this.secondaryForm.controls.name.setValue(this.data[1].name);    
+  //   this.secondaryForm.controls.macAddress.setValue(this.data[1].macAddress);
+  //   this.secondaryForm.controls.serialNumber.setValue(this.data[1].serialNum);
+  //   this.secondaryForm.controls.ipAddress.setValue(this.data[1].ipAddress);
+  //   this.secondaryForm.controls.deviceSpecId.setValue(this.data[1].deviceSpecId);
+  //   this.secondaryForm.controls.isActive.setValue(this.data[1].isActive);
+  // }
   showMessage(type: string, data?: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',

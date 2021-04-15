@@ -22,6 +22,7 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { TranslateService } from '@ngx-translate/core';
 import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-dialog',
@@ -63,9 +64,11 @@ export class DialogComponent implements OnInit {
     private config: AppConfigService,
     private activatedRoute: ActivatedRoute,
     private auditService: AuditService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private headerService: HeaderService
   ) {
-    this.primaryLangCode = this.config.getConfig().primaryLangCode;
+    //this.primaryLangCode = this.config.getConfig().primaryLangCode;
+    this.primaryLangCode = this.headerService.getUserPreferredLanguage();
     this.translate.use(this.primaryLangCode);
   }
 

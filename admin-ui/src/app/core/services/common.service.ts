@@ -527,11 +527,11 @@ export class CommonService {
         let dynamicObject = null;
         
         if(url === "centers"){
-          dynamicObject = this.mapDataToCenterModelObject(data);
+          dynamicObject = {"id":data.id}
         }else if(url === "machines"){
-          dynamicObject = this.mapDataToMachineModelObject(data);
+          dynamicObject = {"id":data.id}
         }else if(url === "devices"){
-          dynamicObject = this.mapDataToDeviceModelObject(data);
+          dynamicObject = {"id":data.id}
         }else if(url === "center-type"){
           if(data.id){
             dynamicObject = {"code":data.id}
@@ -619,11 +619,11 @@ export class CommonService {
         this.auditService.audit(18, 'ADM-100', 'deactivate');
         let dynamicObject = null;
         if(url === "centers"){
-          dynamicObject = this.mapDataToCenterModelObject(data);
+          dynamicObject = {"id":data.id}
         }else if(url === "machines"){
-          dynamicObject = this.mapDataToMachineModelObject(data);
+          dynamicObject = {"id":data.id}
         }else if(url === "devices"){
-          dynamicObject = this.mapDataToDeviceModelObject(data);
+          dynamicObject = {"id":data.id}
         }else if(url === "center-type"){
           if(data.id){
             dynamicObject = {"code":data.id}

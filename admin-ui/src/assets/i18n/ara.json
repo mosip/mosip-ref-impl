@@ -66,6 +66,7 @@
         "datepicker-placeholder":"اختيار موعد",
         "devices-tooltip":"يتضمن الجهاز ماسحة البصمات ، ماسحة آيريس ، كاميرا ويب ، طابعة",
         "selectLanguage": "اختار اللغة",
+        "editCommonDetails": "يرجى تعديل تفاصيل المركز الأخرى هنا",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",
@@ -136,7 +137,10 @@
             },
             "endTime": {
                 "required": "مركز نهاية الوقت مطلوب"
-            }
+            },
+            "workingDays": {
+                "required": "الرجاء تحديد يوم واحد على الأقل"
+            } 
         },
         "popupMessages": {
             "create": {
@@ -284,6 +288,7 @@
     },
     "packet-status": {
         "header": "حالة الحزمة",
+        "input-text":"أدخل المعرف",
         "text": "الرجاء إدخال معرف التسجيل للتحقق من حالة الحزمة",
         "error": "تم إدخال معرف تسجيل غير صالح",
         "id": "معرف تسجيل",
@@ -298,6 +303,44 @@
         "statuscheckFailed":" فشل",
         "statuscheckCompleted":"منجز"
     },
+    "packet-upload":{
+        "header":"تحميل الحزمة",
+        "singleView":{
+          "detailed-view-txt":"عرض تفصيلي",
+          "status-txt":"حالة",
+          "uploadedBy-txt": "تم الرفع بواسطة",
+          "count-txt":"عدد",
+          "dataAndTime-txt" : "التاريخ و الوقت",
+          "failureDescription-txt":"فشل الوصف",
+          "placeHolder1-txt":"اسم الطاولة",
+          "placeHolder2-txt":"عمليات"
+        },
+        "createView":{
+          "input-btn-text":"اختر ملف",
+          "input-text1":"رفع ملف...",
+          "input-text2":"ارفع ملفك",
+          "upload-btn":"تحميل",
+          "cancle-btn":"إلغاء",
+          "popupMessaages":{
+              "popup1":{
+                  "uploadConfirm":"تأكيد تحميل الحزمة",
+                  "message":"ستتم معالجة الحزمة. \n الرجاء التأكد من صحة جميع المعلومات. \n \n \n ستبدأ المعاملة بمجرد النقر فوق تأكيد",
+                  "confirmBtnTxt":"تؤكد",
+                  "cancelBtnTxt":"يلغي"
+              },
+              "popup2":{
+                  "title":"بالفشل !",
+                  "btnTxt":"انتهى"
+              },
+              "popup3":{
+                  "title":"نجاح",
+                  "message" :"تم تحميل ملفك بنجاح. \n تحميل البيانات قيد التقدم حاليًا. \n \n \n معرّف المعاملة:",
+                  "btnTxt":"انتهى"
+              }
+       
+          }
+        }
+      },
     "actionMessages" : {
         "decommission": {
             "success-message": ["مركز التسجيل ", " تم إيقاف التشغيل بنجاح"],

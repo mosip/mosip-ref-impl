@@ -10,6 +10,7 @@ import { CenterHeaderComponent } from './center-header/center-header.component';
 import { I18nModule } from '../../../../app/i18n.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatKeyboardModule } from 'ngx7-material-keyboard';
+import { EditComponent } from './edit/edit.component';
 
 
 @NgModule({
@@ -23,6 +24,6 @@ import { MatKeyboardModule } from 'ngx7-material-keyboard';
     FormsModule,
     MatKeyboardModule
   ],
-  declarations: [CreateComponent, ViewComponent, CenterHeaderComponent]
+  declarations: [CreateComponent, ViewComponent, CenterHeaderComponent, EditComponent]
 })
 export class CenterModule { }
