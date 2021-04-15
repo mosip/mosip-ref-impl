@@ -220,9 +220,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 */
 	private void loadLanguages() {
 		languageList = Arrays.asList(mandatoryLanguages.split(",")).stream().filter(lang -> !lang.isBlank())
-				.map(lang -> StringUtils.trim(lang)).collect(Collectors.toSet());
+				.map(StringUtils::trim).collect(Collectors.toSet());
 		languageList.addAll(Arrays.asList(optionalLanguages.split(",")).stream().filter(lang -> !lang.isBlank())
-				.map(lang -> StringUtils.trim(lang)).collect(Collectors.toSet()));
+				.map(StringUtils::trim).collect(Collectors.toSet()));
 	}
 
 	/**
@@ -369,7 +369,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		if (Objects.nonNull(env.getProperty(MASTERDATA_LOCATIONS_URI))
 				&& Objects.nonNull(env.getProperty(MASTERDATA_LOCATION_HIERARCHY_URI))) {
 			mapping.entrySet().stream().forEach(fieldEntry -> {
-				Arrays.asList(fieldEntry.getValue().split(",")).stream().map(field -> StringUtils.trim(field))
+				Arrays.asList(fieldEntry.getValue().split(",")).stream().map(StringUtils::trim)
 						.map(field -> String.format(JSON_PATH_WILDCARD_SEARCH, field)).forEach(field -> {
 							JsonPath jsonPath = JsonPath.compile(field);
 							JSONArray fieldData = jsonPath.read(identityString,
