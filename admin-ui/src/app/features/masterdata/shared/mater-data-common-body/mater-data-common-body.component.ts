@@ -6,7 +6,7 @@ import {
   Input
 } from '@angular/core';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -24,6 +24,10 @@ import { FilterRequest } from 'src/app/core/models/filter-request.model';
 import { FilterValuesModel } from 'src/app/core/models/filter-values.model';
 import * as appConstants from '../../../../app.constants';
 import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
+import { CenterRequest } from 'src/app/core/models/centerRequest.model';
+import { FilterModel } from 'src/app/core/models/filter.model';
+import { AppConfigService } from 'src/app/app-config.service';
+import defaultJson from "../../../../../assets/i18n/default.json";
 
 @Component({
   selector: 'app-mater-data-common-body',
@@ -41,7 +45,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   disableForms: boolean;
   copyPrimaryWord: any;
   copySecondaryWord: any;
-
+  selectLanguagesArr:any;
   @Input() primaryData: any;
   @Input() secondaryData: any;
   @Input() fields: any;
@@ -51,6 +55,11 @@ export class MaterDataCommonBodyComponent implements OnInit {
   @Input() masterdataType: any;
 
   dropDownValues = new CenterDropdown();
+  fetchRequest = {} as CenterRequest;
+  id: string;
+  mapping: any;
+  url:string;
+  saveSecondaryForm:boolean;
 
   languageNames = {
     ara: 'عربى',
@@ -65,20 +74,41 @@ export class MaterDataCommonBodyComponent implements OnInit {
   keyboardType: string;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
     private router: Router,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private keyboardService: MatKeyboardService,
+    private appConfigService: AppConfigService,
   ) { }
 
   ngOnInit() {
+    
+    this.activatedRoute.params.subscribe(response => {
+      this.id = response.id;
+      this.masterdataType = response.type;
+      this.mapping = appConstants.masterdataMapping[response.type];
+    });
+    let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
+    let otherLangsArr = supportedLanguages.filter(lang => lang.trim() !== this.primaryLang.trim());
+    this.selectLanguagesArr = [];
+    this.secondaryLang = otherLangsArr[0];
+    otherLangsArr.map((language) => {
+      if (defaultJson.languages && defaultJson.languages[language]) {
+        this.selectLanguagesArr.push({
+          code: language,
+          value: defaultJson.languages[language].nativeName,
+        });
+      }
+    });
     this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
     this.isCreateForm = false;
     this.disableForms = false;
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
     this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
     let url = this.router.url.split('/')[3];
+    this.url = this.router.url.split('/')[3];
     if(!this.primaryData){
       this.isCreateForm = true;
       if(url === "center-type"){
@@ -86,6 +116,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.primaryData = {"code":"","name":"","descr":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "blacklisted-words"){
         this.pageName = "Blacklisted Word";
+        this.showPanel(this.pageName);
         this.primaryData = {"word":"","description":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "gender-type"){
         this.pageName = "Gender Type";
@@ -107,16 +138,20 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "device-specs"){
         this.pageName = "Device Specification";
         this.getDeviceTypes();
+        this.showPanel(this.pageName);
         this.primaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
       }else if(url === "device-types"){
         this.pageName = "Device Type";
+        this.showPanel(this.pageName);
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "machine-specs"){
         this.pageName = "Machine Specification";
         this.getMachineTypes();
+        this.showPanel(this.pageName);
         this.primaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
       }else if(url === "machine-type"){
         this.pageName = "Machine Type";
+        this.showPanel(this.pageName);
         this.primaryData = {"code":"","name":"","description":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "document-type"){
         this.pageName = "Document Type";
@@ -138,6 +173,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
           this.copySecondaryWord = this.secondaryData.word;
         }        
         this.pageName = "Blacklisted Word";
+        this.showPanel(this.pageName);
         this.primaryData['oldWord'] = this.primaryData['word'];
       }else if(url === "gender-type"){
         this.pageName = "Gender Type";
@@ -153,14 +189,18 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Title";
       }else if(url === "device-specs"){
         this.pageName = "Device Specification";
+        this.showPanel(this.pageName);
         this.getDeviceTypes();
       }else if(url === "device-types"){
         this.pageName = "Device Type";
+        this.showPanel(this.pageName);
       }else if(url === "machine-specs"){
         this.pageName = "Machine Specification";
+        this.showPanel(this.pageName);
         this.getMachineTypes();
       }else if(url === "machine-type"){
         this.pageName = "Machine Type";
+        this.showPanel(this.pageName);
       }else if(url === "document-type"){
         this.pageName = "Document Type";
       }else if(url === "document-categories"){
@@ -169,36 +209,102 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Holiday";
       }
     }
+    this.setSecondaryFrom();
+  }
 
+  showPanel(pageName : string){
+    if(pageName ==='Blacklisted Word'){
+      this.showSecondaryForm = false;
+    }else if(pageName ==='Device Specification'){
+      this.showSecondaryForm = false;
+    }else if(pageName ==='Device Type'){
+      this.showSecondaryForm = false;
+    }else if(pageName ==='Machine Specification'){
+      this.showSecondaryForm = false;
+    }else if(pageName ==='Machine Type'){
+      this.showSecondaryForm = false;
+    }else{
+      this.showSecondaryForm = true;
+    }
+  }
+
+  captureLanguage(event: any, language : string){
+    if (event.source.selected) {
+      this.secondaryLang = language;
+      this.secondaryKeyboard = appConstants.keyboardMapping[language];
+      this.getData(language);
+    }
+  }
+
+  getData(language: string) {
+    return new Promise((resolve, reject) => {
+      const filterModel = new FilterModel(
+        this.mapping.idKey,
+        'equals',
+        this.id
+      );
+      this.fetchRequest.filters = [filterModel];
+      this.fetchRequest.languageCode = language;
+      this.fetchRequest.sort = [];
+      this.fetchRequest.pagination = { pageStart: 0, pageFetch: 10 };
+      const request = new RequestModel(
+        appConstants.registrationCenterCreateId,
+        null,
+        this.fetchRequest
+      );
+      this.dataStorageService
+        .getMasterDataByTypeAndId(this.mapping.apiName, request)
+        .subscribe(
+          response => {
+            if (response.response) {
+              if (response.response.data) {
+                this.saveSecondaryForm = false;
+                this.secondaryData = response.response.data[0];
+              }else{
+                this.secondaryData = null;
+                this.saveSecondaryForm = true;
+                this.setSecondaryFrom();
+              }
+            }
+            resolve(true);
+          }
+        );
+    });
+  }
+
+  setSecondaryFrom(){
     if(!this.secondaryData){
-      if(url === "center-type"){
+
+      if(this.url === "center-type"){
         this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "blacklisted-words"){
+        this.secondaryData.code = this.primaryData.code;
+      }else if(this.url === "blacklisted-words"){
         this.secondaryData = {"word":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "gender-type"){
-        this.secondaryData = {"code":"","genderName":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "individual-type"){
-        this.secondaryData = {"code":"","name":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "location"){
+        this.secondaryData.word = this.primaryData.word;
+      }else if(this.url === "location"){
         this.secondaryData = {"code":"","name":"","hierarchyLevel":"","hierarchyName":"","parentLocCode":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "templates"){
-        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
-      }else if(url === "title"){
-        this.secondaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "device-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
-      }else if(url === "device-types"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "machine-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
-      }else if(url === "machine-type"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "document-type"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "document-categories"){
-        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
-      }else if(url === "holiday"){
+        this.secondaryData.code = this.primaryData.code;
+      }else if(this.url === "holiday"){
         this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.secondaryLang,"isActive":true};
+        this.secondaryData.holidayName = this.primaryData.holidayName;
+      }else if(this.url === "templates"){
+        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
+        this.secondaryData.name = this.primaryData.name;
+        this.secondaryData.id = this.primaryData.id;
+      }else if(this.url === "device-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(this.url === "device-types"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(this.url === "machine-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(this.url === "machine-type"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+      }else if(this.url === "document-type"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+        this.secondaryData.code = this.primaryData.code;
+      }else if(this.url === "document-categories"){
+        this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
+        this.secondaryData.code = this.primaryData.code;
       }
     }
   }
@@ -209,21 +315,11 @@ export class MaterDataCommonBodyComponent implements OnInit {
     formControlName: string,
     index: number
   ) {
-    //element.scrollIntoView({ block: 'center', inline: 'nearest' });
     this.selectedField = element;
     if (this.keyboardRef) {
       this.keyboardRef.instance.setInputInstance(
         this.attachToElementMesOne._results[index]
       );
-      /*if (type === 'primary') {
-        this.keyboardRef.instance.attachControl(
-          this.primaryForm.controls[formControlName]
-        );
-      } else if (type === 'secondary') {
-        this.keyboardRef.instance.attachControl(
-          this.secondaryForm.controls[formControlName]
-        );
-      }*/
     }
   }
 
@@ -482,7 +578,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.primaryData['isDeleted'];
         delete this.primaryData['deletedDateTime'];
         delete this.primaryData['deviceTypeName'];
-        delete this.primaryData['machineTypeName'];        
+        delete this.primaryData['machineTypeName'];
+        delete this.primaryData['isActive'];         
       }
       if(this.secondaryData){
         delete this.secondaryData['createdBy'];
@@ -493,6 +590,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['deletedDateTime'];
         delete this.secondaryData['deviceTypeName'];
         delete this.secondaryData['machineTypeName'];
+        delete this.secondaryData['isActive'];
       }
       if(this.router.url.split('/')[3] === "blacklisted-words"){
         this.primaryData['oldWord'] = this.copyPrimaryWord;
@@ -513,12 +611,35 @@ export class MaterDataCommonBodyComponent implements OnInit {
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
             if(textToValidate){
+              this.secondaryData["code"] = updateResponse.response.code; 
+              if(updateResponse.response.id){
+                this.secondaryData["id"] = updateResponse.response.id; 
+              }
+              if(this.saveSecondaryForm){
+                this.secondaryData['isActive'] = true;
+              }
               let request = new RequestModel(
                 "",
                 null,
                 this.secondaryData
               );
-              this.dataStorageService.updateData(request).subscribe(updateResponse => {
+              if(this.saveSecondaryForm){
+                this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
+                  if (!updateResponse.errors) {
+                    let url = this.pageName+" Created Successfully";
+                    this.showMessage(url)
+                      .afterClosed()
+                      .subscribe(() => {
+                        this.router.navigateByUrl(
+                          `admin/masterdata/${this.masterdataType}/view`
+                        );
+                      });
+                  } else {
+                    this.showErrorPopup(updateResponse.errors[0].message);
+                  }
+                });
+              }else{
+                this.dataStorageService.updateData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
                     let url = this.pageName+" Updated Successfully";
                     this.showMessage(url)
@@ -531,7 +652,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
                   } else {
                     this.showErrorPopup(updateResponse.errors[0].message);
                   }
-              });
+                });
+              }
             }else{
               let url = this.pageName+" Updated Successfully";
                 this.showMessage(url)
@@ -550,7 +672,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   showMessage(message: string) {
-    console.log();
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: {

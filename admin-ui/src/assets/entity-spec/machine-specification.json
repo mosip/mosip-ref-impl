@@ -174,7 +174,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
       "sortOrder": "",
       "showAsLink": "false",

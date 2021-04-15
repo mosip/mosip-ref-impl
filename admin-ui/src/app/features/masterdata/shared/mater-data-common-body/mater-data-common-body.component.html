@@ -2,6 +2,7 @@
     <mat-card>
         <mat-card-content class="forms-container" *ngIf="pageName !=='Location'">
             <div class="primary-form">
+                <div style="padding-bottom: 50px;"></div>
                 <strong class="title">{{'center.language' | translate }}</strong>
                 <span
                   *ngIf="!disableForms && pageName !=='Blacklisted Word'"
@@ -202,7 +203,22 @@
                 </div>
             </div>
             <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-            <div *ngIf="showSecondaryForm && pageName !=='Blacklisted Word'" class="secondary-form">
+              <div *ngIf="showSecondaryForm" class="secondary-form" [ngStyle]="{'text-align': (secondaryLang==='ara') ? 'right' : 'left'}">
+                <mat-form-field style="padding-bottom: 10px;">
+                <mat-label><b>{{ "center.selectLanguage" | translate }}</b></mat-label>
+                  <mat-select
+                    formControlName="selectLanguage"
+                    [(value)]="secondaryLang"
+                  >
+                    <mat-option
+                      *ngFor="let data of selectLanguagesArr"
+                      (onSelectionChange)="captureLanguage($event, data.code)"
+                      [value]="data.code"
+                    >
+                      {{ data.value }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
                 <strong class="title">{{ languageNames[secondaryLang] }}</strong>
                 <span
                   *ngIf="!disableForms"
@@ -213,7 +229,7 @@
                 >
                 <hr />
                 <br /><br />
-                <div *ngFor="let field of fields; let ii = index" class="mat-form2">
+                <div *ngFor="let field of fields; let ii = index" class="mat-form2" [ngStyle]="{'text-align': (secondaryLang==='ara') ? 'right' : 'left'}">
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name !== 'code'">
                       <input
                         #keyboardRef
@@ -430,7 +446,7 @@
             </mat-form-field>
           </div>
         <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-          <div *ngIf="showSecondaryForm && pageName !=='Blacklisted Word'" class="secondary-form">
+          <div *ngIf="showSecondaryForm" class="secondary-form">
             <strong class="title">{{ languageNames[secondaryLang] }}</strong>
             <span
               *ngIf="!disableForms"

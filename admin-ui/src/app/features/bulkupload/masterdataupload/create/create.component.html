@@ -1,5 +1,5 @@
 <div id="flex-single-view" style="padding-top: 12px;">
-  <div id="flex-container">
+  <div id="flex-container" *ngIf="labelanddatas">
    <div class="card">
       <mat-card>
         <div class="item1">
@@ -17,33 +17,33 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="uploadForm" class="primary-form" *ngIf="uploadForm">
             <mat-form-field>
-              <mat-label>Operation</mat-label>
+              <mat-label>{{labelanddatas.operation | translate }}</mat-label>
               <mat-select
                 formControlName="operation"
               >
                 <mat-option
-                  *ngFor="let data of dropDownValues"
-                  [value]="data"
+                  *ngFor="let data of labelanddatas.operationCtrl"
+                  [value]="data.value"
                 >
-                  {{ data}}
+                  {{data.label | translate }}
                 </mat-option>
               </mat-select>
             </mat-form-field> 
             <mat-form-field>
-              <mat-label>Select Table Name</mat-label>
+              <mat-label>{{labelanddatas.tableName | translate }}</mat-label>
               <mat-select formControlName="tableName">
                 <mat-option
-                  *ngFor="let data of tableNames"
+                  *ngFor="let data of labelanddatas.tableNames"
                   [value]="data.id"
                 >
-                  {{ data.value}}
+                  {{data.value | translate }}
                 </mat-option>
               </mat-select>
             </mat-form-field> 
             <div class="custom-file-input">
-              <input type="button" value="Choose File" class="browseInput">
+              <input type="button" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
               <input type="file" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" [value]="fileName" placeholder="Upload Your File">                
+              <input type="text" [value]="fileName" placeholder="{{labelanddatas.uploadFile | translate }}">                
             </div>           
           </div> 
         </mat-card-content>
@@ -53,10 +53,10 @@
             mat-raised-button
             (click)="submit()"
           >
-          UPLOAD
+          {{labelanddatas.upload | translate }}
           </button>
           <button mat-raised-button (click)="cancel()">
-          CANCEL
+          {{labelanddatas.cancel | translate }}
           </button>
         </mat-card-actions>
       </mat-card>

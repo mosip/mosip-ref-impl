@@ -15,7 +15,6 @@ export class AppConfigService {
     if (this.appConfig.primaryLangCode) {
       this.appConfig["primaryLangCode"] = this.appConfig.primaryLangCode;
       this.appConfig["secondaryLangCode"] = this.appConfig.secondaryLangCode;
-
       this.http.get(this.appConfig.baseUrl + "masterdata/configs").subscribe(
         (response) => {
           let responseData = response["response"];
@@ -24,6 +23,7 @@ export class AppConfigService {
           this.appConfig["rightToLeftOrientation"] = responseData["rightToLeftOrientation"];
           this.appConfig["leftToRightOrientation"] = responseData["leftToRightOrientation"];
           this.appConfig["countryCode"] = responseData["countryCode"];
+          this.appConfig["version"]= responseData["version"];
         },
         (error) => {
           console.log(error);

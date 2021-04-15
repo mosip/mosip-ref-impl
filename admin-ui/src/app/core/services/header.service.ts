@@ -53,11 +53,9 @@ export class HeaderService {
 
   setUserPreferredLanguage(userPreferredLanguage: string) {
     this.userPreferredLanguage = userPreferredLanguage;
-    console.log("this.userPreferredLanguage>>>"+this.userPreferredLanguage);
   }
 
   getUserPreferredLanguage(): string {
-    console.log("this.getUserPreferredLanguage>>>"+this.userPreferredLanguage);
     this.userPreferredLanguage = "eng";
     return this.userPreferredLanguage;
   }
