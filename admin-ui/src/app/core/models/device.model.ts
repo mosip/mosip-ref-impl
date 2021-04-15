@@ -9,6 +9,7 @@ export class DeviceModel {
         public ipAddress: string,
         public langCode: string,
         public deviceSpecId: string,
+        public regCenterId: string,
         public id?: string,
         public isActive?: boolean,
     ) {}

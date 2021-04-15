@@ -18,13 +18,8 @@ export class CenterService {
 
   private BASE_URL = this.appService.getConfig().baseUrl;
 
-  getRegistrationCentersDetailsWithMissingData(request: RequestModel): Observable<any> {
-    console.log(JSON.stringify(request));
-    return this.http.post(this.BASE_URL + URL.centers + "?addMissingData=true", request, httpOptions);
-  }
-
   getRegistrationCentersDetails(request: RequestModel): Observable<any> {
     console.log(JSON.stringify(request));
-    return this.http.post(this.BASE_URL + URL.centers + "?addMissingData=false", request, httpOptions);
+    return this.http.post(this.BASE_URL + URL.centers, request, httpOptions);
   }
 }
