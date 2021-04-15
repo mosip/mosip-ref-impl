@@ -25,6 +25,7 @@ export class AppConfigService {
     	this.http.get(this.appConfig.baseUrl + 'masterdata/configs').subscribe(
 	      response => {
 	        this.appConfig["locationHierarchyLevel"]= response["response"]["locationHierarchyLevel"];
+          this.appConfig["version"]= response["response"]["version"];
           if (response["response"]["supportedLanguages"]) {
             this.appConfig["supportedLanguages"]= response["response"]["supportedLanguages"];
           }

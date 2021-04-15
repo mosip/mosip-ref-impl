@@ -65,46 +65,49 @@ export class CommonService {
   }
 
   private confirmationPopup(type: string, data: any) {
-
     let url = this.router.url.split('/')[3];
     let textToDisplay = null;
-    
-    if(url === "centers"){
+
+    if(data.name){
       textToDisplay = data.name;
-    }else if(url === "machines"){
-      textToDisplay = data.name;
-    }else if(url === "devices"){
-      textToDisplay = data.name;
-    }else if(url === "center-type"){
-      textToDisplay = data.name;
-    }else if(url === "blacklisted-words"){
-      textToDisplay = data.word;
-    }else if(url === "gender-type"){
-      textToDisplay = data.genderName;
-    }else if(url === "individual-type"){
-      textToDisplay = data.name;
-    }else if(url === "location"){
-      textToDisplay = data.zone;
-    }else if(url === "templates"){
-      textToDisplay = data.name;
-    }else if(url === "title"){
-      textToDisplay = data.titleName;
-    }else if(url === "device-specs"){
-      textToDisplay = data.name;
-    }else if(url === "device-types"){
-      textToDisplay = data.name;
-    }else if(url === "machine-specs"){
-      textToDisplay = data.name;
-    }else if(url === "machine-type"){
-      textToDisplay = data.name;
-    }else if(url === "document-type"){
-      textToDisplay = data.name;
-    }else if(url === "document-categories"){
-      textToDisplay = data.name;
-    }else if(url === "holiday"){
-      textToDisplay = data.holidayName;
+    }else{
+      if(url === "centers"){
+        textToDisplay = data.name;
+      }else if(url === "machines"){
+        textToDisplay = data.name;
+      }else if(url === "devices"){
+        textToDisplay = data.name;
+      }else if(url === "center-type"){
+        textToDisplay = data.name;
+      }else if(url === "blacklisted-words"){
+        textToDisplay = data.word;
+      }else if(url === "gender-type"){
+        textToDisplay = data.genderName;
+      }else if(url === "individual-type"){
+        textToDisplay = data.name;
+      }else if(url === "location"){
+        textToDisplay = data.zone;
+      }else if(url === "templates"){
+        textToDisplay = data.name;
+      }else if(url === "title"){
+        textToDisplay = data.titleName;
+      }else if(url === "device-specs"){
+        textToDisplay = data.name;
+      }else if(url === "device-types"){
+        textToDisplay = data.name;
+      }else if(url === "machine-specs"){
+        textToDisplay = data.name;
+      }else if(url === "machine-type"){
+        textToDisplay = data.name;
+      }else if(url === "document-type"){
+        textToDisplay = data.name;
+      }else if(url === "document-categories"){
+        textToDisplay = data.name;
+      }else if(url === "holiday"){
+        textToDisplay = data.holidayName;
+      }
     }
-    
+
     const obj = {
       case: 'CONFIRMATION',
       title: this.actionMessages[type]['confirmation-title'],
@@ -122,42 +125,46 @@ export class CommonService {
     let obj = {};
     let url = this.router.url.split('/')[3];
     let textToDisplay = null;
-    if(url === "centers"){
+    if(data.name){
       textToDisplay = data.name;
-    }else if(url === "machines"){
-      textToDisplay = data.name;
-    }else if(url === "devices"){
-      textToDisplay = data.name;
-    }else if(url === "center-type"){
-      textToDisplay = data.name;
-    }else if(url === "blacklisted-words"){
-      textToDisplay = data.word;
-    }else if(url === "gender-type"){
-      textToDisplay = data.genderName;
-    }else if(url === "individual-type"){
-      textToDisplay = data.name;
-    }else if(url === "location"){
-      textToDisplay = data.zone;
-    }else if(url === "templates"){
-      textToDisplay = data.name;
-    }else if(url === "title"){
-      textToDisplay = data.titleName;
-    }else if(url === "device-specs"){
-      textToDisplay = data.name;
-    }else if(url === "device-types"){
-      textToDisplay = data.name;
-    }else if(url === "machine-specs"){
-      textToDisplay = data.name;
-    }else if(url === "machine-type"){
-      textToDisplay = data.name;
-    }else if(url === "document-type"){
-      textToDisplay = data.name;
-    }else if(url === "document-categories"){
-      textToDisplay = data.name;
-    }else if(url === "holiday"){
-      textToDisplay = data.holidayName;
+    }else{
+      if(url === "centers"){
+        textToDisplay = data.name;
+      }else if(url === "machines"){
+        textToDisplay = data.name;
+      }else if(url === "devices"){
+        textToDisplay = data.name;
+      }else if(url === "center-type"){
+        textToDisplay = data.name;
+      }else if(url === "blacklisted-words"){
+        textToDisplay = data.word;
+      }else if(url === "gender-type"){
+        textToDisplay = data.genderName;
+      }else if(url === "individual-type"){
+        textToDisplay = data.name;
+      }else if(url === "location"){
+        textToDisplay = data.zone;
+      }else if(url === "templates"){
+        textToDisplay = data.name;
+      }else if(url === "title"){
+        textToDisplay = data.titleName;
+      }else if(url === "device-specs"){
+        textToDisplay = data.name;
+      }else if(url === "device-types"){
+        textToDisplay = data.name;
+      }else if(url === "machine-specs"){
+        textToDisplay = data.name;
+      }else if(url === "machine-type"){
+        textToDisplay = data.name;
+      }else if(url === "document-type"){
+        textToDisplay = data.name;
+      }else if(url === "document-categories"){
+        textToDisplay = data.name;
+      }else if(url === "holiday"){
+        textToDisplay = data.holidayName;
+      }
     }
-    /*console.log("textToDisplay>>>"+textToDisplay);*/
+    
     if (type === 'success') {
       obj = {
         title: this.actionMessages[listItem]['success-title'],
@@ -180,9 +187,8 @@ export class CommonService {
       null,
       data
     );
-    this.dataService.updateData(request).subscribe(
+    this.dataService.updateDataStatus(request).subscribe(
       response => {
-        console.log("request.request>>>"+JSON.stringify(actualData));
         if (!response.errors || response.errors.length === 0) {
           this.createMessage('success', callingFunction, actualData);     
           this.router.navigateByUrl(this.router.url);
@@ -527,33 +533,59 @@ export class CommonService {
         }else if(url === "devices"){
           dynamicObject = this.mapDataToDeviceModelObject(data);
         }else if(url === "center-type"){
-          dynamicObject = this.mapDataToCenterTypeModelObject(data);
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
         }else if(url === "blacklisted-words"){
-          dynamicObject = this.mapDataToBlacklistedWordsModelObject(data);
-        }else if(url === "gender-type"){
-          dynamicObject = this.mapDataToGenderModelObject(data);
-        }else if(url === "individual-type"){
-          dynamicObject = this.mapDataToIndividualTypeModelObject(data);
+          if(data.id){
+            dynamicObject = {"word":data.id}
+          }else{
+            dynamicObject = {"word":data.word}
+          }
         }else if(url === "location"){
-          dynamicObject = this.mapDataToLocationModelObject(data);
-        }else if(url === "templates"){
-          dynamicObject = this.mapDataToTemplateModelObject(data);
-        }else if(url === "title"){
-          dynamicObject = this.mapDataToTitleModelObject(data);
-        }else if(url === "device-specs"){
-          dynamicObject = this.mapDataToDeviceSpecsModelObject(data);
-        }else if(url === "device-types"){
-          dynamicObject = this.mapDataToDeviceTypesModelObject(data);
-        }else if(url === "machine-specs"){
-          dynamicObject = this.mapDataToMachineSpecsModelObject(data);
-        }else if(url === "machine-type"){
-          dynamicObject = this.mapDataToMachineTypesModelObject(data);
-        }else if(url === "document-type"){
-          dynamicObject = this.mapDataToDocumentTypeModelObject(data);
-        }else if(url === "document-categories"){
-          dynamicObject = this.mapDataToDocumentCategoriesModelObject(data);
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
         }else if(url === "holiday"){
-          dynamicObject = this.mapDataToHolidayMasterModelObject(data);
+          if(data.id){
+            dynamicObject = {"holidayId":data.id}
+          }else{
+            dynamicObject = {"holidayId":data.holidayId}
+          }
+        }else if(url === "templates"){
+          dynamicObject = {"id":data.id}
+        }else if(url === "device-specs"){
+          dynamicObject = {"id":data.id}
+        }else if(url === "device-types"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
+        }else if(url === "machine-specs"){
+          dynamicObject = {"id":data.id}
+        }else if(url === "machine-type"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
+        }else if(url === "document-type"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
+        }else if(url === "document-categories"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
         }
         
         dynamicObject.isActive = true;
@@ -566,7 +598,6 @@ export class CommonService {
 
   deactivateCenter(data: any, url: string, idKey: string) {
     if (this.router.url.indexOf('single-view') >= 0) {
-      console.log(this.router.url.split('/'));
       this.auditService.audit(10, 'ADM-087', {
         buttonName: 'deactivate',
         masterdataName: this.router.url.split('/')[
@@ -594,37 +625,61 @@ export class CommonService {
         }else if(url === "devices"){
           dynamicObject = this.mapDataToDeviceModelObject(data);
         }else if(url === "center-type"){
-          dynamicObject = this.mapDataToCenterTypeModelObject(data);
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
         }else if(url === "blacklisted-words"){
-          dynamicObject = this.mapDataToBlacklistedWordsModelObject(data);
-        }else if(url === "gender-type"){
-          dynamicObject = this.mapDataToGenderModelObject(data);
-        }else if(url === "individual-type"){
-          dynamicObject = this.mapDataToIndividualTypeModelObject(data);
+          if(data.id){
+            dynamicObject = {"word":data.id}
+          }else{
+            dynamicObject = {"word":data.word}
+          }
         }else if(url === "location"){
-          dynamicObject = this.mapDataToLocationModelObject(data);
-        }else if(url === "templates"){
-          dynamicObject = this.mapDataToTemplateModelObject(data);
-        }else if(url === "title"){
-          dynamicObject = this.mapDataToTitleModelObject(data);
-        }else if(url === "device-specs"){
-          dynamicObject = this.mapDataToDeviceSpecsModelObject(data);
-        }else if(url === "device-types"){
-          dynamicObject = this.mapDataToDeviceTypesModelObject(data);
-        }else if(url === "machine-specs"){
-          dynamicObject = this.mapDataToMachineSpecsModelObject(data);
-        }else if(url === "machine-type"){
-          dynamicObject = this.mapDataToMachineTypesModelObject(data);
-        }else if(url === "document-type"){
-          dynamicObject = this.mapDataToDocumentTypeModelObject(data);
-        }else if(url === "document-categories"){
-          dynamicObject = this.mapDataToDocumentCategoriesModelObject(data);
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
         }else if(url === "holiday"){
-          dynamicObject = this.mapDataToHolidayMasterModelObject(data);
+          if(data.id){
+            dynamicObject = {"holidayId":data.id}
+          }else{
+            dynamicObject = {"holidayId":data.holidayId}
+          }
+        }else if(url === "templates"){
+          dynamicObject = {"id":data.id}
+        }else if(url === "device-specs"){
+          dynamicObject = {"id":data.id}
+        }else if(url === "device-types"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
+        }else if(url === "machine-specs"){
+          dynamicObject = {"id":data.id}
+        }else if(url === "machine-type"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
+        }else if(url === "document-type"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
+        }else if(url === "document-categories"){
+          if(data.id){
+            dynamicObject = {"code":data.id}
+          }else{
+            dynamicObject = {"code":data.code}
+          }
         }
-
         dynamicObject.isActive = false;
-        console.log(dynamicObject);
         this.updateData('deactivate', dynamicObject, data);
       } else {
         this.auditService.audit(19, 'ADM-103', 'deactivate');
@@ -647,7 +702,7 @@ export class CommonService {
       this.centerService.getRegistrationCentersDetails(request).subscribe(
         response => {
           if (response.response.data) {
-            console.log(response.response.data[0].name);
+            //console.log(response.response.data[0].name);
           }
         }
       );
@@ -691,7 +746,7 @@ export class CommonService {
           null,
           dynamicObject
         );
-        this.dataService.updateData(request).subscribe(
+        this.dataService.updateData(dynamicObject).subscribe(
           response => {
             let obj = {};
             if (!response.errors || response.errors.length === 0) {
