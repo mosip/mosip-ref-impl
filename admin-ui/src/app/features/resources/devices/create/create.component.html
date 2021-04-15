@@ -133,8 +133,11 @@
 
         </mat-card-content>
         <mat-card-actions class="action-buttons">
-          <button id="createButton" mat-raised-button (click)="submit()">
-            Save
+          <button id="createButton" mat-raised-button *ngIf="data.length != 0" (click)="submit()">
+            {{ "devices.edit" | translate }}
+          </button>
+          <button id="createButton" mat-raised-button *ngIf="data.length == 0" (click)="submit()">
+            {{ "devices.create" | translate }}
           </button>
           <button mat-raised-button (click)="cancel()">
             {{ "devices.cancel" | translate }}

@@ -213,7 +213,13 @@
         "validity": "Date valide heure",
         "isActive": "C'est actif",
         "zone": "Zone",
-        "language": "French",
+        "deviceSpecId": "Nom de la spécification de l'appareil",
+        "language": "français",
+        "edit": "Éditer",
+        "create": "Créer",
+        "cancel": "Annuler",
+        "status": "Statut",
+        "keyboard-tooltip": "Cliquez pour le clavier virtuel (français)",
         "errorMessages": {
             "title": "Erreur",
             "message": "Aucune donnée disponible",
@@ -408,7 +414,7 @@
         "decommission": {
             "success-message": ["Le centre d'inscription ", " est déclassé avec succès"],
             "success-title": "Succès",
-            "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
+            "error-message": ["Impossible de mettre hors service "," car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt."],
             "error-title": "Erreur",
             "btnTxt": "D'accord",
             "yesBtnTxt": "confirmer",
