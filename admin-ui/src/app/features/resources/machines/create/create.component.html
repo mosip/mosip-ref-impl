@@ -127,15 +127,25 @@
                           </mat-error>
                         </mat-form-field>
 
-                        
+                        <mat-form-field>
+                          <mat-label>{{ "center.center-name" | translate }}</mat-label>
+                          <mat-select
+                            formControlName="regCenterId">
+                            <mat-option *ngFor="let data of dropDownValues.regCenterCode.primary" [value]="data.fieldCode">
+                              {{ data.fieldValue }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="
+                                        primary.regCenterId.touched && primary.regCenterId.hasError('required')
+                                      ">
+                          {{ "devices.validationMessages.regCenterId.required" | translate }}
+                          </mat-error> 
+                          </mat-form-field>
 
                         <mat-form-field>
                           <mat-label>{{ "machines.zone" | translate }}</mat-label>
                           <mat-select
                             formControlName="zone"
-                            (selectionChange)="
-                              copyDataToSecondaryForm('zone', primary.zone.value)
-                            "
                           >
                             <mat-option
                               *ngFor="let data of dropDownValues.zone.primary"
@@ -159,12 +169,6 @@
                         }}</mat-label>
                         <mat-select
                           formControlName="machineSpecId"
-                          (selectionChange)="
-                            copyDataToSecondaryForm(
-                              'machineSpecId',
-                              primary.machineSpecId.value
-                            )
-                          "
                         >
                           <mat-option
                             *ngFor="let data of dropDownValues.machineTypeCode.primary"
@@ -217,13 +221,10 @@
                           </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field>
+                        <!-- <mat-form-field>
                           <mat-label>{{ "machines.isActive" | translate }}</mat-label>
                           <mat-select
                             formControlName="isActive"
-                            (selectionChange)="
-                              copyDataToSecondaryForm('isActive', primary.isActive.value)
-                            "
                           >
                             <mat-option
                               *ngFor="let data of dropDownValues.isActive"
@@ -239,11 +240,11 @@
                           >
                           {{ "machines.validationMessages.isActive.required" | translate }}
                           </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                 </div>
 
-                <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+                <!-- <mat-divider [vertical]="true" [inset]="true"></mat-divider>
                     <div
                         *ngIf="
                           secondaryLanguageLabels && secondaryLang && showSecondaryForm
@@ -399,7 +400,7 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-                </div>
+                </div> -->
             </mat-card-content>
             <mat-card-actions class="action-buttons">
                
