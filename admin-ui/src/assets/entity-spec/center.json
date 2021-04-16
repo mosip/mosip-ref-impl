@@ -70,6 +70,36 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": { 
+        "eng": "Centers not available in English", 
+        "ara": "المراكز غير متوفرة باللغة الإنجليزية", 
+        "fra": "Centres non disponibles en anglais" 
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": { 
+        "case": "missingData",
+        "title": { 
+          "eng": "Centers not available in English", 
+          "ara": "المراكز غير متوفرة باللغة الإنجليزية", 
+          "fra": "Centres non disponibles en anglais" 
+        },
+        "columnNames": [{ 
+          "eng": "Center Id", 
+          "ara": "معرف المركز", 
+          "fra": "Identifiant du centre" 
+        },{ 
+          "eng": "Center Name", 
+          "ara": "اسم المركز", 
+          "fra": "Nom du centre" 
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [

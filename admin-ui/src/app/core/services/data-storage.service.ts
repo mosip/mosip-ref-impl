@@ -204,4 +204,12 @@ export class DataStorageService {
   getCreateUpdateSteps(entity: string) {
   return this.http.get(`./assets/create-update-steps/${entity}-steps.json`);
   }
+
+  getMissingData(langCode: string, fieldName: string): Observable<any> {
+    let url = this.router.url.split('/')[3];
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
+    return this.http.get(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url] + `/missingids/${langCode}?fieldName=${fieldName}`
+    );
+  }
 }
