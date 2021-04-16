@@ -7,8 +7,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { RequestModel } from '../models/request.model';
 import * as appConstants from '../../app.constants';
-import { CenterModel } from '../models/center.model';
-import { DeviceModel } from '../models/device.model';
 import { MachineModel } from '../models/machine.model';
 import { CenterTypeModel } from '../models/center-type.model';
 import { BlacklistedWordsModel } from '../models/blacklisted-words.model';
@@ -27,6 +25,7 @@ import { HolidaySpecsModel } from '../models/holiday-specs.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { CenterService } from 'src/app/core/services/center.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 import { AuditService } from './audit.service';
 
@@ -45,10 +44,12 @@ export class CommonService {
     private appService: AppConfigService,
     private translate: TranslateService,
     private auditService: AuditService,
+    private headerService: HeaderService,
     private centerService: CenterService
   ) {
+    let lang = headerService.getUserPreferredLanguage();
     translate
-      .getTranslation(appService.getConfig().primaryLangCode)
+      .getTranslation(lang)
       .subscribe(result => {
         this.actionMessages = result.actionMessages;
       });
@@ -181,7 +182,7 @@ export class CommonService {
     this.showMessage(obj);
   }
 
-  private updateData(callingFunction: string, data: CenterModel, actualData:any) {
+  private updateData(callingFunction: string, data: any, actualData:any) {
     const request = new RequestModel(
       appConstants.registrationDeviceCreateId,
       null,
@@ -200,51 +201,7 @@ export class CommonService {
     );
   }
 
-  private mapDataToCenterModelObject(data: any): CenterModel {
-    const primaryObject = new CenterModel(
-      data.addressLine1,
-      data.addressLine2,
-      data.addressLine3,
-      data.centerEndTime,
-      data.centerStartTime,
-      data.centerTypeCode,
-      data.contactPerson,
-      data.contactPhone,
-      data.holidayLocationCode,
-      this.appService.getConfig().primaryLangCode,
-      data.latitude,
-      data.postalCode,
-      data.longitude,
-      data.lunchEndTime,
-      data.lunchStartTime,
-      data.name,
-      data.perKioskProcessTime,
-      data.timeZone,
-      data.workingHours,
-      data.zoneCode,
-      data.id,
-      data.isActive,
-      data.numberOfKiosks
-    );
-    return primaryObject;
-  }
-
-  private mapDataToDeviceModelObject(data: any): DeviceModel {
-    const primaryObject = new DeviceModel(
-      data.zoneCode,
-      data.validityDateTime,
-      data.name,
-      data.macAddress,
-      data.serialNum,
-      data.ipAddress,
-      data.langCode,
-      data.deviceSpecId,
-      data.id,
-      data.isActive,     
-    );
-    return primaryObject;
-  }
-
+  
   private mapDataToMachineModelObject(data: any): MachineModel {
     const primaryObject = new MachineModel(
       data.zoneCode,
@@ -478,24 +435,25 @@ export class CommonService {
         ]
       });
     }
+    console.log(data)
     this.confirmationPopup('decommission', data).afterClosed().subscribe(res => {
       if (res) {
         this.auditService.audit(18, 'ADM-098', 'decommission');
         this.dataService.decommission(data[idKey]).subscribe(
           response => {
             if (!response['errors']) {
-              this.createMessage('success', 'decommission', data.name);
+              this.createMessage('success', 'decommission', data);
               if (this.router.url.indexOf('single-view') >= 0) {
                 this.router.navigateByUrl('admin/resources/centers/view');
               } else {
                 this.router.navigateByUrl(this.router.url);
               }
             } else {
-              this.createMessage('error', 'decommission', data.name);
+              this.createMessage('error', 'decommission', data);
             }
           },
           error => {
-            this.createMessage('error', 'decommission', data.name);
+            this.createMessage('error', 'decommission', data);
           }
         );
       } else {

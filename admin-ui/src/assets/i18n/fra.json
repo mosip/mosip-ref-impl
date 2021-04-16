@@ -213,11 +213,93 @@
         "validity": "Date valide heure",
         "isActive": "C'est actif",
         "zone": "Zone",
-        "language": "French",
+        "deviceSpecId": "Nom de la spécification de l'appareil",
+        "language": "français",
+        "edit": "Éditer",
+        "create": "Créer",
+        "cancel": "Annuler",
+        "status": "Statut",
+        "keyboard-tooltip": "Cliquez pour le clavier virtuel (français)",
         "errorMessages": {
             "title": "Erreur",
             "message": "Aucune donnée disponible",
             "btnTxt": "D'accord"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "Le nom de l'appareil est requis"
+            },
+            "serialNumber": {
+                "required": "Le numéro de série est requis"
+            },
+            "macAddress": {
+                "required": "L'adresse MAC est requise"
+            },
+            "ipAddress": {
+                "required": "L'adresse IP est requise"
+            },
+            "validity": {
+                "required": "La validité est requise"
+            },
+            "isActive": {
+                "required": "Le statut est requis"
+            },
+            "zone": {
+                "required": "La zone administrative est requise"
+            },
+            "deviceSpecId": {
+                "required": "Device SpecId est requis"
+            },
+            "regCenterId": {
+                "required": "Le nom du centre est obligatoire"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["Vous êtes sur le point de créer un appareil d'enregistrement dans",". Veuillez vous assurer que toutes les informations sont correctes. L'ID de l'appareil sera généré une fois que vous aurez confirmé"],
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
+                "mandatorySecondaryFields": "Vous n'avez pas rempli les données obligatoires dans la langue secondaire. Le dispositif d'enregistrement sera créé uniquement dans la langue principale. Voulez-vous toujours continuer?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "Vous êtes sur le point de mettre à jour un appareil d'enregistrement. Veuillez vous assurer que toutes les informations sont correctes",
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
+                "mandatorySecondaryFields": "Vous n'avez pas rempli les données obligatoires dans la langue secondaire. Le dispositif d'enregistrement sera créé uniquement dans la langue principale. Voulez-vous toujours continuer?"
+            },
+            "update-success": {
+                "title": "Succès",
+                "message": ["Les détails de l'appareil sont mis à jour avec succès. \n ID de périphérique:", "\n Nom du CenDeviceter:"],
+                "btnTxt": "D'accord"
+            },
+            "update-error": {
+                "title": "Erreur",
+                "message": "Un problème est survenu lors de la mise à jour de l'appareil. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "create-success": {
+                "title": "Succès",
+                "message": ["L'appareil est créé avec succès avec l'ID d'appareil:", "et nom de l'appareil:"],
+                "btnTxt": "D'accord"
+            },
+            "create-error": {
+                "title": "Erreur",
+                "message": "Un problème est survenu lors de la création d'un appareil. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Voulez-vous vraiment quitter cette page? Toutes les données non enregistrées seront perdues.",
+                "yesBtnTxt": "Quitter",
+                "noBtnTxt": "Rester"
+            },
+            "noData": {
+                "title": "Erreur",
+                "message": "Aucune donnée disponible",
+                "btnTxt": "D'accord"
+            }
         }
     },
     "machines": {
@@ -332,7 +414,7 @@
         "decommission": {
             "success-message": ["Le centre d'inscription ", " est déclassé avec succès"],
             "success-title": "Succès",
-            "error-message": "Impossible de mettre le centre hors service, car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt.",
+            "error-message": ["Impossible de mettre hors service "," car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt."],
             "error-title": "Erreur",
             "btnTxt": "D'accord",
             "yesBtnTxt": "confirmer",

@@ -85,6 +85,25 @@
                   {{ data.fieldValue }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="
+                          primary.deviceSpecId.touched && primary.deviceSpecId.hasError('required')
+                        ">
+            {{ "devices.validationMessages.deviceSpecId.required" | translate }}
+            </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+            <mat-label>{{ "center.center-name" | translate }}</mat-label>
+            <mat-select
+              formControlName="regCenterId">
+              <mat-option *ngFor="let data of dropDownValues.regCenterCode.primary" [value]="data.fieldCode">
+                {{ data.fieldValue }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="
+                          primary.regCenterId.touched && primary.regCenterId.hasError('required')
+                        ">
+            {{ "devices.validationMessages.regCenterId.required" | translate }}
+            </mat-error> 
             </mat-form-field>
             <mat-form-field>
               <mat-label>{{ "devices.zone" | translate }}</mat-label>
@@ -100,7 +119,7 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- <mat-form-field>
+            <!-- <mat-form-field *ngIf="!(data && data.length > 0)">
               <mat-label>{{ "devices.isActive" | translate }}</mat-label>
               <mat-select formControlName="isActive">
                 <mat-option *ngFor="let data of dropDownValues.isActive" [value]="data">
@@ -114,8 +133,11 @@
 
         </mat-card-content>
         <mat-card-actions class="action-buttons">
-          <button id="createButton" mat-raised-button (click)="submit()">
-            Save
+          <button id="createButton" mat-raised-button *ngIf="data.length != 0" (click)="submit()">
+            {{ "devices.edit" | translate }}
+          </button>
+          <button id="createButton" mat-raised-button *ngIf="data.length == 0" (click)="submit()">
+            {{ "devices.create" | translate }}
           </button>
           <button mat-raised-button (click)="cancel()">
             {{ "devices.cancel" | translate }}

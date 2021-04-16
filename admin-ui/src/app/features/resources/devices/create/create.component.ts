@@ -290,10 +290,10 @@ export class CreateComponent{
       macAddress: ['', [Validators.required]],
       ipAddress: ['', [Validators.required]],
       validity: ['', [Validators.required]],
-      isActive: [{ disabled: true}],
+      //isActive: [{value: false}],
       zone: ['', [Validators.required]],
       deviceSpecId: ['', [Validators.required]],
-      //regCenterId: ['', [Validators.required]]
+      regCenterId: ['', [Validators.required]]
     });
   }
 
@@ -341,7 +341,7 @@ export class CreateComponent{
     this.primaryForm.controls.validity.setValue(
       Utils.formatDate(this.primaryData.validityDateTime)
     );
-    this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
+    //this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
     this.primaryForm.controls.zone.setValue(this.primaryData.zone);
     this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
   }
@@ -514,9 +514,10 @@ export class CreateComponent{
       this.primaryForm.controls.ipAddress.value,
       this.primaryLang,
       this.primaryForm.controls.deviceSpecId.value,
+      this.primaryForm.controls.regCenterId.value,
       "",           
-      //this.primaryForm.controls.isActive.value,
-      false               
+      false
+      //this.primaryForm.controls.isActive.value
     );
     // const secondaryObject = new DeviceModel(
     //   this.secondaryForm.controls.zone.value,
@@ -598,6 +599,7 @@ export class CreateComponent{
       this.primaryForm.controls.ipAddress.value,
       this.primaryLang,
       this.primaryForm.controls.deviceSpecId.value,
+      this.primaryForm.controls.regCenterId.value,
       this.data[0].id,           
       //this.primaryForm.controls.isActive.value,             
     );
@@ -725,7 +727,8 @@ export class CreateComponent{
     this.primaryForm.controls.serialNumber.setValue(this.data[0].serialNum);
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
     this.primaryForm.controls.deviceSpecId.setValue(this.data[0].deviceSpecId);
-    this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
+    this.primaryForm.controls.regCenterId.setValue(this.data[0].regCenterId);
+    //this.primaryForm.controls.isActive.setValue(this.data[0].isActive);
   }
 
   // setSecondaryFormValues() {

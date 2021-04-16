@@ -13,6 +13,7 @@ import * as appConstants from 'src/app/app.constants';
 import { CommonService } from 'src/app/core/services/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-table',
@@ -44,16 +45,18 @@ export class TableComponent implements OnInit, OnChanges {
     private appConfig: AppConfigService,
     private commonService: CommonService,
     private translate: TranslateService,
+    private headerService: HeaderService,
     private auditService: AuditService
   ) {
-   translate.use(appConfig.getConfig().primaryLangCode);
+    let lang = headerService.getUserPreferredLanguage();
+   translate.use(lang);
   }
   ngOnInit(): void {
     this.tableData = [...this.data];
     console.log(this.tableData);
     console.log(this.displayedColumns);
     this.sortStatusArray = [];
-    this.lang = this.appConfig.getConfig().primaryLangCode;
+    this.lang = this.headerService.getUserPreferredLanguage();
     const route = this.router.url.split('/')[3];
     this.imageSource = appConstants.ListViewIdKeyMapping[`${route}`]['imagePath'];
     console.log(this.imageSource);
