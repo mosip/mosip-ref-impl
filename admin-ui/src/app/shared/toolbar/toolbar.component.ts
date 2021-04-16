@@ -25,7 +25,7 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
     private router: Router,
     private appConfig: AppConfigService,
     private auditService: AuditService,
-    private headerService: HeaderService,
+    private headerService: HeaderService
   ) {
     super();
     this.itemsPerPageLabel = 'Show rows';

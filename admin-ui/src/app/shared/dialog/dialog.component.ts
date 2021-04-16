@@ -34,6 +34,8 @@ export class DialogComponent implements OnInit {
   input;
   confirm = true;
   FilterData = [];
+  missingData = [];
+  noMissingDataFlag = false;
   filterGroup = new FormGroup({});
   routeParts: string;
   filters = [];
@@ -82,6 +84,9 @@ export class DialogComponent implements OnInit {
       ).filters;
       await this.getFilterMappings();
     }
+    if (this.input.case === 'missingData') {
+      await this.getMissingData(this.input);
+    }
     if (this.input.case === 'STEPS-MESSAGE') {
       await this.getStepsForCreateUpate();
     }
@@ -116,6 +121,37 @@ export class DialogComponent implements OnInit {
           resolve(true);
         });
     });
+  }
+
+  getMissingData(input: any) {
+    return new Promise((resolve, reject) => {
+      this.dataStorageService
+        .getMissingData(this.primaryLangCode, input.fieldName)
+        .subscribe(response => {
+          if (response.response) {
+            this.noMissingDataFlag = false;
+            this.missingData = response.response;
+          } else {
+            this.noMissingDataFlag = true;
+          }
+          resolve(true);
+        });
+    });
+  }
+
+  navigateToItem(data: any) {
+    const routeIndex = this.router.url.lastIndexOf('/');
+    let currentRoute = this.router.url.slice(0, routeIndex);
+    const currentRouteType = this.router.url.split('/')[3];
+    const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    this.auditService.audit(7, id.auditEventId, currentRouteType);
+    console.log(id);
+    console.log(currentRoute);
+    this.dialog.closeAll();
+    this.router.navigate([
+      `${currentRoute}/single-view`,
+      data[id.idKey]
+    ]);
   }
 
   settingUpFilter(filterNames: any) {
