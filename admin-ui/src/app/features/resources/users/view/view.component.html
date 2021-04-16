@@ -1,4 +1,28 @@
-<span class="display"
+<!-- <span class="display"
   >{{'users.redirectMessage'| translate}} &nbsp;
   <a href="{{ keycloakUrl }}" target="_blank">link</a>
-</span>
+</span> -->
+
+<ng-container>
+<span><h3 class="header"></h3></span>
+<mat-card class="mat-elevation-z5">
+  <app-toolbar
+    *ngIf="
+      actionEllipsis && actionEllipsis  && paginatorOptions
+    "
+    [buttonList]="actionEllipsis"
+    [paginationOptions]="paginatorOptions"
+    [filtersAppliedFlag]="filtersApplied"
+    (pageEvent)="pageEvent($event)"
+  ></app-toolbar>
+  <app-table
+    *ngIf="centers && displayedColumns && actionButtons"
+    [data]="centers"
+    [displayedColumns]="displayedColumns"
+    [buttonList]="actionButtons"
+    [sortData]="sortFilter"
+    [noDataFlag]="noData"
+    (sort)="getSortColumn($event)"
+  ></app-table>
+</mat-card>
+</ng-container>
