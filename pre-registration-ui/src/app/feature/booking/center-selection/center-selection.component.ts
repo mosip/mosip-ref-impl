@@ -12,9 +12,8 @@ import Utils from "src/app/app.util";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "./../../../app.constants";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
-import LanguageFactory from "src/assets/i18n";
-import { Subscription } from "rxjs";
-import { resolve } from "url";
+import { Subscription } from "rxjs";;
+
 
 @Component({
   selector: "app-center-selection",
@@ -29,7 +28,7 @@ export class CenterSelectionComponent
   isWorkingDaysAvailable = false;
   canDeactivateFlag = true;
   locationTypes = [];
-
+  allLocationTypes = [];
   locationType = null;
   searchText = null;
   showTable = false;
@@ -40,17 +39,24 @@ export class CenterSelectionComponent
   bookingDataList = [];
   errorlabels: any;
   step = 0;
+  textDir = localStorage.getItem("dir");
   showDescription = false;
   mapProvider = "OSM";
   searchTextFlag = false;
   displayMessage = "Showing nearby registration centers";
   users: UserModel[] = [];
   subscriptions: Subscription[] = [];
-  primaryLang = localStorage.getItem("langCode");
+  userPreferredLangCode = localStorage.getItem("userPrefLanguage");
   workingDays: string;
   preRegId = [];
   locationNames = [];
   locationCodes = [];
+  // MatPaginator Inputs
+  totalItems = 0;
+  defaultPageSize = 10;
+  pageSize = this.defaultPageSize;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 15, 20];
   constructor(
     public dialog: MatDialog,
     private service: BookingService,
@@ -62,7 +68,7 @@ export class CenterSelectionComponent
     private activatedRoute: ActivatedRoute
   ) {
     super(dialog);
-    this.translate.use(this.primaryLang);
+    this.translate.use(this.userPreferredLangCode);
   }
 
   async ngOnInit() {
@@ -79,11 +85,29 @@ export class CenterSelectionComponent
     const subs = this.dataService
       .getLocationTypeData()
       .subscribe((response) => {
-        this.locationTypes = response[appConstants.RESPONSE]["locations"];
+        //get all location types from db
+        this.allLocationTypes = response[appConstants.RESPONSE]["locations"];
+        console.log(`allLocationTypes: ${this.allLocationTypes}`);        
+        //get the recommended loc hierachy code to which booking centers are mapped
+        const recommendedLocCode = this.configService.getConfigByKey(
+          appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
+        );
+        console.log(`recommendedLocCode: ${recommendedLocCode}`);
+        //now filter out only those hierachies which are higher than the recommended loc hierachy code
+        //ex: if locHierachy is ["Country","Region","Province","City","PostalCode"] and the
+        //recommended loc hierachy code is 3 for "City", then show only "Country","Region","Province"
+        //in the Search dropdown. There are no booking centers mapped to "PostalCode", so don't include it.
+        this.locationTypes = this.allLocationTypes.filter(
+          (locType) =>
+            locType.locationHierarchylevel <= Number(recommendedLocCode)
+        );
+        //sort the filtered array in ascending order of hierarchyLevel
+        this.locationTypes.sort(function (a, b) {
+          return a.locationHierarchylevel - b.locationHierarchylevel;
+        });
+        this.getRecommendedCenters();
       });
     this.subscriptions.push(subs);
-    console.log(this.users);
-    this.getRecommendedCenters();
     this.getErrorLabels();
   }
 
@@ -94,7 +118,7 @@ export class CenterSelectionComponent
           this.users.push(user)
         );
       }
-      resolve();
+      resolve(true);
     });
   }
 
@@ -114,22 +138,21 @@ export class CenterSelectionComponent
   }
 
   getErrorLabels() {
-    let factory = new LanguageFactory(this.primaryLang);
-    let response = factory.getCurrentlanguage();
-    this.errorlabels = response["error"];
+    this.dataService.getI18NLanguageFiles(localStorage.getItem('userPrefLanguage')).subscribe((response) => {
+      this.errorlabels = response["error"];
+    });
   }
 
   async getRecommendedCenters() {
-    console.log(this.users.length);
+    this.totalItems = 0;
     const locationHierarchy = JSON.parse(
       localStorage.getItem("locationHierarchy")
     );
     const locationHierarchyLevel = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
     );
-    const locationType = locationHierarchy[Number(locationHierarchyLevel) - 1];
-    console.log(locationHierarchy);
-    console.log(locationHierarchyLevel + ">>>>" + locationType);
+    let minusValue = this.allLocationTypes.length - locationHierarchy.length;
+    const locationType = locationHierarchy[Number(locationHierarchyLevel) - minusValue];
     this.users.forEach((user) => {
       if (
         typeof user.request.demographicDetails.identity[locationType] ===
@@ -166,7 +189,7 @@ export class CenterSelectionComponent
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
       .recommendedCenters(
-        this.primaryLang,
+        this.userPreferredLangCode,
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
         ),
@@ -186,20 +209,14 @@ export class CenterSelectionComponent
     this.subscriptions.push(subs);
   }
 
-
   getLocationNames(locationCode) {
     return new Promise((resolve) => {
       this.dataService
-        .getLocationOnLocationCodeAndLangCode(locationCode, this.primaryLang)
+        .getLocationInfoForLocCode(locationCode, this.userPreferredLangCode)
         .subscribe((response) => {
-          console.log(response[appConstants.RESPONSE]);
           if (response[appConstants.RESPONSE]) {
-            console.log(
-              response[appConstants.RESPONSE]["locations"][0]["name"]
-            );
-            this.locationNames.push(
-              response[appConstants.RESPONSE]["locations"][0]["name"]
-            );
+            let locName = response[appConstants.RESPONSE]["name"];
+            this.locationNames.push(locName);
             resolve(true);
           }
         });
@@ -229,27 +246,43 @@ export class CenterSelectionComponent
   prevStep() {
     this.step--;
   }
+  resetPagination() {
+    this.totalItems = 0;
+    this.pageSize = this.defaultPageSize;
+    this.pageIndex = 0;
+    this.getRecommendedCenters();
+  }
 
-  showResults() {
+  showResults(pageEvent) {
     this.REGISTRATION_CENTRES = [];
     if (this.locationType !== null && this.searchText !== null) {
       this.showMap = false;
+      if (pageEvent) {
+        this.pageSize = pageEvent.pageSize;
+        this.pageIndex = pageEvent.pageIndex;
+      }
       const subs = this.dataService
-        .getRegistrationCentersByName(
+        .getRegistrationCentersByNamePageWise(
           this.locationType.locationHierarchylevel,
-          this.searchText
+          this.searchText,
+          this.pageIndex,
+          this.pageSize
         )
         .subscribe(
           (response) => {
             if (response[appConstants.RESPONSE]) {
+              this.totalItems = response[appConstants.RESPONSE].totalItems;
               this.displayResults(response[appConstants.RESPONSE]);
+              this.showMessage = false;
             } else {
+              this.totalItems = 0;
               this.showMessage = true;
               this.selectedCentre = null;
             }
           },
           (error) => {
             this.showMessage = true;
+            this.totalItems = 0;
             this.displayMessageError("Error", this.errorlabels.error, error);
           }
         );
@@ -348,7 +381,7 @@ export class CenterSelectionComponent
 
   routeDashboard() {
     this.canDeactivateFlag = false;
-    this.router.navigate([`${this.primaryLang}/dashboard`]);
+    this.router.navigate([`${this.userPreferredLangCode}/dashboard`]);
   }
 
   routeBack() {
@@ -366,7 +399,11 @@ export class CenterSelectionComponent
   }
 
   async displayResults(response: any) {
-    this.REGISTRATION_CENTRES = response["registrationCenters"];
+    if (response["registrationCenters"]) {
+      this.REGISTRATION_CENTRES = response["registrationCenters"];
+    } else if (response["data"]) {
+      this.REGISTRATION_CENTRES = response["data"];
+    }
     await this.getWorkingDays();
     this.showTable = true;
     if (this.REGISTRATION_CENTRES) {
@@ -379,18 +416,21 @@ export class CenterSelectionComponent
     return new Promise((resolve) => {
       this.REGISTRATION_CENTRES.forEach((center) => {
         this.dataService
-          .getWorkingDays(center.id, this.primaryLang)
+          .getWorkingDays(center.id, this.userPreferredLangCode)
           .subscribe((response) => {
             center.workingDays = "";
-            response[appConstants.RESPONSE]["workingdays"].forEach((day) => {
-              if (
-                day.working === true ||
-                ((day.working === null || day.working === undefined) &&
-                  day.globalWorking === true)
-              ) {
-                center.workingDays = center.workingDays + day.name + ", ";
-              }
-            });
+            if (response[appConstants.RESPONSE] && response[appConstants.RESPONSE]["workingdays"]) {
+              response[appConstants.RESPONSE]["workingdays"].forEach((day) => {
+                if (
+                  day.working === true ||
+                  ((day.working === null || day.working === undefined) &&
+                    day.globalWorking === true)
+                ) {
+                  center.workingDays = center.workingDays + day.name + ", ";
+                }
+              });
+            }
+            
             this.isWorkingDaysAvailable = true;
             resolve(true);
           });
@@ -425,7 +465,7 @@ export class CenterSelectionComponent
         } else {
           localStorage.setItem("modifyUser", "true");
           this.router.navigate([
-            `${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`,
+            `${this.userPreferredLangCode}/pre-registration/demographic/${this.preRegId[0]}`,
           ]);
         }
       }

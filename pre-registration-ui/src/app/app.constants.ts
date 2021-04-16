@@ -6,7 +6,6 @@ export const NESTED_ERROR = 'errors';
 export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
-export const DEFAULT_LANG_CODE = 'eng';
 export const IDSchemaVersionLabel = 'IDSchemaVersion';
 
 export const IDS = {
@@ -32,16 +31,17 @@ export const APPEND_URL = {
   location_metadata: 'locations/locationhierarchy/',
   location_immediate_children: 'locations/immediatechildren/',
   applicants: 'applications',
-  location: 'v1/masterdata/',
-  gender: 'v1/masterdata/gendertypes',
-  resident: 'v1/masterdata/individualtypes',
+  location: '/masterdata/',
+  gender: '/masterdata/gendertypes',
+  resident: '/masterdata/individualtypes',
   transliteration: 'transliteration/transliterate',
   //applicantType: 'v1/applicanttype/',
-  applicantType: 'v1/masterdata/',
+  applicantType: '/masterdata/',
   validDocument: 'applicanttype/',
   getApplicantType: 'getApplicantType',
   post_document: 'documents/',
   document: 'documents/preregistration/',
+  updateDocRefId: 'documents/document/',
   document_copy: 'document/documents/copy',
   nearby_registration_centers: 'getcoordinatespecificregistrationcenters/',
   registration_centers_by_name: 'registrationcenters/',
@@ -49,9 +49,9 @@ export const APPEND_URL = {
   booking_availability: 'appointment/availability/',
   delete_application: 'applications/',
   qr_code: 'qrCode/generate',
-  notification: 'notification/',
+  notification: 'notification',
   send_notification: 'notify',
-  master_data: 'v1/masterdata/',
+  master_data: '/masterdata/',
   auth: 'login/',
   cancelAppointment: 'appointment/',
   captcha:'captcha/validatecaptcha'
@@ -69,7 +69,8 @@ export const PARAMS_KEYS = {
   getAvailabilityData: 'registration_center_id',
   catCode: 'catCode',
   sourcePrId: 'sourcePrId',
-  POA: 'POA'
+  POA: 'POA',
+  docRefId: 'docRefId'
 };
 
 export const ERROR_CODES = {
@@ -157,24 +158,6 @@ export const APPLICANT_TYPE_ATTRIBUTES = {
   biometricAvailable: 'biometricAvailable'
 };
 
-export const virtual_keyboard_languages = {
-  eng: 'en',
-  fra: 'fr',
-  ara: 'ar'
-};
-
-export const languageMapping = {
-  eng: {
-    langName: 'English'
-  },
-  ara: {
-    langName: 'عربى'
-  },
-  fra: {
-    langName: 'Français'
-  }
-};
-
 export const notificationDtoKeys = {
   notificationDto: 'NotificationRequestDTO',
   langCode: 'langCode',
@@ -191,17 +174,3 @@ export const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 
 export const controlTypeGender = 'gender';
 export const controlTypeResidenceStatus = 'residenceStatus';
-export const TRANSLITERATE_FIELDS = ["fullName","addressLine1","addressLine2","addressLine3"];
-
-export const errorMessages = {
-  requiredMessage : {
-    eng : "Is Required",
-    ara : "مطلوب",
-    fra : "Est requis"
-  },
-  InvalidStringMessage: {
-    eng : "Invalid",
-    ara : "غير صالحة",
-    fra : "Invalide"
-  }
-}

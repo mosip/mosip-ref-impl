@@ -12,6 +12,8 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+
+import { HeaderService } from 'src/app/core/services/header.service';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -20,6 +22,7 @@ import { AuditService } from 'src/app/core/services/audit.service';
 export class ViewComponent implements OnInit, OnDestroy {
   displayedColumns = [];
   actionButtons = [];
+  primaryLang: string;
   actionEllipsis = [];
   paginatorOptions: any;
   sortFilter = [];
@@ -35,6 +38,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   constructor(
     private centerService: CenterService,
     private appService: AppConfigService,
+    private headerService: HeaderService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
@@ -42,8 +46,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     private auditService: AuditService
   ) {
     this.getCenterConfigs();
-    this.translateService.use(appService.getConfig().primaryLangCode);
-    this.translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
+    this.translateService.use(this.primaryLang);
+    this.translateService.getTranslation(this.primaryLang).subscribe(response => {
       console.log(response);
       this.errorMessages = response.errorPopup;
     });
@@ -73,7 +78,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   pageEvent(event: any) {
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
-      this.appService.getConfig().primaryLangCode
+      this.primaryLang
     );
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
@@ -95,7 +100,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     console.log(this.sortFilter);
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
-      this.appService.getConfig().primaryLangCode
+      this.primaryLang
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
@@ -108,7 +113,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.filtersApplied = false;
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
-      this.appService.getConfig().primaryLangCode
+      this.primaryLang
     );
     if (filters.filters.length > 0) {
       this.filtersApplied = true;

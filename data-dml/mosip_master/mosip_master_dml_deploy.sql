@@ -129,7 +129,7 @@ TRUNCATE TABLE master.loc_hierarchy_list cascade ;
 ----- TRUNCATE master.identity_schema TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.identity_schema cascade ;
 
-\COPY master.identity_schema (id,id_version,title,description,id_attr_json,schema_json,status_code,add_props,effective_from,lang_code,is_active,cr_by,cr_dtimes) FROM './dml/master-identity_schema.csv' delimiter ',' HEADER  csv;
+\COPY master.identity_schema (id,id_version,title,description,schema_json,status_code,add_props,effective_from,lang_code,is_active,cr_by,cr_dtimes) FROM './dml/master-identity_schema.csv' delimiter ',' HEADER  csv;
 
 ----- TRUNCATE master.sync_job_def TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.sync_job_def  cascade ;

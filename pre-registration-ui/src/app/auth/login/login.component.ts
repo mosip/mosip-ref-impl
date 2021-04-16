@@ -8,7 +8,8 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { RegistrationService } from "src/app/core/services/registration.service";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "../../app.constants";
-import LanguageFactory from "../../../assets/i18n";
+import Utils from "src/app/app.util";
+import stubConfig from "../../../assets/stub-config.json";
 
 @Component({
   selector: "app-login",
@@ -16,22 +17,15 @@ import LanguageFactory from "../../../assets/i18n";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
-  languages: string[] = [];
+  appVersion;
   inputPlaceholderContact = "Email ID or Phone Number";
   inputPlaceholderOTP = "Enter OTP";
   disableBtn = false;
   timer: any;
   inputOTP: string;
   inputContactDetails = "";
-  secondaryLangCode = "";
-  secondaryDir = "";
   selectedLanguage = "";
-  langCode = "";
-  dir = "";
-  primaryLangFromConfig = "";
-  primaryLang = "";
-  secondaryLangFromConfig = "";
-  defaultLangCode = appConstants.DEFAULT_LANG_CODE;
+  dir = "ltr";
   secondaryLang = "";
   showSendOTP = true;
   showResend = false;
@@ -39,12 +33,13 @@ export class LoginComponent implements OnInit {
   showContactDetails = true;
   showOTP = false;
   disableVerify = false;
-  secondaryLanguagelabels: any;
+  Languagelabels: any;
   loggedOutLang: string;
   errorMessage: string;
   minutes: string;
   seconds: string;
   showSpinner = true;
+  showLanguageDropDown = true;
   validationMessages = {};
   textDir = localStorage.getItem("dir");
   LANGUAGE_ERROR_TEXT =
@@ -54,6 +49,15 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha: boolean = true;
   captchaError: boolean;
+  mandatoryLanguages = [];
+  optionalLanguages = [];
+  minLanguage;
+  maxLanguage;
+  languageSelectionArray = [];
+  userPreferredLanguage: string;
+  langCode: string;
+  LanguageCodelabels;
+  languageCodeValue: any = [];
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -63,75 +67,88 @@ export class LoginComponent implements OnInit {
     private regService: RegistrationService,
     private configService: ConfigService
   ) {
-    translate.setDefaultLang("eng");
     localStorage.clear();
   }
 
-  ngOnInit() {
-    localStorage.setItem("langCode", "eng");
-    this.showSpinner = true;
-    this.loadConfigs();
+  async ngOnInit() {
+    await this.loadDefaultConfig();
+    await this.loadConfigs();
     if (this.authService.isAuthenticated()) {
       this.authService.onLogout();
     }
+    localStorage.setItem("dir", this.dir);
   }
 
-  loadValidationMessages() {
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
-    this.validationMessages = response["login"];
+  async loadDefaultConfig() {
+    this.dataService.getI18NLanguageFiles("default").subscribe((response) => {
+      this.LanguageCodelabels = response["languages"];
+    });
   }
 
-  loginIdValidator() {
-    this.errorMessage = undefined;
-    const modes = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.mosip_login_mode
-    );
-    const emailRegex = new RegExp(
-      this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_regex_email
-      )
-    );
-    const phoneRegex = new RegExp(
-      this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_regex_phone
-      )
-    );
-    if (modes === "email,mobile") {
-      if (
-        !(
-          emailRegex.test(this.inputContactDetails) ||
-          phoneRegex.test(this.inputContactDetails)
-        )
-      ) {
-        this.errorMessage = this.validationMessages["invalidInput"];
-      }
-    } else if (modes === "email") {
-      if (!emailRegex.test(this.inputContactDetails)) {
-        this.errorMessage = this.validationMessages["invalidEmail"];
-      }
-    } else if (modes === "mobile") {
-      if (!phoneRegex.test(this.inputContactDetails)) {
-        this.errorMessage = this.validationMessages["invalidMobile"];
-      }
-    }
+  async loadConfigs() {
+    this.dataService.getConfig().subscribe((response) => {
+      //response = stubConfig;
+      this.configService.setConfig(response);
+      this.appVersion = this.configService.getConfigByKey('preregistration.ui.version');
+      this.setTimer();
+      this.isCaptchaEnabled();
+      this.loadLanguagesWithConfig();
+      localStorage.setItem("langCode", this.languageSelectionArray[0]);
+      this.router.navigate([`${localStorage.getItem("langCode")}`]);
+      this.selectedLanguage = localStorage.getItem("langCode");
+      this.setLanguageDirection(this.selectedLanguage);
+      this.authService.userPreferredLang = this.selectedLanguage;
+      this.userPreferredLanguage = this.selectedLanguage;
+      localStorage.setItem("userPrefLanguage", this.userPreferredLanguage);
+      this.translate.use(this.userPreferredLanguage);
+      this.loadValidationMessages();
+      this.showSpinner = false;
+    });
   }
 
-  loadConfigs() {
-    this.dataService.getConfig().subscribe(
-      (response) => {
-        this.configService.setConfig(response);
-        this.setTimer();
-        this.loadLanguagesWithConfig();
-        this.loadRecaptchaSiteKey();
-      },
-      (error) => {
-        this.showErrorMessage();
-      }
+  loadLanguagesWithConfig() {
+    this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory-languages').split(',');
+    this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");
+    this.optionalLanguages = this.configService.getConfigByKey('mosip.optional-languages').split(',');
+    this.optionalLanguages = this.optionalLanguages.filter(item => item != "");
+    this.minLanguage = Number(this.configService.getConfigByKey('mosip.min-languages.count'));
+    this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max-languages.count'));
+    this.languageSelectionArray = [
+      ...this.mandatoryLanguages,
+      ...this.optionalLanguages,
+    ];
+    this.maxLanguage == 1
+      ? (this.showLanguageDropDown = false)
+      : (this.showLanguageDropDown = true);
+    localStorage.setItem(
+      "availableLanguages",
+      JSON.stringify(this.languageSelectionArray)
+    );
+    this.languageSelectionArray.forEach(async lan => {
+      let localeId = lan.substring(0, 2);
+      if (localStorage.getItem(localeId) == null) {
+        //console.log(`importing localeId: ${localeId}`);
+        await Utils.localeInitializer(localeId);
+      }  
+    });
+    this.prepareDropdownLabelArray();
+  }
+
+  prepareDropdownLabelArray() {
+    this.languageSelectionArray.forEach((language) => {
+      let codevalue = {
+        code: language,
+        value: this.LanguageCodelabels[language].nativeName,
+      };
+      this.languageCodeValue.push(codevalue);
+    });
+    localStorage.setItem(
+      "languageCodeValue",
+      JSON.stringify(this.languageCodeValue)
     );
   }
 
-  loadRecaptchaSiteKey() {
+  isCaptchaEnabled() {
     if (
       this.configService.getConfigByKey("enable-captcha") === "false" ||
       this.configService.getConfigByKey("enable-captcha") === undefined
@@ -139,90 +156,41 @@ export class LoginComponent implements OnInit {
       this.enableCaptcha = false;
     } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
       this.enableCaptcha = true;
+      this.loadRecaptchaSiteKey();
     }
-    console.log(this.enableCaptcha + typeof this.enableCaptcha);
+
     if (!this.enableCaptcha) {
       this.enableSendOtp = true;
     }
+  }
+
+  loadRecaptchaSiteKey() {
     this.siteKey = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.google_recaptcha_site_key
     );
   }
 
-  loadLanguagesWithConfig() {
-    this.primaryLangFromConfig = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.mosip_primary_language
-    );
-    this.secondaryLangFromConfig = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.mosip_secondary_language
-    );
-    if (
-      !this.primaryLangFromConfig ||
-      !this.secondaryLangFromConfig ||
-      this.primaryLangFromConfig === "" ||
-      this.secondaryLangFromConfig === ""
-    ) {
-      const message = {
-        case: "MESSAGE",
-        message: this.LANGUAGE_ERROR_TEXT,
-      };
-      this.dialog.open(DialougComponent, {
-        width: "350px",
-        data: message,
-        disableClose: true,
+  loadValidationMessages() {
+    this.dataService
+      .getI18NLanguageFiles(localStorage.getItem("langCode"))
+      .subscribe((response) => {
+        console.log(localStorage.getItem("langCode"));
+        console.log(response);
+        this.Languagelabels = response;
+        this.validationMessages = this.Languagelabels["login"];
       });
-    }
-
-    this.primaryLang = this.primaryLangFromConfig;
-    this.secondaryLang = this.secondaryLangFromConfig;
-
-    this.setLanguageDirection(
-      this.primaryLangFromConfig,
-      this.secondaryLangFromConfig
-    );
-    localStorage.setItem("langCode", this.primaryLangFromConfig);
-    localStorage.setItem("secondaryLangCode", this.secondaryLangFromConfig);
-    this.translate.use(this.primaryLang);
-    this.selectedLanguage =
-      appConstants.languageMapping[this.primaryLang].langName;
-    if (
-      appConstants.languageMapping[this.primaryLangFromConfig] &&
-      appConstants.languageMapping[this.secondaryLangFromConfig]
-    ) {
-      this.languages.push(
-        appConstants.languageMapping[this.primaryLangFromConfig].langName
-      );
-      if(this.primaryLang !== this.secondaryLang){
-        this.languages.push(
-          appConstants.languageMapping[this.secondaryLangFromConfig].langName
-        );
-      }
-    }
-    this.translate.addLangs([
-      this.primaryLangFromConfig,
-      this.secondaryLangFromConfig,
-    ]);
-    this.showSpinner = false;
-    this.loadValidationMessages();
   }
 
-  setLanguageDirection(primaryLang: string, secondaryLang: string) {
+  setLanguageDirection(userSelectedLanguage) {
     const ltrLangs = this.configService
       .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
       .split(",");
-    if (ltrLangs.includes(primaryLang)) {
+    if (ltrLangs.includes(userSelectedLanguage)) {
       this.dir = "ltr";
     } else {
       this.dir = "rtl";
     }
-    if (ltrLangs.includes(secondaryLang)) {
-      this.secondaryDir = "ltr";
-    } else {
-      this.secondaryDir = "rtl";
-    }
     localStorage.setItem("dir", this.dir);
-    localStorage.setItem("secondaryDir", this.secondaryDir);
-    this.textDir = localStorage.getItem("dir");
   }
 
   setTimer() {
@@ -251,35 +219,13 @@ export class LoginComponent implements OnInit {
   }
 
   changeLanguage(): void {
-    if (
-      this.selectedLanguage !==
-      appConstants.languageMapping[this.primaryLangFromConfig].langName
-    ) {
-      this.secondaryLang = this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_primary_language
-      );
-      this.primaryLang = this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_secondary_language
-      );
-      this.setLanguageDirection(this.primaryLang, this.secondaryLang);
-      this.authService.primaryLang = this.primaryLang;
-      localStorage.setItem("langCode", this.primaryLang);
-      localStorage.setItem("secondaryLangCode", this.secondaryLang);
-      this.router.navigate([localStorage.getItem("langCode")]);
-    } else {
-      this.primaryLang = this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_primary_language
-      );
-      this.secondaryLang = this.configService.getConfigByKey(
-        appConstants.CONFIG_KEYS.mosip_secondary_language
-      );
-      this.authService.primaryLang = this.primaryLang;
-      this.setLanguageDirection(this.primaryLang, this.secondaryLang);
-      localStorage.setItem("langCode", this.primaryLang);
-      localStorage.setItem("secondaryLangCode", this.secondaryLang);
-      this.router.navigate([localStorage.getItem("langCode")]);
-    }
-    this.translate.use(localStorage.getItem("langCode"));
+    this.setLanguageDirection(this.selectedLanguage);
+    this.authService.userPreferredLang = this.selectedLanguage;
+    this.userPreferredLanguage = this.selectedLanguage;
+    localStorage.setItem("userPrefLanguage", this.selectedLanguage);
+    localStorage.setItem("langCode", this.selectedLanguage);
+    this.translate.use(this.userPreferredLanguage);
+    this.router.navigate([this.userPreferredLanguage]);
     this.loadValidationMessages();
   }
 
@@ -381,8 +327,8 @@ export class LoginComponent implements OnInit {
       }
 
       this.dataService
-        .sendOtp(this.inputContactDetails)
-        .subscribe((response) => {});
+        .sendOtp(this.inputContactDetails, this.userPreferredLanguage)
+        .subscribe(() => {});
 
       // dynamic update of button text for Resend and Verify
     } else if (this.showVerify && this.errorMessage === undefined) {
@@ -398,13 +344,13 @@ export class LoginComponent implements OnInit {
               this.regService.setLoginId(this.inputContactDetails);
               localStorage.setItem("loginId", this.inputContactDetails);
               this.disableVerify = false;
-              this.router.navigate([this.primaryLang, "dashboard"]);
+              this.router.navigate([this.userPreferredLanguage, "dashboard"]);
             } else {
               this.disableVerify = false;
               this.showOtpMessage();
             }
           },
-          (error) => {
+          () => {
             this.disableVerify = false;
             this.showErrorMessage();
           }
@@ -412,10 +358,46 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  loginIdValidator() {
+    this.errorMessage = undefined;
+
+    const modes = this.configService.getConfigByKey(
+      appConstants.CONFIG_KEYS.mosip_login_mode
+    );
+    const emailRegex = new RegExp(
+      this.configService.getConfigByKey(
+        appConstants.CONFIG_KEYS.mosip_regex_email
+      )
+    );
+    const phoneRegex = new RegExp(
+      this.configService.getConfigByKey(
+        appConstants.CONFIG_KEYS.mosip_regex_phone
+      )
+    );
+    if (modes === "email,mobile") {
+      if (
+        !(
+          emailRegex.test(this.inputContactDetails) ||
+          phoneRegex.test(this.inputContactDetails)
+        )
+      ) {
+        this.errorMessage = this.validationMessages["invalidInput"];
+      }
+    } else if (modes === "email") {
+      if (!emailRegex.test(this.inputContactDetails)) {
+        this.errorMessage = this.validationMessages["invalidEmail"];
+      }
+    } else if (modes === "mobile") {
+      if (!phoneRegex.test(this.inputContactDetails)) {
+        this.errorMessage = this.validationMessages["invalidMobile"];
+      }
+    }
+  }
+
   showOtpMessage() {
     this.inputOTP = "";
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
+    let response = this.Languagelabels;
+    console.log(response);
     let otpmessage = response["message"]["login"]["msg3"];
     const message = {
       case: "MESSAGE",
@@ -428,8 +410,7 @@ export class LoginComponent implements OnInit {
   }
 
   showErrorMessage() {
-    let factory = new LanguageFactory(localStorage.getItem("langCode"));
-    let response = factory.getCurrentlanguage();
+    let response = this.Languagelabels;
     let errormessage = response["error"]["error"];
     const message = {
       case: "MESSAGE",

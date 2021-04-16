@@ -10,6 +10,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DeviceModel } from 'src/app/core/models/device.model';
 import * as appConstants from '../../../../app.constants';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-devices-header',
@@ -25,9 +26,10 @@ export class DevicesHeaderComponent implements OnInit {
   	constructor(
 	  	private dataSerice: DataStorageService,
 	    private appService: AppConfigService,
+      private headerService: HeaderService,
 	    private commonService: CommonService
   	) {
-    	this.lang = appService.getConfig()['primaryLangCode'];
+    	this.lang = headerService.getUserPreferredLanguage();
   	}
 
   ngOnInit() {

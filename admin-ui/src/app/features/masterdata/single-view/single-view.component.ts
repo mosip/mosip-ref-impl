@@ -102,14 +102,44 @@ export class SingleViewComponent implements OnDestroy {
 
   setHeaderData() {
     if(this.primaryData){
+      let dynamicId = "";
+      if(this.masterdataType.toLowerCase() === "center-type"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "blacklisted-words"){
+        dynamicId = this.primaryData.word
+      }else if(this.masterdataType.toLowerCase() === "location"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "holiday"){
+        dynamicId = this.primaryData.holidayId
+      }else if(this.masterdataType.toLowerCase() === "templates"){
+        dynamicId = this.primaryData.id
+      }else if(this.masterdataType.toLowerCase() === "device-specs"){
+        dynamicId = this.primaryData.id
+      }else if(this.masterdataType.toLowerCase() === "device-types"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "machine-specs"){
+        dynamicId = this.primaryData.id
+      }else if(this.masterdataType.toLowerCase() === "machine-type"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "document-type"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "document-categories"){
+        dynamicId = this.primaryData.code
+      }
+      console.log("this.primaryData.isActive>>>"+this.primaryData.isActive);
       this.headerData = new HeaderModel(
-        this.primaryData[this.mapping.nameKey],
+        this.primaryData[this.mapping.idKey],
         this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
         this.primaryData.createdBy ? this.primaryData.createdBy : '-',
         this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
-        this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
+        this.primaryData.updatedBy ? this.primaryData.updatedBy : '-',
+        dynamicId,
+        this.primaryData.isActive,
       );
-    }    
+    }else{
+      this.headerData = new HeaderModel('-', '-', '-', '-', '-', '-', '-');
+    }
+
     this.showSpinner = false;
   }
 

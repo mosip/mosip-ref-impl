@@ -4,9 +4,6 @@
  */
 package io.mosip.preregistration.booking.service.util;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -23,6 +20,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -72,7 +70,6 @@ import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.TimeSpanException;
 import io.mosip.preregistration.core.code.StatusCodes;
 import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
-import io.mosip.preregistration.core.common.dto.DeleteBookingDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
@@ -88,7 +85,6 @@ import io.mosip.preregistration.core.exception.NotificationException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.UUIDGeneratorUtil;
 import io.mosip.preregistration.core.util.ValidationUtil;
-//import io.mosip.preregistration.demographic.service.DemographicServiceIntf;
 
 /**
  * This class provides the utility methods for Booking application.
@@ -102,14 +98,9 @@ import io.mosip.preregistration.core.util.ValidationUtil;
 @Component
 public class BookingServiceUtil {
 
-	/**
-	 * Autowired reference for {@link #restTemplateBuilder}
-	 */
 	@Autowired
-	RestTemplate restTemplate;
-
-//	@Autowired
-//	private DemographicServiceIntf demographicServiceIntf;
+	//@Qualifier("restTemplate")
+	private RestTemplate restTemplate;
 
 	/**
 	 * Reference for ${regCenter.url} from property file
@@ -201,7 +192,7 @@ public class BookingServiceUtil {
 	public boolean updateDemographicStatus(String preId, String status) {
 		log.info("sessionId", "idType", "id", "In callUpdateStatusRestService method of Booking Service Util");
 		String userId = authUserDetails().getUserId();
-		MainResponseDTO<String> updatePreRegistrationStatus = updatePreRegistrationStatus(preId,status);
+		MainResponseDTO<String> updatePreRegistrationStatus = updatePreRegistrationStatus(preId, status);
 		if (updatePreRegistrationStatus.getErrors() != null) {
 			throw new DemographicStatusUpdationException(updatePreRegistrationStatus.getErrors().get(0).getErrorCode(),
 					updatePreRegistrationStatus.getErrors().get(0).getMessage());
@@ -634,7 +625,7 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<PreRegistartionStatusDTO> getApplicationStatus(String preRegId) {
 		MainResponseDTO<PreRegistartionStatusDTO> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/"+preRegId;
+		String url = preRegResourceUrl + "/applications/status/" + preRegId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
@@ -646,13 +637,14 @@ public class BookingServiceUtil {
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
 				System.out.println(responseEntity.getBody().getErrors());
 				response.setErrors(responseEntity.getBody().getErrors());
-			}else {
+			} else {
 				response.setResponse(responseEntity.getBody().getResponse());
 			}
-			
+
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
-			log.debug("sessionId", "idType", "id", "demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
+			log.debug("sessionId", "idType", "id",
+					"demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
 			throw new RestClientException("rest call failed");
 		}
 		return response;
@@ -660,7 +652,7 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> updatePreRegistrationStatus(String preRegId, String status) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/"+preRegId;
+		String url = preRegResourceUrl + "/applications/status/" + preRegId;
 		MultiValueMap<String, String> paramStatus = new LinkedMultiValueMap<>();
 		paramStatus.add("statusCode", status);
 		HttpHeaders headers = new HttpHeaders();
@@ -672,14 +664,15 @@ public class BookingServiceUtil {
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-			response.setErrors(responseEntity.getBody().getErrors());
-			}else {
+				response.setErrors(responseEntity.getBody().getErrors());
+			} else {
 				response.setResponse(responseEntity.getBody().getResponse());
 			}
-			
+
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
-			log.debug("sessionId", "idType", "id", "demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
+			log.debug("sessionId", "idType", "id",
+					"demographic rest call exception " + ExceptionUtils.getStackTrace(ex));
 			throw new RestClientException("rest call failed");
 		}
 		return response;

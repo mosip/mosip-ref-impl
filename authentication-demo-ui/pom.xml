@@ -44,7 +44,7 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.8</version>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-keygenerator-bouncycastle</artifactId>
@@ -79,7 +79,7 @@
 			<dependency>
 			    <groupId>javax.xml.bind</groupId>
 			    <artifactId>jaxb-api</artifactId>
-			</dependency>			
+			</dependency>
 			<dependency>
 			    <groupId>com.sun.xml.bind</groupId>
 			    <artifactId>jaxb-core</artifactId>
@@ -100,7 +100,7 @@
 			    <groupId>org.openjfx</groupId>
 			    <artifactId>javafx-fxml</artifactId>
 			    <version>15-ea+4</version>
-			</dependency>			
+			</dependency>
 	</dependencies>
 
 	<build>
@@ -126,7 +126,7 @@
 				<version>${maven.compiler.version}</version>
 				<configuration>
 					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>					
+					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 		</plugins>

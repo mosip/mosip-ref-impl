@@ -1,5 +1,9 @@
 package io.mosip.biosdk.client.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.mosip.biosdk.client.config.LoggerConfig;
+import io.mosip.kernel.core.logger.spi.Logger;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -18,7 +22,14 @@ import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.Map;
 
+import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_IDTYPE;
+import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_SESSIONID;
+
 public class Util {
+
+    private static final String debugRequestResponse = System.getenv("mosip_biosdk_request_response_debug");
+
+    private static Logger utilLogger = LoggerConfig.logConfig(Util.class);
 
     public static ResponseEntity<?> restRequest(String url, HttpMethod httpMethodType, MediaType mediaType, Object body,
                                              Map<String, String> headersMap, Class<?> responseClass) {
@@ -37,7 +48,17 @@ public class Util {
             } else {
                 request = new HttpEntity<>(headers);
             }
+
+            if(debugRequestResponse != null && debugRequestResponse.equalsIgnoreCase("y")){
+                Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
+                utilLogger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "Request: ", gson.toJson(request.getBody()));
+            }
+
             response = restTemplate.exchange(url, httpMethodType, request, responseClass);
+
+            if(debugRequestResponse != null && debugRequestResponse.equalsIgnoreCase("y")){
+                utilLogger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "Response: ", response.getBody().toString());
+            }
         } catch (RestClientException ex) {
             ex.printStackTrace();
             throw new RestClientException("rest call failed");

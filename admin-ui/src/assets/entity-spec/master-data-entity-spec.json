@@ -21,33 +21,6 @@
         },
         {
           "label": {
-            "eng": "Location Data",
-            "ara": "بيانات الموقع",
-            "fra": "Données de localisation"
-          },
-          "actionURL": "admin/masterdata/location/view",
-          "auditEventId": "ADM-015"
-        },
-        {
-          "label": {
-            "eng": "Gender",
-            "ara": "جنس",
-            "fra": "Le sexe"
-          },
-          "actionURL": "admin/masterdata/gender-type/view",
-          "auditEventId": "ADM-012"
-        },
-        {
-          "label": {
-            "eng": "Individual Types",
-            "ara": "نوع الفردية",
-            "fra": "Type individuels"
-          },
-          "actionURL": "admin/masterdata/individual-type/view",
-          "auditEventId": "ADM-013"
-        },
-        {
-          "label": {
             "eng": "List Of Holidays",
             "ara": "قائمة عطلة",
             "fra": "Liste de vacances"
@@ -63,15 +36,6 @@
           },
           "actionURL": "admin/masterdata/templates/view",
           "auditEventId": "ADM-016"
-        },
-        {
-          "label": {
-            "eng": "Titles",
-            "ara": "العناوين",
-            "fra": "Les titres"
-          },
-          "actionURL": "admin/masterdata/title/view",
-          "auditEventId": "ADM-017"
         }
       ],
       "deviceDefinition": [

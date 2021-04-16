@@ -17,7 +17,7 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="createForm" class="primary-form" *ngIf="createForm"> 
             <mat-form-field>
-              <mat-label>Application Id</mat-label>
+              <!-- <mat-label>Application Id</mat-label>
               <mat-select formControlName="applicationId">
                 <mat-option
                   *ngFor="let data of applicationId"
@@ -25,7 +25,14 @@
                 >
                   {{ data.value}}
                 </mat-option>
-              </mat-select>
+              </mat-select> -->
+               <input
+                #applicationId
+                matInput
+                formControlName="applicationId"
+                placeholder="Application Id"
+                [value]=""
+              />
             </mat-form-field>
             <mat-form-field>
               <input
