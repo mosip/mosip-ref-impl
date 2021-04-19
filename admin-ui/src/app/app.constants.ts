@@ -7,6 +7,7 @@ export const URL = {
   centers: `masterdata/registrationcenters/search`,
   devices: `masterdata/devices/search`,
   machines: `masterdata/machines/search`,
+  users: `masterdata/users/search`,
   documentCategories: `masterdata/documentcategories`,
   mappedDocUrl: `masterdata/documenttypes/`,
   unMappedDocUrl: `masterdata/documenttypes/`
@@ -155,6 +156,18 @@ export const registrationMachineCreateId = 'string';
 export const viewFields = [];
 
 export const masterdataMapping = {
+  users: {
+    apiName: 'users',
+    specFileName: 'users',
+    name: {
+      eng: 'Users',
+      ara: 'قوالب',
+      fra: 'Modèles'
+    },
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Users'
+  },
   'blacklisted-words': {
     apiName: 'blacklistedwords',
     specFileName: 'blacklisted-words',
@@ -348,6 +361,7 @@ export const ListViewIdKeyMapping = {
     imagePath: 'assets/images/Machine.png',
     auditEventId: 'ADM-066'
   },
+  users: { idKey: 'id', auditEventId: 'ADM-084' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },

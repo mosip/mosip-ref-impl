@@ -16,8 +16,8 @@
     (pageEvent)="pageEvent($event)"
   ></app-toolbar>
   <app-table
-    *ngIf="centers && displayedColumns && actionButtons"
-    [data]="centers"
+    *ngIf="users && displayedColumns && actionButtons"
+    [data]="users"
     [displayedColumns]="displayedColumns"
     [buttonList]="actionButtons"
     [sortData]="sortFilter"

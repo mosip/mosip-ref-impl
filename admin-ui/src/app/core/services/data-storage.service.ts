@@ -121,6 +121,10 @@ export class DataStorageService {
     return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
   }
 
+  getUsersData(request: RequestModel): Observable<any> {
+    return this.http.post(this.BASE_URL + appConstants.URL.users, request);
+  }
+
   getMachinesData(request: RequestModel): Observable<any> {
     return this.http.post(this.BASE_URL + appConstants.URL.machines, request);
   }
@@ -151,6 +155,12 @@ export class DataStorageService {
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/filtervalues',
       data
+    );
+  }
+
+  getFiltersUserDetails(): Observable<any> {
+    return this.http.get(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'usersdetails'
     );
   }
 
