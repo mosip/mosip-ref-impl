@@ -6,7 +6,6 @@ import { MatKeyboardModule } from 'ngx7-material-keyboard';
 import { DemographicRoutingModule } from './demographic-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DemographicComponent } from './demographic/demographic.component';
-import { ValidationMessagePipe } from 'src/app/shared/pipe/validation-message.pipe';
 
 /**
  * @description This is the feature module for the demographic module.
@@ -16,7 +15,7 @@ import { ValidationMessagePipe } from 'src/app/shared/pipe/validation-message.pi
  * @class DemographicModule
  */
 @NgModule({
-  declarations: [DemographicComponent,ValidationMessagePipe],
+  declarations: [DemographicComponent],
   imports: [CommonModule, DemographicRoutingModule, ReactiveFormsModule, SharedModule, MatKeyboardModule]
 })
 export class DemographicModule {}
