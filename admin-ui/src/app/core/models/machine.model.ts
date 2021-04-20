@@ -10,10 +10,7 @@ export class MachineModel {
         public ipAddress: string,
         public publicKey: string,
         public signPublicKey: string,
-        public langCode: string,
         public regCenterId: string,
-        public id?: string,
-        public isActive?: boolean
-
+        public id?: string
     ) {}
 }

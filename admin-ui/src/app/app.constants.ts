@@ -336,6 +336,18 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Individual Type'
   },
+  dynamicfield: {
+    apiName: 'dynamicfields',
+    specFileName: 'dynamicfields',
+    name: {
+      "eng": "Dynamic Field",
+      "ara": "مجال ديناميكي",
+      "fra": "Champ dynamique"
+    },
+    nameKey: 'name',
+    idKey: 'code',
+    headerName: 'Dynamic Field'
+  },
   documentCategoryMapping: {
     name: {
       eng: 'Document Category - Type Mapping',
@@ -450,6 +462,10 @@ export const FilterMapping = {
   'individual-type': {
     apiName: 'individualtypes',
     specFileName: 'individual-types'
+  },
+  dynamicfield: {
+    apiName: 'dynamicfields',
+    specFileName: 'dynamicfields'
   }
 };
 
