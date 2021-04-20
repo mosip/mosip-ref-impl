@@ -437,24 +437,75 @@ export class CommonService {
     console.log(data)
     this.confirmationPopup('decommission', data).afterClosed().subscribe(res => {
       if (res) {
-        this.auditService.audit(18, 'ADM-098', 'decommission');
-        this.dataService.decommission(data[idKey]).subscribe(
-          response => {
-            if (!response['errors']) {
-              this.createMessage('success', 'decommission', data);
-              if (this.router.url.indexOf('single-view') >= 0) {
-                this.router.navigateByUrl('admin/resources/centers/view');
+        let url = this.router.url.split('/')[3];
+        if (url == "devices") {
+          this.auditService.audit(18, 'ADM-100', 'unassign');
+          let dynamicObject = data;
+          delete dynamicObject.createdBy;
+          delete dynamicObject.createdDateTime;
+          delete dynamicObject.updatedBy;
+          delete dynamicObject.updatedDateTime;
+          delete dynamicObject.deletedDateTime;
+          delete dynamicObject.isDeleted;
+          delete dynamicObject.isActive;
+          delete dynamicObject.zone;
+          delete dynamicObject.deviceTypeName;
+          delete dynamicObject.mapStatus;
+          delete dynamicObject.langCode;
+          dynamicObject.regCenterId = "";
+          const request = new RequestModel(
+            appConstants.registrationDeviceCreateId,
+            null,
+            dynamicObject
+          );
+          this.dataService.updateData(request).subscribe(
+            response => {
+              let obj = {};
+              if (!response.errors || response.errors.length === 0) {
+                this.auditService.audit(18, 'ADM-098', 'decommission');
+                this.dataService.decommission(data[idKey]).subscribe(
+                  response1 => {
+                    if (!response1['errors']) {
+                      this.createMessage('success', 'decommission', data);
+                      if (this.router.url.indexOf('single-view') >= 0) {
+                        this.router.navigateByUrl('admin/resources/devices/view');
+                      } else {
+                        this.router.navigateByUrl(this.router.url);
+                      }
+                    } else {
+                      this.createMessage('error', 'decommission', data);
+                    }
+                  },
+                  error => {
+                    this.createMessage('error', 'decommission', data);
+                  }
+                );
               } else {
-                this.router.navigateByUrl(this.router.url);
+                this.createMessage('error', 'decommission', data);
               }
-            } else {
+            }
+          );
+        }
+        else {
+          this.auditService.audit(18, 'ADM-098', 'decommission');
+          this.dataService.decommission(data[idKey]).subscribe(
+            response => {
+              if (!response['errors']) {
+                this.createMessage('success', 'decommission', data);
+                if (this.router.url.indexOf('single-view') >= 0) {
+                  this.router.navigateByUrl('admin/resources/centers/view');
+                } else {
+                  this.router.navigateByUrl(this.router.url);
+                }
+              } else {
+                this.createMessage('error', 'decommission', data);
+              }
+            },
+            error => {
               this.createMessage('error', 'decommission', data);
             }
-          },
-          error => {
-            this.createMessage('error', 'decommission', data);
-          }
-        );
+          );
+        }
       } else {
         this.auditService.audit(19, 'ADM-099', 'decommission');
       }

@@ -5,7 +5,6 @@ export class DeviceModel {
         public name: string,
         public macAddress: string,
         public serialNum: string,
-        public langCode: string,
         public deviceSpecId: string,
         public validityDateTime?: string,
         public ipAddress?: string,
