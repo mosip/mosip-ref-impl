@@ -212,7 +212,6 @@ export class CommonService {
       data.serialNum,
       data.ipAddress,
       null,
-      data.langCode,
       data.id,
       data.isActive,      
     );

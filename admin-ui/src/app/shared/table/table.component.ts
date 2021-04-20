@@ -88,7 +88,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   selectedRow(data: any, specData: any) {
-    console.log(data, specData);
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     if (specData.callBackFunction && specData.callBackFunction !== '') {

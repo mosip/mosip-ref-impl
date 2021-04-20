@@ -520,10 +520,8 @@ export class CreateComponent {
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
       this.primaryForm.controls.signPublicKey.value,
-      this.primaryLang,
       this.primaryForm.controls.regCenterId.value,
-      '0',
-      true
+      '0'
     );
     // const secondaryObject = new MachineModel(
     //   this.secondaryForm.controls.zone.value,
@@ -602,10 +600,8 @@ export class CreateComponent {
       this.primaryForm.controls.ipAddress.value,
       this.primaryForm.controls.publicKey.value,
       this.primaryForm.controls.signPublicKey.value,
-      this.primaryLang,
       this.primaryForm.controls.regCenterId.value,
-      this.data[0].id,
-      true,
+      this.data[0].id
     );
     // const secondaryObject = new MachineModel(
     //   this.secondaryForm.controls.zone.value,
@@ -713,7 +709,7 @@ export class CreateComponent {
             // if (this.showSecondaryForm) {
             // }
           } else {
-          this.showErrorPopup();
+          //this.showErrorPopup();
         }
       },
       (error) => this.showErrorPopup()

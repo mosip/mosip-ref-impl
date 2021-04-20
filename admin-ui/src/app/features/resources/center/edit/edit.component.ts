@@ -254,7 +254,7 @@ export class EditComponent {
       holidayZone: ['', [Validators.required]],
       workingHours: [{ value: '', disabled: true }],
       noKiosk: [
-        { value: 0, disabled: true },
+        { value: 0},
         [Validators.required, Validators.min(0), ValidateKiosk]
       ],
       processingTime: ['', [Validators.required]],

@@ -19,8 +19,7 @@ export class MachineService {
   private BASE_URL = this.appService.getConfig().baseUrl;
 
   getRegistrationMachinesDetails(request: RequestModel): Observable<any> {
-    console.log(JSON.stringify(request));
-    console.log(JSON.stringify(URL));
+    delete request['request']['languageCode'];
     return this.http.post(this.BASE_URL + URL.machines, request, httpOptions);
   }
 }
