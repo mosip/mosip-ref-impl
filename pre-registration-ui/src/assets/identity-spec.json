@@ -325,55 +325,85 @@
         {
           "id": "proofOfAddress",
           "description": "proofOfAddress",
-          "labelName": [{ "value": "Address Proof", "language": "eng" }],
+          "labelName": {
+            "ara": "إثبات العنوان",
+            "fra": "Address Proof",
+            "eng": "Address Proof"
+          },
           "controlType": "fileupload",
           "inputRequired": true,
           "validators": [],
-          "required": false
+          "subType": "POA",
+          "required": true
         },
         {
           "id": "proofOfIdentity",
           "description": "proofOfIdentity",
-          "labelName": [{ "value": "Identity Proof", "language": "eng" }],
+          "labelName": {
+            "ara": "إثبات الهوية",
+            "fra": "Identity Proof",
+            "eng": "Identity Proof"
+          },
           "controlType": "fileupload",
           "inputRequired": true,
           "validators": [],
+          "subType": "POI",
           "required": true
         },
         {
           "id": "proofOfRelationship",
           "description": "proofOfRelationship",
-          "labelName": [{ "value": "Relationship Proof", "language": "eng" }],
+          "labelName": {
+            "ara": "إثبات العلاقة",
+            "fra": "Relationship Proof",
+            "eng": "Relationship Proof"
+          },
           "controlType": "fileupload",
           "inputRequired": true,
           "validators": [],
-          "required": true
+          "subType": "POR",
+          "required": false
         },
         {
           "id": "proofOfDateOfBirth",
           "description": "proofOfDateOfBirth",
-          "labelName": [{ "value": "DOB Proof", "language": "eng" }],
+          "labelName": {
+            "ara": "دليل DOB",
+            "fra": "DOB Proof",
+            "eng": "DOB Proof"
+          },
           "controlType": "fileupload",
           "inputRequired": true,
           "validators": [],
+          "subType": "POB",
           "required": true
         },
         {
           "id": "proofOfException",
           "description": "proofOfException",
-          "labelName": [{ "value": "Exception Proof", "language": "eng" }],
+          "labelName": {
+            "ara": "إثبات الاستثناء",
+            "fra": "Exception Proof",
+            "eng": "Exception Proof"
+          },
           "controlType": "fileupload",
           "inputRequired": true,
           "validators": [],
+          "subType": "POE",
           "required": true
         },
         {
           "id": "proofOfException-1",
           "description": "proofOfException",
-          "labelName": [{ "value": "Exception Proof 2", "language": "eng" }],
+          "labelName": {
+            "ara": "إثبات الاستثناء 2",
+            "fra": "Exception Proof",
+            "eng": "Exception Proof"
+          },
           "controlType": "fileupload",
           "inputRequired": true,
           "validators": [],
+          "subType": "POE",
           "required": true
         }
       ]

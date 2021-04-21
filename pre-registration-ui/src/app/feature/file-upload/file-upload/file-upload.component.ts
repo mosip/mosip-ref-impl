@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, OnDestroy } from "@angular/core";
-
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import * as appConstants from "../../../app.constants";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
@@ -18,6 +18,7 @@ import { FilesModel } from "src/app/shared/models/demographic-model/files.model"
 import { LogService } from "src/app/shared/logger/log.service";
 import Utils from "src/app/app.util";
 import { Subscription } from "rxjs";
+import identityStubJson from "../../../../assets/identity-spec.json";
 
 @Component({
   selector: "app-file-upload",
@@ -70,7 +71,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   flag: boolean;
   zoom: number = 0.5;
   userPrefLanguage = localStorage.getItem("userPrefLanguage");
-
+  userPrefLanguageIsLtr = false;
+  userForm = new FormGroup({});
+  validationMessage: any;
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: "",
     docTypCode: "",
@@ -111,10 +114,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.initiateComponent();
+    let ltrLangs = this.config
+      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+      .split(",");
+    if (ltrLangs.includes(this.userPrefLanguage)) {
+      this.userPrefLanguageIsLtr = true;
+    } else {
+      this.userPrefLanguageIsLtr = false;
+    }  
   }
 
   async ngOnInit() {
     await this.getIdentityJsonFormat();
+    console.log("mayura uiFields");
+    console.log(this.uiFields);
     this.getFileSize();
     this.getPrimaryLabels();
     this.allowedFiles = this.config
@@ -145,6 +158,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   async getIdentityJsonFormat() {
     return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
+        response = identityStubJson;
         this.identityData = response["response"]["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
           if (obj.controlType === "fileupload") {
@@ -514,7 +528,41 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           if (res[appConstants.RESPONSE]) {
-            this.LOD = res["response"].documentCategories;
+            let documentCategories = res["response"].documentCategories;
+            documentCategories.forEach(documentCategory => {
+              this.uiFields.forEach(uiField => {
+                if (uiField.subType == documentCategory.code) {
+                  if (uiField.inputRequired) {
+                    documentCategory["required"] = uiField.required;
+                    documentCategory["labelName"] = uiField.labelName[this.userPrefLanguage];
+                    documentCategory["containerStyle"] = uiField.containerStyle;
+                    documentCategory["headerStyle"] = uiField.headerStyle;  
+                    documentCategory["id"] = uiField.id;  
+                    this.userForm.addControl(uiField.id, new FormControl(""));
+                    if (uiField.required) {
+                      this.userForm.controls[uiField.id].setValidators(
+                        Validators.required
+                      );
+                    }
+                  }
+                  this.LOD.push(documentCategory);      
+                } 
+              });
+            });
+            if (this.userFiles && this.userFiles["documentsMetaData"]) {
+              console.log(this.userFiles["documentsMetaData"]);
+              this.userFiles["documentsMetaData"].forEach(userFile => {
+                this.uiFields.forEach(uiField => {
+                  if (uiField.subType == userFile.docCatCode) {
+                    if (this.userForm.controls[uiField.id]) {
+                      this.userForm.controls[uiField.id].setValue(userFile.docName);
+                    }
+                  }
+                });
+              });
+            } 
+            //this.LOD = res["response"].documentCategories;
+            console.log(this.LOD);
             this.enableBrowseButtonList = new Array(this.LOD.length).fill(
               false
             );
@@ -1036,6 +1084,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile[0].multipartFile = this.fileByteArray;
     this.userFile[0].prereg_id = this.users[0].preRegId;
     this.userFile[0].docRefId = fileResponse.response.docRefId;
+    this.uiFields.forEach(uiField => {
+      if (uiField.subType == fileResponse.response.docCatCode) {
+        this.userForm.controls[uiField.id].setValue(fileResponse.response.docName);
+      }
+    });    
+
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
@@ -1090,6 +1144,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               });
               this.LOD[index].selectedDocName = "";
               this.LOD[index].selectedDocRefId = "";
+              this.uiFields.forEach(uiField => {
+                if (uiField.subType == this.LOD[index].code) {
+                  this.userForm.controls[this.LOD[index].id].setValue("");
+                }
+              });   
             }
             this.disableNavigation = false;
           },
@@ -1193,10 +1252,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    localStorage.setItem("modifyDocument", "false");
-    let url = Utils.getURL(this.router.url, "summary");
-    this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
-    /*}*/
+    if (this.userForm.valid) {
+      localStorage.setItem("modifyDocument", "false");
+      let url = Utils.getURL(this.router.url, "summary");
+      this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    }
   }
 
   /**
@@ -1296,6 +1356,11 @@ export interface DocumentCategory {
   documentTypes?: DocumentCategory[];
   selectedDocName?: string;
   selectedDocRefId: string;
+  labelName: string;
+  required: boolean; 
+  containerStyle: {},
+  headerStyle: {},
+  id: string
 }
 
 export interface Applicants {
