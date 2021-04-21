@@ -158,7 +158,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   async getIdentityJsonFormat() {
     return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        response = identityStubJson;
+        //response = identityStubJson;
         this.identityData = response["response"]["idSchema"]["identity"];
         this.identityData.forEach((obj) => {
           if (obj.controlType === "fileupload") {
@@ -544,13 +544,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                         Validators.required
                       );
                     }
+                    this.userForm.controls[uiField.id].setValue("");
+                    this.LOD.push(documentCategory); 
                   }
-                  this.LOD.push(documentCategory);      
-                } 
+                }
               });
             });
             if (this.userFiles && this.userFiles["documentsMetaData"]) {
-              console.log(this.userFiles["documentsMetaData"]);
               this.userFiles["documentsMetaData"].forEach(userFile => {
                 this.uiFields.forEach(uiField => {
                   if (uiField.subType == userFile.docCatCode) {
