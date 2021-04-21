@@ -11,6 +11,7 @@ export class MachineModel {
         public publicKey: string,
         public signPublicKey: string,
         public regCenterId: string,
-        public id?: string
+        public id?: string,
+        public isActive?: boolean,
     ) {}
 }

@@ -238,11 +238,11 @@ export class CreateComponent {
       this.primaryForm.controls.zone.value,
       '',
       false,
-      0,
+      this.primaryForm.controls.noKiosk.value,
       this.formatWorkingDays(this.primaryForm.controls.workingDays.value),
       this.primaryForm.controls.exceptionalHolidays.value,
     );
-    delete primaryObject.numberOfKiosks;
+    //delete primaryObject.numberOfKiosks;
     if (this.primaryForm.controls.exceptionalHolidays.value.length === 0) {
       delete primaryObject.exceptionalHolidayPutPostDto;
     }
@@ -260,7 +260,7 @@ export class CreateComponent {
           this.showMessage('create-success', createResponse.response)
             .afterClosed()
             .subscribe(() => {
-              this.primaryForm.reset();
+              //this.primaryForm.reset();
               this.router.navigateByUrl('admin/resources/centers/view');
             });
         } else {
@@ -337,7 +337,7 @@ export class CreateComponent {
       holidayZone: ['', [Validators.required]],
       workingHours: [{ value: '', disabled: true }],
       noKiosk: [
-        { value: 0},
+        0,
         [Validators.required, Validators.min(0), ValidateKiosk]
       ],
       processingTime: ['', [Validators.required]],
@@ -358,7 +358,6 @@ export class CreateComponent {
   submit() {
     if (!this.disableForms) {
       this.auditService.audit(17, 'ADM-097');
-      console.log("this.primaryForm.valid >>> " + this.primaryForm.valid);
       if (this.primaryForm.valid) {
         this.onCreate();
       } else {

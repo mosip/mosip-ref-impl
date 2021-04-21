@@ -23,7 +23,6 @@
                             <input
                             #keyboardRef
                             #name
-                            (keyup)="captureValue($event, 'name', 'primary')"
                             (focus)="scrollPage(name, 'primary', 'name', 0)"
                             formControlName="name"
                             matInput
@@ -44,7 +43,6 @@
                             <input
                             #keyboardRef
                             #serialNumber
-                            (keyup)="captureValue($event, 'serialNumber', 'primary')"
                             (focus)="scrollPage(serialNumber, 'primary', 'serialNumber', 1)"
                             formControlName="serialNumber"
                             matInput
@@ -65,7 +63,6 @@
                             <input
                             #keyboardRef
                             #macAddress
-                            (keyup)="captureValue($event, 'macAddress', 'primary')"
                             (focus)="scrollPage(macAddress, 'primary', 'macAddress', 2)"
                             formControlName="macAddress"
                             matInput
@@ -86,7 +83,6 @@
                             <input
                             #keyboardRef
                             #ipAddress
-                            (keyup)="captureValue($event, 'ipAddress', 'primary')"
                             (focus)="scrollPage(ipAddress, 'primary', 'ipAddress', 3)"
                             formControlName="ipAddress"
                             matInput
@@ -109,7 +105,6 @@
                             [min]="minDate"
                             [matDatepicker]="picker"
                             formControlName="validity"
-                            (dateChange)="captureDatePickerValue($event, 'validity', 'primary')"
                             placeholder="{{ 'machines.validity' | translate }}"
                           />
                           <mat-datepicker-toggle
@@ -126,43 +121,6 @@
                           {{ "devices.validationMessages.validity.required" | translate }}
                           </mat-error>
                         </mat-form-field>
-
-                        <mat-form-field>
-                          <mat-label>{{ "center.center-name" | translate }}</mat-label>
-                          <mat-select
-                            formControlName="regCenterId">
-                            <mat-option *ngFor="let data of dropDownValues.regCenterCode.primary" [value]="data.fieldCode">
-                              {{ data.fieldValue }}
-                            </mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="
-                                        primary.regCenterId.touched && primary.regCenterId.hasError('required')
-                                      ">
-                          {{ "devices.validationMessages.regCenterId.required" | translate }}
-                          </mat-error> 
-                          </mat-form-field>
-
-                        <mat-form-field>
-                          <mat-label>{{ "machines.zone" | translate }}</mat-label>
-                          <mat-select
-                            formControlName="zone"
-                          >
-                            <mat-option
-                              *ngFor="let data of dropDownValues.zone.primary"
-                              [value]="data.code"
-                            >
-                              {{ data.name }}
-                            </mat-option>
-                          </mat-select>
-                          <mat-error
-                            *ngIf="
-                              primary.zone.touched && primary.zone.hasError('required')
-                            "
-                          >
-                          {{ "machines.validationMessages.zone.required" | translate }}
-                          </mat-error>
-                        </mat-form-field>
-
                         <mat-form-field>
                         <mat-label>{{
                           "machines.machineSpecId" | translate
@@ -183,7 +141,6 @@
                             <input
                             #keyboardRef
                             #publicKey
-                            (keyup)="captureValue($event, 'publicKey', 'primary')"
                             (focus)="scrollPage(publicKey, 'primary', 'publicKey', 0)"
                             formControlName="publicKey"
                             matInput
@@ -204,7 +161,6 @@
                             <input
                             #keyboardRef
                             #signPublicKey
-                            (keyup)="captureValue($event, 'signPublicKey', 'primary')"
                             (focus)="scrollPage(signPublicKey, 'primary', 'signPublicKey', 0)"
                             formControlName="signPublicKey"
                             matInput
@@ -221,186 +177,43 @@
                           </mat-error>
                         </mat-form-field>
 
-                        <!-- <mat-form-field>
-                          <mat-label>{{ "machines.isActive" | translate }}</mat-label>
+                        <mat-form-field>
+                          <mat-label>{{ "machines.zone" | translate }}</mat-label>
                           <mat-select
-                            formControlName="isActive"
+                            formControlName="zone"
                           >
                             <mat-option
-                              *ngFor="let data of dropDownValues.isActive"
-                              [value]="data"
+                              *ngFor="let data of dropDownValues.zone.primary"
+                              (onSelectionChange)="captureDropDownValue($event, data.code, 'primary')" 
+                              [value]="data.code"
                             >
-                              {{ data | status }}
+                              {{ data.name }}
                             </mat-option>
                           </mat-select>
                           <mat-error
                             *ngIf="
-                              primary.isActive.touched && primary.isActive.hasError('required')
+                              primary.zone.touched && primary.zone.hasError('required')
                             "
                           >
-                          {{ "machines.validationMessages.isActive.required" | translate }}
+                          {{ "machines.validationMessages.zone.required" | translate }}
                           </mat-error>
-                        </mat-form-field> -->
-
-                </div>
-
-                <!-- <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-                    <div
-                        *ngIf="
-                          secondaryLanguageLabels && secondaryLang && showSecondaryForm
-                        "
-                        [formGroup]="secondaryForm"
-                        [ngClass]="
-                          secondaryLang === 'ara' ? 'secondary-form' : 'primary-form'
-                        "
-                    >
-                    <strong class="title">{{secondaryLanguageLabels.language}}</strong>
-                    <span
-                      *ngIf="!disableForms"
-                      matTooltip="{{ secondaryLanguageLabels['keyboard-tooltip'] }}"
-                      (click)="openKeyboard('secondary')"
-                      style="float: left; color: grey; cursor: pointer;"
-                      ><i class="material-icons">keyboard</i></span
-                    >
-                    <hr />
-                    <br /><br />
-
-                        <mat-form-field>
-                         <input
-                            #keyboardRef
-                            #nameSecondary
-                            (focus)="scrollPage(nameSecondary, 'secondary', 'name', 8)"
-                            formControlName="name"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.name
-                            }}"
-                          />
                         </mat-form-field>
-
                         <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #serialNumberSecondary
-                            (focus)="scrollPage(serialNumberSecondary, 'secondary', 'serialNumber', 9)"
-                            formControlName="serialNumber"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.serialNumber
-                            }}"
-                          />
-
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #macAddressSecondary
-                            (focus)="scrollPage(macAddressSecondary, 'secondary', 'macAddress', 10)"
-                            formControlName="macAddress"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.macAddress
-                            }}"
-                          />
-
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input
-                            #keyboardRef
-                            #ipAddressSecondary
-                            (focus)="scrollPage(ipAddressSecondary, 'secondary', 'ipAddress', 11)"
-                            formControlName="ipAddress"
-                            matInput
-                            placeholder="{{
-                              secondaryLanguageLabels.ipAddress
-                            }}"
-                          />
-                        </mat-form-field>
-
-                        <mat-form-field>
-                          <input
-                            matInput
-                            [min]="minDate"
-                            [matDatepicker]="picker"
-                            formControlName="validity"
-                            placeholder="{{secondaryLanguageLabels.validity}}"
-                          />
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="picker"
-                          ></mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-
-                      
-
-                        <mat-form-field>
-                          <mat-label>{{ secondaryLanguageLabels["zone"]}}</mat-label>
-                          <mat-select formControlName="zone">
-                          <mat-option
-                            *ngFor="let data of dropDownValues.zone.secondary"
-                            [value]="data.code"
-                          >
+                        <mat-label>{{ "center.center-name" | translate }}</mat-label>
+                        <mat-select
+                          formControlName="regCenterId">
+                          <mat-option *ngFor="let data of dropDownValues.regCenterCode.primary" [value]="data.id">
                             {{ data.name }}
                           </mat-option>
-                          </mat-select>
+                        </mat-select>
+                        <mat-error *ngIf="
+                                      primary.regCenterId.touched && primary.regCenterId.hasError('required')
+                                    ">
+                        {{ "devices.validationMessages.regCenterId.required" | translate }}
+                        </mat-error> 
                         </mat-form-field>
-
                         
-                        <mat-form-field>
-                        <mat-label>{{
-                          secondaryLanguageLabels.machineSpecId
-                        }}</mat-label>
-                        <mat-select formControlName="machineSpecId">
-                          <mat-option
-                            *ngFor="let data of dropDownValues.machineTypeCode.secondary"
-                            [value]="data.fieldCode"
-                          >
-                            {{ data.fieldValue }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-
-                      <mat-form-field>
-                        <input
-                          #keyboardRef
-                          #publicKey
-                          (focus)="scrollPage(publicKey, 'secondary', 'publicKey')"
-                          formControlName="publicKey"
-                          matInput
-                          placeholder="{{
-                            secondaryLanguageLabels.publicKey
-                          }}"
-                        />
-                      </mat-form-field>
-
-                      <mat-form-field>
-                        <input
-                          #keyboardRef
-                          #signPublicKey
-                          (focus)="scrollPage(signPublicKey, 'secondary', 'signPublicKey')"
-                          formControlName="signPublicKey"
-                          matInput
-                          placeholder="{{
-                            secondaryLanguageLabels.signPublicKey
-                          }}"
-                        />
-                      </mat-form-field>
-
-                      <mat-form-field>
-                        <mat-label>{{ secondaryLanguageLabels["isActive"] }}</mat-label>
-                        <mat-select formControlName="isActive">
-                          <mat-option
-                            *ngFor="let data of dropDownValues.isActive"
-                            [value]="data"
-                          >
-                            {{ data | status }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                </div> -->
+                </div>
             </mat-card-content>
             <mat-card-actions class="action-buttons">
                

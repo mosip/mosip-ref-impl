@@ -128,7 +128,7 @@ export class DialogComponent implements OnInit {
       this.dataStorageService
         .getMissingData(this.primaryLangCode, input.fieldName)
         .subscribe(response => {
-          if (response.response) {
+          if (response.response.length > 0) {
             this.noMissingDataFlag = false;
             this.missingData = response.response;
           } else {

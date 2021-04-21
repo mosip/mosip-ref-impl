@@ -58,6 +58,36 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": { 
+        "eng": "Template not available in English", 
+        "ara": "النموذج غير متوفر باللغة العربية", 
+        "fra": "Modèle non disponible en français" 
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": { 
+        "case": "missingData",
+        "title": { 
+          "eng": "Template not available in English", 
+          "ara": "النموذج غير متوفر باللغة العربية", 
+          "fra": "Modèle non disponible en français" 
+        },
+        "columnNames": [{ 
+          "eng": "Template ID",
+          "ara": "معرف القالب",
+          "fra": "ID de modèle"
+        },{ 
+          "eng": "Name",
+          "ara": "اسم",
+          "fra": "nom"
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [

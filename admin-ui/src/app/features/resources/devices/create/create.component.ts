@@ -151,7 +151,7 @@ export class CreateComponent{
     this.getDevicespecifications();
     this.getZoneData();
     this.initializePrimaryForm();
-    this.getCenterDetails();  
+    //this.getCenterDetails();  
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
@@ -159,16 +159,17 @@ export class CreateComponent{
       });
   }
 
-  getCenterDetails() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
-    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
+  captureDropDownValue(event: any, formControlName: string, type: string) {
+    if (event.source.selected) {
+      this.getCenterDetails(event.source.value);
+    }
+  }
 
-    let request = new RequestModel('', null, filterRequest);
+  getCenterDetails(zoneCode: string) {    
     this.dataStorageService
-      .getFiltersForAllMaterDataTypes('registrationcenters', request)
+      .getFiltersCenterDetailsBasedonZone(this.primaryLang, zoneCode)
       .subscribe(response => {
-        this.dropDownValues.regCenterCode.primary = response.response.filters;
+        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
       });
   }
 
@@ -254,7 +255,6 @@ export class CreateComponent{
     this.primaryForm.controls.validity.setValue(
       Utils.formatDate(this.primaryData.validityDateTime)
     );
-    //this.primaryForm.controls.isActive.setValue(this.statusPipe.transform(this.primaryData.isActive));
     this.primaryForm.controls.zone.setValue(this.primaryData.zone);
     this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
   }

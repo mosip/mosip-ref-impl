@@ -160,6 +160,12 @@ export class DataStorageService {
     );
   }
 
+  getFiltersCenterDetailsBasedonZone(langCode: string, zoneCode: string): Observable<any> {
+    return this.http.get(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'getzonespecificregistrationcenters/'+langCode+'/'+zoneCode
+    );
+  }
+
   getFiltersUserDetails(): Observable<any> {
     return this.http.get(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'usersdetails'
