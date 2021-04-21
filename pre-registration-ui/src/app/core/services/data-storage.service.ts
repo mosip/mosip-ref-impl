@@ -440,6 +440,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.validDocument +
       applicantCode +
       "/languages";
+    console.log(APPLICANT_VALID_DOCUMENTS_URL);  
     return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
       params: new HttpParams().append(
         appConstants.PARAMS_KEYS.getDocumentCategories,
