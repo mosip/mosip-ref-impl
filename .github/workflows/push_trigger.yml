@@ -101,9 +101,9 @@ jobs:
       run: |
         cd kernel
         mvn -B package -s $GITHUB_WORKSPACE/settings.xml --file pom.xml
-        cd ..
-        cd pre-registration-booking-service
-        mvn -B package -s $GITHUB_WORKSPACE/settings.xml --file pom.xml
+        #cd ..
+        #cd pre-registration-booking-service
+        #mvn -B package -s $GITHUB_WORKSPACE/settings.xml --file pom.xml
         
     - name: Publish the maven package
       run: |
