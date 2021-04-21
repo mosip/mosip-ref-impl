@@ -438,7 +438,7 @@ export class CommonService {
     this.confirmationPopup('decommission', data).afterClosed().subscribe(res => {
       if (res) {
         let url = this.router.url.split('/')[3];
-        if (url == "devices") {
+        if (url === "devices" || url === "machines") {
           this.auditService.audit(18, 'ADM-100', 'unassign');
           let dynamicObject = data;
           delete dynamicObject.createdBy;
@@ -450,6 +450,7 @@ export class CommonService {
           delete dynamicObject.isActive;
           delete dynamicObject.zone;
           delete dynamicObject.deviceTypeName;
+          delete dynamicObject.machineTypeName;
           delete dynamicObject.mapStatus;
           delete dynamicObject.langCode;
           dynamicObject.regCenterId = "";
@@ -468,7 +469,7 @@ export class CommonService {
                     if (!response1['errors']) {
                       this.createMessage('success', 'decommission', data);
                       if (this.router.url.indexOf('single-view') >= 0) {
-                        this.router.navigateByUrl('admin/resources/devices/view');
+                        this.router.navigateByUrl('admin/resources/'+url+'/view');
                       } else {
                         this.router.navigateByUrl(this.router.url);
                       }

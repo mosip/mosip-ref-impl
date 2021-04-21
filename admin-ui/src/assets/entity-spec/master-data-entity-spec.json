@@ -39,6 +39,15 @@
         },
         {
           "label": {
+            "eng": "Location Data",
+            "ara": "بيانات الموقع",
+            "fra": "Données de localisation"
+          },
+          "actionURL": "admin/masterdata/location/view",
+          "auditEventId": "ADM-015"
+        },
+        {
+          "label": {
             "eng": "Dynamic Field",
             "ara": "مجال ديناميكي",
             "fra": "Champ dynamique"

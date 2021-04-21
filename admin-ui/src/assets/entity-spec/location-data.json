@@ -58,6 +58,36 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": { 
+        "eng": "Location not available in English", 
+        "ara": "الموقع غير متوفر باللغة العربية", 
+        "fra": "Emplacement non disponible en français" 
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": { 
+        "case": "missingData",
+        "title": { 
+          "eng": "Location not available in English", 
+          "ara": "الموقع غير متوفر باللغة العربية", 
+          "fra": "Emplacement non disponible en français"
+        },
+        "columnNames": [{ 
+          "eng": "Code",
+          "ara": "شفرة",
+          "fra": "Code"
+        },{ 
+          "eng": "Name",
+          "ara": "اسم",
+          "fra": "nom"
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [
