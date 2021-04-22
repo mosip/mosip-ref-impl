@@ -82,6 +82,34 @@ export class DataStorageService {
     );
   }
 
+  createZoneUserMapping(data: RequestModel): Observable<any> {
+    return this.http.post(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zoneuser',
+      data
+    );
+  }
+
+  updateZoneUserMapping(data: RequestModel): Observable<any> {
+    return this.http.put(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'zoneuser',
+      data
+    );
+  }
+
+  createCenterUserMapping(data: any): Observable<any> {
+    return this.http.post(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'usercentermapping',
+      data
+    );
+  }
+
+  updateCenterUserMapping(data: any): Observable<any> {
+    return this.http.put(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'usercentermapping',
+      data
+    );
+  }
+
   updateData(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
 

@@ -11,7 +11,7 @@ import { HeaderModel } from 'src/app/core/models/header.model';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
-import * as deviceSpecFile from '../../../../../assets/entity-spec/devices.json';
+import * as userSpecFile from '../../../../../assets/entity-spec/user.json';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { Observable } from 'rxjs';
 import { FilterRequest } from 'src/app/core/models/filter-request.model';
@@ -32,41 +32,18 @@ import { DeviceService } from 'src/app/core/services/devices.service';
   encapsulation: ViewEncapsulation.None
 })
 export class CreateComponent{
-  //secondaryLanguageLabels: any;
   primaryLang: string;
   isPrimaryLangRTL: boolean;
-  //secondaryLang: string;
-  dropDownValues = new CenterDropdown();
-  allSlots: string[];
-  disableForms: boolean;
+  dropDownValues = new CenterDropdown(); 
   headerObject: HeaderModel;
-  DeviceRequest = {} as DeviceRequest;
   createUpdate = false;
-  //showSecondaryForm: boolean;
-  //secondaryObject: any;
-  filterGroup = new FormGroup({});
-  
+  filterGroup = new FormGroup({});  
   primaryData: any;
-  //secondaryData: any;
-
   subscribed: any;
-
-  deviceSearchModel = {} as DeviceRequest;
-
   errorMessages: any;
-
-  primaryForm: FormGroup;
-
-  data = [];
   popupMessages: any;
-
-  selectedField: HTMLElement;
-
-  private attachToElementMesOne: any;
-
-  days = [];
-  holidayDate: any;
-  minDate = new Date();
+  DeviceRequest = {} as DeviceRequest;
+  data = [];
 
   constructor(
     private location: Location,
@@ -97,29 +74,44 @@ export class CreateComponent{
     }
   }
 
-
   initializeComponent() {
-    this.days = appConstants.days[this.primaryLang];
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
-        this.auditService.audit(8, deviceSpecFile.auditEventIds[1], 'users');
-        this.disableForms = true;
+        this.auditService.audit(8, userSpecFile.auditEventIds[1], 'users');
+        this.createUpdate = true;
         this.getData(params);
       } else {
-        this.disableForms = false;
         this.auditService.audit(20, 'ADM-130');
         this.initializeheader();
+        this.primaryData = {userId:"", zone:"", regCenterId:"", name: ""}
       }
     });
     this.getUserDetails();
-    this.getZoneData();    
-    this.getCenterDetails();  
-    this.initializePrimaryForm();
+    this.getZoneData();
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response.devices.popupMessages;
+      });
+  }
+
+  captureDropDownValue(event: any, formControlName: string) {
+    if (event.source.selected) {
+      this.primaryData[formControlName] = event.source.value;
+      if(formControlName === "zone"){
+        this.getCenterDetails(event.source.value);
+      }else if(formControlName === "userId"){
+        this.primaryData['name'] = event.source.viewValue;
+      }      
+    }
+  }
+
+  getCenterDetails(zoneCode: string) {    
+    this.dataStorageService
+      .getFiltersCenterDetailsBasedonZone(this.primaryLang, zoneCode)
+      .subscribe(response => {
+        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
       });
   }
 
@@ -135,19 +127,6 @@ export class CreateComponent{
       });
   }
 
-  getCenterDetails() {
-    const filterObject = new FilterValuesModel('name', 'unique', '');
-    let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
-    let filterRequest = new FilterRequest([filterObject], this.primaryLang, [optinalFilterObject]);
-
-    let request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('registrationcenters', request)
-      .subscribe(response => {
-        this.dropDownValues.regCenterCode.primary = response.response.filters;
-      });
-  }
-
   getZoneData() {
     this.dataStorageService
       .getZoneData(this.primaryLang)
@@ -155,10 +134,7 @@ export class CreateComponent{
         console.log(response);
         this.dropDownValues.zone.primary = response.response;
         if (this.dropDownValues.zone.primary.length === 1) {
-          this.primaryForm.controls.zone.setValue(
-            this.dropDownValues.zone.primary[0].code
-          );
-          this.primaryForm.controls.zone.disable();
+          this.primaryData.zone = this.dropDownValues.zone.primary[0].code
         }
       });
   }
@@ -179,20 +155,8 @@ export class CreateComponent{
     }
   }
 
-  initializePrimaryForm() {
-    this.primaryForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      zone: ['', [Validators.required]],
-      regCenterId: ['', [Validators.required]]
-    });
-  }
-
   cancel() {
     this.location.back();
-  }
-
-  get primary() {
-    return this.primaryForm.controls;
   }
 
   showError() {
@@ -205,165 +169,61 @@ export class CreateComponent{
     }).afterClosed().subscribe(() => this.router.navigateByUrl('admin/resources/devices/view'));
   }
 
-  setPrimaryData() {
-    this.primaryForm.controls.name.setValue(this.primaryData.name);
-    this.primaryForm.controls.serialNumber.setValue(this.primaryData.serialNum);
-    this.primaryForm.controls.macAddress.setValue(this.primaryData.macAddress);
-    this.primaryForm.controls.ipAddress.setValue(this.primaryData.ipAddress);
-    this.primaryForm.controls.validity.setValue(
-      Utils.formatDate(this.primaryData.validityDateTime)
-    );
-    this.primaryForm.controls.zone.setValue(this.primaryData.zone);
-    this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
-  }
-
-  setHeaderData() {
-    this.headerObject = new HeaderModel(
-      this.primaryData.name,
-      this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
-      this.primaryData.createdBy ? this.primaryData.createdBy : '-',
-      this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
-      this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
-    );
-    console.log(this.headerObject);
-  }
-
   ngOnDestroy() {
     this.subscribed.unsubscribe();
   }
 
   submit() {
-    console.log(`submit ${this.disableForms}`);
-    if (!this.disableForms) {
-      this.auditService.audit(17, 'ADM-097');
-      console.log(this.primaryForm.valid);
-      if (this.primaryForm.valid) {
-        console.log("calling on create");
-        this.onCreate();
-      } else {
-        for (const i in this.primaryForm.controls) {
-          if (this.primaryForm.controls[i]) {
-            this.primaryForm.controls[i].markAsTouched();
-          }
-        }
-      }
-    } else {
-      this.disableForms = false;
-      this.primaryForm.enable();
-    }
-  }
-
-  onCreate() {
-    let data = {};
-    console.log(this.data);
-    if (this.data.length === 0) {
-      data = {
-        case: 'CONFIRMATION',
-        title: this.popupMessages['create'].title,
-        message: this.popupMessages['create'].message[0]+ this.primaryForm.controls.name.value + this.popupMessages['create'].message[1],
-        yesBtnTxt: this.popupMessages['create'].yesBtnText,
-        noBtnTxt: this.popupMessages['create'].noBtnText
-      };
-    } else {
-      data = {
-        case: 'CONFIRMATION',
-        title: this.popupMessages['edit'].title,
-        message: this.popupMessages['edit'].message,
-        yesBtnTxt: this.popupMessages['edit'].yesBtnText,
-        noBtnTxt: this.popupMessages['edit'].noBtnText
-      };
-    }
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
-      data
-    });
-    dialogRef.afterClosed().subscribe(response => {
-      if (response && this.data.length === 0) {
-        this.auditService.audit(18, 'ADM-104', 'create');
-        this.saveData();
-      } else if (response && this.data.length !== 0) {
-        this.auditService.audit(18, 'ADM-105', 'edit');
-        this.updateData();
-      } else if (!response && this.data.length === 0) {
-        this.auditService.audit(19, 'ADM-106', 'create');
-      } else if (!response && this.data.length !== 0) {
-        this.auditService.audit(19, 'ADM-107', 'edit');
-      }
-    });
-  }
-
-  saveData() {
-    this.createUpdate = true;
-    const primaryObject = new DeviceModel(
-      this.primaryForm.controls.zone.value,
-      this.primaryForm.controls.validity.value, 
-      this.primaryForm.controls.name.value,
-      this.primaryForm.controls.macAddress.value,
-      this.primaryForm.controls.serialNumber.value,
-      this.primaryForm.controls.ipAddress.value,
-      this.primaryForm.controls.deviceSpecId.value,
-      this.primaryForm.controls.regCenterId.value,
-      "",           
-      false
-      //this.primaryForm.controls.isActive.value
-    );
-    
-    const primaryRequest = new RequestModel(
-      appConstants.registrationDeviceCreateId,
+    let zoneData = {"isActive": true, "langCode": this.primaryLang, "userId": this.primaryData.userId, "zoneCode": this.primaryData.zone}
+    let centerData = {"isActive": true, "langCode": this.primaryLang, "id": this.primaryData.userId, "regCenterId": this.primaryData.regCenterId, "name":this.primaryData.name}
+    let request = new RequestModel(
+      "",
       null,
-      primaryObject
+      zoneData
     );
-    this.dataStorageService
-      .createDevice(primaryRequest)
-      .subscribe(createResponse => {
-        if (!createResponse.errors) {
-          this.showMessage('create-success', createResponse.response)
-            .afterClosed()
-            .subscribe(() => {
-              this.primaryForm.reset();
-              this.router.navigateByUrl('admin/resources/users/view');
-            }); 
-        } else {
-          this.showMessage('create-error');
-        }
-      });
-  }
-
-
-  updateData() {
-    this.createUpdate = true;
-    const primaryObject = new DeviceModel(
-      this.primaryForm.controls.zone.value,
-      this.primaryForm.controls.validity.value, 
-      this.primaryForm.controls.name.value,
-      this.primaryForm.controls.macAddress.value,
-      this.primaryForm.controls.serialNumber.value,
-      this.primaryForm.controls.ipAddress.value,
-      this.primaryForm.controls.deviceSpecId.value,
-      this.primaryForm.controls.regCenterId.value,
-      this.data[0].id,      
-    );
-   
-    const primaryRequest = new RequestModel(
-      appConstants.registrationDeviceCreateId,
-      null,
-      primaryObject
-    );
-    this.dataStorageService
-      .updateData(primaryRequest)
-      .subscribe(updateResponse => {
-        if (!updateResponse.errors) {
-          this.showMessage('update-success', updateResponse.response)
-          .afterClosed()
-          .subscribe(() => {
-            this.primaryForm.reset();
-            //this.secondaryForm.reset();
-            this.router.navigateByUrl('admin/resources/users/view');
+    if(this.createUpdate){
+      this.dataStorageService.updateZoneUserMapping(request).subscribe(zoneResponse => { 
+        if (zoneResponse.errors != null) {
+          this.dataStorageService.updateCenterUserMapping(centerData).subscribe(centerResponse => {
+            if (!centerResponse.errors) {
+                let url = centerData.name+" Mapped Successfully";
+                this.showMessage(url)
+                  .afterClosed()
+                  .subscribe(() => {
+                    this.router.navigateByUrl(
+                      `admin/resources/users/view`
+                    );
+                  });
+              } else {
+                this.showErrorPopup(centerResponse.errors[0].message);
+              }        
           });
         } else {
-          this.showMessage('update-error');
-        }
+          this.showErrorPopup(zoneResponse.errors[0].message);
+        } 
       });
+    }else{
+      this.dataStorageService.createZoneUserMapping(request).subscribe(zoneResponse => { 
+        if (!zoneResponse.errors) {
+          this.dataStorageService.createCenterUserMapping(centerData).subscribe(centerResponse => {
+            if (centerResponse.errors != null) {
+                let url = centerData.name+" Mapped Successfully";
+                this.showMessage(url)
+                  .afterClosed()
+                  .subscribe(() => {
+                    this.router.navigateByUrl(
+                      `admin/resources/users/view`
+                    );
+                  });
+              } else {
+                this.showErrorPopup(centerResponse.errors[0].message);
+              }        
+          });
+        } else {
+          this.showErrorPopup(zoneResponse.errors[0].message);
+        } 
+      });
+    }
   }
 
   async getData(params: any) {
@@ -380,62 +240,41 @@ export class CreateComponent{
     this.dataStorageService.getUsersData(request).subscribe(
       response => {
         if (response.response.data) {
-          this.data[0] = response.response.data[0];
+          let data = response.response.data[0];
+          this.primaryData = {userId:data.id, zone:data.zoneCode, regCenterId:data.regCenterId, name: data.name}
           this.initializeheader();
-          this.setPrimaryFormValues();
-              this.disableForms = false;
-              this.primaryForm.enable();
         } else {
-          this.showErrorPopup();
+          this.showErrorPopup("No User Details Found");
         }
       },
-      error => this.showErrorPopup()
+      error => this.showErrorPopup("No User Details Found")
     );
   }
 
-  setPrimaryFormValues() {
-  	console.log("this.primaryData>>>"+this.primaryData);
-    /*this.primaryData["zone"] = this.data[0].zoneCode;
-    this.primaryData["userId"] = this.data[0].name; 
-    this.primaryData["regCenterId"] = this.data[0].regCenterId;*/
-  }
-
-  showMessage(type: string, data?: any) {
+  showMessage(message: string) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: {
         case: 'MESSAGE',
-        title: this.popupMessages[type].title,
-        message:
-          type === 'create-success' || type === 'update-success'
-            ? this.popupMessages[type].message[0] +
-              data.id +
-              this.popupMessages[type].message[1] +
-              data.name
-            : this.popupMessages[type].message,
-        btnTxt: this.popupMessages[type].btnTxt
+        title: 'Success',
+        message: message,
+        btnTxt: 'Ok'
       }
     });
     return dialogRef;
   }
 
-  showErrorPopup() {
+  showErrorPopup(message: string) {
     this.dialog
       .open(DialogComponent, {
         width: '350px',
         data: {
           case: 'MESSAGE',
-          // tslint:disable-next-line:no-string-literal
-          title: this.popupMessages['noData']['title'],
-          message: this.popupMessages['noData']['message'],
-          // tslint:disable-next-line:no-string-literal
-          btnTxt: this.popupMessages['noData']['btnTxt']
+          title: 'Error',
+          message: message,
+          btnTxt: 'Ok'
         },
         disableClose: true
-      })
-      .afterClosed()
-      .subscribe(() =>
-        this.router.navigateByUrl(`admin/resources/users/view`)
-      );
+      });
   }
 }
