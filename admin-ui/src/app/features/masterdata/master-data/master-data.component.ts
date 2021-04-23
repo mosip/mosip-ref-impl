@@ -22,6 +22,7 @@ export class MasterDataComponent implements OnInit {
   masterDataDeviceList: any[];
   masterDataMachineList: any[];
   masterDataDocumentList: any[];
+  dynamicfieldDistinctValue: any[];
 
   constructor(private dataService: DataStorageService,
               private router: Router,
@@ -43,6 +44,12 @@ export class MasterDataComponent implements OnInit {
       this.masterDataDeviceList = data.masterDatatList.deviceDefinition;
       this.masterDataMachineList = data.masterDatatList.machineDefinition;
       this.masterDataDocumentList = data.masterDatatList.documentDefinition;
+    });
+    this.dataService.getDynamicfieldDistinctValue().subscribe(
+      response => {
+      if (response.response) {
+        this.dynamicfieldDistinctValue = response.response;
+      }
     });
   }
 

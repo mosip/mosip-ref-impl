@@ -331,8 +331,8 @@
         "category": "Catégorie",
         "mapped-documents": "Documents mappés",
         "unmapped-documents": "Documents non mappés",
-        "masterDataTypes": "Types de données maîtres"
-        
+        "masterDataTypes": "Types de données maîtres",
+        "dynamicField": "Champ dynamique"
     },
     "errorPopup": {
         "noData": {

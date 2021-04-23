@@ -183,9 +183,9 @@ export class CreateComponent{
     );
     if(this.createUpdate){
       this.dataStorageService.updateZoneUserMapping(request).subscribe(zoneResponse => { 
-        if (zoneResponse.errors != null) {
+        if (!zoneResponse.errors) {
           this.dataStorageService.updateCenterUserMapping(centerData).subscribe(centerResponse => {
-            if (!centerResponse.errors) {
+            if (centerResponse.errors != null) {
                 let url = centerData.name+" Mapped Successfully";
                 this.showMessage(url)
                   .afterClosed()

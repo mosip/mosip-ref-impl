@@ -416,7 +416,8 @@
         "category": "الفئة",
         "mapped-documents": "المستندات المعينة",
         "unmapped-documents": "المستندات غير المعينة",
-        "masterDataTypes": "أنواع البيانات الرئيسية"
+        "masterDataTypes": "أنواع البيانات الرئيسية",
+        "dynamicField": "مجال ديناميكي"
     },
     "errorPopup": {
         "noData": {

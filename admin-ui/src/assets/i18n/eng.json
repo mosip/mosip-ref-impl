@@ -227,7 +227,8 @@
         "category": "Category",
         "mapped-documents": "Mapped Documents",
         "unmapped-documents": "Unmapped Documents",
-        "masterDataTypes": "Masterdata Types"
+        "masterDataTypes": "Masterdata Types",
+        "dynamicField": "Dynamic Field"
     },
     "masterdataupload": {
         "title": "Master Data Upload"
