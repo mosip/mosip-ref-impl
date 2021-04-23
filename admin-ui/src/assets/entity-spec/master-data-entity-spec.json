@@ -45,15 +45,6 @@
           },
           "actionURL": "admin/masterdata/location/view",
           "auditEventId": "ADM-015"
-        },
-        {
-          "label": {
-            "eng": "Dynamic Field",
-            "ara": "مجال ديناميكي",
-            "fra": "Champ dynamique"
-          },
-          "actionURL": "admin/masterdata/dynamicfield/view",
-          "auditEventId": "ADM-017"
         }
       ],
       "deviceDefinition": [

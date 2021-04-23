@@ -5,19 +5,38 @@
     </div>
     <div id="master-data-flex-container">
         <div class="item1">
-            <mat-card>
-                <mat-card-header class="header">
-                    <b>{{'masterData.common' | translate}}</b>
-                </mat-card-header>
-                <ng-container *ngFor="let itemList of masterDataCommonList; let i = index">
-                    <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="onList(itemList)">
-                        <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
-                        <span style="text-align: right"><i class="material-icons">
-                                keyboard_arrow_right
-                            </i></span>
-                    </mat-card-content>
-                </ng-container>
-            </mat-card>
+            <div class="sub-items">
+                <div class="sub-item1">
+                    <mat-card>
+                        <mat-card-header class="header">
+                            <b>{{'masterData.common' | translate}}</b>
+                        </mat-card-header>
+                        <ng-container *ngFor="let itemList of masterDataCommonList; let i = index">
+                            <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="onList(itemList)">
+                                <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
+                                <span style="text-align: right"><i class="material-icons">
+                                        keyboard_arrow_right
+                                    </i></span>
+                            </mat-card-content>
+                        </ng-container>
+                    </mat-card>
+                </div>
+                <div class="sub-item2">
+                    <mat-card >
+                        <mat-card-header class="header">
+                            <b>{{'masterData.dynamicField' | translate}}</b>
+                        </mat-card-header>
+                        <ng-container *ngFor="let itemList of dynamicfieldDistinctValue; let i = index">
+                            <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="onList(itemList)">
+                                <span style="margin-top: 5px; margin-left: 5px;">{{itemList | titlecase}}</span>
+                                <span style="text-align: right"><i class="material-icons">
+                                        keyboard_arrow_right
+                                    </i></span>
+                            </mat-card-content>
+                        </ng-container>
+                    </mat-card >
+                </div>
+            </div>
         </div>
         <div class="item1">
             <div class="sub-items">

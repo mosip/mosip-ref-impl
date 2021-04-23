@@ -163,6 +163,12 @@ export class DataStorageService {
     return this.http.get('./assets/entity-spec/master-data-entity-spec.json');
   }
 
+  getDynamicfieldDistinctValue(): Observable<any> {
+    return this.http.get(
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'dynamicfields/distinct'
+    );
+  }
+
   getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/search?addMissingData=true',
