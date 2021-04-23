@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.2.RELEASE</version>
-		<relativePath />
-	</parent>
+	<scm>
+                <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
+                <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
+                <url>https://github.com/mosip/mosip-ref-impl</url>
+                <tag>HEAD</tag>
+        </scm>
 
 	<artifactId>pre-registration-booking-service</artifactId>
 	<version>1.1.5</version>
