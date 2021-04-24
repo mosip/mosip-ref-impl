@@ -14,6 +14,15 @@
 	<artifactId>pre-registration-booking-service</artifactId>
 	<version>1.1.5</version>
 	<name>pre-registration-booking-service</name>
+	<description>Booking service of  MOSIP Pre-registration</description>
+	<url>https://github.com/mosip/mosip-ref-impl</url>
+	
+	<licenses>
+          <license>
+                <name>MPL 2.0</name>
+                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+          </license>
+        </licenses>
 
 	<developers>
 		<developer>
