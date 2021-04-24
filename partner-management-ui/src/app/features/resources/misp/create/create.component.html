@@ -1,0 +1,63 @@
+<div id ="flex-single-view">
+  <div id="flex-container">
+    <app-misp-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-misp-header>
+      <div id="myDiv" class="flex-body">
+        <mat-card>
+          <mat-card-content class="forms-container">
+            <div [formGroup]="primaryForm" class="primary-form">
+              <span><strong>{{ 'misp.language' | translate }}</strong></span>
+            <span *ngIf="!disableForms" matTooltip="{{'misp.keyboard-tooltip' | translate}}" (click)="openKeyboard('primary')" style="float: right; color: grey; cursor: pointer;"><i class="material-icons">keyboard</i></span>
+            <hr />
+            <br /><br />
+            <h3>{{ 'misp.misp-details' | translate }}</h3>
+            <mat-form-field>
+              <input #keyboardRef #name (focus)="scrollPage(name, 'primary', 'name', 0)" formControlName="name" matInput placeholder="{{ 'misp.name' | translate }}">            
+              <mat-error *ngIf="primary.name.touched && primary.name.hasError('required')">
+                {{ 'misp.validationMessages.name.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="primary.name.touched && primary.name.hasError('maxlength')">
+                {{ 'misp.validationMessages.name.max-length' | translate }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input #keyboardRef #address (focus)="scrollPage(address, 'primary', 'address', 1)" formControlName="address" matInput placeholder="{{ 'misp.address' | translate }}">            
+              <mat-error *ngIf="primary.address.touched && primary.address.hasError('required')">
+                {{ 'misp.validationMessages.address.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="primary.address.touched && primary.address.hasError('maxlength')">
+                {{ 'misp.validationMessages.address.max-length' | translate }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input #keyboardRef #contactPhone (focus)="scrollPage(contactPhone, 'primary', 'contactPhone', 2)" formControlName="contactPhone" matInput placeholder="{{ 'misp.contact_no' | translate }}">            
+              <mat-error *ngIf="primary.contactPhone.touched && primary.contactPhone.hasError('required')">
+                {{ 'misp.validationMessages.phoneNo.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="primary.contactPhone.touched && primary.contactPhone.hasError('maxlength')">
+                {{ 'misp.validationMessages.name.max-length' | translate }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input formControlName="email_id" matInput placeholder="{{ 'misp.email_id' | translate }}">            
+              <mat-error *ngIf="primary.email_id.touched && primary.email_id.hasError('required')">
+                {{ 'misp.validationMessages.email.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="primary.email_id.touched && primary.email_id.hasError('maxlength')">
+                {{ 'misp.validationMessages.name.max-length' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          </mat-card-content>
+          <mat-card-actions class="action-buttons">
+            <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length === 0"
+              (click)="submit()">{{ 'misp.create' | translate }}</button>
+            <button id="createButton" mat-raised-button *ngIf="!disableForms && data.length !== 0"
+              (click)="submit()">{{ 'misp.update' | translate }} </button>
+            <button id="createButton" mat-raised-button *ngIf="disableForms"
+              (click)="submit()">{{ 'misp.edit' | translate }}</button>
+            <button mat-raised-button (click)="cancel()">{{ 'misp.cancel' | translate }}</button>
+          </mat-card-actions>  
+        </mat-card>
+      </div>
+  </div>
+</div>

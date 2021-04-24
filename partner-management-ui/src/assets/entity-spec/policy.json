@@ -1,0 +1,144 @@
+{
+  "auditEventIds": ["ADM-028", "ADM-028"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activatePolicy"
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivatePolicy"
+    },
+    {
+      "buttonName": {
+        "eng": "Create Auth Policies",
+        "ara": "وقف التشغيل",
+        "fra": "mettre hors service"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "createAuthPolicys"
+    },
+    {
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "/admin/resources/policy/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "edit"
+    },
+    {
+      "buttonName": {
+        "eng": "Create Policy",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/policy/create",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+        "name": "id",
+        "showInListView": "true",
+        "label": { "eng": "ID", "ara": "اسم المركز", "fra": "Nom du centre" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""  
+    },
+    {
+        "name": "name",
+        "showInListView": "true",
+        "label": { "eng": "Name", "ara": "اسم المركز", "fra": "Nom du centre" },
+        "sortOrder": "3",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""  
+    },
+    {
+        "name": "desc",
+        "showInListView": "true",
+        "label": { "eng": "Desc", "ara": "اسم المركز", "fra": "Nom du centre" },
+        "sortOrder": "",
+        "showAsLink": "",
+        "linkType": "",
+        "LinkURL": ""  
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": { "eng": "IsActive", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""  
+    },
+    {
+      "name" :"AuthPolicies",
+      "showInListView": "true",
+      "label": { "eng": "Link", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "sortOrder": "",
+      "showAsLink": "true",
+      "linkType": "",
+      "LinkURL": "https://www.google.co.in/"  
+    }   
+],
+"paginator": {
+  "totalEntries": null,
+  "pageSize": "10",
+  "pageSizeList": [10, 20, 30, 40, 50]
+},
+"filterColumns": [
+  {
+    "filtername": "name",
+    "filterlabel": "Name",
+    "filterType": "equals",
+    "fieldType": "input",
+    "autocomplete": "false",
+    "dropdown": "false",
+    "datePicker": "false",
+    "apiName": "registrationcenters",
+    "fieldName": "name",
+    "methodCallName": ""
+  },  
+  {
+    "filtername": "isActive",
+    "filterlabel": "Status",
+    "filterType": "contains",
+    "fieldType": "input",
+    "autocomplete": "false",
+    "dropdown": "true",
+    "datePicker": "false",
+    "apiName": "registrationcenters",
+    "fieldName": "isActive",
+    "methodCallName": ""
+  }
+]
+}

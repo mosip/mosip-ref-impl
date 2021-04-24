@@ -1,0 +1,17 @@
+<span class="breadcrumb">
+        <a (click)="changePage('home')">Masterdata Types &nbsp;&nbsp;</a> / 
+        <a (click)="changePage('list')">&nbsp;&nbsp; {{mapping.name}} &nbsp;&nbsp;</a> / 
+        &nbsp;&nbsp; Detail View
+</span>
+<br><br>
+<app-mater-data-common-view
+        *ngIf="mapping && headerData && specFileData && !showSpinner"
+        [masterDataName]="mapping.name"
+        [headerData]="headerData"
+        [primaryData]="primaryData"
+        [secondaryData]="secondaryData"
+        [fields]="specFileData"
+        [primaryLang]="primaryLangCode"
+        [secondaryLang]="secondaryLangCode">
+</app-mater-data-common-view>
+<mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>

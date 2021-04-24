@@ -1,0 +1,397 @@
+{
+    "menuItems": {
+        "item1": {
+            "title": "HOME"
+        },
+        "item2": {
+            "title": "RESOURCES",
+            "subItem1": "MISP",
+            "subItem2": "Policy",
+            "subItem3": "Partner Service",
+            "subItem4": "Partner Manager"
+        },
+        "item3": {
+            "title": "MASTER DATA"
+        },
+        "item4": {
+            "title": "PACKET STATUS"
+        }
+    },    
+    "singleView": {
+        "errorMessages" : [
+            "No record found",
+            "A technical error has occurred"
+        ],
+        "buttonText": "OK",
+        "title": "Error"
+    }, 
+    "masterData": {
+        "master-data": "Master Data",
+        "total-no": "Total No",
+        "common": "Common",
+        "device-definition": "Device Definition",
+        "machine-definition": "Machine Definition",
+        "document-definition": "Document Definition",
+        "doc-category-mapping": "Doc Category - Type Mapping",
+        "category": "Category",
+        "mapped-documents": "Mapped Documents",
+        "unmapped-documents": "Unmapped Documents"
+    },
+    "pmanager":{
+        "status": "Status",
+        "language": "English",
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
+        "update": "Update",
+        "created-on": "Created On",
+        "created-by": "Created By",
+        "updated-on": "Updated On",
+        "updated-by": "Updated By",
+        "header": "Change Policy",
+        "name": "Policy Name",
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
+                "yesBtnText": "Yes",
+                "noBtnText": "No",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a Registration Center. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": "Partner is updated Successfully",
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the Partner. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Partner is created Successfully with Partner ID: ", " and Partner Name: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating Partner. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            }
+        }
+    },
+    "partner":{
+        "address1": "Address",
+        "header" : "Partner Service",
+        "name": "Organization",
+        "id":"Id",
+        "status": "Status",
+        "language": "English",
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
+        "update": "Update",
+        "partner-details": "Partner Details",
+        "created-on": "Created On",
+        "created-by": "Created By",
+        "updated-on": "Updated On",
+        "updated-by": "Updated By",
+        "registration-partner-name": "Organization Name",
+        "registration-partner-type": "Policy Name",
+        "contact-person": "Email Id",
+        "contact-number": "Contact Number",
+        "location-details": "Address Details",
+        "validationMessages":{
+            "partnerTypeCode": {
+                "required": "Policy Name is required"
+            },
+            "name": {
+                "required": "Organization Name is required",
+                "max-length": "Exceeded max length (128)"
+            },
+            "addressLine1": {
+                "required": "Address is required",
+                "max-length": "Exceeded max length (256)"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Registration Center in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
+                "yesBtnText": "Yes",
+                "noBtnText": "No",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a Registration Center. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Registration Center will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": "Partner is updated Successfully",
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the Partner. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Partner is created Successfully with Partner ID: ", " and Partner Status is: "],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating Partner. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            }
+        }
+    },    
+    "misp":{
+        "header" : "MISP",
+        "name": "Name",
+        "id":"Id",
+        "isActive" : "Misp Status",
+        "contact_no":"Phone No",
+        "status": "Status",
+        "address":"Address",
+        "misp-details": "Misp Details",
+        "created-on": "Created On",
+        "created-by": "Created By",
+        "updated-on": "Updated On",
+        "updated-by": "Updated By",
+        "email_id":"Email",
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "language": "English",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
+        "update": "Update",
+        "validationMessages": {
+            "name": {
+                "required": "Misp Name is required",
+                "max-length": "Exceeded max length (128)"
+            },
+            "address": {
+                "required": "Misp Address is required",
+                "max-length": "Exceeded max length (128)"
+            },
+            "phoneNo": {
+                "required": "Misp phoneNo is required"
+            },
+            "email": {
+                "required": "Misp email is required"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Misp in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
+                "yesBtnText": "Yes",
+                "noBtnText": "No",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Misp will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a misp. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Misp will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": "Misp is updated Successfully",
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the misp. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["MISP is created Successfully."],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a misp. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            },
+            "lunchTimeValidation": {
+                "title": "Error",
+                "message": "Please select center timings before selecting lunch timings",
+                "btnTxt": "Ok"
+            }
+        }
+    },
+    "validationMessages": {
+        "required": "Please fill both the ‘To’ and ‘From’ field to filter by the date range",
+        "range": "’To’ date cannot be before ‘From’ date'",
+        "invalid": "Please select a valid value for Date"
+    },
+    "actionMessages" : {
+        "decommission": {
+            "success-message": ["The Misp ", " is approved successfully"],
+            "success-title": "Success",
+            "error-message": "Cannot approve the Misp.Currently Misp is inactive",
+            "error-title": "Error",
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to Approve the Misp ", " ? \n You cannot undo this action once you click on Confirm."],
+            "confirmation-title": "Confirmation"
+        },
+        "activate": {
+            "success-message": ["Misp ", " is Activated Successfully"],
+            "success-title": "Success",
+            "error-message": "Could not be Activated",
+            "error-title": "Error",
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Activate the  Misp ", "? \n You can Deactivate it later if you wish. Till then it will be set as Active"],
+            "confirmation-title": "Confirmation"
+        },
+        "deactivate": {
+            "success-message": ["Misp ", " is Deactivated Successfully"],
+            "success-title": "Success",
+            "error-message": "Misp Could not be Deactivated",
+            "error-title": "Error",
+            "btnTxt": "Ok",
+            "yesBtnTxt": "Yes",
+            "noBtnTxt": "No",
+            "confirmation-message": ["Do you want to Deactivate the Misp ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
+            "confirmation-title": "Confirmation"
+        }
+    },
+    "policy":{
+        "header" : "Policy",
+        "name": "Name",
+        "desc":"Description",
+        "authPolicies" : "Allowed Auth Types",
+        "allowedKycAttributes" : "Allowed Kyc Attributes",
+        "id":"Id",
+        "isActive" : "Status",
+        "policy-details": "Policy Details",
+        "created-on": "Created On",
+        "created-by": "Created By",
+        "updated-on": "Updated On",
+        "updated-by": "Updated By",        
+        "edit": "Edit",
+        "create": "Create",
+        "cancel": "Cancel",
+        "language": "English",
+        "keyboard-tooltip": "Click for Virtual Keyboard (English)",
+        "update": "Update",
+        "validationMessages": {
+            "name": {
+                "required": "Policy Name is required",
+                "max-length": "Exceeded max length (128)"
+            },
+            "desc": {
+                "required": "Policy description is required",
+                "max-length": "Exceeded max length (128)"
+            }
+
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["You are about to create a Policy in ",". Please ensure that all the information is correct. Center ID will be generated once you Confirm"],
+                "yesBtnText": "Yes",
+                "noBtnText": "No",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Policy will be created only in Primary language. Do you still want to continue?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "You are about to update a policy. Please ensure that all the information is correct",
+                "yesBtnText": "Confirm",
+                "noBtnText": "Cancel",
+                "mandatorySecondaryFields": "You have not filled the mandatory data in the Secondary language. Misp will be created only in Primary language. Do you still want to continue?"
+            },
+            "update-success": {
+                "title": "Success",
+                "message": "policy is updated Successfully",
+                "btnTxt": "Ok"
+            },
+            "update-error": {
+                "title": "Error",
+                "message": "There was some issue in updating the policy. Please try again",
+                "btnTxt": "Ok"
+            },
+            "create-success": {
+                "title": "Success",
+                "message": ["Policy is created Successfully."],
+                "btnTxt": "Ok"
+            },
+            "create-error": {
+                "title": "Error",
+                "message": "There was some issue in creating a policy. Please try again",
+                "btnTxt": "Ok"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Are you sure you want to navigate away from this page? Any unsaved data will be lost.",
+                "yesBtnTxt": "Leave",
+                "noBtnTxt": "Stay"
+            },
+            "noData": {
+                "title": "Error",
+                "message": "No Data Found",
+                "btnTxt": "Ok"
+            },
+            "lunchTimeValidation": {
+                "title": "Error",
+                "message": "Please select center timings before selecting lunch timings",
+                "btnTxt": "Ok"
+            }
+        }
+    }
+}

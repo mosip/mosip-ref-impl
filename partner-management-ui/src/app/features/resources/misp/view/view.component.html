@@ -1,0 +1,27 @@
+<ng-container matColumnDef="actions">
+    <span><h3>MISP</h3></span>
+    <mat-card class="mat-elevation-z8">
+      <app-toolbar
+        *ngIf="
+          actionEllipsis && actionEllipsis  && paginatorOptions"
+        [buttonList]="actionEllipsis"
+        [paginationOptions]="paginatorOptions"
+        [filtersAppliedFlag]="filtersApplied"
+        (pageEvent)="pageEvent($event)"
+      ></app-toolbar>
+      <app-table
+        *ngIf="misps && displayedColumns && actionButtons"
+        [data]="misps"
+        [displayedColumns]="displayedColumns"
+        [buttonList]="actionButtons"
+        [sortData]="sortFilter"
+        [noDataFlag]="noData"
+        (sort)="getSortColumn($event)"
+      ></app-table>
+    </mat-card>
+    </ng-container>
+    <!-- <button mat-raised-button (click)="addColumn()"> Add column </button>
+  <button mat-raised-button (click)="removeColumn()"> Remove column </button>
+  <button mat-raised-button (click)="shuffle()"> Shuffle </button> -->
+    <!-- <ng-template #nodata><mat-spinner class="spinner-placer"></mat-spinner></ng-template> -->
+    
