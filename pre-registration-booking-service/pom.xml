@@ -10,6 +10,7 @@
                 <tag>HEAD</tag>
         </scm>
 
+	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
 	<version>1.1.5</version>
 	<name>pre-registration-booking-service</name>
@@ -19,7 +20,7 @@
 			<name>Mosip</name>
 			<email>mosip.emailnotifier@gmail.com</email>
 			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/mosip/pre-registration</organizationUrl>
+			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
 		</developer>
 	</developers>
 
