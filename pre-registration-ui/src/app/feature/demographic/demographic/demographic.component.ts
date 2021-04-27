@@ -124,7 +124,8 @@ export class DemographicComponent
   locationHeirarchies = [];
   validationMessage: any;
   dynamicFields = [];
-  
+  changeActions = [];
+  changeActionsNamesArr = [];  
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -175,7 +176,7 @@ export class DemographicComponent
     if (!this.dataModification) {
       if (this.isConsentMessage) this.consentMultiLangDeclaration(); /*this.consentDeclaration();*/ 
     }
-    this.showHideFormFields();
+    this.onChangeHandler("");
   }
   
   initializeDataCaptureLanguages = async () => {
@@ -473,7 +474,12 @@ export class DemographicComponent
           this.addValidators(control, controlId, language);
         } else if (i == 0) {
           const controlId = control.id;
-          this.userForm.addControl(controlId, new FormControl(""));
+          // if (control.controlType == "checkbox") {
+          //   this.userForm.addControl(controlId, new FormControl(""));
+          //   this.userForm.controls[controlId].setValue(false);
+          // } else {
+            this.userForm.addControl(controlId, new FormControl(""));
+          //}
           this.addValidators(control, controlId, language);
         }
       });
@@ -568,6 +574,7 @@ export class DemographicComponent
    */
   dropdownApiCall(controlObject: any) {
     if (this.isThisFieldInLocationHeirarchies(controlObject.id)) {
+      //console.log("dropdownApiCall : " + controlObject.id);
       if (this.getIndexInLocationHeirarchy(controlObject.id) !== 0) {
         this.selectOptionsDataArray[controlObject.id] = [];
         const locationIndex = this.getIndexInLocationHeirarchy(controlObject.id);
@@ -621,8 +628,8 @@ export class DemographicComponent
    * Using "json-rules-engine", these conditions are evaluated 
    * and fields are shown/hidden in the UI form.
    */
-  showHideFormFields() {
-    console.log("showHideFormFields");
+  async onChangeHandler(selectedFieldId) {
+    console.log("onChangeHandler");
     //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
       //populate form data in json for json-rules-engine to evalatute the conditions
       const identityFormData = this.createIdentityJSONDynamic(true);
@@ -645,57 +652,114 @@ export class DemographicComponent
           "age": currentAge
         }
       };
-      console.log(formIdentityData);
-      //for each uiField in UI specs, check of any "visibleCondition" is given
-      //if yes, then evaluate it with json-rules-engine
-      this.uiFields.forEach(uiField => {
-        //if no "visibleCondition" is given, then show the field
-        if (!uiField.visibleCondition || uiField.visibleCondition == "") {
-          uiField.isVisible = true;
-        }
-        else {
-          const resetHiddenFieldFunc = this.resetHiddenField;
-          let visibilityRule = new Rule({
-            conditions: uiField.visibleCondition,
-            onSuccess() {
-              //in "visibleCondition" is statisfied then show the field
-              uiField.isVisible = true;
-            },
-            onFailure() {
-              //in "visibleCondition" is not statisfied then hide the field
-              uiField.isVisible = false;
-              resetHiddenFieldFunc(uiField);
-            },
-            event: {
-              type: "message",
-              params: {
-                data: ""
-              }
-            }
-          });
-          this.jsonRulesEngine.addRule(visibilityRule);
-          //evaluate the visibleCondition
-          this.jsonRulesEngine
-            .run(formIdentityData)
-            .then(results => {
-              results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
-              this.jsonRulesEngine.removeRule(visibilityRule);
-            })
-            .catch((error) => {
-              console.log('err is', error);
-              this.jsonRulesEngine.removeRule(visibilityRule);
-            });
-        }
-      }, this.resetHiddenField
-      );
-      this.processConditionalRequiredValidations(formIdentityData);
+      await this.processShowHideFields(formIdentityData);
+      await this.processConditionalRequiredValidations(formIdentityData);
+      this.processChangeActions(selectedFieldId);      
     //}
   }
 
+  processShowHideFields = async (formIdentityData) => {
+    //for each uiField in UI specs, check of any "visibleCondition" is given
+    //if yes, then evaluate it with json-rules-engine
+    this.uiFields.forEach(uiField => {
+      //if no "visibleCondition" is given, then show the field
+      if (!uiField.visibleCondition || uiField.visibleCondition == "") {
+        uiField.isVisible = true;
+      }
+      else {
+        const resetHiddenFieldFunc = this.resetHiddenField;
+        let visibilityRule = new Rule({
+          conditions: uiField.visibleCondition,
+          onSuccess() {
+            //in "visibleCondition" is statisfied then show the field
+            uiField.isVisible = true;
+          },
+          onFailure() {
+            //in "visibleCondition" is not statisfied then hide the field
+            uiField.isVisible = false;
+            resetHiddenFieldFunc(uiField);
+          },
+          event: {
+            type: "message",
+            params: {
+              data: ""
+            }
+          }
+        });
+        this.jsonRulesEngine.addRule(visibilityRule);
+        //evaluate the visibleCondition
+        this.jsonRulesEngine
+          .run(formIdentityData)
+          .then(results => {
+            results.events.map(event => console.log('jsonRulesEngine for visibleConditions run successfully', event.params.data));
+            this.jsonRulesEngine.removeRule(visibilityRule);
+          })
+          .catch((error) => {
+            console.log('err is', error);
+            this.jsonRulesEngine.removeRule(visibilityRule);
+          });
+      }
+    }, this.resetHiddenField
+    );
+  }
+  processChangeActions = async (selectedFieldId) => {
+    this.uiFields.forEach(async uiField => {
+      if(selectedFieldId == uiField.id && uiField.changeAction && uiField.changeAction != "" &&  uiField.changeAction != null) {
+        let changeAction = uiField.changeAction;
+        let funcName = null;
+        let funcArgs = null;
+        if (changeAction.indexOf(":") != -1) {
+          const changeActionArr = changeAction.split(":");
+          if (changeActionArr.length > 1) {
+            funcName = changeAction.split(":")[0];
+            const argumentsStr = changeAction.split(":")[1];
+            if (argumentsStr.indexOf(",") != -1) {
+              funcArgs = argumentsStr.split(",");
+            } else {
+              funcArgs = argumentsStr;
+            }
+          }
+        } else {
+          funcName = changeAction;
+          funcArgs = null;
+        }
+        if (funcName !== null) {
+          try {
+            let changeActfunction = null;
+            if (!this.changeActionsNamesArr.includes(funcName)) {
+              const module = await import(`../../../../assets/changeActions/${funcName}.js`);
+              changeActfunction = module.default;
+              this.changeActions.push({
+                name: funcName,
+                functionDetails: module.default
+              });
+              this.changeActionsNamesArr.push(funcName);
+            } else {
+              let filtered = this.changeActions.filter(item => item.name == funcName);
+              if (filtered.length > 0) {
+                changeActfunction = filtered[0].functionDetails;
+              }
+            }
+            if (changeActfunction != null) {
+              if (funcArgs != null) {
+                 await changeActfunction.call(this, this, funcArgs, uiField);
+               } else {
+                await changeActfunction.call(this, this, uiField);
+               }
+            }
+          } catch (ex) {
+            console.log(ex);
+            console.log(`invalid change action defined in UI specs: ${changeAction} for field ${uiField.id}`);
+          }
+        }
+      }
+    });
+  }
   addRequiredValidator = (uiField, controlId, language) => {
     this.addValidators(uiField, controlId, language);
     //This required to force validations to apply
     this.userForm.controls[controlId].setValue(this.userForm.controls[controlId].value);
+    
   };
 
   /**
@@ -1680,7 +1744,7 @@ export class DemographicComponent
       }
     }
   }
-
+  
   /**
    * @description This is a dialoug box whenever an erroe comes from the server, it will appear.
    *

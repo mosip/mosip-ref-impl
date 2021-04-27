@@ -35,7 +35,7 @@
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <input matInput [formControlName]="field.id + '_' + dataCaptureLanguage"
-                              (change)="showHideFormFields()"
+                              (change)="onChangeHandler(field.id + '_' + dataCaptureLanguage)"
                               (focusout)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)"
                               (input)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)" #keyboardRef
                               #input />
@@ -52,7 +52,7 @@
                       <ng-container *ngIf="field.controlType === 'checkbox'">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-checkbox class="form_checkBox" [formControlName]="field.id"
-                            (change)="showHideFormFields();">
+                            (change)="onChangeHandler(field.id);">
                             <span *ngFor="let lang of dataCaptureLanguages;index as langIndex">
                               <span *ngIf="langIndex !== 0"> / </span>
                               <mat-label class="form_checkBox">{{field.labelName[lang]}}</mat-label>
@@ -64,7 +64,7 @@
                       <ng-container *ngIf="field.controlType === 'button'">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-button-toggle-group class="btn_grp" [formControlName]="field.id"
-                            (change)="showHideFormFields();">
+                            (click)="onChangeHandler(field.id);">
                             <ng-container *ngFor="let dropdown of selectOptionsDataArray[field.id]">
                               <span *ngIf="dropdown.languageCode === dataCaptureLanguage">
                                 <mat-button-toggle class="btn_grp mat-button-toggle" value="{{dropdown.valueCode}}"
@@ -101,7 +101,7 @@
                               <ng-container *ngFor="let dropdown of selectOptionsDataArray[field.id]">
                                 <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
                                   [value]="dropdown.valueCode"
-                                  (click)="resetLocationFields(field.id);showHideFormFields();"
+                                  (click)="resetLocationFields(field.id);onChangeHandler(field.id);"
                                   title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
                                   {{ dropdown.valueName }}
                                 </mat-option>
@@ -126,15 +126,15 @@
                             <div class="user__date">
                               <mat-form-field>
                                 <input matInput placeholder="{{ 'demographic.date_dd' | translate }}" #dd [value]="date"
-                                  (change)="showHideFormFields()" (focusout)="onDOBChange();showHideFormFields();" />
+                                  (change)="onChangeHandler(field.id)" (focusout)="onDOBChange();onChangeHandler(field.id);" />
                               </mat-form-field>
                               <mat-form-field>
                                 <input matInput placeholder="{{ 'demographic.date_mm' | translate }}" [value]="month"
-                                  #mm (focusout)="onDOBChange();showHideFormFields();" (change)="showHideFormFields()" />
+                                  #mm (focusout)="onDOBChange();onChangeHandler(field.id);" (change)="onChangeHandler(field.id)" />
                               </mat-form-field>
                               <mat-form-field>
                                 <input matInput placeholder="{{ 'demographic.date_yyyy' | translate }}" [value]="year"
-                                  #yyyy (focusout)="onDOBChange();showHideFormFields();" (change)="showHideFormFields()" />
+                                  #yyyy (focusout)="onDOBChange();onChangeHandler(field.id);" (change)="onChangeHandler(field.id)" />
                               </mat-form-field>
                             </div>
                             <div class="user__pref">
@@ -143,8 +143,8 @@
                             <div class="user__age">
                               <mat-form-field>
                                 <input matInput tabindex="-1" placeholder="{{ 'demographic.label_age' | translate }}"
-                                  [value]="currentAge" #age (change)="showHideFormFields()"
-                                  (focusout)="onAgeChange();showHideFormFields();" />
+                                  [value]="currentAge" #age (change)="onChangeHandler(field.id)"
+                                  (focusout)="onAgeChange();onChangeHandler(field.id);" />
                               </mat-form-field>
                               <div class="user__age--years">
                                 {{ "demographic.text_years" | translate }}
@@ -169,7 +169,7 @@
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
-                            <input matInput [formControlName]="field.id" (change)="showHideFormFields()"
+                            <input matInput [formControlName]="field.id" (change)="onChangeHandler(field.id)"
                               #input />
                           </mat-form-field>
                         </span>
