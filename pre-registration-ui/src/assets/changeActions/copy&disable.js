@@ -1,6 +1,6 @@
 const copyanddisable = async (context, args, uiField) => {
   console.log("copyanddisable called");
-  if (args.length > 1) {
+  if (args.length > 0) {
     let checkboxVal = context.userForm.controls[`${uiField.id}`].value;
     args.forEach((arg) => {
       let controlsArr = arg.split("=");

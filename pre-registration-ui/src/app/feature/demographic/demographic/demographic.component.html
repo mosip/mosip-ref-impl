@@ -35,7 +35,7 @@
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <input matInput [formControlName]="field.id + '_' + dataCaptureLanguage"
-                              (change)="onChangeHandler(field.id + '_' + dataCaptureLanguage)"
+                              (change)="onChangeHandler(field.id)"
                               (focusout)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)"
                               (input)="transliterateFieldValue(field.id, dataCaptureLanguage, $event)" #keyboardRef
                               #input />
