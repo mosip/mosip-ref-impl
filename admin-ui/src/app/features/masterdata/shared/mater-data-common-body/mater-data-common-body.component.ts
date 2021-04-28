@@ -162,6 +162,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "holiday"){
         this.pageName = "Holiday";
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
+      }else if(url === "dynamicfields"){
+        this.pageName = "Dynamic Field";
+        this.primaryData = {"name":"","description":"","dataType":"","fieldVal": "","langCode":this.primaryLang};
       }
     }else{
       
@@ -207,6 +210,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Document Category";
       }else if(url === "holiday"){
         this.pageName = "Holiday";
+      }else if(url === "dynamicfields"){
+        this.pageName = "Dynamic Field";
       }
     }
     this.setSecondaryFrom();
@@ -222,6 +227,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }else if(pageName ==='Machine Specification'){
       this.showSecondaryForm = false;
     }else if(pageName ==='Machine Type'){
+      this.showSecondaryForm = false;
+    }else if(pageName ==='Dynamic Field'){
       this.showSecondaryForm = false;
     }else{
       this.showSecondaryForm = true;
@@ -305,6 +312,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(this.url === "document-categories"){
         this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
         this.secondaryData.code = this.primaryData.code;
+      }else if(this.url === "device-specs"){
+        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+      }else if(this.url === "dynamicfields"){
+        this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": "","langCode":this.primaryLang};
       }
     }
   }
@@ -426,12 +437,19 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   changePage(location: string) {
-    if (location === 'home') {
-      this.router.navigateByUrl('admin/masterdata/home');
-    } else if (location === 'list') {
+    let url = this.router.url.split('/');
+    if(url[3] === "dynamicfields"){
       this.router.navigateByUrl(
-        `admin/masterdata/${this.masterdataType}/view`
+        `admin/masterdata/${this.masterdataType}/${url[4]}/view`
       );
+    }else{
+      if (location === 'home') {
+        this.router.navigateByUrl('admin/masterdata/home');
+      } else if (location === 'list') {
+        this.router.navigateByUrl(
+          `admin/masterdata/${this.masterdataType}/view`
+        );
+      }
     }
   }
 
@@ -547,9 +565,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
-                        this.router.navigateByUrl(
-                          `admin/masterdata/${this.masterdataType}/view`
-                        );
+                        if(this.router.url.split('/')[3] === "dynamicfields"){
+                          this.router.navigateByUrl(
+                            `admin/masterdata/${this.masterdataType}/${this.router.url.split('/')[4]}/view`
+                          );
+                        }else{
+                          this.router.navigateByUrl(
+                            `admin/masterdata/${this.masterdataType}/view`
+                          );
+                        }                        
                       });
                   } else {
                     this.showErrorPopup(updateResponse.errors[0].message);
@@ -560,9 +584,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
               this.showMessage(url)
                 .afterClosed()
                 .subscribe(() => {
-                  this.router.navigateByUrl(
-                    `admin/masterdata/${this.masterdataType}/view`
-                  );
+                  if(this.router.url.split('/')[3] === "dynamicfields"){
+                    this.router.navigateByUrl(
+                      `admin/masterdata/${this.masterdataType}/${this.router.url.split('/')[4]}/view`
+                    );
+                  }else{
+                    this.router.navigateByUrl(
+                      `admin/masterdata/${this.masterdataType}/view`
+                    );
+                  }
                 });
             }
           } else {
@@ -630,9 +660,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
-                        this.router.navigateByUrl(
-                          `admin/masterdata/${this.masterdataType}/view`
-                        );
+                        if(this.router.url.split('/')[3] === "dynamicfields"){
+                          this.router.navigateByUrl(
+                            `admin/masterdata/${this.masterdataType}/${this.router.url.split('/')[4]}/view`
+                          );
+                        }else{
+                          this.router.navigateByUrl(
+                            `admin/masterdata/${this.masterdataType}/view`
+                          );
+                        }
                       });
                   } else {
                     this.showErrorPopup(updateResponse.errors[0].message);
@@ -645,9 +681,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
-                        this.router.navigateByUrl(
-                          `admin/masterdata/${this.masterdataType}/view`
-                        );
+                        if(this.router.url.split('/')[3] === "dynamicfields"){
+                          this.router.navigateByUrl(
+                            `admin/masterdata/${this.masterdataType}/${this.router.url.split('/')[4]}/view`
+                          );
+                        }else{
+                          this.router.navigateByUrl(
+                            `admin/masterdata/${this.masterdataType}/view`
+                          );
+                        }
                       });
                   } else {
                     this.showErrorPopup(updateResponse.errors[0].message);
@@ -659,9 +701,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 this.showMessage(url)
                   .afterClosed()
                   .subscribe(() => {
-                    this.router.navigateByUrl(
-                      `admin/masterdata/${this.masterdataType}/view`
-                    );
+                    if(this.router.url.split('/')[3] === "dynamicfields"){
+                      this.router.navigateByUrl(
+                        `admin/masterdata/${this.masterdataType}/${this.router.url.split('/')[4]}/view`
+                      );
+                    }else{
+                      this.router.navigateByUrl(
+                        `admin/masterdata/${this.masterdataType}/view`
+                      );
+                    }
                   });
             }
           } else {

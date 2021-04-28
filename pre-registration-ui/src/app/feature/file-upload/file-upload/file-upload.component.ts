@@ -126,6 +126,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.getIdentityJsonFormat();
+    console.log("mayura uiFields");
+    console.log(this.uiFields);
     this.getFileSize();
     this.getPrimaryLabels();
     this.allowedFiles = this.config

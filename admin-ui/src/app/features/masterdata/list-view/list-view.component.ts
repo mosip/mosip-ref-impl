@@ -142,9 +142,15 @@ export class ListViewComponent implements OnDestroy {
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(
+    if(this.activatedRoute.snapshot.params.dynamicfieldtype){
+      this.router.navigateByUrl(
+      `admin/masterdata/${this.activatedRoute.snapshot.params.type}/${this.activatedRoute.snapshot.params.dynamicfieldtype}/view?${url}`
+      );
+    }else{
+      this.router.navigateByUrl(
       `admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`
-    );
+      );
+    }
   }
   pageEvent(event: any) {
     const filters = Utils.convertFilter(
@@ -154,9 +160,15 @@ export class ListViewComponent implements OnDestroy {
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(
+    if(this.activatedRoute.snapshot.params.dynamicfieldtype){
+      this.router.navigateByUrl(
+      `admin/masterdata/${this.activatedRoute.snapshot.params.type}/${this.activatedRoute.snapshot.params.dynamicfieldtype}/view?${url}`
+      );
+    }else{
+      this.router.navigateByUrl(
       `admin/masterdata/${this.activatedRoute.snapshot.params.type}/view?${url}`
-    );
+      );
+    }    
   }
 
   getMasterDataTypeValues(language: string) {
@@ -176,9 +188,12 @@ export class ListViewComponent implements OnDestroy {
       this.sortFilter = filters.sort;
       if(this.sortFilter.length == 0){
         this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
-      }
+      }     
       this.requestModel = new RequestModel(null, null, filters);
-      console.log(JSON.stringify(this.requestModel));
+      if(this.activatedRoute.snapshot.params.dynamicfieldtype){        
+        this.requestModel.request.filters.push({columnName: "name", type: "contains", value: this.activatedRoute.snapshot.params.dynamicfieldtype});
+      }
+      console.log("this.requestModel>>>"+JSON.stringify(this.requestModel.request));
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
         .subscribe(({ response }) => {
@@ -193,23 +208,6 @@ export class ListViewComponent implements OnDestroy {
               console.log(this.masterData);
             } else {
               this.noData = true;
-              // this.dialog
-              // .open(DialogComponent, {
-              //    data: {
-              //     case: 'MESSAGE',
-              //     title: this.errorMessages.noData.title,
-              //     message: this.errorMessages.noData.message,
-              //     btnTxt: this.errorMessages.noData.btnTxt
-              //    } ,
-              //   width: '700px'
-              // })
-              // .afterClosed()
-              // .subscribe(result => {
-              //   console.log('dislog is closed');
-              //   this.router.navigateByUrl(
-              //     `admin/masterdata/${this.activatedRoute.snapshot.params.type}/view`
-              //   );
-              // });
             }
           } else {
             this.dialog

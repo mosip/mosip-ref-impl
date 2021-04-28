@@ -301,7 +301,7 @@
             },
             "update-success": {
                 "title": "Success",
-                "message": ["Device details are updated successfully. \n Device ID: ", " \n CenDeviceter Name: "],
+                "message": ["Device details are updated successfully. \n Device ID: ", " \n Device Name: "],
                 "btnTxt": "Ok"
             },
             "update-error": {

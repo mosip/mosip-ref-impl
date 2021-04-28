@@ -161,6 +161,7 @@ export class CreateComponent{
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
     if (event.source.selected) {
+      this.primaryForm.controls.regCenterId.setValue('');
       this.getCenterDetails(event.source.value);
     }
   }
@@ -169,7 +170,7 @@ export class CreateComponent{
     this.dataStorageService
       .getFiltersCenterDetailsBasedonZone(this.primaryLang, zoneCode)
       .subscribe(response => {
-        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
+        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;        
       });
   }
 
@@ -196,7 +197,7 @@ export class CreateComponent{
             this.dropDownValues.zone.primary[0].code
           );
           this.primaryForm.controls.zone.disable();
-        }
+        }        
       });
   }
 

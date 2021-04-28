@@ -91,6 +91,8 @@ export class TableComponent implements OnInit, OnChanges {
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     if (specData.callBackFunction && specData.callBackFunction !== '') {
+      console.log("selectedRow id.idKey>>>"+id.idKey);
+      console.log("data>>>"+JSON.stringify(data));
       this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
     }
   }

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
 import { AuditService } from 'src/app/core/services/audit.service';
-
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-master-data',
@@ -16,7 +16,6 @@ import { AuditService } from 'src/app/core/services/audit.service';
 export class MasterDataComponent implements OnInit {
 
   primaryLang: string;
-  secondaryLang: string;
 
   masterDataCommonList: any[];
   masterDataDeviceList: any[];
@@ -26,13 +25,11 @@ export class MasterDataComponent implements OnInit {
 
   constructor(private dataService: DataStorageService,
               private router: Router,
+              private headerService: HeaderService,
               private appConfigService: AppConfigService,
               private translateService: TranslateService,
               private auditService: AuditService) {
-    // tslint:disable-next-line:no-string-literal
-    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
-    // tslint:disable-next-line:no-string-literal
-    this.secondaryLang = appConfigService.getConfig()['secondaryLangCode'];
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     translateService.use(this.primaryLang);
   }
 
@@ -57,6 +54,10 @@ export class MasterDataComponent implements OnInit {
     this.auditService.audit(2, item.auditEventId, item.label[this.primaryLang]);
     console.log('Single Item', item.actionURL);
     this.router.navigateByUrl(item.actionURL);
+  }
+
+  dynamicFeildNavigate(item: any) {
+    this.router.navigateByUrl('admin/masterdata/dynamicfields/'+item+'/view');
   }
 
 }

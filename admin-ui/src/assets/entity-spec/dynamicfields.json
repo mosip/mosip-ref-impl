@@ -32,7 +32,7 @@
         "fra": "modifier"
       },
       "actionURL": "",
-      "redirectURL": "/admin/masterdata/gender-type/single-view/$id",
+      "redirectURL": "/admin/masterdata/dynamicfields/single-view/$id",
       "showIn": "Ellipsis",
       "validations": "",
       "callBackFunction": "centerEdit"
@@ -46,7 +46,7 @@
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
       "actionURL": "",
-      "redirectURL": "admin/masterdata/gender-type/create",
+      "redirectURL": "admin/masterdata/dynamicfields/create",
       "showIn": "Button",
       "validations": ""
     },
@@ -62,11 +62,11 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "code",
+      "name": "name",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
-      "sortOrder": "3",
+      "label": { "eng": " Name", "ara": "اسم", "fra": "prénom" },
+      "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
@@ -74,11 +74,35 @@
       "ismandatory": "true"
     },
     {
-      "name": "genderName",
+      "name": "description",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": " Gender Name", "ara": "اسم", "fra": "prénom" },
-      "sortOrder": "",
+      "label": { "eng": "Description", "ara": "الشفرة", "fra": "Code" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },  
+    {
+      "name": "dataType",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Data Type", "ara": "الشفرة", "fra": "Code" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },    
+    {
+      "name": "fieldVal",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Value", "ara": "الشفرة", "fra": "Code" },
+      "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
@@ -157,14 +181,14 @@
   },
   "filterColumns":  [
     {
-      "filtername": "genderName",
+      "filtername": "name",
       "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
       "datePicker": "false",
-      "apiName": "machinetypes",
-      "fieldName": "genderName",
+      "apiName": "dynamicfields",
+      "fieldName": "name",
       "methodCallName": ""
     },
     {
@@ -174,7 +198,7 @@
       "autocomplete": "false",
       "dropdown": "true",
       "datePicker": "false",
-      "apiName": "machinetypes",
+      "apiName": "dynamicfields",
       "fieldName": "isActive",
       "methodCallName": ""
     }

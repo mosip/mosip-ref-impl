@@ -216,30 +216,6 @@ export const masterdataMapping = {
     idKey: 'postalCode',
     headerName: 'Location'
   },
-  'gender-type': {
-    apiName: 'gendertypes',
-    specFileName: 'gender-types',
-    name: {
-      eng: 'Gender',
-      ara: 'جنس',
-      fra: 'Le sexe'
-    },
-    nameKey: 'genderName',
-    idKey: 'code',
-    headerName: 'Gender Type'
-  },
-  title: {
-    apiName: 'title',
-    specFileName: 'titles',
-    name: {
-      eng: 'Titles',
-      ara: 'العناوين',
-      fra: 'Les titres'
-    },
-    nameKey: 'titleName',
-    idKey: 'code',
-    headerName: 'Title'
-  },
   templates: {
     apiName: 'templates',
     specFileName: 'templates',
@@ -336,7 +312,7 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Individual Type'
   },
-  dynamicfield: {
+  dynamicfields: {
     apiName: 'dynamicfields',
     specFileName: 'dynamicfields',
     name: {
@@ -345,7 +321,7 @@ export const masterdataMapping = {
       "fra": "Champ dynamique"
     },
     nameKey: 'name',
-    idKey: 'code',
+    idKey: 'id',
     headerName: 'Dynamic Field'
   },
   documentCategoryMapping: {
@@ -390,7 +366,8 @@ export const ListViewIdKeyMapping = {
   holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' },
   masterdataupload : { idKey: 'transcationId', auditEventId: 'ADM-081' },
   packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' },
-  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' }
+  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' },
+  dynamicfields : { idKey: 'id', auditEventId: 'ADM-084' }
   
 };
 
@@ -463,7 +440,7 @@ export const FilterMapping = {
     apiName: 'individualtypes',
     specFileName: 'individual-types'
   },
-  dynamicfield: {
+  dynamicfields: {
     apiName: 'dynamicfields',
     specFileName: 'dynamicfields'
   }
