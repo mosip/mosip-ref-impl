@@ -56,8 +56,11 @@ export class HeaderService {
   }
 
   getUserPreferredLanguage(): string {
-    this.userPreferredLanguage = "eng";
-    return this.userPreferredLanguage;
+    if(this.userPreferredLanguage){
+      return this.userPreferredLanguage;
+    }else{
+      return "null";
+    }    
   }
 
 }

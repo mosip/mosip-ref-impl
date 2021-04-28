@@ -15,6 +15,19 @@
         },
         "item4": {
             "title": "État du paquet"
+        },
+        "item5": {
+            "title": "Transfert groupé",
+            "subItem1": "Données de base",
+            "subItem2": "Paquets"
+        },
+        "item6": {
+            "title": "Gestionnaire de clés",
+            "subItem1": "GénérerCSR",
+            "subItem2": "Générer la clé principale",
+            "subItem3": "Obtenir un certificat",
+            "subItem4": "Télécharger le certificat",
+            "subItem5": "Télécharger un autre certificat de domaine"
         }
     },
     "center": {
@@ -271,7 +284,7 @@
             },
             "update-success": {
                 "title": "Succès",
-                "message": ["Les détails de l'appareil sont mis à jour avec succès. \n ID de périphérique:", "\n Nom du CenDeviceter:"],
+                "message": ["Les détails de l'appareil sont mis à jour avec succès. \n ID de périphérique:", "\n Nom du Device:"],
                 "btnTxt": "D'accord"
             },
             "update-error": {
@@ -313,11 +326,50 @@
         "validity": "Date valide heure",
         "isActive": "C'est actif",
         "zone": "Zone",
-        "language": "French",
+        "language": "français",
+        "edit": "Éditer",
+        "create": "Créer",
+        "cancel": "Annuler",
+        "status": "Statut",
+        "publicKey": "Clé publique",
+        "signPublicKey": "Signer la clé publique",
+        "keyboard-tooltip": "Cliquez pour le clavier virtuel (français)",
         "errorMessages": {
             "title": "Erreur",
             "message": "Aucune donnée disponible",
             "btnTxt": "D'accord"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "Le nom de la machine est obligatoire"
+            },
+            "serialNumber": {
+                "required": "Le numéro de série est requis"
+            },
+            "macAddress": {
+                "required": "L'adresse MAC est requise"
+            },
+            "ipAddress": {
+                "required": "L'adresse IP est requise"
+            },
+            "validity": {
+                "required": "La validité est requise"
+            },
+            "isActive": {
+                "required": "Le statut est requis"
+            },
+            "zone": {
+                "required": "La zone administrative est requise"
+            },
+            "machineSpecId": {
+                "required": "L'ID de spécification des machines est requis"
+            },
+            "publicKey": {
+                "required": "La clé publique est requise"
+            },
+            "signPublicKey": {
+                "required": "La signature de la clé publique est requise"
+            }
         }
     },
     "masterData": {

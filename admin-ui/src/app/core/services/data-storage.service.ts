@@ -74,7 +74,7 @@ export class DataStorageService {
   createMasterData(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
 
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
 
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url],
@@ -113,17 +113,21 @@ export class DataStorageService {
   updateData(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
 
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
-
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
+    let queryParam = "";
+    if(url === "dynamicfields"){
+      queryParam = "?id="+data.request.id;
+      delete data.request.id;
+    }
     return this.http.put(
-      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url],
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url] + queryParam,
       data
     );
   }
 
   updateDataStatus(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
 
     return this.http.patch(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url]+'?isActive='+data.request.isActive+"&"+Object.keys(data["request"])[0]+"="+data["request"][Object.keys(data["request"])[0]],
@@ -259,7 +263,7 @@ export class DataStorageService {
 
   getMissingData(langCode: string, fieldName: string): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blacklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
     return this.http.get(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url] + `/missingids/${langCode}?fieldName=${fieldName}`
     );

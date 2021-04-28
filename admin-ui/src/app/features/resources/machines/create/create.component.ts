@@ -167,6 +167,7 @@ export class CreateComponent {
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
     if (event.source.selected) {
+      this.primaryForm.controls.regCenterId.setValue('');
       this.getCenterDetails(event.source.value);
     }
   }
@@ -233,7 +234,7 @@ export class CreateComponent {
       publicKey: ['', Validators.required],
       signPublicKey: ['', Validators.required],
       machineSpecId: ['', Validators.required],
-      regCenterId: ['', [Validators.required]]
+      regCenterId: ['']
     });
   }
 

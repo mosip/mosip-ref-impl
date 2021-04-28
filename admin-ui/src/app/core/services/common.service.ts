@@ -595,6 +595,8 @@ export class CommonService {
           }else{
             dynamicObject = {"code":data.code}
           }
+        }else if(url === "dynamicfields"){
+          dynamicObject = {"id":data.id}
         }
         
         dynamicObject.isActive = true;
@@ -623,7 +625,6 @@ export class CommonService {
     }
     this.confirmationPopup('deactivate', data).afterClosed().subscribe(res => {
       if (res) {
-
         let url = this.router.url.split('/')[3];
         this.auditService.audit(18, 'ADM-100', 'deactivate');
         let dynamicObject = null;
@@ -687,6 +688,8 @@ export class CommonService {
           }else{
             dynamicObject = {"code":data.code}
           }
+        }else if(url === "dynamicfields"){
+          dynamicObject = {"id":data.id}         
         }
         dynamicObject.isActive = false;
         this.updateData('deactivate', dynamicObject, data);

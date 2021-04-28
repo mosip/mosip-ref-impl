@@ -39,7 +39,6 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
   actionEvent(buttonAction) {
     console.log(buttonAction);
     if (buttonAction.actionListType === 'action') {
-      console.log(buttonAction.actionListType);
       this.auditService.audit(9, 'ADM-082', {
         buttonName: buttonAction.buttonName.eng,
         masterdataName: this.router.url.split('/')[
@@ -49,14 +48,17 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
       this.openFilterDialog(buttonAction.actionURL);
     }
     if (buttonAction.actionListType === 'redirect') {
-      console.log(buttonAction.actionListType);
       this.auditService.audit(9, 'ADM-083', {
         buttonName: buttonAction.buttonName.eng,
         masterdataName: this.router.url.split('/')[
           this.router.url.split('/').length - 2
         ]
       });
-      this.router.navigateByUrl(buttonAction.redirectURL);
+      if("admin/masterdata/dynamicfields/create" === buttonAction.redirectURL){
+        this.router.navigateByUrl("admin/masterdata/dynamicfields/"+this.router.url.split('/')[4]+"/create");
+      }else{
+        this.router.navigateByUrl(buttonAction.redirectURL);
+      }      
     }
   }
   openFilterDialog(action): void {
