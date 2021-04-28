@@ -37,7 +37,7 @@ import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/
 import { Subscription } from "rxjs";
 import { Engine, Rule } from 'json-rules-engine';
 import moment from 'moment';
-import identityStubJson from "../../../../assets/identity-spec.json";
+import identityStubJson from "../../../../assets/identity-spec1.json";
 
 /**
  * @description This component takes care of the demographic page.
@@ -654,7 +654,7 @@ export class DemographicComponent
       };
       await this.processShowHideFields(formIdentityData);
       await this.processConditionalRequiredValidations(formIdentityData);
-      this.processChangeActions(selectedFieldId);      
+      await this.processChangeActions(selectedFieldId);      
     //}
   }
 
@@ -716,7 +716,7 @@ export class DemographicComponent
             if (argumentsStr.indexOf(",") != -1) {
               funcArgs = argumentsStr.split(",");
             } else {
-              funcArgs = argumentsStr;
+              funcArgs = [argumentsStr];
             }
           }
         } else {
@@ -1663,6 +1663,14 @@ export class DemographicComponent
           let elementValue = identityObj[element];
           if (elementValue !== "" && elementValue !== null && elementValue !== undefined) {
             newIdentityObj[element] = elementValue;
+          }
+        } else if (typeof identityObj[element] === "boolean") {
+          let elementValue = identityObj[element];
+          if (elementValue == true) {
+            newIdentityObj[element] = true;
+          }
+          if (elementValue == false) {
+            newIdentityObj[element] = false;
           }
         }
       }
