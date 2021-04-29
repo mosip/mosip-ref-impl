@@ -116,7 +116,7 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	public void start() {
 
 		router.setRoute(
-				this.postUrl(vertx, MessageBusAddress.EXTERNAL_STAGE_BUS_IN, MessageBusAddress.EXTERNAL_STAGE_BUS_OUT));
+				this.postUrl(getVertx(), MessageBusAddress.EXTERNAL_STAGE_BUS_IN, MessageBusAddress.EXTERNAL_STAGE_BUS_OUT));
 		this.createServer(router.getRouter(), Integer.parseInt(port));
 	}
 

@@ -64,7 +64,7 @@ jobs:
     env:
       NAMESPACE: mosipdev
       SERVICE_NAME: registration-processor-external-stage
-      SERVICE_LOCATION: registration-processor/pre-processor/registration-processor-external-stage
+      SERVICE_LOCATION: registration-processor/registration-processor-external-stage
 
     steps:
     - uses: actions/checkout@v2
@@ -175,7 +175,7 @@ jobs:
     env:
       NAMESPACE: mosipdev
       SERVICE_NAME: registration-processor-external-integration-service
-      SERVICE_LOCATION: registration-processor/pre-processor/registration-processor-external-integration-service
+      SERVICE_LOCATION: registration-processor/registration-processor-external-integration-service
 
     steps:
     - uses: actions/checkout@v2
