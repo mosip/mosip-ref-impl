@@ -17,7 +17,14 @@
             <br /><br />
 
             <mat-form-field>
-              <input #keyboardRef #name (focus)="scrollPage(name, 'primary', 'name', 0)" formControlName="name" matInput
+              <input #keyboardRef #id (focus)="scrollPage(id, 'primary', 'id', 0)" formControlName="id" matInput
+                placeholder="{{
+                              'devices.id' | translate
+                            }}" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input #keyboardRef #name (focus)="scrollPage(name, 'primary', 'name', 1)" formControlName="name" matInput
                 placeholder="{{
                               'devices.name' | translate
                             }}" />
@@ -29,7 +36,7 @@
             </mat-form-field>
 
             <mat-form-field>
-              <input #keyboardRef #serialNumber (focus)="scrollPage(serialNumber, 'primary', 'serialNumber', 1)"
+              <input #keyboardRef #serialNumber (focus)="scrollPage(serialNumber, 'primary', 'serialNumber', 2)"
                 formControlName="serialNumber" matInput placeholder="{{
                               'devices.serialNumber' | translate
                             }}" />
@@ -41,7 +48,7 @@
             </mat-form-field>
 
             <mat-form-field>
-              <input #keyboardRef #macAddress (focus)="scrollPage(macAddress, 'primary', 'macAddress', 2)"
+              <input #keyboardRef #macAddress (focus)="scrollPage(macAddress, 'primary', 'macAddress', 3)"
                 formControlName="macAddress" matInput placeholder="{{
                               'devices.macAddress' | translate
                             }}" />
@@ -53,7 +60,7 @@
             </mat-form-field>
 
             <mat-form-field>
-              <input #keyboardRef #ipAddress (focus)="scrollPage(ipAddress, 'primary', 'ipAddress', 3)"
+              <input #keyboardRef #ipAddress (focus)="scrollPage(ipAddress, 'primary', 'ipAddress', 4)"
                 formControlName="ipAddress" matInput placeholder="{{
                               'devices.ipAddress' | translate
                             }}" />

@@ -234,6 +234,7 @@
         "title": "Master Data Upload"
     },
     "devices": {
+        "id":"Code",
         "title":"Devices",
         "header": "Device",
         "name": "Device Name",

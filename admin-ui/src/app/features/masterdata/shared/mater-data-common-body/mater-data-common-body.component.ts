@@ -164,7 +164,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
-        this.primaryData = {"name":"","description":"","dataType":"","fieldVal": "","langCode":this.primaryLang};
+        this.primaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
+        this.showPanel(this.pageName);
       }
     }else{
       
@@ -212,6 +213,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Holiday";
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
+        this.showPanel(this.pageName);
       }
     }
     this.setSecondaryFrom();
@@ -315,7 +317,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(this.url === "device-specs"){
         this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
       }else if(this.url === "dynamicfields"){
-        this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": "","langCode":this.primaryLang};
+        this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
       }
     }
   }
@@ -540,7 +542,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
       textToValidate = this.secondaryData.name;
     }else if(url === "holiday"){
       textToValidate = this.secondaryData.holidayName;
+    }else if(url === "dynamicfields"){
+      this.primaryData.fieldVal = JSON.parse(this.primaryData.fieldVal);
     }
+    
     if(this.isCreateForm){
       let request = new RequestModel(
         "",

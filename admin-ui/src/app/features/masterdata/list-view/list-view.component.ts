@@ -193,7 +193,6 @@ export class ListViewComponent implements OnDestroy {
       if(this.activatedRoute.snapshot.params.dynamicfieldtype){        
         this.requestModel.request.filters.push({columnName: "name", type: "contains", value: this.activatedRoute.snapshot.params.dynamicfieldtype});
       }
-      console.log("this.requestModel>>>"+JSON.stringify(this.requestModel.request));
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
         .subscribe(({ response }) => {
@@ -202,10 +201,8 @@ export class ListViewComponent implements OnDestroy {
             this.paginatorOptions.totalEntries = response.totalRecord;
             this.paginatorOptions.pageIndex = filters.pagination.pageStart;
             this.paginatorOptions.pageSize = filters.pagination.pageFetch;
-            console.log(this.paginatorOptions);
             if (response.data !== null) {
               this.masterData = response.data ? [...response.data] : [];
-              console.log(this.masterData);
             } else {
               this.noData = true;
             }
