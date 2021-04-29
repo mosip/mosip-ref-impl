@@ -217,6 +217,7 @@
         "title": "Erreur"
     },
     "devices": {
+        "id":"Code",
         "title":"Dispositifs",
         "header": "Dispositif",
         "name": "Nom de l'appareil",

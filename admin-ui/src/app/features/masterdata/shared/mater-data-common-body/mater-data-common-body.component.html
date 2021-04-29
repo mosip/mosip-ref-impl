@@ -15,7 +15,7 @@
                 <br /><br />
                 <div *ngFor="let field of fields; let i = index" class="mat-form1">
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name !== 'code'">
-                       <input
+                      <input
                         #keyboardRef
                         #{{field.name}}
                         (keyup)="captureValue($event, field.name, 'primary')"
@@ -26,6 +26,20 @@
                         }}"
                         [value]="primaryData[field.name]"
                         field.required
+                        *ngIf="field.name !== 'fieldVal'"
+                      />
+                      <input
+                        #keyboardRef
+                        #{{field.name}}
+                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (focus)="scrollPage(field.name, 'primary', field.name, i)"
+                        matInput
+                        placeholder="{{
+                          field.label[primaryLang] | translate
+                        }}"
+                        [value]="primaryData[field.name]"
+                        field.required
+                        *ngIf="field.name === 'fieldVal'"
                       />
                     </mat-form-field>
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && isCreateForm">

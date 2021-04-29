@@ -126,7 +126,7 @@ export class SingleViewComponent implements OnDestroy {
       }else if(this.masterdataType.toLowerCase() === "document-categories"){
         dynamicId = this.primaryData.code
       }
-      console.log("this.primaryData.isActive>>>"+this.primaryData.isActive);
+
       this.headerData = new HeaderModel(
         this.primaryData[this.mapping.idKey],
         this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
@@ -167,7 +167,12 @@ export class SingleViewComponent implements OnDestroy {
               if (response.response.data) {
                 this.data.push(response.response.data);
                 if (isPrimary) {
-                  this.primaryData = response.response.data[0];
+                  if(this.masterdataType.toLowerCase() === "dynamicfields"){
+                    this.primaryData = response.response.data[0];
+                    this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+                  }else{
+                    this.primaryData = response.response.data[0];
+                  }                  
                 } else {
                   this.secondaryData = response.response.data[0];
                   this.noRecordFound = true;
@@ -205,10 +210,19 @@ export class SingleViewComponent implements OnDestroy {
   }
 
   changePage(location: string) {
-    if (location === 'home') {
-      this.router.navigateByUrl('admin/masterdata/home');
-    } else if (location === 'list') {
-      this.router.navigateByUrl(`admin/masterdata/${this.masterdataType}/view`);
+    let url = this.router.url.split('/');
+    if(url[3] === "dynamicfields"){
+      this.router.navigateByUrl(
+        `admin/masterdata/${this.masterdataType}/${url[4]}/view`
+      );
+    }else{
+      if (location === 'home') {
+        this.router.navigateByUrl('admin/masterdata/home');
+      } else if (location === 'list') {
+        this.router.navigateByUrl(
+          `admin/masterdata/${this.masterdataType}/view`
+        );
+      }
     }
   }
 

@@ -218,7 +218,15 @@ export class CreateComponent{
   }
 
   initializePrimaryForm() {
+    const routeParts = this.router.url.split('/');
+    let id = [];
+    if (this.disableForms) {
+      id = [{ value: '', disabled: true }];
+    }else{
+      id = [''];
+    }
     this.primaryForm = this.formBuilder.group({
+      id: id,
       name: ['', [Validators.required]],
       serialNumber: ['', [Validators.required]],
       macAddress: ['', [Validators.required]],
@@ -246,18 +254,6 @@ export class CreateComponent{
       },
       disableClose: true
     }).afterClosed().subscribe(() => this.router.navigateByUrl('admin/resources/devices/view'));
-  }
-
-  setPrimaryData() {
-    this.primaryForm.controls.name.setValue(this.primaryData.name);
-    this.primaryForm.controls.serialNumber.setValue(this.primaryData.serialNum);
-    this.primaryForm.controls.macAddress.setValue(this.primaryData.macAddress);
-    this.primaryForm.controls.ipAddress.setValue(this.primaryData.ipAddress);
-    this.primaryForm.controls.validity.setValue(
-      Utils.formatDate(this.primaryData.validityDateTime)
-    );
-    this.primaryForm.controls.zone.setValue(this.primaryData.zone);
-    this.primaryForm.controls.publicKey.setValue(this.primaryData.publicKey);
   }
 
   setHeaderData() {
@@ -369,7 +365,7 @@ export class CreateComponent{
       this.primaryForm.controls.validity.value != "" ? this.primaryForm.controls.validity.value: null, 
       this.primaryForm.controls.ipAddress.value != "" ?this.primaryForm.controls.ipAddress.value: null,
       this.primaryForm.controls.regCenterId.value != "" ? this.primaryForm.controls.regCenterId.value: null,
-      "",           
+      this.primaryForm.controls.id.value,           
       false   
     );
     const primaryRequest = new RequestModel(
@@ -447,7 +443,7 @@ export class CreateComponent{
           this.initializeheader();
           this.setPrimaryFormValues();
           this.disableForms = false;
-          this.primaryForm.enable();
+          //this.primaryForm.enable();
         } else {
           this.showErrorPopup();
         }
@@ -465,6 +461,7 @@ export class CreateComponent{
     this.primaryForm.controls.ipAddress.setValue(this.data[0].ipAddress);
     this.primaryForm.controls.deviceSpecId.setValue(this.data[0].deviceSpecId);
     this.primaryForm.controls.regCenterId.setValue(this.data[0].regCenterId);
+    this.primaryForm.controls.id.setValue(this.data[0].id);
   }
 
   showMessage(type: string, data?: any) {

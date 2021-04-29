@@ -36,15 +36,6 @@
           },
           "actionURL": "admin/masterdata/templates/view",
           "auditEventId": "ADM-016"
-        },
-        {
-          "label": {
-            "eng": "Location Data",
-            "ara": "بيانات الموقع",
-            "fra": "Données de localisation"
-          },
-          "actionURL": "admin/masterdata/location/view",
-          "auditEventId": "ADM-015"
         }
       ],
       "deviceDefinition": [
