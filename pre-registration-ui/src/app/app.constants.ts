@@ -117,7 +117,6 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
   google_recaptcha_site_key: 'google.recaptcha.site.key',
   mosip_adult_age:'mosip.adult.age',
-  mosip_idschema_version:'mosip.idschema.version',
   preregistration_preview_fields:'preregistration.preview.fields'
 };
 

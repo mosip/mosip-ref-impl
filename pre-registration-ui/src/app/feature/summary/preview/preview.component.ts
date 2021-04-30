@@ -145,13 +145,15 @@ export class PreviewComponent implements OnInit {
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        console.log(response);
-        this.identityData = response["response"]["idSchema"]["identity"];
-        this.locationHeirarchy = [
-          ...response["response"]["idSchema"]["locationHierarchy"],
-        ];
+        //console.log(response);
+        let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
+        //console.log(jsonSpec)
+        this.identityData = jsonSpec["identity"];
         let locationHeirarchiesFromJson = [
-          ...response["response"]["idSchema"]["locationHierarchy"],
+          ...jsonSpec["locationHierarchy"],
+        ];
+        this.locationHeirarchy = [
+          ...jsonSpec["locationHierarchy"],
         ];
         if (Array.isArray(locationHeirarchiesFromJson[0])) {
           this.locationHeirarchies = locationHeirarchiesFromJson;

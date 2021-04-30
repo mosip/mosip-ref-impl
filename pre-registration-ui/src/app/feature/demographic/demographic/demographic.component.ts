@@ -126,6 +126,7 @@ export class DemographicComponent
   dynamicFields = [];
   changeActions = [];
   changeActionsNamesArr = [];  
+  identitySchemaVersion = "";
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -383,11 +384,13 @@ export class DemographicComponent
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         //response = identityStubJson;
-        console.log(response);
-        this.identityData = response["response"]["idSchema"]["identity"];
+        let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
+        this.identityData = jsonSpec["identity"];
         let locationHeirarchiesFromJson = [
-          ...response["response"]["idSchema"]["locationHierarchy"],
+          ...jsonSpec["locationHierarchy"],
         ];
+        this.identitySchemaVersion = response[appConstants.RESPONSE]["idSchemaVersion"];
+        console.log(`identitySchemaVersion: ${this.identitySchemaVersion}`);
         if (Array.isArray(locationHeirarchiesFromJson[0])) {
           this.locationHeirarchies = locationHeirarchiesFromJson;  
         } else {
@@ -424,10 +427,15 @@ export class DemographicComponent
         );
         this.setDropDownArrays();
         this.setLocations();
-       // this.setGender();
-       // this.setResident();
+      // this.setGender();
+      // this.setResident();
         this.setDynamicFieldValues();
         resolve(true);
+        
+      },
+      (error) => {
+        console.log(error);
+        this.onError(this.errorlabels.error, error);
       });
     });
   }
@@ -1630,9 +1638,9 @@ export class DemographicComponent
       } else {
         if (field.id == appConstants.IDSchemaVersionLabel) {
           if (field.type === 'string') {
-            identityObj[field.id] = this.config[appConstants.CONFIG_KEYS.mosip_idschema_version];
+            identityObj[field.id] = String(this.identitySchemaVersion);
           } else if (field.type === 'number') {
-            identityObj[field.id] = Number(this.config[appConstants.CONFIG_KEYS.mosip_idschema_version]);
+            identityObj[field.id] = Number(this.identitySchemaVersion);
           } 
         }
       }

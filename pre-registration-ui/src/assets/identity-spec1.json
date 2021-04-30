@@ -3,7 +3,8 @@
 	"version": null,
 	"responsetime": null,
 	"response": {
-		"idSchema": {
+		"idSchemaVersion": 0.6,
+		"jsonSpec": {
 			"locationHierarchy": [
 				[
 					"presentProvince",
