@@ -581,6 +581,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
                         }                        
                       });
                   } else {
+                    if(this.router.url.split('/')[3] === "dynamicfields"){
+                      this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+                    }
                     this.showErrorPopup(updateResponse.errors[0].message);
                   }
               });
@@ -601,6 +604,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 });
             }
           } else {
+            if(this.router.url.split('/')[3] === "dynamicfields"){
+              this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+            }
             this.showErrorPopup(updateResponse.errors[0].message);
           }
       });
@@ -676,6 +682,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
                         }
                       });
                   } else {
+                    if(this.router.url.split('/')[3] === "dynamicfields"){
+                      this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+                    }
                     this.showErrorPopup(updateResponse.errors[0].message);
                   }
                 });
@@ -697,6 +706,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
                         }
                       });
                   } else {
+                    if(this.router.url.split('/')[3] === "dynamicfields"){
+                      this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+                    }
                     this.showErrorPopup(updateResponse.errors[0].message);
                   }
                 });
@@ -718,6 +730,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
                   });
             }
           } else {
+            if(this.router.url.split('/')[3] === "dynamicfields"){
+              this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+            }
             this.showErrorPopup(updateResponse.errors[0].message);
           }
       });
