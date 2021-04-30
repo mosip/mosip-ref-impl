@@ -203,12 +203,15 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     });
   }
 
-  getLabelDetails(langCode, index) {
-    this.dataStorageService
+  async getLabelDetails(langCode, index) {
+    return new Promise((resolve) => {
+      this.dataStorageService
       .getI18NLanguageFiles(langCode)
       .subscribe((response) => {
         this.usersInfo[index].labelDetails.push(response["acknowledgement"]);
+        resolve(true);
       });
+    });
   }
 
   manipulateUserInfo() {
@@ -352,7 +355,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.sendNotification(this.applicantContactDetails, false);
     }, 500);
   }
-
 
   getTemplate() {
     return new Promise((resolve) => {
