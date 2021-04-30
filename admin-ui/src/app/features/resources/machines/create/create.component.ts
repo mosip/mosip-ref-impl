@@ -392,9 +392,7 @@ export class CreateComponent {
     this.dataStorageService
       .createMachine(primaryRequest)
       .subscribe((createResponse) => {
-        console.log('Primary Response' + createResponse);
-        if (!createResponse.errors) {
-      
+        if (!createResponse.errors) {      
               this.showMessage('create-success', createResponse.response)
                 .afterClosed()
                 .subscribe(() => {
@@ -402,7 +400,7 @@ export class CreateComponent {
                   this.router.navigateByUrl('admin/resources/machines/view');
                 });
             } else {
-          this.showMessage('create-error');
+          this.showMessage('create-error', createResponse);
         }
       });
   }
@@ -431,7 +429,6 @@ export class CreateComponent {
     this.dataStorageService
       .updateData(primaryRequest)
       .subscribe((createResponse) => {
-        console.log('Primary Response' + createResponse);
         if (!createResponse.errors) {
             this.showMessage('update-success', createResponse.response)
               .afterClosed()
@@ -440,7 +437,7 @@ export class CreateComponent {
                 this.router.navigateByUrl('admin/resources/machines/view');
               });
              } else {
-          this.showMessage('update-error');
+          this.showMessage('update-error', createResponse);
         }
       });
   }
@@ -489,18 +486,18 @@ export class CreateComponent {
   }
 
   showMessage(type: string, data ?: any) {
+    let message = "";
+    if(type === 'create-success' || type === 'update-success'){
+      message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
+    }else{
+      message = data.errors[0].message;
+    }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
-        message:
-          type === 'create-success' || type === 'update-success'
-            ? this.popupMessages[type].message[0] +
-              data.id +
-              this.popupMessages[type].message[1] +
-              data.name
-            : this.popupMessages[type].message,
+        message: message,
         btnTxt: this.popupMessages[type].btnTxt,
       },
     });
