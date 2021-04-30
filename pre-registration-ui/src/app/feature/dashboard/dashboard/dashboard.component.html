@@ -105,6 +105,7 @@
               <button
                 mat-button
                 class="footer-btn"
+                *ngIf="user.status === 'Pending_Appointment'"
                 [disabled]="disableModifyDataButton"
                 (click)="onModifyInformation(user)"
               >
