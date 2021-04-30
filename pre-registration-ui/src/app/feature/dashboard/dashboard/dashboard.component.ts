@@ -149,9 +149,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   getIdentityJsonFormat() {
     this.dataStorageService.getIdentityJson().subscribe((response) => {
-      this.identityData = response["response"]["idSchema"]["identity"];
+      let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
+      this.identityData = jsonSpec["identity"];
       let locationHeirarchiesFromJson = [
-        ...response["response"]["idSchema"]["locationHierarchy"],
+        ...jsonSpec["locationHierarchy"],
       ];
       if (Array.isArray(locationHeirarchiesFromJson[0])) {
         this.locationHeirarchies = locationHeirarchiesFromJson;

@@ -534,8 +534,8 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
-    const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-    //const url = "assets/identity-spec.json";
+    //const url = this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    let url = this.BASE_URL + this.PRE_REG_URL+ `uispec/latest`;
     return this.httpClient.get(url);
   }
 
@@ -561,7 +561,6 @@ export class DataStorageService {
   }
 
   getDynamicFieldsandValues(langCode) {
-    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
@@ -571,7 +570,6 @@ export class DataStorageService {
   }
 
   getDynamicFieldsandValuesForAllLang(pageNumber: string) {
-    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
