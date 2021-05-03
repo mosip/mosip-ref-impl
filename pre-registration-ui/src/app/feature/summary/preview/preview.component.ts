@@ -146,14 +146,11 @@ export class PreviewComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         //console.log(response);
-        let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
+        let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
         //console.log(jsonSpec)
-        this.identityData = jsonSpec["identity"];
+        this.identityData = identityJsonSpec["identity"];
         let locationHeirarchiesFromJson = [
-          ...jsonSpec["locationHierarchy"],
-        ];
-        this.locationHeirarchy = [
-          ...jsonSpec["locationHierarchy"],
+          ...identityJsonSpec["locationHierarchy"],
         ];
         if (Array.isArray(locationHeirarchiesFromJson[0])) {
           this.locationHeirarchies = locationHeirarchiesFromJson;
@@ -162,6 +159,8 @@ export class PreviewComponent implements OnInit {
           hierarchiesArray.push(locationHeirarchiesFromJson);
           this.locationHeirarchies = hierarchiesArray;
         }
+        this.locationHeirarchy = this.locationHeirarchies[0];
+        
         console.log(...this.locationHeirarchies);
         this.identityData.forEach((obj) => {
           if (
