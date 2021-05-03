@@ -119,7 +119,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
-    build-biosdk-client:
+  build-biosdk-client:
 
     runs-on: ubuntu-latest
     steps:
