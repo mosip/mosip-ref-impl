@@ -589,6 +589,7 @@ export class DemographicComponent
         const parentLocationName = this.getLocationNameFromIndex(controlObject.id, locationIndex - 1);
         let locationCode = this.userForm.get(`${parentLocationName}`).value;
         this.loadLocationData(locationCode, controlObject.id);
+       
       }
     }
   }
@@ -903,13 +904,14 @@ export class DemographicComponent
                 let codeValueModal: CodeValueModal = {
                   valueCode: element.code,
                   valueName: element.name,
-                  languageCode: dataCaptureLanguage,
+                  languageCode:  element.langCode,
                 };
                 if (this.selectOptionsDataArray[`${fieldName}`]) {
                   this.selectOptionsDataArray[`${fieldName}`].push(codeValueModal);
                 }
               });
             }
+            console.log(this.selectOptionsDataArray);
           },
           (error) => {
             console.log(error);

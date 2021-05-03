@@ -78,7 +78,7 @@
                           <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
                             <span *ngFor="let option of selectOptionsDataArray[field.id]">
                               <span
-                                *ngIf="option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
+                                *ngIf="option.languageCode !== dataCaptureLanguage && option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
                                 <span class="selectedOption">{{option.valueName}}</span>
                               </span>
                             </span>
@@ -109,10 +109,11 @@
                             </mat-select>
                           </mat-form-field>
                           <br>
+                          <p></p>
                           <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
-                            <span *ngFor="let option of selectOptionsDataArray[field.id]">
+                            <span *ngFor="let option of selectOptionsDataArray[field.id];index as k">   
                               <span
-                                *ngIf="option.valueCode === userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
+                                *ngIf="option.languageCode !== dataCaptureLanguage && option.valueCode == userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
                                 <span class="selectedOption">{{option.valueName}}</span>
                               </span>
                             </span>

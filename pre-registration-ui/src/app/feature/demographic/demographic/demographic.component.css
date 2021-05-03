@@ -7,6 +7,7 @@
 }
 
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  margin-bottom: 3px;
   color: #22a8c9;
 }
 
