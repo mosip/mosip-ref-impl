@@ -27,6 +27,7 @@ import io.mosip.kernel.core.authmanager.authadapter.model.AuthUserDetails;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.preregistration.booking.codes.RequestCodes;
 import io.mosip.preregistration.booking.dto.AvailabilityDto;
+import io.mosip.preregistration.booking.dto.BookingDataByRegIdDto;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
 import io.mosip.preregistration.booking.dto.BookingStatus;
 import io.mosip.preregistration.booking.dto.BookingStatusDTO;
@@ -34,6 +35,7 @@ import io.mosip.preregistration.booking.dto.DateTimeDto;
 import io.mosip.preregistration.booking.dto.MultiBookingRequest;
 import io.mosip.preregistration.booking.dto.MultiBookingRequestDTO;
 import io.mosip.preregistration.booking.dto.RegistrationCenterDto;
+import io.mosip.preregistration.booking.dto.SlotTimeDto;
 import io.mosip.preregistration.booking.entity.AvailibityEntity;
 import io.mosip.preregistration.booking.errorcodes.ErrorCodes;
 import io.mosip.preregistration.booking.errorcodes.ErrorMessages;
@@ -910,8 +912,8 @@ public class BookingService implements BookingServiceIntf {
 				DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern(format);
 				LocalDate fromDate = LocalDate.parse(fromDateStr, parseFormatter);
 				LocalDate toDate = LocalDate.parse(toDateStr, parseFormatter);
-
-				List<String> details = bookingDAO.findByBookingDateBetweenAndRegCenterId(fromDate, toDate, regCenterId);
+				Map<String, Map<LocalDate, SlotTimeDto>> idsWithSlotTime = new HashMap<String, Map<LocalDate, SlotTimeDto>>();
+				List<String> details = bookingDAO.findByBookingDateBetweenAndRegCenterId(fromDate, toDate, regCenterId,idsWithSlotTime);
 				PreRegIdsByRegCenterIdResponseDTO responseDTO = new PreRegIdsByRegCenterIdResponseDTO();
 				responseDTO.setPreRegistrationIds(details);
 				responseDTO.setRegistrationCenterId(regCenterId);
@@ -931,4 +933,42 @@ public class BookingService implements BookingServiceIntf {
 		return response;
 	}
 
+
+	@Override
+	public MainResponseDTO<BookingDataByRegIdDto> getBookedPreRegistrations(String fromDateStr, String toDateStr,
+			String regCenterId) {
+		log.info("sessionId", "idType", "id", "In getBookedPreRegistrations method of booking service ");
+		MainResponseDTO<BookingDataByRegIdDto> response = new MainResponseDTO<>();
+		response.setId(idUrlBookingByDate);
+		response.setVersion(versionUrl);
+		try {
+
+			if (toDateStr == null || toDateStr.isEmpty()) {
+				toDateStr = fromDateStr;
+			}
+			String format = "yyyy-MM-dd";
+			if (serviceUtil.validateFromDateAndToDate(fromDateStr, toDateStr, format)) {
+				DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern(format);
+				LocalDate fromDate = LocalDate.parse(fromDateStr, parseFormatter);
+				LocalDate toDate = LocalDate.parse(toDateStr, parseFormatter);
+				Map<String, Map<LocalDate, SlotTimeDto>> idsWithSlotTime = new HashMap<String, Map<LocalDate, SlotTimeDto>>();
+				bookingDAO.findByBookingDateBetweenAndRegCenterId(fromDate, toDate, regCenterId, idsWithSlotTime);
+				BookingDataByRegIdDto responseDTO = new BookingDataByRegIdDto();
+				responseDTO.setRegistrationCenterId(regCenterId);
+				responseDTO.setIdsWithAppointmentDate(idsWithSlotTime);
+				response.setResponse(responseDTO);
+			}
+		} catch (Exception ex) {
+			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+			log.error("sessionId", "idType", "id",
+					"In getBookedPreRegistrations method of pre-registration service - " + ex.getMessage());
+			new BookingExceptionCatcher().handle(ex, response);
+		}
+		response.setResponsetime(serviceUtil.getCurrentResponseTime());
+		response.setId(idUrlBookingByDate);
+		response.setVersion(versionUrl);
+		response.setErrors(null);
+		return response;
+
+	}
 }
