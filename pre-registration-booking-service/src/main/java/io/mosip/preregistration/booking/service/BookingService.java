@@ -661,7 +661,7 @@ public class BookingService implements BookingServiceIntf {
 					bookingDAO.deleteByPreRegistrationId(preRegistrationId);
 
 					/* Update the status to Canceled in demographic Table */
-					serviceUtil.updateDemographicStatus(preRegistrationId, StatusCodes.PENDING_APPOINTMENT.getCode());
+					serviceUtil.updateDemographicStatus(preRegistrationId, StatusCodes.CANCELED.getCode());
 
 					/* No. of Availability. update */
 					availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() + 1);
