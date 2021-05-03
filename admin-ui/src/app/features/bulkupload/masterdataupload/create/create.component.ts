@@ -44,13 +44,7 @@ export class CreateComponent {
     this.dataStorageService
     .getI18NLanguageFiles(this.primaryLang)
     .subscribe((response) => {
-      console.log("response>>>"+response);
-    });
-
-    this.translateService
-    .getTranslation(this.primaryLang)
-    .subscribe(response => {
-      this.labelanddatas = response.bulkUpload;
+      this.labelanddatas = response["bulkUpload"];
     });
     this.initializeForm();
   }
