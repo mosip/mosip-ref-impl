@@ -195,6 +195,24 @@
                         </mat-option>
                       </mat-select>
                       </div>
+
+                      <div *ngIf="field.name === 'locationCode'">
+                      <mat-select
+                        formControlName="locationCode"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[primaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.locationCode.primary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'primary')
+                          "
+                          [value]="data.code"
+                        >
+                          {{ data.name }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
                       
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
@@ -407,7 +425,26 @@
                           {{ data.locationHierarchyName }}
                         </mat-option>
                       </mat-select>
-                      </div>                     
+                      </div> 
+                      
+                      <div *ngIf="field.name === 'locationCode'">
+                      <mat-select
+                        formControlName="locationCode"
+                        [value]="primaryData[field.name]" 
+                        placeholder="{{ field.label[secondaryLang] }}"               
+                      >
+                        <mat-option
+                          *ngFor="let data of dropDownValues.locationCode.secondary"
+                          (onSelectionChange)="
+                            captureDropDownValue($event, field.name, 'secondary')
+                          "
+                          [value]="data.code"
+                        >
+                          {{ data.name }}
+                        </mat-option>
+                      </mat-select>
+                      </div>
+
                       <div *ngIf="field.name === 'isActive'">
                       <mat-select
                         id="{{field.name}}"

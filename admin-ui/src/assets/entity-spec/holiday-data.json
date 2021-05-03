@@ -140,7 +140,7 @@
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "dropdown",
       "ismandatory": "true"
     },
     {

@@ -162,6 +162,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "holiday"){
         this.pageName = "Holiday";
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
+        this.getZoneData();
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
         this.primaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
@@ -211,6 +212,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Document Category";
       }else if(url === "holiday"){
         this.pageName = "Holiday";
+        this.getZoneData();
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
         this.showPanel(this.pageName);
@@ -274,7 +276,11 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 this.saveSecondaryForm = true;
                 this.setSecondaryFrom();
               }
-            }
+            }else{
+                this.secondaryData = null;
+                this.saveSecondaryForm = true;
+                this.setSecondaryFrom();
+              }
             resolve(true);
           }
         );
@@ -283,7 +289,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
   setSecondaryFrom(){
     if(!this.secondaryData){
-
       if(this.url === "center-type"){
         this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
         this.secondaryData.code = this.primaryData.code;
@@ -296,10 +301,12 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(this.url === "holiday"){
         this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.secondaryLang,"isActive":true};
         this.secondaryData.holidayName = this.primaryData.holidayName;
+        this.getZoneData();
       }else if(this.url === "templates"){
         this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
         this.secondaryData.name = this.primaryData.name;
         this.secondaryData.id = this.primaryData.id;
+        this.getTemplateFileFormat();
       }else if(this.url === "device-specs"){
         this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
       }else if(this.url === "device-types"){
@@ -352,7 +359,20 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }
     }
   }
-  
+
+  getZoneData() {
+    this.dataStorageService
+      .getZoneData(this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues.locationCode.primary = response.response;
+      });
+    this.dataStorageService
+      .getZoneData(this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues.locationCode.secondary = response.response;
+      });
+  }
+
   getDeviceTypes() {
     const filterObject = new FilterValuesModel('name', 'unique', '');
     let optinalFilterObject = new OptionalFilterValuesModel('isActive', 'equals', 'true');
@@ -468,7 +488,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let formattedDate = dateFormat.getFullYear() + "-" + ("0"+(dateFormat.getMonth()+1)).slice(-2) + "-" + ("0" + dateFormat.getDate()).slice(-2);
     if (type === 'primary') {
       this.primaryData[formControlName] = formattedDate;
+      this.secondaryData[formControlName] = formattedDate;
     } else if (type === 'secondary') {
+      this.primaryData[formControlName] = formattedDate;
       this.secondaryData[formControlName] = formattedDate;
     }
   }
