@@ -37,7 +37,7 @@ import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/
 import { Subscription } from "rxjs";
 import { Engine, Rule } from 'json-rules-engine';
 import moment from 'moment';
-import identityStubJson from "../../../../assets/identity-spec1.json";
+import identityStubJson from "../../../../assets/identity-spec.json";
 
 /**
  * @description This component takes care of the demographic page.
@@ -384,10 +384,10 @@ export class DemographicComponent
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         //response = identityStubJson;
-        let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
-        this.identityData = jsonSpec["identity"];
+        let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
+        this.identityData = identityJsonSpec["identity"];
         let locationHeirarchiesFromJson = [
-          ...jsonSpec["locationHierarchy"],
+          ...identityJsonSpec["locationHierarchy"],
         ];
         this.identitySchemaVersion = response[appConstants.RESPONSE]["idSchemaVersion"];
         console.log(`identitySchemaVersion: ${this.identitySchemaVersion}`);
