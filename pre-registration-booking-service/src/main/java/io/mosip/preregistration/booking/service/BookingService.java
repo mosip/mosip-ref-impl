@@ -286,7 +286,8 @@ public class BookingService implements BookingServiceIntf {
 						/* Checking the availability of slots */
 						checkSlotAvailability(bookingRequestDTO);
 
-						if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())) {
+						if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
+						   || preRegStatusCode.equals(StatusCodes.CANCELED.getCode())) {
 
 							/* Creating new booking */
 							response = book(preRegistrationId, bookingRequestDTO);
@@ -409,7 +410,8 @@ public class BookingService implements BookingServiceIntf {
 							/* Checking the availability of slots */
 							checkSlotAvailability(bookingRequest);
 
-							if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())) {
+							if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
+							   || preRegStatusCode.equals(StatusCodes.CANCELED.getCode())) {
 
 								/* Creating new booking */
 								respList.add(book(bookingRequestDTO.getPreRegistrationId(), bookingRequest));
