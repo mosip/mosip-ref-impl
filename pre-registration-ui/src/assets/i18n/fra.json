@@ -455,7 +455,8 @@
     "status": {
       "pendingAppointment": "Rendez-vous en attente",
       "booked": "Réservé",
-      "expired": "Expiré"
+      "expired": "Expiré",
+      "canceled": "Annulé"
     },
     "error": {
       "error": "Erreur Interne du Serveur. Veuillez réessayer après un certain temps.",
@@ -553,7 +554,8 @@
     "status": {
       "pendingAppointment": "Rendez-vous n'est pas encore réservé",
       "booked": "Rendez-vous est réservé avec succès",
-      "expired": "La date de rendez-vous est passée"
+      "expired": "La date de rendez-vous est passée",
+      "cancelled":"Le rendez-vous a été annulé"
     },
     "deleteIcon": "Vous pouvez soit rejeter la demande entière, soit annuler le rendez-vous et enregistrer les détails.",
     "book/modify_appointment": "Vous devez cocher la case en regard de l'identifiant de pré-inscription pour qu'un ou plusieurs demandeurs puissent prendre un rendez-vous",

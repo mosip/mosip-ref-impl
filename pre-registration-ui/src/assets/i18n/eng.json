@@ -117,7 +117,8 @@
       "status": {
         "pendingAppointment": "Pending Appointment",
         "booked": "Booked",
-        "expired": "Expired"
+        "expired": "Expired",
+        "canceled": "Cancelled"
       },
       "explanation": {
         "pendingAppointment": {
@@ -451,7 +452,8 @@
     "status": {
       "pendingAppointment": "Pending Appointment",
       "booked": "Booked",
-      "expired": "Expired"
+      "expired": "Expired",
+      "canceled": "Cancelled"
     },
     "error": {
       "error": "Internal server error. Please try again after  some time.",
@@ -549,7 +551,8 @@
     "status": {
       "pendingAppointment": "Appointment is yet to be booked",
       "booked": "Appointment is booked successfully",
-      "expired": "Appointed date has passed"
+      "expired": "Appointed date has passed",
+      "cancelled":"Appointment has been Cancelled"
     },
     "deleteIcon": "You can either discard entire application or cancel the appointment and save the details.",
     "book/modify_appointment": "You must tick the check box near to pre-registration id for one or multiple applicants to book/modify appointment",
