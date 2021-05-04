@@ -129,7 +129,6 @@ export class TableComponent implements OnInit, OnChanges {
       masterdataName: this.router.url.split('/')[3],
       columnName
     });
-    console.log(this.sortIconTrackerArray);
     const sortObject = this.sortData.filter(
       data => data.sortField === columnName
     );
@@ -144,8 +143,8 @@ export class TableComponent implements OnInit, OnChanges {
         sortModel.sortType = 'desc';
         this.sortIconTrackerArray[columnIndex] = -1;
       } else if (sortModel.sortType.toLowerCase() === 'desc') {
-        sortModel.sortType = null;
-        this.sortIconTrackerArray[columnIndex] = 0;
+        sortModel.sortType = 'asc';
+        this.sortIconTrackerArray[columnIndex] = 1;
       }
     }
     console.log(this.sortStatusArray);
