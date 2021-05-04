@@ -102,6 +102,13 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loginId = localStorage.getItem("loginId");
+    this.dataStorageService
+    .getI18NLanguageFiles(this.userPreferredLangCode)
+    .subscribe((response) => {
+      this.languagelabels = response["dashboard"].discard;
+      this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
+      this.errorLanguagelabels = response["error"];
+    });
     this.initUsers();
     const subs = this.autoLogout.currentMessageAutoLogout.subscribe(
       (message) => (this.message = message)
@@ -115,13 +122,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       this.autoLogout.getValues(this.userPreferredLangCode);
       this.autoLogout.continueWatching();
     }
-    this.dataStorageService
-      .getI18NLanguageFiles(this.userPreferredLangCode)
-      .subscribe((response) => {
-        this.languagelabels = response["dashboard"].discard;
-        this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
-        this.errorLanguagelabels = response["error"];
-      });
+   
     this.regService.setSameAs("");
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
