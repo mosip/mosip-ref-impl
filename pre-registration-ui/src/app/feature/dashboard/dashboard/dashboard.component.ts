@@ -153,9 +153,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   getIdentityJsonFormat() {
     this.dataStorageService.getIdentityJson().subscribe((response) => {
       let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
-      this.identityData = jsonSpec["identity"];
+      this.identityData = jsonSpec["identity"]["identity"];
       let locationHeirarchiesFromJson = [
-        ...jsonSpec["locationHierarchy"],
+        ...jsonSpec["identity"]["locationHierarchy"],
       ];
       if (Array.isArray(locationHeirarchiesFromJson[0])) {
         this.locationHeirarchies = locationHeirarchiesFromJson;
@@ -340,6 +340,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicantResponse[
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.demographicMetadata
       ];
+      console.log(demographicMetadata);
+      console.log( applicantResponse[
+        appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode
+      ]);
     let dataAvailableLanguage = [];
     demographicMetadata[this.name].forEach((element) => {
       dataAvailableLanguage.push(element["language"]);
@@ -801,6 +805,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       return "orange";
     if (value === appConstants.APPLICATION_STATUS_CODES.booked) return "green";
     if (value === appConstants.APPLICATION_STATUS_CODES.expired) return "red";
+    if(value === 'Canceled') return 'purple';
   }
 
   getMargin(name: string) {

@@ -80,7 +80,9 @@
                         ? 'dashboard.status.booked'
                         : user.status === 'Expired'
                         ? 'dashboard.status.expired'
-                        : 'dashboard.status.pendingAppointment') | translate
+                        : user.status === 'Pending_Appointment'?
+                        'dashboard.status.pendingAppointment'
+                        :'dashboard.status.canceled') | translate
                     }}
 
                     <mat-icon
@@ -90,7 +92,9 @@
                           ? 'helpText.status.booked'
                           : user.status === 'Expired'
                           ? 'helpText.status.expired'
-                          : 'helpText.status.pendingAppointment') | translate
+                          : user.status === 'Pending_Appointment'
+                          ? 'helpText.pendingAppointment'
+                          : 'helpText.status.cancelled') | translate
                       }}"
                       [inline]="true"
                       >help_outline</mat-icon
