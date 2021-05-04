@@ -102,7 +102,16 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loginId = localStorage.getItem("loginId");
-    this.initUsers();
+    this.dataStorageService
+    .getI18NLanguageFiles(this.userPreferredLangCode)
+    .subscribe((response) => {
+      this.languagelabels = response["dashboard"].discard;
+      this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
+      this.errorLanguagelabels = response["error"];
+      if(this.dataCaptureLabels!= undefined){
+        this.initUsers();
+      }
+    });
     const subs = this.autoLogout.currentMessageAutoLogout.subscribe(
       (message) => (this.message = message)
     );
@@ -115,13 +124,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       this.autoLogout.getValues(this.userPreferredLangCode);
       this.autoLogout.continueWatching();
     }
-    this.dataStorageService
-      .getI18NLanguageFiles(this.userPreferredLangCode)
-      .subscribe((response) => {
-        this.languagelabels = response["dashboard"].discard;
-        this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
-        this.errorLanguagelabels = response["error"];
-      });
+   
     this.regService.setSameAs("");
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
@@ -149,10 +152,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   getIdentityJsonFormat() {
     this.dataStorageService.getIdentityJson().subscribe((response) => {
-      let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
-      this.identityData = identityJsonSpec["identity"];
+      let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
+      this.identityData = jsonSpec["identity"];
       let locationHeirarchiesFromJson = [
-        ...identityJsonSpec["locationHierarchy"],
+        ...jsonSpec["locationHierarchy"],
       ];
       if (Array.isArray(locationHeirarchiesFromJson[0])) {
         this.locationHeirarchies = locationHeirarchiesFromJson;
