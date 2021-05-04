@@ -108,8 +108,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       this.languagelabels = response["dashboard"].discard;
       this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
       this.errorLanguagelabels = response["error"];
+      if(this.dataCaptureLabels!= undefined){
+        this.initUsers();
+      }
     });
-    this.initUsers();
     const subs = this.autoLogout.currentMessageAutoLogout.subscribe(
       (message) => (this.message = message)
     );
@@ -150,10 +152,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   getIdentityJsonFormat() {
     this.dataStorageService.getIdentityJson().subscribe((response) => {
-      let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
-      this.identityData = identityJsonSpec["identity"];
+      let jsonSpec = response[appConstants.RESPONSE]["jsonSpec"];
+      this.identityData = jsonSpec["identity"];
       let locationHeirarchiesFromJson = [
-        ...identityJsonSpec["locationHierarchy"],
+        ...jsonSpec["locationHierarchy"],
       ];
       if (Array.isArray(locationHeirarchiesFromJson[0])) {
         this.locationHeirarchies = locationHeirarchiesFromJson;
