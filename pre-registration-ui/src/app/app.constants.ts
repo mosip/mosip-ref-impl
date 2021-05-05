@@ -147,7 +147,8 @@ export const DEMOGRAPHIC_RESPONSE_KEYS = {
 export const APPLICATION_STATUS_CODES = {
   pending: 'Pending_Appointment',
   booked: 'Booked',
-  expired: 'Expired'
+  expired: 'Expired',
+  cancelled: 'Canceled'
 };
 
 export const APPLICANT_TYPE_ATTRIBUTES = {
