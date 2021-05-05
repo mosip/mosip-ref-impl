@@ -43,6 +43,11 @@
   color: #fd518c;
 }
 
+.readOnly {
+  margin: 0;
+  color: #fd518c;
+}
+
 .user hr {
   border-top: 1.5px solid #fd518c;
   position: relative;

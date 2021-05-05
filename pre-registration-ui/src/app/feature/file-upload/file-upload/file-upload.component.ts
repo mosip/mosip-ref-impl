@@ -100,6 +100,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   preRegId: number;
   isDocUploadRequired = [];
   name:"";
+  readOnlyMode = false;
 
   constructor(
     private registration: RegistrationService,
@@ -126,8 +127,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.getIdentityJsonFormat();
-    console.log("mayura uiFields");
-    console.log(this.uiFields);
     this.getFileSize();
     this.getPrimaryLabels();
     this.allowedFiles = this.config
@@ -153,12 +152,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
+    if (this.readOnlyMode) {
+      this.userForm.disable();
+    }
   }
 
   async getIdentityJsonFormat() {
     return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        //response = identityStubJson;
+        response = identityStubJson;
         let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
         this.identityData = identityJsonSpec["identity"];
         this.identityData.forEach((obj) => {
@@ -208,6 +210,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               undefined
             )
           );
+          let resp = response[appConstants.RESPONSE];
+          if (resp["statusCode"] !== "Pending_Appointment") {
+            this.readOnlyMode = true;
+          } else {
+            this.readOnlyMode = false;
+          }
           resolve(true);
         });
     });
@@ -1253,10 +1261,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    if (this.userForm.valid) {
+    if (this.readOnlyMode) {
       localStorage.setItem("modifyDocument", "false");
       let url = Utils.getURL(this.router.url, "summary");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    } else {
+      if (this.userForm.valid) {
+        localStorage.setItem("modifyDocument", "false");
+        let url = Utils.getURL(this.router.url, "summary");
+        this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+      }
     }
   }
 

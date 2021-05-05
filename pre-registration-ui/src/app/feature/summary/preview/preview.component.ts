@@ -36,6 +36,7 @@ export class PreviewComponent implements OnInit {
   dataCaptureLanguages = [];
   controlIds = [];
   ControlIdLabelObjects = {};
+  readOnlyMode=false;
   constructor(
     private dataStorageService: DataStorageService,
     private router: Router,
@@ -134,8 +135,9 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  checkArray(data, controlId) {
+  checkArray(data, control) {
     let result = false;
+    //if (controlId.type == "string")
     if (Array.isArray(data)) {
       result = true;
     }
@@ -211,7 +213,7 @@ export class PreviewComponent implements OnInit {
               codeValue = {
                 valueCode: element.code,
                 valueName: element.value,
-                languageCode: element.langCode,
+                languageCode: langCode,
               };
             }
             this.dropDownFields[field].push(codeValue);
@@ -233,6 +235,12 @@ export class PreviewComponent implements OnInit {
             undefined,
             []
           );
+          let resp = response[appConstants.RESPONSE];
+          if (resp["statusCode"] !== "Pending_Appointment") {
+            this.readOnlyMode = true;
+          } else {
+            this.readOnlyMode = false;
+          }
           resolve(true);
         });
     });

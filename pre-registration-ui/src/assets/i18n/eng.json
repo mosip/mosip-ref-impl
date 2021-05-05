@@ -313,6 +313,7 @@
     "action_back": "BACK",
     "action_continue": "CONTINUE",
     "action_preview": "PREVIEW",
+    "read_only_message": "** You can no longer edit this application, since you have currently or previously booked an appointment for it! If you still want to make changes, then discard this application and make a new one.",
     "consent": {
       "title": "Terms and Conditions",
       "subtitle": "Your Agreement",
