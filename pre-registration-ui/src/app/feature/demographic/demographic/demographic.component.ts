@@ -103,7 +103,7 @@ export class DemographicComponent
   residenceStatus: any;
   message = {};
   config = {};
-  consentMessage: any;
+  consentMessage= [];
   titleOnError = "";
   @ViewChild("dd") dd: ElementRef;
   @ViewChild("mm") mm: ElementRef;
@@ -127,6 +127,7 @@ export class DemographicComponent
   changeActions = [];
   changeActionsNamesArr = [];  
   identitySchemaVersion = "";
+  readOnlyMode = false;
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -178,6 +179,9 @@ export class DemographicComponent
       if (this.isConsentMessage) this.consentMultiLangDeclaration(); /*this.consentDeclaration();*/ 
     }
     this.onChangeHandler("");
+    if (this.readOnlyMode) {
+      this.userForm.disable();
+    }
   }
   
   initializeDataCaptureLanguages = async () => {
@@ -290,6 +294,7 @@ export class DemographicComponent
       if (localStorage.getItem("modifyUserFromPreview") === "true") {
         this.showPreviewButton = true;
       }
+      
       this.loginId = localStorage.getItem("loginId");
     }
   }
@@ -310,6 +315,11 @@ export class DemographicComponent
         if (response[appConstants.RESPONSE]) {
           this.user.request = response[appConstants.RESPONSE];
           console.log(this.user.request);
+          if (this.user.request["statusCode"] !== "Pending_Appointment") {
+            this.readOnlyMode = true;
+          } else {
+            this.readOnlyMode = false;
+          }
           resolve(response[appConstants.RESPONSE]);
         }
       });
@@ -911,7 +921,6 @@ export class DemographicComponent
                 }
               });
             }
-            console.log(this.selectOptionsDataArray);
           },
           (error) => {
             console.log(error);
@@ -1439,86 +1448,90 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   onSubmit() {
-    this.uiFields.forEach((control) => {
-      this.dataCaptureLanguages.forEach((language, i) => {
-        if (this.isControlInMultiLang(control)) {
-          const controlId = control.id + "_" + language;
-          this.userForm.controls[`${controlId}`].markAsTouched();
-        } else if (i == 0) {
-          const controlId = control.id;
-          this.userForm.controls[`${controlId}`].markAsTouched();
-        }
+    if (this.readOnlyMode) {
+      this.redirectUser();
+    } else {
+      this.uiFields.forEach((control) => {
+        this.dataCaptureLanguages.forEach((language, i) => {
+          if (this.isControlInMultiLang(control)) {
+            const controlId = control.id + "_" + language;
+            this.userForm.controls[`${controlId}`].markAsTouched();
+          } else if (i == 0) {
+            const controlId = control.id;
+            this.userForm.controls[`${controlId}`].markAsTouched();
+          }
+        });
       });
-    });
-    if (this.userForm.valid) {
-      const identity = this.createIdentityJSONDynamic(false);
-      const request = this.createRequestJSON(identity);
-      //console.log(request);
-      const responseJSON = this.createResponseJSON(identity);
-      //console.log(responseJSON);
-      this.dataUploadComplete = false;
-      if (this.dataModification) {
-        this.subscriptions.push(
-          this.dataStorageService.updateUser(request, this.preRegId).subscribe(
-            (response) => {
-              if (
-                (response[appConstants.NESTED_ERROR] === null &&
-                  response[appConstants.RESPONSE] === null) ||
-                response[appConstants.NESTED_ERROR] !== null
-              ) {
-                let message = "";
+      if (this.userForm.valid) {
+        const identity = this.createIdentityJSONDynamic(false);
+        const request = this.createRequestJSON(identity);
+        //console.log(request);
+        const responseJSON = this.createResponseJSON(identity);
+        //console.log(responseJSON);
+        this.dataUploadComplete = false;
+        if (this.dataModification) {
+          this.subscriptions.push(
+            this.dataStorageService.updateUser(request, this.preRegId).subscribe(
+              (response) => {
                 if (
-                  response[appConstants.NESTED_ERROR][0][
-                    appConstants.ERROR_CODE
-                  ] === appConstants.ERROR_CODES.invalidPin
+                  (response[appConstants.NESTED_ERROR] === null &&
+                    response[appConstants.RESPONSE] === null) ||
+                  response[appConstants.NESTED_ERROR] !== null
                 ) {
-                  message = this.formValidation(response);
-                } else message = this.errorlabels.error;
-                this.onError(message, "");
-                return;
+                  let message = "";
+                  if (
+                    response[appConstants.NESTED_ERROR][0][
+                      appConstants.ERROR_CODE
+                    ] === appConstants.ERROR_CODES.invalidPin
+                  ) {
+                    message = this.formValidation(response);
+                  } else message = this.errorlabels.error;
+                  this.onError(message, "");
+                  return;
+                }
+                this.redirectUser();
+              },
+              (error) => {
+                this.loggerService.error(error);
+                this.onError(this.errorlabels.error, error);
               }
-              this.onSubmission();
-            },
-            (error) => {
-              this.loggerService.error(error);
-              this.onError(this.errorlabels.error, error);
-            }
-          )
-        );
-      } else {
-        this.subscriptions.push(
-          this.dataStorageService.addUser(request).subscribe(
-            (response) => {
-              if (
-                (response[appConstants.NESTED_ERROR] === null &&
-                  response[appConstants.RESPONSE] === null) ||
-                response[appConstants.NESTED_ERROR] !== null
-              ) {
-                this.loggerService.error(JSON.stringify(response));
-                let message = "";
+            )
+          );
+        } else {
+          this.subscriptions.push(
+            this.dataStorageService.addUser(request).subscribe(
+              (response) => {
                 if (
-                  response[appConstants.NESTED_ERROR] &&
-                  response[appConstants.NESTED_ERROR][0][
-                    appConstants.ERROR_CODE
-                  ] === appConstants.ERROR_CODES.invalidPin
+                  (response[appConstants.NESTED_ERROR] === null &&
+                    response[appConstants.RESPONSE] === null) ||
+                  response[appConstants.NESTED_ERROR] !== null
                 ) {
-                  console.log(response);
-                  message = this.formValidation(response);
-                } else message = this.errorlabels.error;
-                this.onError(message, "");
-                return;
-              } else {
-                this.preRegId =
-                  response[appConstants.RESPONSE].preRegistrationId;
+                  this.loggerService.error(JSON.stringify(response));
+                  let message = "";
+                  if (
+                    response[appConstants.NESTED_ERROR] &&
+                    response[appConstants.NESTED_ERROR][0][
+                      appConstants.ERROR_CODE
+                    ] === appConstants.ERROR_CODES.invalidPin
+                  ) {
+                    console.log(response);
+                    message = this.formValidation(response);
+                  } else message = this.errorlabels.error;
+                  this.onError(message, "");
+                  return;
+                } else {
+                  this.preRegId =
+                    response[appConstants.RESPONSE].preRegistrationId;
+                }
+                this.redirectUser();
+              },
+              (error) => {
+                this.loggerService.error(error);
+                this.onError(this.errorlabels.error, error);
               }
-              this.onSubmission();
-            },
-            (error) => {
-              this.loggerService.error(error);
-              this.onError(this.errorlabels.error, error);
-            }
-          )
-        );
+            )
+          );
+        }
       }
     }
   }
@@ -1538,7 +1551,7 @@ export class DemographicComponent
    *
    * @memberof DemographicComponent
    */
-  onSubmission() {
+  redirectUser() {
     this.canDeactivateFlag = false;
     this.checked = true;
     this.dataUploadComplete = true;

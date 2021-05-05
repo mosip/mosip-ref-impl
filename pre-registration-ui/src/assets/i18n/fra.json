@@ -315,6 +315,7 @@
     "action_back": "RETOUR",
     "action_continue": "CONTINUER",
     "action_preview": "APERÇU",
+    "read_only_message": "** Vous ne pouvez plus modifier cette application, car vous avez actuellement ou précédemment réservé un rendez-vous pour elle! Si vous souhaitez toujours apporter des modifications, supprimez cette application et créez-en une nouvelle.",
     "consent": {
       "title": "Termes et conditions",
       "subtitle": "Votre accord",

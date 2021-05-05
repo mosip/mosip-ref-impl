@@ -4,25 +4,22 @@
       <div class="preview__header">
         <p>{{ 'preview.title_preview' | translate }}</p>
       </div>
-
-      <div class="preview__modify-div">
-          <span
-                  (click)="modifyDemographic()"
-                  class="preview__modify-div-span"
-                  matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"
-          ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
-          >
+      <div class="preview__modify-div" *ngIf="!readOnlyMode">
+        <span (click)="modifyDemographic()" class="preview__modify-div-span"
+          matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"><img src="assets/edit.png" /> {{
+          'preview.action_modify' | translate }}</span>
       </div>
     </mat-card-header>
     <mat-card-content>
       <div class="preview__body-content-container">
-        <div class = "preview__body-content-div">
+        <div class="preview__body-content-div">
           <table class="row" *ngFor="let controlId of controlIds">
             <tr>
-              <i *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
-                <td>{{ControlIdLabelObjects[controlId][dataCaptureLanguage]}} <i> : </i></td>
-
-                <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div> 
+              <td>
+                <b>{{ControlIdLabelObjects[controlId][dataCaptureLanguages[0]]}} : </b></td>
+              <span
+                *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
+                <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div>
                 <ng-template #content>
 
                   <!-- <td *ngIf="controlId === 'gender'">
@@ -47,9 +44,13 @@
 
                   <td>
                     <!-- <div *ngIf="controlId !== 'residenceStatus'"> -->
-                      <div *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></div>
-                      <ng-template #displayLabel>{{previewData[controlId][i].label}} <!-- <i *ngIf="!last">/</i> --></ng-template>
-                      <ng-template #displayValue>{{previewData[controlId][i].value}} <!-- <i *ngIf="!last">/</i> --></ng-template>
+                    <div *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></div>
+                    <ng-template #displayLabel>{{previewData[controlId][i].label}}
+                      <!-- <i *ngIf="!last">/</i> -->
+                    </ng-template>
+                    <ng-template #displayValue>{{previewData[controlId][i].value}}
+                      <!-- <i *ngIf="!last">/</i> -->
+                    </ng-template>
                     <!-- </div> -->
                   </td>
 
@@ -60,8 +61,8 @@
                   </td>
                   <!-- <td *ngIf="!first" class="emptydiv"></td> -->
                 </ng-template>
-                <i *ngIf="!last">/</i>
-              </i>
+                <i *ngIf="!last"> / </i>
+              </span>
             </tr>
           </table>
 
@@ -70,12 +71,9 @@
     </mat-card-content>
     <div class="preview__footer-header">
       <span>{{ 'preview.title_document' | translate }}</span>
-      <span
-              (click)="modifyDocument()"
-              class="preview__modify-file"
-              matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"
-      ><img src="assets/edit.png" /> {{ 'preview.action_modify' | translate }}</span
-      >
+      <span  *ngIf="!readOnlyMode" (click)="modifyDocument()" class="preview__modify-file"
+        matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"><img src="assets/edit.png" /> {{
+        'preview.action_modify' | translate }}</span>
     </div>
     <mat-card-footer class="preview__footer-container">
       <div class="preview__footer">
@@ -100,11 +98,8 @@
 <mat-card class="center-selection__button-container">
   <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
   <span class="spacer"></span>
-  <button
-          matTooltip="{{ 'helpText.add_applicant' | translate }}"
-          (click)="navigateDashboard()"
-          class="user-book_later-btn"
-  >
+  <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="navigateDashboard()"
+    class="user-book_later-btn">
     {{ 'preview.action_add_applicant' | translate }}
   </button>
   <button (click)="navigateNext()" class="user-continue-btn">
