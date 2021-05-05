@@ -287,7 +287,7 @@ public class BookingService implements BookingServiceIntf {
 						checkSlotAvailability(bookingRequestDTO);
 
 						if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-						   || preRegStatusCode.equals(StatusCodes.CANCELED.getCode())) {
+						   || preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
 
 							/* Creating new booking */
 							response = book(preRegistrationId, bookingRequestDTO);
@@ -411,7 +411,7 @@ public class BookingService implements BookingServiceIntf {
 							checkSlotAvailability(bookingRequest);
 
 							if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-							   || preRegStatusCode.equals(StatusCodes.CANCELED.getCode())) {
+							   || preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
 
 								/* Creating new booking */
 								respList.add(book(bookingRequestDTO.getPreRegistrationId(), bookingRequest));
@@ -663,7 +663,7 @@ public class BookingService implements BookingServiceIntf {
 					bookingDAO.deleteByPreRegistrationId(preRegistrationId);
 
 					/* Update the status to Canceled in demographic Table */
-					serviceUtil.updateDemographicStatus(preRegistrationId, StatusCodes.CANCELED.getCode());
+					serviceUtil.updateDemographicStatus(preRegistrationId, StatusCodes.CANCELLED.getCode());
 
 					/* No. of Availability. update */
 					availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() + 1);
