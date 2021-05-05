@@ -433,7 +433,8 @@
       "text_appoinment_date": "Date de rendez-vous",
       "text_status": "Statut",
       "action_modify_information": "Modifier les informations",
-      "action_view_acknowledgement": "Voir accusé de réception"
+      "action_view_acknowledgement": "Voir accusé de réception",
+      "action_view_information": "Afficher les informations"
     },
     "discard": {
       "title_confirm": "Confirmer",
@@ -456,7 +457,7 @@
       "pendingAppointment": "Rendez-vous en attente",
       "booked": "Réservé",
       "expired": "Expiré",
-      "canceled": "Annulé"
+      "cancelled": "Annulé"
     },
     "error": {
       "error": "Erreur Interne du Serveur. Veuillez réessayer après un certain temps.",
@@ -493,7 +494,13 @@
         "Voulez-vous continuer à réserver"
       ],
       "yesButtonText": "Oui",
-      "noButtonText": "Non"
+      "noButtonText": "Non",
+      "applicationLockConfirm":{
+        "title":"Confirmation",
+        "message":"Les détails de l'application ne peuvent plus être modifiés une fois la réservation effectuée. Pleace cliquez sur confirmer pour prendre rendez-vous",
+        "yesButtonText": "Confirmer",
+        "noButtonText": "Annuler"
+      }
     }
   },
   "appointmentCentreSearch": {
@@ -568,7 +575,8 @@
     "recommended_centers": "Liste du centre recommandé selon votre code postal",
     "nearBy": "Centres d'inscription basés sur votre géolocalisation",
     "magnifying_glass": "Recherche basée sur la sélection du menu déroulant.",
-    "preview_continue": "Téléchargez tous les fichiers pour continuer"
+    "preview_continue": "Téléchargez tous les fichiers pour continuer",
+    "lockIcon":"Les détails de la demande ne peuvent pas être modifiés une fois que le rendez-vous est réservé, annulé ou expiré"
   },
   "error": {
     "error": "Une erreur technique s'est produite et l'opération ne peut pas être terminée. Aucune donnée fournie ne peut être sauvegardée",

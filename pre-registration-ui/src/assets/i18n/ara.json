@@ -431,7 +431,8 @@
       "text_appoinment_date": "موعد موعد",
       "text_status": "الحالة",
       "action_modify_information": "تعديل المعلومات",
-      "action_view_acknowledgement": "عرض إقرار"
+      "action_view_acknowledgement": "عرض إقرار",
+      "action_view_information": "عرض المعلومات"
     },
     "discard": {
       "title_confirm": "تؤكد",
@@ -454,7 +455,7 @@
       "pendingAppointment": "في انتظار الموعد",
       "booked": "حجز",
       "expired": "منتهية الصلاحية",
-      "canceled": "ألغيت"
+      "cancelled": "ألغيت"
     },
     "error": {
       "error": "خطأ في الخادم الداخلي. من فضلك حاول مرة أخرى بعد بعض من الوقت.",
@@ -488,7 +489,13 @@
       "msg_failure": "فشل موعد الحجز",
       "deletedApplicant1": ["لم تقم بتحديد أي فترة زمنية لمتابعة المستخدم", "هل ترغب في مواصلة الحجز"],
       "yesButtonText": "نعم فعلا",
-      "noButtonText": "لا"
+      "noButtonText": "لا",
+      "applicationLockConfirm":{
+        "title":"تأكيد",
+        "message":"لا يمكن تعديل تفاصيل التطبيق مرة أخرى بمجرد الحجز. الرجاء الضغط على تأكيد لحجز موعد",
+        "yesButtonText": "يتأكد",
+        "noButtonText": "يلغي"
+      }
     }
   },
   "appointmentCentreSearch": {
@@ -563,7 +570,8 @@
     "recommended_centers": "قائمة المركز الموصى به حسب الرمز البريدي الخاص بك",
     "nearBy": "مراكز التسجيل على أساس موقعك الجغرافي",
     "magnifying_glass": "البحث يعتمد على اختيار القائمة المنسدلة.",
-    "preview_continue": "تحميل جميع الملفات للمتابعة"
+    "preview_continue": "تحميل جميع الملفات للمتابعة",
+    "lockIcon":"لا يمكن تعديل تفاصيل الطلب بمجرد حجز الموعد أو إلغاؤه أو انتهاء صلاحيته"
   },
   "error": {
     "error": "حدث خطأ فني ولا يمكن إتمام العملية. لا يجوز حفظ أي بيانات مقدمة",

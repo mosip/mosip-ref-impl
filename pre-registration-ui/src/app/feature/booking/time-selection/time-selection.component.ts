@@ -113,7 +113,6 @@ export class TimeSelectionComponent
         this.errorlabels = response["error"];
         this.DAYS = response["DAYS"];
       });
-  
   }
 
   getUserInfo(preRegId) {
@@ -424,41 +423,62 @@ export class TimeSelectionComponent
       this.disableContinueButton = false;
       return;
     }
-    const obj = {
-      bookingRequest: this.bookingDataList,
+    const data = {
+      case: "CONFIRMATION",
+      title: this.languagelabels.applicationLockConfirm.title,
+      message: this.languagelabels.applicationLockConfirm.message,
+      noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
+      yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
     };
-    const request = new RequestModel(appConstants.IDS.booking, obj);
-    if (this.deletedNames.length !== 0) {
-      const data = {
-        case: "CONFIRMATION",
-        title: "",
-        message:
-          this.languagelabels.deletedApplicant1[0] +
-          ' - "' +
-          this.getNames() +
-          ' ". ' +
-          this.languagelabels.deletedApplicant1[1] +
-          "?",
-        yesButtonText: this.languagelabels.yesButtonText,
-        noButtonText: this.languagelabels.noButtonText,
-      };
-      const dialogRef = this.dialog.open(DialougComponent, {
-        width: "350px",
+    this.dialog
+      .open(DialougComponent, {
+        width: "450px",
+        height: "220px",
         data: data,
-        disableClose: true,
-      });
-      const subs = dialogRef.afterClosed().subscribe((selectedOption) => {
-        if (selectedOption) {
-          this.bookingOperation(request);
+      })
+      .afterClosed()
+      .subscribe((response) => {
+        console.log(response);
+        if (response === true) {
+          const obj = {
+            bookingRequest: this.bookingDataList,
+          };
+          const request = new RequestModel(appConstants.IDS.booking, obj);
+          if (this.deletedNames.length !== 0) {
+            const data = {
+              case: "CONFIRMATION",
+              title: "",
+              message:
+                this.languagelabels.deletedApplicant1[0] +
+                ' - "' +
+                this.getNames() +
+                ' ". ' +
+                this.languagelabels.deletedApplicant1[1] +
+                "?",
+              yesButtonText: this.languagelabels.yesButtonText,
+              noButtonText: this.languagelabels.noButtonText,
+            };
+            const dialogRef = this.dialog.open(DialougComponent, {
+              width: "350px",
+              data: data,
+              disableClose: true,
+            });
+            const subs = dialogRef.afterClosed().subscribe((selectedOption) => {
+              if (selectedOption) {
+                this.bookingOperation(request);
+              } else {
+                this.disableContinueButton = false;
+                return;
+              }
+            });
+            this.subscriptions.push(subs);
+          } else {
+            this.bookingOperation(request);
+          }
         } else {
           this.disableContinueButton = false;
-          return;
         }
       });
-      this.subscriptions.push(subs);
-    } else {
-      this.bookingOperation(request);
-    }
   }
 
   bookingOperation(request) {
@@ -477,8 +497,7 @@ export class TimeSelectionComponent
             })
             .afterClosed()
             .subscribe(() => {
-              this.temp.forEach((name) => {
-              });
+              this.temp.forEach((name) => {});
               this.bookingService.setSendNotification(true);
               const url = Utils.getURL(this.router.url, "summary", 3);
               if (this.router.url.includes("multiappointment")) {

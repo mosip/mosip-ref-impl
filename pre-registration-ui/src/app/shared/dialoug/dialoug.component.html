@@ -95,17 +95,16 @@
   </div>
   <div mat-dialog-actions>
     <span style="width: 50%"
-      ><button mat-button [mat-dialog-close]="confirm" cdkFocusInitial>
-        {{ input.yesButtonText }}
-      </button></span
-    >
-    <span style="width: 50%"
       ><button
         mat-button
         (click)="onNoClick(input.noButtonText)"
-        cdkFocusInitial
       >
         {{ input.noButtonText }}
+      </button></span
+    >
+    <span style="width: 50%"
+      ><button mat-button [mat-dialog-close]="confirm" cdkFocusInitial>
+        {{ input.yesButtonText }}
       </button></span
     >
   </div>
@@ -151,26 +150,40 @@
   </div>
 </div>
 
-<div class="consent-popup-parent" *ngIf="input.case === 'CONSENTPOPUPMULTILANG'">
-
+<div
+  class="consent-popup-parent"
+  *ngIf="input.case === 'CONSENTPOPUPMULTILANG'"
+>
   <div class="div-bottom-spacing">
     <span class="consent-popup-title" mat-dialog-title>Consent</span>
     <span>
-      <button class="consent-popup-cross" mat-dialog-actions (click)="onNoClick(); userRedirection()" cdkFocusInitial>
+      <button
+        class="consent-popup-cross"
+        mat-dialog-actions
+        (click)="onNoClick(); userRedirection()"
+        cdkFocusInitial
+      >
         <mat-icon class="consent-popup-cross-icon">close</mat-icon>
       </button>
     </span>
   </div>
 
   <mat-accordion class="example-headers-align" multi>
-    <mat-expansion-panel *ngFor="let item of input.data; let isFirst = first" [expanded]="isFirst">
+    <mat-expansion-panel
+      *ngFor="let item of input.data; let isFirst = first"
+      [expanded]="isFirst"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <span class="consent-popup-title" mat-dialog-title>{{ item.labels.consent.title }}</span>
+          <span class="consent-popup-title" mat-dialog-title>{{
+            item.labels.consent.title
+          }}</span>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div>
-        <h3 class="consent-popup-subtitle" mat-dialog-title>{{ item.labels.consent.subtitle }}</h3>
+        <h3 class="consent-popup-subtitle" mat-dialog-title>
+          {{ item.labels.consent.subtitle }}
+        </h3>
         <div mat-dialog-content class="consentpopup-content">
           <div *ngFor="let message of item.fileText">
             <div>{{ message }}</div>
@@ -181,11 +194,20 @@
   </mat-accordion>
 
   <mat-checkbox (change)="onSelectCheckbox()" class="checkbox-accept">
-    <div *ngFor="let item of input.data;let last = last;" class="content-display-iniline-block">{{ item.labels.consent.checkCondition }} <span *ngIf="!last">&nbsp;&nbsp;/&nbsp;&nbsp;</span></div>
+    <div
+      *ngFor="let item of input.data; let last = last"
+      class="content-display-iniline-block"
+    >
+      {{ item.labels.consent.checkCondition }}
+      <span *ngIf="!last">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+    </div>
   </mat-checkbox>
 
   <div *ngFor="let item of input.data">
-    <div mat-dialog-actions *ngIf="item.langCode === input.userPrefferedlangCode">
+    <div
+      mat-dialog-actions
+      *ngIf="item.langCode === input.userPrefferedlangCode"
+    >
       <button
         class="accept-button"
         [ngClass]="isChecked ? 'accept-button-disabled' : 'accept-button'"
@@ -234,9 +256,12 @@
   <div class="select-lang-header">{{ input.title }}</div>
   <div class="select-lang-body">
     <p>{{ input.message }}</p>
-    <mat-error class="error" *ngIf="selectedLanguage.length > input.maxLanguage">
-       {{ input.errorText }}
-      </mat-error>
+    <mat-error
+      class="error"
+      *ngIf="selectedLanguage.length > input.maxLanguage"
+    >
+      {{ input.errorText }}
+    </mat-error>
     <div
       class="language-selection-section"
       *ngFor="let lang of input.languages"
