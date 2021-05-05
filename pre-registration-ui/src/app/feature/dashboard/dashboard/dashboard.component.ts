@@ -638,7 +638,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
             // this.sendNotification(preRegId,appointmentDate,appointmentDateTime);
             const index = this.users.indexOf(element);
             this.users[index].status =
-              appConstants.APPLICATION_STATUS_CODES.pending;
+              appConstants.APPLICATION_STATUS_CODES.cancelled;
             this.users[index].appointmentDate = "-";
             this.users[index].appointmentTime = "";
           } else {
