@@ -72,6 +72,14 @@
             <groupId>io.mosip.kernel</groupId>
             <artifactId>kernel-biometrics-api</artifactId>
             <version>${kernel.biometricsdk.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.springframework.boot</groupId>
+            		<artifactId>
+            			spring-boot-starter-security
+            		</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.mosip.kernel</groupId>
