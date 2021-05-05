@@ -157,6 +157,10 @@ img {
 .delete-img {
   height: 18px;
 }
+.lock-img {
+  height: 17px;
+  margin-top: 4px;
+}
 #status {
   padding-left: 10px;
 }

@@ -148,7 +148,7 @@ export const APPLICATION_STATUS_CODES = {
   pending: 'Pending_Appointment',
   booked: 'Booked',
   expired: 'Expired',
-  cancelled: 'Canceled'
+  cancelled: 'Cancelled'
 };
 
 export const APPLICANT_TYPE_ATTRIBUTES = {

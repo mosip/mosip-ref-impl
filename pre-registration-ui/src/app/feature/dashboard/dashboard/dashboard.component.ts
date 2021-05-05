@@ -103,15 +103,15 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loginId = localStorage.getItem("loginId");
     this.dataStorageService
-    .getI18NLanguageFiles(this.userPreferredLangCode)
-    .subscribe((response) => {
-      this.languagelabels = response["dashboard"].discard;
-      this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
-      this.errorLanguagelabels = response["error"];
-      if(this.dataCaptureLabels!= undefined){
-        this.initUsers();
-      }
-    });
+      .getI18NLanguageFiles(this.userPreferredLangCode)
+      .subscribe((response) => {
+        this.languagelabels = response["dashboard"].discard;
+        this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
+        this.errorLanguagelabels = response["error"];
+        if (this.dataCaptureLabels != undefined) {
+          this.initUsers();
+        }
+      });
     const subs = this.autoLogout.currentMessageAutoLogout.subscribe(
       (message) => (this.message = message)
     );
@@ -124,7 +124,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       this.autoLogout.getValues(this.userPreferredLangCode);
       this.autoLogout.continueWatching();
     }
-   
+
     this.regService.setSameAs("");
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
@@ -137,11 +137,15 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     this.mandatoryLanguages = this.configService
       .getConfigByKey("mosip.mandatory-languages")
       .split(",");
-    this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");  
+    this.mandatoryLanguages = this.mandatoryLanguages.filter(
+      (item) => item != ""
+    );
     this.optionalLanguages = this.configService
       .getConfigByKey("mosip.optional-languages")
       .split(",");
-    this.optionalLanguages = this.optionalLanguages.filter(item => item != "");  
+    this.optionalLanguages = this.optionalLanguages.filter(
+      (item) => item != ""
+    );
     this.minLanguage = Number(
       this.configService.getConfigByKey("mosip.min-languages.count")
     );
@@ -340,10 +344,12 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicantResponse[
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.demographicMetadata
       ];
-      console.log(demographicMetadata);
-      console.log( applicantResponse[
+    console.log(demographicMetadata);
+    console.log(
+      applicantResponse[
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode
-      ]);
+      ]
+    );
     let dataAvailableLanguage = [];
     demographicMetadata[this.name].forEach((element) => {
       dataAvailableLanguage.push(element["language"]);
@@ -550,11 +556,13 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       message = `${this.dataCaptureLabels.message[0]} ${this.minLanguage} ${this.dataCaptureLabels.message[3]}`;
     } else {
       message = `${this.dataCaptureLabels.message[1]} ${this.minLanguage} ${this.dataCaptureLabels.message[2]} ${this.maxLanguage} ${this.dataCaptureLabels.message[3]}`;
-    } 
+    }
     if (this.mandatoryLanguages.length > 0) {
-      message += ` ${this.getLanguageConcatinatedString()} ${this.dataCaptureLabels.message[4]}`; 
-    }  
-    message += ` ${this.dataCaptureLabels.message[5]}`; 
+      message += ` ${this.getLanguageConcatinatedString()} ${
+        this.dataCaptureLabels.message[4]
+      }`;
+    }
+    message += ` ${this.dataCaptureLabels.message[5]}`;
     return message;
   }
 
@@ -805,7 +813,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       return "orange";
     if (value === appConstants.APPLICATION_STATUS_CODES.booked) return "green";
     if (value === appConstants.APPLICATION_STATUS_CODES.expired) return "red";
-    if(value === 'Canceled') return 'purple';
+    if (value === "Canceled") return "purple";
   }
 
   getMargin(name: string) {
