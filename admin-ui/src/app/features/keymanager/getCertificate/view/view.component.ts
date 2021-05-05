@@ -25,11 +25,13 @@ export class ViewComponent implements OnInit, OnDestroy {
   sortFilter = [];
   pagination = new PaginationModel();
   requestModel: RequestModel;
-  datas = [];
+  datas = "";
   subscribed: any;
   errorMessages: any;
   noData = false;
   filtersApplied = false;
+  applicationId = "";
+  referenceId = "";
 
   constructor(
     private keymanagerService: KeymanagerService,
@@ -48,7 +50,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getCertificate();
+        //this.getCertificate();
       }
     });
   }
@@ -69,7 +71,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.paginatorOptions = getCertificateConfig.paginator;
   }
 
-  /*pageEvent(event: any) {
+  captureValue(event: any, formControlName: string) {
+      this[formControlName] = event.target.value;
+  }
+
+  pageEvent(event: any) {
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
       this.appService.getConfig().primaryLangCode
@@ -77,7 +83,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/bulkupload/masterdataupload/view?${url}`);
+    this.router.navigateByUrl(`admin/keymanager/getcertificate/list?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -98,11 +104,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl('admin/bulkupload/masterdataupload/view?' + url);
-  }*/
+    this.router.navigateByUrl('admin/keymanager/getcertificate/list?' + url);
+  }
 
   getCertificate() {
-    this.datas = [];
+    this.datas = "";
     this.noData = false;
     this.filtersApplied = false;
     const filters = Utils.convertFilter(
@@ -117,24 +123,21 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.sortFilter.push({"sortType":"desc","sortField":"timeStamp"});      
     }
     this.requestModel = new RequestModel(null, null, filters);
-    console.log("filters>>>"+JSON.stringify(filters));
-    console.log(JSON.stringify(this.requestModel));
+
     this.keymanagerService
-      .getCertificate(this.requestModel, "", filters.pagination.pageStart, filters.pagination.pageFetch, "")
+      .getCertificate(this.requestModel, this.applicationId, filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId)
       .subscribe(({ response, errors }) => {
-        console.log("response>>>"+response);
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalItems;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
-          console.log(this.paginatorOptions);
-          if (response.data !== null) {
-            this.datas = response.data ? [...response.data] : [];
+          if (response) {
+            this.datas = response.certificate ? response.certificate : "";
           } else {
-            this.noData = true;
+            this.datas = "No Data Found";
           }
         } else {
-          this.noData = true;
+          this.datas = "No Data Found";
         }
       });
   }
