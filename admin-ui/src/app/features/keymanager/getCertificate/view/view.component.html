@@ -23,24 +23,8 @@
 </div>
 </div>
 </div>
-<mat-card class="mat-elevation-z5">
-  <app-toolbar
-    *ngIf="
-      actionEllipsis && actionEllipsis  && paginatorOptions
-    "
-    [buttonList]="actionEllipsis"
-    [paginationOptions]="paginatorOptions"
-    [filtersAppliedFlag]="filtersApplied"
-    (pageEvent)="pageEvent($event)"
-  ></app-toolbar>
-  <app-table
-    *ngIf="datas && displayedColumns && actionButtons"
-    [data]="datas"
-    [displayedColumns]="displayedColumns"
-    [buttonList]="actionButtons"
-    [sortData]="sortFilter"
-    [noDataFlag]="noData"
-  ></app-table>
+<mat-card class="mat-elevation-z5" *ngIf="this.datas">
+  <div>{{this.datas}}</div>
 </mat-card>
 </ng-container>
 <!-- <ng-template #nodata><mat-spinner class="spinner-placer"></mat-spinner></ng-template> -->

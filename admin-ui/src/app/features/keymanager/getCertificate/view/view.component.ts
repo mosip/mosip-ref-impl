@@ -25,7 +25,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   sortFilter = [];
   pagination = new PaginationModel();
   requestModel: RequestModel;
-  datas = [];
+  datas = "";
   subscribed: any;
   errorMessages: any;
   noData = false;
@@ -50,7 +50,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getCertificate();
+        //this.getCertificate();
       }
     });
   }
@@ -108,7 +108,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   getCertificate() {
-    this.datas = [];
+    this.datas = "";
     this.noData = false;
     this.filtersApplied = false;
     const filters = Utils.convertFilter(
@@ -131,14 +131,13 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.paginatorOptions.totalEntries = response.totalItems;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
-          console.log(this.paginatorOptions);
-          if (response.data !== null) {
-            this.datas = response.data ? [...response.data] : [];
+          if (response) {
+            this.datas = response.certificate ? response.certificate : "";
           } else {
-            this.noData = true;
+            this.datas = "No Data Found";
           }
         } else {
-          this.noData = true;
+          this.datas = "No Data Found";
         }
       });
   }
