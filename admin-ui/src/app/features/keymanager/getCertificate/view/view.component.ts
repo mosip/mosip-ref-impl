@@ -29,7 +29,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   subscribed: any;
   errorMessages: any;
   noData = false;
+  displayText = "welcome"
   filtersApplied = false;
+  applicationId = "";
+  referenceId = "";
 
   constructor(
     private keymanagerService: KeymanagerService,
@@ -69,7 +72,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.paginatorOptions = getCertificateConfig.paginator;
   }
 
-  /*pageEvent(event: any) {
+  captureValue(event: any, formControlName: string) {
+      this[formControlName] = event.target.value;
+  }
+
+  pageEvent(event: any) {
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
       this.appService.getConfig().primaryLangCode
@@ -77,7 +84,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/bulkupload/masterdataupload/view?${url}`);
+    this.router.navigateByUrl(`admin/keymanager/getcertificate/list?${url}`);
   }
 
   getSortColumn(event: SortModel) {
@@ -98,8 +105,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl('admin/bulkupload/masterdataupload/view?' + url);
-  }*/
+    this.router.navigateByUrl('admin/keymanager/getcertificate/list?' + url);
+  }
 
   getCertificate() {
     this.datas = [];
@@ -117,12 +124,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.sortFilter.push({"sortType":"desc","sortField":"timeStamp"});      
     }
     this.requestModel = new RequestModel(null, null, filters);
-    console.log("filters>>>"+JSON.stringify(filters));
-    console.log(JSON.stringify(this.requestModel));
+
     this.keymanagerService
-      .getCertificate(this.requestModel, "", filters.pagination.pageStart, filters.pagination.pageFetch, "")
+      .getCertificate(this.requestModel, this.applicationId, filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId)
       .subscribe(({ response, errors }) => {
-        console.log("response>>>"+response);
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalItems;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;

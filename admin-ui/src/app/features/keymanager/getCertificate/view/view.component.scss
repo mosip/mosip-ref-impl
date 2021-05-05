@@ -11,4 +11,19 @@
     font-weight: bold;
     margin-top: 12px !important;
     padding-bottom: 0px;
-  }
+}
+
+.example-container{
+  margin-left: 50px;
+}
+
+.example-container .mat-form-field + .mat-form-field {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+#createButton{
+    background-color: #ff4081!important;
+    color: white;
+}
+
+    
