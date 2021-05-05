@@ -29,7 +29,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   subscribed: any;
   errorMessages: any;
   noData = false;
-  displayText = "welcome"
   filtersApplied = false;
   applicationId = "";
   referenceId = "";
