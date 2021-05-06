@@ -101,22 +101,27 @@ export class CreateComponent {
   showMessage(response){
     let data = {};
     let self = this;
-    if(response.errors){
+    let displaycert = "";
+    if(response.response.status == "FAILED"){
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: response.errors[0].message,
+        message: "Please retry again.",
         btnTxt: "DONE"
       };
     }else{
+      if(response.response.certificate){
+        displaycert = response.response.certificate;
+      }else if(response.response.certSignRequest){
+        displaycert = response.response.certSignRequest;
+      }
       data = {
         case: 'MESSAGE',
         title: "Success",
-        message: response.response.certSignRequest,
+        message: displaycert,
         btnTxt: "DONE"
       };
     }
-    console.log();  
     const dialogRef = self.dialog.open(DialogComponent, {
       width: '650px',
       data
