@@ -272,6 +272,11 @@ TRUNCATE TABLE master.registration_center_h cascade ;
 
 \COPY master.registration_center_h (id,name,cntrtyp_code,addr_line1,addr_line2,addr_line3,latitude,longitude,location_code,contact_phone,contact_person,number_of_kiosks,working_hours,per_kiosk_process_time,center_start_time,center_end_time,lunch_start_time,lunch_end_time,time_zone,holiday_loc_code,zone_code,lang_code,is_active,cr_by,cr_dtimes,eff_dtimes) FROM './dml/master-registration_center_h.csv' delimiter ',' HEADER  csv;
 
+----- TRUNCATE master.ui_spec TABLE Data and It's reference Data and COPY Data from CSV file -----
+TRUNCATE TABLE master.ui_spec cascade ;
+
+\COPY master.ui_spec (id,version,domain,title,description,type,json_spec,identity_schema_id,identity_schema_version,effective_from,status_code,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes,is_deleted,del_dtimes) FROM './dml/master-ui_spec.csv' delimiter ',' HEADER  csv;
+
 ----- TRUNCATE master.user_detail_h TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.user_detail_h cascade ;
 
