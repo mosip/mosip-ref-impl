@@ -120,6 +120,7 @@
   background-color: #eafaea;
   color: green;
   margin: 0 2rem;
+  border-bottom: 1px solid #ff4081;
 }
 
 .ack__body-container {
@@ -127,7 +128,7 @@
   flex-wrap: wrap;
   width: 100%;
   padding: 10px 2rem;
-  border-bottom: 1px dashed #c9c9c9;
+  border-bottom: 1px solid #ff4081;
   z-index: -1;
   position: relative;
 }
@@ -153,7 +154,7 @@ table tr td {
 }
 
 #table-container table {
-  max-width: 400px;
+  /*max-width: 400px;*/
   table-layout: fixed;
 }
 
@@ -188,6 +189,8 @@ table tr td {
     margin-right: 20px;
   }
 }
-
+table{
+  width: 100%
+}
 
 

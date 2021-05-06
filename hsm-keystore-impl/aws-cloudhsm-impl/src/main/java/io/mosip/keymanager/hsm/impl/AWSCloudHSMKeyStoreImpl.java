@@ -29,11 +29,13 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -49,6 +51,7 @@ import io.mosip.kernel.core.keymanager.exception.KeystoreProcessingException;
 import io.mosip.kernel.core.keymanager.exception.NoSuchSecurityProviderException;
 import io.mosip.kernel.core.keymanager.model.CertificateParameters;
 import io.mosip.kernel.core.logger.spi.Logger;
+import io.mosip.kernel.core.util.DateUtils;
 import io.mosip.kernel.keygenerator.bouncycastle.constant.KeyGeneratorExceptionConstant;
 import io.mosip.kernel.keymanager.hsm.constant.KeymanagerConstant;
 import io.mosip.kernel.keymanager.hsm.constant.KeymanagerErrorCode;
@@ -66,6 +69,10 @@ public class AWSCloudHSMKeyStoreImpl implements io.mosip.kernel.core.keymanager.
 
 	private static final Logger LOGGER = KeymanagerLogger.getLogger(AWSCloudHSMKeyStoreImpl.class);
 
+	private static final int PROVIDER_ALLOWED_RELOAD_INTERVEL_IN_SECONDS = 60;
+
+	private static final int NO_OF_RETRIES = 3;
+	
 	private static final BigInteger DEFAULT_PUBLIC_EXPONENT = new BigInteger("65537");
 	private static final String PUBLIC_KEY_ALIAS_SUFFIX = ":public";
 
@@ -133,6 +140,14 @@ public class AWSCloudHSMKeyStoreImpl implements io.mosip.kernel.core.keymanager.
 
 	private char[] partitionPwdCharArr = null;
 
+	private boolean enableKeyReferenceCache;
+
+	private Map<String, PrivateKeyEntry> privateKeyReferenceCache;
+
+	private Map<String, SecretKey> secretKeyReferenceCache;
+
+	private LocalDateTime lastProviderLoadedTime;
+	
 	public AWSCloudHSMKeyStoreImpl(Map<String, String> params) throws Exception {
 		this.keystoreType = params.get(KEYSTORE_TYPE);
 		this.keyStoreFilePath = params.get(KEYSTORE_FILE_PATH);
@@ -150,6 +165,10 @@ public class AWSCloudHSMKeyStoreImpl implements io.mosip.kernel.core.keymanager.
 		
 		initKeystore();
 		loginHSM(partitionName, cuUserName, cuPassword);
+		lastProviderLoadedTime = DateUtils.getUTCCurrentDateTime();
+		this.enableKeyReferenceCache = Boolean.parseBoolean(params.get(KeymanagerConstant.FLAG_KEY_REF_CACHE));
+		LOGGER.info("AWS-sessionId", "CloudHSM", "id", "Cloud HSM Keystore enableKeyReferenceCache flag: " + enableKeyReferenceCache);
+		initKeyReferenceCache();
 		LOGGER.info("AWS-sessionId", "CloudHSM", "id", "Cloud HSM Keystore initialization completed. Provider Name: " + cloudHSMProvider.getName());
 	}
 
@@ -251,20 +270,65 @@ public class AWSCloudHSMKeyStoreImpl implements io.mosip.kernel.core.keymanager.
 	@SuppressWarnings("findsecbugs:HARD_CODE_PASSWORD")
 	@Override
 	public PrivateKeyEntry getAsymmetricKey(String alias) {
-
-		try {
-			if (keyStore.entryInstanceOf(alias, PrivateKeyEntry.class)) {
-				LOGGER.debug("sessionId", "KeyStoreImpl", "getAsymmetricKey", "alias is instanceof keystore");
-				ProtectionParameter password = getPasswordProtection();
-				return (PrivateKeyEntry) keyStore.getEntry(alias, password);
-			} else {
-				throw new NoSuchSecurityProviderException(KeymanagerErrorCode.NO_SUCH_ALIAS.getErrorCode(),
-						KeymanagerErrorCode.NO_SUCH_ALIAS.getErrorMessage() + alias);
+		PrivateKeyEntry privateKeyEntry = getPrivateKeyEntryFromCache(alias);
+		if(privateKeyEntry != null)
+			return privateKeyEntry;
+		int i = 0;
+		boolean isException = false;
+		String expMessage = "";
+		Exception exp = null;
+		do {
+			try {
+				if (keyStore.entryInstanceOf(alias, PrivateKeyEntry.class)) {
+					LOGGER.info("sessionId", "KeyStoreImpl", "getAsymmetricKey", "retry counter: " + i);
+					ProtectionParameter password = getPasswordProtection();
+					privateKeyEntry = (PrivateKeyEntry) keyStore.getEntry(alias, password);
+					if (privateKeyEntry != null) {
+						LOGGER.debug("sessionId", "KeyStoreImpl", "getAsymmetricKey", "privateKeyEntry is not null");
+						break;
+					}
+					
+				} else {
+					throw new NoSuchSecurityProviderException(KeymanagerErrorCode.NO_SUCH_ALIAS.getErrorCode(),
+							KeymanagerErrorCode.NO_SUCH_ALIAS.getErrorMessage() + alias);
+				}
+			} catch (NoSuchAlgorithmException | UnrecoverableEntryException e) {
+				throw new KeystoreProcessingException(KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorCode(),
+						KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorMessage() + e.getMessage(), e);
+			} catch (KeyStoreException kse) {
+				isException = true;
+				expMessage = kse.getMessage();
+				exp = kse;
+				LOGGER.debug("sessionId", "KeyStoreImpl", "getAsymmetricKey", expMessage);
 			}
-		} catch (NoSuchAlgorithmException | UnrecoverableEntryException | KeyStoreException e) {
+			if (isException) {
+				reloadProvider();
+				isException = false;
+			}
+		} while (i++ < NO_OF_RETRIES);
+		if (Objects.isNull(privateKeyEntry)) {
+			LOGGER.debug("sessionId", "KeyStoreImpl", "getAsymmetricKey", "privateKeyEntry is null");
 			throw new KeystoreProcessingException(KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorCode(),
-					KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorMessage() + e.getMessage(), e);
+					KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorMessage() + expMessage, exp);
 		}
+		addPrivateKeyEntryToCache(alias, privateKeyEntry);
+		return privateKeyEntry;
+	}
+
+	private synchronized void reloadProvider() {
+		LOGGER.info("sessionId", "KeyStoreImpl", "KeyStoreImpl", "reloading provider");
+		if(DateUtils.getUTCCurrentDateTime().isBefore(
+				lastProviderLoadedTime.plusSeconds(PROVIDER_ALLOWED_RELOAD_INTERVEL_IN_SECONDS))) {
+			LOGGER.warn("sessionId", "KeyStoreImpl", "reloadProvider", 
+				"Last time successful reload done on " + lastProviderLoadedTime.toString() + 
+					", so reloading not done before interval of " + 
+					PROVIDER_ALLOWED_RELOAD_INTERVEL_IN_SECONDS + " sec");
+			return;
+		}
+		setupProvider();
+		addProvider();
+		this.keyStore = getKeystoreInstance();
+		lastProviderLoadedTime = DateUtils.getUTCCurrentDateTime();
 	}
 
 	@Override
@@ -290,11 +354,16 @@ public class AWSCloudHSMKeyStoreImpl implements io.mosip.kernel.core.keymanager.
 	@SuppressWarnings("findsecbugs:HARD_CODE_PASSWORD")
 	@Override
 	public SecretKey getSymmetricKey(String alias) {
+		SecretKey secretKey = getSecretKeyFromCache(alias);
+		if(secretKey != null)
+			return secretKey;
 
 		try {
 			if (keyStore.entryInstanceOf(alias, SecretKeyEntry.class)) {
 				ProtectionParameter password = getPasswordProtection();
 				SecretKeyEntry retrivedSecret = (SecretKeyEntry) keyStore.getEntry(alias, password);
+				secretKey = retrivedSecret.getSecretKey();
+				addSecretKeyToCache(alias, secretKey);
 				return retrivedSecret.getSecretKey();
 			} else {
 				throw new NoSuchSecurityProviderException(KeymanagerErrorCode.NO_SUCH_ALIAS.getErrorCode(),
@@ -436,5 +505,40 @@ public class AWSCloudHSMKeyStoreImpl implements io.mosip.kernel.core.keymanager.
 			throw new KeystoreProcessingException(KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorCode(),
 					KeymanagerErrorCode.KEYSTORE_PROCESSING_ERROR.getErrorMessage() + e.getMessage(), e);
 		}
-    }
+	}
+	
+	private void initKeyReferenceCache() {
+		if(!enableKeyReferenceCache)
+			return;
+		this.privateKeyReferenceCache = new ConcurrentHashMap<>();
+		this.secretKeyReferenceCache = new ConcurrentHashMap<>();
+	}
+
+	private void addPrivateKeyEntryToCache(String alias, PrivateKeyEntry privateKeyEntry) {
+		if(!enableKeyReferenceCache)
+			return;
+		LOGGER.debug("sessionId", "KeyStoreImpl", "addPrivateKeyEntryToCache", 
+			"Adding private key reference to map for alias " + alias);
+		this.privateKeyReferenceCache.put(alias, privateKeyEntry);
+	}
+
+	private PrivateKeyEntry getPrivateKeyEntryFromCache(String alias) {
+		if(!enableKeyReferenceCache)
+			return null;
+		return this.privateKeyReferenceCache.get(alias);
+	}
+
+	private void addSecretKeyToCache(String alias, SecretKey secretKey) {
+		if(!enableKeyReferenceCache)
+			return;
+		LOGGER.debug("sessionId", "KeyStoreImpl", "addSecretKeyToCache", 
+			"Adding secretKey reference to map for alias " + alias);
+		this.secretKeyReferenceCache.put(alias, secretKey);
+	}
+
+	private SecretKey getSecretKeyFromCache(String alias) {
+		if(!enableKeyReferenceCache)
+			return null;
+		return this.secretKeyReferenceCache.get(alias);
+	}
 }

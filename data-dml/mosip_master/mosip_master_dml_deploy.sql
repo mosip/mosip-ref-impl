@@ -129,12 +129,12 @@ TRUNCATE TABLE master.loc_hierarchy_list cascade ;
 ----- TRUNCATE master.identity_schema TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.identity_schema cascade ;
 
-\COPY master.identity_schema (id,id_version,title,description,id_attr_json,schema_json,status_code,add_props,effective_from,lang_code,is_active,cr_by,cr_dtimes) FROM './dml/master-identity_schema.csv' delimiter ',' HEADER  csv;
+\COPY master.identity_schema (id,id_version,title,description,schema_json,status_code,add_props,effective_from,lang_code,is_active,cr_by,cr_dtimes) FROM './dml/master-identity_schema.csv' delimiter ',' HEADER  csv;
 
 ----- TRUNCATE master.sync_job_def TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.sync_job_def  cascade ;
 
-\COPY master.sync_job_def (ID,NAME,API_NAME,PARENT_SYNCJOB_ID,SYNC_FREQ,LOCK_DURATION,LANG_CODE,IS_ACTIVE,CR_BY,CR_DTIMES,UPD_BY,UPD_DTIMES,IS_DELETED,DEL_DTIMES) FROM './dml/master-sync_job_def.csv' delimiter ',' HEADER  csv;
+\COPY master.sync_job_def (ID,NAME,API_NAME,PARENT_SYNCJOB_ID,SYNC_FREQ,LOCK_DURATION,LANG_CODE,IS_ACTIVE,CR_BY,CR_DTIMES,UPD_BY,UPD_DTIMES,IS_DELETED,DEL_DTIMES,JOB_TYPE) FROM './dml/master-sync_job_def.csv' delimiter ',' HEADER  csv;
 
 ----- TRUNCATE master.dynamic_field TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.dynamic_field cascade ;
@@ -271,6 +271,11 @@ TRUNCATE TABLE master.machine_master_h cascade ;
 TRUNCATE TABLE master.registration_center_h cascade ;
 
 \COPY master.registration_center_h (id,name,cntrtyp_code,addr_line1,addr_line2,addr_line3,latitude,longitude,location_code,contact_phone,contact_person,number_of_kiosks,working_hours,per_kiosk_process_time,center_start_time,center_end_time,lunch_start_time,lunch_end_time,time_zone,holiday_loc_code,zone_code,lang_code,is_active,cr_by,cr_dtimes,eff_dtimes) FROM './dml/master-registration_center_h.csv' delimiter ',' HEADER  csv;
+
+----- TRUNCATE master.ui_spec TABLE Data and It's reference Data and COPY Data from CSV file -----
+TRUNCATE TABLE master.ui_spec cascade ;
+
+\COPY master.ui_spec (id,version,domain,title,description,type,json_spec,identity_schema_id,identity_schema_version,effective_from,status_code,is_active,cr_by,cr_dtimes,upd_by,upd_dtimes,is_deleted,del_dtimes) FROM './dml/master-ui_spec.csv' delimiter ',' HEADER  csv;
 
 ----- TRUNCATE master.user_detail_h TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.user_detail_h cascade ;

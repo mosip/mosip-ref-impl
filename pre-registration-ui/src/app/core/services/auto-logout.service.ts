@@ -6,7 +6,7 @@ import { DialougComponent } from 'src/app/shared/dialoug/dialoug.component';
 import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from 'src/app/core/services/config.service';
 import * as appConstants from 'src/app/app.constants';
-import LanguageFactory from 'src/assets/i18n';
+import { DataStorageService } from './data-storage.service';
 
 /**
  * @description This class is responsible for auto logging out user when he is inactive for a
@@ -25,9 +25,8 @@ export class AutoLogoutService {
   isActive = false;
 
   timer = new UserIdleConfig();
-  secondaryLanguagelabels: any;
-  primaryLang = localStorage.getItem('langCode');
-  secondaryLang = localStorage.getItem('secondaryLangCode');
+  languagelabels: any;
+  langCode = localStorage.getItem('langCode');
 
   idle: number;
   timeout: number;
@@ -39,7 +38,8 @@ export class AutoLogoutService {
     private userIdle: UserIdleService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private configservice: ConfigService
+    private configservice: ConfigService,
+    private dataStorageService: DataStorageService
   ) {}
 
   /**
@@ -48,7 +48,7 @@ export class AutoLogoutService {
    * @returns void
    * @memberof AutoLogoutService
    */
-  getValues(langCode: string) {
+  getValues(langCode) {
     (this.idle = Number(
       this.configservice.getConfigByKey(appConstants.CONFIG_KEYS.mosip_preregistration_auto_logout_idle)
     )),
@@ -59,10 +59,12 @@ export class AutoLogoutService {
         this.configservice.getConfigByKey(appConstants.CONFIG_KEYS.mosip_preregistration_auto_logout_ping)
       ));
 
-    this.primaryLang = langCode;
-    let factory = new LanguageFactory(this.primaryLang);
-    let response = factory.getCurrentlanguage();
-    this.secondaryLanguagelabels = response['autologout'];
+      this.dataStorageService
+      .getI18NLanguageFiles(langCode)
+      .subscribe((response) => {
+        this.languagelabels = response['autologout'];
+      });
+    
   }
 
   setisActive(value: boolean) {
@@ -143,16 +145,14 @@ export class AutoLogoutService {
   }
 
   /**
-   * @description This methoed opens a pop up when user idle has been detected for given time...
-   *
-   * @returns void
+   * @description This methoed opens a pop up when user idle has been detected for given time.id
    * @memberof AutoLogoutService
    */
 
   openPopUp() {
     const data = {
       case: 'POPUP',
-      content: this.secondaryLanguagelabels.preview
+      content: this.languagelabels.preview   
     };
     this.dialogref = this.dialog.open(DialougComponent, {
       width: '550px',
@@ -162,7 +162,7 @@ export class AutoLogoutService {
   popUpPostLogOut() {
     const data = {
       case: 'POSTLOGOUT',
-      contentLogout: this.secondaryLanguagelabels.post
+      contentLogout: this.languagelabels.post
     };
     this.dialogreflogout = this.dialog.open(DialougComponent, {
       width: '550px',

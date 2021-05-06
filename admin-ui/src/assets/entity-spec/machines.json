@@ -216,17 +216,6 @@
       "methodCallName": ""
     },
     {
-      "filtername": "mapStatus",
-      "filterlabel": {"eng":"Map Status","ara":"خريطة الحالة", "fra": "État de la carte"},
-      "filterType": "equals",
-      "autocomplete": "false",
-      "dropdown": "true",
-      "datePicker": "false",
-      "apiName": "machines",
-      "fieldName": "mapStatus",
-      "methodCallName": ""
-    },
-    {
       "filtername": "machineTypeName",
       "filterlabel": {
         "eng": "Machine Type",

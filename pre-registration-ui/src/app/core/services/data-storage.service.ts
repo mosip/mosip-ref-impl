@@ -35,6 +35,10 @@ export class DataStorageService {
   BASE_URL = this.appConfigService.getConfig()["BASE_URL"];
   PRE_REG_URL = this.appConfigService.getConfig()["PRE_REG_URL"];
 
+  getI18NLanguageFiles(langCode:string){
+   return this.httpClient.get(`./assets/i18n/${langCode}.json`);
+  }
+
   getUsers(userId: string) {
     let url =
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;
@@ -45,7 +49,7 @@ export class DataStorageService {
    * @description This method returns the user details for the given pre-registration id.
    *
    * @param {string} preRegId - pre-registartion-id
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   getUser(preRegId: string) {
@@ -55,15 +59,16 @@ export class DataStorageService {
       appConstants.APPEND_URL.applicants +
       appConstants.APPENDER +
       preRegId;
+    console.log("url>>>>"+url);
     return this.httpClient.get(url);
   }
 
   /**
-   * @description This methos returns the list of available genders
+   * @description This methos returns the list of available genders
    *
    *
-   * @returns an `Observable` of the body as an `Object`
-   * @memberof DataStorageService
+   * @returns an `Observable` of the body as an `Object`
+   * @memberof DataStorageService
    */
   getGenderDetails() {
     const url = this.BASE_URL + this.PRE_REG_URL + '/proxy' + appConstants.APPEND_URL.gender;
@@ -71,11 +76,11 @@ export class DataStorageService {
   }
 
   /**
-   * @description This methos returns the list of available genders
+   * @description This methos returns the list of available genders
    *
    *
-   * @returns an `Observable` of the body as an `Object`
-   * @memberof DataStorageService
+   * @returns an `Observable` of the body as an `Object`
+   * @memberof DataStorageService
    */
   getResidentDetails() {
     const url = this.BASE_URL + this.PRE_REG_URL + '/proxy' + appConstants.APPEND_URL.resident;
@@ -86,7 +91,7 @@ export class DataStorageService {
    * @description This method is responsible for doing the transliteration for a given word.
    *
    * @param {*} request
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   getTransliteration(request: any) {
@@ -111,7 +116,7 @@ export class DataStorageService {
    * @description This method adds the user
    *
    * @param {*} identity `Object`
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   addUser(identity: any) {
@@ -218,6 +223,16 @@ export class DataStorageService {
         "locations/" +
         localStorage.getItem("langCode")
     );
+  }
+
+  getLocationInfoForLocCode(locCode: string, langCode: string) {
+    let url = this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
+    appConstants.APPEND_URL.master_data +
+    "locations/info/" +
+    locCode + "/" + 
+    langCode;
+    console.log(url);
+    return this.httpClient.get(url);
   }
 
   getLocationsHierarchyByLangCode(langCode: string, locCode: string) {
@@ -345,8 +360,7 @@ export class DataStorageService {
     return this.httpClient.post(
       this.BASE_URL +
         this.PRE_REG_URL +
-        appConstants.APPEND_URL.notification +
-        appConstants.APPEND_URL.send_notification,
+        appConstants.APPEND_URL.notification,
       data
     );
   }
@@ -404,8 +418,7 @@ export class DataStorageService {
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
-      "templates/" +
-      localStorage.getItem("langCode") +
+      "templates/templatetypecodes" +
       "/" +
       templateType;
     return this.httpClient.get(url);
@@ -427,6 +440,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.validDocument +
       applicantCode +
       "/languages";
+    console.log(APPLICANT_VALID_DOCUMENTS_URL);  
     return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
       params: new HttpParams().append(
         appConstants.PARAMS_KEYS.getDocumentCategories,
@@ -445,8 +459,9 @@ export class DataStorageService {
     return this.httpClient.get(url);
   }
 
-  sendOtp(userId: string) {
+  sendOtp(userId: string,langCode: string) {
     const req = {
+      langCode: langCode,
       userId: userId,
     };
 
@@ -456,7 +471,7 @@ export class DataStorageService {
       this.BASE_URL +
       this.PRE_REG_URL +
       appConstants.APPEND_URL.auth +
-      appConstants.APPEND_URL.send_otp;
+      appConstants.APPEND_URL.send_otp + "/" + "langcode";
     return this.httpClient.post(url, obj);
   }
 
@@ -498,7 +513,7 @@ export class DataStorageService {
   /**
    * @description This method is responsible to logout the user and invalidate the token.
    *
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   onLogout() {
@@ -519,8 +534,8 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
-    const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-    //const url = "assets/identity-spec.json";
+    //const url = this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    let url = this.BASE_URL + this.PRE_REG_URL+ `uispec/latest`;
     return this.httpClient.get(url);
   }
 
@@ -546,15 +561,23 @@ export class DataStorageService {
   }
 
   getDynamicFieldsandValues(langCode) {
-    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
+  getDynamicFieldsandValuesForAllLang(pageNumber: string) {
+    const url =
+      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      appConstants.APPEND_URL.master_data +
+      `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
+    //console.log(url);
+    return this.httpClient.get(url);
+  }
+  
   updateDocRefId(fileDocumentId, preId, docRefId) {
     const url = `${this.BASE_URL}${this.PRE_REG_URL}` +
       `${appConstants.APPEND_URL.updateDocRefId}${fileDocumentId}` +

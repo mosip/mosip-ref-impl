@@ -4,6 +4,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { Router } from '@angular/router';
 import { AppConfigService } from 'src/app/app-config.service';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -23,21 +24,21 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private appConfig: AppConfigService,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private headerService: HeaderService
   ) {
     super();
     this.itemsPerPageLabel = 'Show rows';
   }
 
   ngOnInit() {
-    this.lang = this.appConfig.getConfig().primaryLangCode;
+    this.lang = this.headerService.getUserPreferredLanguage();
     this.pageSize = Number(this.paginationOptions.pageSize);
   }
 
   actionEvent(buttonAction) {
     console.log(buttonAction);
     if (buttonAction.actionListType === 'action') {
-      console.log(buttonAction.actionListType);
       this.auditService.audit(9, 'ADM-082', {
         buttonName: buttonAction.buttonName.eng,
         masterdataName: this.router.url.split('/')[
@@ -47,14 +48,17 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
       this.openFilterDialog(buttonAction.actionURL);
     }
     if (buttonAction.actionListType === 'redirect') {
-      console.log(buttonAction.actionListType);
       this.auditService.audit(9, 'ADM-083', {
         buttonName: buttonAction.buttonName.eng,
         masterdataName: this.router.url.split('/')[
           this.router.url.split('/').length - 2
         ]
       });
-      this.router.navigateByUrl(buttonAction.redirectURL);
+      if("admin/masterdata/dynamicfields/create" === buttonAction.redirectURL){
+        this.router.navigateByUrl("admin/masterdata/dynamicfields/"+this.router.url.split('/')[4]+"/create");
+      }else{
+        this.router.navigateByUrl(buttonAction.redirectURL);
+      }      
     }
   }
   openFilterDialog(action): void {

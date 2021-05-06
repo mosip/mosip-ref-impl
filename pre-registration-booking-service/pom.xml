@@ -3,23 +3,33 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.2.RELEASE</version>
-		<relativePath />
-	</parent>
+	<scm>	
+                <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>	
+                <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>	
+                <url>https://github.com/mosip/mosip-ref-impl</url>	
+                <tag>HEAD</tag>	
+        </scm>
 
+	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.1.4-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
+	<description>Booking service of  MOSIP Pre-registration</description>	
+	<url>https://github.com/mosip/mosip-ref-impl</url>	
+		
+	<licenses>	
+          <license>	
+                <name>MPL 2.0</name>	
+                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>	
+          </license>	
+        </licenses>
 
 	<developers>
 		<developer>
 			<name>Mosip</name>
 			<email>mosip.emailnotifier@gmail.com</email>
 			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/mosip/pre-registration</organizationUrl>
+			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
 		</developer>
 	</developers>
 
@@ -37,8 +47,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.1.4-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.1.4-SNAPSHOT</kernel.core.version>
+		<pre.registration.core.version>1.2.0-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.2.0-SNAPSHOT</kernel.core.version>
 
 		<!-- Core -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
@@ -219,6 +229,21 @@
 			<artifactId>logback-core</artifactId>
 			<version>1.2.3</version>
 		</dependency>
+			<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>asm</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>json-smart</artifactId>
+			<version>2.2.1</version>
+		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
@@ -290,4 +315,3 @@
 	</build>
 
 </project>
-

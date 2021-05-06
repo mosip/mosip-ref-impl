@@ -11,6 +11,7 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-view',
@@ -38,11 +39,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     private translateService: TranslateService,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private headerService: HeaderService
   ) {
     this.getpacketuploadConfigs();
-    this.translateService.use(appService.getConfig().primaryLangCode);
-    this.translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+    this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
       console.log(response);
       this.errorMessages = response.errorPopup;
     });
@@ -76,7 +78,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
-    console.log("filters>>>"+JSON.stringify(filters));
+    console.log('filters>>>' + JSON.stringify(filters));
     const url = Utils.convertFilterToUrl(filters);
     this.router.navigateByUrl(`admin/bulkupload/packetupload/view?${url}`);
   }
@@ -114,13 +116,13 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.filtersApplied = true;
     }
     this.sortFilter = filters.sort;
-    if(this.sortFilter.length == 0){
-      this.sortFilter.push({"sortType":"desc","sortField":"timeStamp"});      
+    if (this.sortFilter.length === 0) {
+      this.sortFilter.push({sortType: 'desc', sortField: 'timeStamp'});
     }
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.bulkuploadService
-      .getUploadDetails(this.requestModel, "packet", filters.pagination.pageStart, filters.pagination.pageFetch)
+      .getUploadDetails(this.requestModel, 'packet', filters.pagination.pageStart, filters.pagination.pageFetch)
       .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {

@@ -58,6 +58,36 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": { 
+        "eng": "Center Type not available in English", 
+        "ara": "نوع المركز غير متوفر باللغة العربية", 
+        "fra": "Type de centre non disponible en français" 
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": { 
+        "case": "missingData",
+        "title": { 
+          "eng": "Center Type not available in English", 
+          "ara": "نوع المركز غير متوفر باللغة العربية", 
+          "fra": "Type de centre non disponible en français"
+        },
+        "columnNames": [{ 
+          "eng": "Code", 
+          "ara": "الشفرة", 
+          "fra": "Code" 
+        },{ 
+          "eng": "Name", 
+          "ara": "اسم", 
+          "fra": "prénom" 
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [
@@ -100,7 +130,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",

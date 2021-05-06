@@ -58,6 +58,36 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": { 
+        "eng": "Holiday not available in English", 
+        "ara": "عطلة غير متوفرة باللغة العربية", 
+        "fra": "Vacances non disponibles en français" 
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": { 
+        "case": "missingData",
+        "title": { 
+          "eng": "Holiday not available in English", 
+          "ara": "عطلة غير متوفرة باللغة العربية", 
+          "fra": "Vacances non disponibles en français" 
+        },
+        "columnNames": [{ 
+          "eng": "Holiday Name",
+          "ara": "اسم العطلة",
+          "fra": "Nom des vacances"
+        },{ 
+          "eng": "Holiday Id", 
+          "ara": "اسم", 
+          "fra": "Id de vacances" 
+        }],
+        "fieldName": "holidayName"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [
@@ -110,13 +140,13 @@
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "dropdown",
       "ismandatory": "true"
     },
     {
       "name": "isActive",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
       "sortOrder": "",
       "showAsLink": "false",

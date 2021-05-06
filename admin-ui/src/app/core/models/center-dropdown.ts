@@ -22,6 +22,7 @@ export class CenterDropdown {
     public moduleId: any = {},    
     public hierarchyLevelCode: any = {},
     public isActive = [true, false],
-    public regCenterCode: any = {}
+    public regCenterCode: any = {},
+    public locationCode: any = {}
   ) {}
 }

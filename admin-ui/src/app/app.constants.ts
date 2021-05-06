@@ -7,6 +7,7 @@ export const URL = {
   centers: `masterdata/registrationcenters/search`,
   devices: `masterdata/devices/search`,
   machines: `masterdata/machines/search`,
+  users: `masterdata/users/search`,
   documentCategories: `masterdata/documentcategories`,
   mappedDocUrl: `masterdata/documenttypes/`,
   unMappedDocUrl: `masterdata/documenttypes/`
@@ -155,6 +156,18 @@ export const registrationMachineCreateId = 'string';
 export const viewFields = [];
 
 export const masterdataMapping = {
+  users: {
+    apiName: 'users',
+    specFileName: 'users',
+    name: {
+      eng: 'Users',
+      ara: 'قوالب',
+      fra: 'Modèles'
+    },
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Users'
+  },
   'blacklisted-words': {
     apiName: 'blacklistedwords',
     specFileName: 'blacklisted-words',
@@ -202,30 +215,6 @@ export const masterdataMapping = {
     nameKey: 'postalCode',
     idKey: 'postalCode',
     headerName: 'Location'
-  },
-  'gender-type': {
-    apiName: 'gendertypes',
-    specFileName: 'gender-types',
-    name: {
-      eng: 'Gender',
-      ara: 'جنس',
-      fra: 'Le sexe'
-    },
-    nameKey: 'genderName',
-    idKey: 'code',
-    headerName: 'Gender Type'
-  },
-  title: {
-    apiName: 'title',
-    specFileName: 'titles',
-    name: {
-      eng: 'Titles',
-      ara: 'العناوين',
-      fra: 'Les titres'
-    },
-    nameKey: 'titleName',
-    idKey: 'code',
-    headerName: 'Title'
   },
   templates: {
     apiName: 'templates',
@@ -323,6 +312,18 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Individual Type'
   },
+  dynamicfields: {
+    apiName: 'dynamicfields',
+    specFileName: 'dynamicfields',
+    name: {
+      "eng": "Dynamic Field",
+      "ara": "مجال ديناميكي",
+      "fra": "Champ dynamique"
+    },
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Dynamic Field'
+  },
   documentCategoryMapping: {
     name: {
       eng: 'Document Category - Type Mapping',
@@ -348,6 +349,7 @@ export const ListViewIdKeyMapping = {
     imagePath: 'assets/images/Machine.png',
     auditEventId: 'ADM-066'
   },
+  users: { idKey: 'id', auditEventId: 'ADM-084' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },
@@ -364,7 +366,8 @@ export const ListViewIdKeyMapping = {
   holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' },
   masterdataupload : { idKey: 'transcationId', auditEventId: 'ADM-081' },
   packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' },
-  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' }
+  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' },
+  dynamicfields : { idKey: 'id', auditEventId: 'ADM-084' }
   
 };
 
@@ -436,6 +439,10 @@ export const FilterMapping = {
   'individual-type': {
     apiName: 'individualtypes',
     specFileName: 'individual-types'
+  },
+  dynamicfields: {
+    apiName: 'dynamicfields',
+    specFileName: 'dynamicfields'
   }
 };
 
