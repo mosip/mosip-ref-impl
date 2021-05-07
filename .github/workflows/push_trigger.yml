@@ -353,21 +353,6 @@ jobs:
           docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION  
 
-    - name: Build with Maven
-      run: |
-        cd biosdk-client
-        mvn -B package -s $GITHUB_WORKSPACE/settings.xml --file pom.xml
-    
-    - name: Ready the springboot artifacts
-      run: find -name '*.jar' -executable -type f  -exec zip release.zip {} +
-
-    - name: Publish the maven package
-      run: |
-        cd biosdk-client && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        GPG_TTY: $(tty)
-
   build-pre-registration-booking-service:
 
     runs-on: ubuntu-latest
