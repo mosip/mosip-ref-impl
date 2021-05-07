@@ -1,156 +1,493 @@
-id,name,description,data_type,value_json,lang_code,is_active,cr_by,cr_dtimes
-10001,bloodType,Blood Type,string,"
+﻿id,name,description,data_type,value_json,lang_code,is_active,cr_by,cr_dtimes
+10001,bloodType,Blood Type,string,"[
 	{
 		""code"": ""101"",
 		""value"": ""A"",
-	}",eng,TRUE,superadmin,now()
-10002,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""102"",
 		""value"": ""A+"",
-	}",eng,TRUE,superadmin,now()
-10003,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""103"",
 		""value"": ""A-"",
-	}",eng,TRUE,superadmin,now()
-10004,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""104"",
 		""value"": ""B"",
-	}",eng,TRUE,superadmin,now()
-10005,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""105"",
 		""value"": ""B+"",
-	}",eng,TRUE,superadmin,now()
-10006,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""106"",
 		""value"": ""B-"",
-	}",eng,TRUE,superadmin,now()
-10007,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""107"",
 		""value"": ""AB"",
-	}",eng,TRUE,superadmin,now()
-10008,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""108"",
 		""value"": ""AB+"",
-	}",eng,TRUE,superadmin,now()
-10009,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""109"",
 		""value"": ""AB-"",
-	}",eng,TRUE,superadmin,now()
-10010,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""110"",
 		""value"": ""O"",
-	}",eng,TRUE,superadmin,now()
-10011,bloodType,Blood Type,string,"
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""111"",
-		""value"": ""O+""
-	}",eng,TRUE,superadmin,now()
-10012,bloodType,Blood Type,string,"
+		""value"": ""O+"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""112"",
-		""value"": ""O-""
-	}",eng,TRUE,superadmin,now()
-10013,bloodType,Blood Type,string,"
+		""value"": ""O-"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""113"",
-		""value"": ""Don't Know""
-	}",eng,TRUE,superadmin,now()
-10014,bloodType,Blood Type,string,"
+		""value"": ""Don't Know"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""114"",
-		""value"": ""Not Applicable""
-	}",eng,TRUE,superadmin,now()
-10015,maritalStatus,Marital Status,string,"
+		""value"": ""Not Applicable"",
+		""langCode"": ""eng"",
+		""active"": true
+	}
+]",eng,TRUE,superadmin,now()
+10002,maritalStatus,Marital Status,string,"[
 	{
 		""code"": ""101"",
-		""value"": ""Single""
-	}",eng,TRUE,superadmin,now()
-10016,maritalStatus,Marital Status,string,"
+		""value"": ""Single"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""102"",
-		""value"": ""Married""
-	}",eng,TRUE,superadmin,now()
-10017,maritalStatus,Marital Status,string,"
+		""value"": ""Married"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""103"",
-		""value"": ""Widowed""
-	}",eng,TRUE,superadmin,now()
-10018,maritalStatus,Marital Status,string,"
+		""value"": ""Widowed"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""104"",
-		""value"": ""Divorced""
-	}",eng,TRUE,superadmin,now()
-10019,maritalStatus,Marital Status,string,"
+		""value"": ""Divorced"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""105"",
-		""value"": ""Legally Separated""
-	}",eng,TRUE,superadmin,now()
-10020,maritalStatus,Marital Status,string,"
+		""value"": ""Legally Separated"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""106"",
-		""value"": ""Annulled""
-	}",eng,TRUE,superadmin,now()
-10021,maritalStatus,Marital Status,string,"
+		""value"": ""Annulled"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""107"",
-		""value"": ""Nullified""
-	}",eng,TRUE,superadmin,now()
-10022,registrationType,Registration Type,string,"
+		""value"": ""Nullified"",
+		""langCode"": ""eng"",
+		""active"": true
+	}
+]",eng,TRUE,superadmin,now()
+10003,registrationType,Registration Type,string,"[
 	{
 		""code"": ""Document-based"",
-		""value"": ""Document-based""
-	}",eng,TRUE,superadmin,now()
-10023,registrationType,Registration Type,string,"
+		""value"": ""Document-based"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""Introducer-based"",
-		""value"": ""Introducer-based""
-	}",eng,TRUE,superadmin,now()
-10024,modeOfClaim,Mode of Claim,string,"
+		""value"": ""Introducer-based"",
+		""langCode"": ""eng"",
+		""active"": true
+	}
+]",eng,TRUE,superadmin,now()
+10004,modeOfClaim,Mode of Claim,string,"[
 	{
 		""code"": ""101"",
-		""value"": ""Pick-up""
-	}",eng,TRUE,superadmin,now()
-10025,modeOfClaim,Mode of Claim,string,"
+		""value"": ""Pick-up"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""102"",
-		""value"": ""Delivery to permanent address""
-	}",eng,TRUE,superadmin,now()
-10026,modeOfClaim,Mode of Claim,string,"
+		""value"": ""Delivery to permanent address"",
+		""langCode"": ""eng"",
+		""active"": true
+	},
 	{
 		""code"": ""103"",
-		""value"": ""Delivery to present address""
-	}",eng,TRUE,superadmin,now()
-10027,gender,Gender,string,"
+		""value"": ""Delivery to present address"",
+		""langCode"": ""eng"",
+		""active"": true
+	}
+]",eng,TRUE,superadmin,now()
+10001,bloodType,Blood Type,string,"[
 	{
-		""code"": ""MLE"",
-		""value"": ""Male""
-	}",eng,TRUE,superadmin,now()
-10028,gender,Gender,string,"
+		""code"": ""101"",
+		""value"": ""A"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
 	{
-		""code"": ""FLE"",
-		""value"": ""Female""
-	}",eng,TRUE,superadmin,now()
-10029,gender,Gender,string,"
+		""code"": ""102"",
+		""value"": ""A+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
 	{
-		""code"": ""OTH"",
-		""value"": ""Others""
-	}",eng,TRUE,superadmin,now()
-10030,residenceStatus,residenceStatus,string,"
+		""code"": ""103"",
+		""value"": ""A-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
 	{
-		""code"": ""FR"",
-		""value"": ""Foreigner""
-	}",eng,TRUE,superadmin,now()
-10031,residenceStatus,residenceStatus,string,"
+		""code"": ""104"",
+		""value"": ""B"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
 	{
-		""code"": ""NFR"",
-		""value"": ""Non-Foreigner""
-	}",eng,TRUE,superadmin,now()
+		""code"": ""105"",
+		""value"": ""B+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""B-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""AB"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""108"",
+		""value"": ""AB+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""109"",
+		""value"": ""AB-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""110"",
+		""value"": ""O"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""111"",
+		""value"": ""O+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""112"",
+		""value"": ""O-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""113"",
+		""value"": ""Don't Know"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""114"",
+		""value"": ""Not Applicable"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10002,maritalStatus,Marital Status,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""أعزب"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""متزوج"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""الأرامل"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""مطلق"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""مطلق من الناحية القانونية"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""ملغى"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""مبطل"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10003,registrationType,Registration Type,string,"[
+	{
+		""code"": ""Document-based"",
+		""value"": ""مستند إلى المستند"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""Introducer-based"",
+		""value"": ""المعرف القائم"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10004,modeOfClaim,Mode of Claim,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""يلتقط"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""التسليم إلى العنوان الدائم"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""التسليم إلى العنوان الحالي"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10001,bloodType,Blood Type,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""A"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""A+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""A-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""B"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""B+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""B-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""AB"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""108"",
+		""value"": ""AB+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""109"",
+		""value"": ""AB-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""110"",
+		""value"": ""O"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""111"",
+		""value"": ""O+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""112"",
+		""value"": ""O-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""113"",
+		""value"": ""Don't Know"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""114"",
+		""value"": ""Not Applicable"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
+10002,maritalStatus,Marital Status,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""Seul"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""Mariée"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""Veuve"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""Divorcée"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""Séparés légalement"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""Annulé"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""Annulé"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
+10003,registrationType,Registration Type,string,"[
+	{
+		""code"": ""Document-based"",
+		""value"": ""Basé sur des documents"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""Introducer-based"",
+		""value"": ""Basé sur l'introducteur"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
+10004,modeOfClaim,Mode of Claim,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""Ramasser"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""Livraison à une adresse permanente"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""Livraison à l'adresse actuelle"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
