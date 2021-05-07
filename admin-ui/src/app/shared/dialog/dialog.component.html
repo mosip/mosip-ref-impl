@@ -1,3 +1,30 @@
+<!-- Missing Data-->
+<span *ngIf="input.case === 'missingData'">
+  <div class="table-container">
+    <h2 class="filter-heading">{{ input.title[primaryLangCode] }}</h2>
+    <mat-divider></mat-divider>
+    <table class="mat-table">
+      <tr class="mat-row sticky-header" >
+        <th class="mat-header-cell table-header sticky-header"  *ngFor="let col of input.columnNames;">
+          <span>{{col[primaryLangCode]}}</span>
+        </th>
+      </tr>
+      <tr *ngFor="let data of missingData; index as i" class="mat-header-row">
+        <td (click)="navigateToItem(data)" class="mat-cell">{{data.id}}</td>
+        <td  (click)="navigateToItem(data)" class="mat-cell">{{data.fieldValue}}</td>
+      </tr>
+    </table>
+    <p *ngIf="noMissingDataFlag" style="text-align: center">{{'center.popupMessages.noData.message' | translate}}</p>
+    <div *ngIf="!noMissingDataFlag && !(missingData.length > 0)" style="display: flex; justify-content: center;">
+      <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+    </div>
+  </div>
+  <div class="pop-up">
+    <div mat-dialog-actions class="pop-up-footer">
+      <span><button mat-button cdkFocusInitial (click)="dismiss()">{{'center.cancel' | translate}}</button></span>
+    </div>
+  </div>
+</span>  
 <!-- center filter -->
 <div class="filter" *ngIf="input.case === 'filter'">
   <h2 class="filter-heading">{{ "filters.titleTxt" | translate }}</h2>

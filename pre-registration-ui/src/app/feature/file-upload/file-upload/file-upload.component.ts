@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, OnDestroy } from "@angular/core";
-
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import * as appConstants from "../../../app.constants";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
@@ -17,8 +17,8 @@ import { MatDialog } from "@angular/material";
 import { FilesModel } from "src/app/shared/models/demographic-model/files.model";
 import { LogService } from "src/app/shared/logger/log.service";
 import Utils from "src/app/app.util";
-import LanguageFactory from "src/assets/i18n";
 import { Subscription } from "rxjs";
+import identityStubJson from "../../../../assets/identity-spec.json";
 
 @Component({
   selector: "app-file-upload",
@@ -26,6 +26,7 @@ import { Subscription } from "rxjs";
   styleUrls: ["./file-upload.component.css"],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
+  textDir = localStorage.getItem("dir");
   selected = [];
   @ViewChild("fileUpload")
   fileInputVariable: ElementRef;
@@ -69,8 +70,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   documentName: string;
   flag: boolean;
   zoom: number = 0.5;
-  primaryLang = localStorage.getItem("langCode");
-
+  userPrefLanguage = localStorage.getItem("userPrefLanguage");
+  userPrefLanguageIsLtr = false;
+  userForm = new FormGroup({});
+  validationMessage: any;
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: "",
     docTypCode: "",
@@ -90,23 +93,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   applicants: any[] = [];
   allowedFiles: string[];
   firstFile: Boolean = true;
-  // noneApplicant = {
-  //   demographicMetadata: {
-  //     name: [
-  //       {
-  //         language: "",
-  //         value: "None",
-  //       },
-  //     ],
-  //   },
-  //   preRegistrationId: "",
-  // };
+  
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
   preRegId: number;
   isDocUploadRequired = [];
   name:"";
+  readOnlyMode = false;
 
   constructor(
     private registration: RegistrationService,
@@ -121,6 +115,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.initiateComponent();
+    let ltrLangs = this.config
+      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+      .split(",");
+    if (ltrLangs.includes(this.userPrefLanguage)) {
+      this.userPrefLanguageIsLtr = true;
+    } else {
+      this.userPrefLanguageIsLtr = false;
+    }  
   }
 
   async ngOnInit() {
@@ -140,21 +142,27 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.sameAsselected = false;
     } else {
       this.sameAsselected = true;
-    }
-    let factory = new LanguageFactory(this.primaryLang);
-    let response = factory.getCurrentlanguage();
-    if (response["message"])
+    }this.dataStorageService
+    .getI18NLanguageFiles(this.userPrefLanguage)
+    .subscribe((response) => {
+      if (response["message"])
       this.fileUploadLanguagelabels = response["message"];
     if (response["error"]) this.errorlabels = response["error"];
+    });
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
+    if (this.readOnlyMode) {
+      this.userForm.disable();
+    }
   }
 
   async getIdentityJsonFormat() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        this.identityData = response["response"]["idSchema"]["identity"];
+        response = identityStubJson;
+        let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
+        this.identityData = identityJsonSpec["identity"];
         this.identityData.forEach((obj) => {
           if (obj.controlType === "fileupload") {
             this.uiFields.push(obj);
@@ -173,7 +181,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   private async initiateComponent() {
-    this.translate.use(this.primaryLang);
+    this.translate.use(this.userPrefLanguage);
     this.isModify = localStorage.getItem("modifyDocument");
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
@@ -202,6 +210,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               undefined
             )
           );
+          let resp = response[appConstants.RESPONSE];
+          if (resp["statusCode"] !== "Pending_Appointment") {
+            this.readOnlyMode = true;
+          } else {
+            this.readOnlyMode = false;
+          }
           resolve(true);
         });
     });
@@ -400,7 +414,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     for (let applicant of allApplicants) {
       for (let name of applicant) {
         if (
-          name["demographicMetadata"][name][j].language != this.primaryLang
+          name["demographicMetadata"][name][j].language != this.userPrefLanguage
           ) {
           allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
@@ -445,13 +459,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
     requestDTO.attribute =
       appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    for (let language of this.users[0].request.demographicDetails.identity
-      .residenceStatus) {
-      if (language.language === this.primaryLang) {
-        requestDTO.value = language.value;
-      }
-    }
-
+    // for (let language of this.users[0].request.demographicDetails.identity
+    //   .residenceStatus) {
+    //   if (language.language === this.userPrefLanguage) {
+    //     requestDTO.value = language.value;
+    //   }
+    // }
+    requestDTO.value = this.users[0].request.demographicDetails.identity
+    .residenceStatus[0].value;
     requestArray.attributes.push(requestDTO);
 
     DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;
@@ -522,7 +537,41 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           if (res[appConstants.RESPONSE]) {
-            this.LOD = res["response"].documentCategories;
+            let documentCategories = res["response"].documentCategories;
+            documentCategories.forEach(documentCategory => {
+              this.uiFields.forEach(uiField => {
+                if (uiField.subType == documentCategory.code) {
+                  if (uiField.inputRequired) {
+                    documentCategory["required"] = uiField.required;
+                    documentCategory["labelName"] = uiField.labelName[this.userPrefLanguage];
+                    documentCategory["containerStyle"] = uiField.containerStyle;
+                    documentCategory["headerStyle"] = uiField.headerStyle;  
+                    documentCategory["id"] = uiField.id;  
+                    this.userForm.addControl(uiField.id, new FormControl(""));
+                    if (uiField.required) {
+                      this.userForm.controls[uiField.id].setValidators(
+                        Validators.required
+                      );
+                    }
+                    this.userForm.controls[uiField.id].setValue("");
+                    this.LOD.push(documentCategory); 
+                  }
+                }
+              });
+            });
+            if (this.userFiles && this.userFiles["documentsMetaData"]) {
+              this.userFiles["documentsMetaData"].forEach(userFile => {
+                this.uiFields.forEach(uiField => {
+                  if (uiField.subType == userFile.docCatCode) {
+                    if (this.userForm.controls[uiField.id]) {
+                      this.userForm.controls[uiField.id].setValue(userFile.docName);
+                    }
+                  }
+                });
+              });
+            } 
+            //this.LOD = res["response"].documentCategories;
+            console.log(this.LOD);
             this.enableBrowseButtonList = new Array(this.LOD.length).fill(
               false
             );
@@ -969,7 +1018,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   setJsonString(docName: string, docCode: string, docRefId: string) {
     this.documentUploadRequestBody.docCatCode = docCode;
-    this.documentUploadRequestBody.langCode = this.primaryLang;
+    this.documentUploadRequestBody.langCode = this.userPrefLanguage;
     this.documentUploadRequestBody.docTypCode = docName;
     this.documentUploadRequestBody.docRefId = docRefId;
     this.documentRequest = new RequestModel(
@@ -1044,6 +1093,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile[0].multipartFile = this.fileByteArray;
     this.userFile[0].prereg_id = this.users[0].preRegId;
     this.userFile[0].docRefId = fileResponse.response.docRefId;
+    this.uiFields.forEach(uiField => {
+      if (uiField.subType == fileResponse.response.docCatCode) {
+        this.userForm.controls[uiField.id].setValue(fileResponse.response.docName);
+      }
+    });    
+
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
@@ -1098,6 +1153,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               });
               this.LOD[index].selectedDocName = "";
               this.LOD[index].selectedDocRefId = "";
+              this.uiFields.forEach(uiField => {
+                if (uiField.subType == this.LOD[index].code) {
+                  this.userForm.controls[this.LOD[index].id].setValue("");
+                }
+              });   
             }
             this.disableNavigation = false;
           },
@@ -1201,52 +1261,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onNext() {
-    let displayedDocCatCode = [];
-    let uploadDocumentsCatCode = [];
-    let requiredDocuments = [];
-    this.isDocUploadRequired = [];
-    //     this.getUserFiles();
-    //     console.log(this.userFile);
-    this.LOD.forEach((document) => {
-      displayedDocCatCode.push(document.code);
-    });
-    console.log(displayedDocCatCode);
-    this.uiFields.forEach((field) => {
-      if (field.required) {
-        requiredDocuments.push(field.id);
+    if (this.readOnlyMode) {
+      localStorage.setItem("modifyDocument", "false");
+      let url = Utils.getURL(this.router.url, "summary");
+      this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
+    } else {
+      if (this.userForm.valid) {
+        localStorage.setItem("modifyDocument", "false");
+        let url = Utils.getURL(this.router.url, "summary");
+        this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
       }
-    });
-    //     this.userFile.filter(file=>{
-    //      if(file.docCatCode !== undefined){
-    //        if(file.docCatCode !== "" || file.docCatCode.length !== 0){
-    //         uploadDocumentsCatCode.push(file.docCatCode);
-    //        }
-    //      }
-    //     });
-    console.log(uploadDocumentsCatCode);
-    console.log(requiredDocuments);
-    displayedDocCatCode.forEach((docCat) => {
-      requiredDocuments.forEach((reqDoc) => {
-        if (docCat === reqDoc) {
-          if (uploadDocumentsCatCode.indexOf(docCat) < 0) {
-            this.isDocUploadRequired.push(docCat);
-          }
-        }
-      });
-    });
-    console.log(this.isDocUploadRequired);
-    /*if (this.isDocUploadRequired.length > 0) {
-      let message = "please upload ";
-      let docList = "";
-      for (let i = 0; i < this.isDocUploadRequired.length; i++) {
-        docList = docList + this.isDocUploadRequired[i] + " ,";
-      }
-      this.displayMessage("Required", message + docList);
-    } else {*/
-    localStorage.setItem("modifyDocument", "false");
-    let url = Utils.getURL(this.router.url, "summary");
-    this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
-    /*}*/
+    }
   }
 
   /**
@@ -1346,6 +1371,11 @@ export interface DocumentCategory {
   documentTypes?: DocumentCategory[];
   selectedDocName?: string;
   selectedDocRefId: string;
+  labelName: string;
+  required: boolean; 
+  containerStyle: {},
+  headerStyle: {},
+  id: string
 }
 
 export interface Applicants {

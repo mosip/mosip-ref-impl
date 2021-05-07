@@ -35,6 +35,10 @@ export class DataStorageService {
   BASE_URL = this.appConfigService.getConfig()["BASE_URL"];
   PRE_REG_URL = this.appConfigService.getConfig()["PRE_REG_URL"];
 
+  getI18NLanguageFiles(langCode:string){
+   return this.httpClient.get(`./assets/i18n/${langCode}.json`);
+  }
+
   getUsers(userId: string) {
     let url =
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.applicants;
@@ -55,6 +59,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.applicants +
       appConstants.APPENDER +
       preRegId;
+    console.log("url>>>>"+url);
     return this.httpClient.get(url);
   }
 
@@ -355,8 +360,7 @@ export class DataStorageService {
     return this.httpClient.post(
       this.BASE_URL +
         this.PRE_REG_URL +
-        appConstants.APPEND_URL.notification +
-        appConstants.APPEND_URL.send_notification,
+        appConstants.APPEND_URL.notification,
       data
     );
   }
@@ -414,8 +418,7 @@ export class DataStorageService {
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
-      "templates/" +
-      localStorage.getItem("langCode") +
+      "templates/templatetypecodes" +
       "/" +
       templateType;
     return this.httpClient.get(url);
@@ -437,6 +440,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.validDocument +
       applicantCode +
       "/languages";
+    console.log(APPLICANT_VALID_DOCUMENTS_URL);  
     return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
       params: new HttpParams().append(
         appConstants.PARAMS_KEYS.getDocumentCategories,
@@ -530,8 +534,8 @@ export class DataStorageService {
   }
 
   getIdentityJson() {
-    const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-    //const url = "assets/identity-spec.json";
+    //const url = this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    let url = this.BASE_URL + this.PRE_REG_URL+ `uispec/latest`;
     return this.httpClient.get(url);
   }
 
@@ -557,15 +561,23 @@ export class DataStorageService {
   }
 
   getDynamicFieldsandValues(langCode) {
-    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
     const url =
       this.BASE_URL + this.PRE_REG_URL + '/proxy' +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
+  getDynamicFieldsandValuesForAllLang(pageNumber: string) {
+    const url =
+      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      appConstants.APPEND_URL.master_data +
+      `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
+    //console.log(url);
+    return this.httpClient.get(url);
+  }
+  
   updateDocRefId(fileDocumentId, preId, docRefId) {
     const url = `${this.BASE_URL}${this.PRE_REG_URL}` +
       `${appConstants.APPEND_URL.updateDocRefId}${fileDocumentId}` +

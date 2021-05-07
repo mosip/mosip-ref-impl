@@ -58,12 +58,42 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": { 
+        "eng": "Template not available in English", 
+        "ara": "النموذج غير متوفر باللغة العربية", 
+        "fra": "Modèle non disponible en français" 
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": { 
+        "case": "missingData",
+        "title": { 
+          "eng": "Template not available in English", 
+          "ara": "النموذج غير متوفر باللغة العربية", 
+          "fra": "Modèle non disponible en français" 
+        },
+        "columnNames": [{ 
+          "eng": "Template ID",
+          "ara": "معرف القالب",
+          "fra": "ID de modèle"
+        },{ 
+          "eng": "Name",
+          "ara": "اسم",
+          "fra": "nom"
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [
     {
       "name": "id",
-      "showInListView": "true",
+      "showInListView": "false",
       "showInSingleView": "false",
       "label": {
         "eng": "Template ID",
@@ -173,7 +203,7 @@
     },
     {
       "name": "moduleName",
-      "showInListView": "false",
+      "showInListView": "true",
       "showInSingleView": "false",
       "label": {
         "eng": "Module Name",
@@ -206,7 +236,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
-      "showInSingleView": "true",
+      "showInSingleView": "false",
       "label": { "eng": "Status", "ara": "نشط", "fra": "c'est actif" },
       "sortOrder": "",
       "showAsLink": "false",
@@ -291,21 +321,6 @@
       "datePicker": "false",
       "apiName": "templates",
       "fieldName": "name",
-      "methodCallName": ""
-    },
-    {
-      "filtername": "moduleId",
-      "filterlabel": {
-        "eng": "Module Id",
-        "ara": "معرف الوحدة النمطية",
-        "fra": "ID module"
-      },
-      "filterType": "equals",
-      "autocomplete": "false",
-      "dropdown": "true",
-      "datePicker": "false",
-      "apiName": "templates",
-      "fieldName": "moduleId",
       "methodCallName": ""
     },
     {

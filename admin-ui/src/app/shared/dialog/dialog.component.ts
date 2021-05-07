@@ -22,6 +22,7 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { TranslateService } from '@ngx-translate/core';
 import { OptionalFilterValuesModel } from 'src/app/core/models/optional-filter-values.model';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-dialog',
@@ -33,6 +34,8 @@ export class DialogComponent implements OnInit {
   input;
   confirm = true;
   FilterData = [];
+  missingData = [];
+  noMissingDataFlag = false;
   filterGroup = new FormGroup({});
   routeParts: string;
   filters = [];
@@ -63,9 +66,11 @@ export class DialogComponent implements OnInit {
     private config: AppConfigService,
     private activatedRoute: ActivatedRoute,
     private auditService: AuditService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private headerService: HeaderService
   ) {
-    this.primaryLangCode = this.config.getConfig().primaryLangCode;
+    //this.primaryLangCode = this.config.getConfig().primaryLangCode;
+    this.primaryLangCode = this.headerService.getUserPreferredLanguage();
     this.translate.use(this.primaryLangCode);
   }
 
@@ -78,6 +83,9 @@ export class DialogComponent implements OnInit {
         this.config.getConfig().primaryLangCode
       ).filters;
       await this.getFilterMappings();
+    }
+    if (this.input.case === 'missingData') {
+      await this.getMissingData(this.input);
     }
     if (this.input.case === 'STEPS-MESSAGE') {
       await this.getStepsForCreateUpate();
@@ -113,6 +121,37 @@ export class DialogComponent implements OnInit {
           resolve(true);
         });
     });
+  }
+
+  getMissingData(input: any) {
+    return new Promise((resolve, reject) => {
+      this.dataStorageService
+        .getMissingData(this.primaryLangCode, input.fieldName)
+        .subscribe(response => {
+          if (response.response.length > 0) {
+            this.noMissingDataFlag = false;
+            this.missingData = response.response;
+          } else {
+            this.noMissingDataFlag = true;
+          }
+          resolve(true);
+        });
+    });
+  }
+
+  navigateToItem(data: any) {
+    const routeIndex = this.router.url.lastIndexOf('/');
+    let currentRoute = this.router.url.slice(0, routeIndex);
+    const currentRouteType = this.router.url.split('/')[3];
+    const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    this.auditService.audit(7, id.auditEventId, currentRouteType);
+    console.log(id);
+    console.log(currentRoute);
+    this.dialog.closeAll();
+    this.router.navigate([
+      `${currentRoute}/single-view`,
+      data[id.idKey]
+    ]);
   }
 
   settingUpFilter(filterNames: any) {

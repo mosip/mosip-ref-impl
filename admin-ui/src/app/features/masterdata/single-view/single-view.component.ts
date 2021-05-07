@@ -102,14 +102,44 @@ export class SingleViewComponent implements OnDestroy {
 
   setHeaderData() {
     if(this.primaryData){
+      let dynamicId = "";
+      if(this.masterdataType.toLowerCase() === "center-type"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "blacklisted-words"){
+        dynamicId = this.primaryData.word
+      }else if(this.masterdataType.toLowerCase() === "location"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "holiday"){
+        dynamicId = this.primaryData.holidayId
+      }else if(this.masterdataType.toLowerCase() === "templates"){
+        dynamicId = this.primaryData.id
+      }else if(this.masterdataType.toLowerCase() === "device-specs"){
+        dynamicId = this.primaryData.id
+      }else if(this.masterdataType.toLowerCase() === "device-types"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "machine-specs"){
+        dynamicId = this.primaryData.id
+      }else if(this.masterdataType.toLowerCase() === "machine-type"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "document-type"){
+        dynamicId = this.primaryData.code
+      }else if(this.masterdataType.toLowerCase() === "document-categories"){
+        dynamicId = this.primaryData.code
+      }
+
       this.headerData = new HeaderModel(
-        this.primaryData[this.mapping.nameKey],
+        this.primaryData[this.mapping.idKey],
         this.primaryData.createdDateTime ? this.primaryData.createdDateTime : '-',
         this.primaryData.createdBy ? this.primaryData.createdBy : '-',
         this.primaryData.updatedDateTime ? this.primaryData.updatedDateTime : '-',
-        this.primaryData.updatedBy ? this.primaryData.updatedBy : '-'
+        this.primaryData.updatedBy ? this.primaryData.updatedBy : '-',
+        dynamicId,
+        this.primaryData.isActive,
       );
-    }    
+    }else{
+      this.headerData = new HeaderModel('-', '-', '-', '-', '-', '-', '-');
+    }
+
     this.showSpinner = false;
   }
 
@@ -137,7 +167,12 @@ export class SingleViewComponent implements OnDestroy {
               if (response.response.data) {
                 this.data.push(response.response.data);
                 if (isPrimary) {
-                  this.primaryData = response.response.data[0];
+                  if(this.masterdataType.toLowerCase() === "dynamicfields"){
+                    this.primaryData = response.response.data[0];
+                    this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+                  }else{
+                    this.primaryData = response.response.data[0];
+                  }                  
                 } else {
                   this.secondaryData = response.response.data[0];
                   this.noRecordFound = true;
@@ -175,10 +210,19 @@ export class SingleViewComponent implements OnDestroy {
   }
 
   changePage(location: string) {
-    if (location === 'home') {
-      this.router.navigateByUrl('admin/masterdata/home');
-    } else if (location === 'list') {
-      this.router.navigateByUrl(`admin/masterdata/${this.masterdataType}/view`);
+    let url = this.router.url.split('/');
+    if(url[3] === "dynamicfields"){
+      this.router.navigateByUrl(
+        `admin/masterdata/${this.masterdataType}/${url[4]}/view`
+      );
+    }else{
+      if (location === 'home') {
+        this.router.navigateByUrl('admin/masterdata/home');
+      } else if (location === 'list') {
+        this.router.navigateByUrl(
+          `admin/masterdata/${this.masterdataType}/view`
+        );
+      }
     }
   }
 

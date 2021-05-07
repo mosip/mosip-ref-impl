@@ -21,7 +21,6 @@ local.properties
 .loadpath
 .DS_Store
 *.log
-*.zip
 *.logs
 *.ucls
 *.useq
@@ -31,3 +30,5 @@ dist/*
 coverage/*
 .editorconfig
 e2e/*
+proxy.conf.json
+src/assets/i18n

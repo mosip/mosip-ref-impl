@@ -315,6 +315,7 @@
     "action_back": "RETOUR",
     "action_continue": "CONTINUER",
     "action_preview": "APERÇU",
+    "read_only_message": "** Vous ne pouvez plus modifier cette application, car vous avez actuellement ou précédemment réservé un rendez-vous pour elle! Si vous souhaitez toujours apporter des modifications, supprimez cette application et créez-en une nouvelle.",
     "consent": {
       "title": "Termes et conditions",
       "subtitle": "Votre accord",
@@ -326,23 +327,9 @@
       "alertMessageThird": "Vous serez redirigé vers la page de prévisualisation car vous n'acceptez pas les conditions générales."
     },
     "validation": {
-      "name_required": "Le nom complet est requis",
-      "age_validation": "L'âge devrait être inférieur à 150",
-      "gender_validation": "S'il vous plaît sélectionner le sexe",
-      "nationality_validation": "Veuillez sélectionner le statut de résidence",
       "DOB_validation": "Entrez la date de naissance ou l'âge valide",
-      "date_required": "Entrez 2 chiffres pour la date",
-      "month_required": "Entrez 2 chiffres pour le mois",
-      "year_required": "Entrez 4 chiffres pour l'année",
-      "address_required": "L'adresse est obligatoire",
-      "region_required": "Veuillez sélectionner une région",
-      "province_required": "Veuillez sélectionner une province",
-      "city_required": "Veuillez sélectionner une ville",
-      "admin_required": "Veuillez sélectionner zone",
-      "postal_code_required": "Veuillez entrer un code postal valide",
-      "mobile_required": "Veuillez entrer un numéro de téléphone valide",
-      "email_required": "S'il vous plaît entrer email id valide",
-      "pin_required": "Veuillez entrer un numéro d’identité de référence valide"
+      "requiredMessage":"Est requis",
+      "InvalidMessage":"Est invalide"
     }
   },
   "documents": {
@@ -356,20 +343,22 @@
     "label_sameas": "Pareil que",
     "text_or": "OU",
     "action_view": "VUE",
-    "OR": "ou"
+    "OR": "ou",
+    "text_docrefid": "ID de référence du document"
   },
   "acknowledgement": {
     "title": "Rendez-vous confirmé",
     "message": "L'identifiant de pré-enregistrement et les détails du rendez-vous ont été envoyés à l'identifiant et au numéro de téléphone de l'e-mail enregistré.",
     "label_name": "prénom",
     "label_pre_id": "ID de pré-inscription",
-    "label_reg_cntr": "Centre d'inscription",
+    "label_reg_cntr": "Nom du centre",
     "label_cntr_contact_number": "Numéro de contact du centre",
     "label_appointment_date_time": "Date et heure du rendez-vous",
     "container_guideline": "Directives importantes",
     "action_send": "ENVOYER EMAIL / SMS",
     "action_download": "TÉLÉCHARGER LE FICHIER PDF",
-    "action_print": "IMPRESSION"
+    "action_print": "IMPRESSION",
+    "label_reg_cntr_dtl": "Adresse du centre"
   },
   "preview": {
     "title_preview": "Aperçu",
@@ -445,7 +434,8 @@
       "text_appoinment_date": "Date de rendez-vous",
       "text_status": "Statut",
       "action_modify_information": "Modifier les informations",
-      "action_view_acknowledgement": "Voir accusé de réception"
+      "action_view_acknowledgement": "Voir accusé de réception",
+      "action_view_information": "Afficher les informations"
     },
     "discard": {
       "title_confirm": "Confirmer",
@@ -467,11 +457,19 @@
     "status": {
       "pendingAppointment": "Rendez-vous en attente",
       "booked": "Réservé",
-      "expired": "Expiré"
+      "expired": "Expiré",
+      "cancelled": "Annulé"
     },
     "error": {
       "error": "Erreur Interne du Serveur. Veuillez réessayer après un certain temps.",
       "button_ok": "D'accord"
+    },
+    "dataCaptureLanguage":{
+      "title":"Choisir la langue",
+      "message":["Veuillez sélectionner","Vous pouvez sélectionner le minimum ","langues pour la saisie des données.","est obligatoire pour le résident de choisir selon les directives gouvernementales.","L'ordre de sélection mènera à la page vue pour les données démographiques."],
+      "error_text":["Vous pouvez sélectionner au plus","langues pour la saisie des données."],
+      "cancel_btn":"Annuler",
+      "submit_btn":"nous faire parvenir"
     }
   },
   "timeSelection": {
@@ -497,7 +495,13 @@
         "Voulez-vous continuer à réserver"
       ],
       "yesButtonText": "Oui",
-      "noButtonText": "Non"
+      "noButtonText": "Non",
+      "applicationLockConfirm":{
+        "title":"Confirmation",
+        "message":"Les détails de l'application ne peuvent plus être modifiés une fois la réservation effectuée. Pleace cliquez sur confirmer pour prendre rendez-vous",
+        "yesButtonText": "Confirmer",
+        "noButtonText": "Annuler"
+      }
     }
   },
   "appointmentCentreSearch": {
@@ -531,7 +535,7 @@
     "action_add": "Ajouter",
     "action_close": "Fermer",
     "action_add_to_slot": "Ajouter à la fente",
-    "navigation_alert": "Are you sure you would like to navigate away as data entered will not be saved. Please confirm(FRA)"
+    "navigation_alert": "Êtes-vous sûr de vouloir quitter le site car les données saisies ne seront pas enregistrées. Veuillez confirmer"
   },
   "centerSelection": {
     "title": " Rendez-vous du livre ",
@@ -558,7 +562,8 @@
     "status": {
       "pendingAppointment": "Rendez-vous n'est pas encore réservé",
       "booked": "Rendez-vous est réservé avec succès",
-      "expired": "La date de rendez-vous est passée"
+      "expired": "La date de rendez-vous est passée",
+      "cancelled":"Le rendez-vous a été annulé"
     },
     "deleteIcon": "Vous pouvez soit rejeter la demande entière, soit annuler le rendez-vous et enregistrer les détails.",
     "book/modify_appointment": "Vous devez cocher la case en regard de l'identifiant de pré-inscription pour qu'un ou plusieurs demandeurs puissent prendre un rendez-vous",
@@ -571,7 +576,8 @@
     "recommended_centers": "Liste du centre recommandé selon votre code postal",
     "nearBy": "Centres d'inscription basés sur votre géolocalisation",
     "magnifying_glass": "Recherche basée sur la sélection du menu déroulant.",
-    "preview_continue": "Téléchargez tous les fichiers pour continuer"
+    "preview_continue": "Téléchargez tous les fichiers pour continuer",
+    "lockIcon":"Les détails de la demande ne peuvent pas être modifiés une fois que le rendez-vous est réservé, annulé ou expiré"
   },
   "error": {
     "error": "Une erreur technique s'est produite et l'opération ne peut pas être terminée. Aucune donnée fournie ne peut être sauvegardée",

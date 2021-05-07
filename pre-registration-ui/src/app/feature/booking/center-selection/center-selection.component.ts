@@ -12,11 +12,8 @@ import Utils from "src/app/app.util";
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "./../../../app.constants";
 import { BookingDeactivateGuardService } from "src/app/shared/can-deactivate-guard/booking-guard/booking-deactivate-guard.service";
-import LanguageFactory from "src/assets/i18n";
-import { Subscription } from "rxjs";
-import { resolve } from "url";
+import { Subscription } from "rxjs";;
 
-import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: "app-center-selection",
@@ -42,13 +39,14 @@ export class CenterSelectionComponent
   bookingDataList = [];
   errorlabels: any;
   step = 0;
+  textDir = localStorage.getItem("dir");
   showDescription = false;
   mapProvider = "OSM";
   searchTextFlag = false;
   displayMessage = "Showing nearby registration centers";
   users: UserModel[] = [];
   subscriptions: Subscription[] = [];
-  primaryLang = localStorage.getItem("langCode");
+  userPreferredLangCode = localStorage.getItem("userPrefLanguage");
   workingDays: string;
   preRegId = [];
   locationNames = [];
@@ -70,7 +68,7 @@ export class CenterSelectionComponent
     private activatedRoute: ActivatedRoute
   ) {
     super(dialog);
-    this.translate.use(this.primaryLang);
+    this.translate.use(this.userPreferredLangCode);
   }
 
   async ngOnInit() {
@@ -107,12 +105,9 @@ export class CenterSelectionComponent
         this.locationTypes.sort(function (a, b) {
           return a.locationHierarchylevel - b.locationHierarchylevel;
         });
-        //console.log(this.locationTypes);
         this.getRecommendedCenters();
       });
     this.subscriptions.push(subs);
-    console.log(this.users);
-    //this.getRecommendedCenters();
     this.getErrorLabels();
   }
 
@@ -123,7 +118,7 @@ export class CenterSelectionComponent
           this.users.push(user)
         );
       }
-      resolve();
+      resolve(true);
     });
   }
 
@@ -143,14 +138,13 @@ export class CenterSelectionComponent
   }
 
   getErrorLabels() {
-    let factory = new LanguageFactory(this.primaryLang);
-    let response = factory.getCurrentlanguage();
-    this.errorlabels = response["error"];
+    this.dataService.getI18NLanguageFiles(localStorage.getItem('userPrefLanguage')).subscribe((response) => {
+      this.errorlabels = response["error"];
+    });
   }
 
   async getRecommendedCenters() {
     this.totalItems = 0;
-    console.log(this.users.length);
     const locationHierarchy = JSON.parse(
       localStorage.getItem("locationHierarchy")
     );
@@ -158,12 +152,8 @@ export class CenterSelectionComponent
       appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
     );
     let minusValue = this.allLocationTypes.length - locationHierarchy.length;
-     console.log(minusValue);
     const locationType = locationHierarchy[Number(locationHierarchyLevel) - minusValue];
-    console.log(locationHierarchy);
-    console.log(locationHierarchyLevel + ">>>>" + locationType);
     this.users.forEach((user) => {
-      console.log(user);
       if (
         typeof user.request.demographicDetails.identity[locationType] ===
         "object"
@@ -180,7 +170,6 @@ export class CenterSelectionComponent
         );
       }
     });
-    console.log(this.locationCodes);
     await this.getLocationNamesByCodes();
     this.getRecommendedCentersApiCall();
   }
@@ -200,7 +189,7 @@ export class CenterSelectionComponent
     this.REGISTRATION_CENTRES = [];
     const subs = this.dataService
       .recommendedCenters(
-        this.primaryLang,
+        this.userPreferredLangCode,
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.preregistration_recommended_centers_locCode
         ),
@@ -223,12 +212,10 @@ export class CenterSelectionComponent
   getLocationNames(locationCode) {
     return new Promise((resolve) => {
       this.dataService
-        .getLocationInfoForLocCode(locationCode, this.primaryLang)
+        .getLocationInfoForLocCode(locationCode, this.userPreferredLangCode)
         .subscribe((response) => {
-          console.log(response[appConstants.RESPONSE]);
           if (response[appConstants.RESPONSE]) {
             let locName = response[appConstants.RESPONSE]["name"];
-            console.log(locName);
             this.locationNames.push(locName);
             resolve(true);
           }
@@ -260,7 +247,6 @@ export class CenterSelectionComponent
     this.step--;
   }
   resetPagination() {
-    console.log("resetPagination");
     this.totalItems = 0;
     this.pageSize = this.defaultPageSize;
     this.pageIndex = 0;
@@ -284,7 +270,6 @@ export class CenterSelectionComponent
         )
         .subscribe(
           (response) => {
-            console.log(response);
             if (response[appConstants.RESPONSE]) {
               this.totalItems = response[appConstants.RESPONSE].totalItems;
               this.displayResults(response[appConstants.RESPONSE]);
@@ -396,7 +381,7 @@ export class CenterSelectionComponent
 
   routeDashboard() {
     this.canDeactivateFlag = false;
-    this.router.navigate([`${this.primaryLang}/dashboard`]);
+    this.router.navigate([`${this.userPreferredLangCode}/dashboard`]);
   }
 
   routeBack() {
@@ -431,7 +416,7 @@ export class CenterSelectionComponent
     return new Promise((resolve) => {
       this.REGISTRATION_CENTRES.forEach((center) => {
         this.dataService
-          .getWorkingDays(center.id, this.primaryLang)
+          .getWorkingDays(center.id, this.userPreferredLangCode)
           .subscribe((response) => {
             center.workingDays = "";
             if (response[appConstants.RESPONSE] && response[appConstants.RESPONSE]["workingdays"]) {
@@ -480,7 +465,7 @@ export class CenterSelectionComponent
         } else {
           localStorage.setItem("modifyUser", "true");
           this.router.navigate([
-            `${this.primaryLang}/pre-registration/demographic/${this.preRegId[0]}`,
+            `${this.userPreferredLangCode}/pre-registration/demographic/${this.preRegId[0]}`,
           ]);
         }
       }

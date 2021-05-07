@@ -4,6 +4,7 @@ package io.mosip.preregistration.booking.service;
 import org.springframework.stereotype.Service;
 
 import io.mosip.preregistration.booking.dto.AvailabilityDto;
+import io.mosip.preregistration.booking.dto.BookingDataByRegIdDto;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
 import io.mosip.preregistration.booking.dto.BookingStatus;
 import io.mosip.preregistration.booking.dto.BookingStatusDTO;
@@ -150,5 +151,20 @@ public interface BookingServiceIntf {
 
 	MainResponseDTO<PreRegIdsByRegCenterIdResponseDTO> getBookedPreRegistrationByDate(String fromDateStr,
 			String toDateStr, String regCenterId);
+	
+	/**
+	 * This Method is used to retrieve booked PreIds by date and regCenterId**
+	 * 
+	 * @param fromDate
+	 *            pass fromDate*
+	 * @param toDate
+	 *            pass toDate*
+	 * @param regCenterId        
+	 * @return MainResponseDTO<PreRegIdsByRegCenterIdResponseDTO>    
+	 ***/
+
+	MainResponseDTO<BookingDataByRegIdDto> getBookedPreRegistrations(String fromDateStr,
+			String toDateStr, String regCenterId);
+
 
 }

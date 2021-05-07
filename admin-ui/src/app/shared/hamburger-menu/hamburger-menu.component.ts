@@ -31,8 +31,8 @@ export class HamburgerComponent implements OnInit {
     if (this.data !== null && this.data.menuList) {
       this.dataList = this.data.menuList;
     }
-    if (this.headerService.getUsername()) {
-      this.userName = this.headerService.getUsername();
+    if (this.headerService.getDisplayUserName()) {
+      this.userName = this.headerService.getDisplayUserName();
     }
     if (this.headerService.getRoles()) {
       this.roleNameSubstr = this.headerService.getRoles();

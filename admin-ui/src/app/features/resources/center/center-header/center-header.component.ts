@@ -10,6 +10,9 @@ import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { CenterModel } from 'src/app/core/models/center.model';
+
+import { HeaderService } from 'src/app/core/services/header.service';
+
 import * as appConstants from '../../../../app.constants';
 
 @Component({
@@ -28,9 +31,10 @@ export class CenterHeaderComponent implements OnInit, OnChanges {
   constructor(
     private dataSerice: DataStorageService,
     private appService: AppConfigService,
+    private headerService: HeaderService,
     private commonService: CommonService
   ) {
-    this.lang = appService.getConfig()['primaryLangCode'];
+    this.lang = headerService.getUserPreferredLanguage();
   }
 
   ngOnInit() {}
