@@ -58,7 +58,7 @@
               >
             </span>
             <span class="spacer"></span>
-            <span
+            <span *ngIf="(user.status !== 'Pending_Appointment')"
               ><img
                 matTooltip="{{ 'helpText.lockIcon' | translate }}"
                 [matTooltipDisabled]="false"
