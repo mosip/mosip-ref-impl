@@ -163,3 +163,331 @@
 		""active"": true
 	}
 ]",eng,TRUE,superadmin,now()
+10001,bloodType,Blood Type,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""A"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""A+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""A-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""B"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""B+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""B-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""AB"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""108"",
+		""value"": ""AB+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""109"",
+		""value"": ""AB-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""110"",
+		""value"": ""O"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""111"",
+		""value"": ""O+"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""112"",
+		""value"": ""O-"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""113"",
+		""value"": ""Don't Know"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""114"",
+		""value"": ""Not Applicable"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10002,maritalStatus,Marital Status,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""أعزب"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""متزوج"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""الأرامل"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""مطلق"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""مطلق من الناحية القانونية"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""ملغى"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""مبطل"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10003,registrationType,Registration Type,string,"[
+	{
+		""code"": ""Document-based"",
+		""value"": ""مستند إلى المستند"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""Introducer-based"",
+		""value"": ""المعرف القائم"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10004,modeOfClaim,Mode of Claim,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""يلتقط"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""التسليم إلى العنوان الدائم"",
+		""langCode"": ""ara"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""التسليم إلى العنوان الحالي"",
+		""langCode"": ""ara"",
+		""active"": true
+	}
+]",ara,TRUE,superadmin,now()
+10001,bloodType,Blood Type,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""A"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""A+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""A-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""B"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""B+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""B-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""AB"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""108"",
+		""value"": ""AB+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""109"",
+		""value"": ""AB-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""110"",
+		""value"": ""O"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""111"",
+		""value"": ""O+"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""112"",
+		""value"": ""O-"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""113"",
+		""value"": ""Don't Know"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""114"",
+		""value"": ""Not Applicable"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
+10002,maritalStatus,Marital Status,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""Seul"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""Mariée"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""Veuve"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""104"",
+		""value"": ""Divorcée"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""105"",
+		""value"": ""Séparés légalement"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""106"",
+		""value"": ""Annulé"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""107"",
+		""value"": ""Annulé"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
+10003,registrationType,Registration Type,string,"[
+	{
+		""code"": ""Document-based"",
+		""value"": ""Basé sur des documents"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""Introducer-based"",
+		""value"": ""Basé sur l'introducteur"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
+10004,modeOfClaim,Mode of Claim,string,"[
+	{
+		""code"": ""101"",
+		""value"": ""Ramasser"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""102"",
+		""value"": ""Livraison à une adresse permanente"",
+		""langCode"": ""fra"",
+		""active"": true
+	},
+	{
+		""code"": ""103"",
+		""value"": ""Livraison à l'adresse actuelle"",
+		""langCode"": ""fra"",
+		""active"": true
+	}
+]",fra,TRUE,superadmin,now()
