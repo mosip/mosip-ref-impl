@@ -36,7 +36,14 @@ ENV artifactory_url_env=${artifactory_url}
 # change volume to whichever storage directory you want to use for this container.
 VOLUME /home/logs
 
-COPY ./target/registration-processor-external-stage-*.jar registration-processor-external-stage.jar
+# copying shaded jar into docker image
+ADD ./target/*.jar /target/
+RUN find target/ -regextype posix-extended -regex '.*registration-processor-external-stage-[0-9\.]+[-A-Za-z0-9]*\.jar'  "-print0" | xargs "-0" cp -t / \
+  && rm -rf /target \
+  && rm -rf original*.jar \
+  && rm -rf *-sources.jar \
+  && rm -rf *-javadoc.jar \
+  && mv *.jar registration-processor-external-stage.jar 
 
 CMD if [ "$is_glowroot_env" = "present" ]; then \
     wget "${artifactory_url_env}"/artifactory/libs-release-local/io/mosip/testing/glowroot.zip ; \
