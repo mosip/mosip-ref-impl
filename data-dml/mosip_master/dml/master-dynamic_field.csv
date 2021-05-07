@@ -1,4 +1,4 @@
-﻿id,name,description,data_type,value_json,lang_code,is_active,cr_by,cr_dtimes
+id,name,description,data_type,value_json,lang_code,is_active,cr_by,cr_dtimes
 10001,bloodType,Blood Type,string,"
 	{
 		""code"": ""101"",
@@ -136,7 +136,7 @@
 	}",eng,TRUE,superadmin,now()
 10028,gender,Gender,string,"
 	{
-		""code"": ""MLE"",
+		""code"": ""FLE"",
 		""value"": ""Female""
 	}",eng,TRUE,superadmin,now()
 10029,gender,Gender,string,"
@@ -144,12 +144,12 @@
 		""code"": ""OTH"",
 		""value"": ""Others""
 	}",eng,TRUE,superadmin,now()
-10030,individualtype,IndividualType,string,"
+10030,residenceStatus,residenceStatus,string,"
 	{
 		""code"": ""FR"",
 		""value"": ""Foreigner""
 	}",eng,TRUE,superadmin,now()
-10031,IndividualType,Gender,string,"
+10031,residenceStatus,residenceStatus,string,"
 	{
 		""code"": ""NFR"",
 		""value"": ""Non-Foreigner""
