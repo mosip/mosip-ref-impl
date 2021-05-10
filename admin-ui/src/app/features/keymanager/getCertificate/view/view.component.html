@@ -15,8 +15,8 @@
         <input matInput #input placeholder="Ex. 123" [value]="referenceId" (keyup)="captureValue($event, 'referenceId')">
       </mat-form-field>
 
-      <button id="createButton" mat-raised-button (click)="getCertificate()" (keyup)="captureValue($event, field.name)">
-        Get Certificate Modified
+      <button id="createButton" mat-raised-button (click)="getCertificate()">
+        Get Certificate
       </button>
     </div>
   </mat-card>
