@@ -102,6 +102,7 @@ export class CreateComponent {
     let data = {};
     let self = this;
     let displaycert = "";
+    console.log("response.response.status>>>"+response.response.status);
     if(response.response.status == "FAILED"){
       data = {
         case: 'MESSAGE',
