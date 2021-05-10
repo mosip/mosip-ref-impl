@@ -123,7 +123,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.sortFilter.push({"sortType":"desc","sortField":"timeStamp"});      
     }
     this.requestModel = new RequestModel(null, null, filters);
-
+    console.log("this.applicationId>>>"+this.applicationId);
     this.keymanagerService
       .getCertificate(this.requestModel, this.applicationId, filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId)
       .subscribe(({ response, errors }) => {

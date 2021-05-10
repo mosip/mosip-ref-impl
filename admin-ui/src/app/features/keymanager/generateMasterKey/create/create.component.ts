@@ -94,6 +94,7 @@ export class CreateComponent {
       formData
     );
     self.keymanagerService.generateMasterkey(primaryRequest, self.createForm.get('objectType').value).subscribe(response => {
+      console.log("showMessage>>>"+response.response);
       self.showMessage(response);
     });
   }
@@ -101,8 +102,7 @@ export class CreateComponent {
   showMessage(response){
     let data = {};
     let self = this;
-    let displaycert = "";
-    console.log("response.response.status>>>"+response.response.status);
+    let displaycert = "";    
     if(response.response.status == "FAILED"){
       data = {
         case: 'MESSAGE',
