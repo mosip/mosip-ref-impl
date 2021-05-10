@@ -154,7 +154,7 @@ Merci de mettre à jour vos coordonnées avec la plateforme d’identité numér
 1124,Template for Email Acknowledgement,Template for Email Acknowledgement,txt,velocity,"Dear $name,
 Your Pre-Registration for UIN is Completed Successfully
 on $Date at $Time. Your ID is #$PRID.
-Appointment is scheduled for $Appointmentdate at $Appointmenttime.
+Appointment is scheduled for $Appointmentdate at $Appointmenttime.In Registration Center Name $RegistrationCenterName at Registration Center Address $RegistrationCenterAddress.
 you will also receive the details on your registered Mobile Number",10001,Pre-Registration,Email-Acknowledgement,eng,TRUE,superadmin,now()
 1125,Template for Onscreen Acknowledgment,Template for Onscreen Acknowledgment,txt,velocity,"1. Guideline 1
 2. Guideline 2
@@ -194,11 +194,11 @@ OTP لـ Pre-Registration $PRID هو $otp وهو صالح لمدة $validTime د
 1129,قالب للإشعار SMS,قالب للإشعار SMS,txt,velocity,"
 تم الانتهاء من التسجيل المسبق ل uin بنجاح
 علي $Date في $Time. رقم التعريف الخاص بك هو # $PRID.
-ومن المقرر تعيين $Appointmentdate في $Appointmenttime.
+ومن المقرر تعيين $Appointmentdate في $Appointmenttime.في اسم مركز التسجيل $ RegistrationCenterName في عنوان مركز التسجيل $ RegistrationCenterAddress.
 سوف تتلقي أيضا التفاصيل علي عنوان البريد الكتروني المسجل الخاص بك",10001,ما قبل التسجيل,SMS-Acknowledgement,ara,TRUE,superadmin,now()
 1124,Template for email confirmation,Template for email confirmation,txt,velocity,"Cher $name, 
 votre pré-inscription à l'UIN est terminée avec succès sur $Date à $Time. Votre ID est # $PRID.
-Le rendez-vous est prévu pour $Appointmentdate à $Appointmenttime.
+Le rendez-vous est prévu pour $Appointmentdate à $Appointmenttime.Dans le nom du centre d'inscription $ RegistrationCenterName à l'adresse d'inscription $ RegistrationCenterAddress
 vous recevrez également les détails sur votre numéro de mobile enregistré",10001,Pré-inscription,Email-Acknowledgement,fra,TRUE,superadmin,now()
 1125,On-screen recognition template,On-screen recognition template,txt,velocity,"1. Ligne directrice 1
 2. Ligne directrice 2
