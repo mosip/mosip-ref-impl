@@ -131,6 +131,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.paginatorOptions.totalEntries = response.totalItems;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
+          console.log("response>>>"+response);
           if (response) {
             this.datas = response.certificate ? response.certificate : "";
           } else {
