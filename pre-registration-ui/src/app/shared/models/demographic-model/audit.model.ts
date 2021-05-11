@@ -1,4 +1,4 @@
-import Utils from "src/app/app.util";
+import moment from "moment";
 
 export class AuditModel {
 
@@ -7,7 +7,7 @@ export class AuditModel {
     public actionUserId: string;
 
     constructor(
-        public actionTimeStamp: string = Utils.getCurrentDate(),
+        public actionTimeStamp: any = new Date().toLocaleString("en-US", {timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone}),
         public moduleName: string = "PREREGISTRATION_UI",
         public moduleId: string = "PREREG_UI"
     ) {}
