@@ -6,6 +6,7 @@ import { AppConfigService } from "../../app-config.service";
 import { Applicant } from "../../shared/models/dashboard-model/dashboard.modal";
 import { ConfigService } from "./config.service";
 import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
+import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
 
 /**
  * @description This class is responsible for sending or receiving data to the service.
@@ -71,7 +72,7 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   getGenderDetails() {
-    const url = this.BASE_URL + this.PRE_REG_URL + '/proxy' + appConstants.APPEND_URL.gender;
+    const url = this.BASE_URL + this.PRE_REG_URL + 'proxy' + appConstants.APPEND_URL.gender;
     return this.httpClient.get(url);
   }
 
@@ -83,7 +84,7 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   getResidentDetails() {
-    const url = this.BASE_URL + this.PRE_REG_URL + '/proxy' + appConstants.APPEND_URL.resident;
+    const url = this.BASE_URL + this.PRE_REG_URL + 'proxy' + appConstants.APPEND_URL.resident;
     return this.httpClient.get(url);
   }
 
@@ -169,7 +170,7 @@ export class DataStorageService {
   getNearbyRegistrationCenters(coords: any) {
     return this.httpClient.get(
       this.BASE_URL +
-        this.PRE_REG_URL + '/proxy' +
+        this.PRE_REG_URL + 'proxy' +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.nearby_registration_centers +
         localStorage.getItem("langCode") +
@@ -187,7 +188,7 @@ export class DataStorageService {
   getRegistrationCentersByName(locType: string, text: string) {
     return this.httpClient.get(
       this.BASE_URL +
-        this.PRE_REG_URL + '/proxy' +
+        this.PRE_REG_URL + 'proxy' +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.registration_centers_by_name +
         localStorage.getItem("langCode") +
@@ -200,7 +201,7 @@ export class DataStorageService {
 
   getRegistrationCentersByNamePageWise(locType: string, text: string, pageNumber: number, pageSize: number) {
     let url = this.BASE_URL +
-    this.PRE_REG_URL + '/proxy' +
+    this.PRE_REG_URL + 'proxy' +
     appConstants.APPEND_URL.master_data +
     appConstants.APPEND_URL.registration_centers_by_name +
     "page/" +
@@ -218,7 +219,7 @@ export class DataStorageService {
 
   getLocationTypeData() {
     return this.httpClient.get(
-      this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL +  this.PRE_REG_URL + 'proxy' +
         appConstants.APPEND_URL.master_data +
         "locations/" +
         localStorage.getItem("langCode")
@@ -226,7 +227,7 @@ export class DataStorageService {
   }
 
   getLocationInfoForLocCode(locCode: string, langCode: string) {
-    let url = this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
+    let url = this.BASE_URL +  this.PRE_REG_URL + 'proxy' +
     appConstants.APPEND_URL.master_data +
     "locations/info/" +
     locCode + "/" + 
@@ -237,7 +238,7 @@ export class DataStorageService {
 
   getLocationsHierarchyByLangCode(langCode: string, locCode: string) {
     return this.httpClient.get(
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
         appConstants.APPEND_URL.master_data +
         "locations/" +
         locCode +
@@ -286,7 +287,7 @@ export class DataStorageService {
    */
   getLocationImmediateHierearchy(lang: string, location: string) {
     const url =
-      this.BASE_URL  + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL  + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       appConstants.APPEND_URL.location_immediate_children +
       location +
@@ -367,7 +368,7 @@ export class DataStorageService {
 
   getLocationOnLocationCodeAndLangCode(locationCode, langCode) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       "locations/" +
       locationCode +
@@ -383,7 +384,7 @@ export class DataStorageService {
   ) {
     console.log(data);
     let url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       "registrationcenters/" +
       langCode +
@@ -405,7 +406,7 @@ export class DataStorageService {
 
   getRegistrationCenterByIdAndLangCode(id: string, langCode: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       "registrationcenters/" +
       id +
@@ -416,17 +417,18 @@ export class DataStorageService {
 
   getGuidelineTemplate(templateType: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       "templates/templatetypecodes" +
       "/" +
       templateType;
+      localStorage.setItem("consentUrl",url);
     return this.httpClient.get(url);
   }
 
   getApplicantType(docuemntCategoryDto) {
     return this.httpClient.post(
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
         appConstants.APPEND_URL.applicantType +
         appConstants.APPEND_URL.getApplicantType,
       docuemntCategoryDto
@@ -435,7 +437,7 @@ export class DataStorageService {
 
   getDocumentCategories(applicantCode) {
     const APPLICANT_VALID_DOCUMENTS_URL =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.location +
       appConstants.APPEND_URL.validDocument +
       applicantCode +
@@ -501,7 +503,7 @@ export class DataStorageService {
    */
   getWorkingDays(registartionCenterId: string, langCode: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       "workingdays/" +
       registartionCenterId +
@@ -541,7 +543,7 @@ export class DataStorageService {
 
   getRegistrationCentersById(regCenterId, langCode: string) {
     return this.httpClient.get(
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.registration_centers_by_name +
         regCenterId +
@@ -562,7 +564,7 @@ export class DataStorageService {
 
   getDynamicFieldsandValues(langCode) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
     //console.log(url);
@@ -571,7 +573,7 @@ export class DataStorageService {
 
   getDynamicFieldsandValuesForAllLang(pageNumber: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
     //console.log(url);
@@ -585,4 +587,11 @@ export class DataStorageService {
       `&${appConstants.PARAMS_KEYS.docRefId}=${docRefId}`;
     return this.httpClient.put(url, {});
   }
+ 
+  logAudit(auditRequest: AuditModel){
+    let request = new RequestModel("",auditRequest);
+   const url = this.BASE_URL + this.PRE_REG_URL + 'logAudit';
+   return this.httpClient.post(url, request).subscribe(res => console.log(res));
+  }
+
 }
