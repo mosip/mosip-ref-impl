@@ -38,6 +38,7 @@ import { Subscription } from "rxjs";
 import { Engine, Rule } from 'json-rules-engine';
 import moment from 'moment';
 import identityStubJson from "../../../../assets/identity-spec.json";
+import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
 
 /**
  * @description This component takes care of the demographic page.
@@ -356,8 +357,10 @@ export class DemographicComponent
   private consentMultiLangDeclaration() {
     if (this.demographiclabels) {
       let newDataStructure = [];
+      let consentText = [];
       this.consentMessage.forEach((obj) => {
         if(this.dataCaptureLanguages.includes(obj.langCode)){
+          consentText.push(obj.fileText.split("\n"));
           this.dataStorageService
           .getI18NLanguageFiles(obj.langCode)
           .subscribe((response) => {
@@ -383,7 +386,20 @@ export class DemographicComponent
         height:"590px",
         data: data,
         disableClose: true,
-      });
+      }).afterClosed().subscribe(res => {
+       let description = {
+         url:localStorage.getItem('consentUrl'),
+         template:consentText,
+         description:'Consent Accepted'
+        }
+        if(res!== undefined){
+         let auditObj = new AuditModel();
+         auditObj.actionUserId = localStorage.getItem('loginId');
+         auditObj.eventName = "CONSENT";
+         auditObj.description = JSON.stringify(description);
+         this.dataStorageService.logAudit(auditObj);
+        }
+      })
     }
   }
 

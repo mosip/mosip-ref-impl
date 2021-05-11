@@ -160,6 +160,7 @@ img {
 .lock-img {
   height: 17px;
   margin-top: 4px;
+  padding-right: 15px;
 }
 #status {
   padding-left: 10px;
