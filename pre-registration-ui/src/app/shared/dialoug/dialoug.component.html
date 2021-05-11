@@ -160,7 +160,7 @@
       <button
         class="consent-popup-cross"
         mat-dialog-actions
-        (click)="onNoClick(); userRedirection()"
+        (click)="onNoClick(); cancelConsent(input.data); userRedirection()"
         cdkFocusInitial
       >
         <mat-icon class="consent-popup-cross-icon">close</mat-icon>

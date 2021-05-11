@@ -591,7 +591,7 @@ export class DataStorageService {
   logAudit(auditRequest: AuditModel){
     let request = new RequestModel("",auditRequest);
    const url = this.BASE_URL + this.PRE_REG_URL + 'logAudit';
-   return this.httpClient.post(url, request).subscribe(res => console.log(res));
+   return this.httpClient.post(url, request);
   }
 
 }

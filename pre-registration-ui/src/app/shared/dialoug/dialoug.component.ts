@@ -6,6 +6,8 @@ import { ConfigService } from "src/app/core/services/config.service";
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material";
 import { RouterExtService } from "../router/router-ext.service";
+import { DataStorageService } from "src/app/core/services/data-storage.service";
+import { AuditModel } from "../models/demographic-model/audit.model";
 
 export interface DialogData {
   case: number;
@@ -41,7 +43,8 @@ export class DialougComponent implements OnInit {
     private config: ConfigService,
     private router: Router,
     private dialogBox: MatDialog,
-    private routerService: RouterExtService
+    private routerService: RouterExtService,
+    private dataService: DataStorageService
   ) {}
 
   ngOnInit() {
@@ -89,7 +92,7 @@ export class DialougComponent implements OnInit {
   }
 
   enableButton(email, mobile) {
-    if (!email&& !mobile) {
+    if (!email && !mobile) {
       this.disableSend = true;
       this.invalidApplicantEmail = false;
       this.invalidApplicantNumber = false;
@@ -114,21 +117,39 @@ export class DialougComponent implements OnInit {
     this.enableDataCaptureSubmitBtn();
   }
 
-    enableDataCaptureSubmitBtn(){
-      if (
-        this.selectedLanguage.length >= Number(this.input.minLanguage) &&
-        this.selectedLanguage.length <= Number(this.input.maxLanguage)
-      ) {
-        console.log(this.input.minLanguage);
-        this.disablelanguageSubmitBtn = false;
-      } else {
-        this.disablelanguageSubmitBtn = true;
-      }
+  enableDataCaptureSubmitBtn() {
+    if (
+      this.selectedLanguage.length >= Number(this.input.minLanguage) &&
+      this.selectedLanguage.length <= Number(this.input.maxLanguage)
+    ) {
+      console.log(this.input.minLanguage);
+      this.disablelanguageSubmitBtn = false;
+    } else {
+      this.disablelanguageSubmitBtn = true;
+    }
   }
 
   collectDataCaptureLanguage() {
     this.dialogRef.close(this.selectedLanguage);
   }
+
+  cancelConsent(message) {
+    let consentText = [];
+    message.forEach(element => {
+      consentText.push(element['fileText']);
+    });
+    let description = {
+      url: localStorage.getItem("consentUrl"),
+      template: consentText,
+      description: "Consent Not Accepted",
+    };
+    let auditObj = new AuditModel();
+    auditObj.actionUserId = localStorage.getItem("loginId");
+    auditObj.eventName = "CONSENT";
+    auditObj.description = JSON.stringify(description);
+    this.dataService.logAudit(auditObj).subscribe(res => {});
+  }
+
   async userRedirection() {
     if (
       localStorage.getItem("newApplicant") === "true" &&
