@@ -60,6 +60,7 @@ export class AuthService {
     localStorage.setItem("loggedOut", "true");
     this.removeToken();
     localStorage.removeItem("config");
+    localStorage.clear();
     this.setCaptchaAuthenticate(false);
     this.dataStorageService.onLogout().subscribe();
     this.router.navigate(["/"]);

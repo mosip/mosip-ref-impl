@@ -15,6 +15,13 @@
 .error {
   font-size: 13px;
   color: red;
+  font-weight: bolder;
+  margin-top: -10px;
+}
+
+.loading {
+  font-size: 13px;
+  font-weight: bolder;
   margin-top: -10px;
 }
 

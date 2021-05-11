@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         "dashboard",
       ]);
     } else {
-      this.router.navigate(["/"]);
+      this.router.navigate([`/${localStorage.getItem("userPrefLanguage")}`]);
     }
   }
 
