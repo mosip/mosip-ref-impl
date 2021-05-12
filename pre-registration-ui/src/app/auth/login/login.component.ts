@@ -55,7 +55,6 @@ export class LoginComponent implements OnInit {
   langCode: string;
   LanguageCodelabels;
   languageCodeValue: any = [];
-  browserReloaded = false;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -117,61 +116,58 @@ export class LoginComponent implements OnInit {
   }
 
   handleBrowserReload() {
-    if (!this.browserReloaded) {
-      this.browserReloaded = true;
-      clearInterval(this.timer);
-      const otp_sent_time = localStorage.getItem("otp_sent_time");
-      const user_email_or_phone = localStorage.getItem("user_email_or_phone");
-      console.log(`otp_sent_time: ${otp_sent_time}`);
-      if (otp_sent_time && user_email_or_phone) {
-        let otpSentTime = moment(otp_sent_time).toISOString();
-        console.log(`otpSentTime: ${otpSentTime}`);
-        let currentTime = moment().toISOString();
-        console.log(`currentTime: ${currentTime}`);
-        let otpExpiryIntervalInSeconds = Number(
-          this.configService.getConfigByKey(
-            appConstants.CONFIG_KEYS.mosip_kernel_otp_expiry_time
-          )
-        );
-        if (isNaN(otpExpiryIntervalInSeconds)) {
-          otpExpiryIntervalInSeconds = 120; //2 mins by default
-        }
-        console.log(`otpExpiryIntervalInSeconds: ${otpExpiryIntervalInSeconds}`);
-        var timeLapsedInSeconds = moment(currentTime).diff(moment(otpSentTime), 'seconds');
-        console.log(`timeLapsedInSeconds: ${timeLapsedInSeconds}`);
-        if (timeLapsedInSeconds <= otpExpiryIntervalInSeconds) {
-          console.log("otp interval not yet expired");
-          let newOtpIntervalInSeconds = otpExpiryIntervalInSeconds - timeLapsedInSeconds;
-          console.log(`newOtpIntervalInSeconds: ${newOtpIntervalInSeconds}`);
-          this.errorMessage = ""; 
-          this.inputOTP = "";
-          this.showResend = false;
-          this.showOTP = true;
-          this.showSendOTP = false;
-          this.showContactDetails = false;
-          this.inputContactDetails = user_email_or_phone;
-          let mins = 0;
-          if (newOtpIntervalInSeconds >= 60) {
-            mins = newOtpIntervalInSeconds / 60;
-            mins = Math.floor(mins);
-          } 
-          if (mins < 10) {
-            this.minutes = "0" + mins;
-          } else {
-            this.minutes = String(mins);
-          }
-          let secs = newOtpIntervalInSeconds % 60;
-          if (secs < 10) {
-            this.seconds = "0" + secs;
-          } else {
-            this.seconds = String(secs);
-          }
-          this.timer = setInterval(this.timerFn, 1000);
+    clearInterval(this.timer);
+    const otp_sent_time = localStorage.getItem("otp_sent_time");
+    const user_email_or_phone = localStorage.getItem("user_email_or_phone");
+    console.log(`otp_sent_time: ${otp_sent_time}`);
+    if (otp_sent_time && user_email_or_phone) {
+      let otpSentTime = moment(otp_sent_time).toISOString();
+      console.log(`otpSentTime: ${otpSentTime}`);
+      let currentTime = moment().toISOString();
+      console.log(`currentTime: ${currentTime}`);
+      let otpExpiryIntervalInSeconds = Number(
+        this.configService.getConfigByKey(
+          appConstants.CONFIG_KEYS.mosip_kernel_otp_expiry_time
+        )
+      );
+      if (isNaN(otpExpiryIntervalInSeconds)) {
+        otpExpiryIntervalInSeconds = 120; //2 mins by default
+      }
+      console.log(`otpExpiryIntervalInSeconds: ${otpExpiryIntervalInSeconds}`);
+      var timeLapsedInSeconds = moment(currentTime).diff(moment(otpSentTime), 'seconds');
+      console.log(`timeLapsedInSeconds: ${timeLapsedInSeconds}`);
+      if (timeLapsedInSeconds <= otpExpiryIntervalInSeconds) {
+        console.log("otp interval not yet expired");
+        let newOtpIntervalInSeconds = otpExpiryIntervalInSeconds - timeLapsedInSeconds;
+        console.log(`newOtpIntervalInSeconds: ${newOtpIntervalInSeconds}`);
+        this.errorMessage = ""; 
+        this.inputOTP = "";
+        //this.showResend = false;
+        this.showOTP = true;
+        this.showSendOTP = false;
+        this.showContactDetails = false;
+        this.inputContactDetails = user_email_or_phone;
+        let mins = 0;
+        if (newOtpIntervalInSeconds >= 60) {
+          mins = newOtpIntervalInSeconds / 60;
+          mins = Math.floor(mins);
+        } 
+        if (mins < 10) {
+          this.minutes = "0" + mins;
         } else {
-          localStorage.removeItem("otp_sent_time");
-          localStorage.removeItem("user_email_or_phone");
-          console.log("otp interval expired");
+          this.minutes = String(mins);
         }
+        let secs = newOtpIntervalInSeconds % 60;
+        if (secs < 10) {
+          this.seconds = "0" + secs;
+        } else {
+          this.seconds = String(secs);
+        }
+        this.timer = setInterval(this.timerFn, 1000);
+      } else {
+        localStorage.removeItem("otp_sent_time");
+        localStorage.removeItem("user_email_or_phone");
+        console.log("otp interval expired");
       }
     }
   }
@@ -228,7 +224,6 @@ export class LoginComponent implements OnInit {
       this.enableCaptcha = true;
       this.loadRecaptchaSiteKey();
     }
-
     if (!this.enableCaptcha) {
       this.enableSendOtp = true;
     }
@@ -312,9 +307,9 @@ export class LoginComponent implements OnInit {
     ) {
       this.errorMessage = "";
       this.showVerify = true;
-      this.showResend = false;
+      //this.showResend = false;
     } else {
-      this.showResend = false;
+      //this.showResend = false;
       this.showVerify = false;
     }
   }
@@ -343,8 +338,8 @@ export class LoginComponent implements OnInit {
       if (minValue === 0) {
         // redirecting to initial phase on completion of timer
         this.showContactDetails = true;
-        this.showSendOTP = false;
-        this.showResend = true;
+        this.showSendOTP = true;
+        //this.showResend = true;
         this.showOTP = false;
         this.showVerify = false;
         if (this.enableCaptcha) {
@@ -412,7 +407,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem("user_email_or_phone", this.inputContactDetails);
             this.errorMessage = undefined; 
             this.inputOTP = "";
-            this.showResend = false;
+            //this.showResend = false;
             this.showOTP = true;
             this.showSendOTP = false;
             this.showContactDetails = false;
@@ -440,7 +435,6 @@ export class LoginComponent implements OnInit {
       // dynamic update of button text for Resend and Verify
     } else if (this.showVerify && this.errorMessage == "") {
       this.disableVerify = true;
-      clearInterval(this.timer);
       this.dataService
         .verifyOtp(this.inputContactDetails, this.inputOTP)
         .subscribe(
@@ -454,12 +448,14 @@ export class LoginComponent implements OnInit {
               this.disableVerify = false;
               this.router.navigate([this.userPreferredLanguage, "dashboard"]);
             } else {
+              this.showVerify = false;
               this.disableVerify = false;
               this.showOtpMessage();
             }
           },
           () => {
             this.disableVerify = false;
+            this.showVerify = false;
             this.showErrorMessage();
           }
         );

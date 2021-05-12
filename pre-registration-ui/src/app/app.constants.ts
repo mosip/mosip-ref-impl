@@ -94,8 +94,6 @@ export const CONFIG_KEYS = {
   preregistartion_identity_name : 'preregistartion.identity.name',
   mosip_regex_email: 'mosip.id.validation.identity.email',
   mosip_regex_phone: 'mosip.id.validation.identity.phone',
-  mosip_primary_language: 'mosip.primary-language',
-  mosip_secondary_language: 'mosip.secondary-language',
   mosip_left_to_right_orientation: 'mosip.left_to_right_orientation',
   mosip_kernel_otp_expiry_time: 'mosip.kernel.otp.expiry-time',
   mosip_kernel_otp_default_length: 'mosip.kernel.otp.default-length',
