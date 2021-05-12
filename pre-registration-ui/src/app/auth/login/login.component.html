@@ -57,10 +57,10 @@
           <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
           <p class="loading" *ngIf="loadingMessage != ''">{{ loadingMessage }}</p>
         </div>
-        <div *ngIf="enableCaptcha && showCaptcha">
+        <div *ngIf="enableCaptcha && showCaptcha && !showOTP">
           <app-captcha [captchaSiteKey]="siteKey"></app-captcha>
         </div>
-        <div *ngIf="captchaError" class="error" style="margin-left: 55px">
+        <div *ngIf="captchaError && !showOTP" class="error" style="margin-left: 55px">
           {{ "recaptcha.errorMessage" | translate }}
         </div>
         <div [dir]="dir" *ngIf="showOTP" >
@@ -105,7 +105,7 @@
           </button>
         </div>
 
-        <div *ngIf="showResend">
+        <!-- <div *ngIf="showResend">
           <button
             mat-raised-button
             class="btn_axn-pri"
@@ -114,7 +114,7 @@
           >
             {{ "login.action_resend" | translate }}
           </button>
-        </div>
+        </div> -->
 
         <div class="pinkText boldText" id="timer">
           <span>{{ "login.otp_valid_label" | translate }}&nbsp;</span
