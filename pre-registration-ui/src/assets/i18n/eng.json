@@ -275,7 +275,9 @@
     "otp_valid_label": "Valid for",
     "invalidEmail": "Invalid email id Entered",
     "invalidMobile": "Invalid mobile number Entered",
-    "invalidInput": "Invalid email id or mobile number Entered"
+    "invalidInput": "Invalid email id or mobile number Entered",
+    "serverUnavailable": "Unable to send Otp. Retry..",
+    "loading": "Sending..."
   },
   "stepper": {
     "link_demographic": "Demographics Details",

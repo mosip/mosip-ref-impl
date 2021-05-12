@@ -55,6 +55,7 @@
             </mat-form-field>
           </div>
           <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+          <p class="loading" *ngIf="loadingMessage != ''">{{ loadingMessage }}</p>
         </div>
         <div *ngIf="enableCaptcha && showCaptcha">
           <app-captcha [captchaSiteKey]="siteKey"></app-captcha>
