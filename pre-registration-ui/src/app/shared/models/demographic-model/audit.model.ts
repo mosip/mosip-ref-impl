@@ -1,4 +1,4 @@
-import moment from "moment";
+import { DatePipe } from "@angular/common";
 
 export class AuditModel {
 
