@@ -34,11 +34,18 @@ import {
 } from "ngx7-material-keyboard";
 import { LogService } from "src/app/shared/logger/log.service";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { Engine, Rule } from "json-rules-engine";
 import moment from "moment";
 import identityStubJson from "../../../../assets/identity-spec.json";
 import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
+import { map, startWith } from "rxjs/operators";
+
+export interface Gender {
+  label: string;
+  value: string;
+}
+
 
 /**
  * @description This component takes care of the demographic page.
@@ -54,6 +61,7 @@ import { AuditModel } from "src/app/shared/models/demographic-model/audit.model"
   templateUrl: "./demographic.component.html",
   styleUrls: ["./demographic.component.css"],
 })
+
 export class DemographicComponent
   extends FormDeactivateGuardService
   implements OnInit, OnDestroy {
@@ -129,6 +137,39 @@ export class DemographicComponent
   changeActionsNamesArr = [];
   identitySchemaVersion = "";
   readOnlyMode = false;
+  // myControl = new FormControl();
+  // myControlOptions: Object[] = [{
+  //   "label": "One",
+  //   "value": "one"
+  // }, {
+  //   "label": "Two",
+  //   "value": "two"
+  // }, {
+  //   "label": "Three",
+  //   "value": "three"
+  // }];
+  // myControlFilteredOptions: Observable<Object[]>;
+  genderLabelCtrl = new FormControl();
+  genderValueCtrl = new FormControl();
+  filteredGenders: Observable<Gender[]>;
+  gendersData: Gender[] = [
+    {
+      label: 'Male',
+      value: 'MLE'
+    },
+    {
+      label: 'Female',
+      value: 'FLE'
+    },
+    {
+      label: 'Others',
+      value: 'OTH'
+    },
+    {
+      label: 'OtherType',
+      value: 'OTY'
+    }
+  ];
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -158,7 +199,6 @@ export class DemographicComponent
         .subscribe((message) => (this.message = message))
     );
   }
-
   /**
    * @description This is the angular life cycle hook called upon loading the component.
    *
@@ -184,8 +224,51 @@ export class DemographicComponent
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
+    this.filteredGenders = this.genderLabelCtrl.valueChanges
+    .pipe(
+      startWith(''),
+      map(gender => gender ? this._filterGenders(gender) : this.gendersData.slice())
+    );
+  }
+  
+  private _filterGenders(value: string): Gender[] {
+    const filterValue = value.toLowerCase();
+    return this.gendersData.filter(gender => gender.label.toLowerCase().indexOf(filterValue) === 0);
+  }
+  
+  handleGenderBlurEvent() {
+    let val = this.genderLabelCtrl.value;
+    if (val && val !== "") {
+      let filtr = this.gendersData.filter(gender => gender.label.toLowerCase().indexOf(val.toLowerCase()) === 0);
+      if (filtr.length == 0) {
+        this.genderLabelCtrl.setValue("");
+        this.genderValueCtrl.setValue("");
+      }
+      if (filtr.length == 1) {
+        this.genderLabelCtrl.setValue(filtr[0]["label"]);
+        this.genderValueCtrl.setValue(filtr[0]["value"]);
+      }
+    } else {
+      this.genderLabelCtrl.setValue("");
+      this.genderValueCtrl.setValue("");
+    }
   }
 
+  handleGenderValueBlurEvent() {
+    let genderValue = this.genderValueCtrl.value;
+    let genderLabel = this.genderLabelCtrl.value;
+    if (genderValue && genderValue !== "") {
+      let filtr = this.gendersData.filter(gender => gender.value === genderValue && gender.label === genderLabel);
+      if (filtr.length == 0) {
+        this.genderLabelCtrl.setValue("");
+        this.genderValueCtrl.setValue("");
+      }
+    } else {
+      this.genderLabelCtrl.setValue("");
+      this.genderValueCtrl.setValue("");
+    }
+  }
+  
   initializeDataCaptureLanguages = async () => {
     if (!this.dataModification) {
       this.dataCaptureLanguages = JSON.parse(
@@ -252,6 +335,7 @@ export class DemographicComponent
         this.errorlabels = response["error"];
       });
   }
+  
 
   private getConsentMessage() {
     return new Promise((resolve, reject) => {
@@ -514,6 +598,8 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async initForm() {
+    //this.userForm.addControl("myControl", new FormControl(""));
+        
     this.uiFields.forEach((control, index) => {
       this.dataCaptureLanguages.forEach((language, i) => {
         if (this.isControlInMultiLang(control)) {
@@ -1550,6 +1636,7 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   onSubmit() {
+    console.log(this.stateCtrl.value);
     if (this.readOnlyMode) {
       this.redirectUser();
     } else {
