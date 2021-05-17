@@ -109,7 +109,23 @@
                       </ng-container>
                       <!-- Add Dropdown Options in  only one language on mouse over other lang are shown-->
                       <ng-container *ngIf="field.controlType === 'dropdown'">
-                        <span *ngIf="i == 0" [dir]="textDirection[i]">
+                        <span *ngIf="i == 0 && field.id=='gender'" [dir]="textDirection[i]">
+                          <mat-form-field class="example-full-width">
+                            <mat-label>Gender</mat-label>
+                            <input matInput aria-label="Gender" [matAutocomplete]="auto" [formControl]="genderLabelCtrl"
+                              (blur)="handleGenderBlurEvent($event)">
+                            <mat-autocomplete #auto="matAutocomplete">
+                              <mat-option *ngFor="let option of filteredGenders | async" [value]="option.label">
+                                {{option.label}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <input matInput aria-label="Gender Value" [formControl]="genderValueCtrl"
+                              (blur)="handleGenderValueBlurEvent($event)">
+                          </mat-form-field>
+                        </span>
+                        <span *ngIf="i == 0 && field.id !=='gender'" [dir]="textDirection[i]">
                           <mat-form-field [ngClass]="'dropdown-field'">
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
