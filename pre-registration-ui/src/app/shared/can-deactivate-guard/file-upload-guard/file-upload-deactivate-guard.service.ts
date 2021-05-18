@@ -15,13 +15,13 @@ export class FileUploadDeactivateGuardService implements CanDeactivate {
 
   canDeactivate(component: FileUploadComponent) {
     if (!this.authService.isAuthenticated()) {
-      console.log(this.authService.isAuthenticated());
       return true;
     } else {
       let deActivate = component.canExit();
       let msg = component.errorlabels;
       this.authService.isAuthenticated();
-
+      console.log(msg);
+       console.log(msg.fileUploadDeactivateMsg);
       if (!deActivate) {
         const messageObj = {
           case: "MESSAGE",
