@@ -425,7 +425,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     }
     if (this.isNavigateToDemographic) {
       let dataCaptureLanguagesLabels = [];
-      JSON.parse(localStorage.getItem("")).forEach(
+      JSON.parse(localStorage.getItem("dataCaptureLanguages")).forEach(
         (langCode) => {
           JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
             (element) => {
