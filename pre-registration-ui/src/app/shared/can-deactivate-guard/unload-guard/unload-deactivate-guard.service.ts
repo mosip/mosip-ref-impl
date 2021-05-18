@@ -1,5 +1,4 @@
-import { Injectable, HostListener } from '@angular/core';
-import { AuthService } from 'src/app/auth/auth.service';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 @Injectable({

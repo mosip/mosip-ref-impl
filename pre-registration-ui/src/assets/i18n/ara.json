@@ -590,7 +590,8 @@
     "timeExpired_2": " ساعات الحجز",
     "errorLabel": "خطأ",
     "regCenterNotavailabe":"مركز التسجيل غير متاح.",
-    "centerDetailsNotAvailable":"لا يمكن عمل حجز المواعيد أو إعادة الحجز. الرجاء معاودة المحاولة في وقت لاحق."
+    "centerDetailsNotAvailable":"لا يمكن عمل حجز المواعيد أو إعادة الحجز. الرجاء معاودة المحاولة في وقت لاحق.",
+    "fileUploadDeactivateMsg":"يرجى تحميل المستند المطلوب للمتابعة."
   },
   "residentTypesMapping": {
     "NFR": "الوطني",

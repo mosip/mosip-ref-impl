@@ -595,7 +595,8 @@
     "timeExpired_2": " heures de réservation",
     "errorLabel": "ERREUR",
     "regCenterNotavailabe":"Le centre d'inscription n'est pas disponible.",
-    "centerDetailsNotAvailable":"Aucun créneau horaire, disponible La réservation / re-réservation de rendez-vous ne peut pas être effectuée. Veuillez réessayer plus tard."
+    "centerDetailsNotAvailable":"Aucun créneau horaire, disponible La réservation / re-réservation de rendez-vous ne peut pas être effectuée. Veuillez réessayer plus tard.",
+    "fileUploadDeactivateMsg":"Veuillez télécharger le document requis pour continuer."
   },
   "residentTypesMapping": {
     "NFR": "Nationale",
