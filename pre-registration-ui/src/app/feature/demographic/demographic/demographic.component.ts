@@ -37,15 +37,9 @@ import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/
 import { Observable, Subscription } from "rxjs";
 import { Engine, Rule } from "json-rules-engine";
 import moment from "moment";
-import identityStubJson from "../../../../assets/identity-spec.json";
 import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
 import { map, startWith } from "rxjs/operators";
-
-export interface Gender {
-  label: string;
-  value: string;
-}
-
+import identityStubJson from "../../../../assets/identity-spec.json";
 
 /**
  * @description This component takes care of the demographic page.
@@ -72,8 +66,6 @@ export class DemographicComponent
   ltrLangs = this.configService
     .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
     .split(",");
-  //languages = this.dataCaptureLanguages;
-  //keyboardLang = appConstants.virtual_keyboard_languages[this.dataCaptureLanguages[0]];
   agePattern: string;
   defaultDay: string;
   defaultMonth: string;
@@ -130,6 +122,7 @@ export class DemographicComponent
   jsonRulesEngine = new Engine();
   primaryuserForm = false;
   selectOptionsDataArray = new Map();
+  filteredSelectOptionsDataArr = new Map();
   locationHeirarchies = [];
   validationMessage: any;
   dynamicFields = [];
@@ -137,39 +130,6 @@ export class DemographicComponent
   changeActionsNamesArr = [];
   identitySchemaVersion = "";
   readOnlyMode = false;
-  // myControl = new FormControl();
-  // myControlOptions: Object[] = [{
-  //   "label": "One",
-  //   "value": "one"
-  // }, {
-  //   "label": "Two",
-  //   "value": "two"
-  // }, {
-  //   "label": "Three",
-  //   "value": "three"
-  // }];
-  // myControlFilteredOptions: Observable<Object[]>;
-  genderLabelCtrl = new FormControl();
-  genderValueCtrl = new FormControl();
-  filteredGenders: Observable<Gender[]>;
-  gendersData: Gender[] = [
-    {
-      label: 'Male',
-      value: 'MLE'
-    },
-    {
-      label: 'Female',
-      value: 'FLE'
-    },
-    {
-      label: 'Others',
-      value: 'OTH'
-    },
-    {
-      label: 'OtherType',
-      value: 'OTY'
-    }
-  ];
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -205,6 +165,7 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async ngOnInit() {
+    
     await this.initialization();
     await this.initializeDataCaptureLanguages();
     //set translation service
@@ -223,49 +184,6 @@ export class DemographicComponent
     this.onChangeHandler("");
     if (this.readOnlyMode) {
       this.userForm.disable();
-    }
-    this.filteredGenders = this.genderLabelCtrl.valueChanges
-    .pipe(
-      startWith(''),
-      map(gender => gender ? this._filterGenders(gender) : this.gendersData.slice())
-    );
-  }
-  
-  private _filterGenders(value: string): Gender[] {
-    const filterValue = value.toLowerCase();
-    return this.gendersData.filter(gender => gender.label.toLowerCase().indexOf(filterValue) === 0);
-  }
-  
-  handleGenderBlurEvent() {
-    let val = this.genderLabelCtrl.value;
-    if (val && val !== "") {
-      let filtr = this.gendersData.filter(gender => gender.label.toLowerCase().indexOf(val.toLowerCase()) === 0);
-      if (filtr.length == 0) {
-        this.genderLabelCtrl.setValue("");
-        this.genderValueCtrl.setValue("");
-      }
-      if (filtr.length == 1) {
-        this.genderLabelCtrl.setValue(filtr[0]["label"]);
-        this.genderValueCtrl.setValue(filtr[0]["value"]);
-      }
-    } else {
-      this.genderLabelCtrl.setValue("");
-      this.genderValueCtrl.setValue("");
-    }
-  }
-
-  handleGenderValueBlurEvent() {
-    let genderValue = this.genderValueCtrl.value;
-    let genderLabel = this.genderLabelCtrl.value;
-    if (genderValue && genderValue !== "") {
-      let filtr = this.gendersData.filter(gender => gender.value === genderValue && gender.label === genderLabel);
-      if (filtr.length == 0) {
-        this.genderLabelCtrl.setValue("");
-        this.genderValueCtrl.setValue("");
-      }
-    } else {
-      this.genderLabelCtrl.setValue("");
-      this.genderValueCtrl.setValue("");
     }
   }
   
@@ -607,14 +525,25 @@ export class DemographicComponent
           this.userForm.addControl(controlId, new FormControl(""));
           this.addValidators(control, controlId, language);
         } else if (i == 0) {
-          const controlId = control.id;
-          // if (control.controlType == "checkbox") {
-          //   this.userForm.addControl(controlId, new FormControl(""));
-          //   this.userForm.controls[controlId].setValue(false);
-          // } else {
-          this.userForm.addControl(controlId, new FormControl(""));
-          //}
-          this.addValidators(control, controlId, language);
+          if (control.controlType === "dropdown") {
+            const dropdownControlId = control.id;
+            this.userForm.addControl(dropdownControlId, new FormControl(""));
+            this.addValidators(control, dropdownControlId, language);
+            //add a hidden field to carry the value of the autocomplete dropdown
+            const hiddenControlId = control.id + "_hidden";
+            this.userForm.addControl(hiddenControlId, new FormControl(""));
+            //add the listener for autocomplete
+            this.filteredSelectOptionsDataArr[`${dropdownControlId}`] 
+            = this.userForm.controls[`${dropdownControlId}`].valueChanges
+            .pipe(startWith(''),
+              map(value  => value  
+                ? this._filterOptions(value, dropdownControlId) 
+                : this.selectOptionsDataArray[`${dropdownControlId}`].slice()));
+          } else {
+            const controlId = control.id;
+            this.userForm.addControl(controlId, new FormControl(""));
+            this.addValidators(control, controlId, language);
+          }
         }
       });
       if (this.uiFields.length === index + 1) {
@@ -675,6 +604,7 @@ export class DemographicComponent
         control.controlType === "button"
       ) {
         this.selectOptionsDataArray[control.id] = [];
+        this.filteredSelectOptionsDataArr[control.id] = new Observable<CodeValueModal[]>();
       }
     });
   }
@@ -706,7 +636,6 @@ export class DemographicComponent
   };
 
   /**
-
    *
    * @description this method is to make dropdown api calls
    *
@@ -731,6 +660,47 @@ export class DemographicComponent
     }
   }
 
+  private _filterOptions(value: string, controlId: string): CodeValueModal[] {
+    const filterValue = value.toLowerCase();
+    return this.selectOptionsDataArray[`${controlId}`].filter(
+      option => option.valueName.toLowerCase().indexOf(filterValue) === 0);
+  }
+  
+  handleDropdownBlurEvent(event, controlId) {
+    const hiddenControlId = controlId + "_hidden";
+    let val = this.userForm.controls[`${controlId}`].value;
+    if (val && val !== "") {
+      let filtr = this.selectOptionsDataArray[`${controlId}`].filter(option => option.valueName.toLowerCase().indexOf(val.toLowerCase()) === 0);
+      if (filtr.length == 0) {
+        this.userForm.controls[`${controlId}`].setValue("");
+        this.userForm.controls[`${hiddenControlId}`].setValue("");
+      }
+      if (filtr.length == 1) {
+        this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueName"]);
+        this.userForm.controls[`${hiddenControlId}`].setValue(filtr[0]["valueCode"]);
+      }
+    } else {
+      this.userForm.controls[`${controlId}`].setValue("");
+      this.userForm.controls[`${hiddenControlId}`].setValue("");
+    }
+  }
+
+  handleHiddenValueBlurEvent(event, controlId) {
+    const hiddenControlId = controlId + "_hidden";
+    let optionValue = this.userForm.controls[`${hiddenControlId}`].value;
+    let optionLabel = this.userForm.controls[`${controlId}`].value;
+    if (optionValue && optionValue !== "") {
+      let filtr = this.selectOptionsDataArray[`${controlId}`].filter(option => option.valueCode === optionValue && option.valueName === optionLabel);
+      if (filtr.length == 0) {
+        this.userForm.controls[`${controlId}`].setValue("");
+        this.userForm.controls[`${hiddenControlId}`].setValue("");
+      }
+    } else {
+      this.userForm.controls[`${controlId}`].setValue("");
+      this.userForm.controls[`${hiddenControlId}`].setValue("");
+    }
+  }
+  
   transliterateFieldValue(uiFieldId: string, fromLang: string, event: Event) {
     let filteredList = this.uiFieldsWithTransliteration.filter(
       (field) => field.id == uiFieldId
@@ -1636,7 +1606,7 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   onSubmit() {
-    console.log(this.stateCtrl.value);
+    //console.log(this.stateCtrl.value);
     if (this.readOnlyMode) {
       this.redirectUser();
     } else {

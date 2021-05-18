@@ -109,23 +109,46 @@
                       </ng-container>
                       <!-- Add Dropdown Options in  only one language on mouse over other lang are shown-->
                       <ng-container *ngIf="field.controlType === 'dropdown'">
-                        <span *ngIf="i == 0 && field.id=='gender'" [dir]="textDirection[i]">
-                          <mat-form-field class="example-full-width">
-                            <mat-label>Gender</mat-label>
-                            <input matInput aria-label="Gender" [matAutocomplete]="auto" [formControl]="genderLabelCtrl"
-                              (blur)="handleGenderBlurEvent($event)">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
+                          <mat-form-field [ngClass]="'dropdown-field'">
+                            <mat-label>
+                              {{field.labelName[dataCaptureLanguage]}}
+                            </mat-label>
+                            <input matInput [matAutocomplete]="auto" formControlName="{{ field.id }}"
+                              (blur)="handleDropdownBlurEvent($event, field.id)"
+                              (focus)="!readOnlyMode ? dropdownApiCall(field): ''">
                             <mat-autocomplete #auto="matAutocomplete">
-                              <mat-option *ngFor="let option of filteredGenders | async" [value]="option.label">
-                                {{option.label}}
+                              <mat-option *ngIf="!(
+                                selectOptionsDataArray[field.id]?.length > 0 &&
+                                selectOptionsDataArray[field.id] !== null)">
+                                <mat-spinner [diameter]="20" style="margin-left: 43%"></mat-spinner>
                               </mat-option>
+                              <ng-container *ngFor="let dropdown of filteredSelectOptionsDataArr[field.id] | async">
+                                <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
+                                  [value]="dropdown.valueName"
+                                  (click)="resetLocationFields(field.id);onChangeHandler(field.id);"
+                                  title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
+                                  {{ dropdown.valueName }}
+                                </mat-option>
+                              </ng-container>
                             </mat-autocomplete>
                           </mat-form-field>
                           <mat-form-field>
-                            <input matInput aria-label="Gender Value" [formControl]="genderValueCtrl"
-                              (blur)="handleGenderValueBlurEvent($event)">
+                            <input matInput formControlName="{{ field.id + '_hidden'}}"
+                              (blur)="handleHiddenValueBlurEvent($event, field.id)">
                           </mat-form-field>
+                          <p></p>
+                          <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
+                            <span *ngFor="let option of selectOptionsDataArray[field.id];">
+                              <span
+                                *ngIf="option.languageCode !== dataCaptureLanguage && option.valueCode == userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
+                                <span class="selectedOption">{{option.valueName}}</span>
+                              </span>
+                            </span>
+                          </span>
                         </span>
-                        <span *ngIf="i == 0 && field.id !=='gender'" [dir]="textDirection[i]">
+                        <!-- 
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-form-field [ngClass]="'dropdown-field'">
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
@@ -147,7 +170,6 @@
                               </ng-container>
                             </mat-select>
                           </mat-form-field>
-                          <br>
                           <p></p>
                           <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
                             <span *ngFor="let option of selectOptionsDataArray[field.id];">
@@ -157,7 +179,7 @@
                               </span>
                             </span>
                           </span>
-                        </span>
+                        </span> -->
                       </ng-container>
                       <!-- Add Date fields-->
                       <ng-container *ngIf="field.controlType === 'date'">
