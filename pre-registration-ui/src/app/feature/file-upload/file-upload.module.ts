@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FileUploadRoutingModule } from './file-upload-routing.module';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileUploadDeactivateGuardService } from 'src/app/shared/can-deactivate-guard/file-upload-guard/file-upload-deactivate-guard.service';
 
 /**
  * @description THis module is responsible for uploading the documents in specified format. This is an optional module.
@@ -16,6 +17,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
  */
 @NgModule({
   declarations: [FileUploadComponent],
-  imports: [CommonModule, PdfViewerModule, ReactiveFormsModule, FileUploadRoutingModule, SharedModule]
+  imports: [CommonModule, PdfViewerModule, ReactiveFormsModule, FileUploadRoutingModule, SharedModule],
+  providers:[FileUploadDeactivateGuardService]
 })
 export class FileUploadModule {}

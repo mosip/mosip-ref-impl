@@ -93,13 +93,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   applicants: any[] = [];
   allowedFiles: string[];
   firstFile: Boolean = true;
-  
+
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
   preRegId: number;
   isDocUploadRequired = [];
-  name:"";
+  name: "";
   readOnlyMode = false;
 
   constructor(
@@ -122,7 +122,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.userPrefLanguageIsLtr = true;
     } else {
       this.userPrefLanguageIsLtr = false;
-    }  
+    }
   }
 
   async ngOnInit() {
@@ -142,13 +142,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.sameAsselected = false;
     } else {
       this.sameAsselected = true;
-    }this.dataStorageService
-    .getI18NLanguageFiles(this.userPrefLanguage)
-    .subscribe((response) => {
-      if (response["message"])
-      this.fileUploadLanguagelabels = response["message"];
-    if (response["error"]) this.errorlabels = response["error"];
-    });
+    }
+    this.dataStorageService
+      .getI18NLanguageFiles(this.userPrefLanguage)
+      .subscribe((response) => {
+        if (response["message"])
+          this.fileUploadLanguagelabels = response["message"];
+        if (response["error"]) this.errorlabels = response["error"];
+      });
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
@@ -161,7 +162,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
         response = identityStubJson;
-        let identityJsonSpec = response[appConstants.RESPONSE]["jsonSpec"]["identity"];
+        let identityJsonSpec =
+          response[appConstants.RESPONSE]["jsonSpec"]["identity"];
         this.identityData = identityJsonSpec["identity"];
         this.identityData.forEach((obj) => {
           if (obj.controlType === "fileupload") {
@@ -234,7 +236,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.userFile = response[appConstants.RESPONSE][appConstants.METADATA];
     } else {
       let fileModel: FileModel = new FileModel("", "", "", "", "", "", "", "");
-      if(this.userFile.length === 0){
+      if (this.userFile.length === 0) {
         this.userFile.push(fileModel);
       }
     }
@@ -415,14 +417,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       for (let name of applicant) {
         if (
           name["demographicMetadata"][name][j].language != this.userPrefLanguage
-          ) {
+        ) {
           allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
         j++;
       }
       i++;
     }
-    console.log("allApplicants>>>"+JSON.stringify(allApplicants));
+    console.log("allApplicants>>>" + JSON.stringify(allApplicants));
     return allApplicants;
   }
   /**
@@ -465,8 +467,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     //     requestDTO.value = language.value;
     //   }
     // }
-    requestDTO.value = this.users[0].request.demographicDetails.identity
-    .residenceStatus[0].value;
+    requestDTO.value =
+      this.users[0].request.demographicDetails.identity.residenceStatus[0].value;
     requestArray.attributes.push(requestDTO);
 
     DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;
@@ -475,7 +477,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     requestArray.attributes.push(DOBDTO);
 
     genderDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.genderCode;
-    genderDTO.value = this.users[0].request.demographicDetails.identity.gender[0].value;
+    genderDTO.value =
+      this.users[0].request.demographicDetails.identity.gender[0].value;
 
     requestArray.attributes.push(genderDTO);
 
@@ -538,15 +541,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         (res) => {
           if (res[appConstants.RESPONSE]) {
             let documentCategories = res["response"].documentCategories;
-            documentCategories.forEach(documentCategory => {
-              this.uiFields.forEach(uiField => {
+            documentCategories.forEach((documentCategory) => {
+              this.uiFields.forEach((uiField) => {
                 if (uiField.subType == documentCategory.code) {
                   if (uiField.inputRequired) {
                     documentCategory["required"] = uiField.required;
-                    documentCategory["labelName"] = uiField.labelName[this.userPrefLanguage];
+                    documentCategory["labelName"] =
+                      uiField.labelName[this.userPrefLanguage];
                     documentCategory["containerStyle"] = uiField.containerStyle;
-                    documentCategory["headerStyle"] = uiField.headerStyle;  
-                    documentCategory["id"] = uiField.id;  
+                    documentCategory["headerStyle"] = uiField.headerStyle;
+                    documentCategory["id"] = uiField.id;
                     this.userForm.addControl(uiField.id, new FormControl(""));
                     if (uiField.required) {
                       this.userForm.controls[uiField.id].setValidators(
@@ -554,22 +558,24 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                       );
                     }
                     this.userForm.controls[uiField.id].setValue("");
-                    this.LOD.push(documentCategory); 
+                    this.LOD.push(documentCategory);
                   }
                 }
               });
             });
             if (this.userFiles && this.userFiles["documentsMetaData"]) {
-              this.userFiles["documentsMetaData"].forEach(userFile => {
-                this.uiFields.forEach(uiField => {
+              this.userFiles["documentsMetaData"].forEach((userFile) => {
+                this.uiFields.forEach((uiField) => {
                   if (uiField.subType == userFile.docCatCode) {
                     if (this.userForm.controls[uiField.id]) {
-                      this.userForm.controls[uiField.id].setValue(userFile.docName);
+                      this.userForm.controls[uiField.id].setValue(
+                        userFile.docName
+                      );
                     }
                   }
                 });
               });
-            } 
+            }
             //this.LOD = res["response"].documentCategories;
             console.log(this.LOD);
             this.enableBrowseButtonList = new Array(this.LOD.length).fill(
@@ -635,7 +641,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.updateApplicants();
     let temp = this.getApplicantsName(this.applicants);
     this.allApplicants = JSON.parse(JSON.stringify(temp));
-    console.log("this.allApplicants"+this.allApplicants.length);
+    console.log("this.allApplicants" + this.allApplicants.length);
     temp = JSON.parse(JSON.stringify(this.allApplicants));
     this.setNoneApplicant();
   }
@@ -819,7 +825,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  handleFileInput(event: any, docName: string, docCode: string, docRefId: string) {
+  handleFileInput(
+    event: any,
+    docName: string,
+    docCode: string,
+    docRefId: string
+  ) {
     const extensionRegex = new RegExp(
       "(?:" + this.allowedFilesHtml.replace(/,/g, "|") + ")"
     );
@@ -1093,11 +1104,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile[0].multipartFile = this.fileByteArray;
     this.userFile[0].prereg_id = this.users[0].preRegId;
     this.userFile[0].docRefId = fileResponse.response.docRefId;
-    this.uiFields.forEach(uiField => {
+    this.uiFields.forEach((uiField) => {
       if (uiField.subType == fileResponse.response.docCatCode) {
-        this.userForm.controls[uiField.id].setValue(fileResponse.response.docName);
+        this.userForm.controls[uiField.id].setValue(
+          fileResponse.response.docName
+        );
       }
-    });    
+    });
 
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
@@ -1140,7 +1153,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       let arr = fileMetadata.filter((ent) => ent.docCatCode === "POA");
       console.log(arr);
       const subs = this.dataStorageService
-        .deleteFile(arr[0].documentId,this.preRegId)
+        .deleteFile(arr[0].documentId, this.preRegId)
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
@@ -1153,11 +1166,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               });
               this.LOD[index].selectedDocName = "";
               this.LOD[index].selectedDocRefId = "";
-              this.uiFields.forEach(uiField => {
+              this.uiFields.forEach((uiField) => {
                 if (uiField.subType == this.LOD[index].code) {
                   this.userForm.controls[this.LOD[index].id].setValue("");
                 }
-              });   
+              });
             }
             this.disableNavigation = false;
           },
@@ -1193,7 +1206,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               );
               this.documentName = docList[0].code;
               this.LOD[index].selectedDocName = this.documentName;
-              this.LOD[index].selectedDocRefId = response["response"]["docRefId"];
+              this.LOD[index].selectedDocRefId =
+                response["response"]["docRefId"];
             } else {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
@@ -1345,6 +1359,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.LOD[index].selectedDocRefId = event.target.value;
   }
 
+  canExit(): boolean {
+    let CanDeactivateFlag = true;
+    for (let document of this.LOD) {
+      if (this.userForm.get(`${document.id}`).hasError('required')) {
+        CanDeactivateFlag = false;
+        break;
+      }
+    }
+    return CanDeactivateFlag;
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
@@ -1372,10 +1397,10 @@ export interface DocumentCategory {
   selectedDocName?: string;
   selectedDocRefId: string;
   labelName: string;
-  required: boolean; 
-  containerStyle: {},
-  headerStyle: {},
-  id: string
+  required: boolean;
+  containerStyle: {};
+  headerStyle: {};
+  id: string;
 }
 
 export interface Applicants {

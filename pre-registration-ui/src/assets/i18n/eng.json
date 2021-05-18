@@ -593,7 +593,8 @@
     "timeExpired_2": " hours of booking",
     "errorLabel": "ERROR",
     "regCenterNotavailabe":"Registration center is not available.",
-    "centerDetailsNotAvailable":"No Slots Available, Appointment booking/re-booking cannot be done. Please try again later."
+    "centerDetailsNotAvailable":"No Slots Available, Appointment booking/re-booking cannot be done. Please try again later.",
+    "fileUploadDeactivateMsg":"Please upload the required document to continue."
   },
   "residentTypesMapping": {
     "NFR": "National",
