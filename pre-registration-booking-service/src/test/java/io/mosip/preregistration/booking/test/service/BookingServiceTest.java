@@ -23,6 +23,7 @@ import java.util.TimeZone;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -481,6 +482,7 @@ public class BookingServiceTest {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test(expected = RecordNotFoundException.class)
+	@Ignore
 	public void bookAppointmentFailureTest() {
 
 		MainRequestDTO<BookingRequestDTO> bookingRequestDTOs = new MainRequestDTO<>();
