@@ -99,7 +99,7 @@ import io.mosip.preregistration.core.util.ValidationUtil;
 public class BookingServiceUtil {
 
 	@Autowired
-	//@Qualifier("restTemplate")
+	// @Qualifier("restTemplate")
 	private RestTemplate restTemplate;
 
 	/**
@@ -239,7 +239,8 @@ public class BookingServiceUtil {
 		String statusCode = getApplicationStatus.getResponse().getStatusCode();
 
 		if (!statusCode.equals(StatusCodes.BOOKED.getCode())) {
-			if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())) {
+			if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
+					|| statusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
 				throw new BookingDataNotFoundException(ErrorCodes.PRG_BOOK_RCI_013.getCode(),
 						ErrorMessages.BOOKING_DATA_NOT_FOUND.getMessage());
 			}

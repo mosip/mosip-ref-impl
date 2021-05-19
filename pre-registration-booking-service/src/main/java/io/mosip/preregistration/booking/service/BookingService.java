@@ -40,6 +40,7 @@ import io.mosip.preregistration.booking.entity.AvailibityEntity;
 import io.mosip.preregistration.booking.errorcodes.ErrorCodes;
 import io.mosip.preregistration.booking.errorcodes.ErrorMessages;
 import io.mosip.preregistration.booking.exception.AvailablityNotFoundException;
+import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.util.BookingExceptionCatcher;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
@@ -140,7 +141,7 @@ public class BookingService implements BookingServiceIntf {
 
 	@Value("${mosip.primary-language}")
 	String primaryLang;
-	
+
 	@Autowired
 	private ValidationUtil validationUtil;
 
@@ -158,7 +159,6 @@ public class BookingService implements BookingServiceIntf {
 		return (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -225,9 +225,9 @@ public class BookingService implements BookingServiceIntf {
 		return response;
 	}
 
-
 	/**
-	 * Retrieve number of holidays based on date Time, number of holidays and available slots
+	 * Retrieve number of holidays based on date Time, number of holidays and
+	 * available slots
 	 * 
 	 * @param dateTimeList
 	 * @param noOfHoliday
@@ -281,13 +281,18 @@ public class BookingService implements BookingServiceIntf {
 					/* Getting Status From Demographic */
 					String preRegStatusCode = serviceUtil.getDemographicStatus(preRegistrationId);
 
+					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+						throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+								ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+					}
+
 					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)) {
 
 						/* Checking the availability of slots */
 						checkSlotAvailability(bookingRequestDTO);
 
 						if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-						   || preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
+								|| preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
 
 							/* Creating new booking */
 							response = book(preRegistrationId, bookingRequestDTO);
@@ -396,6 +401,11 @@ public class BookingService implements BookingServiceIntf {
 						/* Getting Status From Demographic */
 						String preRegStatusCode = serviceUtil
 								.getDemographicStatus(bookingRequestDTO.getPreRegistrationId());
+						
+						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+						}
 
 						// Taking one booking request from multiple
 						BookingRequestDTO bookingRequest = new BookingRequestDTO();
@@ -411,7 +421,7 @@ public class BookingService implements BookingServiceIntf {
 							checkSlotAvailability(bookingRequest);
 
 							if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-							   || preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
+									|| preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
 
 								/* Creating new booking */
 								respList.add(book(bookingRequestDTO.getPreRegistrationId(), bookingRequest));
@@ -648,7 +658,7 @@ public class BookingService implements BookingServiceIntf {
 							bookingEntity.getSlotFromTime(), bookingEntity.getSlotToTime(), bookingEntity.getRegDate(),
 							bookingEntity.getRegistrationCenterId());
 					/* Getting Status From Demographic */
-					serviceUtil.getDemographicStatus(preRegistrationId);
+					//serviceUtil.getDemographicStatus(preRegistrationId);
 
 					/* For batch condition will skip */
 					if (!isBatchUser) {
@@ -915,7 +925,8 @@ public class BookingService implements BookingServiceIntf {
 				LocalDate fromDate = LocalDate.parse(fromDateStr, parseFormatter);
 				LocalDate toDate = LocalDate.parse(toDateStr, parseFormatter);
 				Map<String, Map<LocalDate, SlotTimeDto>> idsWithSlotTime = new HashMap<String, Map<LocalDate, SlotTimeDto>>();
-				List<String> details = bookingDAO.findByBookingDateBetweenAndRegCenterId(fromDate, toDate, regCenterId,idsWithSlotTime);
+				List<String> details = bookingDAO.findByBookingDateBetweenAndRegCenterId(fromDate, toDate, regCenterId,
+						idsWithSlotTime);
 				PreRegIdsByRegCenterIdResponseDTO responseDTO = new PreRegIdsByRegCenterIdResponseDTO();
 				responseDTO.setPreRegistrationIds(details);
 				responseDTO.setRegistrationCenterId(regCenterId);
@@ -934,7 +945,6 @@ public class BookingService implements BookingServiceIntf {
 		response.setErrors(null);
 		return response;
 	}
-
 
 	@Override
 	public MainResponseDTO<BookingDataByRegIdDto> getBookedPreRegistrations(String fromDateStr, String toDateStr,
