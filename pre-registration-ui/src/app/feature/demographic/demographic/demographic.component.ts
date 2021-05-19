@@ -526,19 +526,23 @@ export class DemographicComponent
           this.addValidators(control, controlId, language);
         } else if (i == 0) {
           if (control.controlType === "dropdown") {
-            const dropdownControlId = control.id;
+            const controlId = control.id;
+            const dropdownControlId = control.id + "_dropdown";
             this.userForm.addControl(dropdownControlId, new FormControl(""));
             this.addValidators(control, dropdownControlId, language);
             //add a hidden field to carry the value of the autocomplete dropdown
-            const hiddenControlId = control.id + "_hidden";
-            this.userForm.addControl(hiddenControlId, new FormControl(""));
+            this.userForm.addControl(controlId, new FormControl(""));
             //add the listener for autocomplete
-            this.filteredSelectOptionsDataArr[`${dropdownControlId}`] 
+            this.filteredSelectOptionsDataArr[`${controlId}`] 
             = this.userForm.controls[`${dropdownControlId}`].valueChanges
             .pipe(startWith(''),
-              map(value  => value  
-                ? this._filterOptions(value, dropdownControlId) 
-                : this.selectOptionsDataArray[`${dropdownControlId}`].slice()));
+              map(value  => {
+                console.log("pipe");
+                console.log(value);
+                return value != ""  
+                ? this._filterOptions(value, controlId) 
+                : this.selectOptionsDataArray[`${controlId}`]
+              }));
           } else {
             const controlId = control.id;
             this.userForm.addControl(controlId, new FormControl(""));
@@ -642,62 +646,72 @@ export class DemographicComponent
    * @param controlObject is Identity Type Object
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
-  dropdownApiCall(controlObject: any) {
-    if (this.isThisFieldInLocationHeirarchies(controlObject.id)) {
-      //console.log("dropdownApiCall : " + controlObject.id);
-      if (this.getIndexInLocationHeirarchy(controlObject.id) !== 0) {
-        this.selectOptionsDataArray[controlObject.id] = [];
+  async dropdownApiCall(controlId: string) {
+    if (this.isThisFieldInLocationHeirarchies(controlId)) {
+      console.log("dropdownApiCall : " + controlId);
+      if (this.getIndexInLocationHeirarchy(controlId) !== 0) {
+        //this.userForm.controls[`${controlId}`].setValue("");
+        //this.userForm.controls[`${controlId}_dropdown`].setValue("");
+        this.selectOptionsDataArray[controlId] = [];
         const locationIndex = this.getIndexInLocationHeirarchy(
-          controlObject.id
+          controlId
         );
         const parentLocationName = this.getLocationNameFromIndex(
-          controlObject.id,
+          controlId,
           locationIndex - 1
         );
         let locationCode = this.userForm.get(`${parentLocationName}`).value;
-        this.loadLocationData(locationCode, controlObject.id);
+        if (parentLocationName) {
+          await this.loadLocationData(locationCode, controlId);
+        }
       }
     }
   }
 
   private _filterOptions(value: string, controlId: string): CodeValueModal[] {
+    console.log("_filterOptions");
     const filterValue = value.toLowerCase();
     return this.selectOptionsDataArray[`${controlId}`].filter(
       option => option.valueName.toLowerCase().indexOf(filterValue) === 0);
   }
   
-  handleDropdownBlurEvent(event, controlId) {
-    const hiddenControlId = controlId + "_hidden";
-    let val = this.userForm.controls[`${controlId}`].value;
+  handleDropdownBlurEvent(controlId, dataCaptureLanguage) {
+    console.log("handleDropdownBlurEvent");
+    const dropdownControlId = controlId + "_dropdown";
+    let val = this.userForm.controls[`${dropdownControlId}`].value;
+    console.log(val);
     if (val && val !== "") {
-      let filtr = this.selectOptionsDataArray[`${controlId}`].filter(option => option.valueName.toLowerCase().indexOf(val.toLowerCase()) === 0);
+      let filtr = this.selectOptionsDataArray[`${controlId}`].filter(option => 
+        option.languageCode === dataCaptureLanguage && option.valueName.toLowerCase().indexOf(val.toLowerCase()) === 0);
       if (filtr.length == 0) {
         this.userForm.controls[`${controlId}`].setValue("");
-        this.userForm.controls[`${hiddenControlId}`].setValue("");
+        this.userForm.controls[`${dropdownControlId}`].setValue("");
+        //this.resetLocationFields(`${controlId}`);
       }
       if (filtr.length == 1) {
-        this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueName"]);
-        this.userForm.controls[`${hiddenControlId}`].setValue(filtr[0]["valueCode"]);
+        this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueCode"]);
+        this.userForm.controls[`${dropdownControlId}`].setValue(filtr[0]["valueName"]);
       }
     } else {
       this.userForm.controls[`${controlId}`].setValue("");
-      this.userForm.controls[`${hiddenControlId}`].setValue("");
+      this.userForm.controls[`${dropdownControlId}`].setValue("");
+      //this.resetLocationFields(`${controlId}`);
     }
   }
 
   handleHiddenValueBlurEvent(event, controlId) {
-    const hiddenControlId = controlId + "_hidden";
-    let optionValue = this.userForm.controls[`${hiddenControlId}`].value;
-    let optionLabel = this.userForm.controls[`${controlId}`].value;
+    const dropdownControlId = controlId + "_dropdown";
+    let optionValue = this.userForm.controls[`${controlId}`].value;
+    let optionLabel = this.userForm.controls[`${dropdownControlId}`].value;
     if (optionValue && optionValue !== "") {
       let filtr = this.selectOptionsDataArray[`${controlId}`].filter(option => option.valueCode === optionValue && option.valueName === optionLabel);
       if (filtr.length == 0) {
         this.userForm.controls[`${controlId}`].setValue("");
-        this.userForm.controls[`${hiddenControlId}`].setValue("");
+        this.userForm.controls[`${dropdownControlId}`].setValue("");
       }
     } else {
       this.userForm.controls[`${controlId}`].setValue("");
-      this.userForm.controls[`${hiddenControlId}`].setValue("");
+      this.userForm.controls[`${dropdownControlId}`].setValue("");
     }
   }
   
@@ -998,8 +1012,8 @@ export class DemographicComponent
    */
   private async setLocations() {
     await this.getLocationMetadataHirearchy();
-    this.locationHeirarchies.forEach((locationHeirarchy) => {
-      this.loadLocationData(
+    this.locationHeirarchies.forEach(async (locationHeirarchy) => {
+      await this.loadLocationData(
         this.uppermostLocationHierarchy,
         locationHeirarchy[0]
       );
@@ -1012,12 +1026,15 @@ export class DemographicComponent
    * @param fieldName location dropdown control Name
    */
   resetLocationFields(fieldName: string) {
+    console.log("resetLocationFields");
     if (this.isThisFieldInLocationHeirarchies(fieldName)) {
       const locationFields = this.getLocationHierarchy(fieldName);
       const index = locationFields.indexOf(fieldName);
       for (let i = index + 1; i < locationFields.length; i++) {
         this.userForm.controls[locationFields[i]].setValue("");
         this.userForm.controls[locationFields[i]].markAsUntouched();
+        this.userForm.controls[locationFields[i] + "_dropdown"].setValue("");
+        this.userForm.controls[locationFields[i] + "_dropdown"].markAsUntouched();
       }
     }
   }
@@ -1028,36 +1045,34 @@ export class DemographicComponent
    * @param fieldName location dropdown control Name
    * @param locationCode location code of parent location
    */
-  loadLocationData(locationCode: string, fieldName: string) {
+  async loadLocationData(locationCode: string, fieldName: string) {
     if (fieldName && fieldName.length > 0) {
-      this.dataCaptureLanguages.forEach((dataCaptureLanguage) => {
+    return new Promise((resolve) => {
+      let dataArr = [];
+      this.dataCaptureLanguages.forEach(async (dataCaptureLanguage) => {
         this.dataStorageService
-          .getLocationImmediateHierearchy(dataCaptureLanguage, locationCode)
-          .subscribe(
-            (response) => {
-              if (response[appConstants.RESPONSE]) {
-                response[appConstants.RESPONSE][
-                  appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations
-                ].forEach((element) => {
-                  let codeValueModal: CodeValueModal = {
-                    valueCode: element.code,
-                    valueName: element.name,
-                    languageCode: element.langCode,
-                  };
-                  if (this.selectOptionsDataArray[`${fieldName}`]) {
-                    this.selectOptionsDataArray[`${fieldName}`].push(
-                      codeValueModal
-                    );
-                  }
-                });
-              }
-            },
-            (error) => {
-              console.log(error);
+        .getLocationImmediateHierearchy(dataCaptureLanguage, locationCode)
+        .subscribe(
+          (response) => {
+            if (response[appConstants.RESPONSE]) {
+              response[appConstants.RESPONSE][
+                appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations
+              ].forEach((element) => {
+                let codeValueModal: CodeValueModal = {
+                  valueCode: element.code,
+                  valueName: element.name,
+                  languageCode: element.langCode,
+                };
+                dataArr.push(codeValueModal);
+              });
             }
-          );
+            resolve(true); 
+          }
+        )
       });
-    }
+      this.selectOptionsDataArray[`${fieldName}`] = dataArr;
+    });
+    }  
   }
 
   /**
@@ -1180,9 +1195,10 @@ export class DemographicComponent
               control.controlType === "button"
             ) {
               if (this.isThisFieldInLocationHeirarchies(control.id)) {
-                this.dropdownApiCall(control);
+                this.dropdownApiCall(control.id);
               }
             }
+
             if (control.type === "string") {
               this.userForm.controls[`${control.id}`].setValue(
                 this.user.request.demographicDetails.identity[`${control.id}`]
