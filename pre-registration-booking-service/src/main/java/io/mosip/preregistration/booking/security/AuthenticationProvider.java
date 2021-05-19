@@ -9,16 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -44,10 +41,11 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 
 	private RestTemplate restTemplate = new RestTemplate();
 
+	@Value("${prereg.auth.jwt.secret}")
+	private String jwtSecret;
+
 	@Value("${auth.server.admin.validate.url:http://localhost:8091/v1/authmanager/authorize/admin/validateToken}")
 	private String adminValidateUrl;
-
-	private byte[] secret = TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=");
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -60,11 +58,10 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 	@Override
 	protected UserDetails retrieveUser(String userName,
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
-		LOGGER.info("In retriveUser method of AuthenticationProvider class" + usernamePasswordAuthenticationToken);
 		Object token = usernamePasswordAuthenticationToken.getCredentials();
-		LOGGER.info("In retriveUser method of AuthenticationProvider class" + token);
+		LOGGER.info("In retriveUser method of AuthenticationProvider class");
 		MosipUserDto mosipUserDto = new MosipUserDto();
-
+		byte[] secret = TextCodec.BASE64.decode(jwtSecret);
 		try {
 
 			Jws<Claims> clamis = Jwts.parser().setSigningKey(secret).parseClaimsJws(token.toString());
@@ -72,28 +69,24 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 			mosipUserDto.setName(clamis.getBody().get("user_name").toString());
 			mosipUserDto.setToken(token.toString());
 			mosipUserDto.setRole(clamis.getBody().get("roles").toString());
-			LOGGER.info("extracted token details" + mosipUserDto);
 
 		} catch (SignatureException | IllegalArgumentException ex) {
-			System.out.println(ex.getMessage());
 			ResponseEntity<String> response = null;
 			response = getKeycloakValidatedUserResponse(token.toString());
-			System.out.println(response);
 			List<ServiceError> validationErrorsList = ExceptionUtils.getServiceErrorList(response.getBody());
 			if (!validationErrorsList.isEmpty()) {
-				throw new AccessDeniedException(validationErrorsList.toString());
+				LOGGER.error("validate token exception {}", validationErrorsList);
 			}
 			try {
 				ResponseWrapper<?> responseObject = objectMapper.readValue(response.getBody(), ResponseWrapper.class);
 				mosipUserDto = objectMapper.readValue(objectMapper.writeValueAsString(responseObject.getResponse()),
 						MosipUserDto.class);
-				LOGGER.info("user " + mosipUserDto.getUserId());
 			} catch (Exception e) {
-				throw new AccessDeniedException(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+				LOGGER.error("validate token exception {}", e);
 			}
 		} catch (JwtException e) {
-			LOGGER.error("exception while parsing the token" + e);
-			throw new UsernameNotFoundException("Cannot find user with authentication token=" + token);
+			LOGGER.error("exception while parsing the token");
+
 		}
 
 		AuthUserDetails authUserDetails = new AuthUserDetails(mosipUserDto, token.toString());
@@ -104,16 +97,17 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 	}
 
 	private ResponseEntity<String> getKeycloakValidatedUserResponse(String token) {
-		System.out.println(token);
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.COOKIE, "Authorization=" + token);
 		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 		ResponseEntity<String> response = null;
 		try {
+			LOGGER.info("validate token url" + adminValidateUrl);
 			response = restTemplate.exchange(adminValidateUrl, HttpMethod.GET, entity, String.class);
 		} catch (RestClientException e) {
-			throw new AccessDeniedException(e.getMessage());
+			LOGGER.error("validate token exception", ExceptionUtils.getStackTrace(e));
 		}
 		return response;
 	}
+
 }
