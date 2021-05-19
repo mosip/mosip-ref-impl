@@ -31,7 +31,8 @@ import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
 })
 export class TimeSelectionComponent
   extends BookingDeactivateGuardService
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   @ViewChild("widgetsContent", { read: ElementRef }) public widgetsContent;
   @ViewChild("cardsContent", { read: ElementRef }) public cardsContent;
   textDir = localStorage.getItem("dir");
@@ -66,6 +67,7 @@ export class TimeSelectionComponent
   afternoonSlotAvailable: boolean = false;
   morningSlotAvailable: boolean = false;
   name = "";
+  applicationStatus = "";
   constructor(
     private bookingService: BookingService,
     public dialog: MatDialog,
@@ -101,9 +103,8 @@ export class TimeSelectionComponent
       appConstants.CONFIG_KEYS.preregistration_availability_noOfDays
     );
     if (this.temp[0]) {
-      this.registrationCenterLunchTime = this.temp[0].registrationCenter.lunchEndTime.split(
-        ":"
-      );
+      this.registrationCenterLunchTime =
+        this.temp[0].registrationCenter.lunchEndTime.split(":");
     }
     this.getSlotsforCenter(this.registrationCenter);
     this.dataService
@@ -399,7 +400,7 @@ export class TimeSelectionComponent
     return x.join(", ");
   }
 
-  makeBooking(): void {
+  async makeBooking() {
     this.canDeactivateFlag = false;
     this.disableContinueButton = true;
     this.bookingDataList = [];
@@ -423,62 +424,69 @@ export class TimeSelectionComponent
       this.disableContinueButton = false;
       return;
     }
-    const data = {
-      case: "CONFIRMATION",
-      title: this.languagelabels.applicationLockConfirm.title,
-      message: this.languagelabels.applicationLockConfirm.message,
-      noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
-      yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
-    };
-    this.dialog
-      .open(DialougComponent, {
-        width: "450px",
-        height: "220px",
-        data: data,
-      })
-      .afterClosed()
-      .subscribe((response) => {
-        console.log(response);
-        if (response === true) {
-          const obj = {
-            bookingRequest: this.bookingDataList,
-          };
-          const request = new RequestModel(appConstants.IDS.booking, obj);
-          if (this.deletedNames.length !== 0) {
-            const data = {
-              case: "CONFIRMATION",
-              title: "",
-              message:
-                this.languagelabels.deletedApplicant1[0] +
-                ' - "' +
-                this.getNames() +
-                ' ". ' +
-                this.languagelabels.deletedApplicant1[1] +
-                "?",
-              yesButtonText: this.languagelabels.yesButtonText,
-              noButtonText: this.languagelabels.noButtonText,
-            };
-            const dialogRef = this.dialog.open(DialougComponent, {
-              width: "350px",
-              data: data,
-              disableClose: true,
-            });
-            const subs = dialogRef.afterClosed().subscribe((selectedOption) => {
-              if (selectedOption) {
-                this.bookingOperation(request);
-              } else {
-                this.disableContinueButton = false;
-                return;
-              }
-            });
-            this.subscriptions.push(subs);
-          } else {
-            this.bookingOperation(request);
+    await this.getApplicationStatus(this.preRegId);
+    if (this.applicationStatus === "Pending_Appointment") {
+      const data = {
+        case: "CONFIRMATION",
+        title: this.languagelabels.applicationLockConfirm.title,
+        message: this.languagelabels.applicationLockConfirm.message,
+        noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
+        yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
+      };
+      this.dialog
+        .open(DialougComponent, {
+          width: "450px",
+          height: "220px",
+          data: data,
+        })
+        .afterClosed()
+        .subscribe((response) => {
+          console.log(response);
+          if (response === true) {
+            this.bookingOperationRequest();
           }
+        });
+    } else {
+      this.bookingOperationRequest();
+    }
+  }
+
+  bookingOperationRequest() {
+    const obj = {
+      bookingRequest: this.bookingDataList,
+    };
+    const request = new RequestModel(appConstants.IDS.booking, obj);
+    if (this.deletedNames.length !== 0) {
+      const data = {
+        case: "CONFIRMATION",
+        title: "",
+        message:
+          this.languagelabels.deletedApplicant1[0] +
+          ' - "' +
+          this.getNames() +
+          ' ". ' +
+          this.languagelabels.deletedApplicant1[1] +
+          "?",
+        yesButtonText: this.languagelabels.yesButtonText,
+        noButtonText: this.languagelabels.noButtonText,
+      };
+      const dialogRef = this.dialog.open(DialougComponent, {
+        width: "350px",
+        data: data,
+        disableClose: true,
+      });
+      const subs = dialogRef.afterClosed().subscribe((selectedOption) => {
+        if (selectedOption) {
+          this.bookingOperation(request);
         } else {
           this.disableContinueButton = false;
+          return;
         }
       });
+      this.subscriptions.push(subs);
+    } else {
+      this.bookingOperation(request);
+    }
   }
 
   bookingOperation(request) {
@@ -514,9 +522,8 @@ export class TimeSelectionComponent
           response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
           appConstants.ERROR_CODES.timeExpired
         ) {
-          let timespan = response[appConstants.NESTED_ERROR][0].message.match(
-            /\d+/g
-          );
+          let timespan =
+            response[appConstants.NESTED_ERROR][0].message.match(/\d+/g);
           let errorMessage =
             this.errorlabels.timeExpired_1 +
             timespan[0] +
@@ -535,6 +542,15 @@ export class TimeSelectionComponent
       }
     );
     this.subscriptions.push(subs);
+  }
+
+  getApplicationStatus(prid) {
+    return new Promise((resolve) => {
+      this.dataService.getApplicationStatus(prid).subscribe((response) => {
+        this.applicationStatus = response["response"]["statusCode"];
+        resolve(true);
+      });
+    });
   }
 
   displayMessage(title: string, message: string, error: any) {
