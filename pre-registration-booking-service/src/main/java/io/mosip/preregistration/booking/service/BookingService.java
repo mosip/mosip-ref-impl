@@ -403,6 +403,7 @@ public class BookingService implements BookingServiceIntf {
 								.getDemographicStatus(bookingRequestDTO.getPreRegistrationId());
 						
 						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+							log.error("Appointment cannnot be booked for {} ", preRegStatusCode);
 							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
 									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
 						}

@@ -213,6 +213,8 @@ public class BookingServiceUtil {
 
 		MainResponseDTO<PreRegistartionStatusDTO> getApplicationStatus = getApplicationStatus(preId);
 
+		log.info("Application status code {} for prid {}", getApplicationStatus.getResponse().getStatusCode(), preId);
+
 		if (getApplicationStatus.getErrors() != null) {
 			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
 					getApplicationStatus.getErrors().get(0).getMessage());
@@ -263,7 +265,7 @@ public class BookingServiceUtil {
 				"In timeSpanCheckForCancle method of Booking Service for request Date Time- "
 						+ requestTimeCountrySpecific);
 		long hours = ChronoUnit.HOURS.between(requestTimeCountrySpecific, bookedDateTime);
-		if (hours >= timeSpanCheckForCancel)
+		if (hours >= 48)
 			return true;
 		else
 			throw new TimeSpanException(ErrorCodes.PRG_BOOK_RCI_026.getCode(),
