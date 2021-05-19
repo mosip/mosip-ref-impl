@@ -1359,17 +1359,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.LOD[index].selectedDocRefId = event.target.value;
   }
 
-  canExit(): boolean {
-    let CanDeactivateFlag = true;
-    for (let document of this.LOD) {
-      if (this.userForm.get(`${document.id}`).hasError('required')) {
-        CanDeactivateFlag = false;
-        break;
-      }
-    }
-    return CanDeactivateFlag;
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
