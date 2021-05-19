@@ -114,15 +114,18 @@
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
-                            <input matInput [matAutocomplete]="auto" formControlName="{{ field.id }}"
-                              (blur)="handleDropdownBlurEvent($event, field.id)"
-                              (focus)="!readOnlyMode ? dropdownApiCall(field): ''">
+                            <input matInput [matAutocomplete]="auto" formControlName="{{ field.id + '_dropdown'}}"
+                              (blur)="handleDropdownBlurEvent(field.id, dataCaptureLanguage)"
+                              (focus)="!readOnlyMode ? dropdownApiCall(field.id): ''">
                             <mat-autocomplete #auto="matAutocomplete">
                               <mat-option *ngIf="!(
-                                selectOptionsDataArray[field.id]?.length > 0 &&
+                                selectOptionsDataArray[field.id].length > 0 &&
                                 selectOptionsDataArray[field.id] !== null)">
                                 <mat-spinner [diameter]="20" style="margin-left: 43%"></mat-spinner>
                               </mat-option>
+                              <span *ngIf="(
+                                selectOptionsDataArray[field.id].length > 0 &&
+                                selectOptionsDataArray[field.id] !== null)">
                               <ng-container *ngFor="let dropdown of filteredSelectOptionsDataArr[field.id] | async">
                                 <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
                                   [value]="dropdown.valueName"
@@ -131,11 +134,15 @@
                                   {{ dropdown.valueName }}
                                 </mat-option>
                               </ng-container>
+                              </span>
                             </mat-autocomplete>
                           </mat-form-field>
-                          <mat-form-field>
-                            <input matInput formControlName="{{ field.id + '_hidden'}}"
+                          <!-- <mat-form-field>
+                            <input matInput formControlName="{{ field.id}}"
                               (blur)="handleHiddenValueBlurEvent($event, field.id)">
+                          </mat-form-field> -->
+                          <mat-form-field>
+                            <input matInput formControlName="{{ field.id}}">
                           </mat-form-field>
                           <p></p>
                           <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
@@ -154,7 +161,7 @@
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <mat-select formControlName="{{ field.id }}"
-                              (focus)="!readOnlyMode ? dropdownApiCall(field): ''" #dropdown>
+                              (focus)="!readOnlyMode ? dropdownApiCall(field.id): ''" #dropdown>
                               <mat-option *ngIf="!(
                                 selectOptionsDataArray[field.id]?.length > 0 &&
                                 selectOptionsDataArray[field.id] !== null)">
