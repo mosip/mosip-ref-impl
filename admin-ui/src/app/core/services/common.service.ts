@@ -596,7 +596,11 @@ export class CommonService {
             dynamicObject = {"code":data.code}
           }
         }else if(url === "dynamicfields"){
-          dynamicObject = {"id":data.id}
+          if(data.id){
+            dynamicObject = {"id":data.id} 
+          }else{
+            dynamicObject = {"id":data.name} 
+          }
         }
         
         dynamicObject.isActive = true;
@@ -689,7 +693,11 @@ export class CommonService {
             dynamicObject = {"code":data.code}
           }
         }else if(url === "dynamicfields"){
-          dynamicObject = {"id":data.id}         
+          if(data.id){
+            dynamicObject = {"id":data.id} 
+          }else{
+            dynamicObject = {"id":data.name} 
+          }        
         }
         dynamicObject.isActive = false;
         this.updateData('deactivate', dynamicObject, data);

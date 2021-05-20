@@ -1,0 +1,94 @@
+{
+  "auditEventIds": ["ADM-030", "ADM-052"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activateCenter"
+    },
+    {
+      "buttonName": { "eng": "Deactivate", "ara": "الغاء تنشيط", "fra": "désactiver" },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "workflowId",
+      "showInListView": "True",
+      "label": { "eng": "RID", "ara": "ايتخلص", "fra": "DÉBARRASSER" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "workflowType",
+      "showInListView": "True",
+      "label": { "eng": "Type", "ara": "يكتب", "fra": "Taper" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "currentStageName",
+      "showInListView": "True",
+      "label": { "eng": "Current Stage", "ara": "المرحلة الحالية", "fra": "Étape actuelle" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "workflowId",
+      "filterlabel": { "eng": "RID", "ara": "ايتخلص", "fra": "DÉBARRASSER" },
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "packet",
+      "fieldName": "workflowId",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "currentStageName",
+      "filterlabel": { "eng": "Current Stage", "ara": "المرحلة الحالية", "fra": "Étape actuelle" },
+      "filterType": "contains",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "packet",
+      "fieldName": "currentStageName",
+      "methodCallName": ""
+    }
+  ]
+}

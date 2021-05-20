@@ -12,6 +12,7 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from "src/app/core/services/header.service";
 
 @Component({
   selector: 'app-single-view',
@@ -23,12 +24,10 @@ export class SingleViewComponent implements OnDestroy {
   mapping: any;
   id: string;
   primaryLangCode: string;
-  secondaryLangCode: string;
   primaryData: any;
   secondaryData: any;
   headerData: HeaderModel;
   showSpinner = true;
-  primaryLang: string;
   subscribed: any;
   masterdataType: string;
 
@@ -48,7 +47,8 @@ export class SingleViewComponent implements OnDestroy {
     private location: Location,
     private router: Router,
     private translate: TranslateService,
-    private auditService: AuditService
+    private auditService: AuditService, 
+    private headerService: HeaderService
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -59,16 +59,13 @@ export class SingleViewComponent implements OnDestroy {
 
   async initializeComponent() {
     this.showSpinner = true;
-    this.primaryLangCode = await this.appService.getConfig()['primaryLangCode'];
-    this.secondaryLangCode = await this.appService.getConfig()
-      .secondaryLangCode;
-    this.primaryLang = await this.appService.getConfig()['primaryLangCode'];
-    this.primaryLangCode === this.secondaryLangCode
+    this.primaryLangCode = this.headerService.getUserPreferredLanguage();
+    /*this.primaryLangCode === this.secondaryLangCode
       ? (this.showSecondaryForm = false)
-      : (this.showSecondaryForm = true);
-    this.translate.use(this.primaryLang);
+      : (this.showSecondaryForm = true);*/
+    this.translate.use(this.headerService.getUserPreferredLanguage());
     this.translate
-      .getTranslation(this.primaryLangCode)
+      .getTranslation(this.headerService.getUserPreferredLanguage())
       .subscribe(response => (this.popupMessages = response.singleView));
     this.activatedRoute.params.subscribe(response => {
       this.id = response.id;
@@ -93,9 +90,9 @@ export class SingleViewComponent implements OnDestroy {
       await this.getData("eng", true);
     } else {
       await this.getData(this.primaryLangCode, true);
-      if (this.showSecondaryForm) {
+      /*if (this.showSecondaryForm) {
         await this.getData(this.secondaryLangCode, false);
-      }
+      }*/
     }
     this.setHeaderData();
   }

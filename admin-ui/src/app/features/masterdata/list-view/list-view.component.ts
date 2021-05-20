@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from "src/app/core/services/header.service";
 
 @Component({
   selector: 'app-list-view',
@@ -45,14 +46,15 @@ export class ListViewComponent implements OnDestroy {
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private translateService: TranslateService,
-    private auditService: AuditService
+    private auditService: AuditService, 
+    private headerService: HeaderService
   ) {
-    this.primaryLang = appService.getConfig().primaryLangCode;
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
+
     this.translateService.use(this.primaryLang);
     translateService
-      .getTranslation(appService.getConfig().primaryLangCode)
+      .getTranslation(this.primaryLang)
       .subscribe(response => {
-        console.log(response);
         this.errorMessages = response.errorPopup;
       });
     this.subscribed = router.events.subscribe(event => {

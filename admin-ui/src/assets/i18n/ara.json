@@ -17,11 +17,14 @@
             "title": "حزمة الحالة"
         },
         "item5": {
+            "title": "وقفة / استئناف RID"
+        },
+        "item6": {
             "title": "تحميل مجمع",
             "subItem1": "البيانات الرئيسية",
             "subItem2": "الحزم"
         },
-        "item6": {
+        "item7": {
             "title": "مدير المفتاح",
             "subItem1": "توليد CSR",
             "subItem2": "توليد مفتاح رئيسي",
@@ -433,6 +436,9 @@
         "masterDataTypes": "أنواع البيانات الرئيسية",
         "dynamicField": "مجال ديناميكي"
     },
+    "masterdataupload": {
+        "title": "تحميل البيانات الرئيسية"
+    },
     "errorPopup": {
         "noData": {
             "title": "لا توجد سجلات",
@@ -489,7 +495,7 @@
           "input-text1":"رفع ملف...",
           "input-text2":"ارفع ملفك",
           "upload-btn":"تحميل",
-          "cancle-btn":"إلغاء",
+          "cancel-btn":"إلغاء",
           "popupMessaages":{
               "popup1":{
                   "uploadConfirm":"تأكيد تحميل الحزمة",

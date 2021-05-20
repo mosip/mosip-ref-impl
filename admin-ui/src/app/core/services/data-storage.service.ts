@@ -150,8 +150,14 @@ export class DataStorageService {
   }
 
   getDevicesData(request: RequestModel): Observable<any> {
-    delete request['request']['languageCode'];
+    delete request['request']['languageCode'];    
     return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
+  }
+
+  getridDetails(request: RequestModel): Observable<any> {
+    delete request['request']['languageCode'];
+    request['request']['sort'] = {"sortField": "createDateTime", "sortType": "desc"};
+    return this.http.post(this.BASE_URL + appConstants.URL["rid-status"], request);
   }
 
   getUsersData(request: RequestModel): Observable<any> {

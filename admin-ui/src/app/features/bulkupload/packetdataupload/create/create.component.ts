@@ -47,7 +47,8 @@ export class CreateComponent {
     this.dataService
          .getI18NLanguageFiles(this.primaryLangCode)
          .subscribe((response) => {
-           this.popUpMessages = response['packet-upload']['popupMessaages'];
+           console.log("");
+           this.popUpMessages = response['packet-upload']['createView']['popupMessaages'];
          });
   }
 
