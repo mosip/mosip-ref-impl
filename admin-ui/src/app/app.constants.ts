@@ -7,6 +7,7 @@ export const URL = {
   centers: `masterdata/registrationcenters/search`,
   devices: `masterdata/devices/search`,
   machines: `masterdata/machines/search`,
+  'rid-status': `masterdata/packet/search`,
   users: `masterdata/users/search`,
   documentCategories: `masterdata/documentcategories`,
   mappedDocUrl: `masterdata/documenttypes/`,
@@ -67,6 +68,14 @@ export const navItems = [
     roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   },
   {
+    displayName: 'menuItems.item5.title',
+    icon: './assets/images/id-card.svg',
+    route: '/admin/rid-status',
+    children: null,
+    auditEventId: 'ADM-009',
+    roles: ['GLOBAL_ADMIN']
+  },
+  {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/masterdata',
@@ -75,19 +84,19 @@ export const navItems = [
     roles: ['GLOBAL_ADMIN']
   },
   {
-    displayName: 'menuItems.item5.title',
+    displayName: 'menuItems.item6.title',
     icon: 'assets/images/support.svg',
     route: 'admin/bulkupload',
     children: [
       {
-        displayName: 'menuItems.item5.subItem1',
+        displayName: 'menuItems.item6.subItem1',
         icon: null,
         route: '/admin/bulkupload/masterdataupload',
         auditEventId: 'ADM-004',
         roles: ['GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item5.subItem2',
+        displayName: 'menuItems.item6.subItem2',
         icon: null,
         route: '/admin/bulkupload/packetupload',
         auditEventId: 'ADM-005',
@@ -98,40 +107,40 @@ export const navItems = [
     roles: ['GLOBAL_ADMIN']
   },
   {
-    displayName: 'menuItems.item6.title',
+    displayName: 'menuItems.item7.title',
     icon: 'assets/images/support.svg',
     route: 'admin/keymanager',
     children: [
       {
-        displayName: 'menuItems.item6.subItem1',
+        displayName: 'menuItems.item7.subItem1',
         icon: null,
         route: '/admin/keymanager/generatecsr',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem2',
+        displayName: 'menuItems.item7.subItem2',
         icon: null,
         route: '/admin/keymanager/generatemasterkey',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem3',
+        displayName: 'menuItems.item7.subItem3',
         icon: null,
         route: '/admin/keymanager/getcertificate',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem4',
+        displayName: 'menuItems.item7.subItem4',
         icon: null,
         route: '/admin/keymanager/uploadcertificate',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem5',
+        displayName: 'menuItems.item7.subItem5',
         icon: null,
         route: '/admin/keymanager/uploadotherdomaincertificate',
         auditEventId: 'ADM-004',
@@ -443,6 +452,14 @@ export const FilterMapping = {
   dynamicfields: {
     apiName: 'dynamicfields',
     specFileName: 'dynamicfields'
+  },
+  users: {
+    apiName: 'users',
+    specFileName: 'user'
+  },
+  'rid-status': {
+    apiName: 'packet',
+    specFileName: 'rid-status'
   }
 };
 

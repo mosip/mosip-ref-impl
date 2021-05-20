@@ -17,11 +17,14 @@
             "title": "Packet Status"
         },
         "item5": {
+            "title": "Pause / Resume RID"
+        },
+        "item6": {
             "title": "Bulk Upload",
             "subItem1": "Master Data",
             "subItem2": "Packets"
         },
-        "item6": {
+        "item7": {
             "title": "KeyManager",
             "subItem1": "GenerateCSR",
             "subItem2": "GenerateMasterKey",
@@ -494,7 +497,7 @@
         "input-text1":"Upload file...",
         "input-text2":"Upload Your File",
         "upload-btn":"UPLOAD",
-        "cancle-btn":"CANCEL",
+        "cancel-btn":"CANCEL",
         "popupMessaages":{
             "popup1":{
                 "uploadConfirm":"Confirm Packet Upload",

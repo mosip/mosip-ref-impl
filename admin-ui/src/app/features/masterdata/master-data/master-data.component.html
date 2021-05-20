@@ -26,6 +26,14 @@
                         <mat-card-header class="header">
                             <b>{{'masterData.dynamicField' | translate}}</b>
                         </mat-card-header>
+                        <ng-container>
+                            <mat-card-content class="content" (click)="dynamicFeildAdd()">
+                                <span style="margin-top: 5px; margin-left: 5px;"><b>Create New Dynamic Field</b></span>
+                                <span style="text-align: right"><i class="material-icons">
+                                        add
+                                    </i></span>
+                            </mat-card-content>
+                        </ng-container>
                         <ng-container *ngFor="let itemList of dynamicfieldDistinctValue; let i = index">
                             <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="dynamicFeildNavigate(itemList)">
                                 <span style="margin-top: 5px; margin-left: 5px;">{{itemList | titlecase}}</span>

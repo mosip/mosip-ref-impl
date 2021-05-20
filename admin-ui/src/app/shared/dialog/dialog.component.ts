@@ -109,8 +109,14 @@ export class DialogComponent implements OnInit {
   getFilterMappings() {
     return new Promise((resolve, reject) => {
       this.routeParts = this.router.url.split('/')[3];
-      const specFileName =
-        appConstants.FilterMapping[`${this.routeParts}`].specFileName;
+      console.log("this.routeParts>>>"+this.routeParts);
+      let specFileName = "";
+      if(this.routeParts != "view"){
+        specFileName = appConstants.FilterMapping[`${this.routeParts}`].specFileName;
+      }else{
+        this.routeParts = this.router.url.split('/')[2];
+        specFileName = appConstants.FilterMapping[`${this.routeParts}`].specFileName;
+      }      
       this.dataStorageService
         .getFiltersForListView(specFileName)
         .subscribe(response => {
@@ -256,7 +262,7 @@ export class DialogComponent implements OnInit {
       }
     } else {
       const filterModel = new FilterModel(filterDetails.fieldName, 'between');
-      if (filterDetails.filterlabel.indexOf('From') >= 0) {
+      if (filterDetails.filtername.indexOf('From') >= 0) {
         if (filterDetails.datePicker === 'true') {
           this.momentDate = this.convertDate(
             this.filterGroup.controls[filterDetails.filtername].value
@@ -268,7 +274,7 @@ export class DialogComponent implements OnInit {
             filterDetails.filtername
           ].value;
         }
-      } else if (filterDetails.filterlabel.indexOf('To') >= 0) {
+      } else if (filterDetails.filtername.indexOf('To') >= 0) {
         if (filterDetails.datePicker === 'true') {
           this.momentDate = this.convertDate(
             this.filterGroup.controls[filterDetails.filtername].value
