@@ -648,8 +648,7 @@ export class DemographicComponent
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
   async dropdownApiCall(controlId: string, dataCaptureLanguage: string) {
-    //if (this.isThisFieldInLocationHeirarchies(controlId) && this.hasDropdownChanged(controlId, dataCaptureLanguage)) {
-      if (this.isThisFieldInLocationHeirarchies(controlId)) {  
+    if (this.isThisFieldInLocationHeirarchies(controlId)) {  
       console.log("dropdownApiCall : " + controlId);
       if (this.getIndexInLocationHeirarchy(controlId) !== 0) {
         this.selectOptionsDataArray[controlId] = [];
@@ -673,85 +672,36 @@ export class DemographicComponent
   }
 
   private _filterOptions(value: string, controlId: string): CodeValueModal[] {
-    console.log(`_filterOptions: ${controlId}: ${value}`);
+    //console.log(`_filterOptions: ${controlId}: ${value}`);
     const filterValue = value.toLowerCase();
     return this.selectOptionsDataArray[controlId].filter(
       option => option.valueName.toLowerCase().indexOf(filterValue) === 0);
   }
   
- // handleOutOfFocusEvent(controlId, dataCaptureLanguage) {
-    //console.log("handleOutOfFocusEvent");
-    // const dropdownControlId = controlId + "_dropdown";
-    // let initialValue = this.userForm.controls[dropdownControlId].value;
-    // console.log(`initialValue: ${initialValue}`);
-    // if (initialValue && initialValue !== "") {
-    //   //console.log(this.selectOptionsDataArray[controlId].length);
-    //   let filtr = this.selectOptionsDataArray[controlId].filter(option => 
-    //     option.languageCode === dataCaptureLanguage && option.valueName.toLowerCase().indexOf(initialValue.toLowerCase()) === 0);
-    //   //console.log(filtr);
-    //   if (filtr.length == 0) {
-    //     this.userForm.controls[`${controlId}`].setValue("");
-    //     this.userForm.controls[`${dropdownControlId}`].setValue("");
-    //   }
-    //   if (filtr.length == 1) {
-    //     this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueCode"]);
-    //     this.userForm.controls[`${dropdownControlId}`].setValue(filtr[0]["valueName"]);
-    //   }
-    //   if (filtr.length > 1) {
-    //     //this.userForm.controls[`${controlId}`].setValue("");
-    //     //this.userForm.controls[`${dropdownControlId}`].setValue("");
-    //   } 
-    //   let updatedValue = this.userForm.controls[`${dropdownControlId}`].value;
-    //   console.log(`updatedValue: ${updatedValue}`);
-    //   if (updatedValue !== initialValue) {
-    //     this.resetLocationFields(`${controlId}`);
-    //     this.onChangeHandler(`${controlId}`);
-    //   }
-    // }  
-    // } else {
-    //   console.log("resetting");
-    //   this.userForm.controls[`${controlId}`].setValue("");
-    //   this.userForm.controls[`${dropdownControlId}`].setValue("");
-    //   this.resetLocationFields(`${controlId}`);
-    //   this.onChangeHandler(`${controlId}`);
-    // }
-  //}
-
-  handleOutOfFocusEvent(controlId, dataCaptureLanguage) {
+  handleOutOfFocusEvent(control, dataCaptureLanguage) {
     console.log("handleOutOfFocusEvent");
+    const controlId = control.id;
     const dropdownControlId = controlId + "_dropdown";
     let initialValue = this.userForm.controls[dropdownControlId].value;
     console.log(`initialValue: ${initialValue}`);
-    let filtr = this.selectOptionsDataArray[controlId].filter(option => 
-      option.languageCode === dataCaptureLanguage && option.valueName === initialValue);
-    console.log(filtr);
-    if (filtr.length == 1) {
-      this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueCode"]);
-      this.userForm.controls[`${dropdownControlId}`].setValue(filtr[0]["valueName"]);
+    if (control.type === "string") {
+      this.userForm.controls[`${controlId}`].setValue(initialValue);
     } else {
-      this.userForm.controls[`${controlId}`].setValue("");
-      this.userForm.controls[`${dropdownControlId}`].setValue("");
+      let filtr = this.selectOptionsDataArray[controlId].filter(option => 
+        option.languageCode === dataCaptureLanguage && option.valueName === initialValue);
+      console.log(filtr);
+      if (filtr.length == 1) {
+        this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueCode"]);
+        this.userForm.controls[`${dropdownControlId}`].setValue(filtr[0]["valueName"]);
+      } else {
+        this.userForm.controls[`${controlId}`].setValue("");
+        this.userForm.controls[`${dropdownControlId}`].setValue("");
+      }
     }
     this.resetLocationFields(`${controlId}`);
     this.onChangeHandler(`${controlId}`);
   }
 
-  // handleHiddenValueBlurEvent(event, controlId) {
-  //   const dropdownControlId = controlId + "_dropdown";
-  //   let optionValue = this.userForm.controls[`${controlId}`].value;
-  //   let optionLabel = this.userForm.controls[`${dropdownControlId}`].value;
-  //   if (optionValue && optionValue !== "") {
-  //     let filtr = this.selectOptionsDataArray[`${controlId}`].filter(option => option.valueCode === optionValue && option.valueName === optionLabel);
-  //     if (filtr.length == 0) {
-  //       this.userForm.controls[`${controlId}`].setValue("");
-  //       this.userForm.controls[`${dropdownControlId}`].setValue("");
-  //     }
-  //   } else {
-  //     this.userForm.controls[`${controlId}`].setValue("");
-  //     this.userForm.controls[`${dropdownControlId}`].setValue("");
-  //   }
-  // }
-  
   transliterateFieldValue(uiFieldId: string, fromLang: string, event: Event) {
     let filteredList = this.uiFieldsWithTransliteration.filter(
       (field) => field.id == uiFieldId
