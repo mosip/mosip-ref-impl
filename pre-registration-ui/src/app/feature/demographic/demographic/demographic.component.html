@@ -115,7 +115,7 @@
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <input matInput [matAutocomplete]="auto" formControlName="{{ field.id + '_dropdown'}}"
-                              (focusout)="handleOutOfFocusEvent(field.id, dataCaptureLanguage)"
+                              (focusout)="handleOutOfFocusEvent(field, dataCaptureLanguage)"
                               (focus)="!readOnlyMode ? dropdownApiCall(field.id, dataCaptureLanguage): ''"
                               >  
                             <mat-autocomplete #auto="matAutocomplete">
