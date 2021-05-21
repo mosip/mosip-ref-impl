@@ -115,8 +115,8 @@
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <input matInput [matAutocomplete]="auto" formControlName="{{ field.id + '_dropdown'}}"
-                              (blur)="handleDropdownBlurEvent(field.id, dataCaptureLanguage)"
-                              (focus)="!readOnlyMode ? dropdownApiCall(field.id): ''"
+                              (focusout)="handleOutOfFocusEvent(field.id, dataCaptureLanguage)"
+                              (focus)="!readOnlyMode ? dropdownApiCall(field.id, dataCaptureLanguage): ''"
                               >  
                             <mat-autocomplete #auto="matAutocomplete">
                               <mat-option *ngIf="!(
@@ -128,9 +128,14 @@
                                 selectOptionsDataArray[field.id].length > 0 &&
                                 selectOptionsDataArray[field.id] !== null)">
                               <ng-container *ngFor="let dropdown of filteredSelectOptionsDataArr[field.id] | async">
-                                <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
+                                <!-- <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
                                   [value]="dropdown.valueName"
                                   (click)="resetLocationFields(field.id);onChangeHandler(field.id);"
+                                  title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
+                                  {{ dropdown.valueName }}
+                                </mat-option> -->
+                                <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
+                                  [value]="dropdown.valueName"
                                   title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
                                   {{ dropdown.valueName }}
                                 </mat-option>
