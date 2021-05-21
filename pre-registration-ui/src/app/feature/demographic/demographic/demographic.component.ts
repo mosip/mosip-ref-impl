@@ -677,29 +677,34 @@ export class DemographicComponent
     return this.selectOptionsDataArray[controlId].filter(
       option => option.valueName.toLowerCase().indexOf(filterValue) === 0);
   }
-  
+
   handleOutOfFocusEvent(control, dataCaptureLanguage) {
     console.log("handleOutOfFocusEvent");
     const controlId = control.id;
     const dropdownControlId = controlId + "_dropdown";
     let initialValue = this.userForm.controls[dropdownControlId].value;
     console.log(`initialValue: ${initialValue}`);
-    if (control.type === "string") {
-      this.userForm.controls[`${controlId}`].setValue(initialValue);
-    } else {
-      let filtr = this.selectOptionsDataArray[controlId].filter(option => 
-        option.languageCode === dataCaptureLanguage && option.valueName === initialValue);
-      console.log(filtr);
-      if (filtr.length == 1) {
-        this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueCode"]);
-        this.userForm.controls[`${dropdownControlId}`].setValue(filtr[0]["valueName"]);
+    const dropdownData = this.selectOptionsDataArray[controlId];
+    console.log(dropdownData.length);
+    if (dropdownData.length > 0) {
+      if (control.type === "string") {
+        this.userForm.controls[`${controlId}`].setValue(initialValue);
       } else {
-        this.userForm.controls[`${controlId}`].setValue("");
-        this.userForm.controls[`${dropdownControlId}`].setValue("");
+        let filtr = dropdownData.filter(option => 
+          option.languageCode === dataCaptureLanguage && option.valueName === initialValue);
+        console.log(filtr);
+        if (filtr.length == 1) {
+          this.userForm.controls[`${controlId}`].setValue(filtr[0]["valueCode"]);
+          this.userForm.controls[`${dropdownControlId}`].setValue(filtr[0]["valueName"]);
+        } 
+        if (filtr.length == 0) {
+          this.userForm.controls[`${controlId}`].setValue("");
+          this.userForm.controls[`${dropdownControlId}`].setValue("");
+        }
       }
+      this.resetLocationFields(`${controlId}`);
+      this.onChangeHandler(`${controlId}`);
     }
-    this.resetLocationFields(`${controlId}`);
-    this.onChangeHandler(`${controlId}`);
   }
 
   transliterateFieldValue(uiFieldId: string, fromLang: string, event: Event) {
