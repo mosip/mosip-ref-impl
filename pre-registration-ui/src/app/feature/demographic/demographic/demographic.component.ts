@@ -34,11 +34,10 @@ import {
 } from "ngx7-material-keyboard";
 import { LogService } from "src/app/shared/logger/log.service";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
-import { Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { Engine, Rule } from "json-rules-engine";
 import moment from "moment";
 import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
-import { map, startWith } from "rxjs/operators";
 import identityStubJson from "../../../../assets/identity-spec1.json";
 
 /**
@@ -122,7 +121,6 @@ export class DemographicComponent
   jsonRulesEngine = new Engine();
   primaryuserForm = false;
   selectOptionsDataArray = new Map();
-  filteredSelectOptionsDataArr = new Map();
   locationHeirarchies = [];
   validationMessage: any;
   dynamicFields = [];
@@ -586,7 +584,6 @@ export class DemographicComponent
         control.controlType === "button"
       ) {
         this.selectOptionsDataArray[control.id] = [];
-        this.filteredSelectOptionsDataArr[control.id] = new Observable<CodeValueModal[]>();
       }
     });
   }
@@ -646,13 +643,6 @@ export class DemographicComponent
         });
       } 
     }  
-  }
-
-  private _filterOptions(value: string, controlId: string): CodeValueModal[] {
-    //console.log(`_filterOptions: ${controlId}: ${value}`);
-    const filterValue = value.toLowerCase();
-    return this.selectOptionsDataArray[controlId].filter(
-      option => option.valueName.toLowerCase().indexOf(filterValue) === 0);
   }
 
   transliterateFieldValue(uiFieldId: string, fromLang: string, event: Event) {
@@ -1014,42 +1004,6 @@ export class DemographicComponent
       });
     }    
    return promisesArr;
-
-    // return new Promise((resolve) => {
-    //   if (fieldName && fieldName.length > 0) {
-    //     this.dataCaptureLanguages.forEach(async (dataCaptureLanguage) => {
-           
-          
-    //     });
-    //    // resolve(true);    
-    //   }
-    // });  
-  }
-
-  callLocationService = async (dataCaptureLanguage, locationCode, fieldName) => {
-    return new Promise((resolve) => {
-      let dataArr = [];
-      this.dataStorageService
-      .getLocationImmediateHierearchy(dataCaptureLanguage, locationCode)
-      .subscribe(
-        (response) => {
-          if (response[appConstants.RESPONSE]) {
-            response[appConstants.RESPONSE][
-              appConstants.DEMOGRAPHIC_RESPONSE_KEYS.locations
-            ].forEach((element) => {
-              let codeValueModal: CodeValueModal = {
-                valueCode: element.code,
-                valueName: element.name,
-                languageCode: element.langCode,
-              };
-              dataArr.push(codeValueModal);
-            });
-          }
-          this.selectOptionsDataArray[`${fieldName}`] = dataArr;
-          resolve(true);
-        }
-      )
-    });
   }
 
   /**

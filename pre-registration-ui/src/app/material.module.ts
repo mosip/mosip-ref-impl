@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {
   MatButtonModule,
   MatButtonToggleModule,
@@ -42,8 +41,7 @@ import {
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatPaginatorModule,
-    MatAutocompleteModule
+    MatPaginatorModule
   ]
 })
 export class MaterialModule {}
