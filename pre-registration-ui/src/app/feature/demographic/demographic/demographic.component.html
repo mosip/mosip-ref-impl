@@ -115,7 +115,7 @@
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <mat-select formControlName="{{ field.id }}"
-                              (focus)="!readOnlyMode ? dropdownApiCall(field): ''" #dropdown>
+                              (focus)="!readOnlyMode ? dropdownApiCall(field.id): ''" #dropdown>
                               <mat-option *ngIf="!(
                                 selectOptionsDataArray[field.id]?.length > 0 &&
                                 selectOptionsDataArray[field.id] !== null)">
@@ -131,7 +131,6 @@
                               </ng-container>
                             </mat-select>
                           </mat-form-field>
-                          <br>
                           <p></p>
                           <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
                             <span *ngFor="let option of selectOptionsDataArray[field.id];">
@@ -220,7 +219,7 @@
                           {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                         </mat-error>
                       </span>
-                      <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown' 
+                      <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown'
                         || field.controlType === 'button' || field.controlType === 'checkbox'
                         || (field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
