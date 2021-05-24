@@ -114,57 +114,6 @@
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
-                            <input matInput [matAutocomplete]="auto" formControlName="{{ field.id + '_dropdown'}}"
-                              (blur)="handleOutOfFocusEvent(field, dataCaptureLanguage)"
-                              (focus)="!readOnlyMode ? dropdownApiCall(field.id, dataCaptureLanguage): ''">
-                            <mat-autocomplete #auto="matAutocomplete">
-                              <mat-option *ngIf="!(
-                                selectOptionsDataArray[field.id].length > 0 &&
-                                selectOptionsDataArray[field.id] !== null)">
-                                <mat-spinner [diameter]="20" style="margin-left: 43%"></mat-spinner>
-                              </mat-option>
-                              <span *ngIf="(
-                                selectOptionsDataArray[field.id].length > 0 &&
-                                selectOptionsDataArray[field.id] !== null)">
-                                <ng-container *ngFor="let dropdown of filteredSelectOptionsDataArr[field.id] | async">
-                                  <!-- <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
-                                  [value]="dropdown.valueName"
-                                  (click)="resetLocationFields(field.id);onChangeHandler(field.id);"
-                                  title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
-                                  {{ dropdown.valueName }}
-                                </mat-option> -->
-                                  <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
-                                    [value]="dropdown.valueName"
-                                    title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
-                                    {{ dropdown.valueName }}
-                                  </mat-option>
-                                </ng-container>
-                              </span>
-                            </mat-autocomplete>
-                          </mat-form-field>
-                          <!-- <mat-form-field>
-                            <input matInput formControlName="{{ field.id}}"
-                              (blur)="handleHiddenValueBlurEvent($event, field.id)">
-                          </mat-form-field> -->
-                          <mat-form-field>
-                            <input matInput formControlName="{{ field.id}}">
-                          </mat-form-field>
-                          <p></p>
-                          <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
-                            <span *ngFor="let option of selectOptionsDataArray[field.id];">
-                              <span
-                                *ngIf="option.languageCode !== dataCaptureLanguage && option.valueCode == userForm.get(field.id).value && dataCaptureLanguages.includes(option.languageCode)">
-                                <span class="selectedOption">{{option.valueName}}</span>
-                              </span>
-                            </span>
-                          </span>
-                        </span>
-                        <!-- 
-                        <span *ngIf="i == 0" [dir]="textDirection[i]">
-                          <mat-form-field [ngClass]="'dropdown-field'">
-                            <mat-label>
-                              {{field.labelName[dataCaptureLanguage]}}
-                            </mat-label>
                             <mat-select formControlName="{{ field.id }}"
                               (focus)="!readOnlyMode ? dropdownApiCall(field.id): ''" #dropdown>
                               <mat-option *ngIf="!(
@@ -191,7 +140,7 @@
                               </span>
                             </span>
                           </span>
-                        </span> -->
+                        </span>
                       </ng-container>
                       <!-- Add Date fields-->
                       <ng-container *ngIf="field.controlType === 'date'">
