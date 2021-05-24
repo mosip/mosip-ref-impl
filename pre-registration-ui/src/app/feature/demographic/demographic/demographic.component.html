@@ -219,7 +219,7 @@
                           {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                         </mat-error>
                       </span>
-                      <span *ngIf="field.controlType === 'date' 
+                      <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown'
                         || field.controlType === 'button' || field.controlType === 'checkbox'
                         || (field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
@@ -240,28 +240,6 @@
                             {{ field.labelName[dataCaptureLanguage] }}
                             {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                           </mat-error>
-                        </span>
-                        <span *ngIf="field.controlType === 'dropdown'">
-                          <span *ngIf="i == 0" [dir]="textDirection[i]">
-                            {{userForm.get(field.id + '_dropdown')}}
-                            <mat-error class="primary-errors" *ngIf="
-                            !readOnlyMode && primaryuserForm &&
-                            userForm.get(field.id + '_dropdown') &&
-                            userForm.get(field.id + '_dropdown').hasError('required') &&
-                            userForm.get(field.id + '_dropdown').touched">
-                              {{ field.labelName[dataCaptureLanguage] }}
-                              {{dataCaptureLanguage | validationMessage:'requiredMessage' | async }}
-                            </mat-error>
-                            <mat-error class="primary-errors" *ngIf="
-                            !readOnlyMode && primaryuserForm &&
-                            userForm.get(field.id + '_dropdown') &&
-                            userForm.get(field.id + '_dropdown').touched &&
-                            userForm.get(field.id + '_dropdown').dirty &&
-                            userForm.get(field.id + '_dropdown').hasError('pattern')">
-                              {{ field.labelName[dataCaptureLanguage] }}
-                              {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
-                            </mat-error>
-                          </span>
                         </span>
                       </span>
                     </span>
