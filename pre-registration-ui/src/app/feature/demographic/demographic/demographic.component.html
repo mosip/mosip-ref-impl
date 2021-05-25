@@ -87,11 +87,11 @@
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-button-toggle-group class="btn_grp" [formControlName]="field.id"
                             (click)="onChangeHandler(field.id);">
-                            <ng-container *ngFor="let dropdown of selectOptionsDataArray[field.id]">
-                              <span *ngIf="dropdown.languageCode === dataCaptureLanguage">
-                                <mat-button-toggle class="btn_grp mat-button-toggle" value="{{dropdown.valueCode}}"
-                                  title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
-                                  {{dropdown.valueName}}
+                            <ng-container *ngFor="let button of selectOptionsDataArray[field.id]">
+                              <span *ngIf="button.languageCode === dataCaptureLanguage">
+                                <mat-button-toggle class="btn_grp mat-button-toggle" value="{{button.valueCode}}"
+                                  title="{{getTitleForOptionInOtherLangs(field.id, button.valueCode, dataCaptureLanguage)}}">
+                                  {{button.valueName}}
                                 </mat-button-toggle>
                               </span>
                             </ng-container>
@@ -110,7 +110,45 @@
                       <!-- Add Dropdown Options in  only one language on mouse over other lang are shown-->
                       <ng-container *ngIf="field.controlType === 'dropdown'">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
-                          <mat-form-field [ngClass]="'dropdown-field'">
+                          <mat-form-field>
+                            <mat-label>
+                              {{field.labelName[dataCaptureLanguage]}}
+                            </mat-label>
+                            <mat-select formControlName="{{field.id}}"
+                              (focus)="!readOnlyMode ? dropdownApiCall($event, field.id): ''"
+                              (blur)="onChangeHandler(field.id);" #singleSelect>
+                              <mat-option *ngIf="selectOptionsDataArray[field.id] && selectOptionsDataArray[field.id].length === 0">
+                                <mat-spinner [diameter]="20" style="margin-left: 43%"></mat-spinner>
+                              </mat-option>
+                              <mat-option>
+                                <ngx-mat-select-search formControlName="{{field.id + '_search'}}"
+                                  placeholderLabel="{{ 'demographic.lookup_search_message' | translate }}"
+                                  noEntriesFoundLabel="{{ 'demographic.lookup_no_results_found' | translate }}">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <ng-container *ngIf="selectOptionsDataArray[field.id] && selectOptionsDataArray[field.id].length > 0">
+                                <ng-container *ngFor="let dropdown of filteredSelectOptions[field.id] | async">
+                                  <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
+                                    [value]="dropdown.valueCode"
+                                    title="{{getTitleForOptionInOtherLangs(field.id, dropdown.valueCode, dataCaptureLanguage)}}">
+                                    {{ dropdown.valueName }}
+                                  </mat-option>
+                                </ng-container>
+                              </ng-container>
+                            </mat-select>
+                          </mat-form-field>
+                          <p></p>
+                          <span *ngIf="field.type !== 'string' && dataCaptureLanguages.length > 1">
+                            <span *ngFor="let option of selectOptionsDataArray[field.id];">
+                              <span *ngIf="option.languageCode !== dataCaptureLanguage
+                                && userForm.get(field.id).value != null 
+                                && option.valueCode == userForm.get(field.id).value 
+                                && dataCaptureLanguages.includes(option.languageCode)">
+                                <span class="selectedOption">{{option.valueName}}</span>
+                              </span>
+                            </span>
+                          </span>
+                          <!-- <mat-form-field [ngClass]="'dropdown-field'">
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
@@ -139,7 +177,7 @@
                                 <span class="selectedOption">{{option.valueName}}</span>
                               </span>
                             </span>
-                          </span>
+                          </span> -->
                         </span>
                       </ng-container>
                       <!-- Add Date fields-->
