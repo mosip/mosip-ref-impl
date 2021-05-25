@@ -157,7 +157,7 @@
                 <div *ngIf="field.id != 'residenceStatus'">
                   <div *ngIf="field.id != 'gender'">
                     <td *ngIf="field.fieldType === 'dynamic'">
-                      <div *ngFor="let dropdown of primarydropDownFields[field.id]">
+                      <div *ngFor="let dropdown of secondaryDropDownFields[field.id]">
                         <div  *ngIf = "previewData[field.id][0].value === dropdown.valueCode">
                           {{ dropdown.valueName }}
                         </div>

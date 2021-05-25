@@ -53,7 +53,7 @@
             </table>
           </div>
           <div class="spacer"></div>
-          <div id="table-container" *ngIf="secondaryLanguagelabels && secondaryLanguageRegistrationCenter && primaryLanguage != secondaryLanguage">
+          <div id="table-container" *ngIf="secondaryLanguagelabels && secondaryLanguageRegistrationCenter && primaryLangCode!= secondaryLang">
             <table>
               <tr>
                 <td>{{ secondaryLanguagelabels.label_name }}</td>
