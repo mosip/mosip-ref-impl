@@ -42,6 +42,8 @@ RUN chown -R ${container_user}:${container_user} ${base_path}/assets/i18n
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
 
+EXPOSE 8080
+
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip; \
    cd ${i18n_path} ; \
    unzip pre-registration-i18n-bundle.zip ; \

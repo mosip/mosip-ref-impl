@@ -46,6 +46,8 @@ RUN chown -R ${container_user}:${container_user} ${base_path}/assets/entity-spec
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
 
+EXPOSE 8080
+
 #get the admin i18n bundle zip from artifactory
 CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip;\
     wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip;\
