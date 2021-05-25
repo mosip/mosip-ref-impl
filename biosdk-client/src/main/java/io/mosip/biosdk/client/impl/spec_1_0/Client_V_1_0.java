@@ -67,25 +67,24 @@ public class Client_V_1_0 implements IBioApi {
 
 	private Gson gson = new GsonBuilder().serializeNulls().create();
 
-	Type errorDtoListType = new TypeToken<List<ErrorDto>>(){}.getType();
+	Type errorDtoListType = new TypeToken<List<ErrorDto>>() {
+	}.getType();
 
 	private Map<String, String> sdkUrlsMap;
 
 	@Override
 	public SDKInfo init(Map<String, String> initParams) {
 		sdkUrlsMap = getSdkUrls(initParams);
-		List<SDKInfo> sdkInfos = sdkUrlsMap.values()
-											.stream()
-											.map(sdkUrl -> initForSdkUrl(initParams, sdkUrl))
-											.collect(Collectors.toList());
+		List<SDKInfo> sdkInfos = sdkUrlsMap.values().stream().map(sdkUrl -> initForSdkUrl(initParams, sdkUrl))
+				.collect(Collectors.toList());
 		return getAggregatedSdkInfo(sdkInfos);
 	}
 
 	private SDKInfo getAggregatedSdkInfo(List<SDKInfo> sdkInfos) {
 		SDKInfo sdkInfo;
-		if(!sdkInfos.isEmpty()) {
+		if (!sdkInfos.isEmpty()) {
 			sdkInfo = sdkInfos.get(0);
-			if(sdkInfos.size() == 1) {
+			if (sdkInfos.size() == 1) {
 				return sdkInfo;
 			} else {
 				return getAggregatedSdkInfo(sdkInfos, sdkInfo);
@@ -105,18 +104,16 @@ public class Client_V_1_0 implements IBioApi {
 	}
 
 	private void addOtherSdkInfoDetails(SDKInfo sdkInfo, SDKInfo aggregatedSdkInfo) {
-		if(sdkInfo.getOtherInfo() != null) {
+		if (sdkInfo.getOtherInfo() != null) {
 			aggregatedSdkInfo.getOtherInfo().putAll(sdkInfo.getOtherInfo());
 		}
-		if(sdkInfo.getSupportedMethods() != null) {
+		if (sdkInfo.getSupportedMethods() != null) {
 			aggregatedSdkInfo.getSupportedMethods().putAll(sdkInfo.getSupportedMethods());
 		}
-		if(sdkInfo.getSupportedModalities() != null) {
+		if (sdkInfo.getSupportedModalities() != null) {
 			List<BiometricType> supportedModalities = aggregatedSdkInfo.getSupportedModalities();
-			supportedModalities.addAll(sdkInfo.getSupportedModalities()
-					.stream()
-					.filter(s -> !supportedModalities.contains(s))
-					.collect(Collectors.toList()));
+			supportedModalities.addAll(sdkInfo.getSupportedModalities().stream()
+					.filter(s -> !supportedModalities.contains(s)).collect(Collectors.toList()));
 		}
 	}
 
@@ -127,18 +124,21 @@ public class Client_V_1_0 implements IBioApi {
 			initRequestDto.setInitParams(initParams);
 
 			RequestDto requestDto = generateNewRequestDto(initRequestDto);
-			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", sdkServiceUrl+"/init");
-			ResponseEntity<?> responseEntity = Util.restRequest(sdkServiceUrl+"/init", HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
-				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", sdkServiceUrl + "/init");
+			ResponseEntity<?> responseEntity = Util.restRequest(sdkServiceUrl + "/init", HttpMethod.POST,
+					MediaType.APPLICATION_JSON, requestDto, null, String.class);
+			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ",
+						responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: " + responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
-            JSONParser parser = new JSONParser();
+			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 
-            /* Error handler */
-            errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+			/* Error handler */
+			errorHandler(
+					js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
 			sdkInfo = gson.fromJson(js.get("response").toString(), SDKInfo.class);
 		} catch (ParseException e) {
@@ -149,48 +149,40 @@ public class Client_V_1_0 implements IBioApi {
 	}
 
 	private Map<String, String> getSdkUrls(Map<String, String> initParams) {
-		Map<String, String> sdkUrls = new HashMap<>(initParams.entrySet()
-				.stream()
-				.filter(entry -> entry.getKey().contains(FORMAT_URL_PREFIX))
-				.collect(Collectors.toMap(entry -> entry.getKey()
-						.substring(FORMAT_URL_PREFIX.length()), Entry::getValue)));
-		if(!sdkUrls.containsKey(DEFAULT)) {
-			//If default is not specified in configuration, try getting it from env.
+		Map<String, String> sdkUrls = new HashMap<>(initParams.entrySet().stream()
+				.filter(entry -> entry.getKey().contains(FORMAT_URL_PREFIX)).collect(Collectors
+						.toMap(entry -> entry.getKey().substring(FORMAT_URL_PREFIX.length()), Entry::getValue)));
+		if (!sdkUrls.containsKey(DEFAULT)) {
+			// If default is not specified in configuration, try getting it from env.
 			String defaultSdkServiceUrl = getDefaultSdkServiceUrlFromEnv();
-			if(defaultSdkServiceUrl != null) {
+			if (defaultSdkServiceUrl != null) {
 				sdkUrls.put(DEFAULT, defaultSdkServiceUrl);
 			}
 		}
-		
-		//There needs a default URL to be used when no format is specified.
-		if(!sdkUrls.containsKey(DEFAULT) && !sdkUrls.isEmpty()) {
-			//Take any first url and set it to default
+
+		// There needs a default URL to be used when no format is specified.
+		if (!sdkUrls.containsKey(DEFAULT) && !sdkUrls.isEmpty()) {
+			// Take any first url and set it to default
 			sdkUrls.put(DEFAULT, sdkUrls.values().iterator().next());
 		}
-		
-		if(sdkUrls.isEmpty()) {
+
+		if (sdkUrls.isEmpty()) {
 			throw new IllegalStateException("No valid sdk service url configured");
 		}
 		return sdkUrls;
 	}
-	
+
 	private String getSdkServiceUrl(BiometricType modality, Map<String, String> flags) {
-		if(modality != null) {
+		if (modality != null) {
 			String key = modality.name() + FORMAT_SUFFIX;
-			if(flags != null) {
-				Optional<String> formatFromFlag = flags.entrySet()
-							.stream()
-							.filter(e -> e.getKey().equalsIgnoreCase(key))
-							.findAny()
-							.map(Entry::getValue);
-				if(formatFromFlag.isPresent()) {
+			if (flags != null) {
+				Optional<String> formatFromFlag = flags.entrySet().stream()
+						.filter(e -> e.getKey().equalsIgnoreCase(key)).findAny().map(Entry::getValue);
+				if (formatFromFlag.isPresent()) {
 					String format = formatFromFlag.get();
-					Optional<String> urlForFormat = sdkUrlsMap.entrySet()
-							.stream()
-							.filter(e -> e.getKey().equalsIgnoreCase(format))
-							.findAny()
-							.map(Entry::getValue);
-					if(urlForFormat.isPresent()) {
+					Optional<String> urlForFormat = sdkUrlsMap.entrySet().stream()
+							.filter(e -> e.getKey().equalsIgnoreCase(format)).findAny().map(Entry::getValue);
+					if (urlForFormat.isPresent()) {
 						return urlForFormat.get();
 					}
 				}
@@ -198,7 +190,7 @@ public class Client_V_1_0 implements IBioApi {
 		}
 		return getDefaultSdkServiceUrl();
 	}
-	
+
 	private String getDefaultSdkServiceUrl() {
 		return sdkUrlsMap.get(DEFAULT);
 	}
@@ -208,7 +200,8 @@ public class Client_V_1_0 implements IBioApi {
 	}
 
 	@Override
-	public Response<QualityCheck> checkQuality(BiometricRecord sample, List<BiometricType> modalitiesToCheck, Map<String, String> flags) {
+	public Response<QualityCheck> checkQuality(BiometricRecord sample, List<BiometricType> modalitiesToCheck,
+			Map<String, String> flags) {
 		Response<QualityCheck> response = new Response<>();
 		response.setStatusCode(200);
 		QualityCheck qualityCheck = null;
@@ -218,21 +211,25 @@ public class Client_V_1_0 implements IBioApi {
 			checkQualityRequestDto.setModalitiesToCheck(modalitiesToCheck);
 			checkQualityRequestDto.setFlags(flags);
 			RequestDto requestDto = generateNewRequestDto(checkQualityRequestDto);
-			String url = getSdkServiceUrl(modalitiesToCheck.get(0), flags)+"/check-quality";
+			String url = getSdkServiceUrl(modalitiesToCheck.get(0), flags) + "/check-quality";
 			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
-			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
-				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON,
+					requestDto, null, String.class);
+			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ",
+						responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: " + responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
+			JSONObject responseJson =(JSONObject)  ((JSONObject) js.get("response")).get("response");
 
 			/* Error handler */
-			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+			errorHandler(
+					js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
-			qualityCheck = gson.fromJson(js.get("response").toString(), QualityCheck.class);
+			qualityCheck = gson.fromJson(responseJson.toString(), QualityCheck.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -243,7 +240,7 @@ public class Client_V_1_0 implements IBioApi {
 
 	@Override
 	public Response<MatchDecision[]> match(BiometricRecord sample, BiometricRecord[] gallery,
-										   List<BiometricType> modalitiesToMatch, Map<String, String> flags) {
+			List<BiometricType> modalitiesToMatch, Map<String, String> flags) {
 		Response<MatchDecision[]> response = new Response<>();
 		try {
 			MatchRequestDto matchRequestDto = new MatchRequestDto();
@@ -253,30 +250,31 @@ public class Client_V_1_0 implements IBioApi {
 			matchRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(matchRequestDto);
-			String url = getSdkServiceUrl(modalitiesToMatch.get(0), flags)+"/match";
+			String url = getSdkServiceUrl(modalitiesToMatch.get(0), flags) + "/match";
 			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
-			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
-				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON,
+					requestDto, null, String.class);
+			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ",
+						responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: " + responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 
 			/* Error handler */
-			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+			errorHandler(
+					js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
 			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
 			response.setStatusCode(
-				jsonResponse.get("statusCode") != null ? ((Long)jsonResponse.get("statusCode")).intValue() : null
-			);
+					jsonResponse.get("statusCode") != null ? ((Long) jsonResponse.get("statusCode")).intValue() : null);
 			response.setStatusMessage(
-				jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
-			);
+					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : "");
 			response.setResponse(
-				gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null, MatchDecision[].class)
-			);
+					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null,
+							MatchDecision[].class));
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -285,7 +283,8 @@ public class Client_V_1_0 implements IBioApi {
 	}
 
 	@Override
-	public Response<BiometricRecord> extractTemplate(BiometricRecord sample, List<BiometricType> modalitiesToExtract, Map<String, String> flags) {
+	public Response<BiometricRecord> extractTemplate(BiometricRecord sample, List<BiometricType> modalitiesToExtract,
+			Map<String, String> flags) {
 		Response<BiometricRecord> response = new Response<>();
 		try {
 			ExtractTemplateRequestDto extractTemplateRequestDto = new ExtractTemplateRequestDto();
@@ -294,30 +293,31 @@ public class Client_V_1_0 implements IBioApi {
 			extractTemplateRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(extractTemplateRequestDto);
-			String url = getSdkServiceUrl(modalitiesToExtract, flags)+"/extract-template";
+			String url = getSdkServiceUrl(modalitiesToExtract, flags) + "/extract-template";
 			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
-			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
-				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON,
+					requestDto, null, String.class);
+			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ",
+						responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: " + responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 
 			/* Error handler */
-			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+			errorHandler(
+					js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
 			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
 			response.setStatusCode(
-					jsonResponse.get("statusCode") != null ? ((Long)jsonResponse.get("statusCode")).intValue() : null
-			);
+					jsonResponse.get("statusCode") != null ? ((Long) jsonResponse.get("statusCode")).intValue() : null);
 			response.setStatusMessage(
-					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
-			);
+					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : "");
 			response.setResponse(
-					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null, BiometricRecord.class)
-			);
+					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null,
+							BiometricRecord.class));
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -326,16 +326,16 @@ public class Client_V_1_0 implements IBioApi {
 	}
 
 	private String getSdkServiceUrl(List<BiometricType> modalitiesToExtract, Map<String, String> flags) {
-		if(modalitiesToExtract != null && !modalitiesToExtract.isEmpty()) {
+		if (modalitiesToExtract != null && !modalitiesToExtract.isEmpty()) {
 			return getSdkServiceUrl(modalitiesToExtract.get(0), flags);
 		} else {
 			Set<String> keySet = flags.keySet();
-			for(String key: keySet) {
-				if(key.toLowerCase().contains(BiometricType.FINGER.name().toLowerCase())) {
+			for (String key : keySet) {
+				if (key.toLowerCase().contains(BiometricType.FINGER.name().toLowerCase())) {
 					return getSdkServiceUrl(BiometricType.FINGER, flags);
-				} else if(key.toLowerCase().contains(BiometricType.IRIS.name().toLowerCase())) {
+				} else if (key.toLowerCase().contains(BiometricType.IRIS.name().toLowerCase())) {
 					return getSdkServiceUrl(BiometricType.IRIS, flags);
-				} else if(key.toLowerCase().contains(BiometricType.FACE.name().toLowerCase())) {
+				} else if (key.toLowerCase().contains(BiometricType.FACE.name().toLowerCase())) {
 					return getSdkServiceUrl(BiometricType.FACE, flags);
 				}
 			}
@@ -344,7 +344,8 @@ public class Client_V_1_0 implements IBioApi {
 	}
 
 	@Override
-	public Response<BiometricRecord> segment(BiometricRecord biometricRecord, List<BiometricType> modalitiesToSegment, Map<String, String> flags) {
+	public Response<BiometricRecord> segment(BiometricRecord biometricRecord, List<BiometricType> modalitiesToSegment,
+			Map<String, String> flags) {
 		Response<BiometricRecord> response = new Response<>();
 		try {
 			SegmentRequestDto segmentRequestDto = new SegmentRequestDto();
@@ -353,30 +354,31 @@ public class Client_V_1_0 implements IBioApi {
 			segmentRequestDto.setFlags(flags);
 
 			RequestDto requestDto = generateNewRequestDto(segmentRequestDto);
-			String url = getSdkServiceUrl(modalitiesToSegment.get(0), flags)+"/segment";
+			String url = getSdkServiceUrl(modalitiesToSegment.get(0), flags) + "/segment";
 			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
-			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
-				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON,
+					requestDto, null, String.class);
+			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ",
+						responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: " + responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
 
 			/* Error handler */
-			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+			errorHandler(
+					js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
 			JSONObject jsonResponse = (JSONObject) parser.parse(js.get("response").toString());
 			response.setStatusCode(
-					jsonResponse.get("statusCode") != null ? ((Long)jsonResponse.get("statusCode")).intValue() : null
-			);
+					jsonResponse.get("statusCode") != null ? ((Long) jsonResponse.get("statusCode")).intValue() : null);
 			response.setStatusMessage(
-					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : ""
-			);
+					jsonResponse.get("statusMessage") != null ? jsonResponse.get("statusMessage").toString() : "");
 			response.setResponse(
-					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null, BiometricRecord.class)
-			);
+					gson.fromJson(jsonResponse.get("response") != null ? jsonResponse.get("response").toString() : null,
+							BiometricRecord.class));
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -386,7 +388,8 @@ public class Client_V_1_0 implements IBioApi {
 
 	@Override
 	public BiometricRecord convertFormat(BiometricRecord sample, String sourceFormat, String targetFormat,
-			Map<String, String> sourceParams, Map<String, String> targetParams, List<BiometricType> modalitiesToConvert) {
+			Map<String, String> sourceParams, Map<String, String> targetParams,
+			List<BiometricType> modalitiesToConvert) {
 		BiometricRecord resBiometricRecord = null;
 		try {
 			ConvertFormatRequestDto convertFormatRequestDto = new ConvertFormatRequestDto();
@@ -398,12 +401,14 @@ public class Client_V_1_0 implements IBioApi {
 			convertFormatRequestDto.setModalitiesToConvert(modalitiesToConvert);
 
 			RequestDto requestDto = generateNewRequestDto(convertFormatRequestDto);
-			String url = getDefaultSdkServiceUrl()+"/convert-format";
+			String url = getDefaultSdkServiceUrl() + "/convert-format";
 			logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP url: ", url);
-			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON, requestDto, null, String.class);
-			if(!responseEntity.getStatusCode().is2xxSuccessful()){
-				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ", responseEntity.getStatusCode().toString());
-				throw new RuntimeException("HTTP status: "+responseEntity.getStatusCode().toString());
+			ResponseEntity<?> responseEntity = Util.restRequest(url, HttpMethod.POST, MediaType.APPLICATION_JSON,
+					requestDto, null, String.class);
+			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+				logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE, "HTTP status: ",
+						responseEntity.getStatusCode().toString());
+				throw new RuntimeException("HTTP status: " + responseEntity.getStatusCode().toString());
 			}
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
@@ -411,7 +416,8 @@ public class Client_V_1_0 implements IBioApi {
 			Gson gson = new Gson();
 
 			/* Error handler */
-			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
+			errorHandler(
+					js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
 			resBiometricRecord = gson.fromJson(js.get("response").toString(), BiometricRecord.class);
 		} catch (ParseException e) {
@@ -421,7 +427,7 @@ public class Client_V_1_0 implements IBioApi {
 		return resBiometricRecord;
 	}
 
-	private RequestDto generateNewRequestDto(Object body){
+	private RequestDto generateNewRequestDto(Object body) {
 		Gson gson = new Gson();
 		RequestDto requestDto = new RequestDto();
 		requestDto.setVersion(VERSION);
@@ -429,12 +435,12 @@ public class Client_V_1_0 implements IBioApi {
 		return requestDto;
 	}
 
-	private void errorHandler(List<ErrorDto> errors){
-	    if(errors != null){
-	        for (ErrorDto errorDto: errors){
-                throw new RuntimeException(errorDto.getCode()+" ---> "+errorDto.getMessage());
-            }
-        }
-    }
+	private void errorHandler(List<ErrorDto> errors) {
+		if (errors != null) {
+			for (ErrorDto errorDto : errors) {
+				throw new RuntimeException(errorDto.getCode() + " ---> " + errorDto.getMessage());
+			}
+		}
+	}
 
 }
