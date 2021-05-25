@@ -30,11 +30,11 @@ RUN apt-get -y update \
 # set working directory for the user
 WORKDIR /home/${container_user}
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
+ADD ./nginx.conf /etc/nginx/nginx.conf
 
-COPY default.conf /etc/nginx/conf.d/
+ADD default.conf /etc/nginx/conf.d/
 
-COPY dist ${base_path}
+ADD dist ${base_path}
 
 # install the needed packages including wget and a unzip library 
 #RUN apt-get update -y && apt-get install -y wget && apt-get install -y unzip
