@@ -228,11 +228,12 @@ public class Client_V_1_0 implements IBioApi {
 			String responseBody = responseEntity.getBody().toString();
 			JSONParser parser = new JSONParser();
 			JSONObject js = (JSONObject) parser.parse(responseBody);
+			JSONObject responseJson =(JSONObject)  ((JSONObject) js.get("response")).get("response");
 
 			/* Error handler */
 			errorHandler(js.get("errors") != null ? gson.fromJson(js.get("errors").toString(), errorDtoListType) : null);
 
-			qualityCheck = gson.fromJson(js.get("response").toString(), QualityCheck.class);
+			qualityCheck = gson.fromJson(responseJson.toString(), QualityCheck.class);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
