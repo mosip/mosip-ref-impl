@@ -54,6 +54,6 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     cd ${i18n_path} ;\
     unzip admin-i18n-bundle.zip ;\
     cp -vrf -vf admin-i18n-bundle/i18n/* .  ;\
-    chown -R ${container_user}:${container_user} ${base_path}/assets ; \
+    chown -R mosip:mosip ${base_path}/assets ; \
     nginx ;\
     sleep infinity
