@@ -37,7 +37,7 @@ ADD default.conf /etc/nginx/conf.d/
 ADD dist ${base_path}
 
 # change permissions of file inside working dir
-RUN chown -R ${container_user}:${container_user} /home/${container_user}
+RUN chown -R ${container_user}:${container_user} ${base_path}/assets
 
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
@@ -46,5 +46,6 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
    cd ${i18n_path} ; \
    unzip pre-registration-i18n-bundle.zip ; \
    cp -vrf  "${i18n_path}"/pre-registration-i18n-bundle/* . ; \
+   chown -R mosip:mosip ${base_path}/assets ; \
    nginx ; \
    sleep infinity

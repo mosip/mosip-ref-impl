@@ -40,7 +40,7 @@ COPY dist ${base_path}
 #RUN apt-get update -y && apt-get install -y wget && apt-get install -y unzip
 
 # change permissions of file inside working dir
-RUN chown -R ${container_user}:${container_user} /home/${container_user}
+RUN chown -R ${container_user}:${container_user} ${base_path}/assets
 
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
@@ -54,5 +54,6 @@ CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-
     cd ${i18n_path} ;\
     unzip admin-i18n-bundle.zip ;\
     cp -vrf -vf admin-i18n-bundle/i18n/* .  ;\
+    chown -R mosip:mosip ${base_path}/assets ; \
     nginx ;\
     sleep infinity
