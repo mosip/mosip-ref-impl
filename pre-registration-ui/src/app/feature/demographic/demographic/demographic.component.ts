@@ -38,6 +38,9 @@ import { Subscription } from "rxjs";
 import { Engine, Rule } from "json-rules-engine";
 import moment from "moment";
 import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
+import { MatSelect } from '@angular/material/select';
+import { ReplaySubject, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import identityStubJson from "../../../../assets/identity-spec1.json";
 
 /**
@@ -121,6 +124,7 @@ export class DemographicComponent
   jsonRulesEngine = new Engine();
   primaryuserForm = false;
   selectOptionsDataArray = new Map();
+  filteredSelectOptions = new Map<string, ReplaySubject<CodeValueModal[]>>();
   locationHeirarchies = [];
   validationMessage: any;
   dynamicFields = [];
@@ -128,6 +132,10 @@ export class DemographicComponent
   changeActionsNamesArr = [];
   identitySchemaVersion = "";
   readOnlyMode = false;
+  @ViewChild('singleSelect') singleSelect: MatSelect;
+  /* Subject that emits when the component has been destroyed. */
+  protected _onDestroy = new Subject<void>();
+ 
   /**
    * @description Creates an instance of DemographicComponent.
    * @param {Router} router
@@ -183,10 +191,70 @@ export class DemographicComponent
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
+    this.uiFields.forEach((control, index) => {
+      if (control.controlType === "dropdown") {
+        const controlId = control.id;
+        const searchCtrlId = controlId + "_search";
+        // load the initial list
+        this.filteredSelectOptions[controlId].next(this.selectOptionsDataArray[`${controlId}`]);
+        // listen for search field value changes
+        this.userForm.controls[`${searchCtrlId}`].valueChanges
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(async () => {
+            this.searchInDropdown(controlId);
+          });
+      }  
+    });
     console.log("exiting");
     this.primaryuserForm = true;
   }
-  
+
+  ngAfterViewInit() {
+   this.setInitialValue();
+  }
+  /**
+   * Sets the initial value after the filteredBanks are loaded initially
+   */
+   protected setInitialValue() {
+    this.uiFields.forEach((control, index) => {
+      if (control.controlType === "dropdown") {
+        this.filteredSelectOptions[`${control.id}`]
+        .pipe(take(1), takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.singleSelect.compareWith = (a: CodeValueModal, b: CodeValueModal) => a && b && a.valueCode === b.valueCode;
+        });
+      }
+    });    
+    
+  }
+
+  protected searchInDropdown(controlId: string) {
+    console.log("searchInDropdown");
+    if (this.selectOptionsDataArray[`${controlId}`].length > 0) {
+      // get the search keyword
+      const searchCtrlId = controlId + "_search";
+      let search = this.userForm.controls[`${searchCtrlId}`].value;
+      console.log(`search: ${search}`);
+      const selectData = this.selectOptionsDataArray[`${controlId}`];
+      if (!search) {
+        this.filteredSelectOptions[controlId].next(selectData.slice());
+        return;
+      } 
+      else if (search.trim() == "") {
+        this.filteredSelectOptions[controlId].next(selectData.slice());
+        return;
+      } else {
+        search = search.toLowerCase();
+        const filtered = selectData.filter(option => option.valueName.toLowerCase().indexOf(search) === 0);
+        this.filteredSelectOptions[controlId].next(filtered.slice());
+        return;
+      }
+    } else {
+      this.filteredSelectOptions[controlId].next(this.selectOptionsDataArray[`${controlId}`].slice());
+      return;
+    }
+  }
+
   initializeDataCaptureLanguages = async () => {
     if (!this.dataModification) {
       this.dataCaptureLanguages = JSON.parse(
@@ -473,6 +541,7 @@ export class DemographicComponent
           // this.setGender();
           // this.setResident();
           await this.getDynamicFieldValues(null);
+          //console.log("fetched dynnamic values");
           resolve(true);
         },
         (error) => {
@@ -526,6 +595,10 @@ export class DemographicComponent
           const controlId = control.id;
           this.userForm.addControl(controlId, new FormControl(""));
           this.addValidators(control, controlId, language);
+          if (control.controlType === "dropdown") {
+            const searchCtrlId = controlId + "_search";
+            this.userForm.addControl(searchCtrlId, new FormControl(""));
+          }  
         }
       });
     });
@@ -580,10 +653,15 @@ export class DemographicComponent
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
       if (
-        control.controlType === "dropdown" ||
         control.controlType === "button"
       ) {
         this.selectOptionsDataArray[control.id] = [];
+      }
+      if (
+        control.controlType === "dropdown"
+      ) {
+        this.selectOptionsDataArray[control.id] = [];
+        this.filteredSelectOptions[control.id] = new ReplaySubject<CodeValueModal[]>(1);
       }
     });
   }
@@ -613,7 +691,7 @@ export class DemographicComponent
     });
     return items;
   };
-
+  
   /**
    *
    * @description this method is to make dropdown api calls
@@ -621,11 +699,12 @@ export class DemographicComponent
    * @param controlObject is Identity Type Object
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
-  async dropdownApiCall(controlId: string, dataCaptureLanguage: string) {
+  async dropdownApiCall(controlId: string) {
     if (this.isThisFieldInLocationHeirarchies(controlId)) {  
       console.log("dropdownApiCall : " + controlId);
       if (this.getIndexInLocationHeirarchy(controlId) !== 0) {
         this.selectOptionsDataArray[controlId] = [];
+        this.filteredSelectOptions[controlId] = new ReplaySubject<CodeValueModal[]>(1);
         const locationIndex = this.getIndexInLocationHeirarchy(
           controlId
         );
@@ -634,10 +713,19 @@ export class DemographicComponent
           locationIndex - 1
         );
         let locationCode = this.userForm.controls[`${parentLocationName}`].value;
-        console.log(`${parentLocationName} : ${locationCode}`);
+        //console.log(`${parentLocationName} : ${locationCode}`);
         let promisesArr = await this.loadLocationData(locationCode, controlId);
         Promise.all(promisesArr).then((values) => {
-          console.log(this.selectOptionsDataArray[controlId]);
+          //this.userForm.controls[`${controlId}_search`].setValue("");
+          const newDataArr = this.selectOptionsDataArray[controlId];
+          if (newDataArr && (newDataArr.length / this.dataCaptureLanguages.length) == 1) {
+            const firstValue = newDataArr[0].valueCode;
+            if (firstValue) {
+              this.userForm.controls[`${controlId}`].setValue(firstValue);
+            }
+          }
+          this.searchInDropdown(controlId);
+          this.resetLocationFields(controlId);
           console.log(`done`);
           return;
         });
@@ -695,8 +783,8 @@ export class DemographicComponent
    * Using "json-rules-engine", these conditions are evaluated
    * and fields are shown/hidden in the UI form.
    */
-  async onChangeHandler(selectedFieldId) {
-    console.log("onChangeHandler");
+  async onChangeHandler(selectedFieldId: string) {
+    //console.log("onChangeHandler " + selectedFieldId);
     //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
     //populate form data in json for json-rules-engine to evalatute the conditions
     const identityFormData = this.createIdentityJSONDynamic(true);
@@ -1101,6 +1189,7 @@ export class DemographicComponent
         if (this.user.request === undefined) {
           await this.getUserInfo(this.preRegId);
         }
+        let promisesResolved = [];
         this.uiFields.forEach(async (control, index) => {
           if (this.user.request.demographicDetails.identity[control.id]) {
             if (this.isControlInMultiLang(control)) {
@@ -1148,12 +1237,9 @@ export class DemographicComponent
                   if (parentLocationName) {
                     let locationCode = this.userForm.controls[parentLocationName].value;
                     if (locationCode) {
-                      console.log(`fetching locations for: ${control.id}`);
-                      console.log(`with parent: ${parentLocationName} having value: ${locationCode}`);
-                      let promisesArr = await this.loadLocationData(locationCode, control.id);
-                      Promise.all(promisesArr).then((values) => {
-                        console.log(`done fetching locations for: ${control.id}`);
-                      });
+                      //console.log(`fetching locations for: ${control.id}`);
+                      //console.log(`with parent: ${parentLocationName} having value: ${locationCode}`);
+                      promisesResolved.push(await this.loadLocationData(locationCode, control.id));
                     }
                   }
                 }
@@ -1161,7 +1247,10 @@ export class DemographicComponent
             }
           }
         });
-        resolve(true);
+        Promise.all(promisesResolved).then((values) => {
+          //console.log(`done fetching locations`);
+          resolve(true);
+        });
       }
     });  
   }
@@ -1721,10 +1810,11 @@ export class DemographicComponent
         } else {
           controlId = element;
           if (this["userForm"].controls[`${controlId}`]) {
+            const elementVal = this["userForm"].controls[`${controlId}`].value;
             attr.push(
               new AttributeModel(
                 languageCode,
-                this["userForm"].controls[`${controlId}`].value
+                elementVal
               )
             );
           }
