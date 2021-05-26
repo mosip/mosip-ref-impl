@@ -91,9 +91,9 @@ button {
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
 }
-::ng-deep.mat-form-field-wrapper {
+/* ::ng-deep.mat-form-field-wrapper {
   padding-bottom: 0.5em !important;
-}
+} */
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: white !important;
 }

@@ -1,8 +1,10 @@
+import { resolve } from "core-js/fn/promise";
+
 const copyanddisable = async (context, args, uiField) => {
   console.log("copyanddisable called");
   if (args.length > 0) {
     let checkboxVal = context.userForm.controls[`${uiField.id}`].value;
-    args.forEach((arg) => {
+    args.forEach(async (arg) => {
       let controlsArr = arg.split("=");
       if (controlsArr.length > 1) {
         let control1 = controlsArr[0],
@@ -43,10 +45,30 @@ const copyanddisable = async (context, args, uiField) => {
                   uiField2.controlType == "dropdown" ||
                   uiField2.controlType == "button"
                 ) {
-                  context.dropdownApiCall(uiField2);
+                  let promisesResolved = [];
+                  if (context.isThisFieldInLocationHeirarchies(uiField2.id)) {
+                    const locationIndex = context.getIndexInLocationHeirarchy(
+                      uiField2.id
+                    );
+                    const parentLocationName = context.getLocationNameFromIndex(
+                      uiField2.id,
+                      locationIndex - 1
+                    );
+                    if (parentLocationName) {
+                      let locationCode = context.userForm.controls[parentLocationName].value;
+                      if (locationCode) {
+                        context.selectOptionsDataArray[uiField2.id] = [];
+                        promisesResolved.push(context.loadLocationData(locationCode, uiField2.id));
+                      }
+                    }
+                  }
+                  await Promise.all(promisesResolved).then((values) => {
+                    console.log(`done fetching locations`);
+                    context.userForm.controls[uiField2.id].setValue(fromFieldValue);
+                    context.userForm.controls[uiField2.id].disable();
+                    return;
+                  });                  
                 }
-                context.userForm.controls[uiField2.id].setValue(fromFieldValue);
-                context.userForm.controls[uiField2.id].disable();
               } else {
                 context.userForm.controls[uiField2.id].enable();
               }

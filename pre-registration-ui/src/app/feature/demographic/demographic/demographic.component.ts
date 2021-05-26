@@ -41,7 +41,7 @@ import { AuditModel } from "src/app/shared/models/demographic-model/audit.model"
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import identityStubJson from "../../../../assets/identity-spec.json";
+import identityStubJson from "../../../../assets/identity-spec1.json";
 
 /**
  * @description This component takes care of the demographic page.
@@ -699,8 +699,7 @@ export class DemographicComponent
    * @param controlObject is Identity Type Object
    *  ex: { id : 'region',controlType: 'dropdown' ...}
    */
-  async dropdownApiCall(event: Event, controlId: string) {
-    event.preventDefault();
+  async dropdownApiCall(controlId: string) {
     if (this.isThisFieldInLocationHeirarchies(controlId)) {  
       console.log("dropdownApiCall : " + controlId);
       if (this.getIndexInLocationHeirarchy(controlId) !== 0) {
@@ -718,6 +717,13 @@ export class DemographicComponent
         let promisesArr = await this.loadLocationData(locationCode, controlId);
         Promise.all(promisesArr).then((values) => {
           //this.userForm.controls[`${controlId}_search`].setValue("");
+          const newDataArr = this.selectOptionsDataArray[controlId];
+          if (newDataArr && (newDataArr.length / this.dataCaptureLanguages.length) == 1) {
+            const firstValue = newDataArr[0].valueCode;
+            if (firstValue) {
+              this.userForm.controls[`${controlId}`].setValue(firstValue);
+            }
+          }
           this.searchInDropdown(controlId);
           this.resetLocationFields(controlId);
           console.log(`done`);

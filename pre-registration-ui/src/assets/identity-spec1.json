@@ -18,8 +18,7 @@
             "permanentCity",
             "permanentBarangay",
             "permanentZipcode"
-          ],
-          ["pobCountry", "pobprovince", "pobcity"]
+          ]
         ],
         "identity": [
           {

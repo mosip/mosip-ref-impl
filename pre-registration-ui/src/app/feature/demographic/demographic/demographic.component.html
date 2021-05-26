@@ -35,7 +35,7 @@
                       <ng-container *ngIf="field.controlType === 'textbox' && field.type !== 'string'">
                         <div [dir]="textDirection[i]">
                           <div *ngIf="!readOnlyMode">
-                            <mat-form-field [ngClass]="'text-field'">
+                            <mat-form-field appearance="legacy">
                               <!-- Again Label is required at each TextBox level too -->
                               <mat-label>
                                 {{field.labelName[dataCaptureLanguage]}}
@@ -56,7 +56,7 @@
                             </mat-form-field>
                           </div>
                           <div *ngIf="readOnlyMode">
-                            <mat-form-field [ngClass]="'text-field'">
+                            <mat-form-field appearance="legacy">
                               <!-- Again Label is required at each TextBox level too -->
                               <mat-label>
                                 {{field.labelName[dataCaptureLanguage]}}
@@ -110,23 +110,23 @@
                       <!-- Add Dropdown Options in  only one language on mouse over other lang are shown-->
                       <ng-container *ngIf="field.controlType === 'dropdown'">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
-                          <mat-form-field>
+                          <mat-form-field appearance="legacy">
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
                             </mat-label>
                             <mat-select formControlName="{{field.id}}"
-                              (focus)="!readOnlyMode ? dropdownApiCall($event, field.id): ''"
+                              (focus)="!readOnlyMode ? dropdownApiCall(field.id): ''"
                               (blur)="onChangeHandler(field.id);" #singleSelect>
-                              <mat-option *ngIf="selectOptionsDataArray[field.id] && selectOptionsDataArray[field.id].length === 0">
-                                <mat-spinner [diameter]="20" style="margin-left: 43%"></mat-spinner>
-                              </mat-option>
                               <mat-option>
                                 <ngx-mat-select-search formControlName="{{field.id + '_search'}}"
                                   placeholderLabel="{{ 'demographic.lookup_search_message' | translate }}"
                                   noEntriesFoundLabel="{{ 'demographic.lookup_no_results_found' | translate }}">
                                 </ngx-mat-select-search>
                               </mat-option>
-                              <ng-container *ngIf="selectOptionsDataArray[field.id] && selectOptionsDataArray[field.id].length > 0">
+                              <mat-option *ngIf="selectOptionsDataArray[field.id].length == 0">
+                                <mat-spinner [diameter]="20" style="margin-left: 43%"></mat-spinner>
+                              </mat-option>
+                              <ng-container *ngIf="selectOptionsDataArray[field.id].length > 0">
                                 <ng-container *ngFor="let dropdown of filteredSelectOptions[field.id] | async">
                                   <mat-option *ngIf="dropdown.languageCode === dataCaptureLanguage"
                                     [value]="dropdown.valueCode"
@@ -185,17 +185,17 @@
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <div class="user__age-or-date">
                             <div class="user__date">
-                              <mat-form-field>
+                              <mat-form-field appearance="legacy">
                                 <input matInput placeholder="{{ 'demographic.date_dd' | translate }}" #dd [value]="date"
                                   (change)="onChangeHandler(field.id)"
                                   (focusout)="onDOBChange();onChangeHandler(field.id);" [disabled]="readOnlyMode" />
                               </mat-form-field>
-                              <mat-form-field>
+                              <mat-form-field appearance="legacy">
                                 <input matInput placeholder="{{ 'demographic.date_mm' | translate }}" [value]="month"
                                   #mm (focusout)="onDOBChange();onChangeHandler(field.id);"
                                   (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
                               </mat-form-field>
-                              <mat-form-field>
+                              <mat-form-field appearance="legacy">
                                 <input matInput placeholder="{{ 'demographic.date_yyyy' | translate }}" [value]="year"
                                   #yyyy (focusout)="onDOBChange();onChangeHandler(field.id);"
                                   (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
@@ -205,7 +205,7 @@
                               {{ "demographic.text_or" | translate }}
                             </div>
                             <div class="user__age">
-                              <mat-form-field>
+                              <mat-form-field appearance="legacy">
                                 <input matInput tabindex="-1" placeholder="{{ 'demographic.label_age' | translate }}"
                                   [value]="currentAge" #age (change)="onChangeHandler(field.id)"
                                   (focusout)="onAgeChange();onChangeHandler(field.id);" [disabled]="readOnlyMode" />
@@ -228,7 +228,7 @@
                       <!-- Add Phone and Email in only one lang -->
                       <ng-container *ngIf="(field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
-                          <mat-form-field [ngClass]="'text-field'">
+                          <mat-form-field appearance="legacy">
                             <!-- Again Label is required at each TextBox level too -->
                             <mat-label>
                               {{field.labelName[dataCaptureLanguage]}}
