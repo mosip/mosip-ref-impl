@@ -3,6 +3,8 @@
 # Script to configure the BioSDK
 set -e
 
+echo "starting downloading zip file"
+
 wget -q --show-progress "$biosdk_zip_file_path"
 echo "Downloaded $biosdk_zip_file_path"
 
