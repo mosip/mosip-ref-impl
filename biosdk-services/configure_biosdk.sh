@@ -29,7 +29,7 @@ else
 fi
 
 echo "Copying to loader path"
-cp ./$DIR_NAME/* $loader_path_env
+cp -R ./$DIR_NAME/* $loader_path_env
 echo "Complete"
 cd $work_dir
 
