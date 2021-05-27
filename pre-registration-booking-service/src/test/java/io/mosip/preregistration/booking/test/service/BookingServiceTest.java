@@ -377,7 +377,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
@@ -443,7 +443,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
 		Mockito.when(serviceUtil.mandatoryParameterCheck(Mockito.anyString(), Mockito.any())).thenReturn(true);
@@ -513,7 +513,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.mandatoryParameterCheck(Mockito.anyString(), Mockito.any())).thenReturn(true);
@@ -573,7 +573,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
@@ -673,7 +673,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
@@ -785,7 +785,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
@@ -877,7 +877,7 @@ public class BookingServiceTest {
 	 * MainResponseDTO<PreRegistartionStatusDTO>();
 	 * preRegResponseRebook.setErrors(null);
 	 * preRegResponseRebook.setResponse(preRegistartionStatus);
-	 * Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito
+	 * Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito
 	 * .any(), Mockito.any(), Mockito.any(),
 	 * Mockito.any())).thenReturn(availableEntity);
 	 * 
@@ -939,7 +939,7 @@ public class BookingServiceTest {
 		preRegistartionStatus.setPreRegistartionId("12345678909876");
 		getApplicationStatus.setResponse(preRegistartionStatus);
 		Mockito.when(serviceUtil.getApplicationStatus(Mockito.anyString())).thenReturn(getApplicationStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		Mockito.when(bookingDAO.findByPreRegistrationId(Mockito.any())).thenReturn(bookingEntity);
@@ -1104,7 +1104,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.getDemographicStatusForCancel(Mockito.anyString())).thenReturn(true);
 		Mockito.when(serviceUtil.getDemographicStatus(Mockito.anyString())).thenReturn("Expired");
 		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
 		Mockito.when(bookingDAO.saveRegistrationEntityForBooking(Mockito.any())).thenReturn(bookingEntity);
@@ -1170,7 +1170,7 @@ public class BookingServiceTest {
 
 		Mockito.when(bookingDAO.findByPreRegistrationId("23587986034785")).thenReturn(bookingEntity);
 
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 		service.cancelBooking("23587986034785", false);
 	}
@@ -1205,8 +1205,8 @@ public class BookingServiceTest {
 		response.setErrors(null);
 		response.setResponse(deleteDto);
 		response.setResponsetime(serviceUtil.getCurrentResponseTime());
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
-				Mockito.any(), Mockito.anyString())).thenReturn(availableEntity);
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.anyString(),
+				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
 
 		assertEquals(response.getResponse().getPreRegistrationId(),
@@ -1338,8 +1338,8 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.getDemographicStatus(Mockito.anyString())).thenReturn("Booked");
 		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
 		Mockito.when(bookingDAO.findRegCenter(Mockito.any())).thenReturn(regCenterList);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
-				Mockito.any(), Mockito.anyString())).thenReturn(availableEntityNull);
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.anyString(),
+				Mockito.any(), Mockito.any())).thenReturn(availableEntityNull);
 		service.checkSlotAvailability(successBookDto);
 	}
 
@@ -1372,8 +1372,8 @@ public class BookingServiceTest {
 		AvailablityNotFoundException exception = new AvailablityNotFoundException(
 				ErrorCodes.PRG_BOOK_RCI_002.toString(),
 				ErrorMessages.AVAILABILITY_NOT_FOUND_FOR_THE_SELECTED_TIME.toString());
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
-				Mockito.any(), Mockito.anyString())).thenThrow(exception);
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.anyString(),
+				Mockito.any(), Mockito.any())).thenThrow(exception);
 		service.increaseAvailability(successBookDto);
 	}
 
@@ -1453,7 +1453,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
@@ -1550,7 +1550,7 @@ public class BookingServiceTest {
 		MainResponseDTO<PreRegistartionStatusDTO> preRegResponseRebook = new MainResponseDTO<PreRegistartionStatusDTO>();
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
-		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
+		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
