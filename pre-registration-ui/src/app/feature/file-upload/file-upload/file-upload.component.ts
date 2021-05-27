@@ -58,6 +58,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     docTypeCode: "",
   };
   selectedDocuments: SelectedDocuments[] = [];
+
   LOD: DocumentCategory[] = [];
   fileIndex: number = -1;
   fileUploadLanguagelabels: any;
@@ -101,7 +102,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   isDocUploadRequired = [];
   name: "";
   readOnlyMode = false;
-
+  dataLoaded = false;
   constructor(
     private registration: RegistrationService,
     private dataStorageService: DataStorageService,
@@ -123,6 +124,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.userPrefLanguageIsLtr = false;
     }
+    
   }
 
   async ngOnInit() {
@@ -156,6 +158,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
+    this.dataLoaded = true;
   }
 
   async getIdentityJsonFormat() {
@@ -191,7 +194,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (this.preRegId) {
       await this.getUserInfo();
       await this.getUserFiles();
-      this.getApplicantTypeID();
+      await this.getApplicantTypeID();
+      //this.dataLoaded = true;
+      console.log("applicant files loaded");
     }
     if (!this.users[0].files) {
       this.users[0].files = this.userFiles;
