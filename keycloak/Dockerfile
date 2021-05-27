@@ -1,4 +1,4 @@
-FROM jboss/keycloak:11.0.3
+FROM jboss/keycloak:9.0.0
 
 #ADD --chown=jboss:root ./theme/mosip /opt/jboss/keycloak/themes
 
