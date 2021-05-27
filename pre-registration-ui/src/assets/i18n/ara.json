@@ -347,7 +347,9 @@
     "text_or": "أو",
     "action_view": "رأي",
     "OR": "أو",
-    "text_docrefid": "معرف مرجع المستند"
+    "text_docrefid": "معرف مرجع المستند",
+    "sameAs": "مثل",
+    "sameAsNone": "لا أحد"
   },
   "acknowledgement": {
     "title": "تم تأكيد الموعد",

@@ -348,7 +348,9 @@
     "text_or": "OU",
     "action_view": "VUE",
     "OR": "ou",
-    "text_docrefid": "ID de référence du document"
+    "text_docrefid": "ID de référence du document",
+    "sameAs": "Pareil que",
+    "sameAsNone": "Rien"
   },
   "acknowledgement": {
     "title": "Rendez-vous confirmé",
