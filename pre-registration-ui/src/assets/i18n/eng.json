@@ -346,7 +346,9 @@
     "text_or": "OR",
     "action_view": "preiew",
     "OR": "OR",
-    "text_docrefid": "Document Reference Id"
+    "text_docrefid": "Document Reference Id",
+    "sameAs": "Same As",
+    "sameAsNone": "None"
   },
   "acknowledgement": {
     "title": "Appointment Confirmed",

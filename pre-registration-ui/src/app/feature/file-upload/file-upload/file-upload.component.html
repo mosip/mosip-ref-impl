@@ -1,4 +1,7 @@
 <img src="assets/ajax-loader.gif" *ngIf="" class="loader" />
+<div class="spinner" *ngIf="!dataLoaded">
+  <mat-spinner></mat-spinner>
+</div>
 <div class="spinner" *ngIf="!users[0] && LOD.length > 0 && !dataLoaded">
   <mat-spinner></mat-spinner>
 </div>
@@ -17,7 +20,7 @@
       : {{ allowedFileSize }}
     </b>
   </div>
-  <div class="file-upload__body" *ngIf="dataLoaded">
+  <div class="file-upload__body" *ngIf="users[0] && LOD.length > 0 && dataLoaded">
     <div class="file-upload__body__1">
       <form [formGroup]="userForm" class="user__form">
         <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
@@ -62,14 +65,16 @@
                 <span *ngIf="allApplicants.length > 1"> {{ 'documents.OR' | translate }}</span>
                 <span *ngIf="allApplicants.length > 1">
                   <mat-form-field class="file-upload__or">
-                    <mat-select placeholder="Same as"
+                    <mat-select placeholder="{{ 'documents.sameAs' | translate }}"
                       [disabled]="readOnlyMode" 
                       (selectionChange)="sameAsChange($event, users[0].files.documentsMetaData)" [(value)]="sameAs">
+                      <mat-option value="">
+                        {{ 'documents.sameAsNone' | translate }}
+                      </mat-option>
                       <mat-option *ngFor="let applicant of allApplicants" value="{{applicant.preRegistrationId}}">
                         <div *ngIf="applicant.demographicMetadata[name]">
                           {{applicant.demographicMetadata[name][0].value}}
                         </div>
-                        <!-- {{ applicant.demographicMetadata }} -->
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
