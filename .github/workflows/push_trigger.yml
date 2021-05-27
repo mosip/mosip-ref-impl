@@ -773,7 +773,7 @@ jobs:
           docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-  build-demosdk-client:
+  build-demosdk:
 
     runs-on: ubuntu-latest
     steps:
@@ -814,14 +814,14 @@ jobs:
 
       - name: Build with Maven
         run: |
-          cd demosdk-client
+          cd demosdk
           mvn -B package -s $GITHUB_WORKSPACE/settings.xml --file pom.xml
       - name: Ready the springboot artifacts
         run: find -name '*.jar' -executable -type f  -exec zip release.zip {} +
 
       - name: Analyze with SonarCloud
         run: |
-          cd demosdk-client
+          cd demosdk
           mvn -B -Dgpg.skip verify sonar:sonar -Dsonar.projectKey=mosip_biosdk-client -Dsonar.organization=${{ secrets.ORG_KEY }} -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -829,7 +829,7 @@ jobs:
 
       - name: Publish the maven package
         run: |
-          cd demosdk-client && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+          cd demosdk && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GPG_TTY: $(tty)
