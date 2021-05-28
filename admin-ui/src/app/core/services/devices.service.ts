@@ -19,7 +19,7 @@ export class DeviceService {
   private BASE_URL = this.appService.getConfig().baseUrl;
 
   getRegistrationDevicesDetails(request: RequestModel): Observable<any> {
-    console.log(JSON.stringify(request));
+    delete request['request']['languageCode'];
     return this.http.post(this.BASE_URL + URL.devices, request, httpOptions);
   }
 }

@@ -19,7 +19,7 @@ export class AuthService {
    token: string;
    roles: string[];
    isAuthenticated(): Observable<boolean> {
-    return this.http.get(`${this.appService.getConfig().baseUrl}authmanager/authorize/admin/validateToken`, { observe: 'response'}).
+    return this.http.get(`${this.appService.getConfig().baseUrl}admin/authorize/admin/validateToken`, { observe: 'response'}).
     pipe(map(res => res.status === 200),
     catchError(error => {
       console.log(error);
@@ -35,9 +35,7 @@ export class AuthService {
     console.log(primaryLangCode + ' ' + secondaryLangCode);
     if (
       primaryLangCode === null ||
-      primaryLangCode === '' || primaryLangCode.length === 0 &&
-      secondaryLangCode === null ||
-      secondaryLangCode === '' || secondaryLangCode.length === 0
+      primaryLangCode === '' || primaryLangCode.length === 0
     ) {
       return false;
     } else {

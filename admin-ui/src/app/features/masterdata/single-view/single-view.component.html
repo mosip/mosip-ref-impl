@@ -1,12 +1,12 @@
 <span class="breadcrumb">
         <a (click)="changePage('home')">{{'masterData.masterDataTypes' | translate}} &nbsp;&nbsp;</a> / 
-        <a (click)="changePage('list')">&nbsp;&nbsp; {{ mapping.name[primaryLang] }} &nbsp;&nbsp;</a> / 
-        &nbsp;&nbsp; {{ mapping.name[primaryLang] }}  {{'detailView.detail' | translate}}
+        <a (click)="changePage('list')">&nbsp;&nbsp; {{ mapping.name[primaryLangCode] }} &nbsp;&nbsp;</a> / 
+        &nbsp;&nbsp; {{ mapping.name[primaryLangCode] }}  {{'detailView.detail' | translate}}
 </span>
 <br><br>
 <app-mater-data-common-view
         *ngIf="mapping && specFileData && !showSpinner"
-        [masterDataName]="mapping.name[primaryLang]"
+        [masterDataName]="mapping.name[primaryLangCode]"
         [headerData]="headerData"
         [primaryData]="primaryData"
         [secondaryData]="secondaryData"

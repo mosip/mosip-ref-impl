@@ -1,6 +1,6 @@
 {
   "name": "pre-registration",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "stats": "webpack-bundle-analyzer dist/pre-registration/stats.json"
+    "stats": "webpack-bundle-analyzer dist/pre-registration/stats.json",
+    "sonar": "sonar-scanner"
   },
   "private": true,
   "dependencies": {
@@ -32,16 +33,20 @@
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "html2pdf.js": "^0.9.1",
+    "json-rules-engine": "^6.0.0",
+    "jsonpath-plus": "^4.0.0",
     "material-icons": "^0.2.3",
     "moment": "^2.23.0",
     "ng-recaptcha": "^5.0.0",
     "ng2-pdf-viewer": "^5.3.3",
+    "ngx-mat-select-search": "^1.8.0",
     "ngx-print": "^1.1.4",
     "ngx7-material-keyboard": "^0.1.2",
     "ol": "^5.3.0",
     "osm": "^1.0.0",
     "rxjs": "^6.0.0",
     "smoothscroll-polyfill": "^0.4.4",
+    "vm": "^0.1.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

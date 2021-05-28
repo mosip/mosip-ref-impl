@@ -18,13 +18,14 @@ import { FilterModel } from 'src/app/core/models/filter.model';
 import * as appConstants from '../../../../app.constants';
 import { MachineService } from 'src/app/core/services/machines.service';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'map-center-device',
   templateUrl: './mapcenter.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class MapcenterComponent{
+export class MapcenterComponent {
   displayedColumns = [];
   actionButtons = [];
   actionEllipsis = [];
@@ -39,23 +40,22 @@ export class MapcenterComponent{
   noData = false;
   filtersApplied = false;
   DeviceRequest = {} as DeviceRequest;
-  selectedCenterDetails : any;
-  machineInfo : any;
+  selectedCenterDetails: any;
+  machineInfo: any;
 
   constructor(
     private location: Location,
     private router: Router,
     private centerService: CenterService,
     private appService: AppConfigService,
+    private headerService: HeaderService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private translateService: TranslateService,
-    private auditService: AuditService,
     private machineService: MachineService,
     private dataStorageService: DataStorageService,
   ) {
     this.subscribed = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {     
+      if (event instanceof NavigationEnd) {
         this.initializeComponent();
       }
     });
@@ -72,8 +72,8 @@ export class MapcenterComponent{
   pageEvent(event: any) {
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
-      this.appService.getConfig().primaryLangCode
-    );
+      this.headerService.getUserPreferredLanguage()
+      );
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
@@ -93,29 +93,29 @@ export class MapcenterComponent{
     }
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
-      this.appService.getConfig().primaryLangCode
+      this.headerService.getUserPreferredLanguage()
     );
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
     this.router.navigateByUrl('admin/resources/devices/map-center/3000022?' + url);
   }
 
-  selectedCenterDetail(data:any){
+  selectedCenterDetail(data: any) {
     this.selectedCenterDetails = data;
   }
 
-  getCenterDetails(zone:any) {
+  getCenterDetails(zone: any) {
     this.centers = [];
     this.noData = false;
     this.filtersApplied = false;
     const filters = Utils.convertFilter(
       this.activatedRoute.snapshot.queryParams,
-      this.appService.getConfig().primaryLangCode
+      this.headerService.getUserPreferredLanguage()
     );
     if (filters.filters.length > 0) {
       this.filtersApplied = true;
     }
-    //filters.filters = [{"columnName":"zone","type":"equals","value":"Mnasra"}];
+    // filters.filters = [{"columnName":"zone","type":"equals","value":"Mnasra"}];
     this.sortFilter = filters.sort;
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
@@ -152,27 +152,27 @@ export class MapcenterComponent{
       });
   }
 
-  submit(){
+  submit() {
     let data = {};
     data = {
       case: 'CONFIRMATION',
-      title: "Confirm Assigning",
-      message: "Do you want to assign the selected machine to "+this.selectedCenterDetails.name+" center",
-      yesBtnTxt: "CONFIRM",
-      noBtnTxt: "CANCEL"
+      title: 'Confirm Assigning',
+      message: 'Do you want to assign the selected machine to ' + this.selectedCenterDetails.name + ' center',
+      yesBtnTxt: 'CONFIRM',
+      noBtnTxt: 'CANCEL'
     };
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '450px',
       data
     });
-    dialogRef.afterClosed().subscribe(response => {   
-      if(response){
+    dialogRef.afterClosed().subscribe(response => {
+      if (response) {
         this.saveData();
-      }      
-    });    
+      }
+    });
   }
 
-  saveData(){
+  saveData() {
     delete this.machineInfo.createdBy;
     delete this.machineInfo.createdDateTime;
     delete this.machineInfo.updatedBy;
@@ -182,7 +182,7 @@ export class MapcenterComponent{
     delete this.machineInfo.zone;
     delete this.machineInfo.machineTypeName;
     delete this.machineInfo.mapStatus;
-    
+
     this.machineInfo.regCenterId = this.selectedCenterDetails.id;
     const request = new RequestModel(
       appConstants.registrationDeviceCreateId,
@@ -197,37 +197,38 @@ export class MapcenterComponent{
     );
   }
 
-  showMessage(response){
+  showMessage(response) {
     let data = {};
-    let self = this;
-    if(response.errors){
+    const self = this;
+    if (response.errors) {
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
+        title: 'Failure !',
         message: response.errors[0].message,
-        btnTxt: "DONE"
+        btnTxt: 'DONE'
       };
-    }else{
+    } else {
       data = {
         case: 'MESSAGE',
-        title: "Success",
-        message: "Success! You have assigned Machine "+this.machineInfo.name+" to Registration Center "+this.selectedCenterDetails.name+" successfully",
-        btnTxt: "DONE"
+        title: 'Success',
+        // tslint:disable-next-line:max-line-length
+        message: 'Success! You have assigned Machine ' + this.machineInfo.name + ' to Registration Center ' + this.selectedCenterDetails.name + ' successfully',
+        btnTxt: 'DONE'
       };
     }
-      
+
     const dialogRef = self.dialog.open(DialogComponent, {
       width: '550px',
       data
     });
-    dialogRef.afterClosed().subscribe(response => {   
-      if(response.errors){
-      }else{
+    dialogRef.afterClosed().subscribe(response => {
+      if (response.errors) {
+      } else {
         self.location.back();
-      }     
+      }
     });
   }
-  
+
   cancel() {
     this.location.back();
   }
@@ -235,10 +236,10 @@ export class MapcenterComponent{
   async getData(params: any) {
     const filter = new FilterModel('id', 'equals', params.id);
     this.DeviceRequest.filters = [filter];
-    this.DeviceRequest.languageCode = "eng";
+    this.DeviceRequest.languageCode = 'eng';
     this.DeviceRequest.sort = [];
     this.DeviceRequest.pagination = { pageStart: 0, pageFetch: 10 };
-    let request = new RequestModel(
+    const request = new RequestModel(
       appConstants.registrationDeviceCreateId,
       null,
       this.DeviceRequest

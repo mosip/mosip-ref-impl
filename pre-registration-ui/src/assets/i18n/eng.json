@@ -117,7 +117,8 @@
       "status": {
         "pendingAppointment": "Pending Appointment",
         "booked": "Booked",
-        "expired": "Expired"
+        "expired": "Expired",
+        "canceled": "Cancelled"
       },
       "explanation": {
         "pendingAppointment": {
@@ -274,7 +275,9 @@
     "otp_valid_label": "Valid for",
     "invalidEmail": "Invalid email id Entered",
     "invalidMobile": "Invalid mobile number Entered",
-    "invalidInput": "Invalid email id or mobile number Entered"
+    "invalidInput": "Invalid email id or mobile number Entered",
+    "serverUnavailable": "Unable to send Otp. Retry..",
+    "loading": "Sending..."
   },
   "stepper": {
     "link_demographic": "Demographics Details",
@@ -312,6 +315,9 @@
     "action_back": "BACK",
     "action_continue": "CONTINUE",
     "action_preview": "PREVIEW",
+    "read_only_message": "** You can no longer edit this application, since you have currently or previously booked an appointment for it! If you still want to make changes, then discard this application and make a new one.",
+    "lookup_search_message": "Search ",
+    "lookup_no_results_found": "No matching results found.",
     "consent": {
       "title": "Terms and Conditions",
       "subtitle": "Your Agreement",
@@ -323,23 +329,9 @@
       "alertMessageThird": "You will be redirected to ‘Preview Page’ due to not accepting Terms & Conditions"
     },
     "validation": {
-      "name_required": "Please enter valid name",
-      "age_validation": "Age should be less than 150",
-      "gender_validation": "Please select gender",
-      "nationality_validation": "Please select Residence Status",
       "DOB_validation": "Enter Valid date of birth or age",
-      "date_required": "Enter 2 numeric digits for date",
-      "month_required": "Enter 2 numeric digits for month",
-      "year_required": "Enter 4 numeric digits for year",
-      "address_required": "Please enter valid address",
-      "region_required": "Please select a Region",
-      "province_required": "Please select a Province",
-      "city_required": "Please select a city",
-      "admin_required": "Please select zone",
-      "postal_code_required": "Please enter valid postalCode",
-      "mobile_required": "Please enter valid mobile number",
-      "email_required": "Please enter valid email id",
-      "pin_required": "Please enter valid Reference Identity Number"
+      "requiredMessage":"Is required",
+      "InvalidMessage":"is invalid"
     }
   },
   "documents": {
@@ -353,20 +345,24 @@
     "label_sameas": "Same as",
     "text_or": "OR",
     "action_view": "preiew",
-    "OR": "OR"
+    "OR": "OR",
+    "text_docrefid": "Document Reference Id",
+    "sameAs": "Same As",
+    "sameAsNone": "None"
   },
   "acknowledgement": {
     "title": "Appointment Confirmed",
     "message": "The Pre-Registration id and Appointment details have been sent to the registered email id and phone number",
     "label_name": "Name",
     "label_pre_id": "Pre Registration ID",
-    "label_reg_cntr": "Registration Center",
+    "label_reg_cntr": "Center Name",
     "label_cntr_contact_number": "Center Contact Number",
     "label_appointment_date_time": "Appointment Date & Time",
     "container_guideline": "Important Guidelines",
     "action_send": "SEND EMAIL/SMS",
     "action_download": "DOWNLOAD PDF",
-    "action_print": "PRINT"
+    "action_print": "PRINT",
+    "label_reg_cntr_dtl": "Center Address"
   },
   "preview": {
     "title_preview": "Preview",
@@ -441,7 +437,9 @@
       "text_appoinment_date": "Appointment Date",
       "text_status": "Status",
       "action_modify_information": "Modify Information",
-      "action_view_acknowledgement": "View Acknowledgement"
+      "action_view_acknowledgement": "View Acknowledgement",
+      "action_view_information": "View Information"
+
     },
     "discard": {
       "title_confirm": "Confirm",
@@ -463,11 +461,19 @@
     "status": {
       "pendingAppointment": "Pending Appointment",
       "booked": "Booked",
-      "expired": "Expired"
+      "expired": "Expired",
+      "cancelled": "Cancelled"
     },
     "error": {
       "error": "Internal server error. Please try again after  some time.",
       "button_ok": "OK"
+    },
+    "dataCaptureLanguage":{
+      "title":"Select Language",
+      "message":["Please select","You can select minimum","and maximum" ,"languages for data entry.","is mandatory for the resident to select as per government guidelines.","The order of selection will lead to page view for demographic data."],
+      "error_text":["You can select atmost ","languages for data entry."],
+      "cancel_btn":"Cancel",
+      "submit_btn":"Submit"
     }
   },
   "timeSelection": {
@@ -493,7 +499,13 @@
         "Do you wish to continue booking"
       ],
       "yesButtonText": "Yes",
-      "noButtonText": "No"
+      "noButtonText": "No",
+      "applicationLockConfirm":{
+        "title":"Confirmation",
+        "message":"Application details cannot be modified further once booked. Pleace click on confirm to book an appointment",
+        "yesButtonText": "Confirm",
+        "noButtonText": "Cancel"
+      }
     }
   },
   "appointmentCentreSearch": {
@@ -554,7 +566,8 @@
     "status": {
       "pendingAppointment": "Appointment is yet to be booked",
       "booked": "Appointment is booked successfully",
-      "expired": "Appointed date has passed"
+      "expired": "Appointed date has passed",
+      "cancelled":"Appointment has been Cancelled"
     },
     "deleteIcon": "You can either discard entire application or cancel the appointment and save the details.",
     "book/modify_appointment": "You must tick the check box near to pre-registration id for one or multiple applicants to book/modify appointment",
@@ -567,7 +580,8 @@
     "recommended_centers": "List of the recommended center as per your postal code",
     "nearBy": "Registration centers based on your geo-location",
     "magnifying_glass": "Search based on selection of dropdown.",
-    "preview_continue": "Upload all files to proceed"
+    "preview_continue": "Upload all files to proceed",
+    "lockIcon":"Application details cannot be modified once appointment is Booked, Cancelled or Expired"
   },
   "error": {
     "error": "A technical error occurred and the operation cannot be completed. Any data provided may not be saved",
@@ -583,7 +597,8 @@
     "timeExpired_2": " hours of booking",
     "errorLabel": "ERROR",
     "regCenterNotavailabe":"Registration center is not available.",
-    "centerDetailsNotAvailable":"No Slots Available, Appointment booking/re-booking cannot be done. Please try again later."
+    "centerDetailsNotAvailable":"No Slots Available, Appointment booking/re-booking cannot be done. Please try again later.",
+    "fileUploadDeactivateMsg":"Please upload the required document to continue."
   },
   "residentTypesMapping": {
     "NFR": "National",

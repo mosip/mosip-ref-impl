@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { AuthService } from "src/app/auth/auth.service";
-import { Location } from "@angular/common";
-import { RegistrationService } from "src/app/core/services/registration.service";
 import * as appConstants from "../../app.constants";
 import { ConfigService } from "src/app/core/services/config.service";
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material";
 import { RouterExtService } from "../router/router-ext.service";
+import { DataStorageService } from "src/app/core/services/data-storage.service";
+import { AuditModel } from "../models/demographic-model/audit.model";
 
 export interface DialogData {
   case: number;
@@ -34,21 +34,25 @@ export class DialougComponent implements OnInit {
   addedList = [];
   disableAddButton = true;
   disableSend = true;
-
+  selectedLanguage = [];
+  disablelanguageSubmitBtn = true;
   constructor(
     public dialogRef: MatDialogRef<DialougComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData | any,
     private authService: AuthService,
-    private location: Location,
-    private regService: RegistrationService,
     private config: ConfigService,
     private router: Router,
     private dialogBox: MatDialog,
-    private routerService: RouterExtService
+    private routerService: RouterExtService,
+    private dataService: DataStorageService
   ) {}
 
   ngOnInit() {
     this.input = this.data;
+    if (this.input.case === "LANGUAGE_CAPTURE") {
+      this.selectedLanguage = [...this.input.mandatoryLanguages];
+      this.enableDataCaptureSubmitBtn();
+    }
   }
 
   onNoClick(input): void {
@@ -88,13 +92,13 @@ export class DialougComponent implements OnInit {
   }
 
   enableButton(email, mobile) {
-    if (!email.value && !mobile.value) {
+    if (!email && !mobile) {
       this.disableSend = true;
       this.invalidApplicantEmail = false;
       this.invalidApplicantNumber = false;
-    } else if (email.value && !mobile.value && !this.invalidApplicantEmail)
+    } else if (email && !mobile && !this.invalidApplicantEmail)
       this.disableSend = false;
-    else if (mobile.value && !email.value && !this.invalidApplicantNumber)
+    else if (mobile && !email && !this.invalidApplicantNumber)
       this.disableSend = false;
     else if (!this.invalidApplicantEmail && !this.invalidApplicantNumber)
       this.disableSend = false;
@@ -104,8 +108,49 @@ export class DialougComponent implements OnInit {
     this.isChecked = !this.isChecked;
   }
 
+  onSelectLanguage(lang, event) {
+    if (event && event.checked) {
+      this.selectedLanguage.push(lang);
+    } else {
+      this.selectedLanguage.splice(this.selectedLanguage.indexOf(lang), 1);
+    }
+    this.enableDataCaptureSubmitBtn();
+  }
+
+  enableDataCaptureSubmitBtn() {
+    if (
+      this.selectedLanguage.length >= Number(this.input.minLanguage) &&
+      this.selectedLanguage.length <= Number(this.input.maxLanguage)
+    ) {
+      console.log(this.input.minLanguage);
+      this.disablelanguageSubmitBtn = false;
+    } else {
+      this.disablelanguageSubmitBtn = true;
+    }
+  }
+
+  collectDataCaptureLanguage() {
+    this.dialogRef.close(this.selectedLanguage);
+  }
+
+  cancelConsent(message) {
+    let consentText = [];
+    message.forEach(element => {
+      consentText.push(element['fileText']);
+    });
+    let description = {
+      url: localStorage.getItem("consentUrl"),
+      template: consentText,
+      description: "Consent Not Accepted",
+    };
+    let auditObj = new AuditModel();
+    auditObj.actionUserId = localStorage.getItem("loginId");
+    auditObj.eventName = "CONSENT";
+    auditObj.description = JSON.stringify(description);
+    this.dataService.logAudit(auditObj).subscribe(res => {});
+  }
+
   async userRedirection() {
-    let url = this.routerService.getPreviousUrl();
     if (
       localStorage.getItem("newApplicant") === "true" &&
       localStorage.getItem("addingUserFromPreview") === "true"
@@ -172,17 +217,17 @@ export class DialougComponent implements OnInit {
   redirectingUser() {
     let url = this.routerService.getPreviousUrl();
     console.log(url);
-    let preRegId = ''
-    if(url){
+    let preRegId = "";
+    if (url) {
       preRegId = url.split("/")[4];
     }
-    if (localStorage.getItem("addingUserFromPreview") === "true"){
+    if (localStorage.getItem("addingUserFromPreview") === "true") {
       this.router.navigate([
         `${localStorage.getItem(
           "langCode"
         )}/pre-registration/summary/${preRegId}/preview`,
       ]);
-     }else
+    } else
       this.router.navigate([`${localStorage.getItem("langCode")}/dashboard`]);
   }
 }

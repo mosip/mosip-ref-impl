@@ -16,11 +16,10 @@ export class AuthService {
   ) {}
 
   token: string;
-  primaryLang: string = 'eng';
-  secondaryLang: string;
+  userPreferredLang: string = localStorage.getItem('userPrefLanguage');
 
-  getPrimaryLang() {
-    return this.primaryLang;
+  getUserPreferredLanguage() {
+    return this.userPreferredLang;
   }
 
   setToken() {
@@ -37,14 +36,13 @@ export class AuthService {
     if (match) return match[2];
   }
 
-  setCaptchaAuthenticate(isSuccess:boolean){
-   this.isCaptchaSuccess = isSuccess;
-  }
-   
-  isCaptchaAuthenticated(){
-    return this.isCaptchaSuccess;
+  setCaptchaAuthenticate(isSuccess: boolean) {
+    this.isCaptchaSuccess = isSuccess;
   }
 
+  isCaptchaAuthenticated() {
+    return this.isCaptchaSuccess;
+  }
 
   isAuthenticated() {
     if (
@@ -62,6 +60,7 @@ export class AuthService {
     localStorage.setItem("loggedOut", "true");
     this.removeToken();
     localStorage.removeItem("config");
+    localStorage.clear();
     this.setCaptchaAuthenticate(false);
     this.dataStorageService.onLogout().subscribe();
     this.router.navigate(["/"]);

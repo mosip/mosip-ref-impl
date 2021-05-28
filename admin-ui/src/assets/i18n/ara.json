@@ -15,6 +15,22 @@
         },
         "item4": {
             "title": "حزمة الحالة"
+        },
+        "item5": {
+            "title": "وقفة / استئناف RID"
+        },
+        "item6": {
+            "title": "تحميل مجمع",
+            "subItem1": "البيانات الرئيسية",
+            "subItem2": "الحزم"
+        },
+        "item7": {
+            "title": "مدير المفتاح",
+            "subItem1": "توليد CSR",
+            "subItem2": "توليد مفتاح رئيسي",
+            "subItem3": "الحصول على شهادة",
+            "subItem4": "تحميل الشهادة",
+            "subItem5": "تحميل شهادة مجال أخرى"
         }
     },
     "center": {
@@ -65,6 +81,8 @@
         "add-button": "إضافة",
         "datepicker-placeholder":"اختيار موعد",
         "devices-tooltip":"يتضمن الجهاز ماسحة البصمات ، ماسحة آيريس ، كاميرا ويب ، طابعة",
+        "selectLanguage": "اختار اللغة",
+        "editCommonDetails": "يرجى تعديل تفاصيل المركز الأخرى هنا",
         "validationMessages": {
             "name": {
                 "required": "اسم المركز مطلوب",
@@ -135,7 +153,10 @@
             },
             "endTime": {
                 "required": "مركز نهاية الوقت مطلوب"
-            }
+            },
+            "workingDays": {
+                "required": "الرجاء تحديد يوم واحد على الأقل"
+            } 
         },
         "popupMessages": {
             "create": {
@@ -199,6 +220,7 @@
         "title": "خطأ"
     },
     "devices": {
+        "id": "شفرة",
         "title":"الأجهزة",
         "header": "جهاز",
         "name": "اسم الجهاز",
@@ -219,6 +241,82 @@
             "title": "خطأ",
             "message": "لاتوجد بيانات",
             "btnTxt": "حسنا"
+        },
+        "validationMessages": {
+            "name": {
+                "required": "اسم الجهاز مطلوب"
+            },
+            "serialNumber": {
+                "required": "الرقم التسلسلي مطلوب"
+            },
+            "macAddress": {
+                "required": "عنوان MAC مطلوب"
+            },
+            "ipAddress": {
+                "required": "عنوان IP مطلوب"
+            },
+            "validity": {
+                "required": "الصلاحية مطلوبة"
+            },
+            "isActive": {
+                "required": "الحالة مطلوبة"
+            },
+            "zone": {
+                "required": "المنطقة الإدارية مطلوبة"
+            },
+            "deviceSpecId": {
+                "required": "مطلوب معرف الجهاز"
+            },
+            "regCenterId": {
+                "required": "اسم المركز مطلوب"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "تأكيد",
+                "message": ["أنت على وشك إنشاء جهاز تسجيل في","يرجى التأكد من صحة جميع المعلومات. سيتم إنشاء معرف الجهاز بمجرد التأكيد"],
+                "yesBtnText": "يتأكد",
+                "noBtnText": "يلغي",
+                "mandatorySecondaryFields": "لم تقم بتعبئة البيانات الإلزامية في اللغة الثانوية. سيتم إنشاء جهاز التسجيل باللغة الأساسية فقط. هل مازلت تريد الاستمرار؟"
+            },
+            "edit": {
+                "title": "تأكيد",
+                "message": "أنت على وشك تحديث جهاز تسجيل. يرجى التأكد من صحة جميع المعلومات",
+                "yesBtnText": "يتأكد",
+                "noBtnText": "يلغي",
+                "mandatorySecondaryFields": "لم تقم بتعبئة البيانات الإلزامية في اللغة الثانوية. سيتم إنشاء جهاز التسجيل باللغة الأساسية فقط. هل مازلت تريد الاستمرار؟"
+            },
+            "update-success": {
+                "title": "نجاح",
+                "message": ["تم تحديث تفاصيل الجهاز بنجاح. \n معرف الجهاز:", " \n اسم جهاز Device: "],
+                "btnTxt": "نعم"
+            },
+            "update-error": {
+                "title": "خطأ",
+                "message": "كان هناك بعض المشاكل في تحديث الجهاز. حاول مرة اخرى",
+                "btnTxt": "نعم"
+            },
+            "create-success": {
+                "title": "نجاح",
+                "message": ["تم إنشاء الجهاز بنجاح باستخدام معرف الجهاز:", "واسم الجهاز:"],
+                "btnTxt": "نعم"
+            },
+            "create-error": {
+                "title": "خطأ",
+                "message": "كان هناك بعض المشاكل في إنشاء الجهاز. حاول مرة اخرى",
+                "btnTxt": "نعم"
+            },
+            "navigation-popup": {
+                "title": "تأكيد",
+                "message": "هل أنت متأكد أنك تريد الانتقال بعيدًا عن هذه الصفحة؟ ستفقد أي بيانات غير محفوظة.",
+                "yesBtnTxt": "غادر",
+                "noBtnTxt": "يقضي"
+            },
+            "noData": {
+                "title": "خطأ",
+                "message": "لاتوجد بيانات",
+                "btnTxt": "نعم"
+            }
         }
     },
     "machines": {
@@ -234,6 +332,7 @@
         "isActive": "الحالة",
         "zone": "منطقة",
         "publicKey": "المفتاح العمومي",
+        "signPublicKey": "توقيع المفتاح العام",
         "language": "عربى",
         "edit": "تصحيح",
         "create": "خلق",
@@ -243,6 +342,84 @@
             "title": "خطأ",
             "message": "لاتوجد بيانات",
             "btnTxt": "حسنا"
+        }, "validationMessages": {
+            "name": {
+                "required": "اسم الجهاز مطلوب"
+            },
+            "serialNumber": {
+                "required": "الرقم التسلسلي مطلوب"
+            },
+            "macAddress": {
+                "required": "عنوان MAC مطلوب"
+            },
+            "ipAddress": {
+                "required": "عنوان IP مطلوب"
+            },
+            "validity": {
+                "required": "الصلاحية مطلوبة"
+            },
+            "isActive": {
+                "required": "الصلاحية مطلوبة"
+            },
+            "zone": {
+                "required": "المنطقة الإدارية مطلوبة"
+            },
+            "machineSpecId": {
+                "required": "معرّف مواصفات الأجهزة مطلوب"
+            },
+            "publicKey": {
+                "required": "المفتاح العمومي مطلوب"
+            },
+            "signPublicKey": {
+                "required": "مطلوب تسجيل المفتاح العام"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "تأكيد",
+                "message": ["أنت على وشك إنشاء تفاصيل الجهاز ",". يرجى التأكد من صحة جميع المعلومات. سيتم إنشاء معرف الجهاز بمجرد تأكيدك"],
+                "yesBtnText": "يتأكد",
+                "noBtnText": "يلغي",
+                "mandatorySecondaryFields": "لم تقم بتعبئة البيانات الإلزامية في اللغة الثانوية. سيتم إنشاء تفاصيل الجهاز باللغة الأساسية فقط. هل مازلت تريد الاستمرار؟"
+            },
+            "edit": {
+                "title": "تأكيد",
+                "message": "أنت على وشك تحديث تفاصيل الجهاز. يرجى التأكد من صحة جميع المعلومات",
+                "yesBtnText": "يتأكد",
+                "noBtnText": "يلغي",
+                "mandatorySecondaryFields": "لم تقم بتعبئة البيانات الإلزامية في اللغة الثانوية. سيتم إنشاء تفاصيل الجهاز باللغة الأساسية فقط. هل مازلت تريد الاستمرار؟"
+            },
+            "update-success": {
+                "title": "نجاح",
+                "message": ["تم تحديث تفاصيل الجهاز بنجاح. معرف الجهاز: ", " واسم الجهاز: "],
+                "btnTxt": "نعم"
+            },
+            "update-error": {
+                "title": "خطأ",
+                "message": "كان هناك بعض المشاكل في تحديث تفاصيل الجهاز. حاول مرة اخرى",
+                "btnTxt": "نعم"
+            },
+            "create-success": {
+                "title": "نجاح",
+                "message": ["تم إنشاء الجهاز بنجاح باستخدام معرف الجهاز: ", "واسم الجهاز: "],
+                "btnTxt": "نعم"
+            },
+            "create-error": {
+                "title": "خطأ",
+                "message": "كان هناك بعض المشاكل في إنشاء تفاصيل الجهاز. حاول مرة اخرى",
+                "btnTxt": "نعم"
+            },
+            "navigation-popup": {
+                "title": "تأكيد",
+                "message": "هل أنت متأكد أنك تريد الانتقال بعيدًا عن هذه الصفحة؟ ستفقد أي بيانات غير محفوظة.",
+                "yesBtnTxt": "غادر",
+                "noBtnTxt": "يقضي"
+            },
+            "noData": {
+                "title": "خطأ",
+                "message": "لاتوجد بيانات",
+                "btnTxt": "نعم"
+            }
         }
     },
     "masterData": {
@@ -256,7 +433,11 @@
         "category": "الفئة",
         "mapped-documents": "المستندات المعينة",
         "unmapped-documents": "المستندات غير المعينة",
-        "masterDataTypes": "أنواع البيانات الرئيسية"
+        "masterDataTypes": "أنواع البيانات الرئيسية",
+        "dynamicField": "مجال ديناميكي"
+    },
+    "masterdataupload": {
+        "title": "تحميل البيانات الرئيسية"
     },
     "errorPopup": {
         "noData": {
@@ -282,6 +463,7 @@
     },
     "packet-status": {
         "header": "حالة الحزمة",
+        "input-text":"أدخل المعرف",
         "text": "الرجاء إدخال معرف التسجيل للتحقق من حالة الحزمة",
         "error": "تم إدخال معرف تسجيل غير صالح",
         "id": "معرف تسجيل",
@@ -296,11 +478,50 @@
         "statuscheckFailed":" فشل",
         "statuscheckCompleted":"منجز"
     },
+    "packet-upload":{
+        "header":"تحميل الحزمة",
+        "singleView":{
+          "detailed-view-txt":"عرض تفصيلي",
+          "status-txt":"حالة",
+          "uploadedBy-txt": "تم الرفع بواسطة",
+          "count-txt":"عدد",
+          "dataAndTime-txt" : "التاريخ و الوقت",
+          "failureDescription-txt":"فشل الوصف",
+          "placeHolder1-txt":"اسم الطاولة",
+          "placeHolder2-txt":"عمليات"
+        },
+        "createView":{
+          "input-btn-text":"اختر ملف",
+          "input-text1":"رفع ملف...",
+          "input-text2":"ارفع ملفك",
+          "upload-btn":"تحميل",
+          "cancel-btn":"إلغاء",
+          "popupMessaages":{
+              "popup1":{
+                  "uploadConfirm":"تأكيد تحميل الحزمة",
+                  "message":"ستتم معالجة الحزمة. \n الرجاء التأكد من صحة جميع المعلومات. \n \n \n ستبدأ المعاملة بمجرد النقر فوق تأكيد",
+                  "confirmBtnTxt":"تؤكد",
+                  "cancelBtnTxt":"يلغي"
+              },
+              "popup2":{
+                  "title":"بالفشل !",
+                  "btnTxt":"انتهى"
+              },
+              "popup3":{
+                  "title":"نجاح",
+                  "message" :"تم تحميل ملفك بنجاح. \n تحميل البيانات قيد التقدم حاليًا. \n \n \n معرّف المعاملة:",
+                  "btnTxt":"انتهى"
+              }
+       
+          }
+        }
+      },
     "actionMessages" : {
         "decommission": {
             "success-message": ["مركز التسجيل ", " تم إيقاف التشغيل بنجاح"],
             "success-title": "نجاح",
-            "error-message": "لا يمكن إيقاف تشغيل المركز نظرًا لأن بعض الموارد (المستخدمون / الأجهزة / الأجهزة) لا تزال قيد التعيين إليه. \n الرجاء إلغاء تعيين هذه الموارد قبل إيقاف تشغيل المركز",
+            "error-message": ["لا يمكن إنهاء التفويض"
+                ,"لا يمكن إيقاف تشغيل المركز نظرًا لأن بعض الموارد (المستخدمون / الأجهزة / الأجهزة) لا تزال قيد التعيين إليه. \n الرجاء إلغاء تعيين هذه الموارد قبل إيقاف تشغيل المركز"],
             "error-title": "خطأ",
             "btnTxt": "حسنا",
             "yesBtnTxt": "تؤكد",
@@ -336,6 +557,16 @@
     },
     "users":{
         "redirectMessage":"انقر هنا لإعادة التوجيه إلى قائمة مستخدمي Keycloak"
+    },
+    "bulkUpload":{
+        "operation":"عملية",
+        "operationCtrl":[{"label":"إدراج","value":"Insert"},{"label":"تحديث","value":"Update"},{"label":"حذف","value":"Delete"}],
+        "tableName":"حدد اسم الجدول",
+        "chooseFile":"اختر ملف",
+        "uploadFile":"ارفع ملفك",
+        "upload": "تحميل",
+        "cancel": "يلغي",
+        "tableNames":[{"id":"applicant_valid_document","value":"وثيقة مقدم الطلب سارية المفعول"},{"id":"appl_form_type","value":"تطبيق"},{"id":"biometric_attribute","value":"السمة البيومترية"},{"id":"biometric_type","value":"البيومترية"},{"id":"blacklisted_words","value":"BlacklistedWords"},{"id":"daysofweek_list","value":"DaysOfWeek"},{"id":"device_master","value":"Device"},{"id":"registered_device_master","value":"DeviceRegister"},{"id":"device_spec","value":"DeviceSpecification"},{"id":"device_type","value":"DeviceType"},{"id":"doc_category","value":"DocumentCategory"},{"id":"doc_type","value":"DocumentType"},{"id":"dynamic_field","value":"DynamicField"},{"id":"reg_exceptional_holiday","value":"ExceptionalHoliday"},{"id":"foundational_trust_provider","value":"FoundationalTrustProvider"},{"id":"gender","value":"Gender"},{"id":"loc_holiday","value":"Holiday"},{"id":"identity_schema","value":"IdentitySchema"},{"id":"id_type","value":"IdType"},{"id":"individual_type","value":"IndividualType"},{"id":"language","value":"Language"},{"id":"location","value":"Location"},{"id":"loc_hierarchy_list","value":"LocationHierarchy"},{"id":"machine_master","value":"Machine"},{"id":"machine_spec","value":"MachineSpecification"},{"id":"machine_type","value":"MachineType"},{"id":"module_detail","value":"ModuleDetail"},{"id":"mosip_device_service","value":"MOSIPDeviceService"},{"id":"reason_category","value":"ReasonCategory"},{"id":"reason_list","value":"ReasonList"},{"id":"reg_exceptional_holiday","value":"RegExceptionalHoliday"},{"id":"registered_device_master","value":"RegisteredDevice"},{"id":"registration_center","value":"RegistrationCenter"},{"id":"reg_center_device","value":"RegistrationCenterDevice"},{"id":"reg_center_machine","value":"RegistrationCenterMachine"},{"id":"reg_center_machine_device","value":"RegistrationCenterMachineDevice"},{"id":"reg_center_type","value":"RegistrationCenterType"},{"id":"reg_center_user","value":"RegistrationCenterUser"},{"id":"reg_center_user_machine","value":"RegistrationCenterUserMachine"},{"id":"reg_device_sub_type","value":"RegistrationDeviceSubType"},{"id":"reg_device_type","value":"RegistrationDeviceType"},{"id":"reg_working_nonworking","value":"RegWorkingNonWorking"},{"id":"schema_def","value":"SchemaDefinition"},{"id":"template","value":"Template"},{"id":"template_file_format","value":"TemplateFileFormat"},{"id":"template_type","value":"TemplateType"},{"id":"title","value":"Title"},{"id":"user_detail","value":"UserDetails"},{"id":"valid_document","value":"ValidDocument"},{"id":"zone","value":"Zone"},{"id":"zone_user","value":"ZoneUser"}]
     },
     "filters":{
         "titleTxt":"إضافة مرشحات",

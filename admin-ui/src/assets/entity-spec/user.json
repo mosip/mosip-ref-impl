@@ -1,0 +1,130 @@
+{
+  "auditEventIds": ["ADM-027", "ADM-049"],
+  "actionButtons": [
+    {
+      "buttonName": {
+        "eng": "Edit",
+        "ara": "تصحيح",
+        "fra": "modifier"
+      },
+      "actionURL": "",
+      "redirectURL": "/admin/resources/users/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Map User",
+        "ara": "إضافة مركز",
+        "fra": "Ajouter le centre"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/users/map",
+      "showIn": "Button",
+      "validations": ""
+    },
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "name",
+      "showInListView": "true",
+      "label": { "eng": "Name", "ara": "مركز ", "fra": "Name" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "zoneCode",
+      "showInListView": "true",
+      "label": {
+        "eng": "Zone Code",
+        "ara": "نوع المركز",
+        "fra": "Type de centre"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },    
+    {
+      "name": "regCenterId",
+      "showInListView": "",
+      "label": {
+        "eng": "Center Id",
+        "ara": "المستخدمين",
+        "fra": "Utilisateur"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdBy",
+      "showInListView": "",
+      "label": {
+        "eng": "CreatedBy",
+        "ara": "الشخص المسؤول",
+        "fra": "Personne-ressource"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {
+    "totalEntries": null,
+    "pageSize": "10",
+    "pageSizeList": [10, 20, 30, 40, 50]
+  },
+  "filterColumns": [
+    {
+      "filtername": "name",
+      "filterlabel": { "eng": "Name", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "filterType": "equals",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "users",
+      "fieldName": "name",
+      "methodCallName": ""
+    }
+  ]
+}

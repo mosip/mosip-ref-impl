@@ -1,0 +1,12 @@
+version: '3'
+services:
+  biosdk_server:
+    build: .
+    image: biosdk_server
+    container_name: biosdk_server
+    ports:
+      - "9099:9099"
+    environment:
+      biosdk_zip_url: https://mosip.s3-us-west-2.amazonaws.com/sdk-1.1.0.zip
+      biosdk_bioapi_impl: io.mosip.mock.sdk.impl.SampleSDK
+    restart: always

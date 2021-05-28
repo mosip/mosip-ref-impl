@@ -38,7 +38,6 @@ public class TestConfig {
 			throws RestClientException, JsonParseException, JsonMappingException, IOException {
 		mapper.registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
 		RestTemplate restTemplate = mock(RestTemplate.class);
-		mockLangResponse(restTemplate);
 		mockGenderResponse(restTemplate);
 		mockLocationResponse(restTemplate);
 		mockLocationHierarchyLAAResponse(restTemplate);
@@ -50,13 +49,6 @@ public class TestConfig {
 		mockDocumentTypesResponse(restTemplate);
 		mockResidenceStatusResponse(restTemplate);
 		return restTemplate;
-	}
-
-	private void mockLangResponse(RestTemplate restTemplate)
-			throws RestClientException, JsonParseException, JsonMappingException, IOException {
-		String response = "{\"id\":null,\"version\":null,\"responsetime\":\"2019-05-21T05:37:06.663Z\",\"metadata\":null,\"response\":{\"languages\":[{\"code\":\"eng\",\"name\":\"English\",\"family\":\"Indo-European\",\"nativeName\":\"English\",\"isActive\":true}]},\"errors\":null}";
-		when(restTemplate.getForObject("https://0.0.0.0/language", ObjectNode.class))
-				.thenReturn(mapper.readValue(response.getBytes(), ObjectNode.class));
 	}
 
 	private void mockGenderResponse(RestTemplate restTemplate)

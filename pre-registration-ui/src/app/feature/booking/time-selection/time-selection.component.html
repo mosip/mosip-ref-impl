@@ -1,4 +1,4 @@
-<mat-card class="time-selection__title-card" *ngIf="availabilityData.length !== 0" >
+<mat-card [dir]="textDir" class="time-selection__title-card" *ngIf="availabilityData.length !== 0" >
   <mat-card-header>
     <p class="time-selection__title-card-text">
       {{ 'timeSelection.title_book' | translate }}

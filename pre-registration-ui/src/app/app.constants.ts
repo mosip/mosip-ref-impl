@@ -6,7 +6,6 @@ export const NESTED_ERROR = 'errors';
 export const ERROR_CODE = 'errorCode';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
-export const DEFAULT_LANG_CODE = 'eng';
 export const IDSchemaVersionLabel = 'IDSchemaVersion';
 
 export const IDS = {
@@ -50,7 +49,7 @@ export const APPEND_URL = {
   booking_availability: 'appointment/availability/',
   delete_application: 'applications/',
   qr_code: 'qrCode/generate',
-  notification: 'notification/',
+  notification: 'notification',
   send_notification: 'notify',
   master_data: '/masterdata/',
   auth: 'login/',
@@ -95,8 +94,6 @@ export const CONFIG_KEYS = {
   preregistartion_identity_name : 'preregistartion.identity.name',
   mosip_regex_email: 'mosip.id.validation.identity.email',
   mosip_regex_phone: 'mosip.id.validation.identity.phone',
-  mosip_primary_language: 'mosip.primary-language',
-  mosip_secondary_language: 'mosip.secondary-language',
   mosip_left_to_right_orientation: 'mosip.left_to_right_orientation',
   mosip_kernel_otp_expiry_time: 'mosip.kernel.otp.expiry-time',
   mosip_kernel_otp_default_length: 'mosip.kernel.otp.default-length',
@@ -118,7 +115,6 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
   google_recaptcha_site_key: 'google.recaptcha.site.key',
   mosip_adult_age:'mosip.adult.age',
-  mosip_idschema_version:'mosip.idschema.version',
   preregistration_preview_fields:'preregistration.preview.fields'
 };
 
@@ -149,7 +145,8 @@ export const DEMOGRAPHIC_RESPONSE_KEYS = {
 export const APPLICATION_STATUS_CODES = {
   pending: 'Pending_Appointment',
   booked: 'Booked',
-  expired: 'Expired'
+  expired: 'Expired',
+  cancelled: 'Cancelled'
 };
 
 export const APPLICANT_TYPE_ATTRIBUTES = {
@@ -157,24 +154,6 @@ export const APPLICANT_TYPE_ATTRIBUTES = {
   dateofbirth: 'dateofbirth',
   genderCode: 'genderCode',
   biometricAvailable: 'biometricAvailable'
-};
-
-export const virtual_keyboard_languages = {
-  eng: 'en',
-  fra: 'fr',
-  ara: 'ar'
-};
-
-export const languageMapping = {
-  eng: {
-    langName: 'English'
-  },
-  ara: {
-    langName: 'عربى'
-  },
-  fra: {
-    langName: 'Français'
-  }
 };
 
 export const notificationDtoKeys = {
@@ -193,17 +172,3 @@ export const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 
 export const controlTypeGender = 'gender';
 export const controlTypeResidenceStatus = 'residenceStatus';
-export const TRANSLITERATE_FIELDS = ["fullName","addressLine1","addressLine2","addressLine3"];
-
-export const errorMessages = {
-  requiredMessage : {
-    eng : "Is Required",
-    ara : "مطلوب",
-    fra : "Est requis"
-  },
-  InvalidStringMessage: {
-    eng : "Invalid",
-    ara : "غير صالحة",
-    fra : "Invalide"
-  }
-}

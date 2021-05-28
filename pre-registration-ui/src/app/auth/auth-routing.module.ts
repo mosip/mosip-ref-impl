@@ -1,13 +1,15 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { DefaultLangGuardService } from './default-lang-guard.service';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { LoginComponent } from "./login/login.component";
 
-const authRoutes: Routes = [{ path: '', redirectTo : 'eng', pathMatch: 'full' },
-{ path: ':lang', component: LoginComponent, canActivate:[DefaultLangGuardService]}];
+
+const authRoutes: Routes = [
+  { path: "", component: LoginComponent },
+  { path: ":lang", component: LoginComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(authRoutes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AuthRoutingModule {}

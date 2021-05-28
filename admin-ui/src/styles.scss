@@ -56,7 +56,7 @@ h3 {
 // common css
 #flex-single-view {
   // padding-top: 10px;
-  overflow: hidden;
+  overflow: auto;
   .navigation {
     .material-icons {
       cursor: pointer;
@@ -67,7 +67,7 @@ h3 {
     margin:0px !important;
   }
   #flex-container {
-    overflow: auto;
+    overflow: scroll;
     max-height: 87vh;
     padding-bottom: 20px;
     scrollbar-width: none;
@@ -154,20 +154,37 @@ h3 {
       font-size: 10px;
       .primary-form {
         padding-left: 25px;
+        padding-right: 25px;
         padding-top: 30px;
         flex: 1;
         .mat-form-field {
           width: 100% !important;
         }
       }
-      .secondary-form {
-        padding-right: 25px;
+      .primary-form-rtl {
+        padding-left: 25px;
         padding-top: 30px;
         text-align: right;
         flex: 1;
         .mat-form-field {
           width: 100% !important;
           text-align: right;
+        }
+      }
+      .secondary-form {
+        padding-right: 25px;
+        padding-top: 30px;
+        flex: 1;
+        .mat-form-field {
+          width: 100% !important;
+        }
+      }
+      .secondary-form-ltr {
+        padding-right: 25px;
+        padding-top: 30px;
+        flex: 1;
+        .mat-form-field {
+          width: 100% !important;
         }
       }
       .flex-display {

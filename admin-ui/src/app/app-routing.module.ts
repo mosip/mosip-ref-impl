@@ -37,6 +37,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'rid-status',
+        loadChildren: () =>
+          import('./features/rid-status/rid-status.module').then(
+            m => m.RidStatusModule
+          )
+      },
+      {
         path: 'bulkupload',
         loadChildren: () =>
           import('./features/bulkupload/bulkupload.module').then(

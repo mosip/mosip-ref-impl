@@ -274,7 +274,9 @@
     "logout_msg": "يجب على مقدم الطلب تسجيل الدخول بنفس الهاتف المحمول / البريد الإلكتروني للوصول إلى التطبيقات التي تم إنشاؤها",
     "invalidEmail": "تم إدخال معرف البريد الإلكتروني غير صالح",
     "invalidMobile": "تم إدخال رقم جوال غير صالح",
-    "invalidInput": "تم إدخال معرف البريد الإلكتروني أو رقم الجوال غير صالح"
+    "invalidInput": "تم إدخال معرف البريد الإلكتروني أو رقم الجوال غير صالح",
+    "serverUnavailable": "تعذر إرسال Otp. أعد المحاولة ..",
+    "loading": "جاري الإرسال ..."
   },
   "stepper": {
     "link_demographic": "التفاصيل الديموغرافية",
@@ -313,6 +315,9 @@
     "action_back": "الى الخلف",
     "action_continue": "استمر",
     "action_preview": "معاينة",
+    "read_only_message": "** لم يعد بإمكانك تعديل هذا التطبيق ، لأنك حجزت موعدًا حاليًا أو سابقًا لذلك! إذا كنت لا تزال ترغب في إجراء تغييرات ، فتجاهل هذا التطبيق وقم بعمل تطبيق جديد.",
+    "lookup_search_message": "يبحث ",
+    "lookup_no_results_found": "لم يتم العثور على نتائج مطابقة.",
     "consent": {
       "title": "الأحكام والشروط",
       "subtitle": "موافقتك",
@@ -324,23 +329,9 @@
       "alertMessageThird": "ستتم إعادة توجيهك إلى صفحة المعاينة بسبب عدم قبول الشروط والأحكام"
     },
     "validation": {
-      "name_required": "الإسم الكامل ضروري",
-      "age_validation": "يجب أن يكون العمر أقل من 150",
-      "gender_validation": "يرجى تحديد الجنس",
-      "nationality_validation": "يرجى اختيار حالة الإقامة",
       "DOB_validation": "أدخل تاريخ الميلاد أو العمر الصحيح",
-      "date_required": "مطلوب رقمين التاريخ",
-      "month_required": "أدخل رقمين رقميين للشهر",
-      "year_required": "أدخل رقمين رقميين للسنة",
-      "address_required": "العنوان مطلوب",
-      "region_required": "يرجى اختيار المنطقة",
-      "province_required": "يرجى اختيار مقاطعة",
-      "city_required": "يرجى اختيار المدينة",
-      "admin_required": "يرجى اختيار المنطقة",
-      "postal_code_required": "الرجاء إدخال رمز بريدي صالح",
-      "mobile_required": "يرجى إدخال رقم هاتف محمول صحيح",
-      "email_required": "الرجاء إدخال معرف البريد الإلكتروني الصحيح",
-      "pin_required": "الرجاء إدخال رقم هوية مرجعي صالح"
+      "requiredMessage":"مطلوب",
+      "InvalidMessage":"غير صالح"
     }
   },
 
@@ -355,20 +346,24 @@
     "label_sameas": "مثل",
     "text_or": "أو",
     "action_view": "رأي",
-    "OR": "أو"
+    "OR": "أو",
+    "text_docrefid": "معرف مرجع المستند",
+    "sameAs": "مثل",
+    "sameAsNone": "لا أحد"
   },
   "acknowledgement": {
     "title": "تم تأكيد الموعد",
     "message": "تم إرسال تفاصيل هوية وتاريخ Pre-Registration إلى معرف البريد الإلكتروني المسجل ورقم الهاتف",
     "label_name": "اسم",
     "label_pre_id": "معرف التسجيل المسبق",
-    "label_reg_cntr": "مركز التسجيل",
+    "label_reg_cntr": "اسم المركز",
     "label_cntr_contact_number": "رقم مركز الاتصال",
     "label_appointment_date_time": "موعد ووقت الموعد",
     "container_guideline": "المبادئ التوجيهية الهامة",
     "action_send": "إرسال EMAIL / SMS",
     "action_download": "تحميل PDF",
-    "action_print": "طباعة"
+    "action_print": "طباعة",
+    "label_reg_cntr_dtl": "عنوان المركز"
   },
   "preview": {
     "title_preview": "معاينة",
@@ -443,7 +438,8 @@
       "text_appoinment_date": "موعد موعد",
       "text_status": "الحالة",
       "action_modify_information": "تعديل المعلومات",
-      "action_view_acknowledgement": "عرض إقرار"
+      "action_view_acknowledgement": "عرض إقرار",
+      "action_view_information": "عرض المعلومات"
     },
     "discard": {
       "title_confirm": "تؤكد",
@@ -465,11 +461,19 @@
     "status": {
       "pendingAppointment": "في انتظار الموعد",
       "booked": "حجز",
-      "expired": "منتهية الصلاحية"
+      "expired": "منتهية الصلاحية",
+      "cancelled": "ألغيت"
     },
     "error": {
       "error": "خطأ في الخادم الداخلي. من فضلك حاول مرة أخرى بعد بعض من الوقت.",
       "button_ok": "حسنا"
+    },
+    "dataCaptureLanguage":{
+      "title":"اختار اللغة",
+      "message":["الرجاء التحديد","يمكنك تحديد الحد الأدنى "," والحد الأقصى","لغات لإدخال البيانات.","إلزامي للمقيم للاختيار وفقًا لإرشادات الحكومة.","سيؤدي ترتيب الاختيار إلى عرض صفحة للبيانات الديموغرافية."],
+      "error_text":["يمكنك الاختيار على الأكثر","لغات لإدخال البيانات."],
+      "cancel_btn":"يلغي",
+      "submit_btn":"يقدم"
     }
   },
   "timeSelection": {
@@ -492,7 +496,13 @@
       "msg_failure": "فشل موعد الحجز",
       "deletedApplicant1": ["لم تقم بتحديد أي فترة زمنية لمتابعة المستخدم", "هل ترغب في مواصلة الحجز"],
       "yesButtonText": "نعم فعلا",
-      "noButtonText": "لا"
+      "noButtonText": "لا",
+      "applicationLockConfirm":{
+        "title":"تأكيد",
+        "message":"لا يمكن تعديل تفاصيل التطبيق مرة أخرى بمجرد الحجز. الرجاء الضغط على تأكيد لحجز موعد",
+        "yesButtonText": "يتأكد",
+        "noButtonText": "يلغي"
+      }
     }
   },
   "appointmentCentreSearch": {
@@ -526,7 +536,7 @@
     "action_add": "إضافة",
     "action_close": "قريب",
     "action_add_to_slot": "أضف إلى الفتحة",
-    "navigation_alert": "Are you sure you would like to navigate away as data entered will not be saved. Please confirm(ARA)"
+    "navigation_alert": "هل أنت متأكد من رغبتك في التنقل بعيدًا حيث لن يتم حفظ البيانات التي تم إدخالها. يرجى تأكيد"
   },
   "centerSelection": {
     "title": " موعد الكتاب ",
@@ -553,7 +563,8 @@
     "status": {
       "pendingAppointment": "لم يتم حجز الموعد بعد",
       "booked": "يتم حجز الموعد بنجاح",
-      "expired": "الموعد المعين قد مر"
+      "expired": "الموعد المعين قد مر",
+      "cancelled":"تم إلغاء الموعد"
     },
     "deleteIcon": "يمكنك إما تجاهل التطبيق بالكامل أو إلغاء الموعد وحفظ التفاصيل.",
     "book/modify_appointment": "يجب عليك وضع علامة في خانة الاختيار بالقرب من معرف التسجيل المسبق لأحد المتقدمين أو عدة لحجز / تعديل الموعد",
@@ -566,7 +577,8 @@
     "recommended_centers": "قائمة المركز الموصى به حسب الرمز البريدي الخاص بك",
     "nearBy": "مراكز التسجيل على أساس موقعك الجغرافي",
     "magnifying_glass": "البحث يعتمد على اختيار القائمة المنسدلة.",
-    "preview_continue": "تحميل جميع الملفات للمتابعة"
+    "preview_continue": "تحميل جميع الملفات للمتابعة",
+    "lockIcon":"لا يمكن تعديل تفاصيل الطلب بمجرد حجز الموعد أو إلغاؤه أو انتهاء صلاحيته"
   },
   "error": {
     "error": "حدث خطأ فني ولا يمكن إتمام العملية. لا يجوز حفظ أي بيانات مقدمة",
@@ -582,7 +594,8 @@
     "timeExpired_2": " ساعات الحجز",
     "errorLabel": "خطأ",
     "regCenterNotavailabe":"مركز التسجيل غير متاح.",
-    "centerDetailsNotAvailable":"لا يمكن عمل حجز المواعيد أو إعادة الحجز. الرجاء معاودة المحاولة في وقت لاحق."
+    "centerDetailsNotAvailable":"لا يمكن عمل حجز المواعيد أو إعادة الحجز. الرجاء معاودة المحاولة في وقت لاحق.",
+    "fileUploadDeactivateMsg":"يرجى تحميل المستند المطلوب للمتابعة."
   },
   "residentTypesMapping": {
     "NFR": "الوطني",

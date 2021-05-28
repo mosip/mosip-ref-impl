@@ -78,9 +78,7 @@ export class AppComponent implements OnInit {
   isPrimaryOrSecondaryLanguageEmpty(): boolean {
     if (
       this.primaryLangCode === null ||
-      this.primaryLangCode.trim().length === 0 ||
-      this.secondaryLangCode === null ||
-      this.secondaryLangCode.trim().length === 0
+      this.primaryLangCode.trim().length === 0
     ) {
       return true;
     } else {

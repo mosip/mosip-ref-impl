@@ -7,6 +7,7 @@
 }
 
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  /* margin-bottom: 3px; */
   color: #22a8c9;
 }
 
@@ -27,11 +28,10 @@
 }
 
 .user {
-  background-color: #ffffff;
-    margin: auto;
+  background-color:  #ffffff;
+  margin: auto;
   padding: 1rem 2rem 0 2rem;
   padding-top: 1rem;
-  background-color: white;
   border-bottom: 1px solid lightgray;
   width: 100%;
   display: inline-block;
@@ -40,6 +40,11 @@
 .user header {
   margin: 0;
   font-weight: bold;
+  color: #fd518c;
+}
+
+.readOnly {
+  margin: 0;
   color: #fd518c;
 }
 
@@ -57,7 +62,7 @@
   padding: 1rem 0rem 1rem 0rem;
   /* margin-top: 1rem; */
   margin-bottom: 2rem;
-   width: 50%;
+  width: 50%;
   /* margin-left: 2%; */
   float: left;
 }
@@ -65,7 +70,7 @@
 /* .user__container:focus-within {
   box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.3);
 } */
-.user_container_single_form{
+.user_container_single_form {
   font-size: 0.8rem;
   /* box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.3); */
   padding: 1rem 0rem 1rem 0rem;
@@ -87,6 +92,7 @@
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
+  background-color: white;
   font-family: "Roboto", sans-serif;
 }
 
@@ -114,15 +120,14 @@
   font-weight: 300;
 }
 
-.primary-errors{
+.primary-errors {
   font-size: 9.5px;
 
   margin-left: 5px;
 }
-.secondary-errors{
+.secondary-errors {
   font-size: 9.5px;
   margin-right: 5px;
-
 }
 ::ng-deep svg.mat-datepicker-toggle-default-icon {
   padding-bottom: 10px !important;
@@ -147,17 +152,16 @@ mat-icon {
   /* width: 92%; */
   width: 95%;
   padding: 3px;
-  color: #838383;
-  font-size: 0.8rem;
 }
 
-.mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+/* .mat-form-field-appearance-legacy.mat-form-field-disabled
+  .mat-form-field-underline {
   background-image: none;
-}
+} */
 
 .user__age-or-date {
   display: flex;
-  width: 87.5%;
+  width: 100%;
   align-items: center;
 }
 
@@ -322,13 +326,15 @@ mat-icon {
   color: #ff0000;
 }
 
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
   color: lightgrey;
   border-bottom: 2px solid #22a8c9;
-}
+} 
 
-.required-annotation{
-  color: red;
+.required-annotation {
+  color: white;
   margin-left: 3px;
 }
 
@@ -374,4 +380,55 @@ mat-icon {
     margin-top: 0.8rem;
     font-size: 0.8rem;
   }
+}
+.btn_grp {
+  display: flex;
+  margin-bottom: 6px;
+  margin-top: 6px;
+  border: 0px;
+}
+
+.btn_grp mat-button-toggle {
+  font-weight: inherit;
+  font-size: 0.7rem;
+  margin-right: 10px;
+  height: fit-content;
+  color: rgb(128, 125, 125);
+  border: 1px solid rgb(128, 125, 125);
+  border-radius: 0%;
+}
+
+.btn_grp .mat-button-toggle-checked {
+  background-color: lightgray;
+  color: rgb(128, 125, 125);
+}
+
+.form_checkBox {
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+.rowContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+.fieldContainer {
+  flex:1;
+  width: 400px;
+  margin: 10px;
+  position:relative;
+  min-width: 95%;
+}
+.fieldHeader {
+  width: 400px;
+  color: white;
+  min-height: 40px;
+  padding: 10px;
+  background-color:rgb(11, 106, 130) ;
+}
+.fieldContent {
+  padding: 10px;
+  box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
+}
+.selectedOption {
+  padding: 10px;
 }

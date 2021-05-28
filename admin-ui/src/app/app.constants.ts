@@ -7,6 +7,8 @@ export const URL = {
   centers: `masterdata/registrationcenters/search`,
   devices: `masterdata/devices/search`,
   machines: `masterdata/machines/search`,
+  'rid-status': `masterdata/packet/search`,
+  users: `masterdata/users/search`,
   documentCategories: `masterdata/documentcategories`,
   mappedDocUrl: `masterdata/documenttypes/`,
   unMappedDocUrl: `masterdata/documenttypes/`
@@ -66,6 +68,14 @@ export const navItems = [
     roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
   },
   {
+    displayName: 'menuItems.item5.title',
+    icon: './assets/images/id-card.svg',
+    route: '/admin/rid-status',
+    children: null,
+    auditEventId: 'ADM-009',
+    roles: ['GLOBAL_ADMIN']
+  },
+  {
     displayName: 'menuItems.item3.title',
     icon: './assets/images/id-card.svg',
     route: '/admin/masterdata',
@@ -74,19 +84,19 @@ export const navItems = [
     roles: ['GLOBAL_ADMIN']
   },
   {
-    displayName: 'menuItems.item5.title',
+    displayName: 'menuItems.item6.title',
     icon: 'assets/images/support.svg',
     route: 'admin/bulkupload',
     children: [
       {
-        displayName: 'menuItems.item5.subItem1',
+        displayName: 'menuItems.item6.subItem1',
         icon: null,
         route: '/admin/bulkupload/masterdataupload',
         auditEventId: 'ADM-004',
         roles: ['GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item5.subItem2',
+        displayName: 'menuItems.item6.subItem2',
         icon: null,
         route: '/admin/bulkupload/packetupload',
         auditEventId: 'ADM-005',
@@ -97,40 +107,40 @@ export const navItems = [
     roles: ['GLOBAL_ADMIN']
   },
   {
-    displayName: 'menuItems.item6.title',
+    displayName: 'menuItems.item7.title',
     icon: 'assets/images/support.svg',
     route: 'admin/keymanager',
     children: [
       {
-        displayName: 'menuItems.item6.subItem1',
+        displayName: 'menuItems.item7.subItem1',
         icon: null,
         route: '/admin/keymanager/generatecsr',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem2',
+        displayName: 'menuItems.item7.subItem2',
         icon: null,
         route: '/admin/keymanager/generatemasterkey',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem3',
+        displayName: 'menuItems.item7.subItem3',
         icon: null,
         route: '/admin/keymanager/getcertificate',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem4',
+        displayName: 'menuItems.item7.subItem4',
         icon: null,
         route: '/admin/keymanager/uploadcertificate',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
-        displayName: 'menuItems.item6.subItem5',
+        displayName: 'menuItems.item7.subItem5',
         icon: null,
         route: '/admin/keymanager/uploadotherdomaincertificate',
         auditEventId: 'ADM-004',
@@ -155,6 +165,18 @@ export const registrationMachineCreateId = 'string';
 export const viewFields = [];
 
 export const masterdataMapping = {
+  users: {
+    apiName: 'users',
+    specFileName: 'users',
+    name: {
+      eng: 'Users',
+      ara: 'قوالب',
+      fra: 'Modèles'
+    },
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Users'
+  },
   'blacklisted-words': {
     apiName: 'blacklistedwords',
     specFileName: 'blacklisted-words',
@@ -202,30 +224,6 @@ export const masterdataMapping = {
     nameKey: 'postalCode',
     idKey: 'postalCode',
     headerName: 'Location'
-  },
-  'gender-type': {
-    apiName: 'gendertypes',
-    specFileName: 'gender-types',
-    name: {
-      eng: 'Gender',
-      ara: 'جنس',
-      fra: 'Le sexe'
-    },
-    nameKey: 'genderName',
-    idKey: 'code',
-    headerName: 'Gender Type'
-  },
-  title: {
-    apiName: 'title',
-    specFileName: 'titles',
-    name: {
-      eng: 'Titles',
-      ara: 'العناوين',
-      fra: 'Les titres'
-    },
-    nameKey: 'titleName',
-    idKey: 'code',
-    headerName: 'Title'
   },
   templates: {
     apiName: 'templates',
@@ -323,6 +321,18 @@ export const masterdataMapping = {
     idKey: 'code',
     headerName: 'Individual Type'
   },
+  dynamicfields: {
+    apiName: 'dynamicfields',
+    specFileName: 'dynamicfields',
+    name: {
+      "eng": "Dynamic Field",
+      "ara": "مجال ديناميكي",
+      "fra": "Champ dynamique"
+    },
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Dynamic Field'
+  },
   documentCategoryMapping: {
     name: {
       eng: 'Document Category - Type Mapping',
@@ -348,6 +358,7 @@ export const ListViewIdKeyMapping = {
     imagePath: 'assets/images/Machine.png',
     auditEventId: 'ADM-066'
   },
+  users: { idKey: 'id', auditEventId: 'ADM-084' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },
@@ -364,7 +375,8 @@ export const ListViewIdKeyMapping = {
   holiday: { idKey: 'holidayId', auditEventId: 'ADM-080' },
   masterdataupload : { idKey: 'transcationId', auditEventId: 'ADM-081' },
   packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' },
-  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' }
+  getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' },
+  dynamicfields : { idKey: 'id', auditEventId: 'ADM-084' }
   
 };
 
@@ -436,6 +448,18 @@ export const FilterMapping = {
   'individual-type': {
     apiName: 'individualtypes',
     specFileName: 'individual-types'
+  },
+  dynamicfields: {
+    apiName: 'dynamicfields',
+    specFileName: 'dynamicfields'
+  },
+  users: {
+    apiName: 'users',
+    specFileName: 'user'
+  },
+  'rid-status': {
+    apiName: 'packet',
+    specFileName: 'rid-status'
   }
 };
 

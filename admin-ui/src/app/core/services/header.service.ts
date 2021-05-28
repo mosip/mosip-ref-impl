@@ -8,7 +8,9 @@ export class HeaderService {
   private Username = '';
   private roles = '';
   private zone = '';
-
+  private displayUserName = '';
+  private userPreferredLanguage = '';
+  
   constructor() { }
 
   setUsername(username: string) {
@@ -40,6 +42,27 @@ export class HeaderService {
   getZone(): string {
     return this.zone;
   }
+
+  setDisplayUserName(displayUserName: string) {
+    this.displayUserName = displayUserName;
+  }
+
+  getDisplayUserName(): string {
+    return this.displayUserName;
+  }
+
+  setUserPreferredLanguage(userPreferredLanguage: string) {
+    this.userPreferredLanguage = userPreferredLanguage;
+  }
+
+  getUserPreferredLanguage(): string {
+    if(this.userPreferredLanguage){
+      return this.userPreferredLanguage;
+    }else{
+      return "eng";
+    }    
+  }
+
 }
 
 

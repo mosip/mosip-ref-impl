@@ -1,7 +1,5 @@
-import { DatePipe, registerLocaleData } from '@angular/common';
-import * as appConstants from './app.constants';
-import localeFr from '@angular/common/locales/fr';
-import localeAr from '@angular/common/locales/ar';
+import { DatePipe, registerLocaleData } from "@angular/common";
+import * as appConstants from "./app.constants";
 import localeEn from '@angular/common/locales/en';
 
 export default class Utils {
@@ -25,31 +23,56 @@ export default class Utils {
     }
   }
 
-  static getBookingDateTime(appointment_date: string, time_slot_from: string, language: string) {
-    registerLocaleData(localeEn, appConstants.virtual_keyboard_languages.eng);
-    registerLocaleData(localeAr, appConstants.virtual_keyboard_languages.ara);
-    registerLocaleData(localeFr, appConstants.virtual_keyboard_languages.fra);
+  static async localeInitializer(localeId: string) {
+    return new Promise(async function (resolve) {
+      const module = await import(`@angular/common/locales/${localeId}.js`);
+      registerLocaleData(module.default);
+      localStorage.setItem(localeId, JSON.stringify(module.default));
+      console.log(`registered localeId: ${localeId}`);
+      resolve(true);
+    })
+  }
 
-    const pipe = new DatePipe(appConstants.virtual_keyboard_languages[language]);
-    const date = appointment_date.split('-');
-    let appointmentDateTime = date[2] + ' ' + appConstants.MONTHS[Number(date[1])] + ' ' + date[0];
-    appointmentDateTime = pipe.transform(appointmentDateTime, 'MMM');
-    date[1] = appointmentDateTime;
-    if (language === 'ara') {
-      appointmentDateTime = date.join(' ');
+  static getBookingDateTime(appointment_date: string, time_slot_from: string, language: string) {
+    let localeId = language.substring(0, 2);
+    //console.log(`getBookingDateTime: ${localeId}`);
+    const localeData = localStorage.getItem(localeId);
+    let proceed = false;
+    if (localeData !== null) {
+      registerLocaleData(JSON.parse(localeData));
+      //console.log(`registered localeId: ${localeId}`);
+      proceed = true;
     } else {
-      appointmentDateTime = date.reverse().join(' ');
+      registerLocaleData(localeEn, 'en');
+      proceed = true;
     }
-    return appointmentDateTime;
+    if (proceed) {
+      const pipe = new DatePipe(localeId);
+      const date = appointment_date.split("-");
+      let appointmentDateTime =
+        date[2] + " " + appConstants.MONTHS[Number(date[1])] + " " + date[0];
+      appointmentDateTime = pipe.transform(appointmentDateTime, "MMM");
+      date[1] = appointmentDateTime;
+  
+      if (language === "ara") {
+        appointmentDateTime = date.join(" ");
+      } else {
+        appointmentDateTime = date.reverse().join(" ");
+      }
+      //console.log(appointmentDateTime);
+      return appointmentDateTime;
+    } else {
+      return appointment_date;
+    }
   }
 
   static formatTime(time_slot_from: string) {
-    const time = time_slot_from.split(':');
+    const time = time_slot_from.split(":");
     const appointmentDateTime =
       (Number(time[0]) > 12 ? Number(time[0]) - 12 : Number(time[0])) +
-      ':' +
+      ":" +
       time[1] +
-      (Number(time[0]) >= 12 ? ' PM' : ' AM');
+      (Number(time[0]) >= 12 ? " PM" : " AM");
     return appointmentDateTime;
   }
 }

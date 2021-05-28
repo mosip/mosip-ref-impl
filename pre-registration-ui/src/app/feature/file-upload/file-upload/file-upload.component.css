@@ -139,8 +139,9 @@ mat-select:focus {
 }
 
 .file-upload__body__document-type {
-  padding: 10px 0px;
+  padding: 10px 15px;
   min-height: 100px;
+
 }
 
 .file-upload__body__document-name {
@@ -230,10 +231,12 @@ mat-select:focus {
 .file-upload__input,
 .file-upload__or {
   width: 33%;
+  padding-left: 10px;
 }
 .file-upload__docrefid {
   width: 33%;
   padding-left: 10px;
+  padding-right: 10px;
 }
 .file-upload__or {
   padding-left: 1rem;
@@ -296,4 +299,22 @@ mat-select:focus {
   margin-top: 18vw;
   display: flex;
 
+}
+.fieldContainer {
+  flex:1;
+  width: 560px;
+  margin: 10px;
+  position:relative;
+  min-width: 95%;
+}
+.fieldHeader {
+  width: 560px;
+  color: white;
+  min-height: 40px;
+  padding: 10px;
+  background-color:rgb(11, 106, 130) ;
+}
+.fieldContent {
+  padding: 10px;
+  box-shadow:         1px 1px 1px 1px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }

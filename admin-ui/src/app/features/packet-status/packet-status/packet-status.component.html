@@ -4,7 +4,7 @@
            <span style=" font-family: Roboto, sans-serif; margin-left:30px; font-size: 12px;">{{'packet-status.text' | translate}}</span> 
         <br><br>
         <mat-form-field class="packet-status__input-placer">
-            <input matInput placeholder="Enter ID" [(ngModel)]="id"/>
+            <input matInput placeholder="{{'packet-status.input-text' | translate}}" [(ngModel)]="id"/>
         </mat-form-field>
         <img src="./assets/images/search.png" (click)="search()" alt="search" class="packet-status__image-placer" height="20px" width="20px">
         <mat-error style="margin-left: 30px ;font-size: 9.5px" *ngIf="error">{{'packet-status.error' | translate}}</mat-error>

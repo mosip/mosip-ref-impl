@@ -22,7 +22,7 @@
 }
 .heading {
   font-family: 'Roboto';
-  font-size: 24px;
+  font-size: 20px;
   color: #fd518c;
   opacity: 100%;
   line-height: 20px;
@@ -33,16 +33,16 @@
 }
 
 img {
-  padding-right: 5px;
+  padding-right: 2px;
 }
 .modify-info-btn {
   color: #fd518c;
   border: 1px solid #fd518c;
   border-radius: 0px;
-  margin-left: 12px;
+  margin-left: 15px !important;
   margin-top: 30px;
   font-family: 'Roboto';
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .modify-app-btn {
   color: #fd518c;
@@ -51,7 +51,7 @@ img {
   margin-left: 12px;
   margin-top: 30px;
   font-family: 'Roboto';
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .create-app-btn {
   color: #ffffff;
@@ -76,7 +76,7 @@ img {
 }
 .card-header {
   font-family: 'Roboto';
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   opacity: 100%;
   display: flex;
   background-color: #d8f7ff;
@@ -84,21 +84,21 @@ img {
   min-height: 40px;
 }
 .mat-card {
-  width: 335px;
-  height: 240px;
+  width: 310px;
+  height: 225px;
   padding: 0;
   box-shadow: 1px 1px 1px;
   opacity: 100%;
   border-radius: 0;
 }
 .mat-card-content {
-  margin-top: 20px;
+  margin-top: 12px !important;
 }
 .card-content {
   font-family: 'Roboto';
   color: #838383;
   opacity: 90%;
-  font-size: 12px;
+  font-size: 10.5px;
   white-space: nowrap;
   margin-left: 25px;
   width: 335px;
@@ -145,17 +145,22 @@ img {
 }
 
 .modify-app-img {
-  height: 15px;
+  height: 10px;
   transform: translateY(0.1rem);
 }
 .create-app-img {
-  height: 11px;
+  height: 8px;
 }
 .view-img {
   height: 18px;
 }
 .delete-img {
   height: 18px;
+}
+.lock-img {
+  height: 17px;
+  margin-top: 4px;
+  padding-right: 15px;
 }
 #status {
   padding-left: 10px;

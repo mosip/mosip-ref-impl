@@ -117,18 +117,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.sortFilter.push({"sortType":"desc","sortField":"timeStamp"});      
     }
     this.requestModel = new RequestModel(null, null, filters);
-    console.log("filters>>>"+JSON.stringify(filters));
-    console.log(JSON.stringify(this.requestModel));
     this.bulkuploadService
       .getUploadDetails(this.requestModel, "masterdata", filters.pagination.pageStart, filters.pagination.pageFetch)
       .subscribe(({ response, errors }) => {
-        console.log(response);
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalItems;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
-          console.log(this.paginatorOptions);
-          if (response.data !== null) {
+          if (response.data.length) {
             this.datas = response.data ? [...response.data] : [];
           } else {
             this.noData = true;

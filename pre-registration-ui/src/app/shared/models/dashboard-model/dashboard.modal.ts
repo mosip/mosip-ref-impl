@@ -13,6 +13,5 @@ export interface Applicant {
   appointmentTime: string;
   status: string;
   regDto: any;
-  nameInSecondaryLanguage: string;
   postalCode: string;
 }

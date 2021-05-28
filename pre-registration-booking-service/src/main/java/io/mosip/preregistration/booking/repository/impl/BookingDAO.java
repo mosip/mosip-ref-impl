@@ -7,7 +7,9 @@ package io.mosip.preregistration.booking.repository.impl;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.mosip.kernel.core.dataaccess.exception.DataAccessLayerException;
+import io.mosip.preregistration.booking.dto.SlotTimeDto;
 import io.mosip.preregistration.booking.entity.AvailibityEntity;
 import io.mosip.preregistration.booking.errorcodes.ErrorCodes;
 import io.mosip.preregistration.booking.errorcodes.ErrorMessages;
@@ -280,14 +283,18 @@ public class BookingDAO {
 	 * @return
 	 */
 	public List<String> findByBookingDateBetweenAndRegCenterId(LocalDate fromLocaldate, LocalDate toLocaldate,
-			String regCenterId) {
-		List<String> listOfPreIds = new ArrayList<>();
+			String regCenterId,Map<String,Map<LocalDate,SlotTimeDto>> idsWithSlotTime) {
+		List<String> listOfPreIds = new ArrayList<>();		
 		try {
 			if (regCenterId != null && !regCenterId.isEmpty()) {
 				List<RegistrationBookingEntity> entities = registrationBookingRepository
 						.findByRegDateBetweenAndRegistrationCenterId(fromLocaldate, toLocaldate, regCenterId);
 				if (entities != null && !entities.isEmpty()) {
-					for (RegistrationBookingEntity entity : entities) {
+					for (RegistrationBookingEntity entity : entities) {						
+						Map<LocalDate,SlotTimeDto> appointmentDate = new HashMap<LocalDate,SlotTimeDto>();						
+						appointmentDate.put(entity.getRegDate(),
+								new SlotTimeDto(entity.getSlotFromTime(), entity.getSlotToTime()));
+						idsWithSlotTime.put(entity.getDemographicEntity().getPreRegistrationId(), appointmentDate);
 						listOfPreIds.add(entity.getDemographicEntity().getPreRegistrationId());
 					}
 				} else {

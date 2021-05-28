@@ -7,4 +7,6 @@ export interface NameList {
   registrationCenter?: any;
   bookingData?: any;
   postalCode?: string;
+  langCode?: string;
+  labelDetails?: any;
 }

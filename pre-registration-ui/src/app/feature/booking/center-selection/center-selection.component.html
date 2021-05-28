@@ -1,4 +1,4 @@
-<div class="center_selection-wrapper" *ngIf="isWorkingDaysAvailable">
+<div [dir]="textDir" class="center_selection-wrapper" *ngIf="isWorkingDaysAvailable">
   <!-- Header -->
   <mat-card class="center-selection__title-card">
     <mat-card-header>
@@ -42,8 +42,9 @@
       <ng-template #elseBlock>
         <div class="center_selection-form-container">
           <form class="search-form">
-            <mat-card class="select-card">
+            <mat-card class="select-card" style="border-radius: 0 !important;">
               <mat-select
+               style="font-size: 11.5px;"
                 disableOptionCentering
                 name="select"
                 class="select-input"
@@ -83,7 +84,7 @@
               >
                 <img src="assets\search_grey.png" />
               </button>
-              <button mat-icon-button class="search-cancel-btn" type="button" (click)="setSearchClick(true)">
+              <button mat-icon-button class="search-cancel-btn" type="button" (click)="setSearchClick(true);resetPagination();">
                 <img src="assets\close.png" />
               </button>
             </mat-card>
@@ -99,7 +100,7 @@
           class="center_selection-center-available-text"
         >
           {{ 'centerSelection.text_found' | translate }}
-          {{ REGISTRATION_CENTRES.length }}
+          {{ REGISTRATION_CENTRES.length > this.totalItems ? REGISTRATION_CENTRES.length: this.totalItems }}
           {{ 'centerSelection.text_centers' | translate }}
         </span>
         <span
@@ -171,6 +172,15 @@
           </li>
         </ul>
       </div>
+      <span  *ngIf="this.totalItems !== 0">
+        <mat-paginator 
+          [length]="this.totalItems"
+          [pageSize]="this.pageSize"
+          [pageSizeOptions]="this.pageSizeOptions"
+          (page)="showResults(pageEvent = $event)"
+          >
+        </mat-paginator>
+      </span>
     </div>
 
     <div class="map" *ngIf="showMap">

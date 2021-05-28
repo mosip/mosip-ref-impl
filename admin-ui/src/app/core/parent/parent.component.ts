@@ -7,7 +7,7 @@ import * as cloneObject from 'lodash/cloneDeep';
 import * as appConstants from '../../app.constants';
 import { AppConfigService } from 'src/app/app-config.service';
 import { RolesService } from '../services/roles.service';
-
+import { HeaderService } from 'src/app/core/services/header.service';
 
 
 @Component({
@@ -25,11 +25,11 @@ export class ParentComponent implements OnInit, AfterViewInit {
   languageData: any;
   navItems: NavItem[];
   primaryLang: string;
-  secondaryLang: string;
 
   constructor(private sideMenuService: SideMenuService,
               private translateService: TranslateService,
               private appConfigService: AppConfigService,
+              private headerService: HeaderService,
               public rolesService: RolesService) {
     this.screenWidth = window.innerWidth;
     window.onresize = () => {
@@ -38,8 +38,7 @@ export class ParentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.primaryLang = this.appConfigService.getConfig()['primaryLangCode'];
-    this.secondaryLang = this.appConfigService.getConfig()['secondaryLangCode'];
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     this.translateService.use(this.primaryLang);
     this.navItems = cloneObject(appConstants.navItems);
   }

@@ -13,6 +13,7 @@ import * as appConstants from 'src/app/app.constants';
 import { CommonService } from 'src/app/core/services/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-table',
@@ -44,16 +45,18 @@ export class TableComponent implements OnInit, OnChanges {
     private appConfig: AppConfigService,
     private commonService: CommonService,
     private translate: TranslateService,
+    private headerService: HeaderService,
     private auditService: AuditService
   ) {
-   translate.use(appConfig.getConfig().primaryLangCode);
+    let lang = headerService.getUserPreferredLanguage();
+   translate.use(lang);
   }
   ngOnInit(): void {
     this.tableData = [...this.data];
     console.log(this.tableData);
     console.log(this.displayedColumns);
     this.sortStatusArray = [];
-    this.lang = this.appConfig.getConfig().primaryLangCode;
+    this.lang = this.headerService.getUserPreferredLanguage();
     const route = this.router.url.split('/')[3];
     this.imageSource = appConstants.ListViewIdKeyMapping[`${route}`]['imagePath'];
     console.log(this.imageSource);
@@ -85,10 +88,11 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   selectedRow(data: any, specData: any) {
-    console.log(data, specData);
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     if (specData.callBackFunction && specData.callBackFunction !== '') {
+      console.log("selectedRow id.idKey>>>"+id.idKey);
+      console.log("data>>>"+JSON.stringify(data));
       this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
     }
   }
@@ -125,7 +129,6 @@ export class TableComponent implements OnInit, OnChanges {
       masterdataName: this.router.url.split('/')[3],
       columnName
     });
-    console.log(this.sortIconTrackerArray);
     const sortObject = this.sortData.filter(
       data => data.sortField === columnName
     );
@@ -140,8 +143,8 @@ export class TableComponent implements OnInit, OnChanges {
         sortModel.sortType = 'desc';
         this.sortIconTrackerArray[columnIndex] = -1;
       } else if (sortModel.sortType.toLowerCase() === 'desc') {
-        sortModel.sortType = null;
-        this.sortIconTrackerArray[columnIndex] = 0;
+        sortModel.sortType = 'asc';
+        this.sortIconTrackerArray[columnIndex] = 1;
       }
     }
     console.log(this.sortStatusArray);
