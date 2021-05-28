@@ -1129,17 +1129,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   updateUsers(fileResponse) {
+    //console.log(fileResponse);
     let i = 0;
-    this.file = new FileModel();
-    this.userFile[0] = this.file;
-    this.userFile[0].docCatCode = fileResponse.response.docCatCode;
-    this.userFile[0].doc_file_format = fileResponse.response.docFileFormat;
-    this.userFile[0].documentId = fileResponse.response.docId;
-    this.userFile[0].docName = fileResponse.response.docName;
-    this.userFile[0].docTypCode = fileResponse.response.docTypCode;
-    this.userFile[0].multipartFile = this.fileByteArray;
-    this.userFile[0].prereg_id = this.users[0].preRegId;
-    this.userFile[0].docRefId = fileResponse.response.docRefId;
+    let fileObject = new FileModel();
+    fileObject.docCatCode = fileResponse.response.docCatCode;
+    fileObject.doc_file_format = fileResponse.response.docFileFormat;
+    fileObject.documentId = fileResponse.response.docId;
+    fileObject.docName = fileResponse.response.docName;
+    fileObject.docTypCode = fileResponse.response.docTypCode;
+    fileObject.multipartFile = this.fileByteArray;
+    fileObject.prereg_id = this.users[0].preRegId;
+    fileObject.docRefId = fileResponse.response.docRefId;
     this.uiFields.forEach((uiField) => {
       if (uiField.subType == fileResponse.response.docCatCode) {
         this.userForm.controls[uiField.id].setValue(
@@ -1147,25 +1147,26 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         );
       }
     });
-
+    //console.log(`this.fileDocCatCode: ${this.fileDocCatCode}`);
     if (this.fileDocCatCode == fileResponse.response.docCatCode) {
       this.removeFilePreview();
     }
-
+    //console.log("sendFile");
     for (let file of this.users[0].files.documentsMetaData) {
       if (
-        file.docCatCode == this.userFile[0].docCatCode ||
+        file.docCatCode == fileObject.docCatCode ||
         file.docCatCode == null ||
         file.docCatCode == ""
       ) {
-        this.users[this.step].files.documentsMetaData[i] = this.userFile[0];
+        this.users[this.step].files.documentsMetaData[i] = fileObject;
         break;
       }
       i++;
     }
     if (i == this.users[0].files.documentsMetaData.length) {
-      this.users[this.step].files.documentsMetaData.push(this.userFile[0]);
+      this.users[this.step].files.documentsMetaData.push(fileObject);
     }
+    //console.log(this.users[0].files.documentsMetaData);
     this.userFile = [];
   }
 
