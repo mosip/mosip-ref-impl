@@ -310,24 +310,27 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     //   },
     //   preRegistrationId: "",
     // };
-    let i: number = 0;
+    // let i: number = 0;
     // const temp = JSON.parse(
     //   JSON.stringify(this.allApplicants.push(noneApplicant))
     // );
-
     // let noneCount: Boolean = this.isNoneAvailable();
-
-    for (let applicant of this.allApplicants) {
-      if (this.users) {
-        if (applicant.preRegistrationId == this.preRegId) {
-          this.allApplicants.splice(i, 1);
-          //this.allApplicants.push(noneApplicant);
-          console.log(JSON.stringify(this.allApplicants));
-          //this.removeExtraNone();
-        }
-        i++;
-      }
-    }
+    // for (let applicant of this.allApplicants) {
+    //   if (this.users) {
+    //     if (applicant.preRegistrationId == this.preRegId) {
+    //       this.allApplicants.splice(i, 1);
+    //       //this.allApplicants.push(noneApplicant);
+    //       console.log(JSON.stringify(this.allApplicants));
+    //       //this.removeExtraNone();
+    //     }
+    //     i++;
+    //   }
+    // }
+    let allApplicants = this.allApplicants;
+    if (this.users && allApplicants) {
+      let filtered = allApplicants.filter(applicant => applicant.preRegistrationId !== this.preRegId);
+      this.allApplicants = filtered;
+    }  
   }
   /**
    *@description method to initialise the allowedFiles array used to show in the html page
@@ -519,12 +522,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 response["response"].applicantType.applicantTypeCode
               );
               //console.log(`applicantType: ${response["response"].applicantType.applicantTypeCode}`);
-              console.log("getDocumentCategories started");
+              //console.log("getDocumentCategories started");
               await this.getDocumentCategories(
                 response["response"].applicantType.applicantTypeCode
               );
               this.setApplicantType(response);
-              console.log("getDocumentCategories done");
+              //console.log("getDocumentCategories done");
               resolve(true);
             } else {
               this.displayMessage(
@@ -1184,6 +1187,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.disableNavigation = true;
     if (event.value == "") {
       let arr = fileMetadata.filter((ent) => ent.docCatCode === "POA");
+      //console.log("removing file " + arr[0].documentId);
       const subs = this.dataStorageService
         .deleteFile(arr[0].documentId, this.preRegId)
         .subscribe(
@@ -1217,6 +1221,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         );
       this.subscriptions.push(subs);
     } else {
+      //console.log("copying file " + event.value);
       const subs = this.dataStorageService
         .copyDocument(event.value, this.users[0].preRegId)
         .subscribe(
@@ -1240,6 +1245,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.LOD[index].selectedDocName = this.documentName;
               this.LOD[index].selectedDocRefId =
                 response["response"]["docRefId"];
+              this.sameAsselected = true;  
             } else {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
@@ -1248,6 +1254,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 this.fileUploadLanguagelabels.uploadDocuments.msg9
               );
             }
+            this.disableNavigation = false;
           },
           (err) => {
             this.displayMessage(
@@ -1255,11 +1262,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.fileUploadLanguagelabels.uploadDocuments.msg8,
               err
             );
+            this.sameAs = this.registration.getSameAs();
+            this.sameAsselected = false;
+            this.disableNavigation = false;
           }
         );
-      this.subscriptions.push(subs);
-      this.sameAsselected = true;
-      this.disableNavigation = false;
+        this.subscriptions.push(subs);
+      // this.subscriptions.push(subs);
+      // this.sameAsselected = true;
+      // this.disableNavigation = false;
     }
   }
 
@@ -1269,15 +1280,23 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   removePOADocument() {
+    //console.log("removePOADocument");
     this.userFiles = new FilesModel();
-    let i = 0;
-    if (this.users[0].files.documentsMetaData) {
-      for (let file of this.users[0].files.documentsMetaData) {
-        if (file.docCatCode == "POA") {
-          this.users[0].files.documentsMetaData.splice(i, 1);
-        }
-        i++;
-      }
+    //let i = 0;
+    // if (this.users[0].files.documentsMetaData) {
+    //   for (let file of this.users[0].files.documentsMetaData) {
+    //     console.log(file);
+    //     if (file.docCatCode == "POA") {
+    //       this.users[0].files.documentsMetaData.splice(i, 1);
+    //     }
+    //     i++;
+    //   }
+    // }
+    let allFiles = this.users[0].files.documentsMetaData;
+    if (allFiles) {
+      let updatedFiles = allFiles.filter(file => file.docCatCode !== "POA");
+      //console.log(updatedFiles);
+      this.users[0].files.documentsMetaData = updatedFiles;
     }
   }
 
