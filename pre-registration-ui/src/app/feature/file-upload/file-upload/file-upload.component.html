@@ -62,8 +62,8 @@
                   document.selectedDocName === '')" />
               </span>
               <span *ngIf="document.code === 'POA' && allApplicants">
-                <span *ngIf="allApplicants.length > 1"> {{ 'documents.OR' | translate }}</span>
-                <span *ngIf="allApplicants.length > 1">
+                <span *ngIf="allApplicants.length >= 1"> {{ 'documents.OR' | translate }}</span>
+                <span *ngIf="allApplicants.length >= 1">
                   <mat-form-field class="file-upload__or">
                     <mat-select placeholder="{{ 'documents.sameAs' | translate }}"
                       [disabled]="disableNavigation ||  readOnlyMode" 
