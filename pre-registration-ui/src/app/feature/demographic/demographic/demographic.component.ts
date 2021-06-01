@@ -36,12 +36,26 @@ import { LogService } from "src/app/shared/logger/log.service";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
 import { Engine, Rule } from "json-rules-engine";
-import moment from "moment";
+import moment from 'moment';
 import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import identityStubJson from "../../../../assets/identity-spec1.json";
+import identityStubJson from "../../../../assets/identity-spec.json";
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/DD/YYYY',
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 /**
  * @description This component takes care of the demographic page.
@@ -56,6 +70,14 @@ import identityStubJson from "../../../../assets/identity-spec1.json";
   selector: "app-demographic",
   templateUrl: "./demographic.component.html",
   styleUrls: ["./demographic.component.css"],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 
 export class DemographicComponent
@@ -72,11 +94,12 @@ export class DemographicComponent
   defaultDay: string;
   defaultMonth: string;
   defaultLocation: string;
-  date: string = "";
-  month: string = "";
-  year: string = "";
+  // date: string = "";
+  // month: string = "";
+  // year: string = "";
   currentAge: string = "";
   ageOrDobPref = "";
+  //moment: any = moment;
   showDate = false;
   isNewApplicant = false;
   checked = true;
@@ -108,9 +131,7 @@ export class DemographicComponent
   config = {};
   consentMessage = [];
   titleOnError = "";
-  @ViewChild("dd") dd: ElementRef;
-  @ViewChild("mm") mm: ElementRef;
-  @ViewChild("yyyy") yyyy: ElementRef;
+  dateOfBirthFieldId = "";
   @ViewChild("age") age: ElementRef;
   private _keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren("keyboardRef", { read: ElementRef })
@@ -171,7 +192,6 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async ngOnInit() {
-    
     await this.initialization();
     await this.initializeDataCaptureLanguages();
     //set translation service
@@ -229,12 +249,10 @@ export class DemographicComponent
   }
 
   protected searchInDropdown(controlId: string) {
-    console.log("searchInDropdown");
     if (this.selectOptionsDataArray[`${controlId}`].length > 0) {
       // get the search keyword
       const searchCtrlId = controlId + "_search";
       let search = this.userForm.controls[`${searchCtrlId}`].value;
-      console.log(`search: ${search}`);
       const selectData = this.selectOptionsDataArray[`${controlId}`];
       if (!search) {
         this.filteredSelectOptions[controlId].next(selectData.slice());
@@ -599,6 +617,11 @@ export class DemographicComponent
             const searchCtrlId = controlId + "_search";
             this.userForm.addControl(searchCtrlId, new FormControl(""));
           }  
+          if (control.controlType === "ageDate") {
+            this.dateOfBirthFieldId = controlId;
+            const dtCtrlId = controlId + "_dateCtrl";
+            this.userForm.addControl(dtCtrlId, new FormControl(""));
+          }  
         }
       });
     });
@@ -606,7 +629,7 @@ export class DemographicComponent
 
   isControlInMultiLang(control: any) {
     if (
-      control.controlType !== "date" &&
+      control.controlType !== "ageDate" &&
       control.controlType !== "dropdown" &&
       control.controlType !== "button" &&
       control.controlType !== "checkbox" &&
@@ -701,7 +724,7 @@ export class DemographicComponent
    */
   async dropdownApiCall(controlId: string) {
     if (this.isThisFieldInLocationHeirarchies(controlId)) {  
-      console.log("dropdownApiCall : " + controlId);
+      //console.log("dropdownApiCall : " + controlId);
       if (this.getIndexInLocationHeirarchy(controlId) !== 0) {
         this.selectOptionsDataArray[controlId] = [];
         this.filteredSelectOptions[controlId] = new ReplaySubject<CodeValueModal[]>(1);
@@ -784,14 +807,16 @@ export class DemographicComponent
    * and fields are shown/hidden in the UI form.
    */
   async onChangeHandler(selectedFieldId: string) {
-    //console.log("onChangeHandler " + selectedFieldId);
+    console.log("onChangeHandler " + selectedFieldId);
     //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
     //populate form data in json for json-rules-engine to evalatute the conditions
     const identityFormData = this.createIdentityJSONDynamic(true);
     let isChild = false;
     let currentAge = null;
-    if (identityFormData.identity["dateOfBirth"]) {
-      let calcAge = this.calculateAge(identityFormData.identity["dateOfBirth"]);
+    if (this.dateOfBirthFieldId != "" && identityFormData.identity[this.dateOfBirthFieldId]) {
+      const dateOfBirthDt = identityFormData.identity[this.dateOfBirthFieldId];
+      const formattedDateVal = moment(dateOfBirthDt, 'YYYY/MM/DD').format('MM/DD/YYYY');
+      let calcAge = this.calculateAge(formattedDateVal);
       if (calcAge !== "" && Number(calcAge) > -1) {
         currentAge = Number(calcAge);
       }
@@ -1044,7 +1069,7 @@ export class DemographicComponent
    * @param fieldName location dropdown control Name
    */
   resetLocationFields(fieldName: string) {
-    console.log("resetLocationFields " + fieldName);
+    //console.log("resetLocationFields " + fieldName);
     if (this.isThisFieldInLocationHeirarchies(fieldName)) {
       const locationFields = this.getLocationHierarchy(fieldName);
       const index = locationFields.indexOf(fieldName);
@@ -1209,14 +1234,15 @@ export class DemographicComponent
                 }
               });
             } else {
-              if (control.id === "dateOfBirth") {
-                this.setDateOfBirth();
+              if (control.controlType === "ageDate") {
+                this.setDateOfBirth(control.id);
               }
-              if (control.type === "string") {
+              else if (control.type === "string") {
                 this.userForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[`${control.id}`]
                 );
-              } else if (control.type === "simpleType") {
+              }
+              else if (control.type === "simpleType") {
                 this.userForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[control.id][0]
                     .value
@@ -1318,30 +1344,24 @@ export class DemographicComponent
     });
   }
 
-  setDateOfBirth() {
-    this.date = this.user.request.demographicDetails.identity[
-      "dateOfBirth"
-    ].split("/")[2];
-    this.month = this.user.request.demographicDetails.identity[
-      "dateOfBirth"
-    ].split("/")[1];
-    this.year = this.user.request.demographicDetails.identity[
-      "dateOfBirth"
-    ].split("/")[0];
-    this.currentAge = this.calculateAge(
-      this.user.request.demographicDetails.identity["dateOfBirth"]
-    ).toString();
-
-    this.userForm.controls[`dateOfBirth`].setValue(
-      this.user.request.demographicDetails.identity["dateOfBirth"]
-    );
+  setDateOfBirth(controlId: string) {
+    const dateVal = this.user.request.demographicDetails.identity[controlId];
+    const formattedDateVal = moment(dateVal, 'YYYY/MM/DD').format('MM/DD/YYYY');
+    let calcAge = this.calculateAge(formattedDateVal).toString();
+    if (calcAge !== "" && Number(calcAge) > -1) {
+      this.currentAge = calcAge;
+    }  
+    this.userForm.controls[controlId].setValue(formattedDateVal);
+    this.userForm.controls[`${controlId}_dateCtrl`].setValue(moment(formattedDateVal, 'MM/DD/YYYY'));
   }
+
   /**
    * @description This is called when age is changed and the date of birth will get calculated.
    *
    * @memberof DemographicComponent
    */
-  onAgeChange() {
+  onAgeChange(dateFieldId: string) {
+    console.log("onAgeChange");
     this.defaultDay = this.config[
       appConstants.CONFIG_KEYS.mosip_default_dob_day
     ];
@@ -1352,34 +1372,23 @@ export class DemographicComponent
       appConstants.CONFIG_KEYS.mosip_id_validation_identity_age
     ];
     const ageRegex = new RegExp(this.agePattern);
-    if (this.age.nativeElement.value) {
-      if (ageRegex.test(this.age.nativeElement.value)) {
-        this.currentAge = this.age.nativeElement.value;
+    const ageVal = this.age.nativeElement.value;
+    if (ageVal) {
+      if (ageRegex.test(ageVal) && Number(ageVal) > -1 && Number(ageVal) < 150 ) {
+        this.currentAge = ageVal;
         const now = new Date();
         const calulatedYear = now.getFullYear() - Number(this.currentAge);
-        this.dd.nativeElement.value = this.defaultDay;
-        this.mm.nativeElement.value = this.defaultMonth;
-        this.yyyy.nativeElement.value = calulatedYear;
-        this.date = this.defaultDay;
-        this.month = this.defaultMonth;
-        this.year = calulatedYear.toString();
-        this.userForm.controls["dateOfBirth"].setValue(
-          calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
-        );
-        // this.userForm.controls["dateOfBirth"].setErrors(null);
+        const newDate = this.defaultMonth +  "/" + this.defaultDay + "/" + calulatedYear;
+        this.userForm.controls[dateFieldId].setValue(newDate);
+        this.userForm.controls[`${dateFieldId}_dateCtrl`].setValue(moment(newDate, "MM/DD/YYYY"));
+        this.userForm.controls[dateFieldId].setErrors(null);
         if (this.dataModification) {
-          this.hasDobChanged();
+          this.hasDobChangedFromChildToAdult(dateFieldId);
         }
-        //console.log(this.userForm);
       } else {
-        this.dd.nativeElement.value = "";
-        this.mm.nativeElement.value = "";
-        this.yyyy.nativeElement.value = "";
-        this.date = "";
-        this.month = "";
-        this.year = "";
-        this.userForm.controls["dateOfBirth"].markAsTouched();
-        this.userForm.controls["dateOfBirth"].setErrors({
+        this.userForm.controls[dateFieldId].setValue("");
+        this.userForm.controls[dateFieldId].markAsTouched();
+        this.userForm.controls[dateFieldId].setErrors({
           incorrect: true,
         });
       }
@@ -1392,28 +1401,38 @@ export class DemographicComponent
    *
    * @memberof DemographicComponent
    */
-  onDOBChange() {
-    this.date = this.dd.nativeElement.value;
-    this.month = this.mm.nativeElement.value;
-    this.year = this.yyyy.nativeElement.value;
-    if (this.date !== "" && this.month !== "" && this.year !== "") {
-      const newDate = this.year + "/" + this.month + "/" + this.date;
-      //console.log(newDate);
-      if (moment(newDate, "YYYY/MM/DD", true).isValid()) {
-        this.currentAge = this.calculateAge(newDate).toString();
+  onDOBChange(controlId: string) {
+    //console.log("onDOBChange");
+    const dtCtrlId = controlId + "_dateCtrl";
+    const newDate = this.userForm.controls[`${dtCtrlId}`].value;
+    if (moment(newDate, 'MM/DD/YYYY', true).isValid()) {
+      const formattedDt = moment(newDate).format('MM/DD/YYYY');
+      let calcAge = this.calculateAge(formattedDt).toString();
+      if (calcAge !== "" && Number(calcAge) > -1) {
+        this.currentAge = calcAge;
         this.age.nativeElement.value = this.currentAge;
-        this.userForm.controls["dateOfBirth"].setValue(newDate);
+        this.userForm.controls[controlId].setValue(formattedDt);
         if (this.dataModification) {
-          this.hasDobChanged();
+          this.hasDobChangedFromChildToAdult(controlId);
         }
       } else {
-        this.userForm.controls["dateOfBirth"].markAsTouched();
-        this.userForm.controls["dateOfBirth"].setErrors({
+        this.userForm.controls[controlId].setValue("");
+        this.userForm.controls[controlId].markAsTouched();
+        this.userForm.controls[controlId].setErrors({
           incorrect: true,
         });
         this.currentAge = "";
-        this.age.nativeElement.value = "";
-      }
+        this.age.nativeElement.value = "";  
+      }  
+    } else {
+      //this.userForm.controls[dtCtrlId].setValue("");
+      this.userForm.controls[controlId].setValue("");
+      this.userForm.controls[controlId].markAsTouched();
+      this.userForm.controls[controlId].setErrors({
+        incorrect: true,
+      });
+      this.currentAge = "";
+      this.age.nativeElement.value = "";
     }
   }
 
@@ -1424,26 +1443,22 @@ export class DemographicComponent
    * @returns
    * @memberof DemographicComponent
    */
-
-  calculateAge(bDay) {
-    const now = new Date();
-    const born = new Date(bDay);
-    const years = Math.floor(
-      (now.getTime() - born.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
-    );
-    if (years > 150) {
-      this.userForm.controls["dateOfBirth"].markAsTouched();
-      this.userForm.controls["dateOfBirth"].setErrors({
-        incorrect: true,
-      });
-      this.yyyy.nativeElement.value = "";
-      this.date = "";
-      this.month = "";
-      this.year = "";
-      return "";
-    } else {
-      return years;
-    }
+  calculateAge(dateStr: string) {
+    //console.log(`calculateAge: ${dateStr}`);
+    if (moment(dateStr, "MM/DD/YYYY", true).isValid()) {
+      const now = new Date();
+      const born = new Date(dateStr);
+      const years = Math.floor(
+        (now.getTime() - born.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+      );
+      //console.log(years);
+      if (years > 150 || years < 0) {
+        return "";
+      } else {
+        return years;
+      }
+    }  
+    return "";
   }
 
   /**
@@ -1570,38 +1585,6 @@ export class DemographicComponent
     let url = "";
     url = Utils.getURL(this.router.url, "dashboard", 2);
     this.router.navigate([url]);
-  }
-
-  /**
-   * @description This method is to format the date event to yyyy/mm/dd format
-   *
-   * @param event date event
-   */
-  dateEvent(event) {
-    const date = new Date(event.value);
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    const datee = date.getDate();
-
-    let monthOfYear = "";
-    let dateOfMonth = "";
-    if (month < 10) {
-      monthOfYear = "0" + month;
-    } else {
-      monthOfYear = month.toString();
-    }
-
-    if (datee < 10) {
-      dateOfMonth = "0" + datee;
-    } else {
-      dateOfMonth = datee.toString();
-    }
-
-    const formattedDate = `${year}/${monthOfYear}/${dateOfMonth}`;
-    this.userForm.controls["dateOfBirth"].setValue(formattedDate);
-    if (this.dataModification) {
-      this.hasDobChanged();
-    }
   }
 
   /**
@@ -1732,7 +1715,7 @@ export class DemographicComponent
                       appConstants.ERROR_CODE
                     ] === appConstants.ERROR_CODES.invalidPin
                   ) {
-                    console.log(response);
+                    //console.log(response);
                     message = this.formValidation(response);
                   } else message = this.errorlabels.error;
                   this.onError(message, "");
@@ -1821,8 +1804,13 @@ export class DemographicComponent
         }
       }
     } else if (typeof identity[element] === "string") {
-      if (this.userForm.controls[`${element}`]) {
-        attr = this.userForm.controls[`${element}`].value;
+      if (element === this.dateOfBirthFieldId && this.userForm.controls[`${element}`].value != "") {
+        attr = moment(this.userForm.controls[`${element}`].value,'MM/DD/YYYY').format('YYYY/MM/DD');
+        console.log(`${this.dateOfBirthFieldId}: ${attr}`);
+      } else {
+        if (this.userForm.controls[`${element}`]) {
+          attr = this.userForm.controls[`${element}`].value;
+        }  
       }
     }
     identity[element] = attr;
@@ -1983,12 +1971,14 @@ export class DemographicComponent
     return req;
   }
 
-  hasDobChanged() {
-    const currentDob = this.user.request.demographicDetails.identity
-      .dateOfBirth;
-    const changedDob = this.userForm.controls["dateOfBirth"].value;
-    const currentDobYears = this.calculateAge(currentDob);
-    const changedDobYears = this.calculateAge(changedDob);
+  hasDobChangedFromChildToAdult(controlId: string) {
+    //console.log("hasDobChangedFromChildToAdult");
+    const currentDob = this.user.request.demographicDetails.identity[controlId];
+    const changedDob = this.userForm.controls[controlId].value;
+    const formattedCurrentDob = moment(currentDob, 'YYYY/MM/DD').format('MM/DD/YYYY');
+    const formattedChangedDob = moment(changedDob, 'MM/DD/YYYY').toString();
+    const currentDobYears = this.calculateAge(formattedCurrentDob);
+    const changedDobYears = this.calculateAge(formattedChangedDob);
     const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
     if (this.showPreviewButton) {
       if (
