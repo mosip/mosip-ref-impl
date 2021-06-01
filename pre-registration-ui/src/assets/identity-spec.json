@@ -41,7 +41,7 @@
                 "arguments": []
               }
             ],
-            "required": true,
+            "required": false,
             "transliteration": true
           },
           {
@@ -52,7 +52,7 @@
               "ara": "تاريخ الولادة",
               "fra": "Date de naissance"
             },
-            "controlType": "date",
+            "controlType": "ageDate",
             "inputRequired": true,
             "fieldType": "default",
             "type": "string",
