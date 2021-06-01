@@ -6,3 +6,4 @@ mpartner_policy_euin_req,mpartner-default-print,mpolicy-default-euin,now(),mpoli
 mpartner_policy_reprint_req,mpartner-default-print,mpolicy-default-reprint,now(),mpolicy-default-reprint,Approved,admin,now(),admin,now()
 mpartner_policy_resident_req,mpartner-default-resident,mpolicy-default-resident,now(),mpolicy-default-resident,Approved,admin,now(),admin,now()
 mpartner_policy_ajudica_req,mpartner-default-adjudication,mpolicy-default-adjudication,now(),mpolicy-default-adjudication,Approved,admin,now(),admin,now()
+mpartner_policy_cert_req,mpartner-default-cert,mpolicy-default-cert,now(),mpolicy-default-cert,Approved,admin,now(),admin,now()

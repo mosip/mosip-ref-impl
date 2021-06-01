@@ -6,3 +6,4 @@ mpolicy_part_euin_api,mpartner-default-print,mpolicy-default-euin,now(),12-01-20
 mpolicy_part_reprint_api,mpartner-default-print,mpolicy-default-reprint,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
 mpolicy_part_resident_api,mpartner-default-resident,mpolicy-default-resident,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
 mpolicy_part_adjudica_api,mpartner-default-adjudication,mpolicy-default-adjudication,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
+mpolicy_part_cert_api,mpartner-default-cert,mpolicy-default-cert,now(),12-01-2025 05:31,TRUE,admin,now(),admin,now()
