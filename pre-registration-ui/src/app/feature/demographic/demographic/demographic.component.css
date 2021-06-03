@@ -7,7 +7,7 @@
 }
 
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
-  margin-bottom: 3px;
+  /* margin-bottom: 3px; */
   color: #22a8c9;
 }
 
@@ -152,14 +152,12 @@ mat-icon {
   /* width: 92%; */
   width: 95%;
   padding: 3px;
-  color: #838383;
-  font-size: 0.8rem;
 }
 
-.mat-form-field-appearance-legacy.mat-form-field-disabled
+/* .mat-form-field-appearance-legacy.mat-form-field-disabled
   .mat-form-field-underline {
   background-image: none;
-}
+} */
 
 .user__age-or-date {
   display: flex;
@@ -333,7 +331,7 @@ mat-icon {
   .mat-form-field-outline-thick {
   color: lightgrey;
   border-bottom: 2px solid #22a8c9;
-}
+} 
 
 .required-annotation {
   color: white;
@@ -429,8 +427,7 @@ mat-icon {
 }
 .fieldContent {
   padding: 10px;
-  box-shadow:         1px 1px 1px 1px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
-  
+  box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
 }
 .selectedOption {
   padding: 10px;

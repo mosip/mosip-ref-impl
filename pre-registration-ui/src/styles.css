@@ -168,9 +168,9 @@ body {
   vertical-align: middle;
 }
 
-.mat-form-field-appearance-legacy .mat-form-field-underline {
-  background-color: #696f7c !important;
-}
+/* .mat-form-field-appearance-legacy .mat-form-field-underline {
+ background-color: #696f7c !important;
+} */
 
 .mat-error {
   color: #e44c29;

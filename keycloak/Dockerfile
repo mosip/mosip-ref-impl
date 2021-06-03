@@ -1,2 +1,8 @@
-FROM jboss/keycloak:11.0.3
-COPY --chown=jboss:root ./theme/ /opt/jboss/keycloak/themes
+FROM jboss/keycloak:9.0.0
+
+ADD --chown=jboss:root ./theme/ ./theme
+
+RUN cp -R ./theme/mosip /opt/jboss/keycloak/themes/mosip
+
+RUN cp -R ./theme/base /opt/jboss/keycloak/themes
+

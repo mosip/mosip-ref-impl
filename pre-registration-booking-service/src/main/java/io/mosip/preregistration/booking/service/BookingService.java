@@ -588,6 +588,7 @@ public class BookingService implements BookingServiceIntf {
 	 * io.mosip.preregistration.booking.serviceimpl.dto.BookingRequestDTO)
 	 */
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public BookingStatusDTO book(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
 		log.info("sessionId", "idType", "id", "In book method of Booking Service");
 		BookingStatusDTO bookingStatusDTO = new BookingStatusDTO();
@@ -597,10 +598,11 @@ public class BookingService implements BookingServiceIntf {
 		try {
 			AvailibityEntity availableEntity;
 
-			availableEntity = bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(
+			availableEntity = bookingDAO.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(
+					LocalDate.parse(bookingRequestDTO.getRegDate()),
+					bookingRequestDTO.getRegistrationCenterId(),
 					LocalTime.parse(bookingRequestDTO.getSlotFromTime()),
-					LocalTime.parse(bookingRequestDTO.getSlotToTime()), LocalDate.parse(bookingRequestDTO.getRegDate()),
-					bookingRequestDTO.getRegistrationCenterId());
+					LocalTime.parse(bookingRequestDTO.getSlotToTime()));
 			log.info("In Availablity of book method",
 					"available slots before update :" + availableEntity.getAvailableKiosks(),
 					" for Reg center" + availableEntity.getRegcntrId(),
@@ -640,6 +642,7 @@ public class BookingService implements BookingServiceIntf {
 	 * cancelBooking(java.lang.String, boolean)
 	 */
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public CancelBookingResponseDTO cancelBooking(String preRegistrationId, boolean isBatchUser) {
 		log.info("sessionId", "idType", "id", "In cancelBooking method of Booking Service");
 		CancelBookingResponseDTO cancelBookingResponseDTO = new CancelBookingResponseDTO();
@@ -655,9 +658,10 @@ public class BookingService implements BookingServiceIntf {
 					/* Getting Booking details */
 					bookingEntity = bookingDAO.findByPreRegistrationId(preRegistrationId);
 
-					availableEntity = bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(
-							bookingEntity.getSlotFromTime(), bookingEntity.getSlotToTime(), bookingEntity.getRegDate(),
-							bookingEntity.getRegistrationCenterId());
+					availableEntity = bookingDAO.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(
+							bookingEntity.getRegDate(),
+							bookingEntity.getRegistrationCenterId(),
+							bookingEntity.getSlotFromTime(), bookingEntity.getSlotToTime());
 					/* Getting Status From Demographic */
 					//serviceUtil.getDemographicStatus(preRegistrationId);
 
@@ -733,11 +737,12 @@ public class BookingService implements BookingServiceIntf {
 				LocalDateTime bookedDateTime = LocalDateTime.parse(str, formatter);
 				serviceUtil.timeSpanCheckForCancle(bookedDateTime);
 				bookingDAO.deleteByPreRegistrationId(preregId);
-				availableEntity = bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(
-						LocalTime.parse(registrationEntityList.getSlotFromTime().toString()),
-						LocalTime.parse(registrationEntityList.getSlotToTime().toString()),
+				availableEntity = bookingDAO.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(
 						LocalDate.parse(registrationEntityList.getRegDate().toString()),
-						registrationEntityList.getRegistrationCenterId());
+						registrationEntityList.getRegistrationCenterId(),
+						LocalTime.parse(registrationEntityList.getSlotFromTime().toString()),
+						LocalTime.parse(registrationEntityList.getSlotToTime().toString())
+						);
 				/* No. of Availability. update */
 				availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() + 1);
 
@@ -795,10 +800,11 @@ public class BookingService implements BookingServiceIntf {
 			}
 
 			bookingDAO.findRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
-			AvailibityEntity entity = bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(
+			AvailibityEntity entity = bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(
+					LocalDate.parse(bookingRequestDTO.getRegDate()),
+					bookingRequestDTO.getRegistrationCenterId(),
 					LocalTime.parse(bookingRequestDTO.getSlotFromTime()),
-					LocalTime.parse(bookingRequestDTO.getSlotToTime()), LocalDate.parse(bookingRequestDTO.getRegDate()),
-					bookingRequestDTO.getRegistrationCenterId());
+					LocalTime.parse(bookingRequestDTO.getSlotToTime()));
 			log.info("In Availablity", "available slots :" + entity.getAvailableKiosks(),
 					" for Reg center" + entity.getRegcntrId(),
 					" and Date and Time " + entity.getRegDate() + " " + entity.getFromTime());
@@ -858,9 +864,9 @@ public class BookingService implements BookingServiceIntf {
 		response.setVersion(versionUrl);
 		try {
 			AvailibityEntity availableEntity;
-			availableEntity = bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(
-					LocalTime.parse(oldBooking.getSlotFromTime()), LocalTime.parse(oldBooking.getSlotToTime()),
-					LocalDate.parse(oldBooking.getRegDate()), oldBooking.getRegistrationCenterId());
+			availableEntity = bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(
+					LocalDate.parse(oldBooking.getRegDate()), oldBooking.getRegistrationCenterId(),
+					LocalTime.parse(oldBooking.getSlotFromTime()), LocalTime.parse(oldBooking.getSlotToTime()));
 			availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() + 1);
 			bookingDAO.updateAvailibityEntity(availableEntity);
 			log.info("sessionId", "idType", "id", "In increaseAvailability method of Booking Service");

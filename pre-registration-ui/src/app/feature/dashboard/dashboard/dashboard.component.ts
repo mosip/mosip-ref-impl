@@ -418,10 +418,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           JSON.stringify([this.mandatoryLanguages[0]])
         );
       } else {
-        localStorage.setItem(
-          "dataCaptureLanguages",
-          JSON.stringify(this.mandatoryLanguages)
-        );
+        let reorderedArr = this.reorderLangsForUserPreferredLang(this.mandatoryLanguages);
+        localStorage.setItem("dataCaptureLanguages", JSON.stringify(reorderedArr));
       }
       this.isNavigateToDemographic = true;
     }
@@ -463,12 +461,25 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         if (res == undefined) {
           this.isNavigateToDemographic = false;
         } else {
-          localStorage.setItem("dataCaptureLanguages", JSON.stringify(res));
+          let reorderedArr = this.reorderLangsForUserPreferredLang(res);
+          localStorage.setItem("dataCaptureLanguages", JSON.stringify(reorderedArr));
           this.isNavigateToDemographic = true;
         }
         resolve(true);
       });
     });
+  }
+
+  reorderLangsForUserPreferredLang = (dataCaptureLanguages: string[]) => {
+    let reorderedArr = [];
+    let filteredLangs = dataCaptureLanguages.filter(lang => lang === this.userPreferredLangCode);
+    if (filteredLangs.length > 0) {
+      let filteredLangs1 = dataCaptureLanguages.filter(lang => lang != this.userPreferredLangCode);
+      reorderedArr = [this.userPreferredLangCode, ...filteredLangs1];
+    } else {
+      reorderedArr = [...dataCaptureLanguages];
+    }
+    return reorderedArr;
   }
 
   openDialog(data, width, height?, panelClass?) {

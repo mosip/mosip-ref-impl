@@ -22,7 +22,7 @@
         "
       >
         <div  *ngIf="showLanguageDropDown" >
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="standard">
             <mat-select
               disableOptionCentering
               panelClass="select-option"
@@ -42,7 +42,7 @@
 
         <div *ngIf="showContactDetails">
           <div [dir]="dir" >
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="standard">
               <input
                 class="input_pri"
                 autofocus="autofocus"
@@ -64,7 +64,7 @@
           {{ "recaptcha.errorMessage" | translate }}
         </div>
         <div [dir]="dir" *ngIf="showOTP" >
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="standard">
             <input
               autofocus="autofocus"
               matInput
