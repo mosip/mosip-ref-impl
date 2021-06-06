@@ -60,7 +60,6 @@ public class IdObjectReferenceValidatorTest {
 	
 	@Before
 	public void init() throws IOException {
-		this.getClass().getClassLoader();
 		schema = IOUtils.toString(ClassLoader.getSystemResourceAsStream("schema.json"), "UTF-8");
 	}
 
