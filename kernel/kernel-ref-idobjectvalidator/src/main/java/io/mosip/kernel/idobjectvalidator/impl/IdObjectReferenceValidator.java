@@ -3,6 +3,7 @@ package io.mosip.kernel.idobjectvalidator.impl;
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.ID_OBJECT_VALIDATION_FAILED;
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.BIOMETRICS_TYPE;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.CACHE_RESET_CRON_PATTERN;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOB_FORMAT;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOCUMENT_TYPE;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_DOB_PATH;
@@ -147,7 +148,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		loadLanguages();
 	}
 
-	@Scheduled(fixedDelay = 1000)
+	@Scheduled(cron = "${" + CACHE_RESET_CRON_PATTERN + "}")
 	public void resetCache() {
 		languageList = Set.of();
 		fieldToSubTypeMapping = Map.of();
@@ -155,6 +156,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		validationDataCache.clear();
 		processedSchemaVersions.clear();
 		populateMasterDataCache();
+		loadLanguages();
 	}
 	/*
 	 * (non-Javadoc)
@@ -348,14 +350,18 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
 				.queryParam("langCode", languageList.stream().collect(Collectors.joining(","))).build(field);
-		String response = restTemplate.getForObject(requestUri, ObjectNode.class).toString();
+		ObjectNode responseObject = restTemplate.getForObject(requestUri, ObjectNode.class);
+		logger.debug("IdObjectReferenceValidator masterdata field : {} response : {}", field, responseObject);
+		String response = responseObject.toString();
 		JSONArray langCodeList = JsonPath.compile(masterDataResponseLangCodePath).read(response, READ_OPTIONS);
-		JSONArray codeList = JsonPath.compile(masterDataResponseCodePath).read(response, READ_OPTIONS);
-		IntStream.range(0, codeList.size())
-				.forEach(index -> masterDataMap.put(langCodeList.get(index).toString(), codeList.get(index).toString()));
-		JSONArray valueList = JsonPath.compile(masterDataResponseValuePath).read(response, READ_OPTIONS);
-		IntStream.range(0, valueList.size())
-				.forEach(index -> masterDataMap.put(langCodeList.get(index).toString(), valueList.get(index).toString()));
+		if (!langCodeList.isEmpty()) {
+			JSONArray codeList = JsonPath.compile(masterDataResponseCodePath).read(response, READ_OPTIONS);
+			IntStream.range(0, codeList.size())
+					.forEach(index -> masterDataMap.put(langCodeList.get(index).toString(), codeList.get(index).toString()));
+			JSONArray valueList = JsonPath.compile(masterDataResponseValuePath).read(response, READ_OPTIONS);
+			IntStream.range(0, valueList.size())
+					.forEach(index -> masterDataMap.put(langCodeList.get(index).toString(), valueList.get(index).toString()));
+		}
 		return masterDataMap;
 	}
 
