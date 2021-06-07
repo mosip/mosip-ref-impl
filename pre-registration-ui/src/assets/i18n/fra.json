@@ -500,11 +500,14 @@
         "Vous n'avez sélectionné aucune plage horaire pour l'utilisateur suivant",
         "Voulez-vous continuer à réserver"
       ],
+      "noSlotsSelectedForApplicant":"Aucune date/slot n'a été sélectionné pour une candidature",
+      "note_text":"Remarque : Les détails de l'application ne peuvent pas être modifiés une fois la réservation effectuée.",
+      "text_selected": "Candidats sélectionnés",
       "yesButtonText": "Oui",
       "noButtonText": "Non",
       "applicationLockConfirm":{
         "title":"Confirmation",
-        "message":"Les détails de l'application ne peuvent plus être modifiés une fois la réservation effectuée. Pleace cliquez sur confirmer pour prendre rendez-vous",
+        "message":"Les détails de l'application ne peuvent plus être modifiés une fois la réservation effectuée. Please cliquez sur confirmer pour prendre rendez-vous",
         "yesButtonText": "Confirmer",
         "noButtonText": "Annuler"
       }

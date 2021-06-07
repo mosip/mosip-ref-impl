@@ -483,26 +483,29 @@
     "text_morning": "Morning",
     "text_afternoon": "Afternoon",
     "text_available": "Available Applicants",
+    "text_selected": "Selected Applicants",
     "text_availability": "Available Bookings",
     "text_slots": "slots",
     "action_done": "DONE",
     "action_back": "Back",
     "action_bookLater": "Book Later",
     "action_continue": "Continue",
+    "note_text":"Note: Application details cannot be modified once Booked.",
     "booking": {
       "title_success": "Success",
       "msg_success": "Appointment Booking Successfully Completed",
       "title_failure": "Failure",
       "msg_failure": "Appointment Booking Failed",
+      "noSlotsSelectedForApplicant":"No Date/Slot has been selected for an application",
       "deletedApplicant1": [
-        "You have not selected any time slot for following user",
+        "You have not selected any time slot for following user \r\n",
         "Do you wish to continue booking"
       ],
       "yesButtonText": "Yes",
       "noButtonText": "No",
       "applicationLockConfirm":{
         "title":"Confirmation",
-        "message":"Application details cannot be modified further once booked. Pleace click on confirm to book an appointment",
+        "message":"Application details cannot be modified further once booked. Please click on confirm to book an appointment for the PRID :",
         "yesButtonText": "Confirm",
         "noButtonText": "Cancel"
       }
