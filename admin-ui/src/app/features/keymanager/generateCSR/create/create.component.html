@@ -17,15 +17,6 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="createForm" class="primary-form" *ngIf="createForm"> 
             <mat-form-field>
-              <!-- <mat-label>Application Id</mat-label>
-              <mat-select formControlName="applicationId">
-                <mat-option
-                  *ngFor="let data of applicationId"
-                  [value]="data.id"
-                >
-                  {{ data.value}}
-                </mat-option>
-              </mat-select> -->
               <input
                 #applicationId
                 matInput
@@ -33,6 +24,9 @@
                 placeholder="Application Id"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -42,6 +36,9 @@
                 placeholder="ReferenceId"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -51,6 +48,9 @@
                 placeholder="Common Name"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -60,6 +60,9 @@
                 placeholder="Organization"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -69,6 +72,9 @@
                 placeholder="Organization unit"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -78,6 +84,9 @@
                 placeholder="Location"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -87,6 +96,9 @@
                 placeholder="State"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
             
             <mat-form-field>
@@ -97,6 +109,9 @@
                 placeholder="Country"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                This field is required
+              </mat-error>
             </mat-form-field>
           </div>
         </mat-card-content>

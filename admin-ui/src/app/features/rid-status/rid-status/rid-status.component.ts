@@ -84,8 +84,7 @@ export class RidStatusComponent implements OnInit {
     this.router.navigateByUrl(`admin/rid-status/view?${url}`);
   }
 
-  getSortColumn(event: SortModel) {
-    console.log(event);
+  getSortColumn(event: SortModel) {    
     this.sortFilter.forEach(element => {
       if (element.sortField === event.sortField) {
         const index = this.sortFilter.indexOf(element);
@@ -95,9 +94,8 @@ export class RidStatusComponent implements OnInit {
     if (event.sortType != null) {
       this.sortFilter.push(event);
     }
-    console.log(this.sortFilter);
     const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.primaryLang);
-    filters.sort = this.sortFilter;
+    filters.sort = this.sortFilter.slice(1);
     const url = Utils.convertFilterToUrl(filters);
     this.router.navigateByUrl('admin/rid-status/view?' + url);
   }
@@ -112,7 +110,7 @@ export class RidStatusComponent implements OnInit {
     }
     this.sortFilter = filters.sort;
     if(this.sortFilter.length == 0){
-      this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
+      this.sortFilter.push({"sortType":"desc","sortField":"createDateTime"});      
     }
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));

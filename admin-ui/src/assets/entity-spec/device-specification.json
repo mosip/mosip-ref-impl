@@ -301,7 +301,7 @@
       "autocomplete": "false",
       "dropdown": "true",
       "datePicker": "false",
-      "apiName": "devicespecifications",
+      "apiName": "devicetypes",
       "fieldName": "name",
       "methodCallName": ""
     }

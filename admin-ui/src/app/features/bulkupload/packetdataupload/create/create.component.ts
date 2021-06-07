@@ -114,24 +114,33 @@ export class CreateComponent {
   showMessage(uploadResponse) {
     let data = {};
     const self = this;
-    const statusDescription: any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
-    if (uploadResponse.response.status === 'FAILED') {
-      // tslint:disable-next-line:forin
-      for ( const prop in statusDescription ) {
-        console.log( statusDescription[prop] );
+    if(!uploadResponse.errors){
+      const statusDescription: any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
+      if (uploadResponse.response.status === 'FAILED') {
+        // tslint:disable-next-line:forin
+        for ( const prop in statusDescription ) {
+          console.log( statusDescription[prop] );
+        }
+        data = {
+          case: 'MESSAGE',
+          title: this.popUpMessages.popup2.title,
+          message: uploadResponse.response.statusDescription,
+          btnTxt: this.popUpMessages.popup2.btnTxt,
+        };
+      } else {
+        data = {
+          case: 'MESSAGE',
+          title: this.popUpMessages.popup3.title,
+          message: this.popUpMessages.popup3.message + uploadResponse.response.transcationId,
+          btnTxt: this.popUpMessages.popup3.btnTxt,
+        };
       }
+    }else{
       data = {
         case: 'MESSAGE',
-        title: this.popUpMessages.popup2.title,
-        message: uploadResponse.response.statusDescription,
-        btnTxt: this.popUpMessages.popup2.btnTxt,
-      };
-    } else {
-      data = {
-        case: 'MESSAGE',
-        title: this.popUpMessages.popup3.title,
-        message: this.popUpMessages.popup3.message + uploadResponse.response.transcationId,
-        btnTxt: this.popUpMessages.popup3.btnTxt,
+        title: "Failure !",
+        message: uploadResponse.errors[0].message,
+        btnTxt: "DONE"
       };
     }
 

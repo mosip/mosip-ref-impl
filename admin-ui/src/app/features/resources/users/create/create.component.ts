@@ -111,7 +111,11 @@ export class CreateComponent{
     this.dataStorageService
       .getFiltersCenterDetailsBasedonZone(this.primaryLang, zoneCode)
       .subscribe(response => {
-        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
+        if(!response.errors){
+          this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
+        }else{
+          this.dropDownValues.regCenterCode.primary = [];
+        }
       });
   }
 

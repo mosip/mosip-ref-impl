@@ -67,8 +67,12 @@ export class CommonService {
 
   private confirmationPopup(type: string, data: any) {
     let url = this.router.url.split('/')[3];
-    let textToDisplay = null;
+    let specFileName = "";
+    if(url.includes("view")){
+      url = this.router.url.split('/')[2];
+    }
 
+    let textToDisplay = null;
     if(data.name){
       textToDisplay = data.name;
     }else{
@@ -106,6 +110,8 @@ export class CommonService {
         textToDisplay = data.name;
       }else if(url === "holiday"){
         textToDisplay = data.holidayName;
+      }else if(url === "rid-status"){
+        textToDisplay = data.workflowId;
       }
     }
 
@@ -163,9 +169,11 @@ export class CommonService {
         textToDisplay = data.name;
       }else if(url === "holiday"){
         textToDisplay = data.holidayName;
+      }else if(url === "rid-status"){
+        textToDisplay = data.workflowId;
       }
     }
-    
+    console.log();
     if (type === 'success') {
       obj = {
         title: this.actionMessages[listItem]['success-title'],
@@ -201,201 +209,6 @@ export class CommonService {
     );
   }
 
-  
-  private mapDataToMachineModelObject(data: any): MachineModel {
-    const primaryObject = new MachineModel(
-      data.zoneCode,
-      data.validityDateTime,
-      data.name,
-      data.machineSpecId,
-      data.macAddress,
-      data.serialNum,
-      data.ipAddress,
-      null,
-      data.id,
-      data.isActive,      
-    );
-    return primaryObject;
-  }
-
-  private mapDataToCenterTypeModelObject(data: any): CenterTypeModel {
-    const primaryObject = new CenterTypeModel(
-      data.code,
-      data.langCode,
-      data.name,
-      data.descr,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToBlacklistedWordsModelObject(data: any): BlacklistedWordsModel {
-    const primaryObject = new BlacklistedWordsModel(
-      data.word,
-      data.word,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToGenderModelObject(data: any): GenderModel {
-    const primaryObject = new GenderModel(
-      data.code,
-      data.genderName,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToIndividualTypeModelObject(data: any): IndividualTypeModel {
-    const primaryObject = new IndividualTypeModel(
-      data.code,
-      data.name,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToLocationModelObject(data: any): LocationModel {
-    const primaryObject = new LocationModel(
-      data.hierarchyLevel,
-      data.hierarchyName,
-      data.parentLocCode,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  } 
-
-  private mapDataToTemplateModelObject(data: any): TemplateModel {
-    const primaryObject = new TemplateModel(
-      data.name,
-      data.description,
-      data.fileFormatCode,
-      data.model,
-      data.fileText,
-      data.moduleId,
-      data.moduleName,
-      data.templateTypeCode,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToTitleModelObject(data: any): TitleModel {
-    const primaryObject = new TitleModel(
-      data.code,
-      data.titleName,
-      data.titleDescription,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToDeviceSpecsModelObject(data: any): DeviceSpecsModel {
-    const primaryObject = new DeviceSpecsModel(
-      data.name,
-      data.brand,
-      data.model,
-      data.deviceTypeCode,
-      data.minDriverversion,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToDeviceTypesModelObject(data: any): DeviceTypesModel {
-    const primaryObject = new DeviceTypesModel(
-      data.code,
-      data.name,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToMachineSpecsModelObject(data: any): MachineSpecsModel {
-    const primaryObject = new MachineSpecsModel(
-      data.name,
-      data.brand,
-      data.model,
-      data.machineTypeCode,
-      data.minDriverversion,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToMachineTypesModelObject(data: any): MachineTypesModel {
-    const primaryObject = new MachineTypesModel(
-      data.code,
-      data.name,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToDocumentTypeModelObject(data: any): DocumentTypeModel {
-    const primaryObject = new DocumentTypeModel(
-      data.code,
-      data.name,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToDocumentCategoriesModelObject(data: any): DocumentCategoriesModel {
-    const primaryObject = new DocumentCategoriesModel(
-      data.code,
-      data.name,
-      data.description,
-      data.langCode,
-      data.isActive,
-      data.id,
-    );
-    return primaryObject;
-  }
-
-  private mapDataToHolidayMasterModelObject(data: any): HolidaySpecsModel {
-    const primaryObject = new HolidaySpecsModel(
-      data.holidayDate,
-      data.holidayName,
-      data.holidayDesc,
-      "KTA",
-      "eng",
-      data.isActive,
-      data.holidayId,
-    );
-    return primaryObject;
-  }
-  
   centerEdit(data: any, url: string, idKey: string) {
     this.auditService.audit(9, 'ADM-084', {
       buttonName: 'edit',
@@ -513,7 +326,93 @@ export class CommonService {
     });
   }
 
+  resumeprocessingandremovehotlistedtag(data: any, url: string, idKey: string) {
+    this.confirmationPopup('resumeprocessingandremovehotlistedtag', data).afterClosed().subscribe(res => {
+      if (res) {
+        let dynamicObject = {"workflowAction": "RESUME_PROCESSING_AND_REMOVE_HOTLISTED_TAG", "workflowId": data.workflowId};
+        this.performAction('resumeprocessingandremovehotlistedtag', dynamicObject, data);
+      } else {
+        this.auditService.audit(19, 'ADM-101', 'activate');
+      }
+    });
+  }
+
+  resumefrombeginning(data: any, url: string, idKey: string) {
+    this.confirmationPopup('resumefrombeginning', data).afterClosed().subscribe(res => {
+      if (res) {
+        let dynamicObject = {"workflowAction": "RESUME_FROM_BEGINNING", "workflowId": data.workflowId};
+        this.performAction('resumefrombeginning', dynamicObject, data);
+      } else {
+        this.auditService.audit(19, 'ADM-101', 'activate');
+      }
+    });
+  }
+
+  resumefrombeginningandremovehotlistedtag(data: any, url: string, idKey: string) {
+    this.confirmationPopup('resumefrombeginningandremovehotlistedtag', data).afterClosed().subscribe(res => {
+      if (res) {
+        let dynamicObject = {"workflowAction": "RESUME_FROM_BEGINNING_AND_REMOVE_HOTLISTED_TAG", "workflowId": data.workflowId};
+        this.performAction('resumefrombeginningandremovehotlistedtag', dynamicObject, data);
+      } else {
+        this.auditService.audit(19, 'ADM-101', 'activate');
+      }
+    });
+  }
+  
+  stopprocessing(data: any, url: string, idKey: string) {
+    this.confirmationPopup('stopprocessing', data).afterClosed().subscribe(res => {
+      if (res) {
+        let dynamicObject = {"workflowAction": "STOP_PROCESSING", "workflowId": data.workflowId};
+        this.performAction('stopprocessing', dynamicObject, data);
+      } else {
+        this.auditService.audit(19, 'ADM-101', 'activate');
+      }
+    });
+  }
+
+  private performAction(callingFunction: string, data: any, actualData:any) {
+    const request = new RequestModel(
+      appConstants.registrationDeviceCreateId,
+      null,
+      data
+    );
+    this.dataService.updateridStatus(request).subscribe(
+      response => {
+        if (!response.errors || response.errors.length === 0) {
+          this.createridMessage('success', callingFunction, actualData);     
+          this.router.navigateByUrl(this.router.url);
+        } else {
+          this.createridMessage('error', callingFunction, response);
+        }
+      },
+      error => this.createridMessage('error', callingFunction, actualData)
+    );
+  }
+
+  private createridMessage(type: string, listItem: string, data?: any) {
+    let obj = {};
+    let url = this.router.url.split('/')[2];
+    let textToDisplay = null;    
+        textToDisplay = data.workflowId;
+
+    if (type === 'success') {
+      obj = {
+        title: this.actionMessages[listItem]['success-title'],
+        message: this.actionMessages[listItem]['success-message'][0] + textToDisplay + this.actionMessages[listItem]['success-message'][1],
+        btnTxt: this.actionMessages[listItem]['btnTxt']
+      };
+    } else if (type === 'error') {
+      obj = {
+        title: this.actionMessages[listItem]['error-title'],
+        message: data.errors[0].message,
+        btnTxt: this.actionMessages[listItem]['btnTxt']
+      };
+    }
+    this.showMessage(obj);
+  }
+
   activateCenter(data: any, url: string, idKey: string) {
+    console.log("activateCenter>>>");
     if (this.router.url.indexOf('single-view') >= 0) {
       this.auditService.audit(10, 'ADM-086', {
         buttonName: 'activate',

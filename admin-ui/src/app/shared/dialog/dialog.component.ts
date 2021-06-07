@@ -69,7 +69,6 @@ export class DialogComponent implements OnInit {
     private translate: TranslateService,
     private headerService: HeaderService
   ) {
-    //this.primaryLangCode = this.config.getConfig().primaryLangCode;
     this.primaryLangCode = this.headerService.getUserPreferredLanguage();
     this.translate.use(this.primaryLangCode);
   }
@@ -109,9 +108,8 @@ export class DialogComponent implements OnInit {
   getFilterMappings() {
     return new Promise((resolve, reject) => {
       this.routeParts = this.router.url.split('/')[3];
-      console.log("this.routeParts>>>"+this.routeParts);
       let specFileName = "";
-      if(this.routeParts != "view"){
+      if(!this.routeParts.includes("view")){
         specFileName = appConstants.FilterMapping[`${this.routeParts}`].specFileName;
       }else{
         this.routeParts = this.router.url.split('/')[2];
@@ -151,8 +149,6 @@ export class DialogComponent implements OnInit {
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     this.auditService.audit(7, id.auditEventId, currentRouteType);
-    console.log(id);
-    console.log(currentRoute);
     this.dialog.closeAll();
     this.router.navigate([
       `${currentRoute}/single-view`,
@@ -161,7 +157,6 @@ export class DialogComponent implements OnInit {
   }
 
   settingUpFilter(filterNames: any) {
-    console.log(filterNames, this.existingFilters, this.filterOptions);
     filterNames.forEach(values => {
       const filterOption = this.existingFilters.filter(
         (filter: FilterModel) =>
@@ -192,7 +187,6 @@ export class DialogComponent implements OnInit {
         }
       }
     });
-    console.log(this.filterGroup.controls);
     this.settingUpBetweenFilters(filterNames);
   }
 
@@ -213,7 +207,6 @@ export class DialogComponent implements OnInit {
   }
 
   convertDate(dateString: string) {
-    console.log(dateString);
     const date = new Date(dateString);
     let returnDate = date.getFullYear() + '-';
     returnDate +=
@@ -229,7 +222,6 @@ export class DialogComponent implements OnInit {
   }
 
   createBetweenFilter(filterDetails: any) {
-    console.log(filterDetails);
     const existingFilter = this.existingFilters.filter(
       filters => filters.columnName === filterDetails.fieldName
     );
@@ -240,7 +232,6 @@ export class DialogComponent implements OnInit {
           this.momentDate = this.convertDate(
             this.filterGroup.controls[filterDetails.filtername].value
           );
-          console.log(this.momentDate);
           this.existingFilters[index].fromValue = this.momentDate;
         } else {
           this.existingFilters[index].fromValue = this.filterGroup.controls[
@@ -252,7 +243,6 @@ export class DialogComponent implements OnInit {
           this.momentDate = this.convertDate(
             this.filterGroup.controls[filterDetails.filtername].value
           );
-          console.log(this.momentDate);
           this.existingFilters[index].toValue = this.momentDate;
         } else {
           this.existingFilters[index].toValue = this.filterGroup.controls[
@@ -267,7 +257,6 @@ export class DialogComponent implements OnInit {
           this.momentDate = this.convertDate(
             this.filterGroup.controls[filterDetails.filtername].value
           );
-          console.log(this.momentDate);
           filterModel.fromValue = this.momentDate;
         } else {
           filterModel.fromValue = this.filterGroup.controls[
@@ -279,7 +268,6 @@ export class DialogComponent implements OnInit {
           this.momentDate = this.convertDate(
             this.filterGroup.controls[filterDetails.filtername].value
           );
-          console.log(this.momentDate);
           filterModel.toValue = this.momentDate;
         } else {
           filterModel.toValue = this.filterGroup.controls[
@@ -292,8 +280,6 @@ export class DialogComponent implements OnInit {
   }
 
   validateBetweenFilter(filterModel: FilterModel[], isDate: boolean[]) {
-    console.log('validate called');
-    console.log(filterModel);
     return new Promise((resolve, reject) => {
       filterModel.forEach(filter => {
         if (
@@ -336,7 +322,6 @@ export class DialogComponent implements OnInit {
     Object.keys(this.filterGroup.controls).forEach(key => {
       const filter = this.FilterData.filter(data => data.filtername === key);
       let flag = false;
-      console.log(filter);
       if (
         this.filterGroup.controls[key].value &&
         this.filterGroup.controls[key].value !== ''
@@ -349,10 +334,6 @@ export class DialogComponent implements OnInit {
           filter[0].dropdown === 'false' &&
           filter[0].autocomplete === 'false'
         ) {
-          console.log(
-            typeof this.filterGroup.controls[key].value,
-            this.filterGroup.controls[key].value
-          );
           if (
             this.filterGroup.controls[key].value.toString().endsWith('*') &&
             this.filterGroup.controls[key].value.toString().startsWith('*')
@@ -409,7 +390,6 @@ export class DialogComponent implements OnInit {
         }
       }
     });
-    console.log(this.existingFilters);
     const betweenFilter = this.existingFilters.filter(
       (item: FilterModel) => item.type === 'between'
     );
@@ -430,7 +410,6 @@ export class DialogComponent implements OnInit {
       this.requiredError = false;
       this.rangeError = false;
     }
-    console.log(this.requiredError, this.filterGroup.valid, this.rangeError);
     if (
       !this.requiredError &&
       !this.rangeError &&
@@ -450,7 +429,6 @@ export class DialogComponent implements OnInit {
   }
 
   getControlName(filter: any, value: string) {
-    console.log(filter);
     if (!(filter.dropdown === 'false' && filter.autocomplete === 'false')) {
       this.getFilterValues(
         filter.fieldName,
@@ -485,13 +463,10 @@ export class DialogComponent implements OnInit {
       [optinalFilterObject]
     );
     this.requestModel = new RequestModel('', null, this.filtersRequest);
-    console.log(this.requestModel);
     this.dataStorageService
       .getFiltersForAllMaterDataTypes(apitype, this.requestModel)
       .subscribe(response => {
-        console.log(response);
         this.filterOptions[controlName] = [...response.response.filters];
-        console.log(this.filterOptions);
       });
   }
   getStepsForCreateUpate() {
@@ -499,7 +474,6 @@ export class DialogComponent implements OnInit {
       this.dataStorageService
         .getCreateUpdateSteps(this.input.entity)
         .subscribe(response => {
-           console.log(response);
            this.createUpdateSteps.title = response['title'];
            resolve(true);
         });
