@@ -505,7 +505,7 @@
       "noButtonText": "No",
       "applicationLockConfirm":{
         "title":"Confirmation",
-        "message":"Application details cannot be modified further once booked. Please click on confirm to book an appointment for the PRID :",
+        "message":"Are you sure you want to submit the details? Once submitted the details cannot be modified for the PRID :",
         "yesButtonText": "Confirm",
         "noButtonText": "Cancel"
       }

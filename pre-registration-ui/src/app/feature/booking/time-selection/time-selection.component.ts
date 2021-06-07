@@ -225,9 +225,6 @@ export class TimeSelectionComponent
     this.canAddApplicant(
       this.availabilityData[this.selectedTile].timeSlots[this.selectedCard]
     );
-    console.log(
-      this.availabilityData[this.selectedTile].timeSlots[this.selectedCard]
-    );
   }
 
   itemDelete(index: number): void {
@@ -267,7 +264,6 @@ export class TimeSelectionComponent
         },
       };
       this.selectedNames.push(selectedObj);
-      console.log(this.selectedNames);
       this.deletedNames.splice(index, 1);
     }
   }
@@ -461,8 +457,8 @@ export class TimeSelectionComponent
       };
       this.dialog
         .open(DialougComponent, {
-          width: "450px",
-          height: "220px",
+          width: "525px",
+          height: "190px",
           data: data,
         })
         .afterClosed()
