@@ -62,8 +62,7 @@ import identityStubJson from "../../../../assets/identity-spec.json";
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     {
       provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      useClass: MomentDateAdapter
     },
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
@@ -114,6 +113,7 @@ export class DemographicComponent
   consentMessage = [];
   titleOnError = "";
   dateOfBirthFieldId = "";
+  _moment = moment;
   @ViewChild("age") age: ElementRef;
   private _keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren("keyboardRef", { read: ElementRef })
@@ -183,12 +183,11 @@ export class DemographicComponent
     //set translation service
     this.translate.use(this.dataCaptureLanguages[0]);
     //set the locale for date picker and moment
-    let localeId = this.dataCaptureLanguages[0].substring(0, 2);
+    const localeId = this.dataCaptureLanguages[0].substring(0, 2);
     this.dateAdapter.setLocale(localeId);
-    moment.locale(localeId);
-    this.localeDtFormat = moment().creationData().locale.longDateFormat('L');
-    console.log(`locale for datePicker: ${moment().locale()} : ${this.localeDtFormat}`);
-    
+    this.localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
+    moment.locale('en-GB');
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
     this.getPrimaryLabels();
@@ -507,7 +506,7 @@ export class DemographicComponent
     return new Promise((resolve, reject) => {
       this.dataStorageService.getIdentityJson().subscribe(
         async (response) => {
-          response = identityStubJson;
+          //response = identityStubJson;
           let identityJsonSpec =
             response[appConstants.RESPONSE]["jsonSpec"]["identity"];
           this.identityData = identityJsonSpec["identity"];
@@ -1410,8 +1409,8 @@ export class DemographicComponent
    */
   onDOBChange(controlId: string) {
     const dtCtrlId = controlId + "_dateCtrl";
-    const newDtStr = this.userForm.controls[`${dtCtrlId}`].value;
-    const newDtMomentObj = moment(newDtStr);
+    const newDtMomentObj = this.userForm.controls[`${dtCtrlId}`].value;
+    newDtMomentObj.locale('en-GB');
     if (newDtMomentObj.isValid()) {
       let formattedDt  = newDtMomentObj.format(this.serverDtFormat);
       let calcAge = this.calculateAge(formattedDt).toString();
@@ -1810,6 +1809,7 @@ export class DemographicComponent
     } else if (typeof identity[element] === "string" && this.userForm.controls[`${element}`]) {
       const momentObj = moment(this.userForm.controls[`${element}`].value, this.serverDtFormat, true);   
       if (momentObj.isValid()) {
+        momentObj.locale('en-GB');
         attr = momentObj.format(this.serverDtFormat);
       } else {
         attr = this.userForm.controls[`${element}`].value;  
