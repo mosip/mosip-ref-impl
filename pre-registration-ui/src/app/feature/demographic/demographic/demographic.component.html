@@ -182,29 +182,28 @@
                       </ng-container>
                       <!-- Add Age Date fields-->
                       <ng-container *ngIf="field.controlType === 'ageDate'">
-                        <span *ngIf="i == 0" [dir]="textDirection[i]">
-                          <div class="user__age-or-date">
+                        <span *ngIf="i == 0" >
+                          <div class="user__age-or-date" [dir]="textDirection[i]">
                             <div class="user__date">
                               <!-- <mat-form-field appearance="legacy">
-                                  <input matInput placeholder="{{ 'demographic.date_dd' | translate }}" #dd [value]="date"
-                                    (change)="onChangeHandler(field.id)"
-                                    (focusout)="onDOBChange();onChangeHandler(field.id);" [disabled]="readOnlyMode" />
-                                </mat-form-field>
-                                <mat-form-field appearance="legacy">
-                                  <input matInput placeholder="{{ 'demographic.date_mm' | translate }}" [value]="month"
-                                    #mm (focusout)="onDOBChange();onChangeHandler(field.id);"
-                                    (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
-                                </mat-form-field>
-                                <mat-form-field appearance="legacy">
-                                  <input matInput placeholder="{{ 'demographic.date_yyyy' | translate }}" [value]="year"
-                                    #yyyy (focusout)="onDOBChange();onChangeHandler(field.id);"
-                                    (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
-                                </mat-form-field> -->
+                                <input matInput placeholder="{{ 'demographic.date_dd' | translate }}" #dd [value]="date"
+                                  (change)="onChangeHandler(field.id)"
+                                  (focusout)="onDOBChange();onChangeHandler(field.id);" [disabled]="readOnlyMode" />
+                              </mat-form-field>
                               <mat-form-field appearance="legacy">
+                                <input matInput placeholder="{{ 'demographic.date_mm' | translate }}" [value]="month"
+                                  #mm (focusout)="onDOBChange();onChangeHandler(field.id);"
+                                  (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
+                              </mat-form-field>
+                              <mat-form-field appearance="legacy">
+                                <input matInput placeholder="{{ 'demographic.date_yyyy' | translate }}" [value]="year"
+                                  #yyyy (focusout)="onDOBChange();onChangeHandler(field.id);"
+                                  (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
+                              </mat-form-field> -->
+                              <mat-form-field appearance="legacy" [dir]="textDirection[i]">
                                 <mat-label>{{localeDtFormat}}</mat-label>
                                 <input matInput [formControlName]="field.id + '_dateCtrl'" placeholder="{{localeDtFormat}}"
-                                  (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);" [matDatepicker]="dp"
-                                  [disabled]="readOnlyMode" />
+                                  (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);" [matDatepicker]="dp"/>
                                 <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                 <mat-datepicker #dp></mat-datepicker>
                               </mat-form-field>
@@ -213,17 +212,10 @@
                               {{ "demographic.text_or" | translate }}
                             </div>
                             <div class="user__age">
-                              <!-- <mat-form-field appearance="legacy">
-                                  <input matInput placeholder="{{ 'demographic.label_age' | translate }}"
-                                    [value]="currentAge" #age (change)="onChangeHandler(field.id)"
-                                    (focusout)="onAgeChange(field.id);onChangeHandler(field.id);"
-                                    [disabled]="readOnlyMode" />
-                                </mat-form-field> -->
                               <mat-form-field appearance="legacy">
                                 <input type="number" class="form-control" matInput [value]="currentAge" #age
                                   [disabled]="readOnlyMode" placeholder="{{ 'demographic.label_age' | translate }}"
-                                  (focusout)="onAgeChange(field.id);onChangeHandler(field.id);"
-                                  (change)="onChangeHandler(field.id);">
+                                  (change)="onAgeChange(field.id);onChangeHandler(field.id);">
                               </mat-form-field>
                               <div class="user__age--years">
                                 {{ "demographic.text_years" | translate }}
@@ -246,8 +238,7 @@
                           <mat-form-field appearance="legacy">
                             <mat-label>{{localeDtFormat}}</mat-label>
                             <input matInput [formControlName]="field.id" placeholder='{{localeDtFormat}}'
-                              (dateChange)="onChangeHandler(field.id);" [matDatepicker]="dp"
-                              [disabled]="readOnlyMode" />
+                              (dateChange)="onChangeHandler(field.id);" [matDatepicker]="dp" />
                             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                             <mat-datepicker #dp></mat-datepicker>
                           </mat-form-field>
