@@ -16,7 +16,7 @@
           <span *ngIf="lang === 'ara'" matTooltip="{{'center.devices-tooltip' | translate}}"
           [matTooltipPosition]="'above'"
           [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.ara }}</span>
-          <span (click)="sortColumn(columnName.name,i)"
+          <span *ngIf="columnsOfTableData[i] != 'fieldVal'" (click)="sortColumn(columnName.name,i)"
             ><img *ngIf="sortIconTrackerArray[i] === 0"
               src="assets/images/icon_table_sort_both.png"
               height="20px"
@@ -32,7 +32,7 @@
               height="20px"
               width="13px"
               class="sort-icon"
-            /> </span
+            /></span
         ></span>
       </th>
       <th class="table-header sticky-header">&emsp;</th>

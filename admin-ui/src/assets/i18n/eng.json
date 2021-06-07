@@ -33,6 +33,9 @@
             "subItem5": "UploadOtherDomainCertificate"
         }
     },
+    "dashboard": {
+        "welcomeMessage":"Welcome to Mosip Admin portal !"
+    },
     "center": {
         "title":"Centers",
         "center-detail-view" : "Center Detail View",
@@ -550,6 +553,50 @@
             "yesBtnTxt": "Confirm",
             "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to Deactivate  ", " ? \n You can Activate it later if you wish. Till then it will be set as Inactive"],
+            "confirmation-title": "Confirmation"
+        },
+        "resumeprocessingandremovehotlistedtag": {
+            "success-message": ["", " is Resumed Processing and Removed from Hotlisted Tag"],
+            "success-title": "Success",
+            "error-message": ["", " Could not be Resume Processing and Remove from Hotlisted Tag"],
+            "error-title": "Error",
+            "btnTxt": "Done",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to perform action Resume Processing and Remove Hotlisted Tag on RID ", " ? \n"],
+            "confirmation-title": "Confirmation"
+        },
+        "resumefrombeginning": {
+            "success-message": ["", " is Resumed from Beginning"],
+            "success-title": "Success",
+            "error-message": ["", " Could not be Resume and Remove from Hotlisted Tag"],
+            "error-title": "Error",
+            "btnTxt": "Done",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to perform action Resume from Beginning on RID ", " ? \n"],
+            "confirmation-title": "Confirmation"
+        },
+        "resumefrombeginningandremovehotlistedtag": {
+            "success-message": ["", " is Resumed from Beginning and Removed from Hotlisted Tag"],
+            "success-title": "Success",
+            "error-message": ["", " Could not be Resume from Beginning and Remove from Hotlisted Tag"],
+            "error-title": "Error",
+            "btnTxt": "Done",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to perform action Resume from Beginning and Remove Hotlisted Tag on RID ", " ? \n"],
+            "confirmation-title": "Confirmation"
+        },
+        "stopprocessing": {
+            "success-message": ["", " is Stopped"],
+            "success-title": "Success",
+            "error-message": ["", " Could not be Stopped"],
+            "error-title": "Error",
+            "btnTxt": "Done",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to perform action Stop Processing on RID ", " ? \n"],
             "confirmation-title": "Confirmation"
         }
     },

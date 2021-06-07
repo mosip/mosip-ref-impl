@@ -111,6 +111,7 @@ export class CreateComponent {
     this.getProcessingTime();
     this.getTimeSlots();
     this.getZoneData();
+    this.getWorkingDays();
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
@@ -130,6 +131,14 @@ export class CreateComponent {
           );
           this.primaryForm.controls.zone.disable();
         }
+      });
+  }
+
+  getWorkingDays(){
+    this.dataStorageService
+      .getWorkingDays(this.primaryLang)
+      .subscribe(response => { 
+        this.days = response["response"]["workingdays"]   
       });
   }
 

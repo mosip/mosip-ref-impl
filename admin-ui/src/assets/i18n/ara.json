@@ -33,6 +33,9 @@
             "subItem5": "تحميل شهادة مجال أخرى"
         }
     },
+    "dashboard": {
+        "welcomeMessage":"مرحبا بكم في بوابة الادارية Mosip!"
+    },
     "center": {
         "title":"مراكز",
         "center-detail-view" : "عرض مركز التفاصيل",
@@ -518,38 +521,81 @@
       },
     "actionMessages" : {
         "decommission": {
-            "success-message": ["مركز التسجيل ", " تم إيقاف التشغيل بنجاح"],
+            "success-message": ["", "خرجت من الخدمة بنجاح"],
             "success-title": "نجاح",
-            "error-message": ["لا يمكن إنهاء التفويض"
-                ,"لا يمكن إيقاف تشغيل المركز نظرًا لأن بعض الموارد (المستخدمون / الأجهزة / الأجهزة) لا تزال قيد التعيين إليه. \n الرجاء إلغاء تعيين هذه الموارد قبل إيقاف تشغيل المركز"],
+            "error-message": ["لا يمكن إنهاء التفويض", "لا يزال يتم تعيينه مع بعض الموارد الأخرى. \nيرجى إلغاء تعيين الموارد قبل إيقاف التشغيل"],
             "error-title": "خطأ",
-            "btnTxt": "حسنا",
-            "yesBtnTxt": "تؤكد",
-            "noBtnTxt": "إلغاء",
-            "confirmation-message": ["هل ترغب في إيقاف تشغيل مركز التسجيل", "? \n لا يمكنك التراجع عن هذا الإجراء بمجرد النقر فوق \"تأكيد\"."],
-            "confirmation-title": "التأكيد"
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد الخروج من الخدمة", " ? \n لا يمكنك التراجع عن هذا الإجراء بمجرد النقر فوق "تأكيد"."],
+            "confirmation-title": "تأكيد"
         },
         "activate": {
-            "success-message": ["مركز التسجيل ", " تم تفعيله بنجاح"],
+            "success-message": ["", "تم تفعيله بنجاح"],
             "success-title": "نجاح",
-            "error-message": "لا يمكن تنشيط المركز",
+            "error-message": ["", "لا يمكن التنشيط"],
             "error-title": "خطأ",
-            "btnTxt": "حسنا",
-            "yesBtnTxt": "تؤكد",
-            "noBtnTxt": "إلغاء",
-            "confirmation-message": ["هل تريد تفعيل مركز التسجيل", "? \n يمكنك إلغاء تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه نشط"],
-            "confirmation-title": "التأكيد"
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد التفعيل", "? \nيمكنك إلغاء تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه نشط"],
+            "confirmation-title": "تأكيد"
         },
         "deactivate": {
-            "success-message": ["مركز التسجيل ", " تم إلغاء تنشيطه بنجاح"],
+            "success-message": ["", "تم إلغاء تنشيطه بنجاح"],
             "success-title": "نجاح",
-            "error-message": "لا يمكن إلغاء تنشيط المركز",
+            "error-message": ["", "تعذر إلغاء التنشيط"],
             "error-title": "خطأ",
-            "btnTxt": "حسنا",
-            "yesBtnTxt": "تؤكد",
-            "noBtnTxt": "إلغاء",
-            "confirmation-message": ["هل تريد إلغاء تنشيط مركز التسجيل", " ? \n يمكنك تفعيلها في وقت لاحق إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
-            "confirmation-title": "التأكيد"
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد إلغاء التنشيط", " ? \nيمكنك تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
+            "confirmation-title": "تأكيد"
+        },
+        "resumeprocessingandremovehotlistedtag": {
+            "success-message": ["", "يتم استئناف المعالجة وإزالتها من علامة القائمة الساخنة"],
+            "success-title": "نجاح",
+            "error-message": ["", "تعذر استئناف المعالجة والإزالة من العلامة المدرجة في القائمة الساخنة"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد تنفيذ إجراء استئناف المعالجة وإزالة العلامة المدرجة في القائمة الساخنة على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
+        },
+        "resumefrombeginning": {
+            "success-message": ["", "تم استئنافه من البداية"],
+            "success-title": "نجاح",
+            "error-message": ["", "تعذر الاستئناف والإزالة من العلامة المدرجة في القائمة الساخنة"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد إجراء استئناف من البداية على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
+        },
+        "resumefrombeginningandremovehotlistedtag": {
+            "success-message": ["", "تم استئنافه من البداية وإزالته من العلامة المدرجة في القائمة الساخنة"],
+            "success-title": "نجاح",
+            "error-message": ["", "تعذر الاستئناف من البداية والإزالة من العلامة المدرجة في القائمة الساخنة"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد تنفيذ إجراء استئناف من البداية وإزالة علامة قائمة ساخنة على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
+        },
+        "stopprocessing": {
+            "success-message": ["", "توقف"],
+            "success-title": "نجاح",
+            "error-message": ["", "لا يمكن إيقافه"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد تنفيذ إجراء إيقاف المعالجة على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
         }
     },
     "detailView":{

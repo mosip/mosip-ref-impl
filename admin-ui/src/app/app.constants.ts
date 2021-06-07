@@ -376,7 +376,8 @@ export const ListViewIdKeyMapping = {
   masterdataupload : { idKey: 'transcationId', auditEventId: 'ADM-081' },
   packetupload : { idKey: 'transcationId', auditEventId: 'ADM-082' },
   getcertificate : { idKey: 'applicationId', auditEventId: 'ADM-083' },
-  dynamicfields : { idKey: 'id', auditEventId: 'ADM-084' }
+  dynamicfields : { idKey: 'id', auditEventId: 'ADM-084' },
+  'rid-status' : { idKey: 'workflowId', auditEventId: 'ADM-085' }
   
 };
 

@@ -156,8 +156,11 @@ export class DataStorageService {
 
   getridDetails(request: RequestModel): Observable<any> {
     delete request['request']['languageCode'];
-    request['request']['sort'] = {"sortField": "createDateTime", "sortType": "desc"};
     return this.http.post(this.BASE_URL + appConstants.URL["rid-status"], request);
+  }
+
+  updateridStatus(request: RequestModel): Observable<any> {    
+    return this.http.post(this.BASE_URL + 'masterdata/packet/resume', request);
   }
 
   getUsersData(request: RequestModel): Observable<any> {
@@ -273,5 +276,9 @@ export class DataStorageService {
     return this.http.get(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url] + `/missingids/${langCode}?fieldName=${fieldName}`
     );
+  }
+
+  getWorkingDays(langCode: string){
+    return this.http.get(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'workingdays/'+ langCode);
   }
 }

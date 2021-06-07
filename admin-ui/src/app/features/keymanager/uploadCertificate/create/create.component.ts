@@ -131,7 +131,6 @@ export class CreateComponent {
         btnTxt: "DONE"
       };
     }
-    console.log();  
     const dialogRef = self.dialog.open(DialogComponent, {
       width: '650px',
       data
