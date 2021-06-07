@@ -166,7 +166,7 @@ mat-icon {
 }
 
 .user__age-or-date > div {
-  width: 33.3%;
+  width: 100%;
 }
 
 .user__date {
@@ -189,7 +189,7 @@ mat-icon {
 }
 
 .user__age mat-form-field {
-  width: 100%;
+  width: 50%;
   text-align: center;
 }
 

@@ -180,7 +180,7 @@
                           </span> -->
                         </span>
                       </ng-container>
-                      <!-- Add Date fields-->
+                      <!-- Add Age Date fields-->
                       <ng-container *ngIf="field.controlType === 'ageDate'">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <div class="user__age-or-date">
@@ -201,8 +201,8 @@
                                     (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
                                 </mat-form-field> -->
                               <mat-form-field appearance="legacy">
-                                <mat-label>MM/DD/YYYY</mat-label>
-                                <input matInput [formControlName]="field.id + '_dateCtrl'" placeholder='MM/DD/YYYY'
+                                <mat-label>{{localeDtFormat}}</mat-label>
+                                <input matInput [formControlName]="field.id + '_dateCtrl'" placeholder="{{localeDtFormat}}"
                                   (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);" [matDatepicker]="dp"
                                   [disabled]="readOnlyMode" />
                                 <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -238,6 +238,19 @@
                                 !userForm.get(field.id).valid)" [dir]="textDirection[i]">
                             {{ "demographic.validation.DOB_validation" | translate }}
                           </div>
+                        </span>
+                      </ng-container>
+                      <!-- Date fields-->
+                      <ng-container *ngIf="field.controlType === 'date'">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
+                          <mat-form-field appearance="legacy">
+                            <mat-label>{{localeDtFormat}}</mat-label>
+                            <input matInput [formControlName]="field.id" placeholder='{{localeDtFormat}}'
+                              (dateChange)="onChangeHandler(field.id);" [matDatepicker]="dp"
+                              [disabled]="readOnlyMode" />
+                            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                            <mat-datepicker #dp></mat-datepicker>
+                          </mat-form-field>
                         </span>
                       </ng-container>
                       <!-- Add Phone and Email in only one lang -->
