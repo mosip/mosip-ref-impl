@@ -35,6 +35,16 @@ export default class Utils {
 
   static getBookingDateTime(appointment_date: string, time_slot_from: string, language: string) {
     let localeId = language.substring(0, 2);
+    JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
+      (element) => {
+        if (language === element.code && element.locale) {
+          localeId = element.locale;
+          if (localeId.indexOf("_") != -1) {
+            localeId = localeId.split("_")[0];
+          };      
+        }
+      }
+    );  
     //console.log(`getBookingDateTime: ${localeId}`);
     const localeData = localStorage.getItem(localeId);
     let proceed = false;

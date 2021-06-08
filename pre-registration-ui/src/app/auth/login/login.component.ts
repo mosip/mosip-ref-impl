@@ -190,12 +190,20 @@ export class LoginComponent implements OnInit {
       "availableLanguages",
       JSON.stringify(this.languageSelectionArray)
     );
-    this.languageSelectionArray.forEach(async lan => {
-      let localeId = lan.substring(0, 2);
-      if (localStorage.getItem(localeId) == null) {
-        //console.log(`importing localeId: ${localeId}`);
-        await Utils.localeInitializer(localeId);
-      }  
+    this.languageSelectionArray.forEach(async (language) => {
+      let localeId = language.substring(0, 2);
+      if (this.LanguageCodelabels[language]) {
+        localeId = this.LanguageCodelabels[language].locale;
+        if (localeId && localeId.indexOf("_") != -1) {
+          localeId = localeId.split("_")[0];
+        }
+        if (localeId) {
+          if (localStorage.getItem(localeId) == null) {
+            console.log(`importing localeId: ${localeId}`);
+            await Utils.localeInitializer(localeId);
+          }
+        }
+      }
     });
     this.prepareDropdownLabelArray();
   }
@@ -205,6 +213,7 @@ export class LoginComponent implements OnInit {
       let codevalue = {
         code: language,
         value: this.LanguageCodelabels[language].nativeName,
+        locale: this.LanguageCodelabels[language].locale
       };
       this.languageCodeValue.push(codevalue);
     });

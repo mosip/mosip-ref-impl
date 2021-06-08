@@ -183,36 +183,7 @@ export class DemographicComponent
     //set translation service
     this.translate.use(this.dataCaptureLanguages[0]);
     //set the locale for date picker and moment
-    const localeId = this.dataCaptureLanguages[0].substring(0, 2);
-    this.dateAdapter.setLocale(localeId);
-    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
-    console.log(localeDtFormat);
-    this.translate.get('demographic.date_yyyy').subscribe((year: string) => {
-      const yearLabel = year;
-      this.translate.get('demographic.date_mm').subscribe((month: string) => {
-        const monthLabel = month;
-        this.translate.get('demographic.date_dd').subscribe((day: string) => {
-          const dayLabel = day;
-          if (localeDtFormat.indexOf("YYYY") != -1) {
-            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
-          }
-          if (localeDtFormat.indexOf("MM") != -1) {
-            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
-          }
-          else if (localeDtFormat.indexOf("M") != -1) {
-            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
-          }
-          if (localeDtFormat.indexOf("DD") != -1) {
-            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
-          }
-          else if (localeDtFormat.indexOf("D") != -1) {
-            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
-          }
-          this.localeDtFormat = localeDtFormat;
-          console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
-        });  
-      });  
-    });
+    this.setLocaleForDatePicker();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
     this.getPrimaryLabels();
@@ -288,6 +259,44 @@ export class DemographicComponent
       this.filteredSelectOptions[controlId].next(this.selectOptionsDataArray[`${controlId}`].slice());
       return;
     }
+  }
+  setLocaleForDatePicker = () => {
+    let localeId = this.dataCaptureLanguages[0].substring(0, 2);
+    JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
+      (element) => {
+        if (this.dataCaptureLanguages[0] === element.code && element.locale) {
+          localeId = element.locale;
+        }
+      }
+    ); 
+    this.dateAdapter.setLocale(localeId);
+    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    this.translate.get('demographic.date_yyyy').subscribe((year: string) => {
+      const yearLabel = year;
+      this.translate.get('demographic.date_mm').subscribe((month: string) => {
+        const monthLabel = month;
+        this.translate.get('demographic.date_dd').subscribe((day: string) => {
+          const dayLabel = day;
+          if (localeDtFormat.indexOf("YYYY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          if (localeDtFormat.indexOf("MM") != -1) {
+            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
+          }
+          else if (localeDtFormat.indexOf("M") != -1) {
+            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
+          }
+          if (localeDtFormat.indexOf("DD") != -1) {
+            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
+          }
+          else if (localeDtFormat.indexOf("D") != -1) {
+            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
+          }
+          this.localeDtFormat = localeDtFormat;
+          console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
+        });  
+      });  
+    });
   }
 
   initializeDataCaptureLanguages = async () => {
@@ -1266,6 +1275,9 @@ export class DemographicComponent
               if (control.controlType === "ageDate") {
                 this.setDateOfBirth(control.id);
               }
+              if (control.controlType === "date") {
+                this.setDate(control.id);
+              }
               else if (control.type === "string") {
                 this.userForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[`${control.id}`]
@@ -1383,6 +1395,14 @@ export class DemographicComponent
       }
       this.userForm.controls[controlId].setValue(dateValStr);
       this.userForm.controls[`${controlId}_dateCtrl`].setValue(dateMomentObj);
+    } 
+  }
+
+  setDate(controlId: string) {
+    const dateValStr = this.user.request.demographicDetails.identity[controlId];
+    const dateMomentObj = moment(dateValStr, this.serverDtFormat, true);
+    if (dateMomentObj.isValid()) {
+      this.userForm.controls[controlId].setValue(dateMomentObj);
     } 
   }
 
