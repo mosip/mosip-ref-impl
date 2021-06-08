@@ -180,12 +180,12 @@
                           </span> -->
                         </span>
                       </ng-container>
-                      <!-- Add Date fields-->
-                      <ng-container *ngIf="field.controlType === 'date'">
-                        <span *ngIf="i == 0" [dir]="textDirection[i]">
-                          <div class="user__age-or-date">
+                      <!-- Add Age Date fields-->
+                      <ng-container *ngIf="field.controlType === 'ageDate'">
+                        <span *ngIf="i == 0" >
+                          <div class="user__age-or-date" [dir]="textDirection[i]">
                             <div class="user__date">
-                              <mat-form-field appearance="legacy">
+                              <!-- <mat-form-field appearance="legacy">
                                 <input matInput placeholder="{{ 'demographic.date_dd' | translate }}" #dd [value]="date"
                                   (change)="onChangeHandler(field.id)"
                                   (focusout)="onDOBChange();onChangeHandler(field.id);" [disabled]="readOnlyMode" />
@@ -199,6 +199,13 @@
                                 <input matInput placeholder="{{ 'demographic.date_yyyy' | translate }}" [value]="year"
                                   #yyyy (focusout)="onDOBChange();onChangeHandler(field.id);"
                                   (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
+                              </mat-form-field> -->
+                              <mat-form-field appearance="legacy">
+                                <mat-label>{{localeDtFormat}}</mat-label>
+                                <input matInput [formControlName]="field.id + '_dateCtrl'" placeholder="{{localeDtFormat}}"
+                                  (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);" [matDatepicker]="dp"/>
+                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                <mat-datepicker #dp></mat-datepicker>
                               </mat-form-field>
                             </div>
                             <div class="user__pref">
@@ -206,9 +213,9 @@
                             </div>
                             <div class="user__age">
                               <mat-form-field appearance="legacy">
-                                <input matInput tabindex="-1" placeholder="{{ 'demographic.label_age' | translate }}"
-                                  [value]="currentAge" #age (change)="onChangeHandler(field.id)"
-                                  (focusout)="onAgeChange();onChangeHandler(field.id);" [disabled]="readOnlyMode" />
+                                <input type="number" class="form-control" matInput [value]="currentAge" #age
+                                  [disabled]="readOnlyMode" placeholder="{{ 'demographic.label_age' | translate }}"
+                                  (change)="onAgeChange(field.id);onChangeHandler(field.id);">
                               </mat-form-field>
                               <div class="user__age--years">
                                 {{ "demographic.text_years" | translate }}
@@ -223,6 +230,18 @@
                                 !userForm.get(field.id).valid)" [dir]="textDirection[i]">
                             {{ "demographic.validation.DOB_validation" | translate }}
                           </div>
+                        </span>
+                      </ng-container>
+                      <!-- Date fields-->
+                      <ng-container *ngIf="field.controlType === 'date'">
+                        <span *ngIf="i == 0" [dir]="textDirection[i]">
+                          <mat-form-field appearance="legacy">
+                            <mat-label>{{localeDtFormat}}</mat-label>
+                            <input matInput [formControlName]="field.id" placeholder='{{localeDtFormat}}'
+                              (dateChange)="onChangeHandler(field.id);" [matDatepicker]="dp" />
+                            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                            <mat-datepicker #dp></mat-datepicker>
+                          </mat-form-field>
                         </span>
                       </ng-container>
                       <!-- Add Phone and Email in only one lang -->
@@ -257,7 +276,7 @@
                           {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                         </mat-error>
                       </span>
-                      <span *ngIf="field.controlType === 'date' || field.controlType === 'dropdown'
+                      <span *ngIf="field.controlType === 'ageDate' || field.controlType === 'dropdown'
                         || field.controlType === 'button' || field.controlType === 'checkbox'
                         || (field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
