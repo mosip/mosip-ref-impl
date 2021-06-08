@@ -180,6 +180,7 @@ export class EditComponent {
     this.getProcessingTime();
     this.getTimeSlots();
     this.getZoneData();
+    this.getWorkingDays();
   }
 
   lessThanEqual(locCode, index){
@@ -295,7 +296,14 @@ export class EditComponent {
     });
   }
 
-  
+  getWorkingDays(){
+    this.dataStorageService
+      .getWorkingDays(this.primaryLang)
+      .subscribe(response => { 
+        this.days = response["response"]["workingdays"]   
+      });
+  }
+
   async getPrimaryPanelData(languageCode: string) {
     this.disablePrimaryForm = true;
     console.log(`fetching data for ${languageCode}`);
@@ -528,10 +536,10 @@ export class EditComponent {
   formatWorkingDays(selectedDays: string[]) {
     const obj = {};
     this.days.forEach(day => {
-      if (selectedDays.indexOf(day.code) >= 0) {
-        obj[day.code] = true;
+      if (selectedDays.indexOf(day.name) >= 0) {
+        obj[day.name] = true;
       } else {
-        obj[day.code] = false;
+        obj[day.name] = false;
       }
     });
     return obj;

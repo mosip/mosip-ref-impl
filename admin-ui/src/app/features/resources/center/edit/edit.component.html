@@ -633,7 +633,7 @@
             <mat-selection-list formControlName="workingDays">
               <div style="display: flex; flex-wrap: wrap; margin-left: -15px;">
                 <mat-list-option style="background-color: white" [checkboxPosition]="before" *ngFor="let day of days"
-                  [value]="day.code">
+                  [value]="day.name">
                   {{ day.name }}
                 </mat-list-option>
               </div>

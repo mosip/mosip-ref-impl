@@ -11,11 +11,22 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
-  margin: 0px 2vw;
+  /* margin: 0px 2vw; */
   border-bottom: 1px solid #ff4081;
-  border-radius: 0px;
+  border-radius: 0px !important;
   /* z-index:  -1; */
   position: relative;
+}
+.time-selection__note-text{
+  color: #ff4081;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  /* margin: 0px 2vw; */
+  padding-left: 30px;
+  border-radius: 0px !important;
+  font-size: 14px;
 }
 
 .time-selection__title-card-text {
@@ -31,6 +42,7 @@
   margin: auto;
   color: #ccc;
   cursor: pointer;
+  color: #ff4081;
 }
 
 .time-selection__date-card {
@@ -209,9 +221,10 @@
 }
 
 .card-slot-text-span-number {
-  font-size: 0.8rem !important;
+  font-size: 0.6rem !important;
   margin-left: 9rem;
   font-weight: 600;
+  color:rgb(0, 0, 0);
 }
 
 .card-slot-text-span-image {
@@ -397,6 +410,35 @@
     padding: 0px 2px;
     margin-right: 20px;
   }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.circleBase {
+  border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    background: rgb(216, 216, 216);
+    border: 1px solid rgb(0, 0, 0);
+    padding: 8px;
+}
+.flexview{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-content: space-between;
 }
 
 @media screen and (min-width: 767px) and (max-width: 991px) {

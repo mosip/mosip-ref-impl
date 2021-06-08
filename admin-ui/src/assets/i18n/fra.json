@@ -33,6 +33,9 @@
             "subItem5": "Télécharger un autre certificat de domaine"
         }
     },
+    "dashboard": {
+        "welcomeMessage":"Bienvenue sur le portail d'administration Mosip!"
+    },
     "center": {
         "title":"Centres",
         "center-detail-view" : "Vue détaillée du centre",
@@ -336,6 +339,7 @@
         "cancel": "Annuler",
         "status": "Statut",
         "publicKey": "Clé publique",
+        "update": "mettre à jour",
         "signPublicKey": "Signer la clé publique",
         "keyboard-tooltip": "Cliquez pour le clavier virtuel (français)",
         "errorMessages": {
@@ -373,6 +377,53 @@
             },
             "signPublicKey": {
                 "required": "La signature de la clé publique est requise"
+            }
+        },
+        "popupMessages": {
+            "create": {
+                "title": "Confirmation",
+                "message": ["Vous êtes sur le point de créer les détails de la machine ",". Veuillez vous assurer que toutes les informations sont correctes. L'ID de la machine sera généré une fois que vous aurez confirmé"],
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
+                "mandatorySecondaryFields": "Vous n'avez pas rempli les données obligatoires dans la langue secondaire. Les détails de la machine seront créés uniquement dans la langue principale. Voulez-vous toujours continuer?"
+            },
+            "edit": {
+                "title": "Confirmation",
+                "message": "Vous êtes sur le point de mettre à jour les détails de la machine. Veuillez vous assurer que toutes les informations sont correctes",
+                "yesBtnText": "Confirmer",
+                "noBtnText": "Annuler",
+                "mandatorySecondaryFields": "Vous n'avez pas rempli les données obligatoires dans la langue secondaire. Les détails de la machine seront créés uniquement dans la langue principale. Voulez-vous toujours continuer?"
+            },
+            "update-success": {
+                "title": "Succès",
+                "message": ["Les détails de la machine sont mis à jour avec succès. ID de la machine : ", "et nom de la machine :"],
+                "btnTxt": "D'accord"
+            },
+            "update-error": {
+                "title": "Erreur",
+                "message": "Il y a eu un problème lors de la mise à jour des détails de la machine. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "create-success": {
+                "title": "Succès",
+                "message": ["La machine est créée avec succès avec l'ID de la machine :", " et nom de la machine :"],
+                "btnTxt": "D'accord"
+            },
+            "create-error": {
+                "title": "Erreur",
+                "message": "Il y a eu un problème lors de la création des détails de la machine. Veuillez réessayer",
+                "btnTxt": "D'accord"
+            },
+            "navigation-popup": {
+                "title": "Confirmation",
+                "message": "Voulez-vous vraiment quitter cette page ? Toutes les données non enregistrées seront perdues.",
+                "yesBtnTxt": "Quitter",
+                "noBtnTxt": "Rester"
+            },
+            "noData": {
+                "title": "Erreur",
+                "message": "Aucune donnée disponible",
+                "btnTxt": "D'accord"
             }
         }
     },
@@ -471,36 +522,80 @@
       },
     "actionMessages" : {
         "decommission": {
-            "success-message": ["Le centre d'inscription ", " est déclassé avec succès"],
+            "success-message": ["", "est mis hors service avec succès"],
             "success-title": "Succès",
-            "error-message": ["Impossible de mettre hors service "," car certaines ressources (utilisateurs / machines / appareils) y sont toujours mappées. \n Veuillez démapper ces ressources avant de mettre le centre à l'arrêt."],
+            "error-message": ["Impossible de mettre hors service ", " est toujours mappé avec d'autres ressources. \nVeuillez démapper les ressources avant la mise hors service"],
             "error-title": "Erreur",
-            "btnTxt": "D'accord",
-            "yesBtnTxt": "confirmer",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
             "noBtnTxt": "Annuler",
-            "confirmation-message": ["Voulez-vous mettre le centre d'inscription hors service ", "? \n Vous ne pouvez pas annuler cette action une fois que vous avez cliqué sur Confirmer."],
+            "confirmation-message": ["Voulez-vous mettre hors service ", " ? \n Vous ne pouvez pas annuler cette action une fois que vous avez cliqué sur Confirmer."],
             "confirmation-title": "Confirmation"
         },
         "activate": {
-            "success-message": ["centre d'inscription ", " est activé avec succès"],
+            "success-message": ["", " est activé avec succès"],
             "success-title": "Succès",
-            "error-message": "Le centre n'a pas pu être activé",
+            "error-message": ["", " N'a pas pu être activé"],
             "error-title": "Erreur",
-            "btnTxt": "D'accord",
+            "btnTxt": "Fait",
             "yesBtnTxt": "Confirmer",
             "noBtnTxt": "Annuler",
-            "confirmation-message": ["Voulez-vous activer le centre d'inscription ", "? \n Vous pouvez le désactiver plus tard si vous le souhaitez. Jusque-là, il sera défini comme actif"],
+            "confirmation-message": ["Voulez-vous activer ", "? \n Vous pouvez le désactiver plus tard si vous le souhaitez. Jusque-là, il sera défini comme actif"],
             "confirmation-title": "Confirmation"
         },
         "deactivate": {
-            "success-message": ["centre d'inscription ", " est désactivé avec succès"],
+            "success-message": ["", " est désactivé avec succès"],
             "success-title": "Succès",
-            "error-message": "Le centre n'a pas pu être désactivé",
+            "error-message": ["", " N'a pas pu être désactivé"],
             "error-title": "Erreur",
-            "btnTxt": "D'accord",
+            "btnTxt": "Fait",
             "yesBtnTxt": "Confirmer",
             "noBtnTxt": "Annuler",
-            "confirmation-message": ["Voulez-vous désactiver le centre d'inscription ", " ? \n Vous pouvez l'activer plus tard si vous le souhaitez. Jusque-là, il sera défini comme inactif"],
+            "confirmation-message": ["Voulez-vous désactiver  ", " ? \n Vous pouvez l'activer plus tard si vous le souhaitez. Jusque-là, il sera défini comme inactif"],
+            "confirmation-title": "Confirmation"
+        },
+        "resumeprocessingandremovehotlistedtag": {
+            "success-message": ["", " a repris le traitement et supprimé de l'étiquette de la liste privilégiée"],
+            "success-title": "Succès",
+            "error-message": ["", " Impossible de reprendre le traitement et de supprimer de la balise de la liste privilégiée"],
+            "error-title": "Erreur",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous effectuer l'action Reprendre le traitement et supprimer la balise de la liste de favoris sur le RID ", " ? \n"],
+            "confirmation-title": "Confirmation"
+        },
+        "resumefrombeginning": {
+            "success-message": ["", " est repris depuis le début"],
+            "success-title": "Succès",
+            "error-message": ["", " Impossible de reprendre et de supprimer de la balise de la liste préférée"],
+            "error-title": "Erreur",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous effectuer l'action Reprendre depuis le début sur RID ", " ? \n"],
+            "confirmation-title": "Confirmation"
+        },
+        "resumefrombeginningandremovehotlistedtag": {
+            "success-message": ["", " est repris depuis le début et supprimé de la balise de la liste préférée"],
+            "success-title": "Succès",
+            "error-message": ["", " Impossible de reprendre depuis le début et de supprimer de la balise de la liste préférée"],
+            "error-title": "Erreur",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous effectuer l'action Reprendre depuis le début et supprimer la balise de la liste de favoris sur le RID ", " ? \n"],
+            "confirmation-title": "Confirmation"
+        },
+        "stopprocessing": {
+            "success-message": ["", " est arrêté"],
+            "success-title": "Succès",
+            "error-message": ["", " N'a pas pu être arrêté"],
+            "error-title": "Erreur",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous effectuer l'action Arrêter le traitement sur RID ", " ? \n"],
             "confirmation-title": "Confirmation"
         }
     },

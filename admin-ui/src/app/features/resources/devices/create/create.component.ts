@@ -169,8 +169,12 @@ export class CreateComponent{
   getCenterDetails(zoneCode: string) {    
     this.dataStorageService
       .getFiltersCenterDetailsBasedonZone(this.primaryLang, zoneCode)
-      .subscribe(response => {
-        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;        
+      .subscribe(response => {           
+        if(!response.errors){
+          this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
+        }else{
+          this.dropDownValues.regCenterCode.primary = [];
+        }     
       });
   }
 

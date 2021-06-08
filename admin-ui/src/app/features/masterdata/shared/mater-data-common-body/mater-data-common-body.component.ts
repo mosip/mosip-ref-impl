@@ -163,7 +163,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "holiday"){
         this.pageName = "Holiday";
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
-        this.getZoneData();
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";  
         let name = "";      
@@ -217,7 +217,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Document Category";
       }else if(url === "holiday"){
         this.pageName = "Holiday";
-        this.getZoneData();
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
         this.showPanel(this.pageName);
@@ -308,9 +308,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
           this.secondaryData.code = this.primaryData.code;
       }else if(this.url === "holiday"){
         this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.secondaryLang,"isActive":true};
-        this.getZoneData();
-        /*if(type === "setValue")
-          this.secondaryData.holidayName = this.primaryData.holidayName*/;        
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(this.url === "templates"){
         this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
         this.getTemplateFileFormat();
@@ -458,15 +456,38 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   getHierarchyLevel() {
-    this.dataStorageService
+    this.dropDownValues.hierarchyLevelCode.primary = ['region', 'province', 'city', 'laa', 'postalCode', 'zone'];
+    /*this.dataStorageService
       .getDropDownValuesForMasterData('locations/'+this.primaryLang)
       .subscribe(response => {
-        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations.sort((a, b) => { return a.locationHierarchylevel - b.locationHierarchylevel;});
-      });
-    this.dataStorageService
+        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations.sort((a, b) => { 
+            return a.locationHierarchylevel - b.locationHierarchylevel;
+        });
+      });*/
+
+    let initialLocationCode = this.appConfigService.getConfig()['countryCode'];
+    this.loadLocationData(initialLocationCode);
+
+    /*this.dataStorageService
       .getDropDownValuesForMasterData('locations/'+this.secondaryLang)
       .subscribe(response => {
         this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations.sort((a, b) => { return a.locationHierarchylevel - b.locationHierarchylevel;});
+      });*/
+  }
+
+  loadLocationData(locationCode: string) {
+    this.dataStorageService
+      .getImmediateChildren(locationCode, this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues['locationCode'].primary =
+          response['response']['locations'];
+      });
+
+    this.dataStorageService
+      .getImmediateChildren(locationCode, this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues['locationCode'].secondary =
+          response['response']['locations'];
       });
   }
 

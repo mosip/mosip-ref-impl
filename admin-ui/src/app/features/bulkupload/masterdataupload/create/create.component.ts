@@ -20,7 +20,6 @@ export class CreateComponent {
   uploadForm: FormGroup;
   labelanddatas:any;
   subscribed: any;
-  fileName = "";
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -52,7 +51,8 @@ export class CreateComponent {
   initializeForm() {
     this.uploadForm = this.formBuilder.group({
       category : ['masterdata'],
-      files: ['', [Validators.required]],
+      files: [''],
+      fileName: ['', [Validators.required]],
       operation: ['', [Validators.required]],
       tableName: ['', [Validators.required]],
     });
@@ -62,13 +62,13 @@ export class CreateComponent {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.uploadForm.get('files').setValue(file);
-      this.fileName = file.name;
+      this.uploadForm.get('fileName').setValue(file.name);
     }
   }
 
   onFileClick(event){
-    event.target.value = ''
-    this.fileName = '';
+    event.target.value = '';
+    this.uploadForm.get('fileName').setValue('');
   }
 
   submit(){
@@ -114,25 +114,35 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
-    if(uploadResponse.response.status == "FAILED"){
-      for( let prop in statusDescription ){
-        console.log( statusDescription[prop] );
+    if(!uploadResponse.errors){
+      let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
+      if(uploadResponse.response.status == "FAILED"){
+        for( let prop in statusDescription ){
+          console.log( statusDescription[prop] );
+        }
+        data = {
+          case: 'MESSAGE',
+          title: "Failure !",
+          message: uploadResponse.response.statusDescription,
+          btnTxt: "DONE"
+        };
+      }else{
+        data = {
+          case: 'MESSAGE',
+          title: "Success",
+          message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
+          btnTxt: "DONE"
+        };
       }
-      data = {
-        case: 'MESSAGE',
-        title: "Failure !",
-        message: uploadResponse.response.statusDescription,
-        btnTxt: "DONE"
-      };
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Success",
-        message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
+        title: "Failure !",
+        message: uploadResponse.errors[0].message,
         btnTxt: "DONE"
       };
     }
+    
       
     const dialogRef = self.dialog.open(DialogComponent, {
       width: '550px',

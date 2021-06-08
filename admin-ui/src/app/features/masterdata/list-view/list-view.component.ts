@@ -74,7 +74,7 @@ export class ListViewComponent implements OnDestroy {
       await this.loadBlacklistedWords();
     } else {
       await this.getMasterDataTypeValues(
-        this.appService.getConfig().primaryLangCode
+        this.primaryLang
       );
     }
   }

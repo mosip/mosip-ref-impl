@@ -6,7 +6,7 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { DialougComponent } from "../../../shared/dialoug/dialoug.component";
 import { Router, ActivatedRoute } from "@angular/router";
 import smoothscroll from "smoothscroll-polyfill";
@@ -43,6 +43,7 @@ export class TimeSelectionComponent
   showAddButton = false;
   names: NameList[] = [];
   deletedNames = [];
+  selectedNames = [];
   availabilityData = [];
   days: number;
   disableAddButton = false;
@@ -75,7 +76,8 @@ export class TimeSelectionComponent
     private router: Router,
     private translate: TranslateService,
     private configService: ConfigService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {
     super(dialog);
     smoothscroll.polyfill();
@@ -186,14 +188,15 @@ export class TimeSelectionComponent
   }
 
   public scrollRight(): void {
+    console.log(this.widgetsContent.nativeElement.scrollWidth);
     // for edge browser
     this.widgetsContent.nativeElement.scrollBy({
-      left: this.widgetsContent.nativeElement.scrollLeft + 100,
+      left: this.widgetsContent.nativeElement.scrollLeft + 750,
       behavior: "smooth",
     });
     // for chrome browser
     this.widgetsContent.nativeElement.scrollTo({
-      left: this.widgetsContent.nativeElement.scrollLeft + 100,
+      left: this.widgetsContent.nativeElement.scrollLeft + 750,
       behavior: "smooth",
     });
   }
@@ -201,12 +204,12 @@ export class TimeSelectionComponent
   public scrollLeft(): void {
     // for edge browser
     this.widgetsContent.nativeElement.scrollBy({
-      left: this.widgetsContent.nativeElement.scrollLeft - 100,
+      left: this.widgetsContent.nativeElement.scrollLeft - 750,
       behavior: "smooth",
     });
     //for chrome browser
     this.widgetsContent.nativeElement.scrollTo({
-      left: this.widgetsContent.nativeElement.scrollLeft - 100,
+      left: this.widgetsContent.nativeElement.scrollLeft - 750,
       behavior: "smooth",
     });
   }
@@ -232,6 +235,7 @@ export class TimeSelectionComponent
     this.availabilityData[this.selectedTile].timeSlots[
       this.selectedCard
     ].names.splice(index, 1);
+    this.selectedNames.splice(index, 1);
     this.canAddApplicant(
       this.availabilityData[this.selectedTile].timeSlots[this.selectedCard]
     );
@@ -246,6 +250,20 @@ export class TimeSelectionComponent
       this.availabilityData[this.selectedTile].timeSlots[
         this.selectedCard
       ].names.push(this.deletedNames[index]);
+      let selectedObj = {
+        name: this.deletedNames[index].fullName,
+        bookingData: {
+          displayTime:
+            this.availabilityData[this.selectedTile].timeSlots[
+              this.selectedCard
+            ].displayTime,
+          tag: this.availabilityData[this.selectedTile].timeSlots[
+            this.selectedCard
+          ].tag,
+          date: this.availabilityData[this.selectedTile].displayDate,
+        },
+      };
+      this.selectedNames.push(selectedObj);
       this.deletedNames.splice(index, 1);
     }
   }
@@ -422,14 +440,49 @@ export class TimeSelectionComponent
     });
     if (this.bookingDataList.length === 0) {
       this.disableContinueButton = false;
+      this.openSnackBar(this.languagelabels.noSlotsSelectedForApplicant);
       return;
     }
-    await this.getApplicationStatus(this.preRegId);
-    if (this.applicationStatus === "Pending_Appointment") {
+    if (
+      !this.router.url.includes("multiappointment") &&
+      this.userInfo[0].request.statusCode === "Pending_Appointment"
+    ) {
       const data = {
         case: "CONFIRMATION",
         title: this.languagelabels.applicationLockConfirm.title,
-        message: this.languagelabels.applicationLockConfirm.message,
+        message:
+          this.languagelabels.applicationLockConfirm.message + this.preRegId,
+        noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
+        yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
+      };
+      this.dialog
+        .open(DialougComponent, {
+          width: "525px",
+          height: "190px",
+          data: data,
+        })
+        .afterClosed()
+        .subscribe((response) => {
+          console.log(response);
+          if (response === true) {
+            this.bookingOperationRequest();
+          }
+        });
+    } else if (this.router.url.includes("multiappointment")) {
+      let pridWithNoBookings = [];
+      let pridsString = "";
+      this.userInfo.forEach((user) => {
+        if (user.request.statusCode === "Pending_Appointment") {
+          pridWithNoBookings.push(user.request.preRegistrationId);
+        }
+        pridsString = pridWithNoBookings.join(",");
+        console.log(pridWithNoBookings.join(","));
+      });
+      const data = {
+        case: "CONFIRMATION",
+        title: this.languagelabels.applicationLockConfirm.title,
+        message:
+          this.languagelabels.applicationLockConfirm.message + pridsString,
         noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
         yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
       };
@@ -619,6 +672,14 @@ export class TimeSelectionComponent
       data: data,
     });
     return dialogRef;
+  }
+
+  openSnackBar(message) {
+    this._snackBar.open(message, "", {
+      duration: 5000,
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+    });
   }
 
   navigateDashboard() {

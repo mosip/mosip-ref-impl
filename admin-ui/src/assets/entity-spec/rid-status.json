@@ -3,23 +3,51 @@
   "actionButtons": [
     {
       "buttonName": {
-        "eng": "Activate",
-        "ara": "تنشيط",
-        "fra": "déclencher"
+        "eng": "Resume Processing and Remove Hotlisted Tag",
+        "ara": "استئناف المعالجة وإزالة العلامة المدرجة في القائمة الساخنة",
+        "fra": "Reprendre le traitement et supprimer la balise de la liste sensible"
       },
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
       "validations": "",
-      "callBackFunction": "activateCenter"
+      "callBackFunction": "resumeprocessingandremovehotlistedtag"
     },
     {
-      "buttonName": { "eng": "Deactivate", "ara": "الغاء تنشيط", "fra": "désactiver" },
+      "buttonName": {
+        "eng": "Resume from Beginning",
+        "ara": "استئناف من البداية",
+        "fra": "Reprendre depuis le début"
+      },
       "actionURL": "",
       "redirectURL": "",
       "showIn": "Ellipsis",
       "validations": "",
-      "callBackFunction": "deactivateCenter"
+      "callBackFunction": "resumefrombeginning"
+    },
+    {
+      "buttonName": {
+        "eng": "Resume from Beginning and Remove Hotlisted Tag",
+        "ara": "استئناف من البداية وإزالة العلامة المدرجة في القائمة الساخنة",
+        "fra": "Reprendre depuis le début et supprimer le tag de la Hotlist"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "resumefrombeginningandremovehotlistedtag"
+    },
+    {
+      "buttonName": {
+        "eng": "Stop Processing",
+        "ara": "توقف عن المعالجة",
+        "fra": "Arrêter le traitement"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "stopprocessing"
     },
     {
       "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
@@ -68,7 +96,7 @@
   "filterColumns": [
     {
       "filtername": "workflowId",
-      "filterlabel": { "eng": "RID", "ara": "ايتخلص", "fra": "DÉBARRASSER" },
+      "filterlabel": { "eng": "RID", "ara": "يتخلص", "fra": "DÉBARRASSER" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
@@ -79,15 +107,15 @@
       "methodCallName": ""
     },
     {
-      "filtername": "currentStageName",
-      "filterlabel": { "eng": "Current Stage", "ara": "المرحلة الحالية", "fra": "Étape actuelle" },
+      "filtername": "workflowType",
+      "filterlabel": { "eng": "Workflow Type", "ara": "نوع سير العمل", "fra": "Type de flux de travail" },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
       "dropdown": "false",
       "datePicker": "false",
       "apiName": "packet",
-      "fieldName": "currentStageName",
+      "fieldName": "workflowType",
       "methodCallName": ""
     }
   ]
