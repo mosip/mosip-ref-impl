@@ -2,23 +2,18 @@
   "languages": {
     "eng": {
       "name": "English",
-      "nativeName": "English"
+      "nativeName": "English",
+      "locale": "en_GB"
     },
     "ara": {
       "name": "Arabic",
-      "nativeName": "العَرَبِيَّة‎"
+      "nativeName": "العَرَبِيَّة‎",
+      "locale": "ar_SA"
     },
     "fra": {
       "name": "French",
-      "nativeName": "français"
-    },
-	"tam": {
-      "name": "Tamil",
-      "nativeName": "தமிழ்"
-    },
-	"hin": {
-      "name": "Hindi",
-      "nativeName": "हिन्दी"
+      "nativeName": "français",
+      "locale": "fr_CH"
     }
   }
 }
