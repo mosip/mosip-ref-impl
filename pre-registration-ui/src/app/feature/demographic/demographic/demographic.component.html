@@ -200,7 +200,7 @@
                                   #yyyy (focusout)="onDOBChange();onChangeHandler(field.id);"
                                   (change)="onChangeHandler(field.id)" [disabled]="readOnlyMode" />
                               </mat-form-field> -->
-                              <mat-form-field appearance="legacy" [dir]="textDirection[i]">
+                              <mat-form-field appearance="legacy">
                                 <mat-label>{{localeDtFormat}}</mat-label>
                                 <input matInput [formControlName]="field.id + '_dateCtrl'" placeholder="{{localeDtFormat}}"
                                   (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);" [matDatepicker]="dp"/>

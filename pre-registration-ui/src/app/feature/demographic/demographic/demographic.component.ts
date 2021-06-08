@@ -271,6 +271,7 @@ export class DemographicComponent
     ); 
     this.dateAdapter.setLocale(localeId);
     let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    console.log(`locale for datePicker: ${localeId} : ${localeDtFormat}`);
     this.translate.get('demographic.date_yyyy').subscribe((year: string) => {
       const yearLabel = year;
       this.translate.get('demographic.date_mm').subscribe((month: string) => {
@@ -279,6 +280,9 @@ export class DemographicComponent
           const dayLabel = day;
           if (localeDtFormat.indexOf("YYYY") != -1) {
             localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          else if (localeDtFormat.indexOf("YY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YY/g, yearLabel);
           }
           if (localeDtFormat.indexOf("MM") != -1) {
             localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
@@ -1455,8 +1459,8 @@ export class DemographicComponent
   onDOBChange(controlId: string) {
     const dtCtrlId = controlId + "_dateCtrl";
     const newDtMomentObj = this.userForm.controls[`${dtCtrlId}`].value;
-    newDtMomentObj.locale('en-GB');
-    if (newDtMomentObj.isValid()) {
+    if (newDtMomentObj && newDtMomentObj.isValid()) {
+      newDtMomentObj.locale('en-GB');
       let formattedDt  = newDtMomentObj.format(this.serverDtFormat);
       let calcAge = this.calculateAge(formattedDt).toString();
       if (calcAge !== "" && Number(calcAge) > -1) {
