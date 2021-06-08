@@ -185,9 +185,34 @@ export class DemographicComponent
     //set the locale for date picker and moment
     const localeId = this.dataCaptureLanguages[0].substring(0, 2);
     this.dateAdapter.setLocale(localeId);
-    this.localeDtFormat = moment.localeData(localeId).longDateFormat('L');
-    console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
-    moment.locale('en-GB');
+    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    console.log(localeDtFormat);
+    this.translate.get('demographic.date_yyyy').subscribe((year: string) => {
+      const yearLabel = year;
+      this.translate.get('demographic.date_mm').subscribe((month: string) => {
+        const monthLabel = month;
+        this.translate.get('demographic.date_dd').subscribe((day: string) => {
+          const dayLabel = day;
+          if (localeDtFormat.indexOf("YYYY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          if (localeDtFormat.indexOf("MM") != -1) {
+            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
+          }
+          else if (localeDtFormat.indexOf("M") != -1) {
+            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
+          }
+          if (localeDtFormat.indexOf("DD") != -1) {
+            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
+          }
+          else if (localeDtFormat.indexOf("D") != -1) {
+            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
+          }
+          this.localeDtFormat = localeDtFormat;
+          console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
+        });  
+      });  
+    });
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
     this.getPrimaryLabels();
