@@ -16,8 +16,8 @@
           <!-- Create as rows as many as alignmentGroups in UI specs -->
           <span *ngFor="let alignmentGroup of alignmentGroups">
             <div class="rowContainer">
-              <span *ngFor="let field of uiFieldsForAlignmentGroups[alignmentGroup];index as j">
-                <div class="fieldContainer" [ngStyle]="field.containerStyle" *ngIf="field.isVisible == true">
+              <span *ngFor="let field of uiFieldsForAlignmentGroups[alignmentGroup]; index as uiFieldIndex">
+                <div class="fieldContainer" *ngIf="field.isVisible == true">
                   <div class="fieldHeader" [ngStyle]="field.headerStyle">
                     <!-- Create container header with labels in all chosen dataCaptureLanguages -->
                     <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages">
@@ -182,7 +182,7 @@
                       </ng-container>
                       <!-- Add Age Date fields-->
                       <ng-container *ngIf="field.controlType === 'ageDate'">
-                        <span *ngIf="i == 0" >
+                        <span *ngIf="i == 0">
                           <div class="user__age-or-date" [dir]="textDirection[i]">
                             <div class="user__date">
                               <!-- <mat-form-field appearance="legacy">
@@ -202,8 +202,10 @@
                               </mat-form-field> -->
                               <mat-form-field appearance="legacy">
                                 <mat-label>{{localeDtFormat}}</mat-label>
-                                <input matInput [formControlName]="field.id + '_dateCtrl'" placeholder="{{localeDtFormat}}"
-                                  (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);" [matDatepicker]="dp"/>
+                                <input matInput [formControlName]="field.id + '_dateCtrl'"
+                                  placeholder="{{localeDtFormat}}"
+                                  (dateChange)="onDOBChange(field.id);onChangeHandler(field.id);"
+                                  [matDatepicker]="dp" />
                                 <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                 <mat-datepicker #dp></mat-datepicker>
                               </mat-form-field>

@@ -582,14 +582,6 @@ export class DemographicComponent
           //set the alignmentGroups for UI rendering, by default, 3 containers with multilang controls will appear in a row
           //you can update this by combining controls using "alignmentGroup", "containerStyle" and "headerStyle" in UI specs.
           this.setAlignmentGroups();
-          //this.alignmentGroups.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
-          this.alignmentGroups.map((alignmentGroup) => {
-            this.uiFieldsForAlignmentGroups[alignmentGroup] = [];
-            let uiFieldsFiltered = this.uiFields.filter(
-              (uiField) => uiField.alignmentGroup == alignmentGroup
-            );
-            this.uiFieldsForAlignmentGroups[alignmentGroup] = uiFieldsFiltered;
-          });
           this.dynamicFields = this.uiFields.filter(
             (fields) =>
               (fields.controlType === "dropdown" ||
@@ -614,27 +606,27 @@ export class DemographicComponent
 
   setAlignmentGroups() {
     let rowIndex = 0;
-    let counter = 0;
     this.uiFields.forEach((obj, index) => {
       if (obj.alignmentGroup && obj.alignmentGroup != null) {
         if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
+          this.uiFieldsForAlignmentGroups[obj.alignmentGroup] = [];
           this.alignmentGroups.push(obj.alignmentGroup);
-        }
-      } else {
-        if (counter % 3 === 0) {
           rowIndex = rowIndex + 1;
         }
+        this.uiFieldsForAlignmentGroups[obj.alignmentGroup].push(obj); 
+      }
+      else {
         let alignmentGroup = "defaultrow" + rowIndex;
-        counter = counter + 1;
         obj["alignmentGroup"] = alignmentGroup;
         if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
+          this.uiFieldsForAlignmentGroups[obj.alignmentGroup] = [];
           this.alignmentGroups.push(obj.alignmentGroup);
-          if (obj.containerStyle != null || obj.headerStyle != null) {
-            rowIndex = rowIndex + 1;
-          }
         }
-      }
+        this.uiFieldsForAlignmentGroups[obj.alignmentGroup].push(obj);
+      }  
     });
+    //console.log(this.alignmentGroups);
+    //console.log(this.uiFieldsForAlignmentGroups);
   }
 
   /**
