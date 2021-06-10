@@ -447,7 +447,8 @@ export class DemographicComponent
         if (response[appConstants.RESPONSE]) {
           this.user.request = response[appConstants.RESPONSE];
           console.log(this.user.request);
-          if (this.user.request["statusCode"] !== "Pending_Appointment") {
+          if (this.user.request["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.incomplete &&
+            this.user.request["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.pending) {
             this.readOnlyMode = true;
           } else {
             this.readOnlyMode = false;

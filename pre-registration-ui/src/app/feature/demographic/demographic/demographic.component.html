@@ -20,11 +20,19 @@
                 <div class="fieldContainer" *ngIf="field.isVisible == true">
                   <div class="fieldHeader" [ngStyle]="field.headerStyle">
                     <!-- Create container header with labels in all chosen dataCaptureLanguages -->
-                    <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages">
-                      <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
-                        field.labelName[dataCaptureLanguage] }}</mat-label>
-                      <span *ngIf="i+1 < dataCaptureLanguages.length;else showColon"> / </span>
-                      <ng-template #showColon> : </ng-template>
+                    <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as di">
+                      <span *ngIf="field.controlType === 'checkbox' && di == 0">
+                        <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
+                          field.labelName[dataCaptureLanguage] }}</mat-label>
+                        <span *ngIf="i+1 < dataCaptureLanguages.length;else showColon"> / </span>
+                        <ng-template #showColon> : </ng-template>
+                      </span>
+                      <span *ngIf="field.controlType !== 'checkbox'">
+                        <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
+                          field.labelName[dataCaptureLanguage] }}</mat-label>
+                        <span *ngIf="i+1 < dataCaptureLanguages.length;else showColon"> / </span>
+                        <ng-template #showColon> : </ng-template>
+                      </span>
                     </span>
                     <span *ngIf="field.required" class="required-annotation">*</span>
                   </div>
@@ -278,8 +286,9 @@
                           {{dataCaptureLanguage | validationMessage:'InvalidMessage' | async }}
                         </mat-error>
                       </span>
-                      <span *ngIf="field.controlType === 'ageDate' || field.controlType === 'dropdown'
-                        || field.controlType === 'button' || field.controlType === 'checkbox'
+                      <span *ngIf="field.controlType === 'ageDate' || field.controlType === 'date' 
+                        || field.controlType === 'dropdown' || field.controlType === 'button' 
+                        || field.controlType === 'checkbox'
                         || (field.controlType === 'textbox' && field.type === 'string')">
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-error class="primary-errors" *ngIf="

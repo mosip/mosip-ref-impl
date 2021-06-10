@@ -94,7 +94,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   applicants: any[] = [];
   allowedFiles: string[];
   firstFile: Boolean = true;
-
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
@@ -158,12 +157,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
+    
   }
 
   async getIdentityJsonFormat() {
     return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        response = identityStubJson;
+        //response = identityStubJson;
         let identityJsonSpec =
           response[appConstants.RESPONSE]["jsonSpec"]["identity"];
         this.identityData = identityJsonSpec["identity"];
@@ -198,7 +198,25 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         this.users[0].files = this.userFiles;
       }
       await this.getApplicantTypeID();
-      console.log("dataLoaded");
+      //check if all required documents have been uploaded
+      this.uiFields.forEach((control) => {
+        const controlId = control.id;
+        if (this.userForm.controls[`${controlId}`]) {
+          this.userForm.controls[`${controlId}`].markAsTouched();
+        }
+      });
+      //if yes, and if application status is "Application_Incomplete",
+      //then update it to "Pending_Appointment"
+      if (this.userForm.valid) {
+        await this.updateApplicationStatus();
+      } 
+      //Mark all form fields are untouched to prevent errors before Submit. 
+      this.uiFields.forEach((control) => {
+        const controlId = control.id;
+        if (this.userForm.controls[`${controlId}`]) {
+          this.userForm.controls[`${controlId}`].markAsUntouched();
+        }
+      });
       this.dataLoaded = true;
     } else {
       if (!this.users[0].files) {
@@ -222,12 +240,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             )
           );
           let resp = response[appConstants.RESPONSE];
-          if (resp["statusCode"] !== "Pending_Appointment") {
+          if (resp["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.incomplete &&
+            resp["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.pending) {
             this.readOnlyMode = true;
           } else {
             this.readOnlyMode = false;
           }
-         
           resolve(true);
         });
     });
@@ -1326,18 +1344,54 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    *
    * @memberof FileUploadComponent
    */
-  onNext() {
+  async onNext() {
     if (this.readOnlyMode) {
       localStorage.setItem("modifyDocument", "false");
       let url = Utils.getURL(this.router.url, "summary");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
+      //first update the application status from "Application_Incomplete" to "Pending_Appointment"
+      this.uiFields.forEach((control) => {
+        const controlId = control.id;
+        if (this.userForm.controls[`${controlId}`]) {
+          this.userForm.controls[`${controlId}`].markAsTouched();
+        }
+      });
       if (this.userForm.valid) {
+        await this.updateApplicationStatus();
         localStorage.setItem("modifyDocument", "false");
         let url = Utils.getURL(this.router.url, "summary");
         this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
       }
     }
+  }
+
+  updateApplicationStatus = async () => {
+    return new Promise((resolve) => {
+      //update the application status from "Application_Incomplete" to "Pending_Appointment"
+      this.dataStorageService.getApplicationStatus(this.users[0].preRegId).subscribe(
+        (response) => {
+          const applicationStatus = response["response"]["statusCode"];
+          if (applicationStatus === appConstants.APPLICATION_STATUS_CODES.incomplete) {
+            console.log("updating application status from incomplete to pending");
+            this.dataStorageService.updateApplicationStatus(
+            this.users[0].preRegId, appConstants.APPLICATION_STATUS_CODES.pending)
+            .subscribe(
+              (response) => {
+                resolve(true);
+              },
+              (error) => {
+                resolve(true);      
+              }
+            );
+          }
+          resolve(true);
+        },
+        (error) => {
+          resolve(true);      
+        }
+      );
+    });  
   }
 
   /**

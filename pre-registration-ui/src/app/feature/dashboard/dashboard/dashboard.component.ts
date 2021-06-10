@@ -66,6 +66,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   minLanguage;
   maxLanguage;
   isNavigateToDemographic: any;
+  appStatusCodes = appConstants.APPLICATION_STATUS_CODES;
   /**
    * @description Creates an instance of DashBoardComponent.
    * @param {Router} router
@@ -344,12 +345,12 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicantResponse[
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.demographicMetadata
       ];
-    console.log(demographicMetadata);
-    console.log(
-      applicantResponse[
-        appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode
-      ]
-    );
+    //console.log(demographicMetadata);
+    //console.log(
+    //   applicantResponse[
+    //     appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode
+    //   ]
+    // );
     let dataAvailableLanguage = [];
     demographicMetadata[this.name].forEach((element) => {
       dataAvailableLanguage.push(element["language"]);
@@ -825,7 +826,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     if (value === appConstants.APPLICATION_STATUS_CODES.booked) return "green";
     if (value === appConstants.APPLICATION_STATUS_CODES.expired) return "red";
     if (value === appConstants.APPLICATION_STATUS_CODES.cancelled) return "purple";
-    if (value === "Application_Incomplete") return "maroon";
+    if (value === appConstants.APPLICATION_STATUS_CODES.incomplete) return "maroon";
   }
 
   getMargin(name: string) {
