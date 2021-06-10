@@ -135,8 +135,8 @@ export class DialougComponent implements OnInit {
 
   cancelConsent(message) {
     let consentText = [];
-    message.forEach(element => {
-      consentText.push(element['fileText']);
+    message.forEach((element) => {
+      consentText.push(element["fileText"]);
     });
     let description = {
       url: localStorage.getItem("consentUrl"),
@@ -147,7 +147,7 @@ export class DialougComponent implements OnInit {
     auditObj.actionUserId = localStorage.getItem("loginId");
     auditObj.eventName = "CONSENT";
     auditObj.description = JSON.stringify(description);
-    this.dataService.logAudit(auditObj).subscribe(res => {});
+    this.dataService.logAudit(auditObj).subscribe((res) => {});
   }
 
   async userRedirection() {
@@ -229,5 +229,9 @@ export class DialougComponent implements OnInit {
       ]);
     } else
       this.router.navigate([`${localStorage.getItem("langCode")}/dashboard`]);
+  }
+
+  applicationCancelAndDiscardSubmit(selectedOption) {
+      this.dialogRef.close(selectedOption);
   }
 }
