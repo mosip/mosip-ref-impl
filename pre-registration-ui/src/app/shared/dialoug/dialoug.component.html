@@ -67,7 +67,16 @@
     </mat-radio-group>
   </div>
   <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="selectedOption" cdkFocusInitial>
+    <button mat-button (click)="onNoClick()">
+      {{ "dialog.action_close" | translate }}
+    </button>
+    <span class="spacer"></span>
+    <button
+      mat-button
+      [disabled]="selectedOption === null"
+      (click)="applicationCancelAndDiscardSubmit(selectedOption)"
+      style="margin-right: 40px"
+    >
       {{ "dialog.action_submit" | translate }}
     </button>
   </div>
@@ -95,10 +104,7 @@
   </div>
   <div mat-dialog-actions>
     <span style="width: 50%"
-      ><button
-        mat-button
-        (click)="onNoClick(input.noButtonText)"
-      >
+      ><button mat-button (click)="onNoClick(input.noButtonText)">
         {{ input.noButtonText }}
       </button></span
     >
