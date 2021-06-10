@@ -451,7 +451,7 @@ export class TimeSelectionComponent
         case: "CONFIRMATION",
         title: this.languagelabels.applicationLockConfirm.title,
         message:
-          this.languagelabels.applicationLockConfirm.message + this.preRegId,
+          this.languagelabels.applicationLockConfirm.message,
         noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
         yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
       };
@@ -475,30 +475,32 @@ export class TimeSelectionComponent
         if (user.request.statusCode === "Pending_Appointment") {
           pridWithNoBookings.push(user.request.preRegistrationId);
         }
-        pridsString = pridWithNoBookings.join(",");
-        console.log(pridWithNoBookings.join(","));
+        // pridsString = pridWithNoBookings.join(",");
+        // console.log(pridWithNoBookings.join(","));
       });
-      const data = {
-        case: "CONFIRMATION",
-        title: this.languagelabels.applicationLockConfirm.title,
-        message:
-          this.languagelabels.applicationLockConfirm.message + pridsString,
-        noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
-        yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
-      };
-      this.dialog
-        .open(DialougComponent, {
-          width: "450px",
-          height: "220px",
-          data: data,
-        })
-        .afterClosed()
-        .subscribe((response) => {
-          console.log(response);
-          if (response === true) {
-            this.bookingOperationRequest();
-          }
-        });
+      if (pridWithNoBookings.length !== 0) {
+        const data = {
+          case: "CONFIRMATION",
+          title: this.languagelabels.applicationLockConfirm.title,
+          message: this.languagelabels.applicationLockConfirm.message,
+          noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
+          yesButtonText:
+            this.languagelabels.applicationLockConfirm.yesButtonText,
+        };
+        this.dialog
+          .open(DialougComponent, {
+            width: "450px",
+            height: "220px",
+            data: data,
+          })
+          .afterClosed()
+          .subscribe((response) => {
+            console.log(response);
+            if (response === true) {
+              this.bookingOperationRequest();
+            }
+          });
+      }
     } else {
       this.bookingOperationRequest();
     }

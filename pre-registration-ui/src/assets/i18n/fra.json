@@ -464,7 +464,8 @@
       "pendingAppointment": "Rendez-vous en attente",
       "booked": "Réservé",
       "expired": "Expiré",
-      "cancelled": "Annulé"
+      "cancelled": "Annulé",
+      "Application_Incomplete":"Demande incomplète"
     },
     "error": {
       "error": "Erreur Interne du Serveur. Veuillez réessayer après un certain temps.",
@@ -507,7 +508,7 @@
       "noButtonText": "Non",
       "applicationLockConfirm":{
         "title":"Confirmation",
-        "message":"Les détails de l'application ne peuvent plus être modifiés une fois la réservation effectuée. Please cliquez sur confirmer pour prendre rendez-vous",
+        "message":"Êtes-vous sûr de vouloir soumettre les détails ? Une fois soumis, les détails ne peuvent pas être modifiés",
         "yesButtonText": "Confirmer",
         "noButtonText": "Annuler"
       }
@@ -572,7 +573,8 @@
       "pendingAppointment": "Rendez-vous n'est pas encore réservé",
       "booked": "Rendez-vous est réservé avec succès",
       "expired": "La date de rendez-vous est passée",
-      "cancelled":"Le rendez-vous a été annulé"
+      "cancelled":"Le rendez-vous a été annulé",
+      "Application_Incomplete": "La demande est incomplète"
     },
     "deleteIcon": "Vous pouvez soit rejeter la demande entière, soit annuler le rendez-vous et enregistrer les détails.",
     "book/modify_appointment": "Vous devez cocher la case en regard de l'identifiant de pré-inscription pour qu'un ou plusieurs demandeurs puissent prendre un rendez-vous",
