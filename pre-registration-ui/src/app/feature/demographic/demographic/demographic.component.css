@@ -410,13 +410,13 @@ mat-icon {
 .rowContainer {
   display: flex;
   flex-wrap: wrap;
+  align-items: space-between;
+  justify-content: flex-start;
 }
 .fieldContainer {
-  flex:1;
-  width: 400px;
-  margin: 10px;
-  position:relative;
-  min-width: 95%;
+  flex: 1;
+  margin-right: 10px;
+  margin-bottom: 3%; /* (100-32*3)/2 */
 }
 .fieldHeader {
   width: 400px;
@@ -427,6 +427,7 @@ mat-icon {
 }
 .fieldContent {
   padding: 10px;
+  width: 400px;
   box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
 }
 .selectedOption {

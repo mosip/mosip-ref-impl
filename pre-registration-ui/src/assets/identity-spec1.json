@@ -215,12 +215,10 @@
               }
             ],
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "required": true,
             "visibleCondition": {
@@ -267,14 +265,10 @@
               }
             ],
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "required": false,
             "changeAction": "copyto:permanentAddressLine2,presentAddressLine2,addressCopy"
@@ -301,12 +295,10 @@
               }
             ],
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "required": false,
             "changeAction": "copyto:permanentAddressLine3,presentAddressLine3,addressCopy"
@@ -334,14 +326,10 @@
             ],
             "transliteration": true,
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "required": false,
             "changeAction": "copyto:permanentAddressLine4,presentAddressLine4,addressCopy"
@@ -367,12 +355,10 @@
               }
             ],
             "containerStyle": {
-              "width": "50%",
-              "min-width": "100%"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "50%",
-              "min-width": "100%"
+              "width": "300px"
             },
             "required": false,
             "changeAction": "copyto:permanentProvince,presentProvince,addressCopy"
@@ -398,16 +384,10 @@
             ],
             "alignmentGroup": "row6",
             "containerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "required": false,
             "changeAction": "copyto:permanentCity,presentCity,addressCopy"
@@ -433,16 +413,10 @@
             ],
             "alignmentGroup": "row6",
             "containerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "required": false,
             "changeAction": "copyto:permanentBarangay,presentBarangay,addressCopy"
@@ -462,16 +436,10 @@
             "alignmentGroup": "row6",
             "validators": [],
             "containerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "required": false,
             "changeAction": "copyto:permanentZipcode,presentZipcode,addressCopy"
@@ -492,15 +460,12 @@
             "validators": [],
             "required": true,
             "containerStyle": {
-              "width": "100%",
-              "min-width": "100%"
+              "width": "700px"
             },
             "headerStyle": {
-              "width": "100%",
+              "width": "700px",
               "border-bottom": "1px solid #fd518c",
-              "color": "white",
-              "background-color": "#fd518c",
-              "min-width": "100%"
+              "background-color": "#fd518c"
             },
             "changeAction": "copy&disable:permanentCountry=presentCountry,permanentAddressLine1=presentAddressLine1,permanentAddressLine2=presentAddressLine2,permanentAddressLine3=presentAddressLine3,permanentAddressLine4=presentAddressLine4,permanentCity=presentCity,permanentProvince=presentProvince,permanentBarangay=presentBarangay,permanentZipcode=presentZipcode"
           },
@@ -525,12 +490,10 @@
             ],
             "alignmentGroup": "row8",
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "required": false
           },
@@ -555,14 +518,10 @@
               }
             ],
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "required": false
           },
@@ -587,12 +546,10 @@
               }
             ],
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%"
+              "width": "600px"
             },
             "required": false
           },
@@ -617,14 +574,10 @@
               }
             ],
             "containerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "headerStyle": {
-              "width": "550px",
-              "min-width": "100%",
-              "margin-left": "10px"
+              "width": "600px"
             },
             "required": false
           },
@@ -649,12 +602,10 @@
               }
             ],
             "containerStyle": {
-              "width": "25%",
-              "min-width": "100%"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "25%",
-              "min-width": "100%"
+              "width": "300px"
             },
             "required": false
           },
@@ -679,12 +630,10 @@
               }
             ],
             "containerStyle": {
-              "width": "25%",
-              "min-width": "100%"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "25%",
-              "min-width": "100%"
+              "width": "300px"
             },
             "required": false
           },
@@ -709,16 +658,10 @@
               }
             ],
             "containerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "required": false
           },
@@ -737,16 +680,10 @@
             "type": "simpleType",
             "validators": [],
             "containerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "headerStyle": {
-              "width": "50%",
-              "min-width": "100%",
-              "margin-left": "10px",
-              "margin-right": "10px"
+              "width": "300px"
             },
             "required": false
           },
