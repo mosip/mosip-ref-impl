@@ -40,7 +40,7 @@
     {
       "name": "name",
       "showInListView": "true",
-      "label": { "eng": "Name", "ara": "مركز ", "fra": "Name" },
+      "label": { "eng": "Name", "ara": "ماسم", "fra": "Nom" },
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -116,7 +116,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": { "eng": "Name", "ara": "اسم المركز", "fra": "Nom du centre" },
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom" },
       "filterType": "equals",
       "fieldType": "input",
       "autocomplete": "false",
