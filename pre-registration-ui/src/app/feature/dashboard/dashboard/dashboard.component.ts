@@ -825,6 +825,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     if (value === appConstants.APPLICATION_STATUS_CODES.booked) return "green";
     if (value === appConstants.APPLICATION_STATUS_CODES.expired) return "red";
     if (value === appConstants.APPLICATION_STATUS_CODES.cancelled) return "purple";
+    if (value === "Application_Incomplete") return "maroon";
   }
 
   getMargin(name: string) {

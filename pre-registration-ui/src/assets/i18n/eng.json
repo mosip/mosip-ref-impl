@@ -462,7 +462,8 @@
       "pendingAppointment": "Pending Appointment",
       "booked": "Booked",
       "expired": "Expired",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "Application_Incomplete":"Application Incomplete"
     },
     "error": {
       "error": "Internal server error. Please try again after  some time.",
@@ -505,7 +506,7 @@
       "noButtonText": "No",
       "applicationLockConfirm":{
         "title":"Confirmation",
-        "message":"Are you sure you want to submit the details? Once submitted the details cannot be modified for the PRID :",
+        "message":"Are you sure you want to submit the details? Once submitted the details cannot be modified",
         "yesButtonText": "Confirm",
         "noButtonText": "Cancel"
       }
@@ -570,7 +571,8 @@
       "pendingAppointment": "Appointment is yet to be booked",
       "booked": "Appointment is booked successfully",
       "expired": "Appointed date has passed",
-      "cancelled":"Appointment has been Cancelled"
+      "cancelled":"Appointment has been Cancelled",
+      "Application_Incomplete": "Application is Incomplete"
     },
     "deleteIcon": "You can either discard entire application or cancel the appointment and save the details.",
     "book/modify_appointment": "You must tick the check box near to pre-registration id for one or multiple applicants to book/modify appointment",

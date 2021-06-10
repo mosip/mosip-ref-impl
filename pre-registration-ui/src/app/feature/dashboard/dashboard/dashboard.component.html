@@ -43,7 +43,10 @@
         <mat-card>
           <div class="card-header">
             <span class="checkbox"
-              ><mat-checkbox (change)="onSelectUser(user, $event)">
+              ><mat-checkbox
+                *ngIf="user.status !== 'Application_Incomplete'"
+                (change)="onSelectUser(user, $event)"
+              >
               </mat-checkbox
             ></span>
             <span class="checkbox"
@@ -58,7 +61,13 @@
               >
             </span>
             <span class="spacer"></span>
-            <span *ngIf="(user.status !== 'Pending_Appointment')"
+            <span
+              *ngIf="
+                !(
+                  user.status === 'Pending_Appointment' ||
+                  user.status === 'Application_Incomplete'
+                )
+              "
               ><img
                 matTooltip="{{ 'helpText.lockIcon' | translate }}"
                 [matTooltipDisabled]="false"
@@ -111,7 +120,9 @@
                         ? "dashboard.status.expired"
                         : user.status === "Pending_Appointment"
                         ? "dashboard.status.pendingAppointment"
-                        : "dashboard.status.cancelled"
+                        : user.status === "Cancelled"
+                        ? "dashboard.status.cancelled"
+                        : "dashboard.status.Application_Incomplete"
                       ) | translate
                     }}
 
@@ -123,8 +134,10 @@
                           : user.status === 'Expired'
                           ? 'helpText.status.expired'
                           : user.status === 'Pending_Appointment'
-                          ? 'helpText.pendingAppointment'
-                          : 'helpText.status.cancelled'
+                          ? 'helpText.status.pendingAppointment'
+                          : user.status === 'Cancelled'
+                          ? 'helpText.status.cancelled'
+                          : 'helpText.status.Application_Incomplete'
                         ) | translate
                       }}"
                       [inline]="true"
@@ -140,7 +153,10 @@
               <button
                 mat-button
                 class="footer-btn"
-                *ngIf="user.status === 'Pending_Appointment'"
+                *ngIf="
+                  user.status === 'Pending_Appointment' ||
+                  user.status === 'Application_Incomplete'
+                "
                 [disabled]="disableModifyDataButton"
                 (click)="onModifyInformation(user)"
               >
@@ -153,7 +169,10 @@
               <button
                 mat-button
                 class="footer-btn"
-                *ngIf="user.status !== 'Pending_Appointment'"
+                *ngIf="
+                  !(user.status === 'Pending_Appointment' ||
+                  user.status === 'Application_Incomplete')
+                "
                 (click)="onModifyInformation(user)"
               >
                 <img
@@ -166,7 +185,11 @@
                 mat-button
                 class="footer-btn"
                 (click)="onAcknowledgementView(user)"
-                [disabled]="user.status === 'Pending_Appointment'"
+                [disabled]="
+                  user.status === 'Pending_Appointment' ||
+                  user.status === 'Cancelled' ||
+                  user.status === 'Application_Incomplete'
+                "
               >
                 <img src="assets\view.png" class="modifyapp-btn-img" />{{
                   "dashboard.card.action_view_acknowledgement" | translate
