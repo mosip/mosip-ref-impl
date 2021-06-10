@@ -114,7 +114,7 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    if(!uploadResponse.errors){
+    if(uploadResponse.errors.length == 0){
       let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
       if(uploadResponse.response.status == "FAILED"){
         for( let prop in statusDescription ){

@@ -114,7 +114,7 @@ export class CreateComponent {
   showMessage(uploadResponse) {
     let data = {};
     const self = this;
-    if(!uploadResponse.errors){
+    if(uploadResponse.errors.length == 0){
       const statusDescription: any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
       if (uploadResponse.response.status === 'FAILED') {
         // tslint:disable-next-line:forin
