@@ -144,13 +144,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.sameAsselected = true;
     }
-    this.dataStorageService
-      .getI18NLanguageFiles(this.userPrefLanguage)
-      .subscribe((response) => {
-        if (response["message"])
-          this.fileUploadLanguagelabels = response["message"];
-        if (response["error"]) this.errorlabels = response["error"];
-      });
+    // this.dataStorageService
+    //   .getI18NLanguageFiles(this.userPrefLanguage)
+    //   .subscribe((response) => {
+    //     if (response["message"])
+    //       this.fileUploadLanguagelabels = response["message"];
+    //     if (response["error"]) this.errorlabels = response["error"];
+    //   });
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
@@ -173,11 +173,23 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           }
         });
         resolve(true);
+      },
+      (error) => {
+        this.displayMessage("Error", this.errorlabels.error, error);
+        resolve(true);
       });
     });
   }
 
-  private getPrimaryLabels() {}
+  private getPrimaryLabels() {
+    this.dataStorageService
+    .getI18NLanguageFiles(this.userPrefLanguage)
+    .subscribe((response) => {
+      if (response["message"])
+        this.fileUploadLanguagelabels = response["message"];
+      if (response["error"]) this.errorlabels = response["error"];
+    });
+  }
 
   /**
    *@description This method initialises the users array and the language set by the user.
@@ -1424,9 +1436,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   displayMessage(title: string, message: string, error?: any) {
+   
     if (
       error &&
       error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
       error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
         appConstants.ERROR_CODES.tokenExpired
     ) {

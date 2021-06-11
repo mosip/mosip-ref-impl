@@ -184,9 +184,9 @@ export class DemographicComponent
     this.translate.use(this.dataCaptureLanguages[0]);
     //set the locale for date picker and moment
     this.setLocaleForDatePicker();
+    this.getPrimaryLabels();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
-    this.getPrimaryLabels();
     await this.getConsentMessage();
     // this.validationMessage = appConstants.errorMessages;
     this.initForm();
@@ -729,7 +729,7 @@ export class DemographicComponent
     let items = this.getLocationHierarchy(fieldId);
     return items.length > 0 ? true : false;
   };
-
+ 
   getIndexInLocationHeirarchy = (fieldId) => {
     let items = this.getLocationHierarchy(fieldId);
     return items.indexOf(fieldId);
@@ -1301,9 +1301,10 @@ export class DemographicComponent
                   if (parentLocationName) {
                     let locationCode = this.userForm.controls[parentLocationName].value;
                     if (locationCode) {
-                      //console.log(`fetching locations for: ${control.id}`);
-                      //console.log(`with parent: ${parentLocationName} having value: ${locationCode}`);
+                      // console.log(`fetching locations for: ${control.id}`);
+                      // console.log(`with parent: ${parentLocationName} having value: ${locationCode}`);
                       promisesResolved.push(await this.loadLocationData(locationCode, control.id));
+                      //console.log(this.selectOptionsDataArray[control.id]);
                     }
                   }
                 }
@@ -1312,7 +1313,7 @@ export class DemographicComponent
           }
         });
         Promise.all(promisesResolved).then((values) => {
-          //console.log(`done fetching locations`);
+          console.log(`done fetching locations`);
           resolve(true);
         });
       }
