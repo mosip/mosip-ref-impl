@@ -599,4 +599,9 @@ export class DataStorageService {
    return this.httpClient.get(requesturl);
   }
 
+  updateApplicationStatus(prid: String, statusCode: string){
+    const requesturl = this.BASE_URL + this.PRE_REG_URL + `applications/status/${prid}?statusCode=${statusCode}`;
+    return this.httpClient.put(requesturl, {});
+   }
+
 }

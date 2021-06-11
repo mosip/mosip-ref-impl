@@ -44,7 +44,7 @@
           <div class="card-header">
             <span class="checkbox"
               ><mat-checkbox
-                *ngIf="user.status !== 'Application_Incomplete'"
+                *ngIf="user.status !== appStatusCodes.incomplete"
                 (change)="onSelectUser(user, $event)"
               >
               </mat-checkbox
@@ -64,8 +64,8 @@
             <span
               *ngIf="
                 !(
-                  user.status === 'Pending_Appointment' ||
-                  user.status === 'Application_Incomplete'
+                  user.status === appStatusCodes.pending ||
+                  user.status === appStatusCodes.incomplete
                 )
               "
               ><img
@@ -77,7 +77,7 @@
             <button
               (click)="onDelete(user)"
               mat-icon-button
-              *ngIf="!(user.status === 'Expired')"
+              *ngIf="!(user.status === appStatusCodes.expired)"
             >
               <img
                 matTooltip="{{ 'helpText.deleteIcon' | translate }}"
@@ -114,13 +114,13 @@
                   <td>{{ "dashboard.card.text_status" | translate }}</td>
                   <td id="status" [ngStyle]="{ color: getColor(user.status) }">
                     {{
-                      (user.status === "Booked"
+                      (user.status === appStatusCodes.booked
                         ? "dashboard.status.booked"
-                        : user.status === "Expired"
+                        : user.status === appStatusCodes.expired
                         ? "dashboard.status.expired"
-                        : user.status === "Pending_Appointment"
+                        : user.status === appStatusCodes.pending
                         ? "dashboard.status.pendingAppointment"
-                        : user.status === "Cancelled"
+                        : user.status === appStatusCodes.cancelled
                         ? "dashboard.status.cancelled"
                         : "dashboard.status.Application_Incomplete"
                       ) | translate
@@ -129,13 +129,13 @@
                     <mat-icon
                       class="icon"
                       matTooltip="{{
-                        (user.status === 'Booked'
+                        (user.status === appStatusCodes.booked
                           ? 'helpText.status.booked'
-                          : user.status === 'Expired'
+                          : user.status === appStatusCodes.expired
                           ? 'helpText.status.expired'
-                          : user.status === 'Pending_Appointment'
+                          : user.status === appStatusCodes.pending
                           ? 'helpText.status.pendingAppointment'
-                          : user.status === 'Cancelled'
+                          : user.status === appStatusCodes.cancelled
                           ? 'helpText.status.cancelled'
                           : 'helpText.status.Application_Incomplete'
                         ) | translate
@@ -154,8 +154,8 @@
                 mat-button
                 class="footer-btn"
                 *ngIf="
-                  user.status === 'Pending_Appointment' ||
-                  user.status === 'Application_Incomplete'
+                  user.status === appStatusCodes.pending ||
+                  user.status === appStatusCodes.incomplete
                 "
                 [disabled]="disableModifyDataButton"
                 (click)="onModifyInformation(user)"
@@ -170,8 +170,8 @@
                 mat-button
                 class="footer-btn"
                 *ngIf="
-                  !(user.status === 'Pending_Appointment' ||
-                  user.status === 'Application_Incomplete')
+                  !(user.status === appStatusCodes.pending ||
+                  user.status === appStatusCodes.incomplete)
                 "
                 (click)="onModifyInformation(user)"
               >
@@ -186,9 +186,9 @@
                 class="footer-btn"
                 (click)="onAcknowledgementView(user)"
                 [disabled]="
-                  user.status === 'Pending_Appointment' ||
-                  user.status === 'Cancelled' ||
-                  user.status === 'Application_Incomplete'
+                  user.status === appStatusCodes.pending ||
+                  user.status === appStatusCodes.cancelled ||
+                  user.status === appStatusCodes.incomplete
                 "
               >
                 <img src="assets\view.png" class="modifyapp-btn-img" />{{

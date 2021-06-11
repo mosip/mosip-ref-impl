@@ -236,7 +236,8 @@ export class PreviewComponent implements OnInit {
             []
           );
           let resp = response[appConstants.RESPONSE];
-          if (resp["statusCode"] !== "Pending_Appointment") {
+          if (resp["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.incomplete &&
+            resp["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.pending) {
             this.readOnlyMode = true;
           } else {
             this.readOnlyMode = false;

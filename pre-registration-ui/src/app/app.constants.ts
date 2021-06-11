@@ -143,6 +143,7 @@ export const DEMOGRAPHIC_RESPONSE_KEYS = {
 };
 
 export const APPLICATION_STATUS_CODES = {
+  incomplete: 'Application_Incomplete',
   pending: 'Pending_Appointment',
   booked: 'Booked',
   expired: 'Expired',
