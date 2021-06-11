@@ -1,10 +1,8 @@
-import { resolve } from "core-js/fn/promise";
-
 const copyanddisable = async (context, args, uiField) => {
   console.log("copyanddisable called");
   if (args.length > 0) {
     let checkboxVal = context.userForm.controls[`${uiField.id}`].value;
-    args.forEach(async (arg) => {
+    for (const arg of args) {
       let controlsArr = arg.split("=");
       if (controlsArr.length > 1) {
         let control1 = controlsArr[0],
@@ -41,33 +39,18 @@ const copyanddisable = async (context, args, uiField) => {
               const fromFieldValue =
                 context.userForm.controls[uiField1.id].value;
               if (checkboxVal == true) {
+                context.userForm.controls[uiField2.id].setValue(fromFieldValue);
+                context.userForm.controls[uiField2.id].disable();
                 if (
                   uiField2.controlType == "dropdown" ||
                   uiField2.controlType == "button"
                 ) {
-                  let promisesResolved = [];
+                  context.selectOptionsDataArray[`${uiField2.id}`] =
+                    context.selectOptionsDataArray[`${uiField1.id}`];
+                  context.searchInDropdown(uiField2.id);
                   if (context.isThisFieldInLocationHeirarchies(uiField2.id)) {
-                    const locationIndex = context.getIndexInLocationHeirarchy(
-                      uiField2.id
-                    );
-                    const parentLocationName = context.getLocationNameFromIndex(
-                      uiField2.id,
-                      locationIndex - 1
-                    );
-                    if (parentLocationName) {
-                      let locationCode = context.userForm.controls[parentLocationName].value;
-                      if (locationCode) {
-                        context.selectOptionsDataArray[uiField2.id] = [];
-                        promisesResolved.push(context.loadLocationData(locationCode, uiField2.id));
-                      }
-                    }
+                    context.resetLocationFields(uiField2.id);
                   }
-                  await Promise.all(promisesResolved).then((values) => {
-                    console.log(`done fetching locations`);
-                    context.userForm.controls[uiField2.id].setValue(fromFieldValue);
-                    context.userForm.controls[uiField2.id].disable();
-                    return;
-                  });                  
                 }
               } else {
                 context.userForm.controls[uiField2.id].enable();
@@ -76,7 +59,7 @@ const copyanddisable = async (context, args, uiField) => {
           }
         }
       }
-    });
+    }
   } else {
     console.log(
       "Invalid number of argumments sent to 'copy&disable' changeAction."
