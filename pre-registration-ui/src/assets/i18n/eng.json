@@ -324,6 +324,7 @@
       "message": "To provide consent for storage and utilization of personal information as given",
       "checkCondition": "Click to accept the terms and conditions",
       "acceptButton": "Accept",
+      "cancelButton": "Cancel",
       "alertMessageFirst": "You will be logged out due to not accepting Terms & Conditions",
       "alertMessageSecond": "You will be redirected to ‘Your Application Page’ due to not accepting Terms & Conditions",
       "alertMessageThird": "You will be redirected to ‘Preview Page’ due to not accepting Terms & Conditions"
