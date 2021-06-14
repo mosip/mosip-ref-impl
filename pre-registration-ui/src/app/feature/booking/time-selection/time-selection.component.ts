@@ -440,7 +440,7 @@ export class TimeSelectionComponent
     });
     if (this.bookingDataList.length === 0) {
       this.disableContinueButton = false;
-      this.openSnackBar(this.languagelabels.noSlotsSelectedForApplicant);
+      this.displayMessage("",this.languagelabels.noSlotsSelectedForApplicant,"");
       return;
     }
     if (
