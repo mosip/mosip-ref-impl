@@ -210,25 +210,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         this.users[0].files = this.userFiles;
       }
       await this.getApplicantTypeID();
-      //check if all required documents have been uploaded
-      this.uiFields.forEach((control) => {
-        const controlId = control.id;
-        if (this.userForm.controls[`${controlId}`]) {
-          this.userForm.controls[`${controlId}`].markAsTouched();
-        }
-      });
-      //if yes, and if application status is "Application_Incomplete",
-      //then update it to "Pending_Appointment"
-      if (this.userForm.valid) {
-        await this.updateApplicationStatus();
-      } 
-      //Mark all form fields are untouched to prevent errors before Submit. 
-      this.uiFields.forEach((control) => {
-        const controlId = control.id;
-        if (this.userForm.controls[`${controlId}`]) {
-          this.userForm.controls[`${controlId}`].markAsUntouched();
-        }
-      });
+      //on page load, update application status from "Application_Incomplete"
+      //to "Pending_Appointment", if all required documents are uploaded
+      await this.changeApplicationStatus();
       this.dataLoaded = true;
     } else {
       if (!this.users[0].files) {
@@ -1126,9 +1110,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     const subs = this.dataStorageService
       .sendFile(this.formData, this.users[0].preRegId)
       .subscribe(
-        (response) => {
+        async (response) => {
           if (response[appConstants.RESPONSE]) {
             this.updateUsers(response);
+            //on file upload, update application status from "Application_Incomplete"
+            //to "Pending_Appointment", if all required documents are uploaded
+            await this.changeApplicationStatus();
           } else {
             this.displayMessage(
               this.fileUploadLanguagelabels.uploadDocuments.error,
@@ -1200,6 +1187,31 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile = [];
   }
 
+  changeApplicationStatus = async () => {
+    //console.log("changeApplicationStatus");
+    //check if all required documents have been uploaded
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsTouched();
+      }
+    });
+    //console.log(this.userForm.valid);
+    //if yes, and if application status is "Application_Incomplete",
+    //then update it to "Pending_Appointment"
+    if (this.userForm.valid) {
+      //console.log("calling updateApplicationStatus");
+      await this.updateApplicationStatus();
+    } 
+    //Mark all form fields are untouched to prevent errors before Submit. 
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsUntouched();
+      }
+    });
+  }
+
   openFile() {
     const file = new Blob(this.users[0].files[0][0].multipartFile, {
       type: "application/pdf",
@@ -1256,11 +1268,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       const subs = this.dataStorageService
         .copyDocument(event.value, this.users[0].preRegId)
         .subscribe(
-          (response) => {
+          async (response) => {
             if (response[appConstants.RESPONSE]) {
               this.registration.setSameAs(event.value);
               this.removePOADocument();
               this.updateUsers(response);
+              //on copy document, update application status from "Application_Incomplete"
+              //to "Pending_Appointment", if all required documents are uploaded
+              await this.changeApplicationStatus();
               let index: number;
               let poaTypes = [];
               this.LOD.filter((ele, i) => {
@@ -1362,7 +1377,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       let url = Utils.getURL(this.router.url, "summary");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
-      //first update the application status from "Application_Incomplete" to "Pending_Appointment"
+      //on next, update application status from "Application_Incomplete"
+      //to "Pending_Appointment", if all required documents are uploaded
       this.uiFields.forEach((control) => {
         const controlId = control.id;
         if (this.userForm.controls[`${controlId}`]) {
