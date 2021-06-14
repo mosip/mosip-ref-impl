@@ -490,10 +490,11 @@ export class DemographicComponent
     if (this.demographiclabels) {
       let newDataStructure = [];
       let consentText = [];
-      this.consentMessage.forEach((obj) => {
-        if (this.dataCaptureLanguages.includes(obj.langCode)) {
-          consentText.push(obj.fileText.split("\n"));
-          this.dataStorageService
+      this.dataCaptureLanguages.forEach((lang) => {
+        this.consentMessage.forEach((obj) => {
+          if (lang === obj.langCode) {
+            consentText.push(obj.fileText.split("\n"));
+            this.dataStorageService
             .getI18NLanguageFiles(obj.langCode)
             .subscribe((response) => {
               let labels = response["demographic"];
@@ -503,11 +504,14 @@ export class DemographicComponent
               structure["langCode"] = obj.langCode;
               newDataStructure.push(structure);
             });
-        }
-      });
+          }
+        });    
+      });  
       const data = {
         case: "CONSENTPOPUPMULTILANG",
         data: newDataStructure,
+        title: this.demographiclabels.consent.title,
+        cancelBtn: this.demographiclabels.consent.cancelButton,
         alertMessageFirst: this.demographiclabels.consent.alertMessageFirst,
         alertMessageSecond: this.demographiclabels.consent.alertMessageSecond,
         alertMessageThird: this.demographiclabels.consent.alertMessageThird,
@@ -516,7 +520,6 @@ export class DemographicComponent
       this.dialog
         .open(DialougComponent, {
           width: "950px",
-          height: "590px",
           data: data,
           disableClose: true,
         })
