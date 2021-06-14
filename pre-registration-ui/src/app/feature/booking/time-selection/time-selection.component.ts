@@ -466,6 +466,8 @@ export class TimeSelectionComponent
           console.log(response);
           if (response === true) {
             this.bookingOperationRequest();
+          } else {
+            this.disableContinueButton = false;
           }
         });
     } else if (this.router.url.includes("multiappointment")) {
@@ -498,7 +500,9 @@ export class TimeSelectionComponent
             console.log(response);
             if (response === true) {
               this.bookingOperationRequest();
-            }
+            } else {
+            this.disableContinueButton = false;
+          }
           });
       }
     } else {
