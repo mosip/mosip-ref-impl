@@ -91,28 +91,22 @@
             <div class="card-content">
               <table>
                 <tr>
-                  <td>{{ "dashboard.card.text_name" | translate }}</td>
+                  <td class="column1">{{ "dashboard.card.text_name" | translate }}</td>
                   <td
                     [ngClass]="
                       user.name.length > 30
                         ? 'application-value user__name--wordwrap'
                         : 'application-value'
                     "
-                  >
-                    {{ user.name }}
-                  </td>
+                  >{{ user.name }}</td>
                 </tr>
                 <tr>
-                  <td>
-                    {{ "dashboard.card.text_appoinment_date" | translate }}
-                  </td>
-                  <td class="application-value">
-                    {{ user.appointmentTime }} {{ user.appointmentDate }}
-                  </td>
+                  <td class="column1">{{ "dashboard.card.text_appoinment_date" | translate }}</td>
+                  <td class="application-value">{{ user.appointmentTime }} {{ user.appointmentDate }}</td>
                 </tr>
                 <tr>
-                  <td>{{ "dashboard.card.text_status" | translate }}</td>
-                  <td id="status" [ngStyle]="{ color: getColor(user.status) }">
+                  <td class="column1">{{ "dashboard.card.text_status" | translate }}</td>
+                  <td class="application-value" [ngStyle]="{ color: getColor(user.status) }">
                     {{
                       (user.status === appStatusCodes.booked
                         ? "dashboard.status.booked"
