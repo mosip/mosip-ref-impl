@@ -61,11 +61,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   name = "";
   identityData: any;
   locationHeirarchies: any[];
-  mandatoryLanguages;
-  optionalLanguages;
-  minLanguage;
-  maxLanguage;
-  isNavigateToDemographic: any;
+  mandatoryLanguages: string[];
+  optionalLanguages: string[];
+  minLanguage: Number;
+  maxLanguage: Number;
+  isNavigateToDemographic = false;
   appStatusCodes = appConstants.APPLICATION_STATUS_CODES;
   /**
    * @description Creates an instance of DashBoardComponent.
@@ -91,7 +91,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   ) {
     this.translate.use(this.userPreferredLangCode);
     localStorage.setItem("modifyDocument", "false");
-    localStorage.removeItem("addingUserFromPreview");
+    localStorage.removeItem(appConstants.NEW_APPLICANT_FROM_PREVIEW);
     localStorage.removeItem("muiltyAppointment");
     localStorage.removeItem("modifyMultipleAppointment");
   }
@@ -131,28 +131,10 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     this.getIdentityJsonFormat();
-    this.setLanguageConfiguration();
-  }
-
-  setLanguageConfiguration() {
-    this.mandatoryLanguages = this.configService
-      .getConfigByKey("mosip.mandatory-languages")
-      .split(",");
-    this.mandatoryLanguages = this.mandatoryLanguages.filter(
-      (item) => item != ""
-    );
-    this.optionalLanguages = this.configService
-      .getConfigByKey("mosip.optional-languages")
-      .split(",");
-    this.optionalLanguages = this.optionalLanguages.filter(
-      (item) => item != ""
-    );
-    this.minLanguage = Number(
-      this.configService.getConfigByKey("mosip.min-languages.count")
-    );
-    this.maxLanguage = Number(
-      this.configService.getConfigByKey("mosip.max-languages.count")
-    );
+    this.mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+    this.optionalLanguages = Utils.getOptionalLangs(this.configService);
+    this.minLanguage = Utils.getMinLangs(this.configService);
+    this.maxLanguage = Utils.getMaxLangs(this.configService);
   }
 
   getIdentityJsonFormat() {
@@ -200,7 +182,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           applicants[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
             appConstants.ERROR_CODES.noApplicantEnrolled
         ) {
-          localStorage.setItem("newApplicant", "true");
+          localStorage.setItem(appConstants.NEW_APPLICANT, "true");
           this.onNewApplication();
           return;
         }
@@ -209,7 +191,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           applicants[appConstants.RESPONSE] &&
           applicants[appConstants.RESPONSE] !== null
         ) {
-          localStorage.setItem("newApplicant", "false");
+          localStorage.setItem(appConstants.NEW_APPLICANT, "false");
 
           this.allApplicants =
             applicants[appConstants.RESPONSE][
@@ -406,43 +388,12 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
   async onNewApplication() {
-    if (
-      this.maxLanguage > 1 &&
-      this.optionalLanguages.length > 0 &&
-      this.maxLanguage !== this.mandatoryLanguages.length
-    ) {
-      await this.getDataCaptureLanguages();
-    } else if (this.mandatoryLanguages.length > 0) {
-      if (this.maxLanguage == 1) {
-        localStorage.setItem(
-          "dataCaptureLanguages",
-          JSON.stringify([this.mandatoryLanguages[0]])
-        );
-      } else {
-        let reorderedArr = this.reorderLangsForUserPreferredLang(this.mandatoryLanguages);
-        localStorage.setItem("dataCaptureLanguages", JSON.stringify(reorderedArr));
-      }
-      this.isNavigateToDemographic = true;
-    }
-    if (this.isNavigateToDemographic) {
-      let dataCaptureLanguagesLabels = [];
-      JSON.parse(localStorage.getItem("dataCaptureLanguages")).forEach(
-        (langCode) => {
-          JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
-            (element) => {
-              if (langCode === element.code) {
-                dataCaptureLanguagesLabels.push(element.value);
-              }
-            }
-          );
-        }
-      );
-      localStorage.setItem(
-        "dataCaptureLanguagesLabels",
-        JSON.stringify(dataCaptureLanguagesLabels)
-      );
-      localStorage.setItem("modifyUser", "false");
-      localStorage.setItem("newApplicant", "true");
+     //first check if data capture languages are in session or not
+     const dataCaptureLangsFromSession = localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES);
+     console.log(`dataCaptureLangsFromSession: ${dataCaptureLangsFromSession}`);
+     if (dataCaptureLangsFromSession) {
+      localStorage.setItem(appConstants.MODIFY_USER, "false");
+      localStorage.setItem(appConstants.NEW_APPLICANT, "true");
       if (this.loginId) {
         this.router.navigateByUrl(
           `${this.userPreferredLangCode}/pre-registration/demographic/new`
@@ -451,36 +402,57 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(["/"]);
       }
+     } else {
+       //no data capture langs stored in session, hence prompt the user  
+      if (
+        this.maxLanguage > 1 &&
+        this.optionalLanguages.length > 0 &&
+        this.maxLanguage !== this.mandatoryLanguages.length
+      ) {
+        await this.openLangSelectionPopup();
+      } else if (this.mandatoryLanguages.length > 0) {
+        if (this.maxLanguage == 1) {
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify([this.mandatoryLanguages[0]]));
+        } else {
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(this.mandatoryLanguages, this.userPreferredLangCode);
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
+        }
+        this.isNavigateToDemographic = true;
+      }
+      if (this.isNavigateToDemographic) {
+        let dataCaptureLanguagesLabels = Utils.getLanguageLabels(localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES), 
+          localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES));
+        localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGE_LABELS, JSON.stringify(dataCaptureLanguagesLabels));
+        localStorage.setItem(appConstants.MODIFY_USER, "false");
+        localStorage.setItem(appConstants.NEW_APPLICANT, "true");
+        if (this.loginId) {
+          this.router.navigateByUrl(
+            `${this.userPreferredLangCode}/pre-registration/demographic/new`
+          );
+          this.isNewApplication = true;
+        } else {
+          this.router.navigate(["/"]);
+        }
+      }
     }
   }
 
-  getDataCaptureLanguages() {
+  openLangSelectionPopup() {
     return new Promise((resolve) => {
-      let dialogRef = this.dataCaptureDialog();
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLabels, this.mandatoryLanguages, this.minLanguage, this.maxLanguage);
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
       dialogRef.afterClosed().subscribe((res) => {
         console.log(res);
         if (res == undefined) {
           this.isNavigateToDemographic = false;
         } else {
-          let reorderedArr = this.reorderLangsForUserPreferredLang(res);
-          localStorage.setItem("dataCaptureLanguages", JSON.stringify(reorderedArr));
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.userPreferredLangCode);
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
           this.isNavigateToDemographic = true;
         }
         resolve(true);
       });
     });
-  }
-
-  reorderLangsForUserPreferredLang = (dataCaptureLanguages: string[]) => {
-    let reorderedArr = [];
-    let filteredLangs = dataCaptureLanguages.filter(lang => lang === this.userPreferredLangCode);
-    if (filteredLangs.length > 0) {
-      let filteredLangs1 = dataCaptureLanguages.filter(lang => lang != this.userPreferredLangCode);
-      reorderedArr = [this.userPreferredLangCode, ...filteredLangs1];
-    } else {
-      reorderedArr = [...dataCaptureLanguages];
-    }
-    return reorderedArr;
   }
 
   openDialog(data, width, height?, panelClass?) {
@@ -539,59 +511,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     return dialogRef;
   }
 
-  dataCaptureDialog() {
-    let body = {};
-    body = {
-      case: "LANGUAGE_CAPTURE",
-      title: this.dataCaptureLabels.title,
-      languages: JSON.parse(localStorage.getItem("languageCodeValue")),
-      mandatoryLanguages: this.mandatoryLanguages,
-      minLanguage: this.minLanguage,
-      maxLanguage: this.maxLanguage,
-      message: this.getDataCaptureMessage(),
-      cancelButtonText: this.dataCaptureLabels.cancel_btn,
-      submitButtonText: this.dataCaptureLabels.submit_btn,
-      errorText:
-        this.dataCaptureLabels.error_text[0] +
-        " " +
-        this.maxLanguage +
-        " " +
-        this.dataCaptureLabels.error_text[1],
-    };
-    const dialogRef = this.openDialog(body, "550px", "350px", "data-capture");
-    return dialogRef;
-  }
-
-  getDataCaptureMessage() {
-    let message = "";
-    if (this.minLanguage == this.maxLanguage) {
-      message = `${this.dataCaptureLabels.message[0]} ${this.minLanguage} ${this.dataCaptureLabels.message[3]}`;
-    } else {
-      message = `${this.dataCaptureLabels.message[1]} ${this.minLanguage} ${this.dataCaptureLabels.message[2]} ${this.maxLanguage} ${this.dataCaptureLabels.message[3]}`;
-    }
-    if (this.mandatoryLanguages.length > 0) {
-      message += ` ${this.getLanguageConcatinatedString()} ${
-        this.dataCaptureLabels.message[4]
-      }`;
-    }
-    message += ` ${this.dataCaptureLabels.message[5]}`;
-    return message;
-  }
-
-  getLanguageConcatinatedString() {
-    let mandatoryLang = "";
-    this.mandatoryLanguages.forEach((lang) => {
-      JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
-        (element) => {
-          if (lang == element.code) {
-            mandatoryLang = mandatoryLang + ", " + element.value;
-          }
-        }
-      );
-    });
-    return mandatoryLang.substring(1, mandatoryLang.length);
-  }
-
   removeApplicant(preRegId: string) {
     let x: number = -1;
     for (let i of this.allApplicants) {
@@ -617,7 +536,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
             if (this.users.length == 0) {
               localStorage.setItem("noOfApplicant", "0");
               this.onNewApplication();
-              localStorage.setItem("newApplicant", "true");
+              localStorage.setItem(appConstants.NEW_APPLICANT, "true");
             } else {
               this.displayMessage(
                 this.languagelabels.title_success,
@@ -718,7 +637,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    */
   onModifyInformation(user: Applicant) {
     const preId = user.applicationID;
-    localStorage.setItem("modifyUser", "true");
+    localStorage.setItem(appConstants.MODIFY_USER, "true");
     this.disableModifyDataButton = true;
     this.onModification(preId);
   }

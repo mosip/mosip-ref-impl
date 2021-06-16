@@ -98,7 +98,7 @@
 <mat-card class="center-selection__button-container">
   <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
   <span class="spacer"></span>
-  <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="navigateDashboard()"
+  <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="onNewApplication()"
     class="user-book_later-btn">
     {{ 'preview.action_add_applicant' | translate }}
   </button>

@@ -5,6 +5,9 @@
   <div class="wrapper">
     <div class="user" *ngIf="primaryuserForm">
       <header>{{ "demographic.title" | translate }}
+        <span *ngIf="!dataModification && !readOnlyMode && showChangeDataCaptureLangBtn" style="cursor: pointer;float: right;" >
+          <a (click)="changeDataCaptureLanguages()">{{ "demographic.change_data_capture_langs" | translate }}</a>
+        </span>
       </header>
       <p></p>
       <span class="readOnly" *ngIf="readOnlyMode">

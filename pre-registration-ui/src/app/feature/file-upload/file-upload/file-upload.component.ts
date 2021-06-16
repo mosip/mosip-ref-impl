@@ -1361,7 +1361,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onBack() {
-    localStorage.setItem("modifyUser", "true");
+    localStorage.setItem(appConstants.MODIFY_USER, "true");
     let url = Utils.getURL(this.router.url, "demographic");
     this.router.navigateByUrl(url + `/${this.preRegId}`);
   }

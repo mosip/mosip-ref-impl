@@ -44,6 +44,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import identityStubJson from "../../../../assets/identity-spec.json";
+import { RouterExtService } from "src/app/shared/router/router-ext.service";
 
 /**
  * @description This component takes care of the demographic page.
@@ -105,6 +106,8 @@ export class DemographicComponent
   user: UserModel = new UserModel();
   demographiclabels: any;
   errorlabels: any;
+  dialoglabels: any;
+  dataCaptureLabels: any;
   uppermostLocationHierarchy: any;
   genders: any;
   residenceStatus: any;
@@ -113,6 +116,7 @@ export class DemographicComponent
   consentMessage = [];
   titleOnError = "";
   dateOfBirthFieldId = "";
+  isNavigateToDemographic = false;
   _moment = moment;
   @ViewChild("age") age: ElementRef;
   private _keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
@@ -135,6 +139,7 @@ export class DemographicComponent
   changeActionsNamesArr = [];
   identitySchemaVersion = "";
   readOnlyMode = false;
+  showChangeDataCaptureLangBtn = false;
   localeDtFormat = "";
   serverDtFormat = "YYYY/MM/DD";
   @ViewChild('singleSelect') singleSelect: MatSelect;
@@ -160,6 +165,7 @@ export class DemographicComponent
     private configService: ConfigService,
     private translate: TranslateService,
     public dialog: MatDialog,
+    private routerService: RouterExtService,
     private matKeyboardService: MatKeyboardService,
     private dateAdapter: DateAdapter<Date>,
     private loggerService: LogService // private errorService: ErrorService
@@ -213,6 +219,7 @@ export class DemographicComponent
           });
       }  
     });
+    this.checkToShowLangChangeBtn();
     console.log("exiting");
     this.primaryuserForm = true;
   }
@@ -262,7 +269,7 @@ export class DemographicComponent
   }
   setLocaleForDatePicker = () => {
     let localeId = this.dataCaptureLanguages[0].substring(0, 2);
-    JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
+    JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
       (element) => {
         if (this.dataCaptureLanguages[0] === element.code && element.locale) {
           localeId = element.locale;
@@ -306,10 +313,10 @@ export class DemographicComponent
   initializeDataCaptureLanguages = async () => {
     if (!this.dataModification) {
       this.dataCaptureLanguages = JSON.parse(
-        localStorage.getItem("dataCaptureLanguages")
+        localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES)
       );
       this.dataCaptureLanguagesLabels = JSON.parse(
-        localStorage.getItem("dataCaptureLanguagesLabels")
+        localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGE_LABELS)
       );
       this.dataCaptureLanguages.forEach((langCode) => {
         //set the language direction as well
@@ -343,18 +350,10 @@ export class DemographicComponent
         this.dataCaptureLanguages = [this.user.request.langCode];
       }
       //reorder the languages, by making user login lang as first one in the array
-      let reorderedArr = [];
-      let filteredLangs = this.dataCaptureLanguages.filter(lang => lang === this.langCode);
-      if (filteredLangs.length > 0) {
-        let filteredLangs1 = this.dataCaptureLanguages.filter(lang => lang != this.langCode);
-        reorderedArr = [this.langCode, ...filteredLangs1];
-      } else {
-        reorderedArr = [...this.dataCaptureLanguages];
-      }
-      this.dataCaptureLanguages = reorderedArr;
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.langCode);
       //populate the lang labels
       this.dataCaptureLanguages.forEach((langCode) => {
-        JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
+        JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
           (element) => {
             if (langCode === element.code) {
               this.dataCaptureLanguagesLabels.push(element.value);
@@ -378,6 +377,8 @@ export class DemographicComponent
       .subscribe((response) => {
         this.demographiclabels = response["demographic"];
         this.errorlabels = response["error"];
+        this.dialoglabels = response["dialog"];
+        this.dataCaptureLabels = response["dashboard"]["dataCaptureLanguage"];
       });
   }
   
@@ -415,15 +416,15 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   private async initialization() {
-    if (localStorage.getItem("newApplicant") === "true") {
+    if (localStorage.getItem(appConstants.NEW_APPLICANT) === "true") {
       this.isNewApplicant = true;
     }
-    if (localStorage.getItem("modifyUser") === "true") {
-      //console.log(localStorage.getItem("modifyUser"));
+    if (localStorage.getItem(appConstants.MODIFY_USER) === "true") {
+      //console.log(localStorage.getItem(appConstants.MODIFY_USER));
       this.dataModification = true;
       await this.getPreRegId();
       await this.getUserInfo(this.preRegId);
-      if (localStorage.getItem("modifyUserFromPreview") === "true") {
+      if (localStorage.getItem(appConstants.MODIFY_USER_FROM_PREVIEW) === "true") {
         this.showPreviewButton = true;
       }
 
@@ -1806,13 +1807,13 @@ export class DemographicComponent
     this.checked = true;
     this.dataUploadComplete = true;
     let url = "";
-    if (localStorage.getItem("modifyUserFromPreview") === "true") {
+    if (localStorage.getItem(appConstants.MODIFY_USER_FROM_PREVIEW) === "true" && this.preRegId) {
       url = Utils.getURL(this.router.url, "summary");
-      localStorage.setItem("modifyUserFromPreview", "false");
+      localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "false");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
       url = Utils.getURL(this.router.url, "file-upload");
-      localStorage.removeItem("addingUserFromPreview");
+      localStorage.removeItem(appConstants.NEW_APPLICANT_FROM_PREVIEW);
       this.router.navigate([url, this.preRegId]);
     }
   }
@@ -2036,10 +2037,102 @@ export class DemographicComponent
           this.showPreviewButton = true;
         } else {
           this.showPreviewButton = false;
-          localStorage.setItem("modifyUserFromPreview", "false");
+          localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "false");
         }
       }
     }
+  }
+
+  checkToShowLangChangeBtn = () => {
+    const mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+    const optionalLanguages = Utils.getOptionalLangs(this.configService);
+    const maxLanguage = Utils.getMaxLangs(this.configService);
+    if (
+      maxLanguage > 1 &&
+      optionalLanguages.length > 0 &&
+      maxLanguage !== mandatoryLanguages.length
+    ) {
+      this.showChangeDataCaptureLangBtn = true;
+    }  
+  }
+
+  changeDataCaptureLanguages = () => {
+    if (this.userForm.dirty) {
+      const message = this.demographiclabels["change_data_capture_langs_msg"];
+      const ok_text = this.dialoglabels["action_ok"];
+      const no_text = this.dialoglabels["title_discard"];
+      const body = {
+        case: "CONFIRMATION",
+        message: message,
+        yesButtonText: ok_text,
+        noButtonText: no_text,
+      };
+      this.dialog
+      .open(DialougComponent, { width: "250px", data: body })
+      .beforeClosed()
+      .subscribe((res) => {
+        if (res === true) {
+          this.showLangSelectionPopup();
+        }  
+      });
+    } else {
+      this.showLangSelectionPopup();
+    }
+  }
+
+  /**
+   * This method navigate the user to demographic page if user clicks on Change Data Capture Languages   
+   */
+   async showLangSelectionPopup() {
+    const mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+    const maxLanguage = Utils.getMaxLangs(this.configService);
+    const minLanguage = Utils.getMinLangs(this.configService);
+    await this.openLangSelectionPopup(mandatoryLanguages, minLanguage, maxLanguage);
+    if (this.isNavigateToDemographic) {
+      let dataCaptureLanguagesLabels = Utils.getLanguageLabels(localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES), 
+        localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES));
+      localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGE_LABELS, JSON.stringify(dataCaptureLanguagesLabels));
+      localStorage.setItem(appConstants.MODIFY_USER, "false");
+      localStorage.setItem(appConstants.NEW_APPLICANT, "true");
+      let previousUrl = this.routerService.getPreviousUrl();
+      const newUrl = `/${this.langCode}/pre-registration/demographic/new`;
+      if (previousUrl === newUrl) {
+        previousUrl = `${this.langCode}/dashboard`;
+      }
+      this.router.navigateByUrl(previousUrl, { skipLocationChange: true }).then(() => {
+        this.router.navigate([newUrl])
+      });
+    }
+  }
+  
+  openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
+    return new Promise((resolve) => {
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
+      dialogRef.afterClosed().subscribe((res) => {
+        //console.log(res);
+        if (res == undefined) {
+          this.isNavigateToDemographic = false;
+        } else {
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.langCode);
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
+          console.log("done");
+          this.isNavigateToDemographic = true;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  openDialog(data, width, height?, panelClass?) {
+    const dialogRef = this.dialog.open(DialougComponent, {
+      width: width,
+      height: height,
+      data: data,
+      restoreFocus: false,
+      panelClass: panelClass,
+    });
+    return dialogRef;
   }
 
   /**

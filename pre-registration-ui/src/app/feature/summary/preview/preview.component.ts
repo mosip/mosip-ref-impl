@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { Router, ActivatedRoute } from "@angular/router";
+
+import { MatDialog } from "@angular/material";
 import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
 import { RegistrationService } from "src/app/core/services/registration.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -8,7 +10,7 @@ import Utils from "src/app/app.util";
 import * as appConstants from "../../../app.constants";
 import { ConfigService } from "src/app/core/services/config.service";
 import { CodeValueModal } from "src/app/shared/models/demographic-model/code.value.modal";
-import { LocDetailModal } from "src/app/shared/models/loc.detail.modal";
+import { DialougComponent } from "src/app/shared/dialoug/dialoug.component";
 
 @Component({
   selector: "app-preview",
@@ -26,7 +28,7 @@ export class PreviewComponent implements OnInit {
   sameAs = "";
   residenceStatus: any;
   genders: any;
-
+  dataCaptureLabels;
   identityData = [];
   uiFields = [];
   locationHeirarchy = [];
@@ -37,7 +39,10 @@ export class PreviewComponent implements OnInit {
   controlIds = [];
   ControlIdLabelObjects = {};
   readOnlyMode=false;
+  userPreferredLangCode = localStorage.getItem("userPrefLanguage");
+  isNavigateToDemographic = false;
   constructor(
+    public dialog: MatDialog,
     private dataStorageService: DataStorageService,
     private router: Router,
     private registrationService: RegistrationService,
@@ -45,7 +50,7 @@ export class PreviewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private configService: ConfigService
   ) {
-    this.translate.use(localStorage.getItem("langCode"));
+    this.translate.use(this.userPreferredLangCode);
     localStorage.setItem("modifyDocument", "false");
   }
 
@@ -356,6 +361,7 @@ export class PreviewComponent implements OnInit {
       .getI18NLanguageFiles(localStorage.getItem("langCode"))
       .subscribe((response) => {
         this.sameAs = response["sameAs"];
+        this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
       });
   }
 
@@ -370,8 +376,8 @@ export class PreviewComponent implements OnInit {
 
   modifyDemographic() {
     const url = Utils.getURL(this.router.url, "demographic", 3);
-    localStorage.setItem("modifyUserFromPreview", "true");
-    localStorage.setItem("modifyUser", "true");
+    localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "true");
+    localStorage.setItem(appConstants.MODIFY_USER, "true");
     this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
 
@@ -452,14 +458,81 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  navigateDashboard() {
-    localStorage.setItem("newApplicant", "true");
-    localStorage.setItem("modifyUserFromPreview", "false");
-    localStorage.setItem("modifyUser", "false");
-    localStorage.setItem("addingUserFromPreview", "true");
-    this.router.navigate([`${this.Language}/pre-registration/demographic/new`]);
+  /**
+   * This method navigate the user to demographic page if user clicks on Add New applicant.
+   */
+   async onNewApplication() {
+    //first check if data capture languages are in session or not
+    const dataCaptureLangsFromSession = localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES);
+    console.log(`dataCaptureLangsFromSession: ${dataCaptureLangsFromSession}`);
+    if (dataCaptureLangsFromSession) {
+      this.navigateToDemographic();
+    } else {
+      //no data capture langs stored in session, hence prompt the user 
+      const mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+      const optionalLanguages = Utils.getOptionalLangs(this.configService);
+      const maxLanguage = Utils.getMaxLangs(this.configService);
+      const minLanguage = Utils.getMinLangs(this.configService);
+      if (
+        maxLanguage > 1 &&
+        optionalLanguages.length > 0 &&
+        maxLanguage !== mandatoryLanguages.length
+      ) {
+        await this.openLangSelectionPopup(mandatoryLanguages, minLanguage, maxLanguage);
+      } else if (mandatoryLanguages.length > 0) {
+        if (maxLanguage == 1) {
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify([mandatoryLanguages[0]]));
+        } else {
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(mandatoryLanguages, this.userPreferredLangCode);
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
+        }
+        this.isNavigateToDemographic = true;
+      }
+      if (this.isNavigateToDemographic) {
+        let dataCaptureLanguagesLabels = Utils.getLanguageLabels(localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES), 
+          localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES));
+        localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGE_LABELS, JSON.stringify(dataCaptureLanguagesLabels));
+        this.navigateToDemographic();
+      }
+    }
+  }
+  
+  openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
+    return new Promise((resolve) => {
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
+      dialogRef.afterClosed().subscribe((res) => {
+        //console.log(res);
+        if (res == undefined) {
+          this.isNavigateToDemographic = false;
+        } else {
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.userPreferredLangCode);
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
+          this.isNavigateToDemographic = true;
+        }
+        resolve(true);
+      });
+    });
   }
 
+  openDialog(data, width, height?, panelClass?) {
+    const dialogRef = this.dialog.open(DialougComponent, {
+      width: width,
+      height: height,
+      data: data,
+      restoreFocus: false,
+      panelClass: panelClass,
+    });
+    return dialogRef;
+  }
+
+  navigateToDemographic() {
+    localStorage.setItem(appConstants.NEW_APPLICANT, "true");
+    localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "false");
+    localStorage.setItem(appConstants.MODIFY_USER, "false");
+    localStorage.setItem(appConstants.NEW_APPLICANT_FROM_PREVIEW, "true");
+    this.router.navigate([`${this.userPreferredLangCode}/pre-registration/demographic/new`]);
+  }
   navigateBack() {
     const url = Utils.getURL(this.router.url, "file-upload", 3);
     this.router.navigateByUrl(url + `/${this.preRegId}`);

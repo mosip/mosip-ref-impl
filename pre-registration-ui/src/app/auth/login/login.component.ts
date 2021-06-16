@@ -46,10 +46,10 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha: boolean = true;
   captchaError: boolean;
-  mandatoryLanguages = [];
-  optionalLanguages = [];
-  minLanguage;
-  maxLanguage;
+  mandatoryLanguages : string[];
+  optionalLanguages : string[];
+  minLanguage: Number;
+  maxLanguage: Number;
   languageSelectionArray = [];
   userPreferredLanguage: string;
   langCode: string;
@@ -173,12 +173,10 @@ export class LoginComponent implements OnInit {
   }
 
   loadLanguagesWithConfig() {
-    this.mandatoryLanguages = this.configService.getConfigByKey('mosip.mandatory-languages').split(',');
-    this.mandatoryLanguages = this.mandatoryLanguages.filter(item => item != "");
-    this.optionalLanguages = this.configService.getConfigByKey('mosip.optional-languages').split(',');
-    this.optionalLanguages = this.optionalLanguages.filter(item => item != "");
-    this.minLanguage = Number(this.configService.getConfigByKey('mosip.min-languages.count'));
-    this.maxLanguage = Number(this.configService.getConfigByKey('mosip.max-languages.count'));
+    this.mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+    this.optionalLanguages = Utils.getOptionalLangs(this.configService);
+    this.minLanguage = Utils.getMinLangs(this.configService);
+    this.maxLanguage = Utils.getMaxLangs(this.configService);
     this.languageSelectionArray = [
       ...this.mandatoryLanguages,
       ...this.optionalLanguages,
@@ -217,10 +215,7 @@ export class LoginComponent implements OnInit {
       };
       this.languageCodeValue.push(codevalue);
     });
-    localStorage.setItem(
-      "languageCodeValue",
-      JSON.stringify(this.languageCodeValue)
-    );
+    localStorage.setItem(appConstants.LANGUAGE_CODE_VALUES, JSON.stringify(this.languageCodeValue));
   }
 
   isCaptchaEnabled() {
