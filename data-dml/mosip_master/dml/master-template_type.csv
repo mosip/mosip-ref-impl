@@ -139,3 +139,5 @@ partner-reg-content-template,"partner registration notify content template
 partner-status-content-template,partner status notify content template,eng,TRUE,superadmin,now()
 apikey-status-content-template,partner apikey status notify content template,eng,TRUE,superadmin,now()
 Registration Consent,Registration Consent Template,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,Template for Paused for additional info,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,Template for Paused for additional info,eng,TRUE,superadmin,now()
