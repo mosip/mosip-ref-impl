@@ -115,7 +115,11 @@ export const CONFIG_KEYS = {
   preregistration_document_alllowe_file_name_lenght: 'preregistration.documentupload.allowed.file.nameLength',
   google_recaptcha_site_key: 'google.recaptcha.site.key',
   mosip_adult_age:'mosip.adult.age',
-  preregistration_preview_fields:'preregistration.preview.fields'
+  preregistration_preview_fields:'preregistration.preview.fields',
+  mosip_mandatory_languages: 'mosip.mandatory-languages',
+  mosip_optional_languages: 'mosip.optional-languages',
+  mosip_min_languages_count: 'mosip.min-languages.count',
+  mosip_max_languages_count: 'mosip.max-languages.count'
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {
@@ -173,3 +177,11 @@ export const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 
 export const controlTypeGender = 'gender';
 export const controlTypeResidenceStatus = 'residenceStatus';
+
+export const DATA_CAPTURE_LANGUAGES = "dataCaptureLanguages";
+export const DATA_CAPTURE_LANGUAGE_LABELS = "dataCaptureLanguagesLabels";
+export const LANGUAGE_CODE_VALUES = "languageCodeValue";
+export const MODIFY_USER = "modifyUser";
+export const NEW_APPLICANT = "newApplicant";
+export const MODIFY_USER_FROM_PREVIEW = "modifyUserFromPreview";
+export const NEW_APPLICANT_FROM_PREVIEW = "addingUserFromPreview";

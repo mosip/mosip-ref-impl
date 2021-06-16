@@ -463,7 +463,7 @@ export class CenterSelectionComponent
         ) {
           this.routeDashboard();
         } else {
-          localStorage.setItem("modifyUser", "true");
+          localStorage.setItem(appConstants.MODIFY_USER, "true");
           this.router.navigate([
             `${this.userPreferredLangCode}/pre-registration/demographic/${this.preRegId[0]}`,
           ]);

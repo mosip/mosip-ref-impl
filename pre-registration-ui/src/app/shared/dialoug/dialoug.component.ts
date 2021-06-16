@@ -152,17 +152,17 @@ export class DialougComponent implements OnInit {
 
   async userRedirection() {
     if (
-      localStorage.getItem("newApplicant") === "true" &&
-      localStorage.getItem("addingUserFromPreview") === "true"
+      localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
+      localStorage.getItem(appConstants.NEW_APPLICANT_FROM_PREVIEW) === "true"
     ) {
       await this.thirdPopUp();
     } else if (
-      localStorage.getItem("newApplicant") === "true" &&
+      localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       Number(localStorage.getItem("noOfApplicant")) > 0
     ) {
       await this.secondPopUp();
     } else if (
-      localStorage.getItem("newApplicant") === "true" &&
+      localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       Number(localStorage.getItem("noOfApplicant")) === 0
     ) {
       await this.firstPopUp();
@@ -221,7 +221,8 @@ export class DialougComponent implements OnInit {
     if (url) {
       preRegId = url.split("/")[4];
     }
-    if (localStorage.getItem("addingUserFromPreview") === "true") {
+    console.log(`preRegId: ${preRegId}`);
+    if (localStorage.getItem(appConstants.NEW_APPLICANT_FROM_PREVIEW) === "true") {
       this.router.navigate([
         `${localStorage.getItem(
           "langCode"
