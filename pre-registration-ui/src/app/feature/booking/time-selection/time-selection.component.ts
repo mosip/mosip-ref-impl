@@ -440,7 +440,11 @@ export class TimeSelectionComponent
     });
     if (this.bookingDataList.length === 0) {
       this.disableContinueButton = false;
-      this.displayMessage("",this.languagelabels.noSlotsSelectedForApplicant,"");
+      this.displayMessage(
+        "",
+        this.languagelabels.noSlotsSelectedForApplicant,
+        ""
+      );
       return;
     }
     if (
@@ -450,8 +454,7 @@ export class TimeSelectionComponent
       const data = {
         case: "CONFIRMATION",
         title: this.languagelabels.applicationLockConfirm.title,
-        message:
-          this.languagelabels.applicationLockConfirm.message,
+        message: this.languagelabels.applicationLockConfirm.message,
         noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
         yesButtonText: this.languagelabels.applicationLockConfirm.yesButtonText,
       };
@@ -477,8 +480,6 @@ export class TimeSelectionComponent
         if (user.request.statusCode === "Pending_Appointment") {
           pridWithNoBookings.push(user.request.preRegistrationId);
         }
-        // pridsString = pridWithNoBookings.join(",");
-        // console.log(pridWithNoBookings.join(","));
       });
       if (pridWithNoBookings.length !== 0) {
         const data = {
@@ -678,14 +679,6 @@ export class TimeSelectionComponent
       data: data,
     });
     return dialogRef;
-  }
-
-  openSnackBar(message) {
-    this._snackBar.open(message, "", {
-      duration: 5000,
-      horizontalPosition: "center",
-      verticalPosition: "bottom",
-    });
   }
 
   navigateDashboard() {
