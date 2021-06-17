@@ -1651,9 +1651,10 @@ export class DemographicComponent
     toFieldName: string
   ) {
     if (this.userForm.controls[fromFieldName].value !== "") {
+      let fromVal = this.userForm.controls[fromFieldName].value;
       const request: any = {
         from_field_lang: fromLang,
-        from_field_value: this.userForm.controls[fromFieldName].value,
+        from_field_value: fromVal,
         to_field_lang: toLang,
       };
       this.subscriptions.push(
@@ -1980,9 +1981,15 @@ export class DemographicComponent
     if (this.user.request) {
       langCode = this.user.request.langCode;
     }
+    let requiredFields = [];
+    this.identityData.forEach((field) => {
+      if (field.required === true && !(field.controlType === "fileupload")) {
+        requiredFields.push(field.id);
+      }
+    });  
     const request = {
       langCode: langCode,
-      //dataCaptureLanguages: this.dataCaptureLanguages,
+      requiredFields: requiredFields,
       demographicDetails: identity,
     };
     return request;
