@@ -9,7 +9,7 @@ import { RegistrationService } from "src/app/core/services/registration.service"
 import { ConfigService } from "src/app/core/services/config.service";
 import * as appConstants from "../../app.constants";
 import Utils from "src/app/app.util";
-import moment from 'moment';
+import moment from "moment";
 import stubConfig from "../../../assets/stub-config.json";
 
 @Component({
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   siteKey: any;
   enableCaptcha = false;
   enableSendOtp: boolean;
-  showCaptcha: boolean = true;
+  showCaptcha = true;
   captchaError: boolean;
   mandatoryLanguages : string[];
   optionalLanguages : string[];
@@ -55,6 +55,8 @@ export class LoginComponent implements OnInit {
   langCode: string;
   LanguageCodelabels;
   languageCodeValue: any = [];
+  captchaToken = null;
+  resetCaptcha: boolean;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -83,14 +85,16 @@ export class LoginComponent implements OnInit {
         this.LanguageCodelabels = response["languages"];
         resolve(true);
       });
-  });
+    });
   }
 
   async loadConfigs() {
     this.dataService.getConfig().subscribe((response) => {
       //response = stubConfig;
       this.configService.setConfig(response);
-      this.appVersion = this.configService.getConfigByKey('preregistration.ui.version');
+      this.appVersion = this.configService.getConfigByKey(
+        "preregistration.ui.version"
+      );
       //this.setTimer();
       this.isCaptchaEnabled();
       this.loadLanguagesWithConfig();
@@ -111,7 +115,7 @@ export class LoginComponent implements OnInit {
       if (this.router.url.includes(`${localStorage.getItem("langCode")}`)) {
         console.log("calling handleBrowserReload");
         this.handleBrowserReload();
-      }   
+      }
     });
   }
 
@@ -134,24 +138,34 @@ export class LoginComponent implements OnInit {
         otpExpiryIntervalInSeconds = 120; //2 mins by default
       }
       console.log(`otpExpiryIntervalInSeconds: ${otpExpiryIntervalInSeconds}`);
-      var timeLapsedInSeconds = moment(currentTime).diff(moment(otpSentTime), 'seconds');
+      var timeLapsedInSeconds = moment(currentTime).diff(
+        moment(otpSentTime),
+        "seconds"
+      );
       console.log(`timeLapsedInSeconds: ${timeLapsedInSeconds}`);
       if (timeLapsedInSeconds <= otpExpiryIntervalInSeconds) {
         console.log("otp interval not yet expired");
-        let newOtpIntervalInSeconds = otpExpiryIntervalInSeconds - timeLapsedInSeconds;
+        let newOtpIntervalInSeconds =
+          otpExpiryIntervalInSeconds - timeLapsedInSeconds;
         console.log(`newOtpIntervalInSeconds: ${newOtpIntervalInSeconds}`);
-        this.errorMessage = ""; 
+        if (JSON.parse(localStorage.getItem("show_captcha"))) {
+          this.showCaptcha = true;
+        } else {
+          this.showCaptcha = false;
+        }
+        this.errorMessage = "";
         this.inputOTP = "";
         //this.showResend = false;
         this.showOTP = true;
         this.showSendOTP = false;
         this.showContactDetails = false;
+        this.enableSendOtp = false;
         this.inputContactDetails = user_email_or_phone;
         let mins = 0;
         if (newOtpIntervalInSeconds >= 60) {
           mins = newOtpIntervalInSeconds / 60;
           mins = Math.floor(mins);
-        } 
+        }
         if (mins < 10) {
           this.minutes = "0" + mins;
         } else {
@@ -167,6 +181,7 @@ export class LoginComponent implements OnInit {
       } else {
         localStorage.removeItem("otp_sent_time");
         localStorage.removeItem("user_email_or_phone");
+        localStorage.removeItem("show_captcha");
         console.log("otp interval expired");
       }
     }
@@ -211,7 +226,7 @@ export class LoginComponent implements OnInit {
       let codevalue = {
         code: language,
         value: this.LanguageCodelabels[language].nativeName,
-        locale: this.LanguageCodelabels[language].locale
+        locale: this.LanguageCodelabels[language].locale,
       };
       this.languageCodeValue.push(codevalue);
     });
@@ -220,11 +235,19 @@ export class LoginComponent implements OnInit {
 
   isCaptchaEnabled() {
     if (
-      this.configService.getConfigByKey("enable-captcha") === "false" ||
-      this.configService.getConfigByKey("enable-captcha") === undefined
+      this.configService.getConfigByKey(
+        "mosip.preregistration.captcha.enable"
+      ) === "false" ||
+      this.configService.getConfigByKey(
+        "mosip.preregistration.captcha.enable"
+      ) === undefined
     ) {
       this.enableCaptcha = false;
-    } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
+    } else if (
+      this.configService.getConfigByKey(
+        "mosip.preregistration.captcha.enable"
+      ) === "true"
+    ) {
       this.enableCaptcha = true;
       this.loadRecaptchaSiteKey();
     }
@@ -235,7 +258,7 @@ export class LoginComponent implements OnInit {
 
   loadRecaptchaSiteKey() {
     this.siteKey = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.google_recaptcha_site_key
+      "mosip.preregistration.captcha.sitekey"
     );
   }
 
@@ -268,7 +291,7 @@ export class LoginComponent implements OnInit {
         appConstants.CONFIG_KEYS.mosip_kernel_otp_expiry_time
       )
     );
-    
+
     if (!isNaN(time)) {
       const minutes = time / 60;
       const seconds = time % 60;
@@ -318,13 +341,17 @@ export class LoginComponent implements OnInit {
     }
   }
   timerFn = () => {
-    let secValue, minValue = 0;
-    if (document.getElementById("secondsSpan") && document.getElementById("secondsSpan").innerText 
-    && document.getElementById("minutesSpan") && document.getElementById("minutesSpan").innerText) {
+    let secValue,
+      minValue = 0;
+    if (
+      document.getElementById("secondsSpan") &&
+      document.getElementById("secondsSpan").innerText &&
+      document.getElementById("minutesSpan") &&
+      document.getElementById("minutesSpan").innerText
+    ) {
       secValue = Number(document.getElementById("secondsSpan").innerText);
-      minValue = Number(document.getElementById("minutesSpan").innerText);  
-    }
-    else {
+      minValue = Number(document.getElementById("minutesSpan").innerText);
+    } else {
       secValue = Number(this.seconds);
       minValue = Number(this.minutes);
       if (document.getElementById("timer")) {
@@ -334,7 +361,7 @@ export class LoginComponent implements OnInit {
         document.getElementById("secondsSpan").innerText = this.seconds;
       }
       if (document.getElementById("minutesSpan")) {
-        document.getElementById("minutesSpan").innerText = this.minutes; 
+        document.getElementById("minutesSpan").innerText = this.minutes;
       }
     }
     if (secValue === 0) {
@@ -346,9 +373,9 @@ export class LoginComponent implements OnInit {
         //this.showResend = true;
         this.showOTP = false;
         this.showVerify = false;
+        this.enableSendOtp = false;
         if (this.enableCaptcha) {
           this.showCaptcha = true;
-          this.authService.setCaptchaAuthenticate(false);
         }
         if (document.getElementById("minutesSpan")) {
           document.getElementById("minutesSpan").innerText = this.minutes;
@@ -361,7 +388,7 @@ export class LoginComponent implements OnInit {
       }
       if (document.getElementById("minutesSpan")) {
         document.getElementById("minutesSpan").innerText = "0" + (minValue - 1);
-      }  
+      }
     }
     if (document.getElementById("secondsSpan")) {
       if (secValue === 10 || secValue < 10) {
@@ -369,73 +396,74 @@ export class LoginComponent implements OnInit {
       } else {
         document.getElementById("secondsSpan").innerText = --secValue + "";
       }
-    }  
+    }
   };
 
   submit() {
     this.loginIdValidator();
-    if (
-      this.enableCaptcha &&
-      this.authService.isCaptchaAuthenticated() &&
-      this.errorMessage == ""
-    ) {
-      this.showCaptcha = false;
-      this.captchaError = false;
-    } else if (
-      this.enableCaptcha &&
-      this.authService.isCaptchaAuthenticated() &&
-      this.errorMessage != ""
-    ) {
-      this.showCaptcha = true;
-    } else if (
-      this.enableCaptcha &&
-      !this.authService.isCaptchaAuthenticated() &&
-      this.errorMessage == ""
-    ) {
-      this.captchaError = true;
-    }
+    this.resetCaptcha = false;
     if (
       (this.showSendOTP || this.showResend) &&
       this.errorMessage == "" &&
-      ((this.enableCaptcha && this.authService.isCaptchaAuthenticated()) ||
-        this.enableSendOtp)
+      this.enableCaptcha &&
+      this.enableSendOtp
     ) {
       this.loadingMessage = this.validationMessages["loading"];
       this.dataService
-        .sendOtp(this.inputContactDetails, this.userPreferredLanguage)
-        .subscribe((response) => {  
-          this.loadingMessage = "";
-          if (!response["errors"]) {
-            let otpSentTime = response["responsetime"];
-            localStorage.setItem("otp_sent_time", String(otpSentTime));
-            localStorage.setItem("user_email_or_phone", this.inputContactDetails);
-            this.errorMessage = undefined; 
-            this.inputOTP = "";
-            //this.showResend = false;
-            this.showOTP = true;
-            this.showSendOTP = false;
-            this.showContactDetails = false;
-            // initial set up for timer
-            this.setTimer();
-            if (document.getElementById("timer")) {
-              document.getElementById("timer").style.visibility = "visible";
+        .sendOtpWithCaptcha(
+          this.inputContactDetails,
+          this.userPreferredLanguage,
+          this.captchaToken
+        )
+        .subscribe(
+          (response) => {
+            this.loadingMessage = "";
+            if (!response["errors"]) {
+              let otpSentTime = response["responsetime"];
+              localStorage.setItem("otp_sent_time", String(otpSentTime));
+              localStorage.setItem(
+                "user_email_or_phone",
+                this.inputContactDetails
+              );
+              this.errorMessage = undefined;
+              this.inputOTP = "";
+              //this.showResend = false;
+              this.showOTP = true;
+              this.showSendOTP = false;
+              this.showContactDetails = false;
+              localStorage.setItem("show_captcha", JSON.stringify(false));
+              this.showCaptcha = false;
+              // initial set up for timer
+              this.setTimer();
+              if (document.getElementById("timer")) {
+                document.getElementById("timer").style.visibility = "visible";
+              }
+              if (document.getElementById("secondsSpan")) {
+                document.getElementById("secondsSpan").innerText = this.seconds;
+              }
+              if (document.getElementById("minutesSpan")) {
+                document.getElementById("minutesSpan").innerText = this.minutes;
+              }
+              this.timer = setInterval(this.timerFn, 1000);
+            } else {
+              this.errorMessage = this.validationMessages["serverUnavailable"];
+              this.resetCaptcha = true;
+              this.captchaToken = null;
+              this.enableSendOtp = false;
+              console.log("Resetting captcha:" + this.resetCaptcha);
             }
-            if (document.getElementById("secondsSpan")) {
-              document.getElementById("secondsSpan").innerText = this.seconds;
-            }
-            if (document.getElementById("minutesSpan")) {
-              document.getElementById("minutesSpan").innerText = this.minutes;  
-            }
-            this.timer = setInterval(this.timerFn, 1000);
-          } else {
+          },
+          (error) => {
+            clearInterval(this.timer);
+            console.log(error);
+            this.loadingMessage = "";
             this.errorMessage = this.validationMessages["serverUnavailable"];
+            this.resetCaptcha = true;
+            this.captchaToken = null;
+            this.enableSendOtp = false;
+            console.log("Resetting captcha:" + this.resetCaptcha);
           }
-      },(error) => {  
-        clearInterval(this.timer);
-        console.log(error);
-        this.loadingMessage = "";
-        this.errorMessage = this.validationMessages["serverUnavailable"];
-    });    
+        );
       // dynamic update of button text for Resend and Verify
     } else if (this.showVerify && this.errorMessage == "") {
       this.disableVerify = true;
@@ -499,6 +527,17 @@ export class LoginComponent implements OnInit {
       if (!phoneRegex.test(this.inputContactDetails)) {
         this.errorMessage = this.validationMessages["invalidMobile"];
       }
+    }
+  }
+
+  getCaptchaToken(event: Event) {
+    if (event !== undefined && event != null) {
+      console.log("Captcha event " + event);
+      this.captchaToken = event;
+      this.enableSendOtp = true;
+    } else {
+      console.log("Captcha has expired" + event);
+      this.enableSendOtp = false;
     }
   }
 
