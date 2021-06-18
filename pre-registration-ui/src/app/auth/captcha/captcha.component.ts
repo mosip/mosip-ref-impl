@@ -1,8 +1,5 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { RequestModel } from "src/app/shared/models/request-model/RequestModel";
-import * as appConstants from "../../app.constants";
-import { DataStorageService } from "src/app/core/services/data-storage.service";
-import { AuthService } from "../auth.service";
+import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-captcha",
   templateUrl: "./captcha.component.html",
@@ -10,48 +7,31 @@ import { AuthService } from "../auth.service";
 })
 export class CaptchaComponent implements OnInit {
   @Input() captchaSiteKey: string;
-  captchaSucess: boolean;
-  showCaptcha = true;
-  captchaError: boolean;
-  constructor(
-    private dataService: DataStorageService,
-    private authService: AuthService
-  ) {}
+  @Input() resetCaptcha: boolean;
+  @Output() captchaEvent = new EventEmitter<string>();
+  langCode: string;
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    console.log(this.captchaSiteKey);
+    this.activatedRoute.paramMap.subscribe((param) => {
+      this.langCode = param.get("lang").substr(0, 2);
+    });
   }
 
-  recaptcha(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-    let data = {
-      captchaToken: "",
-    };
-    data.captchaToken = captchaResponse;
-    let obj = new RequestModel(appConstants.IDS.captchaId, data, "");
-    if (data.captchaToken != null) {
-      this.dataService.verifyGCaptcha(obj).subscribe((response) => {
-        console.log(response);
-        if (response["response"]) {
-          this.captchaSucess = response["response"].success;
-          if (this.captchaSucess) {
-            console.log("Captcha Authentication :" + this.captchaSucess);
-            this.authService.setCaptchaAuthenticate(this.captchaSucess);
-          } else {
-            this.authService.setCaptchaAuthenticate(false);
-          }
-        } else {
-          grecaptcha.reset();
-          this.authService.setCaptchaAuthenticate(false);
-        }
-      });
-    } else {
-      this.captchaSucess = false;
-      this.authService.setCaptchaAuthenticate(this.captchaSucess);
-    }
+  ngOnChanges(): void {
+    if (this.resetCaptcha) this.handleReset();
   }
+
+  recaptcha(captchaResponse: any) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+      this.captchaEvent.emit(captchaResponse);
+   }
+
   recaptchaError(event) {
-    console.log(event);
     alert(event);
+  }
+
+  handleReset() {
+    grecaptcha.reset();
   }
 }

@@ -502,8 +502,8 @@ export class TimeSelectionComponent
             if (response === true) {
               this.bookingOperationRequest();
             } else {
-            this.disableContinueButton = false;
-          }
+              this.disableContinueButton = false;
+            }
           });
       }
     } else {
@@ -602,15 +602,6 @@ export class TimeSelectionComponent
       }
     );
     this.subscriptions.push(subs);
-  }
-
-  getApplicationStatus(prid) {
-    return new Promise((resolve) => {
-      this.dataService.getApplicationStatus(prid).subscribe((response) => {
-        this.applicationStatus = response["response"]["statusCode"];
-        resolve(true);
-      });
-    });
   }
 
   displayMessage(title: string, message: string, error: any) {
