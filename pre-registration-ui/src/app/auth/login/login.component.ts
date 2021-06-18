@@ -11,6 +11,7 @@ import * as appConstants from "../../app.constants";
 import Utils from "src/app/app.util";
 import moment from "moment";
 import stubConfig from "../../../assets/stub-config.json";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-login",
@@ -46,8 +47,8 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha = true;
   captchaError: boolean;
-  mandatoryLanguages : string[];
-  optionalLanguages : string[];
+  mandatoryLanguages: string[];
+  optionalLanguages: string[];
   minLanguage: Number;
   maxLanguage: Number;
   languageSelectionArray = [];
@@ -121,7 +122,12 @@ export class LoginComponent implements OnInit {
 
   handleBrowserReload() {
     clearInterval(this.timer);
-    const otp_sent_time = localStorage.getItem("otp_sent_time");
+    let otp_sent_time = null;
+    if(localStorage.getItem("otp_sent_time") != null){
+      otp_sent_time = localStorage.getItem("otp_sent_time").endsWith("Z")
+      ? localStorage.getItem("otp_sent_time")
+      : localStorage.getItem("otp_sent_time") + "Z";
+    } 
     const user_email_or_phone = localStorage.getItem("user_email_or_phone");
     console.log(`otp_sent_time: ${otp_sent_time}`);
     if (otp_sent_time && user_email_or_phone) {
@@ -230,7 +236,10 @@ export class LoginComponent implements OnInit {
       };
       this.languageCodeValue.push(codevalue);
     });
-    localStorage.setItem(appConstants.LANGUAGE_CODE_VALUES, JSON.stringify(this.languageCodeValue));
+    localStorage.setItem(
+      appConstants.LANGUAGE_CODE_VALUES,
+      JSON.stringify(this.languageCodeValue)
+    );
   }
 
   isCaptchaEnabled() {
