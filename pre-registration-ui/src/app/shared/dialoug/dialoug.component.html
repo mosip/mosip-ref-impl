@@ -156,18 +156,18 @@
   </div>
 </div>
 <div *ngIf="input.case === 'CONSENTPOPUPMULTILANG'">
-  <h2 mat-dialog-title>{{ input.title }}</h2>
+  <h2 mat-dialog-title [dir]="input.textDirectionArr[0]">{{ input.title }}</h2>
   <mat-dialog-content>
     <mat-accordion multi>
-      <mat-expansion-panel *ngFor="let item of input.data; let isFirst = first" [expanded]="isFirst">
-        <mat-expansion-panel-header>
+      <mat-expansion-panel *ngFor="let item of input.data; index as i; let isFirst = first;" [expanded]="isFirst">
+        <mat-expansion-panel-header [dir]="input.textDirectionArr[i]">
           <mat-panel-title>
             <span class="consent-popup-title" mat-dialog-title>{{
               item.labels.consent.title
               }}</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div>
+        <div [dir]="input.textDirectionArr[i]">
           <h3 class="consent-popup-subtitle" mat-dialog-title>
             {{ item.labels.consent.subtitle }}
           </h3>
@@ -180,7 +180,7 @@
       </mat-expansion-panel>
     </mat-accordion>
   </mat-dialog-content>
-  <mat-dialog-actions>
+  <mat-dialog-actions [dir]="input.textDirectionArr[0]">
     <mat-checkbox (change)="onSelectCheckbox()" class="checkbox-accept">
       <div *ngFor="let item of input.data; let last = last" class="content-display-iniline-block">
         {{ item.labels.consent.checkCondition }}
@@ -188,7 +188,7 @@
       </div>
     </mat-checkbox>
   </mat-dialog-actions>
-  <mat-dialog-actions align="end">
+  <mat-dialog-actions align="end" [dir]="input.textDirectionArr[0]">
     <button mat-button mat-dialog-close
       (click)="onNoClick(); cancelConsent(input.data); userRedirection()">{{ input.cancelBtn }}</button>
     <div *ngFor="let item of input.data">
@@ -304,7 +304,7 @@
   </div>
 </div>
 
-<div class="data-capture" *ngIf="input.case === 'LANGUAGE_CAPTURE'">
+<div class="data-capture" *ngIf="input.case === 'LANGUAGE_CAPTURE'" [dir]="input.dir">
   <div class="select-lang-header">{{ input.title }}</div>
   <div class="select-lang-body">
     <p>{{ input.message }}</p>

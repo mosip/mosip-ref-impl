@@ -2,7 +2,7 @@
   <mat-spinner></mat-spinner>
 </div>
 <div>
-  <div class="wrapper">
+  <div class="wrapper" [dir]="textDirection[0]">
     <div class="user" *ngIf="primaryuserForm">
       <header>{{ "demographic.title" | translate }}
         <span *ngIf="!dataModification && !readOnlyMode && showChangeDataCaptureLangBtn" style="cursor: pointer;float: right;" >
@@ -10,9 +10,7 @@
         </span>
       </header>
       <p></p>
-      <span class="readOnly" *ngIf="readOnlyMode">
-        ( {{ "demographic.read_only_message" | translate }} )
-      </span>
+      <span class="readOnly" *ngIf="readOnlyMode">( {{ "demographic.read_only_message" | translate }} )</span>
       <hr />
       <div class="user_container_single_form" *ngIf="primaryuserForm">
         <form [formGroup]="userForm" class="user__form">
@@ -21,19 +19,19 @@
             <div class="rowContainer">
               <span *ngFor="let field of uiFieldsForAlignmentGroups[alignmentGroup]; index as uiFieldIndex">
                 <div class="fieldContainer" *ngIf="field.isVisible == true">
-                  <div class="fieldHeader" [ngStyle]="field.headerStyle">
+                  <div [dir]="textDirection[0]" class="fieldHeader" [ngStyle]="field.headerStyle">
                     <!-- Create container header with labels in all chosen dataCaptureLanguages -->
                     <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as di">
                       <span *ngIf="field.controlType === 'checkbox' && di == 0">
                         <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
                           field.labelName[dataCaptureLanguage] }}</mat-label>
-                        <span *ngIf="i+1 < dataCaptureLanguages.length;else showColon"> / </span>
+                        <span *ngIf="di+1 < dataCaptureLanguages.length;else showColon"> / </span>
                         <ng-template #showColon> : </ng-template>
                       </span>
                       <span *ngIf="field.controlType !== 'checkbox'">
                         <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
                           field.labelName[dataCaptureLanguage] }}</mat-label>
-                        <span *ngIf="i+1 < dataCaptureLanguages.length;else showColon"> / </span>
+                        <span *ngIf="di+1 < dataCaptureLanguages.length;else showColon"> / </span>
                         <ng-template #showColon> : </ng-template>
                       </span>
                     </span>

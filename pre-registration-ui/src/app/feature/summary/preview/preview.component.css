@@ -2,7 +2,12 @@
   margin: 5px 2vw;
   margin-bottom: 90px;
 }
-
+.spinner {
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18vw;
+  display: flex;
+}
 .preview__file__table__header td {
   font-size: 0.8rem;
   padding: 0 20px 10px 0;

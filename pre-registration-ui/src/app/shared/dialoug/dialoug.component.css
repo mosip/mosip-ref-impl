@@ -145,6 +145,7 @@
 }
 .lang-selection-footer-btn-submit {
   background-color: #ff4081;
+  margin-right: 4px;
   border: none;
   color: white;
 }

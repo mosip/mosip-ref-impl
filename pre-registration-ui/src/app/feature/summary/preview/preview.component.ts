@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { DataStorageService } from "src/app/core/services/data-storage.service";
 import { Router, ActivatedRoute } from "@angular/router";
-
+import { Subscription } from "rxjs";
 import { MatDialog } from "@angular/material";
 import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
 import { RegistrationService } from "src/app/core/services/registration.service";
@@ -22,6 +22,7 @@ export class PreviewComponent implements OnInit {
   Language;
   user: UserModel;
   preRegId: string;
+  subscriptions: Subscription[] = [];
   files: any;
   documentTypes = [];
   documentMapObject = [];
@@ -36,11 +37,17 @@ export class PreviewComponent implements OnInit {
   dynamicFields = [];
   dropDownFields = {};
   dataCaptureLanguages = [];
+  dataCaptureLanguagesLabels = [];
+  textDirection = [];
+  ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
   controlIds = [];
   ControlIdLabelObjects = {};
   readOnlyMode=false;
   userPreferredLangCode = localStorage.getItem("userPrefLanguage");
   isNavigateToDemographic = false;
+  dataLoaded = false;
   constructor(
     public dialog: MatDialog,
     private dataStorageService: DataStorageService,
@@ -55,36 +62,18 @@ export class PreviewComponent implements OnInit {
   }
 
   async ngOnInit() {
-    let self = this;
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
     await this.getIdentityJsonFormat();
     // await this.getResidentDetails();
     // await this.getGenderDetails();
-    await this.setDynamicFieldValues();
+    await this.getDynamicFieldValues(null);
     await this.getUserInfo();
     await this.getUserFiles();
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
-    const identityObj = this.user.request.demographicDetails.identity;
-    if (identityObj) {
-      let keyArr: any[] = Object.keys(identityObj);
-      for (let index = 0; index < keyArr.length; index++) {
-        const elementKey = keyArr[index];
-        let dataArr = identityObj[elementKey];
-        if (Array.isArray(dataArr)) {
-          dataArr.forEach((dataArrElement) => {
-            if (!this.dataCaptureLanguages.includes(dataArrElement.language)) {
-              this.dataCaptureLanguages.push(dataArrElement.language);
-            }
-          });
-        }
-      }
-    } else if (this.user.request.langCode) {
-      this.dataCaptureLanguages = [this.user.request.langCode];
-    }
-
+    this.initializeDataCaptureLanguages();
     this.calculateAge();
     this.formatDob(this.previewData.dateOfBirth);
     this.getLanguageLabels();
@@ -95,27 +84,30 @@ export class PreviewComponent implements OnInit {
       tempObj = {};
     this.uiFields.forEach((control) => {
       if (this.previewData[control.id]) {
-        self.controlIds.push(control.id);
-        self.dataCaptureLanguages.forEach((langCode) => {
+        this.controlIds.push(control.id);
+        this.dataCaptureLanguages.forEach((langCode) => {
           tempObj[langCode] = control.labelName[langCode];
         });
-        self.ControlIdLabelObjects[control.id] = tempObj;
+
+        this.ControlIdLabelObjects[control.id] = tempObj;
         tempObj = {};
         updatedUIFields.push(control);
       }
     });
+    console.log(this.ControlIdLabelObjects);
     let locations = [];
     this.locationHeirarchies.forEach((element) => {
       locations.push(...element);
     });
-    let locName = "",
-      label = "";
-    for (let i = 0; i < self.controlIds.length; i++) {
-      label = self.controlIds[i];
+    let controlId = "";
+    console.log(this.dropDownFields);
+    console.log(this.previewData);
+    for (let i = 0; i < this.controlIds.length; i++) {
+      controlId = this.controlIds[i];
       updatedUIFields.forEach((control) => {
-        if (control.id === label && control.fieldType === "dynamic") {
-          this.previewData[label].forEach((ele) => {
-            this.dropDownFields[label].forEach((codeValue) => {
+        if (control.id === controlId && control.fieldType === "dynamic") {
+          this.previewData[controlId].forEach((ele) => {
+            this.dropDownFields[controlId].forEach((codeValue) => {
               if (
                 ele.language === codeValue.languageCode &&
                 ele.value === codeValue.valueCode
@@ -127,18 +119,63 @@ export class PreviewComponent implements OnInit {
           });
         }
       });
-      if (locations.includes(label)) {
-        for (let j = 0; j < self.previewData[label].length; j++) {
-          self.fetchLocationName(
-            self.previewData[label][j].value,
-            self.previewData[label][j].language,
+      if (locations.includes(controlId)) {
+        for (let j = 0; j < this.previewData[controlId].length; j++) {
+          this.fetchLocationName(
+            this.previewData[controlId][j].value,
+            this.previewData[controlId][j].language,
             j,
-            label
+            controlId
           );
         }
       }
     }
   }
+
+  initializeDataCaptureLanguages = async () => {
+    if (this.user.request) {
+      const identityObj = this.user.request.demographicDetails.identity;
+      if (identityObj) {
+        let keyArr: any[] = Object.keys(identityObj);
+        for (let index = 0; index < keyArr.length; index++) {
+          const elementKey = keyArr[index];
+          let dataArr = identityObj[elementKey];
+          if (Array.isArray(dataArr)) {
+            dataArr.forEach((dataArrElement) => {
+              if (
+                !this.dataCaptureLanguages.includes(dataArrElement.language)
+              ) {
+                this.dataCaptureLanguages.push(dataArrElement.language);
+              }
+            });
+          }
+        }
+      } else if (this.user.request.langCode) {
+        this.dataCaptureLanguages = [this.user.request.langCode];
+      }
+      //reorder the languages, by making user login lang as first one in the array
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.userPreferredLangCode);
+      //populate the lang labels
+      this.dataCaptureLanguages.forEach((langCode) => {
+        JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
+          (element) => {
+            if (langCode === element.code) {
+              this.dataCaptureLanguagesLabels.push(element.value);
+            }
+          }
+        );
+        //set the language direction as well
+        if (this.ltrLangs.includes(langCode)) {
+          this.textDirection.push("ltr");
+        } else {
+          this.textDirection.push("rtl");
+        }
+      });
+    }
+    this.translate.use(this.dataCaptureLanguages[0]);
+    
+    console.log(this.dataCaptureLanguages);
+  };
 
   checkArray(data, control) {
     let result = false;
@@ -316,11 +353,7 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues(null);
-  }
-
-  getDynamicFieldValues(pageNo) {
+  async getDynamicFieldValues(pageNo) {
     let pageNumber;
     if (pageNo == null) {
       pageNumber = 0;
@@ -328,9 +361,10 @@ export class PreviewComponent implements OnInit {
       pageNumber = pageNo;
     }
     return new Promise((resolve) => {
-      this.dataStorageService
+      this.subscriptions.push(
+        this.dataStorageService
         .getDynamicFieldsandValuesForAllLang(pageNumber)
-        .subscribe((response) => {
+        .subscribe(async (response) => {
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
             dynamicField.forEach((res) => {
@@ -349,10 +383,13 @@ export class PreviewComponent implements OnInit {
           }
           pageNumber = pageNumber + 1;
           if (totalPages > pageNumber) {
-            this.getDynamicFieldValues(pageNumber);
+            await this.getDynamicFieldValues(pageNumber);
+            resolve(true);
+          } else {
+            resolve(true);
           }
-        });
-      resolve(true);
+        })
+      );  
     });
   }
 
@@ -445,13 +482,12 @@ export class PreviewComponent implements OnInit {
     index: number,
     controlName: string
   ) {
-    let self = this;
     return new Promise((resolve) => {
       this.dataStorageService
         .getLocationInfoForLocCode(locCode, langCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            self.previewData[controlName][index]["label"] =
+            this.previewData[controlName][index]["label"] =
               response[appConstants.RESPONSE]["name"];
           }
         });
@@ -499,7 +535,7 @@ export class PreviewComponent implements OnInit {
   
   openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     return new Promise((resolve) => {
-      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0], this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
       const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);

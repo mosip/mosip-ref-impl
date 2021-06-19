@@ -490,6 +490,22 @@ export class DataStorageService {
       ),
     });
   }
+  
+  getDocumentCategoriesByLang(applicantCode, langCode) {
+    const APPLICANT_VALID_DOCUMENTS_URL =
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      appConstants.APPEND_URL.location +
+      appConstants.APPEND_URL.validDocument +
+      applicantCode +
+      "/languages";
+    console.log(APPLICANT_VALID_DOCUMENTS_URL);  
+    return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
+      params: new HttpParams().append(
+        appConstants.PARAMS_KEYS.getDocumentCategories,
+        langCode
+      ),
+    });
+  }
 
   getConfig() {
     //    return this.httpClient.get('./assets/configs.json');

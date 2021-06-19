@@ -1,4 +1,7 @@
-<div *ngIf="previewData !== undefined" class="preview__container">
+<div class="spinner" *ngIf="!previewData">
+  <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="previewData !== undefined" class="preview__container" [dir]="textDirection[0]">
   <mat-card class="preview__header-container card-padding">
     <mat-card-header class="preview__header-container">
       <div class="preview__header">
