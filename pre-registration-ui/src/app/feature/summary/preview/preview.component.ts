@@ -94,15 +94,13 @@ export class PreviewComponent implements OnInit {
         updatedUIFields.push(control);
       }
     });
-    console.log(this.ControlIdLabelObjects);
     let locations = [];
     this.locationHeirarchies.forEach((element) => {
       locations.push(...element);
     });
     let controlId = "";
-    console.log(this.dropDownFields);
-    console.log(this.previewData);
     for (let i = 0; i < this.controlIds.length; i++) {
+
       controlId = this.controlIds[i];
       updatedUIFields.forEach((control) => {
         if (control.id === controlId && control.fieldType === "dynamic") {
@@ -113,7 +111,6 @@ export class PreviewComponent implements OnInit {
                 ele.value === codeValue.valueCode
               ) {
                 ele.value = codeValue.valueName;
-                console.log(codeValue.valueName);
               }
             });
           });
@@ -130,6 +127,8 @@ export class PreviewComponent implements OnInit {
         }
       }
     }
+    this.dataLoaded = true;
+    console.log(this.previewData);
   }
 
   initializeDataCaptureLanguages = async () => {
@@ -173,8 +172,7 @@ export class PreviewComponent implements OnInit {
       });
     }
     this.translate.use(this.dataCaptureLanguages[0]);
-    
-    console.log(this.dataCaptureLanguages);
+    console.log(`dataCaptureLanguages: ${this.dataCaptureLanguages}`);
   };
 
   checkArray(data, control) {
@@ -233,34 +231,35 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  private filterOnLangCode(langCode: string, field: string, entityArray: any) {
+  private filterOnLangCode( 
+    field: string,
+    entityArray: any,
+    langCode: string) {
     return new Promise((resolve, reject) => {
       if (entityArray) {
-        entityArray.filter((element: any) => {
-          if (element.langCode === langCode) {
-            let codeValue: CodeValueModal;
-            if (element.genderName) {
-              codeValue = {
-                valueCode: element.code,
-                valueName: element.genderName,
-                languageCode: element.langCode,
-              };
-            } else if (element.name) {
-              codeValue = {
-                valueCode: element.code,
-                valueName: element.name,
-                languageCode: element.langCode,
-              };
-            } else {
-              codeValue = {
-                valueCode: element.code,
-                valueName: element.value,
-                languageCode: langCode,
-              };
-            }
-            this.dropDownFields[field].push(codeValue);
-            resolve(true);
+        entityArray.map((element: any) => {
+          let codeValue: CodeValueModal;
+          if (element.genderName) {
+            codeValue = {
+              valueCode: element.code,
+              valueName: element.genderName,
+              languageCode: element.langCode,
+            };
+          } else if (element.name) {
+            codeValue = {
+              valueCode: element.code,
+              valueName: element.name,
+              languageCode: element.langCode,
+            };
+          } else {
+            codeValue = {
+              valueCode: element.code,
+              valueName: element.value,
+              languageCode: langCode,
+            };
           }
+          this.dropDownFields[field].push(codeValue);
+          resolve(true);
         });
       }
     });
@@ -370,9 +369,9 @@ export class PreviewComponent implements OnInit {
             dynamicField.forEach((res) => {
               if (field.id === res.name) {
                 this.filterOnLangCode(
-                  res["langCode"],
                   res.name,
-                  res["fieldVal"]
+                  res["fieldVal"],
+                  res["langCode"]
                 );
               }
             });

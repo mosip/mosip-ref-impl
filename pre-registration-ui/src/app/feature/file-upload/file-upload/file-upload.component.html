@@ -9,7 +9,7 @@
   <div class="user" [ngStyle]="textDirection[0] == 'ltr'? {'float':'left'} : {'float':'right'}">
     <header>{{ 'documents.title_document' | translate }}</header>
     <p></p>
-    <span class="readOnly">
+    <span class="readOnly" *ngIf="readOnlyMode">
       ( {{ "demographic.read_only_message" | translate }} )
     </span>
     <hr />
