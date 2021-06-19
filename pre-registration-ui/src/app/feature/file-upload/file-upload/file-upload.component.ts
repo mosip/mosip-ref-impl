@@ -26,7 +26,6 @@ import identityStubJson from "../../../../assets/identity-spec.json";
   styleUrls: ["./file-upload.component.css"],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
-  textDir = localStorage.getItem("dir");
   selected = [];
   @ViewChild("fileUpload")
   fileInputVariable: ElementRef;
@@ -58,7 +57,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     docTypeCode: "",
   };
   selectedDocuments: SelectedDocuments[] = [];
-
+  dataCaptureLanguages = [];
+  dataCaptureLanguagesLabels = [];
+  textDirection = [];
+  ltrLangs = this.config
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
   LOD: DocumentCategory[] = [];
   fileIndex: number = -1;
   fileUploadLanguagelabels: any;
@@ -72,7 +76,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   flag: boolean;
   zoom: number = 0.5;
   userPrefLanguage = localStorage.getItem("userPrefLanguage");
-  userPrefLanguageIsLtr = false;
   userForm = new FormGroup({});
   validationMessage: any;
   documentUploadRequestBody: DocumentUploadRequestDTO = {
@@ -114,27 +117,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     private loggerService: LogService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.initiateComponent();
-    let ltrLangs = this.config
-      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
-      .split(",");
-    if (ltrLangs.includes(this.userPrefLanguage)) {
-      this.userPrefLanguageIsLtr = true;
-    } else {
-      this.userPrefLanguageIsLtr = false;
-    }
-    
+    this.translate.use(this.userPrefLanguage);
   }
 
-  async ngOnInit() {
-    
+  async ngOnInit() { 
+    await this.initiateComponent();
     this.getFileSize();
     this.getPrimaryLabels();
-    this.allowedFiles = this.config
-      .getConfigByKey(
-        appConstants.CONFIG_KEYS.preregistration_document_alllowe_files
-      )
-      .split(",");
+    this.allowedFiles = this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files).split(",");
     this.getAllowedFileTypes(this.allowedFiles);
     this.loginId = localStorage.getItem("loginId");
     await this.getAllApplicants();
@@ -144,20 +134,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.sameAsselected = true;
     }
-    // this.dataStorageService
-    //   .getI18NLanguageFiles(this.userPrefLanguage)
-    //   .subscribe((response) => {
-    //     if (response["message"])
-    //       this.fileUploadLanguagelabels = response["message"];
-    //     if (response["error"]) this.errorlabels = response["error"];
-    //   });
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
-    
   }
 
   async getIdentityJsonFormat() {
@@ -183,7 +165,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   private getPrimaryLabels() {
     this.dataStorageService
-    .getI18NLanguageFiles(this.userPrefLanguage)
+    .getI18NLanguageFiles(this.dataCaptureLanguages[0])
     .subscribe((response) => {
       if (response["message"])
         this.fileUploadLanguagelabels = response["message"];
@@ -198,7 +180,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   private async initiateComponent() {
     await this.getIdentityJsonFormat();
-    this.translate.use(this.userPrefLanguage);
     this.isModify = localStorage.getItem("modifyDocument");
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
@@ -209,6 +190,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       if (!this.users[0].files) {
         this.users[0].files = this.userFiles;
       }
+      this.initializeDataCaptureLanguages();
+      this.translate.use(this.dataCaptureLanguages[0]);
       await this.getApplicantTypeID();
       //on page load, update application status from "Application_Incomplete"
       //to "Pending_Appointment", if all required documents are uploaded
@@ -269,6 +252,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     }
     this.userFiles["documentsMetaData"] = this.userFile;
   }
+
   onModification() {
     if (
       this.users[0].files &&
@@ -307,39 +291,55 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else return;
   }
 
+  initializeDataCaptureLanguages = async () => {
+    if (this.users.length > 0) {
+      const identityObj = this.users[0].request.demographicDetails.identity;
+      if (identityObj) {
+        let keyArr: any[] = Object.keys(identityObj);
+        for (let index = 0; index < keyArr.length; index++) {
+          const elementKey = keyArr[index];
+          let dataArr = identityObj[elementKey];
+          if (Array.isArray(dataArr)) {
+            dataArr.forEach((dataArrElement) => {
+              if (
+                !this.dataCaptureLanguages.includes(dataArrElement.language)
+              ) {
+                this.dataCaptureLanguages.push(dataArrElement.language);
+              }
+            });
+          }
+        }
+      } else if (this.users[0].request.langCode) {
+        this.dataCaptureLanguages = [this.users[0].request.langCode];
+      }
+      //reorder the languages, by making user login lang as first one in the array
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.userPrefLanguage);
+      //populate the lang labels
+      this.dataCaptureLanguages.forEach((langCode) => {
+        JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
+          (element) => {
+            if (langCode === element.code) {
+              this.dataCaptureLanguagesLabels.push(element.value);
+            }
+          }
+        );
+        //set the language direction as well
+        if (this.ltrLangs.includes(langCode)) {
+          this.textDirection.push("ltr");
+        } else {
+          this.textDirection.push("rtl");
+        }
+      });
+    }
+    console.log(this.dataCaptureLanguages);
+  };
+
   /**
    *@description method to change the current user to be shown as None value in the same as array.
    *@private
    * @memberof FileUploadComponent
    */
   private setNoneApplicant() {
-    // const noneApplicant = {
-    //   demographicMetadata: {
-    //     [""]: [
-    //       {
-    //         language: this.userPrefLanguage,
-    //         value: "None",
-    //       },
-    //     ],
-    //   },
-    //   preRegistrationId: "",
-    // };
-    // let i: number = 0;
-    // const temp = JSON.parse(
-    //   JSON.stringify(this.allApplicants.push(noneApplicant))
-    // );
-    // let noneCount: Boolean = this.isNoneAvailable();
-    // for (let applicant of this.allApplicants) {
-    //   if (this.users) {
-    //     if (applicant.preRegistrationId == this.preRegId) {
-    //       this.allApplicants.splice(i, 1);
-    //       //this.allApplicants.push(noneApplicant);
-    //       console.log(JSON.stringify(this.allApplicants));
-    //       //this.removeExtraNone();
-    //     }
-    //     i++;
-    //   }
-    // }
     let allApplicants = this.allApplicants;
     if (this.users && allApplicants) {
       let filtered = allApplicants.filter(applicant => applicant.preRegistrationId !== this.preRegId);
@@ -446,7 +446,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     for (let applicant of allApplicants) {
       for (let name of applicant) {
         if (
-          name["demographicMetadata"][name][j].language != this.userPrefLanguage
+          name["demographicMetadata"][name][j].language != this.dataCaptureLanguages[0]
         ) {
           allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
@@ -492,12 +492,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
     requestDTO.attribute =
       appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    // for (let language of this.users[0].request.demographicDetails.identity
-    //   .residenceStatus) {
-    //   if (language.language === this.userPrefLanguage) {
-    //     requestDTO.value = language.value;
-    //   }
-    // }
+    
     requestDTO.value =
       this.users[0].request.demographicDetails.identity.residenceStatus[0].value;
     requestArray.attributes.push(requestDTO);
@@ -579,7 +574,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => {
       this.subscriptions.push(
         this.dataStorageService
-        .getDocumentCategories(applicantcode)
+        .getDocumentCategoriesByLang(applicantcode, this.dataCaptureLanguages[0])
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
@@ -590,8 +585,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                   if (uiField.subType == documentCategory.code) {
                     if (uiField.inputRequired) {
                       documentCategory["required"] = uiField.required;
-                      documentCategory["labelName"] =
-                        uiField.labelName[this.userPrefLanguage];
+                      documentCategory["labelName"] = uiField.labelName;
                       documentCategory["containerStyle"] = uiField.containerStyle;
                       documentCategory["headerStyle"] = uiField.headerStyle;
                       documentCategory["id"] = uiField.id;
@@ -1079,7 +1073,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   setJsonString(docName: string, docCode: string, docRefId: string) {
     this.documentUploadRequestBody.docCatCode = docCode;
-    this.documentUploadRequestBody.langCode = this.userPrefLanguage;
+    this.documentUploadRequestBody.langCode = this.dataCaptureLanguages[0];
     this.documentUploadRequestBody.docTypCode = docName;
     this.documentUploadRequestBody.docRefId = docRefId;
     this.documentRequest = new RequestModel(

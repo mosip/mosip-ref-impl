@@ -60,7 +60,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.applicants +
       appConstants.APPENDER +
       preRegId;
-    console.log("url>>>>" + url);
+    //console.log("url>>>>" + url);
     return this.httpClient.get(url);
   }
 
@@ -233,7 +233,7 @@ export class DataStorageService {
       "&pageSize=" +
       pageSize +
       "&orderBy=desc&sortBy=createdDateTime";
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
@@ -258,7 +258,7 @@ export class DataStorageService {
       locCode +
       "/" +
       langCode;
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
@@ -412,7 +412,7 @@ export class DataStorageService {
     locationHierarchyCode: number,
     data: string[]
   ) {
-    console.log(data);
+    //console.log(data);
     let url =
       this.BASE_URL +
       this.PRE_REG_URL +
@@ -432,7 +432,7 @@ export class DataStorageService {
     if (url.charAt(url.length - 1) === "&") {
       url = url.substring(0, url.length - 1);
     }
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
@@ -482,11 +482,27 @@ export class DataStorageService {
       appConstants.APPEND_URL.validDocument +
       applicantCode +
       "/languages";
-    console.log(APPLICANT_VALID_DOCUMENTS_URL);
+    //console.log(APPLICANT_VALID_DOCUMENTS_URL);
     return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
       params: new HttpParams().append(
         appConstants.PARAMS_KEYS.getDocumentCategories,
         localStorage.getItem("langCode")
+      ),
+    });
+  }
+  
+  getDocumentCategoriesByLang(applicantCode, langCode) {
+    const APPLICANT_VALID_DOCUMENTS_URL =
+      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      appConstants.APPEND_URL.location +
+      appConstants.APPEND_URL.validDocument +
+      applicantCode +
+      "/languages";
+    //console.log(APPLICANT_VALID_DOCUMENTS_URL);  
+    return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
+      params: new HttpParams().append(
+        appConstants.PARAMS_KEYS.getDocumentCategories,
+        langCode
       ),
     });
   }
@@ -589,7 +605,7 @@ export class DataStorageService {
   }
 
   verifyGCaptcha(captcha) {
-    console.log(captcha);
+    //console.log(captcha);
     const headers = new HttpHeaders({ "Content-Type": "application/json" });
     const url =
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
@@ -632,7 +648,7 @@ export class DataStorageService {
       "proxy" +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
-    //console.log(url);
+    ////console.log(url);
     return this.httpClient.get(url);
   }
 
@@ -643,7 +659,7 @@ export class DataStorageService {
       "proxy" +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
-    //console.log(url);
+    ////console.log(url);
     return this.httpClient.get(url);
   }
 

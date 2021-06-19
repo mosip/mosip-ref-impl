@@ -5,12 +5,14 @@
 <!-- <div class="spinner" *ngIf="!users[0] && LOD.length > 0 && !dataLoaded">
   <mat-spinner></mat-spinner>
 </div> -->
-<div [dir]="textDir" class="file-upload" *ngIf="users[0] && dataLoaded">
-  <div class="file-uploaad__header">{{ 'documents.title_document' | translate }}
+<div [dir]="textDirection[0]" class="file-upload" *ngIf="users[0] && dataLoaded">
+  <div class="user" [ngStyle]="textDirection[0] == 'ltr'? {'float':'left'} : {'float':'right'}">
+    <header>{{ 'documents.title_document' | translate }}</header>
     <p></p>
     <span class="readOnly" *ngIf="readOnlyMode">
       ( {{ "demographic.read_only_message" | translate }} )
     </span>
+    <hr />
   </div>
   <div class="file-upload__message">
     <b>
@@ -26,17 +28,21 @@
         <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
           <div class="fieldContainer" [ngStyle]="document.containerStyle">
             <div class="fieldHeader" [ngStyle]="document.headerStyle">
-              <mat-label>{{document.labelName}}:
-                <span *ngIf="document.required" class="required-annotation"
-                  [ngStyle]="userPrefLanguageIsLtr? {} : {'float':'left'}">*</span>
-              </mat-label>
+              <!-- Create container header with labels in all chosen dataCaptureLanguages -->
+              <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as di">
+                <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
+                  document.labelName[dataCaptureLanguage] }}</mat-label>
+                <span *ngIf="di+1 < dataCaptureLanguages.length;else showColon"> / </span>
+                <ng-template #showColon> : </ng-template>
+              </span>
+              <span *ngIf="document.required" class="required-annotation">*</span>
             </div>
             <div class="fieldContent" [ngStyle]="document.containerStyle">
               <mat-form-field *ngIf="displayHidden">
                 <input matInput [formControlName]="document.id" />
               </mat-form-field>
               <mat-form-field class="file-upload__input">
-                <mat-label>{{document.labelName}}</mat-label>
+                <mat-label>{{document.labelName[dataCaptureLanguages[0]]}}</mat-label>
                 <mat-select #ref (selectionChange)="changeStatus(ref, i)" [(value)]="document.selectedDocName"
                   disableOptionCentering placeholder="{{ document.code }}" (selectionChange)="selectChange($event, i)"
                   [disabled]="disableNavigation ||  readOnlyMode || (document.code === 'POA' && sameAsselected ? true : false)">
@@ -96,15 +102,15 @@
               <mat-error class="primary-errors" *ngIf="
                 !readOnlyMode && userForm.get(document.id) &&
                 userForm.get(document.id).hasError('required') && userForm.get(document.id).touched">
-                {{document.labelName}}
-                {{userPrefLanguage | validationMessage:'requiredMessage' | async }}
+                {{document.labelName[dataCaptureLanguages[0]]}}
+                {{dataCaptureLanguages[0] | validationMessage:'requiredMessage' | async }}
               </mat-error>
             </div>
           </div>
         </div>
       </form>
     </div>
-    <div class="file-upload__body__2" *ngIf="this.users[0].files && fileIndex >= 0">
+    <div class="file-upload__body__2" *ngIf="this.users[0].files && fileIndex >= 0"  dir="ltr">
       <p>{{ fileName }}</p>
       <div *ngIf="!flag">
         <pdf-viewer class="file-uplaoad__body__2__preview pdf-viewer"
@@ -115,7 +121,7 @@
         <img *ngIf="fileUrl && fileExtension.toLowerCase() !== 'pdf'" class="file-uplaoad__body__2__preview"
           [src]="fileUrl" />
       </div>
-      <div class="file-buttons" *ngIf="fileIndex >= 0">
+      <div class="file-buttons" *ngIf="fileIndex >= 0" dir="ltr">
         <button class="previousFile" [disabled]="fileIndex <= 0 ? true : false" (click)="previousFile(fileIndex)">
           <img src="assets/left.png" />
         </button>

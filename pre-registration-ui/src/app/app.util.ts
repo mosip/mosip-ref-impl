@@ -156,7 +156,7 @@ export default class Utils {
     return dataCaptureLanguagesLabels;
   };
 
-  static getLangSelectionPopupAttributes(dataCaptureLabels: any, mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
+  static getLangSelectionPopupAttributes(textDir: string,dataCaptureLabels: any, mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     //create string with mandatory Lang Names
     let mandatoryLang = "";
     mandatoryLanguages.forEach((lang) => {
@@ -185,6 +185,7 @@ export default class Utils {
     body = {
       case: "LANGUAGE_CAPTURE",
       title: dataCaptureLabels.title,
+      dir: textDir,
       languages: JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)),
       mandatoryLanguages: mandatoryLanguages,
       minLanguage: minLanguage,

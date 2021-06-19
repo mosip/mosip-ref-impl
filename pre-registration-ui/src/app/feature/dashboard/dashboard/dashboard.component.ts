@@ -439,7 +439,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   openLangSelectionPopup() {
     return new Promise((resolve) => {
-      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLabels, this.mandatoryLanguages, this.minLanguage, this.maxLanguage);
+      
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDir, 
+        this.dataCaptureLabels, this.mandatoryLanguages, this.minLanguage, this.maxLanguage);
       const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
       dialogRef.afterClosed().subscribe((res) => {
         console.log(res);

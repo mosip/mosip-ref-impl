@@ -171,6 +171,7 @@ export class DemographicComponent
     private loggerService: LogService // private errorService: ErrorService
   ) {
     super(dialog);
+    this.translate.use(this.langCode);
     this.subscriptions.push(
       this.regService
         .getMessage()
@@ -511,6 +512,7 @@ export class DemographicComponent
       const data = {
         case: "CONSENTPOPUPMULTILANG",
         data: newDataStructure,
+        textDirectionArr: this.textDirection,
         title: this.demographiclabels.consent.title,
         cancelBtn: this.demographiclabels.consent.cancelButton,
         alertMessageFirst: this.demographiclabels.consent.alertMessageFirst,
@@ -2114,7 +2116,8 @@ export class DemographicComponent
   
   openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     return new Promise((resolve) => {
-      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0],
+        this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
       const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);
