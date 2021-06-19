@@ -42,8 +42,6 @@
               }
             ],
             "required": false,
-            "containerStyle": { "width": "650px", "min-width": "100%" },
-            "headerStyle": { "width": "650px", "min-width": "100%" },
             "transliteration": true
           },
           {
@@ -59,8 +57,7 @@
             "fieldType": "default",
             "type": "string",
             "validators": [],
-            "required": true,
-            "alignmentGroup": "line"
+            "required": true
           },
           {
             "id": "gender",
@@ -75,8 +72,7 @@
             "fieldType": "dynamic",
             "type": "simpleType",
             "validators": [],
-            "required": true,
-            "alignmentGroup": "line"
+            "required": true
           },
           {
             "id": "residenceStatus",
@@ -91,8 +87,7 @@
             "fieldType": "dynamic",
             "type": "simpleType",
             "validators": [],
-            "required": true,
-            "alignmentGroup": "line"
+            "required": true
           },
           {
             "id": "addressLine1",
@@ -113,10 +108,8 @@
                 "arguments": []
               }
             ],
-            "required": false,
-            "alignmentGroup": "address",
-            "transliteration": true,
-            "changeAction": "copyto:addressLine1,addressLine3,addressCopy"
+            "required": true,
+            "transliteration": true
           },
           {
             "id": "addressLine2",
@@ -138,26 +131,7 @@
               }
             ],
             "required": false,
-            "alignmentGroup": "address",
             "transliteration": true
-          },
-          {
-            "id": "addressCopy",
-            "description": "addressCopy",
-            "labelName": {
-              "eng": "Copy Address Line1 To Address Line2?",
-              "ara": "نسخ العنوان الدائم إلى العنوان الحالي؟",
-              "fra": "Copier l'adresse permanente dans l'adresse actuelle?"
-            },
-            "controlType": "checkbox",
-            "inputRequired": true,
-            "fieldType": "default",
-            "type": "string",
-            "alignmentGroup": "row7",
-            "validators": [],
-            "required": false,
-
-            "changeAction": "copy&disable:addressLine1=addressLine3"
           },
           {
             "id": "addressLine3",
@@ -179,7 +153,6 @@
               }
             ],
             "required": false,
-            "alignmentGroup": "address1",
             "transliteration": true
           },
           {
@@ -201,8 +174,7 @@
                 "arguments": []
               }
             ],
-            "required": true,
-            "alignmentGroup": "address1"
+            "required": true
           },
           {
             "id": "province",
@@ -223,8 +195,7 @@
                 "arguments": []
               }
             ],
-            "required": true,
-            "alignmentGroup": "address1"
+            "required": true
           },
           {
             "id": "city",
@@ -245,8 +216,7 @@
                 "arguments": []
               }
             ],
-            "required": true,
-            "alignmentGroup": "address1"
+            "required": true
           },
           {
             "id": "zone",
@@ -261,8 +231,7 @@
             "fieldType": "default",
             "type": "simpleType",
             "validators": [],
-            "required": true,
-            "alignmentGroup": "address1"
+            "required": true
           },
           {
             "id": "postalCode",
@@ -304,8 +273,7 @@
                 "arguments": []
               }
             ],
-            "required": true,
-            "alignmentGroup": "address2"
+            "required": true
           },
           {
             "id": "email",
@@ -340,7 +308,7 @@
             "inputRequired": true,
             "validators": [],
             "subType": "POA",
-            "required": false
+            "required": true
           },
           {
             "id": "proofOfIdentity",
@@ -429,4 +397,3 @@
   },
   "errors": null
 }
-
