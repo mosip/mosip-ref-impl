@@ -414,7 +414,6 @@ export class LoginComponent implements OnInit {
     if (
       (this.showSendOTP || this.showResend) &&
       this.errorMessage == "" &&
-      this.enableCaptcha &&
       this.enableSendOtp
     ) {
       this.loadingMessage = this.validationMessages["loading"];
