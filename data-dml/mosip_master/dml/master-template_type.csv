@@ -1,4 +1,4 @@
-code,descr,lang_code,is_active,cr_by,cr_dtimes
+﻿code,descr,lang_code,is_active,cr_by,cr_dtimes
 auth-email-content,Template for authorization content,eng,TRUE,superadmin,now()
 auth-email-subject,Template for authorization subject,eng,TRUE,superadmin,now()
 auth-sms,Template for authorization SMS,eng,TRUE,superadmin,now()
@@ -139,3 +139,5 @@ partner-reg-content-template,"partner registration notify content template
 partner-status-content-template,partner status notify content template,eng,TRUE,superadmin,now()
 apikey-status-content-template,partner apikey status notify content template,eng,TRUE,superadmin,now()
 Registration Consent,Registration Consent Template,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,Email template requesting for additional info,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,SMS template requesting for additional info,eng,TRUE,superadmin,now()
