@@ -559,7 +559,7 @@ export class LoginComponent implements OnInit {
       message: otpmessage,
     };
     this.dialog.open(DialougComponent, {
-      width: "350px",
+      width: "400px",
       data: message,
     });
   }
@@ -572,7 +572,7 @@ export class LoginComponent implements OnInit {
       message: errormessage,
     };
     this.dialog.open(DialougComponent, {
-      width: "350px",
+      width: "400px",
       data: message,
     });
   }

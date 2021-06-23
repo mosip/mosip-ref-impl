@@ -180,6 +180,7 @@ export class TimeSelectionComponent
       nameList.status = user.request.statusCode;
       nameList.fullName =
         user["request"].demographicDetails.identity[this.name][0].value;
+
       nameList.postalCode = user.request.demographicDetails.identity.postalCode;
       nameList.registrationCenter = regCenterInfo;
       this.names.push(nameList);
@@ -460,7 +461,7 @@ export class TimeSelectionComponent
       };
       this.dialog
         .open(DialougComponent, {
-          width: "525px",
+          width: "400px",
           height: "190px",
           data: data,
         })
@@ -519,7 +520,6 @@ export class TimeSelectionComponent
     if (this.deletedNames.length !== 0) {
       const data = {
         case: "CONFIRMATION",
-        title: "",
         message:
           this.languagelabels.deletedApplicant1[0] +
           ' - "' +
@@ -531,7 +531,7 @@ export class TimeSelectionComponent
         noButtonText: this.languagelabels.noButtonText,
       };
       const dialogRef = this.dialog.open(DialougComponent, {
-        width: "350px",
+        width: "400px",
         data: data,
         disableClose: true,
       });
@@ -560,7 +560,7 @@ export class TimeSelectionComponent
           };
           this.dialog
             .open(DialougComponent, {
-              width: "350px",
+              width: "400px",
               data: data,
             })
             .afterClosed()

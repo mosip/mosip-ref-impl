@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       };
       this.dialog
         .open(DialougComponent, {
-          width: "350px",
+          width: "400px",
           data: data,
         })
         .afterClosed()
