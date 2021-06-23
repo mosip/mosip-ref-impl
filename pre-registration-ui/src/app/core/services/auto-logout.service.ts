@@ -155,7 +155,7 @@ export class AutoLogoutService {
       content: this.languagelabels.preview   
     };
     this.dialogref = this.dialog.open(DialougComponent, {
-      width: '550px',
+      width: '400px',
       data: data
     });
   }
@@ -165,7 +165,7 @@ export class AutoLogoutService {
       contentLogout: this.languagelabels.post
     };
     this.dialogreflogout = this.dialog.open(DialougComponent, {
-      width: '550px',
+      width: '400px',
       data: data
     });
   }

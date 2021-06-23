@@ -200,7 +200,7 @@ export class DemographicComponent
     await this.setFormControlValues();
     if (!this.dataModification) {
       if (this.isConsentMessage)
-        this.consentMultiLangDeclaration(); /*this.consentDeclaration();*/
+        this.consentDeclaration(); 
     }
     this.onChangeHandler("");
     if (this.readOnlyMode) {
@@ -398,7 +398,7 @@ export class DemographicComponent
               //console.log(this.consentMessage);
             } else if (response[appConstants.NESTED_ERROR])
               this.onError(this.errorlabels.error, "");
-            resolve(true);
+              resolve(true);
           },
           (error) => {
             this.isConsentMessage = false;
@@ -461,34 +461,7 @@ export class DemographicComponent
     });
   }
 
-  /**
-   * @description This is the consent form, which applicant has to agree upon to proceed forward.
-   *
-   * @private
-   * @memberof DemographicComponent
-   */
   private consentDeclaration() {
-    if (this.demographiclabels) {
-      const data = {
-        case: "CONSENTPOPUP",
-        title: this.demographiclabels.consent.title,
-        subtitle: this.demographiclabels.consent.subtitle,
-        message: this.consentMessage,
-        checkCondition: this.demographiclabels.consent.checkCondition,
-        acceptButton: this.demographiclabels.consent.acceptButton,
-        alertMessageFirst: this.demographiclabels.consent.alertMessageFirst,
-        alertMessageSecond: this.demographiclabels.consent.alertMessageSecond,
-        alertMessageThird: this.demographiclabels.consent.alertMessageThird,
-      };
-      this.dialog.open(DialougComponent, {
-        width: "550px",
-        data: data,
-        disableClose: true,
-      });
-    }
-  }
-
-  private consentMultiLangDeclaration() {
     if (this.demographiclabels) {
       let newDataStructure = [];
       let consentText = [];
@@ -510,7 +483,7 @@ export class DemographicComponent
         });    
       });  
       const data = {
-        case: "CONSENTPOPUPMULTILANG",
+        case: "CONSENTPOPUP",
         data: newDataStructure,
         textDirectionArr: this.textDirection,
         title: this.demographiclabels.consent.title,
@@ -522,7 +495,7 @@ export class DemographicComponent
       };
       this.dialog
         .open(DialougComponent, {
-          width: "950px",
+          width: "900px",
           data: data,
           disableClose: true,
         })
@@ -2066,25 +2039,29 @@ export class DemographicComponent
   }
 
   changeDataCaptureLanguages = () => {
+    
     if (this.userForm.dirty) {
       const message = this.demographiclabels["change_data_capture_langs_msg"];
       const ok_text = this.dialoglabels["action_ok"];
       const no_text = this.dialoglabels["title_discard"];
       const body = {
         case: "CONFIRMATION",
+        textDir: this.textDirection[0],
         message: message,
         yesButtonText: ok_text,
         noButtonText: no_text,
       };
       this.dialog
-      .open(DialougComponent, { width: "250px", data: body })
+      .open(DialougComponent, { width: "400px", data: body })
       .beforeClosed()
       .subscribe((res) => {
         if (res === true) {
+          this.canDeactivateFlag = false;
           this.showLangSelectionPopup();
         }  
       });
     } else {
+      this.canDeactivateFlag = false;
       this.showLangSelectionPopup();
     }
   }
@@ -2118,7 +2095,7 @@ export class DemographicComponent
     return new Promise((resolve) => {
       const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0],
         this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
-      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);
         if (res == undefined) {
@@ -2139,8 +2116,7 @@ export class DemographicComponent
       width: width,
       height: height,
       data: data,
-      restoreFocus: false,
-      panelClass: panelClass,
+      restoreFocus: false
     });
     return dialogRef;
   }
@@ -2172,7 +2148,7 @@ export class DemographicComponent
       yesButtonText: this.errorlabels.button_ok,
     };
     this.dialog.open(DialougComponent, {
-      width: "250px",
+      width: "400px",
       data: body,
     });
   }

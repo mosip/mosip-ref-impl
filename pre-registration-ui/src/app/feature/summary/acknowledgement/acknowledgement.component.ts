@@ -182,8 +182,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         .getAppointmentDetails(preRegId)
         .subscribe((response) => {
           console.log(response);
-          this.regCenterId =
+          if (response[appConstants.RESPONSE]) {
+            this.regCenterId =
             response[appConstants.RESPONSE].registration_center_id;
+          }
           resolve(response[appConstants.RESPONSE]);
         });
     });
@@ -404,16 +406,17 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   sendAcknowledgement() {
     const data = {
-      case: "APPLICANTS",
+      case: "SEND_ACKNOWLEDGEMENT",
       notificationTypes: this.notificationTypes,
     };
     const subs = this.dialog
       .open(DialougComponent, {
         width: "350px",
-        data: data,
+        data: data
       })
       .afterClosed()
       .subscribe((applicantNumber) => {
+        console.log(applicantNumber);
         if (applicantNumber !== undefined) {
           this.sendNotification(applicantNumber, true);
         }

@@ -439,10 +439,9 @@ export class DashBoardComponent implements OnInit, OnDestroy {
 
   openLangSelectionPopup() {
     return new Promise((resolve) => {
-      
       const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDir, 
         this.dataCaptureLabels, this.mandatoryLanguages, this.minLanguage, this.maxLanguage);
-      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         console.log(res);
         if (res == undefined) {
@@ -457,13 +456,12 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDialog(data, width, height?, panelClass?) {
+  openDialog(data, width, height?) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
       height: height,
       data: data,
-      restoreFocus: false,
-      panelClass: panelClass,
+      restoreFocus: false
     });
     return dialogRef;
   }
@@ -472,7 +470,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     let data = {};
     if (status.toLowerCase() === "booked") {
       data = {
-        case: "DISCARD",
+        case: "DISCARD_APPLICATION",
+        textDir: this.textDir,
         disabled: {
           radioButton1: false,
           radioButton2: false,
@@ -480,7 +479,8 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       };
     } else {
       data = {
-        case: "DISCARD",
+        case: "DISCARD_APPLICATION",
+        textDir: this.textDir,
         disabled: {
           radioButton1: false,
           radioButton2: true,
@@ -509,7 +509,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         noButtonText: this.languagelabels.button_cancel,
       };
     }
-    const dialogRef = this.openDialog(body, "250px");
+    const dialogRef = this.openDialog(body, "400px");
     return dialogRef;
   }
 
@@ -628,7 +628,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       title: title,
       message: message,
     };
-    this.openDialog(messageObj, "250px");
+    this.openDialog(messageObj, "400px");
   }
 
   /**
@@ -809,7 +809,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         yesButtonText: this.errorLanguagelabels.button_ok,
       };
       this.dialog.open(DialougComponent, {
-        width: "250px",
+        width: "400px",
         data: body,
       });
     }

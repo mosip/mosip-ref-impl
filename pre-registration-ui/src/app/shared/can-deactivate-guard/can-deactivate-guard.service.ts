@@ -40,7 +40,7 @@ export class CanDeactivateGuardService
             noButtonText: no_text,
           };
           this.dialog
-            .open(DialougComponent, { width: "250px", data: body })
+            .open(DialougComponent, { width: "400px", data: body })
             .beforeClosed()
             .subscribe((res) => {
               if (res === true) resolve(true);

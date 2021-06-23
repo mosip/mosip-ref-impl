@@ -535,7 +535,7 @@ export class PreviewComponent implements OnInit {
   openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     return new Promise((resolve) => {
       const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0], this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
-      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);
         if (res == undefined) {
@@ -550,13 +550,12 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  openDialog(data, width, height?, panelClass?) {
+  openDialog(data, width, height?) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
       height: height,
       data: data,
-      restoreFocus: false,
-      panelClass: panelClass,
+      restoreFocus: false
     });
     return dialogRef;
   }

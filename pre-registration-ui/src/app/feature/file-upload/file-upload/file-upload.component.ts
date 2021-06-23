@@ -121,9 +121,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() { 
+    this.getPrimaryLabels(this.userPrefLanguage);
     await this.initiateComponent();
     this.getFileSize();
-    this.getPrimaryLabels();
+    this.getPrimaryLabels(this.dataCaptureLanguages[0]);
     this.allowedFiles = this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files).split(",");
     this.getAllowedFileTypes(this.allowedFiles);
     this.loginId = localStorage.getItem("loginId");
@@ -163,9 +164,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getPrimaryLabels() {
+  private getPrimaryLabels(lang) {
     this.dataStorageService
-    .getI18NLanguageFiles(this.dataCaptureLanguages[0])
+    .getI18NLanguageFiles(lang)
     .subscribe((response) => {
       if (response["message"])
         this.fileUploadLanguagelabels = response["message"];
@@ -179,6 +180,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   private async initiateComponent() {
+
     await this.getIdentityJsonFormat();
     this.isModify = localStorage.getItem("modifyDocument");
     this.activatedRoute.params.subscribe((param) => {
@@ -1462,7 +1464,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       title: title,
       message: message,
     };
-    this.openDialog(messageObj, "250px");
+    this.openDialog(messageObj, "400px");
   }
 
   /**

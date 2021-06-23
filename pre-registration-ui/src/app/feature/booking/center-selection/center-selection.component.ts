@@ -453,7 +453,7 @@ export class CenterSelectionComponent
       title: title,
       message: message,
     };
-    const dialogRef = this.openDialog(messageObj, "250px");
+    const dialogRef = this.openDialog(messageObj, "400px");
     dialogRef.afterClosed().subscribe(() => {
       if (messageObj.message === this.errorlabels.regCenterNotavailabe) {
         this.canDeactivateFlag = false;
