@@ -49,8 +49,11 @@
             <div class="custom-file-input">
               <input type="button" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
               <input type="file" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}">                
-            </div>           
+              <input type="text" id="fileName"  formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}"> 
+              <mat-error *ngIf="fileNameError">
+                This field is required
+              </mat-error>  
+            </div>                       
           </div> 
         </mat-card-content>
         <mat-card-actions class="action-buttons">

@@ -62,20 +62,6 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "id",
-      "showInListView": "false",
-      "showInSingleView": "false",
-      "label": {
-        "eng": "Machine Spec ID",
-        "ara": "معرف الجهاز المواصفات",
-        "fra": "ID de spécification"
-      },
-      "sortOrder": "3",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
       "name": "name",
       "showInListView": "true",
       "showInSingleView": "true",
@@ -112,38 +98,6 @@
       "ismandatory": "true"
     },
     {
-      "name": "deviceTypeName",
-      "showInListView": "true",
-      "showInSingleView": "false",
-      "label": {
-        "eng": "Device Type",
-        "ara": "نوع الجهاز",
-        "fra": "Type de Device"
-      },
-      "sortOrder": "",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "text",
-      "ismandatory": "true"
-    },
-    {
-      "name": "deviceTypeCode",
-      "showInListView": "false",
-      "showInSingleView": "true",
-      "label": {
-        "eng": "Device Type",
-        "ara": "نوع الجهاز",
-        "fra": "Type de Device"
-      },
-      "sortOrder": "",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
-    },
-    {
       "name": "minDriverversion",
       "showInListView": "false",
       "showInSingleView": "true",
@@ -170,6 +124,52 @@
       "LinkURL": "",
       "inputType": "text",
       "ismandatory": "true"
+    },
+    {
+      "name": "deviceTypeCode",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Device Type",
+        "ara": "نوع الجهاز",
+        "fra": "Type de Device"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
+    },
+    {
+      "name": "deviceTypeName",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Device Type",
+        "ara": "نوع الجهاز",
+        "fra": "Type de Device"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "id",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Machine Spec ID",
+        "ara": "معرف الجهاز المواصفات",
+        "fra": "ID de spécification"
+      },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
     },
     {
       "name": "isActive",

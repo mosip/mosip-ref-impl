@@ -469,7 +469,7 @@
     "packet-status": {
         "header": "Etat du paquet",
         "input-text":"Entrez l'ID",
-        "text": "S'il vous plaît entrer l'ID d'enregistrement pour vérifier l'état du paquet",
+        "text": "Veuillez saisir l'ID d'enregistrement pour vérifier l'état du paquet",
         "error": "ID d'enregistrement non valide entré",
         "id": "ID d'enregistrement",
         "status": "Statut",

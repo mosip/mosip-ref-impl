@@ -266,7 +266,7 @@
                         #keyboardRef
                         #{{field.name}}
                         (keyup)="captureValue($event, field.name, 'secondary')"
-                        (focus)="scrollPage(field.name, 'secondary', field.name, ii)"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
                         matInput
                         placeholder="{{
                           field.label[secondaryLang]
@@ -279,7 +279,7 @@
                         #keyboardRef
                         #{{field.name}}
                         (keyup)="captureValue($event, field.name, 'secondary')"
-                        (focus)="scrollPage(field.name, 'secondary', field.name, ii)"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
                         matInput
                         placeholder="{{
                           field.label[secondaryLang]
@@ -292,7 +292,7 @@
                         #keyboardRef
                         #{{field.name}}
                         (keyup)="captureValue($event, field.name, 'secondary')"
-                        (focus)="scrollPage(field.name, 'secondary', field.name, ii)"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
                         matInput
                         placeholder="{{
                           field.label[secondaryLang]

@@ -158,7 +158,7 @@ export class EditComponent {
       this.isSecondaryLangRTL = true;
     }
     //load weekdays label in primary language
-    this.days = appConstants.days[this.primaryLang];
+    //this.days = appConstants.days[this.primaryLang];
     //load secondary labels
     this.translateService
       .getTranslation(this.secondaryLang)
@@ -524,7 +524,8 @@ export class EditComponent {
       Utils.convertTimeTo12Hours(commonData.lunchEndTime)
     );
     this.commonForm.controls.workingDays.setValue(commonData.workingNonWorkingDays ?
-      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []);
+      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []); 
+    //console.log("commonData.workingNonWorkingDays>>>"+JSON.stringify(commonData.workingNonWorkingDays)+"<<<this.commonForm.controls.workingDays.value>>>"+this.commonForm.controls.workingDays.value);
     this.commonForm.controls.exceptionalHolidays.setValue(
       commonData.exceptionalHolidayPutPostDto ? [...commonData.exceptionalHolidayPutPostDto] : []);
     //this.commonForm.controls.isActive.setValue(commonData.isActive);
@@ -536,10 +537,10 @@ export class EditComponent {
   formatWorkingDays(selectedDays: string[]) {
     const obj = {};
     this.days.forEach(day => {
-      if (selectedDays.indexOf(day.name) >= 0) {
-        obj[day.name] = true;
+      if (selectedDays.indexOf(day.code) >= 0) {
+        obj[day.code] = true;
       } else {
-        obj[day.name] = false;
+        obj[day.code] = false;
       }
     });
     return obj;
@@ -550,7 +551,7 @@ export class EditComponent {
     const selectedDays = [];
     keys.forEach(key => {
       if (days[key]) {
-        selectedDays.push(key);
+        selectedDays.push(key.trim());
       }
     });
     return selectedDays;
@@ -618,6 +619,7 @@ export class EditComponent {
     });
   }
   updateCommonData() {
+    console.log("this.commonForm.controls.workingDays.value>>>"+this.commonForm.controls.workingDays.value);
     this.createUpdate = true;
     let locationCode = "";
     if (1 == this.locCode) {

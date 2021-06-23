@@ -194,7 +194,6 @@ export class CreateComponent {
         obj[day.code] = false;
       }
     });
-    console.log(obj);
     return obj;
   }
 

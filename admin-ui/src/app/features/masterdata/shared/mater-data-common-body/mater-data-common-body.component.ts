@@ -3,7 +3,8 @@ import {
   OnInit,
   ElementRef,
   ViewChildren,
-  Input
+  Input,
+  HostListener 
 } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -60,6 +61,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   mapping: any;
   url:string;
   saveSecondaryForm:boolean;
+  fieldsCount:number;
 
   languageNames = {
     ara: 'عربى',
@@ -84,7 +86,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+    this.fieldsCount = 0;
+
+    this.fields.forEach(obj => {
+      if(obj.inputType === "text" && obj.showInSingleView === "true"){
+        this.fieldsCount++;
+      }        
+    });
     this.activatedRoute.params.subscribe(response => {
       this.id = response.id;
       this.masterdataType = response.type;
@@ -226,6 +234,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
     this.setSecondaryFrom("");
   }
 
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (this.keyboardService.isOpened) {
+      this.keyboardService.dismiss();
+      this.keyboardRef = undefined;
+    }
+  }
+
   showPanel(pageName : string){
     if(pageName ==='Blacklisted Word'){
       this.showSecondaryForm = false;
@@ -346,7 +361,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
     index: number
   ) {
     this.selectedField = element;
+    console.log("formControlName>>>"+formControlName+"<<<index>>>"+index);
     if (this.keyboardRef) {
+      console.log("this.attachToElementMesOne._results[index]>>>"+JSON.stringify(this.attachToElementMesOne._results[index]));
       this.keyboardRef.instance.setInputInstance(
         this.attachToElementMesOne._results[index]
       );
@@ -649,6 +666,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                   }
               });
             }else{
+              this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
               let url = this.pageName+" Created Successfully";
               this.showMessage(url)
                 .afterClosed()
@@ -775,6 +793,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 });
               }
             }else{
+              this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
               let url = this.pageName+" Updated Successfully";
                 this.showMessage(url)
                   .afterClosed()
