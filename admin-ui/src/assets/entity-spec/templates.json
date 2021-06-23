@@ -92,20 +92,6 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "id",
-      "showInListView": "false",
-      "showInSingleView": "false",
-      "label": {
-        "eng": "Template ID",
-        "ara": "معرف القالب",
-        "fra": "ID de modèle"
-      },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
       "name": "name",
       "showInListView": "true",
       "showInSingleView": "true",
@@ -138,22 +124,6 @@
       "ismandatory": "true"
     },
     {
-      "name": "fileFormatCode",
-      "showInListView": "false",
-      "showInSingleView": "true",
-      "label": {
-        "eng": "Template Format",
-        "ara": "تنسيق القالب",
-        "fra": "Modèle de format"
-      },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
-    },
-    {
       "name": "model",
       "showInListView": "false",
       "showInSingleView": "true",
@@ -169,6 +139,38 @@
       "inputType": "text",
       "ismandatory": "true"
     },
+    {
+      "name": "fileText",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Scenario",
+        "ara": "السيناريو",
+        "fra": "scénario"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "fileFormatCode",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Template Format",
+        "ara": "تنسيق القالب",
+        "fra": "Modèle de format"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
+    },    
     {
       "name": "templateTypeCode",
       "showInListView": "false",
@@ -209,22 +211,6 @@
         "eng": "Module Name",
         "ara": "اسم الوحدة النمطية",
         "fra": "Nom du module"
-      },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "text",
-      "ismandatory": "true"
-    },
-    {
-      "name": "fileText",
-      "showInListView": "false",
-      "showInSingleView": "true",
-      "label": {
-        "eng": "Scenario",
-        "ara": "السيناريو",
-        "fra": "scénario"
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -298,6 +284,20 @@
       },
       "sortOrder": "3",
       "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "id",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Template ID",
+        "ara": "معرف القالب",
+        "fra": "ID de modèle"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
       "linkType": "",
       "LinkURL": ""
     }

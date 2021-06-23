@@ -25,6 +25,7 @@ export class CreateComponent {
   fileName = '';
   fileCount = 0;
   popUpMessages;
+  fileNameError:boolean = false;
   constructor(
   private bulkuploadService: BulkuploadService,
   private location: Location,
@@ -55,9 +56,8 @@ export class CreateComponent {
   initializeForm() {
     this.uploadForm = this.formBuilder.group({
       category : ['packet'],
-      files: [''],
-      operation: ['', [Validators.required]],
-      tableName: ['', [Validators.required]],
+      files: ['', [Validators.required]],
+      fileName: ['', [Validators.required]]
     });
   }
 
@@ -66,7 +66,10 @@ export class CreateComponent {
       const files = [].slice.call(event.target.files);
       this.uploadForm.get('files').setValue(files);
       this.fileName = files.map(f => f.name).join(', ');
+      this.uploadForm.get('fileName').setValue(this.fileName);
       this.fileCount = event.target.files.length;
+      document.getElementById("fileName").classList.remove('addredborder');
+      this.fileNameError = false;
     }
   }
 
@@ -77,26 +80,40 @@ export class CreateComponent {
   }
 
   submit() {
-    let data = {};
-    data = {
-      case: 'CONFIRMATION',
-      title: this.popUpMessages.popup1.uploadConfirm,
-      message: this.fileCount + this.popUpMessages.popup1.message,
-      yesBtnTxt: this.popUpMessages.popup1.confirmBtnTxt,
-      noBtnTxt: this.popUpMessages.popup1.cancelBtnTxt
-    };
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '450px',
-      data
-    });
-    dialogRef.afterClosed().subscribe(response => {
-      if (response) {
-        this.saveData();
+    if (this.uploadForm.valid) {
+      let data = {};
+      data = {
+        case: 'CONFIRMATION',
+        title: this.popUpMessages.popup1.uploadConfirm,
+        message: this.fileCount + this.popUpMessages.popup1.message,
+        yesBtnTxt: this.popUpMessages.popup1.confirmBtnTxt,
+        noBtnTxt: this.popUpMessages.popup1.cancelBtnTxt
+      };
+      const dialogRef = this.dialog.open(DialogComponent, {
+        width: '450px',
+        data
+      });
+      dialogRef.afterClosed().subscribe(response => {
+        if (response) {
+          this.saveData();
+        }
+      });
+    } else {
+      for (const i in this.uploadForm.controls) {
+        if (this.uploadForm.controls[i]) {
+          if(i === "fileName"){
+            document.getElementById("fileName").classList.add('addredborder');
+            this.fileNameError = true;
+          }else{
+            this.uploadForm.controls[i].markAsTouched();
+          }
+          
+        }
       }
-    });
+    } 
   }
 
-  saveData() {
+  saveData() {    
     const self = this;
     const formData = new FormData();
     for (let i = 0; i < this.fileCount; i++) {
@@ -108,7 +125,7 @@ export class CreateComponent {
     formData.append('tableName', '');
     self.bulkuploadService.uploadData(formData).subscribe(uploadResponse => {
       self.showMessage(uploadResponse);
-    });
+    });    
   }
 
   showMessage(uploadResponse) {
