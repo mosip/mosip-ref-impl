@@ -71,7 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
         .afterClosed()
         .subscribe((response) => {
-         if (response !== "Cancel") {
+          if (response === true) {
             localStorage.removeItem("loggedOutLang");
             localStorage.removeItem("loggedOut");
             this.authService.onLogout();
