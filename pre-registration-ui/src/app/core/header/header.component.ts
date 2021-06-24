@@ -58,8 +58,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     .subscribe((response) => {
       languagelabels = response["login"]["logout_msg"];
       const data = {
-        case: "MESSAGE",
+        case: "CONFIRMATION",
+        title: response["header"]["link_logout"],
         message: languagelabels,
+        yesButtonText: response["dialog"]["action_ok"],
+        noButtonText: response["dialog"]["action_close"]
       };
       this.dialog
         .open(DialougComponent, {
@@ -68,7 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
         .afterClosed()
         .subscribe((response) => {
-          if (response) {
+         if (response !== "Cancel") {
             localStorage.removeItem("loggedOutLang");
             localStorage.removeItem("loggedOut");
             this.authService.onLogout();
