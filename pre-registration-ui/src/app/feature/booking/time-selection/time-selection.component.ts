@@ -476,7 +476,6 @@ export class TimeSelectionComponent
         });
     } else if (this.router.url.includes("multiappointment")) {
       let pridWithNoBookings = [];
-      let pridsString = "";
       this.userInfo.forEach((user) => {
         if (user.request.statusCode === "Pending_Appointment") {
           pridWithNoBookings.push(user.request.preRegistrationId);
@@ -499,13 +498,14 @@ export class TimeSelectionComponent
           })
           .afterClosed()
           .subscribe((response) => {
-            console.log(response);
             if (response === true) {
               this.bookingOperationRequest();
             } else {
               this.disableContinueButton = false;
             }
           });
+      } else {
+        this.bookingOperationRequest();
       }
     } else {
       this.bookingOperationRequest();
