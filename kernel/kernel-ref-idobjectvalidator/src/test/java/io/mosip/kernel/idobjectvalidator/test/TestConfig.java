@@ -7,17 +7,23 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import io.mosip.kernel.core.http.ResponseWrapper;
 
 /**
  * @author Manoj SP
@@ -37,11 +43,12 @@ public class TestConfig {
 		return restTemplate;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void mockGenderResponse(RestTemplate restTemplate)
 			throws RestClientException, JsonParseException, JsonMappingException, IOException, URISyntaxException {
-		String response = "{\"id\":null,\"version\":null,\"responsetime\":\"2019-05-21T05:37:06.813Z\",\"metadata\":null,\"response\":{\"genderType\":[{\"code\":\"MLE\",\"genderName\":\"Male\",\"langCode\":\"eng\",\"isActive\":true}]},\"errors\":null}";
-		when(restTemplate.getForObject(new URI("http://0.0.0.0/genderTypes?langCode=eng"), ObjectNode.class))
-				.thenReturn(mapper.readValue(response.getBytes(), ObjectNode.class));
+		String response = "{\"id\":null,\"version\":null,\"responsetime\":\"2021-06-24T16:32:55.693Z\",\"metadata\":null,\"response\":{\"eng\":[{\"code\":\"Female\",\"value\":null,\"dataType\":\"string\"},{\"code\":\"Others\",\"value\":null,\"dataType\":\"string\"},{\"code\":\"Male\",\"value\":null,\"dataType\":\"string\"}]},\"errors\":null}";
+		when(restTemplate.exchange(Mockito.any(URI.class), Mockito.any(HttpMethod.class), Mockito.any(), Mockito.any(ParameterizedTypeReference.class)))
+				.thenReturn(new ResponseEntity<>(mapper.readValue(response.getBytes(), ResponseWrapper.class), HttpStatus.OK));
 	}
 
 	@Bean

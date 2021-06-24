@@ -4,6 +4,7 @@ import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorE
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.BIOMETRICS_TYPE;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.CACHE_RESET_CRON_PATTERN;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.CODE;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOB_FORMAT;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.DOCUMENT_TYPE;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_DOB_PATH;
@@ -11,10 +12,7 @@ import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValida
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IDENTITY_LANGUAGE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.IS_CACHE_RESET_ENABLED;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.LANGUAGE;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTER_DATA_CODE_PATH;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTER_DATA_LANG_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTER_DATA_URI;
-import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MASTER_DATA_VALUE_PATH;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MOSIP_MANDATORY_LANG;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.MOSIP_OPTIONAL_LANG;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.SCHEMA_FIELD_DEF_PATH;
@@ -50,12 +48,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -66,6 +67,7 @@ import com.jayway.jsonpath.Option;
 
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.exception.ServiceError;
+import io.mosip.kernel.core.http.ResponseWrapper;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectIOException;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectValidationFailedException;
 import io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator;
@@ -83,7 +85,7 @@ import net.minidev.json.JSONArray;
 @RefreshScope
 @Component
 public class IdObjectReferenceValidator implements IdObjectValidator {
-	
+
 	private final static Logger logger = Logfactory.getSlf4jLogger(IdObjectReferenceValidator.class);
 
 	@Value("${" + MOSIP_MANDATORY_LANG + ":}")
@@ -91,26 +93,17 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 
 	@Value("${" + MOSIP_OPTIONAL_LANG + ":}")
 	private String optionalLanguages;
-	
+
 	@Value("${" + MASTER_DATA_URI + "}")
 	private String masterDataUri;
-	
-	@Value("${" + MASTER_DATA_CODE_PATH + "}")
-	private String masterDataResponseCodePath;
-	
-	@Value("${" + MASTER_DATA_VALUE_PATH + "}")
-	private String masterDataResponseValuePath;
-	
-	@Value("${" + MASTER_DATA_LANG_PATH + "}")
-	private String masterDataResponseLangCodePath;
-	
+
 	@Value("${" + IDENTITY_ID_SCHEMA_VERSION_PATH + "}")
 	private String idSchemaVersionPath;
 
 	private Map<String, String> fieldToSubTypeMapping;
 
 	private Map<String, String> fieldToFieldDefMapping;
-	
+
 	private Set<String> processedSchemaVersions = new HashSet<>();
 
 	/** The env. */
@@ -158,6 +151,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		populateMasterDataCache();
 		loadLanguages();
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -200,7 +194,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			processedSchemaVersions.add(schemaVersion);
 		}
 	}
-	
+
 	private boolean isSchemaProcessed(String schemaVersion) {
 		return processedSchemaVersions.contains(schemaVersion);
 	}
@@ -216,16 +210,16 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void extractFieldDefinitions(String identitySchema) {
 		JsonPath fieldDefPath = JsonPath.compile(SCHEMA_FIELD_DEF_PATH);
 		List<String> fieldDefPathList = fieldDefPath.read(identitySchema, PATH_LIST_OPTIONS);
-		fieldToFieldDefMapping = IntStream.range(0, fieldDefPathList.size()).boxed()
-				.collect(Collectors.toMap(i -> convertToPath(fieldDefPathList.get(i)).split(SLASH)[3], i -> StringUtils
-						.substringAfterLast(JsonPath.compile(fieldDefPathList.get(i)).read(identitySchema, READ_OPTIONS), SLASH)));
+		fieldToFieldDefMapping = IntStream.range(0, fieldDefPathList.size()).boxed().collect(
+				Collectors.toMap(i -> convertToPath(fieldDefPathList.get(i)).split(SLASH)[3], i -> StringUtils.substringAfterLast(
+						JsonPath.compile(fieldDefPathList.get(i)).read(identitySchema, READ_OPTIONS), SLASH)));
 	}
 
 	private void populateMasterDataCache() {
 		validationDataCache.putAll(fieldToSubTypeMapping.entrySet().stream()
 				.filter(fieldEntry -> !validationDataCache.containsKey(fieldEntry.getKey())).collect(Collectors
 						.toMap(fieldEntry -> fieldEntry.getKey(), fieldEntry -> fetchMasterData(fieldEntry.getValue()))));
-		logger.debug("IdObjectReferenceValidator VALIDATION VALUES LOADED: {}" , validationDataCache.toString());
+		logger.debug("IdObjectReferenceValidator VALIDATION VALUES LOADED: {}", validationDataCache.toString());
 	}
 
 	private void validateDateOfBirth(Object identity, Set<ServiceError> errorList) {
@@ -255,7 +249,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			}
 		}
 	}
-	
+
 	private void validateLanguage(Object identityObject, Set<ServiceError> errorList) {
 		if (!languageList.isEmpty()) {
 			JsonPath jsonPath = JsonPath.compile(IDENTITY_LANGUAGE_PATH);
@@ -274,7 +268,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		for (String field : validationDataCache.keySet()) {
 			JSONArray dataArray = JsonPath.compile("*." + field).read(identityObject, READ_OPTIONS);
 			// If dataArray is empty, means the field is not present in identity data.
-			// Exception is not thrown if dataArray is empty as the field might be optional field
+			// Exception is not thrown if dataArray is empty as the field might be optional
+			// field
 			// and so it is not sent as part of identity data.
 			if (!dataArray.isEmpty()) {
 				Object data = dataArray.get(0);
@@ -305,8 +300,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	}
 
 	private void validateDocumentType(Set<ServiceError> errorList, String field, Map<String, String> data) {
-		languageList.forEach(
-				lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, data.get(TYPE)), true));
+		languageList.forEach(lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, data.get(TYPE)), true));
 	}
 
 	private void validateBiometricType(Set<ServiceError> errorList, String field, Map<String, String> data) {
@@ -350,18 +344,16 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
 				.queryParam("langCode", languageList.stream().collect(Collectors.joining(","))).build(field);
-		ObjectNode responseObject = restTemplate.getForObject(requestUri, ObjectNode.class);
+		ResponseWrapper<Object> responseObject = restTemplate
+				.exchange(requestUri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<Object>>() {
+				}).getBody();
 		logger.debug("IdObjectReferenceValidator masterdata field : {} response : {}", field, responseObject);
-		String response = responseObject.toString();
-		JSONArray langCodeList = JsonPath.compile(masterDataResponseLangCodePath).read(response, READ_OPTIONS);
-		if (!langCodeList.isEmpty()) {
-			JSONArray codeList = JsonPath.compile(masterDataResponseCodePath).read(response, READ_OPTIONS);
-			IntStream.range(0, codeList.size())
-					.forEach(index -> masterDataMap.put(langCodeList.get(index).toString(), codeList.get(index).toString()));
-			JSONArray valueList = JsonPath.compile(masterDataResponseValuePath).read(response, READ_OPTIONS);
-			IntStream.range(0, valueList.size())
-					.forEach(index -> masterDataMap.put(langCodeList.get(index).toString(), valueList.get(index).toString()));
-		}
+		Map<String, List<ObjectNode>> response = mapper.convertValue(responseObject.getResponse(),
+				new TypeReference<Map<String, List<ObjectNode>>>() {
+				});
+		response.entrySet().forEach(entry -> masterDataMap.putAll(entry.getKey(), entry.getValue().stream().flatMap(
+				responseValue -> List.of(responseValue.get(CODE).toString(), responseValue.get(VALUE).toString()).stream())
+				.collect(Collectors.toList())));
 		return masterDataMap;
 	}
 
