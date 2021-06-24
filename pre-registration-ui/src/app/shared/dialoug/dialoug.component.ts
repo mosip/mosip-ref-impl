@@ -180,6 +180,7 @@ export class DialougComponent implements OnInit {
       .open(DialougComponent, {
         width: "400px",
         data: data,
+        disableClose: true
       })
       .afterClosed()
       .subscribe(() => this.loggingUserOut());
@@ -195,6 +196,7 @@ export class DialougComponent implements OnInit {
       .open(DialougComponent, {
         width: "400px",
         data: data,
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() => this.redirectingUser());
@@ -210,6 +212,7 @@ export class DialougComponent implements OnInit {
       .open(DialougComponent, {
         width: "400px",
         data: data,
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() => this.redirectingUser());

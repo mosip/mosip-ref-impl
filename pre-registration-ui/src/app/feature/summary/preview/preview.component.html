@@ -16,16 +16,16 @@
     <mat-card-content>
       <div class="preview__body-content-container">
         <div class="preview__body-content-div">
-          <table class="row" *ngFor="let controlId of controlIds">
-            <tr>
-              <td>
+          <table>
+            <tr *ngFor="let controlId of controlIds" class="row">
+              <td width="15%">
                 <b>{{ControlIdLabelObjects[controlId][dataCaptureLanguages[0]]}} : </b></td>
               <span
                 *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
-                <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div>
+                <span *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></span>
                 <ng-template #content>
                   <td>
-                    <div *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></div>
+                    <span *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></span>
                     <ng-template #displayLabel>{{previewData[controlId][i].label}}</ng-template>
                     <ng-template #displayValue>{{previewData[controlId][i].value}}</ng-template>
                   </td>
