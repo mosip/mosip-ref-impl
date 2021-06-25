@@ -629,7 +629,7 @@ export class TimeSelectionComponent
       title: title,
       message: message,
     };
-    const dialogRef = this.openDialog(messageObj, "250px");
+    const dialogRef = this.openDialog(messageObj, "400px");
     const subs = dialogRef.afterClosed().subscribe(() => {
       if (
         error &&
