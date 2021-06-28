@@ -610,14 +610,14 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       if (selectedOption && Number(selectedOption) === 1) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe((confirm) => {
-          if (confirm !== "Cancel") {
+          if (confirm == true) {
             this.deletePreregistration(element);
           }
         });
       } else if (selectedOption && Number(selectedOption) === 2) {
         dialogRef = this.confirmationDialog(selectedOption);
         dialogRef.afterClosed().subscribe((confirm) => {
-          if (confirm !== "Cancel") {
+          if (confirm == true) {
             this.cancelAppointment(element);
           }
         });
