@@ -297,6 +297,23 @@ mat-icon {
   text-transform: uppercase;
 }
 
+.user__btn_change_lang {
+  background-color: rgb(11, 106, 130);
+  border: none;
+  color: white;
+  padding: 0.8rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.7rem;
+  /* margin: 6px 2px 4px 2px;
+  margin-right: 2rem; */
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
 .user__btn--back {
   border: 1px solid #ff4081;
   background-color: white;

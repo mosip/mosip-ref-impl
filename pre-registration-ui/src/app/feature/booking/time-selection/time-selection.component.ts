@@ -318,10 +318,14 @@ export class TimeSelectionComponent
       });
       element.TotalAvailable = sumAvailability;
       element.inActive = false;
+      const ltrLangs = this.configService
+      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+      .split(",");
       element.displayDate = Utils.getBookingDateTime(
         element.date,
         "",
-        this.userPreferredLangCode
+        this.userPreferredLangCode,
+        ltrLangs
       );
       let index = new Date(Date.parse(element.date)).getDay();
       element.displayDay = this.DAYS[index];
