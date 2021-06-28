@@ -64,7 +64,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
     await this.getUserInfo(this.preRegIds);
-    console.log(this.usersInfoArr);
+    //console.log(this.usersInfoArr);
     for (let i = 0; i < this.usersInfoArr.length; i++) {
       await this.getRegCenterDetails(this.usersInfoArr[i].langCode, i);
       await this.getLabelDetails(this.usersInfoArr[i].langCode, i);
@@ -120,7 +120,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               }
             }
           } 
-          console.log(`applicationLanguages: ${applicationLanguages}`);
+          //console.log(`applicationLanguages: ${applicationLanguages}`);
           applicationLanguages.forEach(applicationLang => {
             const nameListObj: NameList = {
               preRegId: "",
@@ -150,7 +150,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             nameListObj.langCode = applicationLang;
             nameListObj.regDto = regDto;
             this.usersInfoArr.push(nameListObj);
-            console.log(this.usersInfoArr);
+            //console.log(this.usersInfoArr);
           });
           this.applicantContactDetails[1] = demographicData["phone"];
           this.applicantContactDetails[0] = demographicData["email"];
@@ -232,7 +232,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       nameValues = [],
       labelRegCntrs = [],
       regCntrNames = [],
-      appLangCode = []; 
+      appLangCode = [],
+      bookingDataPrimary = [],
+      bookingTimePrimary = [];
+
       this.ackDataItem["preRegId"] = prid;
       
       this.ackDataItem["contactPhone"] =
@@ -241,8 +244,6 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.usersInfoArr.forEach(userInfo => {
         if (userInfo.preRegId == prid) {
           this.ackDataItem["qrCodeBlob"] = userInfo.qrCodeBlob;
-          this.ackDataItem["bookingTimePrimary"] = userInfo.bookingTimePrimary;
-          this.ackDataItem["bookingDataPrimary"] = userInfo.bookingDataPrimary;
           const labels = userInfo.labelDetails[0];
           preRegIdLabels.push(labels.label_pre_id);
           appDateLabels.push(labels.label_appointment_date_time);
@@ -256,6 +257,16 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           let fltrLangs = this.usersInfoArr.filter(userInfoItm => userInfoItm.preRegId == userInfo.preRegId && userInfoItm.langCode == this.langCode);
           if (fltrLangs.length == 1) {
             //matching lang found
+            bookingTimePrimary.push({
+              langCode: userInfo.langCode,
+              time:userInfo.bookingTimePrimary,
+              langAvailable: true
+            });
+            bookingDataPrimary.push({
+              langCode: userInfo.langCode,
+              date:userInfo.bookingDataPrimary,
+              langAvailable: true
+            });  
             let fltr = messages.filter(msg => msg.preRegId == fltrLangs[0].preRegId);
             if (fltr.length == 0) {
               messages.push({
@@ -264,6 +275,17 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               });
             }
           } else {
+            //matching lang found
+            bookingTimePrimary.push({
+              langCode: userInfo.langCode,
+              time:userInfo.bookingTimePrimary,
+              langAvailable: false
+            });
+            bookingDataPrimary.push({
+              langCode: userInfo.langCode,
+              date:userInfo.bookingDataPrimary,
+              langAvailable: false
+            });  
             let fltr = messages.filter(msg => msg.preRegId == userInfo.preRegId);
             if (fltr.length == 0) {
               messages.push({
@@ -276,6 +298,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       });
 
       this.ackDataItem["appLangCode"] = appLangCode;
+      this.ackDataItem["bookingTimePrimary"] = bookingTimePrimary;
+      this.ackDataItem["bookingDataPrimary"] = bookingDataPrimary;
       this.ackDataItem["preRegIdLabels"] = JSON.stringify(
         preRegIdLabels
       )
@@ -351,26 +375,31 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   formatDateTime() {
-    for (let i = 0; i < this.usersInfoArr.length; i++) {
-      if (!this.usersInfoArr[i].bookingData) {
-        this.usersInfoArr[i].bookingDataPrimary = Utils.getBookingDateTime(
-          this.usersInfoArr[i].regDto.appointment_date,
-          this.usersInfoArr[i].regDto.time_slot_from,
-          this.usersInfoArr[i].langCode
+    const ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
+    this.usersInfoArr.forEach(userInfo => {
+      if (!userInfo.bookingData) {
+        userInfo.bookingDataPrimary = Utils.getBookingDateTime(
+          userInfo.regDto.appointment_date,
+          userInfo.regDto.time_slot_from,
+          userInfo.langCode,
+          ltrLangs
         );
-        this.usersInfoArr[i].bookingTimePrimary = Utils.formatTime(
-          this.usersInfoArr[i].regDto.time_slot_from
+        userInfo.bookingTimePrimary = Utils.formatTime(
+          userInfo.regDto.time_slot_from
         );
       } else {
-        const date = this.usersInfoArr[i].bookingData.split(",");
-        this.usersInfoArr[i].bookingDataPrimary = Utils.getBookingDateTime(
+        const date = userInfo.bookingData.split(",");
+        userInfo.bookingDataPrimary = Utils.getBookingDateTime(
           date[0],
           date[1],
-          this.usersInfoArr[i].langCode
+          userInfo.langCode,
+          ltrLangs
         );
-        this.usersInfoArr[i].bookingTimePrimary = Utils.formatTime(date[1]);
-      }
-    }
+        userInfo.bookingTimePrimary = Utils.formatTime(date[1]);
+      }    
+    });  
   }
 
   automaticNotification() {
@@ -385,7 +414,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         .getGuidelineTemplate("Onscreen-Acknowledgement")
         .subscribe((response) => {
           this.guidelines = response["response"]["templates"];
-          console.log(this.guidelines);
+          //console.log(this.guidelines);
           resolve(true);
         });
       this.subscriptions.push(subs);
@@ -395,6 +424,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   download() {
     window.scroll(0, 0);
     const element = document.getElementById("print-section");
+    
     html2pdf(element, this.pdfOptions);
   }
 
@@ -438,7 +468,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .subscribe((applicantNumber) => {
-        console.log(applicantNumber);
+        //console.log(applicantNumber);
         if (applicantNumber !== undefined) {
           this.sendNotification(applicantNumber, true);
         }
@@ -453,7 +483,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         return new Promise((resolve) => {});
       }
     } catch (ex) {
-      console.log("this.usersInfo[index].qrCodeBlob>>>" + ex.messages);
+      console.log("this.usersInfo[index].qrCodeBlob >>> " + ex.messages);
     }
   }
 

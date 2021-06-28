@@ -273,12 +273,16 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicant[
         appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto
       ];
+    const ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");  
     const date = Utils.getBookingDateTime(
       bookingRegistrationDTO[
         appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.regDate
       ],
       "",
-      this.userPreferredLangCode
+      this.userPreferredLangCode,
+      ltrLangs
     );
     let appointmentDate = date;
     return appointmentDate;

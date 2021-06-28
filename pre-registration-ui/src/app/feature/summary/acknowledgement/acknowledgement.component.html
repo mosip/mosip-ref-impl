@@ -20,7 +20,17 @@
             </tr>
             <tr>
               <td>{{ ackData.appDateLabels }} : </td>
-              <td><b>{{ ackData.bookingTimePrimary }}, {{ ackData.bookingDataPrimary }}</b></td>
+              <td
+                *ngIf="ackData.bookingTimePrimary && ackData.bookingTimePrimary.length > 0 && ackData.bookingTimePrimary[0].langAvailable">
+                <span *ngFor="let bookingTime of ackData.bookingTimePrimary; index as i;">
+                  <b *ngIf="bookingTime.langCode == langCode">{{ bookingTime.time
+                    }}, {{ ackData.bookingDataPrimary[i].date }}</b>
+                </span>
+              </td>
+              <td
+                *ngIf="ackData.bookingTimePrimary && ackData.bookingTimePrimary.length > 0 && !ackData.bookingTimePrimary[0].langAvailable">
+                <b>{{ ackData.bookingTimePrimary[0].time}}, {{ ackData.bookingDataPrimary[0].date }}</b>
+              </td>
             </tr>
             <tr>
               <td>{{ ackData.contactPhoneLabels }} : </td>

@@ -320,10 +320,14 @@ export class PreviewComponent implements OnInit {
 
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
+    const ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
     this.previewData.dateOfBirth = Utils.getBookingDateTime(
       dob,
       "",
-      localStorage.getItem("langCode")
+      localStorage.getItem("langCode"),
+      ltrLangs
     );
   }
 

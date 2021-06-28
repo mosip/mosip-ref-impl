@@ -37,8 +37,10 @@ export default class Utils {
   static getBookingDateTime(
     appointment_date: string,
     time_slot_from: string,
-    language: string
+    language: string,
+    ltrLangs: string[]
   ) {
+    //console.log(`language: ${language}`);
     let localeId = language.substring(0, 2);
     JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach((element) => {
       if (language === element.code && element.locale) {
@@ -66,13 +68,12 @@ export default class Utils {
         date[2] + " " + appConstants.MONTHS[Number(date[1])] + " " + date[0];
       appointmentDateTime = pipe.transform(appointmentDateTime, "MMM");
       date[1] = appointmentDateTime;
-
-      if (language === "ara") {
-        appointmentDateTime = date.join(" ");
-      } else {
+      if (ltrLangs.includes(language)) {
         appointmentDateTime = date.reverse().join(" ");
+      }  else {
+        appointmentDateTime = date.join(" ");
       }
-      //console.log(appointmentDateTime);
+      console.log(appointmentDateTime);
       return appointmentDateTime;
     } else {
       return appointment_date;
