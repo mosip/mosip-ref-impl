@@ -320,7 +320,7 @@
     "read_only_message": "** Vous ne pouvez plus modifier cette application, car vous avez actuellement ou précédemment réservé un rendez-vous pour elle! Si vous souhaitez toujours apporter des modifications, supprimez cette application et créez-en une nouvelle.",
     "lookup_search_message": "Rechercher ",
     "lookup_no_results_found": "Aucun résultat correspondant trouvé.",
-    "change_data_capture_langs": "Changer les langues de capture de données?",
+    "change_data_capture_langs": "Changer les langues de capture de données",
     "change_data_capture_langs_msg": "Toutes les données saisies seront supprimées et vous devrez redémarrer. Veuillez confirmer.",
     "consent": {
       "title": "Termes et conditions",
