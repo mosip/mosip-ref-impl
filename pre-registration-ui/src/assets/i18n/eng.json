@@ -318,7 +318,7 @@
     "read_only_message": "** You can no longer edit this application, since you have currently or previously booked an appointment for it! If you still want to make changes, then discard this application and make a new one.",
     "lookup_search_message": "Search ",
     "lookup_no_results_found": "No matching results found.",
-    "change_data_capture_langs": "Change data capture languages?",
+    "change_data_capture_langs": "Change data capture languages",
     "change_data_capture_langs_msg": "All data entered will be discarded and you will have to restart. Please Confirm.",
     "consent": {
       "title": "Terms and Conditions",
