@@ -59,6 +59,12 @@ TRUNCATE TABLE master.machine_type cascade ;
 
 \COPY master.machine_type (code,name,descr,lang_code,is_active,cr_by,cr_dtimes) FROM './dml/master-machine_type.csv' delimiter ',' HEADER  csv;
 
+----- TRUNCATE master.mid_seq TABLE Data and It's reference Data and COPY Data from CSV file -----
+TRUNCATE TABLE master.mid_seq cascade;
+
+\COPY master.mid_seq (curr_seq_no,cr_by ,cr_dtimes ) FROM './dml/master-mid_seq.csv' delimiter ',' HEADER  csv;
+
+
 ----- TRUNCATE master.module_detail TABLE Data and It's reference Data and COPY Data from CSV file -----
 TRUNCATE TABLE master.module_detail cascade ;
 
