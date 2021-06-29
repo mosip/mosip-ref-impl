@@ -132,8 +132,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+           id: date
+           run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Build image
         run: |
@@ -224,7 +224,7 @@ jobs:
           status: ${{ job.status }}
           fields: repo,message,commit,workflow,job # selectable (default: repo,message)
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK2 }} # required
         if: failure() # Pick up events even if the job fails or is canceled.
 
   docker-registration-processor-external-stage:
@@ -291,8 +291,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+         id: date
+         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
     - name: Build image
       run: |
@@ -386,8 +386,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+         id: date
+         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
     - name: Build image
       run: |
@@ -487,7 +487,7 @@ jobs:
           status: ${{ job.status }}
           fields: repo,message,commit,workflow,job # selectable (default: repo,message)
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK2 }} # required
         if: failure() # Pick up events even if the job fails or is canceled.
 
   # This workflow contains a single job for building and pushing biosdk service docker"
@@ -561,8 +561,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+           id: date
+           run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Build image
         run: |
@@ -653,7 +653,7 @@ jobs:
           status: ${{ job.status }}
           fields: repo,message,commit,workflow,job # selectable (default: repo,message)
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK2 }} # required
         if: failure() # Pick up events even if the job fails or is canceled.
 
 
@@ -706,8 +706,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+           id: date
+           run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Build image
         run: |
@@ -785,8 +785,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+           id: date
+           run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Build image
         run: |
@@ -843,8 +843,8 @@ jobs:
           # Strip git ref prefix from version
           echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
       - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+           id: date
+           run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Build image
         run: |
@@ -940,6 +940,6 @@ jobs:
           status: ${{ job.status }}
           fields: repo,message,commit,workflow,job # selectable (default: repo,message)
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK2 }} # required
         if: failure() # Pick up events even if the job fails or is canceled.
 
