@@ -455,10 +455,13 @@ export class LoginComponent implements OnInit {
               this.timer = setInterval(this.timerFn, 1000);
             } else {
               this.errorMessage = this.validationMessages["serverUnavailable"];
-              this.resetCaptcha = true;
-              this.captchaToken = null;
-              this.enableSendOtp = false;
-              console.log("Resetting captcha:" + this.resetCaptcha);
+              if(this.enableCaptcha){
+                this.inputContactDetails = "";
+                this.resetCaptcha = true;
+                this.captchaToken = null;
+                this.enableSendOtp = false;
+                console.log("Resetting captcha:" + this.resetCaptcha);
+              }
             }
           },
           (error) => {
