@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   flag = false;
   subscription: Subscription;
   userPreferredLang: string;
-
+  textDir = localStorage.getItem("dir");
   constructor(
     public authService: AuthService,
     private translate: TranslateService,
@@ -27,8 +27,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.translate.use(localStorage.getItem("langCode")); 
+    this.textDir = localStorage.getItem("dir");
   }
-
+  textDirection() {
+    return localStorage.getItem("dir");
+  }
   onLogoClick() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate([

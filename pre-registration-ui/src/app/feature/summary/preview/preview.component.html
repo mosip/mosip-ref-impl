@@ -44,7 +44,7 @@
         matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"><img src="assets/edit.png" /> {{
         'preview.action_modify' | translate }}</span>
     </div>
-    <mat-card-footer class="preview__footer-container">
+    <mat-card-footer class="preview__footer-container" [dir]="textDirection[0]">
       <div class="preview__footer">
         <div class="preview__file-container">
           <table style="width:100%" *ngIf="documentMapObject">
@@ -64,7 +64,7 @@
   </mat-card>
 </div>
 
-<mat-card class="center-selection__button-container">
+<mat-card class="center-selection__button-container" [dir]="textDirection[0]" *ngIf="previewData !== undefined && dataLoaded">
   <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
   <span class="spacer"></span>
   <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="onNewApplication()"

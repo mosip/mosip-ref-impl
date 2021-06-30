@@ -331,25 +331,7 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
-      const identityObj = this.user.request.demographicDetails.identity;
-      if (identityObj) {
-        let keyArr: any[] = Object.keys(identityObj);
-        for (let index = 0; index < keyArr.length; index++) {
-          const elementKey = keyArr[index];
-          let dataArr = identityObj[elementKey];
-          if (Array.isArray(dataArr)) {
-            dataArr.forEach((dataArrElement) => {
-              if (
-                !this.dataCaptureLanguages.includes(dataArrElement.language)
-              ) {
-                this.dataCaptureLanguages.push(dataArrElement.language);
-              }
-            });
-          }
-        }
-      } else if (this.user.request.langCode) {
-        this.dataCaptureLanguages = [this.user.request.langCode];
-      }
+      this.dataCaptureLanguages = Utils.getApplicationLangs(this.user.request);
       //reorder the languages, by making user login lang as first one in the array
       this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.langCode);
       //populate the lang labels
