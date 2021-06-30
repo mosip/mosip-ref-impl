@@ -1,10 +1,10 @@
 .spinner {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  margin-top: 18vw;
+  display: flex;
 }
+
 .time-selection__title-card {
   color: #ff4081;
   padding: 0px;
@@ -19,12 +19,10 @@
 }
 .time-selection__note-text{
   color: #ff4081;
-  padding: 0px;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  /* margin: 0px 2vw; */
-  padding-left: 30px;
+  padding: 5px;
   border-radius: 0px !important;
   font-size: 14px;
 }
@@ -149,6 +147,13 @@
 .time-selection__name-list-item {
   padding: 15px 0 15px 10px;
   height: 50px;
+  width: 100%;
+  font-size: 0.8rem;
+}
+.selected-name-list-item {
+  padding: 10px;
+  min-height: 30px;
+  border-bottom: 1px solid #ff4081;
   width: 100%;
   font-size: 0.8rem;
 }

@@ -37,6 +37,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   preRegIds: any;
   regCenterId;
   langCode;
+  textDir = localStorage.getItem("dir");
   name = "";
   applicantContactDetails = [];
   constructor(
@@ -102,25 +103,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           await this.getAppointmentDetails(prid).then((appointmentDetails) => {
             regDto = appointmentDetails;
           });
-          let applicationLanguages = [];
           const demographicData = user["request"].demographicDetails.identity;
-          if (demographicData) {
-            let keyArr: any[] = Object.keys(demographicData);
-            for (let index = 0; index < keyArr.length; index++) {
-              const elementKey = keyArr[index];
-              let dataArr = demographicData[elementKey];
-              if (Array.isArray(dataArr)) {
-                dataArr.forEach((dataArrElement) => {
-                  if (
-                    !applicationLanguages.includes(dataArrElement.language)
-                  ) {
-                    applicationLanguages.push(dataArrElement.language);
-                  }
-                });
-              }
-            }
-          } 
-          //console.log(`applicationLanguages: ${applicationLanguages}`);
+          const applicationLanguages = Utils.getApplicationLangs(user["request"]);
           applicationLanguages.forEach(applicationLang => {
             const nameListObj: NameList = {
               preRegId: "",

@@ -73,7 +73,7 @@
     </div>
   </div>
 </div>
-<div>
+<div  *ngIf="!showSpinner" [dir]="textDir">
   <div class="ack__button-container">
     <!-- <button mat-button (click)="navigateBack()" class="user-back-btn">{{'preview.action_back'| translate}}</button> -->
     <span class="spacer"></span>

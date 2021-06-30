@@ -487,12 +487,14 @@
     "text_morning": "صباح",
     "text_afternoon": "بعد الظهر",
     "text_available": "مقدمو الطلبات المتاحة",
+    "text_selected": "المتقدمون المختارون",
     "text_availability": "الحجوزات المتاحة",
     "text_slots": "فتحات",
     "action_done": "فعله",
     "action_back": "الى الخلف",
     "action_bookLater": " كتاب لاحقا",
     "action_continue": "استمر",
+    "note_text":"يرجى ملاحظة أنه لا يمكن تعديل تفاصيل الطلب بمجرد حجز موعد لذلك",
     "booking": {
       "title_success": "نجاح",
       "msg_success": "اكتملت عملية حجز الموعد بنجاح",
@@ -502,8 +504,6 @@
       "yesButtonText": "نعم فعلا",
       "noButtonText": "لا",
       "noSlotsSelectedForApplicant":"لم يتم تحديد تاريخ / فترة زمنية للتطبيق",
-      "note_text":"ملاحظة: لا يمكن تعديل تفاصيل التطبيق بمجرد الحجز.",
-      "text_selected": "المتقدمون المختارون",
       "applicationLockConfirm":{
         "title":"تأكيد",
         "message":"هل أنت متأكد أنك تريد إرسال التفاصيل؟ بمجرد إرسال التفاصيل لا يمكن تعديلها",

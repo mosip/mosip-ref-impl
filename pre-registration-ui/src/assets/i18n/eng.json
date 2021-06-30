@@ -494,7 +494,7 @@
     "action_back": "Back",
     "action_bookLater": "Book Later",
     "action_continue": "Continue",
-    "note_text":"Note: Application details cannot be modified once Booked.",
+    "note_text":"Please note that the application details cannot be modified once appointment is booked for it.",
     "booking": {
       "title_success": "Success",
       "msg_success": "Appointment Booking Successfully Completed",
