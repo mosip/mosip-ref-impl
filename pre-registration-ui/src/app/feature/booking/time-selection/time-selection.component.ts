@@ -108,7 +108,6 @@ export class TimeSelectionComponent
       this.registrationCenterLunchTime =
         this.temp[0].registrationCenter.lunchEndTime.split(":");
     }
-    this.getSlotsforCenter(this.registrationCenter);
     this.dataService
       .getI18NLanguageFiles(this.userPreferredLangCode)
       .subscribe((response) => {
@@ -116,6 +115,7 @@ export class TimeSelectionComponent
         this.errorlabels = response["error"];
         this.DAYS = response["DAYS"];
       });
+    this.getSlotsforCenter(this.registrationCenter);  
   }
 
   getUserInfo(preRegId) {
@@ -650,6 +650,7 @@ export class TimeSelectionComponent
     } else if (
       error &&
       error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
       error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
         appConstants.ERROR_CODES.slotNotAvailable
     ) {
@@ -665,6 +666,7 @@ export class TimeSelectionComponent
       if (
         error &&
         error[appConstants.ERROR] &&
+        error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
         error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
           appConstants.ERROR_CODES.slotNotAvailable
       ) {
