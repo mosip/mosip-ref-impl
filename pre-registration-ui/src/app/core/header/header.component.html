@@ -1,4 +1,4 @@
-<mat-sidenav-container>
+<mat-sidenav-container [dir]="textDirection()">
   <mat-sidenav #sidenav role="navigation" position="start" mode="push">
     <mat-nav-list class="sidenav-list">
       <a mat-list-item routerLink="/about-us" (click)="sidenav.toggle()"> {{ 'header.link_about' | translate }}</a>

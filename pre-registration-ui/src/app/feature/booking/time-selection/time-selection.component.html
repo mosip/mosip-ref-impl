@@ -1,3 +1,6 @@
+<div class="spinner" *ngIf="spinner">
+  <mat-spinner></mat-spinner>
+</div>
 <mat-card
   [dir]="textDir"
   style="padding: 0; border-radius: 0; margin:0 2vw;"
@@ -13,13 +16,11 @@
         >help_outline</mat-icon
       >
     </p>
+    <span class="time-selection__note-text">{{ "timeSelection.note_text" | translate }}</span>
   </mat-card-header>
-  <p class="time-selection__note-text">{{ "timeSelection.note_text" | translate }}</p>
+  
 </mat-card>
-<div class="spinner" *ngIf="spinner">
-  <mat-spinner [diameter]="50"></mat-spinner>
-</div>
-<div *ngIf="!spinner">
+<div *ngIf="!spinner" [dir]="textDir">
   <mat-card
     class="time-selection__date-card"
     *ngIf="availabilityData.length !== 0"
@@ -238,32 +239,21 @@
       </div>
       <div *ngIf="selectedNames.length !== 0">
         <div class="time-selection__name-list-header">{{ "timeSelection.text_selected" | translate }}</div>
-        <div>
-          <div>
-            <div
-              class="time-selection__name-list-item"
-              *ngFor="let item of selectedNames; let k = index"
-            >
-              <div>
-                <div style="display: inline-flex">
-                  <div>
-                    {{ item.name }}&nbsp;&nbsp;
-                  </div>
-                  <div style="display:block; padding:2px">(
-                    {{ item.bookingData.date }} &nbsp;&nbsp;
-                    {{ item.bookingData.displayTime }}
-                    {{ item.bookingData.tag }} )
-                </div>
-              </div>
-            </div>
+        <div
+          class="selected-name-list-item"
+          *ngFor="let item of selectedNames; let k = index"
+        >
+          <div>{{ item.name }}</div><p></p>
+          <div>({{ item.bookingData.date }}
+            {{ item.bookingData.displayTime }}
+            {{ item.bookingData.tagLabel }} )
           </div>
-        </div>
         </div>
       </div>
     </mat-card>
   </div>
 
-  <div>
+  <div *ngIf="!spinner" [dir]="textDir">
     <mat-card class="time-selection__button-container">
       <button (click)="navigateBack()" class="user-back-btn">
         {{ "timeSelection.action_back" | translate }}

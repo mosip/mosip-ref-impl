@@ -175,13 +175,25 @@ export class TimeSelectionComponent
         bookingData: "",
         postalCode: "",
       };
-
+      const demographicData = user["request"].demographicDetails.identity;
+      const applicationLanguages = Utils.getApplicationLangs(user["request"]);
+      let filteredLangs = applicationLanguages.filter(applicationLang => 
+        applicationLang == this.userPreferredLangCode
+      );
+      if (filteredLangs.length > 0) {
+        let nameValues = demographicData[this.name];
+        nameValues.forEach(nameVal => {
+          if (nameVal["language"] == this.userPreferredLangCode) {
+            nameList.fullName = nameVal["value"];
+          }
+        });  
+      } else {
+        nameList.fullName =
+        demographicData[this.name][0].value;
+      }
       nameList.preRegId = user.request.preRegistrationId;
       nameList.status = user.request.statusCode;
-      nameList.fullName =
-        user["request"].demographicDetails.identity[this.name][0].value;
-
-      nameList.postalCode = user.request.demographicDetails.identity.postalCode;
+      nameList.postalCode = demographicData["postalCode"];
       nameList.registrationCenter = regCenterInfo;
       this.names.push(nameList);
       this.temp.push(nameList);
@@ -261,6 +273,9 @@ export class TimeSelectionComponent
           tag: this.availabilityData[this.selectedTile].timeSlots[
             this.selectedCard
           ].tag,
+          tagLabel: this.availabilityData[this.selectedTile].timeSlots[
+            this.selectedCard
+          ].tagLabel,
           date: this.availabilityData[this.selectedTile].displayDate,
         },
       };
@@ -282,6 +297,13 @@ export class TimeSelectionComponent
   formatJson(centerDetails: any) {
     centerDetails.forEach((element) => {
       let sumAvailability = 0;
+      let morningLabelText = "", afternoonLabelText = "";
+      this.translate.get('timeSelection.text_morning').subscribe((label: string) => {
+        morningLabelText = label;
+      });
+      this.translate.get('timeSelection.text_afternoon').subscribe((label: string) => {
+        afternoonLabelText = label;
+      });  
       element.timeSlots.forEach((slot) => {
         sumAvailability += slot.availability;
         slot.names = [];
@@ -289,6 +311,7 @@ export class TimeSelectionComponent
         let toTime = slot.toTime.split(":");
         if (this.registrationCenterLunchTime[0] === null) {
           slot.tag = "morning";
+          slot.tagLabel = morningLabelText; 
           element.showMorning = true;
           this.morningSlotAvailable = true;
           this.afternoonSlotAvailable = false;
@@ -297,15 +320,18 @@ export class TimeSelectionComponent
           this.registrationCenterLunchTime[0].split(":")[0] === "00"
         ) {
           slot.tag = "morning";
+          slot.tagLabel = morningLabelText;
           element.showMorning = true;
           this.morningSlotAvailable = true;
           this.afternoonSlotAvailable = false;
         } else if (fromTime[0] < this.registrationCenterLunchTime[0]) {
           slot.tag = "morning";
+          slot.tagLabel = morningLabelText;
           element.showMorning = true;
           this.morningSlotAvailable = true;
         } else {
           slot.tag = "afternoon";
+          slot.tagLabel = afternoonLabelText;
           element.showAfternoon = true;
           this.afternoonSlotAvailable = true;
         }
@@ -454,7 +480,7 @@ export class TimeSelectionComponent
     }
     if (
       !this.router.url.includes("multiappointment") &&
-      this.userInfo[0].request.statusCode === "Pending_Appointment"
+      this.userInfo[0].request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending
     ) {
       const data = {
         case: "CONFIRMATION",
@@ -466,7 +492,7 @@ export class TimeSelectionComponent
       this.dialog
         .open(DialougComponent, {
           width: "400px",
-          height: "190px",
+          height: "210px",
           data: data,
         })
         .afterClosed()
@@ -481,7 +507,7 @@ export class TimeSelectionComponent
     } else if (this.router.url.includes("multiappointment")) {
       let pridWithNoBookings = [];
       this.userInfo.forEach((user) => {
-        if (user.request.statusCode === "Pending_Appointment") {
+        if (user.request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending) {
           pridWithNoBookings.push(user.request.preRegistrationId);
         }
       });
@@ -497,7 +523,7 @@ export class TimeSelectionComponent
         this.dialog
           .open(DialougComponent, {
             width: "450px",
-            height: "220px",
+            height: "230px",
             data: data,
           })
           .afterClosed()
@@ -536,6 +562,7 @@ export class TimeSelectionComponent
       };
       const dialogRef = this.dialog.open(DialougComponent, {
         width: "400px",
+        height: "210px",
         data: data,
         disableClose: true,
       });

@@ -73,7 +73,7 @@ export default class Utils {
       }  else {
         appointmentDateTime = date.join(" ");
       }
-      console.log(appointmentDateTime);
+      //console.log(appointmentDateTime);
       return appointmentDateTime;
     } else {
       return appointment_date;
@@ -202,5 +202,30 @@ export default class Utils {
         dataCaptureLabels.error_text[1],
     };
     return body;
+  }
+
+  static getApplicationLangs = (userRequest) => {
+    const demographicData = userRequest.demographicDetails.identity;
+    let applicationLanguages = [];
+    if (demographicData) {
+      let keyArr: any[] = Object.keys(demographicData);
+      for (let index = 0; index < keyArr.length; index++) {
+        const elementKey = keyArr[index];
+        let dataArr = demographicData[elementKey];
+        if (Array.isArray(dataArr)) {
+          dataArr.forEach((dataArrElement) => {
+            if (
+              !applicationLanguages.includes(dataArrElement.language)
+            ) {
+              applicationLanguages.push(dataArrElement.language);
+            }
+          });
+        }
+      }
+    } else if (userRequest.langCode) {
+      applicationLanguages = [userRequest.langCode];
+    }
+    //console.log(`applicationLanguages: ${applicationLanguages}`);
+    return applicationLanguages;
   }
 }

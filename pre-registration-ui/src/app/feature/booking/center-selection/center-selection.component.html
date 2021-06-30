@@ -1,3 +1,6 @@
+<div class="spinner" *ngIf="!isWorkingDaysAvailable">
+  <mat-spinner></mat-spinner>
+</div>
 <div [dir]="textDir" class="center_selection-wrapper" *ngIf="isWorkingDaysAvailable">
   <!-- Header -->
   <mat-card class="center-selection__title-card">
@@ -189,7 +192,7 @@
   </div>
 </div>
   <!-- Footer navigation -->
-  <div>
+  <div [dir]="textDir" *ngIf="isWorkingDaysAvailable">
     <mat-card class="center-selection__button-container">
       <button (click)="routeBack()" class="user-back-btn">
         {{ 'centerSelection.action_back' | translate }}

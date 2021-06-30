@@ -11,7 +11,6 @@ import * as appConstants from "../../app.constants";
 import Utils from "src/app/app.util";
 import moment from "moment";
 import stubConfig from "../../../assets/stub-config.json";
-import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-login",
@@ -41,7 +40,7 @@ export class LoginComponent implements OnInit {
   showSpinner = true;
   showLanguageDropDown = true;
   validationMessages = {};
-  textDir = localStorage.getItem("dir");
+  //textDir = "ltr";
   siteKey: any;
   enableCaptcha = false;
   enableSendOtp: boolean;
@@ -457,7 +456,7 @@ export class LoginComponent implements OnInit {
               this.errorMessage = this.validationMessages["serverUnavailable"];
               this.resetCaptcha = true;
               this.captchaToken = null;
-              this.enableSendOtp = false;
+              this.enableSendOtp = true;
               console.log("Resetting captcha:" + this.resetCaptcha);
             }
           },
@@ -468,7 +467,7 @@ export class LoginComponent implements OnInit {
             this.errorMessage = this.validationMessages["serverUnavailable"];
             this.resetCaptcha = true;
             this.captchaToken = null;
-            this.enableSendOtp = false;
+            this.enableSendOtp = true;
             console.log("Resetting captcha:" + this.resetCaptcha);
           }
         );

@@ -489,12 +489,14 @@
     "text_morning": "Matin",
     "text_afternoon": "Après midi",
     "text_available": "Candidats disponibles",
+    "text_selected": "Candidats sélectionnés",
     "text_availability": "Réservation disponible",
     "text_slots": "fentes",
     "action_done": "TERMINÉ",
     "action_back": "RETOUR",
     "action_bookLater": "RÉSERVER PLUS TARD",
     "action_continue": "CONTINUER",
+    "note_text":"Veuillez noter que les détails de l'application ne peuvent pas être modifiés une fois le rendez-vous pris pour celle-ci.",
     "booking": {
       "title_success": "Succès",
       "msg_success": "Réservation de rendez-vous terminée avec succès",
@@ -505,8 +507,6 @@
         "Voulez-vous continuer à réserver"
       ],
       "noSlotsSelectedForApplicant":"Aucune date/slot n'a été sélectionné pour une candidature",
-      "note_text":"Remarque : Les détails de l'application ne peuvent pas être modifiés une fois la réservation effectuée.",
-      "text_selected": "Candidats sélectionnés",
       "yesButtonText": "Oui",
       "noButtonText": "Non",
       "applicationLockConfirm":{

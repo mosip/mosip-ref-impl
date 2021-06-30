@@ -110,7 +110,7 @@
         </div>
       </form>
     </div>
-    <div class="file-upload__body__2" *ngIf="this.users[0].files && fileIndex >= 0"  dir="ltr">
+    <div class="file-upload__body__2" *ngIf="this.users[0].files && fileIndex >= 0">
       <p>{{ fileName }}</p>
       <div *ngIf="!flag">
         <pdf-viewer class="file-uplaoad__body__2__preview pdf-viewer"
@@ -121,11 +121,11 @@
         <img *ngIf="fileUrl && fileExtension.toLowerCase() !== 'pdf'" class="file-uplaoad__body__2__preview"
           [src]="fileUrl" />
       </div>
-      <div class="file-buttons" *ngIf="fileIndex >= 0" dir="ltr">
+      <div class="file-buttons" *ngIf="fileIndex >= 0">
         <button class="previousFile" [disabled]="fileIndex <= 0 ? true : false" (click)="previousFile(fileIndex)">
           <img src="assets/left.png" />
         </button>
-        <p *ngIf="fileIndex >= 0">{{ fileIndex + 1 }} of {{ users[0].files.documentsMetaData.length }}</p>
+        <p *ngIf="fileIndex >= 0">{{ fileIndex + 1 }} - {{ users[0].files.documentsMetaData.length }}</p>
         <button class="nextFile" [disabled]="fileIndex == users[0].files.documentsMetaData.length - 1 ? true : false"
           (click)="nextFile(fileIndex)">
           <img src="assets/right.png" />
@@ -134,7 +134,7 @@
     </div>
   </div>
 </div>
-<div class="user__buttons">
+<div class="user__buttons" [dir]="textDirection[0]" *ngIf="users[0] && dataLoaded">
   <button class="user__btn user__btn--back" type="button" (click)="onBack()" [disabled]="disableNavigation"
     *ngIf="isModify == 'false'">
     {{ 'documents.action_back' | translate }}
