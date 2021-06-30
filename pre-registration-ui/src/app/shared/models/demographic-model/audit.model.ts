@@ -1,4 +1,5 @@
 import { DatePipe } from "@angular/common";
+import jstz from "jstz";
 
 export class AuditModel {
 
@@ -7,7 +8,7 @@ export class AuditModel {
     public actionUserId: string;
 
     constructor(
-        public actionTimeStamp: any = new DatePipe("en-US").transform(new Date(),'yyyy-MM-ddTHH:mm:ss.SSS',Intl.DateTimeFormat().resolvedOptions().timeZone),
+        public actionTimeStamp: any = new DatePipe("en-US").transform(new Date(),'yyyy-MM-ddTHH:mm:ss.SSS',jstz.determine().name(),Intl.DateTimeFormat().resolvedOptions().timeZone),
         public moduleName: string = "PREREGISTRATION_UI",
         public moduleId: string = "PREREG_UI"
     ) {}
