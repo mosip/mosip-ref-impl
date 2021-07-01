@@ -16,7 +16,7 @@
         >help_outline</mat-icon
       >
     </p>
-    <span class="time-selection__note-text">{{ "timeSelection.note_text" | translate }}</span>
+    <span *ngIf="showNote" class="time-selection__note-text">{{ "timeSelection.note_text" | translate }}</span>
   </mat-card-header>
   
 </mat-card>
@@ -255,17 +255,17 @@
 
   <div *ngIf="!spinner" [dir]="textDir">
     <mat-card class="time-selection__button-container">
-      <button (click)="navigateBack()" class="user-back-btn">
+      <button (click)="navigateBack()" class="user__btn user__btn-back">
         {{ "timeSelection.action_back" | translate }}
       </button>
       <span class="spacer"></span>
-      <button (click)="navigateDashboard()" class="user-book_later-btn">
+      <button (click)="navigateDashboard()" class="user__btn user__btn-action">
         {{ "timeSelection.action_bookLater" | translate }}
       </button>
       <button
         [disabled]="disableContinueButton"
         (click)="makeBooking()"
-        class="user-continue-btn"
+        class="user__btn"
       >
         {{ "timeSelection.action_continue" | translate }}
       </button>

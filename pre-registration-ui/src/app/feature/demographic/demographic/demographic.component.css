@@ -281,59 +281,8 @@ mat-icon {
   justify-content: flex-end;
 }
 
-.user__btn {
-  background-color: #ff4081;
-  border: none;
-  color: white;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.7rem;
-  margin: 6px 2px 4px 2px;
-  margin-right: 2rem;
-  cursor: pointer;
-  border-radius: 2px;
-  text-transform: uppercase;
-}
-
 .user__btn_change_lang {
-  background-color: #fd518c;
-  border: none;
-  color: white;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.7rem;
-  /* margin: 6px 2px 4px 2px;
-  margin-right: 2rem; */
   margin-bottom: 10px;
-  cursor: pointer;
-  border-radius: 2px;
-  text-transform: uppercase;
-}
-
-.user__btn--back {
-  border: 1px solid #ff4081;
-  background-color: white;
-  color: #ff4081;
-  margin-left: 2rem;
-  text-transform: uppercase;
-  display: none;
-}
-
-.user__btn--continue {
-  margin-right: 61px;
-  text-transform: uppercase;
-}
-
-.user__btn:disabled,
-.user__btn:active {
-  border: 1px solid lightgray;
-  background-color: lightgray;
-  color: #2f3033;
-  cursor: default;
 }
 
 ::ng-deep .mat-button-toggle-button {
@@ -423,8 +372,8 @@ mat-icon {
 }
 
 .form_checkBox {
-  margin-bottom: 6px;
-  margin-top: 6px;
+  padding: 5px;
+  word-wrap: break-word;
 }
 .rowContainer {
   display: flex;

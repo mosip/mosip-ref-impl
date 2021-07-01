@@ -53,6 +53,7 @@
                 class="select-input"
                 [(ngModel)]="locationType"
                 value="locationType"
+                (selectionChange)="onChangeLocationType()"
                 placeholder="{{ 'centerSelection.text_select' | translate }}"
               >
                 <mat-option style="color:black;" *ngFor="let locationType of locationTypes" [value]="locationType">
@@ -194,14 +195,14 @@
   <!-- Footer navigation -->
   <div [dir]="textDir" *ngIf="isWorkingDaysAvailable">
     <mat-card class="center-selection__button-container">
-      <button (click)="routeBack()" class="user-back-btn">
+      <button (click)="routeBack()" class="user__btn user__btn-back">
         {{ 'centerSelection.action_back' | translate }}
       </button>
       <span class="spacer"></span>
-      <button (click)="routeDashboard()" class="user-book_later-btn">
+      <button (click)="routeDashboard()" class="user__btn user__btn-action">
         {{ 'centerSelection.action_book_later' | translate }}
       </button>
-      <button (click)="routeNext()" [disabled]="selectedCentre === null" class="user-continue-btn">
+      <button (click)="routeNext()" [disabled]="selectedCentre === null" class="user__btn">
         {{ 'centerSelection.action_continue' | translate }}
       </button>
     </mat-card>

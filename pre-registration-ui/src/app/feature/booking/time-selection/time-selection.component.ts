@@ -39,6 +39,7 @@ export class TimeSelectionComponent
   registrationCenter: String;
   selectedCard: number;
   selectedTile = 0;
+  showNote = false;
   limit = [];
   showAddButton = false;
   names: NameList[] = [];
@@ -195,6 +196,10 @@ export class TimeSelectionComponent
       nameList.status = user.request.statusCode;
       nameList.postalCode = demographicData["postalCode"];
       nameList.registrationCenter = regCenterInfo;
+      console.log(`user.request.statusCode: ${user.request.statusCode}`);
+      if (user.request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending) {
+        this.showNote = true;
+      }  
       this.names.push(nameList);
       this.temp.push(nameList);
     });

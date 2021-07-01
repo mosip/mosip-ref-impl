@@ -478,6 +478,7 @@ export class DemographicComponent
       this.dialog
         .open(DialougComponent, {
           width: "900px",
+          height: "95%",
           data: data,
           disableClose: true,
         })

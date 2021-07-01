@@ -7,7 +7,7 @@
       <header>{{ "demographic.title" | translate }}
         <span *ngIf="!dataModification && !readOnlyMode && showChangeDataCaptureLangBtn"
           [ngStyle]="textDirection[0] == 'ltr'? {'float': 'right'} : {'float': 'left'}">
-          <button class="user__btn_change_lang" type="button" (click)="changeDataCaptureLanguages()">{{
+          <button class="user__btn user__btn_change_lang" type="button" (click)="changeDataCaptureLanguages()">{{
             "demographic.change_data_capture_langs" | translate }}</button>
         </span>
       </header>
@@ -27,7 +27,6 @@
                       <span *ngIf="field.controlType === 'checkbox' && di == 0">
                         <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
                           field.labelName[dataCaptureLanguage] }}</mat-label>
-                        <span *ngIf="di+1 < dataCaptureLanguages.length;else showColon"> / </span>
                         <ng-template #showColon> : </ng-template>
                       </span>
                       <span *ngIf="field.controlType !== 'checkbox'">
@@ -83,11 +82,10 @@
                         <span *ngIf="i == 0" [dir]="textDirection[i]">
                           <mat-checkbox class="form_checkBox" [formControlName]="field.id"
                             (change)="onChangeHandler(field.id);">
-                            <span *ngFor="let lang of dataCaptureLanguages;index as langIndex">
-                              <span *ngIf="langIndex !== 0"> / </span>
-                              <mat-label class="form_checkBox">{{field.labelName[lang]}}</mat-label>
-                            </span>
-                          </mat-checkbox>
+                          </mat-checkbox>&nbsp;&nbsp;
+                          <span *ngFor="let lang of dataCaptureLanguages;index as langIndex">
+                            <span *ngIf="langIndex !== 0"> / </span>{{field.labelName[lang]}}
+                          </span>
                         </span>
                       </ng-container>
                       <!-- Add Button Options in  only one language on mouse over other lang are shown -->

@@ -166,21 +166,6 @@
   transform: translateY(0.2rem);
 }
 
-.user__btn {
-  /* padding: 0px 53px;
-    border: 1px solid red;
-    margin: 5px; */
-  background-color: #ff4081;
-  border: none;
-  color: white;
-  padding: 0.8rem 4rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
 
 .button-placer {
   margin-left: 50%;
@@ -188,13 +173,6 @@
 
 .button-right {
   float: right;
-}
-
-.user__btn:disabled,
-.user__btn:active {
-  border: 1px solid gray;
-  background-color: white;
-  color: #ff4081;
 }
 
 .card {
@@ -305,55 +283,18 @@
 
 .time-selection__button-container {
   width: 100%;
-  position: fixed;
-  bottom: 0vh;
-  left: 0;
-  padding: 2px 1.6rem;
   display: flex;
-  z-index: 5;
+  justify-content: space-between;
+  margin-top: 1rem;
+  bottom: 0;
+  position: fixed;
+  background: #ffffff;
+  box-shadow: 10px 10px 10px 3px #808080;
+  z-index: 22;
+  padding: 0 2vw;
 }
 .spacer {
   flex: 1 1 auto;
-}
-.user-back-btn {
-  background-color: #ffffff;
-  border: 1px solid #ff4081;
-  color: #ff4081;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 4px 2rem;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-.user-book_later-btn {
-  background-color: #ffffff;
-  border: 1px solid #ff4081;
-  color: #ff4081;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 4px 2rem;
-  cursor: pointer;
-  margin-right: 0px;
-  text-transform: uppercase;
-}
-.user-continue-btn {
-  background-color: #ff4081;
-  border: none;
-  color: white;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 4px 3rem 4px 1.2rem !important;
-  cursor: pointer;
-  text-transform: uppercase;
 }
 
 .time-selection__date {

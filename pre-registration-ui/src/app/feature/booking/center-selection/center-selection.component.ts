@@ -283,11 +283,25 @@ export class CenterSelectionComponent
           (error) => {
             this.showMessage = true;
             this.totalItems = 0;
+            this.selectedCentre = null;
             this.displayMessageError("Error", this.errorlabels.error, error);
           }
         );
       this.subscriptions.push(subs);
+    } else {
+      this.showMessage = true;
+      this.totalItems = 0;
+      this.selectedCentre = null;
     }
+  }
+
+  onChangeLocationType() {
+    //console.log('onChangeLocationType');
+    this.showMessage = false;
+    this.totalItems = 0;
+    this.searchText = "";
+    //this.REGISTRATION_CENTRES = [];
+    this.selectedCentre = null;
   }
 
   plotOnMap() {
