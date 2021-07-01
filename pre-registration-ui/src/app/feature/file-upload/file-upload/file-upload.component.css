@@ -136,23 +136,24 @@ mat-select:focus {
   padding: 0px 2rem 10px 2rem;
   font-size: 0.8rem;
   display: flex;
+  width: 100%;
   justify-content: space-between;
   margin-bottom: 70px;
 }
 
 .file-upload__body__1 {
-  width: 45.5vw;
+  width: 50%;
   border-right: 2px solid #e6e6e6;
   margin-bottom: 30px;
 }
 
 .file-upload__body__2 {
-  width: 90%;
+  width: 50%;
   /* padding-bottom: 20px; */
 }
 
 :host ::ng-deep .ng2-pdf-viewer-container {
-  width: 100% !important;
+  /* max-width: 100% !important; */
   height: 64vh !important;
 }
 
@@ -216,8 +217,7 @@ mat-select:focus {
   height: 60vh;
   width: 100%;
 }
-
-.user__buttons {
+.file-upload__button-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -227,41 +227,8 @@ mat-select:focus {
   background: #ffffff;
   box-shadow: 10px 10px 10px 3px #808080;
   z-index: 22;
-  padding: 0 2vw;
-}
+  padding: 0 2vw;}
 
-.user__btn {
-  /* padding: 0px 53px;
-  border: 1px solid red;
-  margin: 5px; */
-  background-color: #ff4081;
-  border: none;
-  color: white;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 6px 3rem;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-
-.user__btn--back {
-  border: 1px solid #ff4081;
-  background-color: white;
-  color: #ff4081;
-  margin-left: 2rem;
-  text-transform: uppercase;
-}
-
-.user__btn:disabled,
-.user__btn:active {
-  border: 1px solid lightgray;
-  background-color: lightgray;
-  color: #2f3033;
-  cursor: default;
-}
 .file-upload__input,
 .file-upload__or {
   width: 33%;
@@ -335,14 +302,12 @@ mat-select:focus {
 
 }
 .fieldContainer {
-  flex:1;
-  width: 560px;
-  margin: 10px;
-  position:relative;
-  min-width: 95%;
+  flex: 1;
+  margin-right: 10px;
+  margin-bottom: 3%; /* (100-32*3)/2 */
 }
 .fieldHeader {
-  width: 560px;
+  max-width: 500px;
   color: white;
   min-height: 40px;
   padding: 10px;
@@ -350,5 +315,6 @@ mat-select:focus {
 }
 .fieldContent {
   padding: 10px;
-  box-shadow:         1px 1px 1px 1px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  max-width: 500px;
+  box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
 }

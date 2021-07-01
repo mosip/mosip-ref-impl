@@ -39,6 +39,7 @@ export class TimeSelectionComponent
   registrationCenter: String;
   selectedCard: number;
   selectedTile = 0;
+  showNote = false;
   limit = [];
   showAddButton = false;
   names: NameList[] = [];
@@ -108,7 +109,6 @@ export class TimeSelectionComponent
       this.registrationCenterLunchTime =
         this.temp[0].registrationCenter.lunchEndTime.split(":");
     }
-    this.getSlotsforCenter(this.registrationCenter);
     this.dataService
       .getI18NLanguageFiles(this.userPreferredLangCode)
       .subscribe((response) => {
@@ -116,6 +116,7 @@ export class TimeSelectionComponent
         this.errorlabels = response["error"];
         this.DAYS = response["DAYS"];
       });
+    this.getSlotsforCenter(this.registrationCenter);  
   }
 
   getUserInfo(preRegId) {
@@ -195,6 +196,10 @@ export class TimeSelectionComponent
       nameList.status = user.request.statusCode;
       nameList.postalCode = demographicData["postalCode"];
       nameList.registrationCenter = regCenterInfo;
+      console.log(`user.request.statusCode: ${user.request.statusCode}`);
+      if (user.request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending) {
+        this.showNote = true;
+      }  
       this.names.push(nameList);
       this.temp.push(nameList);
     });
@@ -650,6 +655,7 @@ export class TimeSelectionComponent
     } else if (
       error &&
       error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
       error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
         appConstants.ERROR_CODES.slotNotAvailable
     ) {
@@ -665,6 +671,7 @@ export class TimeSelectionComponent
       if (
         error &&
         error[appConstants.ERROR] &&
+        error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
         error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
           appConstants.ERROR_CODES.slotNotAvailable
       ) {

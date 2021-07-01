@@ -246,3 +246,34 @@ mat-keyboard-container mat-keyboard-key .mat-keyboard-key {
 .ng2-pdf-viewer-container > div {
   position: relative;
 }
+.user__btn:disabled,
+.user__btn:active {
+  border: 1px solid lightgray;
+  background-color: lightgray;
+  color: #2f3033;
+  cursor: default;
+}
+.user__btn {
+  background-color: #ff4081;
+  border: none;
+  color: white;
+  padding: 0.8rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.7rem;
+  margin: 4px 3rem 4px 1.2rem !important;
+  cursor: pointer;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.user__btn-back {
+  background-color: #ffffff;
+  border: 1px solid #ff4081;
+  color: #ff4081;
+}
+.user__btn-action {
+  background-color: #ffffff;
+  border: 1px solid #ff4081;
+  color: #ff4081;
+}

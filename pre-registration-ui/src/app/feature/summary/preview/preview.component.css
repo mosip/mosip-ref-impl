@@ -127,45 +127,8 @@
 .spacer {
   flex: 1 1 auto;
 }
-.user-back-btn {
-  background-color: #ffffff;
-  border: 1px solid #ff4081;
-  color: #ff4081;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 4px 2rem;
-  cursor: pointer;
-}
-.user-book_later-btn {
-  background-color: #ffffff;
-  border: 1px solid #ff4081;
-  color: #ff4081;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 4px 2rem;
-  cursor: pointer;
-  margin-right: 0px;
-}
-.user-continue-btn {
-  background-color: #ff4081;
-  border: none;
-  color: white;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8rem;
-  margin: 4px 3rem 4px 1.2rem !important;
-  cursor: pointer;
-}
 
-.center-selection__button-container {
+.preview__button-container {
   width: 100%;
   position: fixed;
   bottom: 0;
@@ -174,7 +137,6 @@
   display: flex;
   z-index: 22;
 }
-
 .preview__file-container {
   display: flex;
   flex-wrap: wrap;

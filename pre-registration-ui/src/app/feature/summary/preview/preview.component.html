@@ -16,7 +16,7 @@
     <mat-card-content>
       <div class="preview__body-content-container">
         <div class="preview__body-content-div">
-          <table>
+          <table width="100%">
             <tr *ngFor="let controlId of controlIds" class="row">
               <td width="15%">
                 <b>{{ControlIdLabelObjects[controlId][dataCaptureLanguages[0]]}} : </b></td>
@@ -64,14 +64,14 @@
   </mat-card>
 </div>
 
-<mat-card class="center-selection__button-container" [dir]="textDirection[0]" *ngIf="previewData !== undefined && dataLoaded">
-  <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
+<mat-card class="preview__button-container" [dir]="textDirection[0]" *ngIf="previewData !== undefined && dataLoaded">
+  <button (click)="navigateBack()" class="user__btn user__btn-back">{{ 'preview.action_back' | translate }}</button>
   <span class="spacer"></span>
   <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="onNewApplication()"
-    class="user-book_later-btn">
+    class="user__btn user__btn-action">
     {{ 'preview.action_add_applicant' | translate }}
   </button>
-  <button (click)="navigateNext()" class="user-continue-btn">
+  <button (click)="navigateNext()" class="user__btn">
     {{ 'preview.action_continue' | translate }}
   </button>
 </mat-card>
