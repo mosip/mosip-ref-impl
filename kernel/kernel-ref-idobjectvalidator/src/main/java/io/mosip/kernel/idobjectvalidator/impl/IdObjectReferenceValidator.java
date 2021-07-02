@@ -138,7 +138,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	public void loadData() {
 		resetCache();
 		mapper.registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
-		loadLanguages();
 	}
 
 	@Scheduled(cron = "${" + CACHE_RESET_CRON_PATTERN + "}")
@@ -343,7 +342,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private HashSetValuedHashMap<String, String> fetchMasterData(String field) {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
-				.queryParam("langCode", languageList.stream().collect(Collectors.joining(","))).build(field);
+				.queryParam("langCode", languageList.stream().collect(Collectors.joining(",")))
+				.queryParam("parentLangCode", mandatoryLanguages)
+				.build(field);
 		ResponseWrapper<Object> responseObject = restTemplate
 				.exchange(requestUri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<Object>>() {
 				}).getBody();
@@ -352,7 +353,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				new TypeReference<Map<String, List<ObjectNode>>>() {
 				});
 		response.entrySet().forEach(entry -> masterDataMap.putAll(entry.getKey(), entry.getValue().stream().flatMap(
-				responseValue -> List.of(responseValue.get(CODE).toString(), responseValue.get(VALUE).toString()).stream())
+				responseValue -> List.of(responseValue.get(CODE).asText(), responseValue.get(VALUE).asText()).stream())
 				.collect(Collectors.toList())));
 		return masterDataMap;
 	}
