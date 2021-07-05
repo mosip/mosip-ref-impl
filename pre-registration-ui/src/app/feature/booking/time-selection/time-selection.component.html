@@ -137,12 +137,10 @@
                     *ngIf="data.names.length !== 0"
                     class="card-slot-text-span-number circleBase"
                     >{{ data.names.length
-                    }}<span class="card-slot-text-span-image"
-                      ><img
+                    }}<img
                         src="assets/slots.png"
                         height="15px"
-                        width="15px" /></span
-                  ></span>
+                        width="15px" /></span>
                 </p>
               </mat-card-content>
             </mat-card>
@@ -169,7 +167,7 @@
           <span class="time-selection__names-header-date-text">{{
             availabilityData[selectedTile].displayDay
           }}</span>
-          <br />
+          <p></p>
           <span class="time-selection__names-header-time-text">{{
             availabilityData[selectedTile].timeSlots[selectedCard].displayTime
           }}</span
@@ -213,6 +211,7 @@
       </div>
       <div *ngIf="deletedNames.length !== 0">
         <div class="time-selection__name-list-header">
+          <p></p>
           {{ "timeSelection.text_available" | translate }}
         </div>
         <div>

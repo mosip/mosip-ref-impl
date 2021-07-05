@@ -114,7 +114,7 @@
 }
 
 .time-selection__name-list-header {
-  height: 55px;
+  min-height: 50px;
   width: 100%;
   background-color: #3973ac;
   padding: 5px 2rem;
@@ -123,16 +123,16 @@
 }
 
 .time-selection__names-header-date-text {
-  font-size: 12px;
+  font-size: 0.9rem;
 }
 
 .time-selection__names-header-time-text {
-  font-size: 20px;
+  font-size: 0.9rem;
   margin-top: 10px;
 }
 
 .time-selection__names-header-day-text {
-  font-size: 9px;
+  font-size: 0.9rem;
 }
 
 .time-selection__name-list {
@@ -146,7 +146,7 @@
 
 .time-selection__name-list-item {
   padding: 15px 0 15px 10px;
-  height: 50px;
+  min-height: 50px;
   width: 100%;
   font-size: 0.8rem;
 }
@@ -211,8 +211,7 @@
 }
 
 .card-slot-text-span-image {
-  float: right;
-  margin-left: 10px;
+  margin-left: 2px;
 }
 
 .card-slot-text-span-image img {
@@ -221,7 +220,7 @@
 }
 
 .card-slot-text-selected {
-  font-size: 0.8rem;
+  font-size: 11px;
   font-weight: 500;
   color: white;
 }
@@ -320,7 +319,7 @@
   }
 
   .time-selection__name-list-header {
-    height: 150px;
+    min-height: 50px;
     padding: 5px;
   }
 
@@ -345,7 +344,7 @@
   }
 
   .time-selection__name-list-header {
-    height: 50px;
+    height: 70px; 
     width: 100%;
   }
 
