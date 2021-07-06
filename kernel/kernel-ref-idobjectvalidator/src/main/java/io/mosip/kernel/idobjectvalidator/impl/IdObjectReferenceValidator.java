@@ -343,7 +343,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
 				.queryParam("langCode", languageList.stream().collect(Collectors.joining(",")))
-				.queryParam("parentLangCode", StringUtils.substringBefore(mandatoryLanguages, ",").trim()).build(field);
+				.build(field);
 		ResponseWrapper<Object> responseObject = restTemplate
 				.exchange(requestUri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<Object>>() {
 				}).getBody();
