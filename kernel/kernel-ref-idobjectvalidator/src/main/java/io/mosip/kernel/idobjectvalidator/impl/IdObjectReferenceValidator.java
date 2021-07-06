@@ -343,8 +343,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
 				.queryParam("langCode", languageList.stream().collect(Collectors.joining(",")))
-				.queryParam("parentLangCode", mandatoryLanguages)
-				.build(field);
+				.queryParam("parentLangCode", StringUtils.substringBefore(mandatoryLanguages, ",").trim()).build(field);
 		ResponseWrapper<Object> responseObject = restTemplate
 				.exchange(requestUri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<Object>>() {
 				}).getBody();
@@ -352,9 +351,10 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		Map<String, List<ObjectNode>> response = mapper.convertValue(responseObject.getResponse(),
 				new TypeReference<Map<String, List<ObjectNode>>>() {
 				});
-		response.entrySet().forEach(entry -> masterDataMap.putAll(entry.getKey(), entry.getValue().stream().flatMap(
-				responseValue -> List.of(responseValue.get(CODE).asText(), responseValue.get(VALUE).asText()).stream())
-				.collect(Collectors.toList())));
+		response.entrySet()
+				.forEach(entry -> masterDataMap.putAll(entry.getKey(), entry.getValue().stream().flatMap(
+						responseValue -> List.of(responseValue.get(CODE).asText(), responseValue.get(VALUE).asText()).stream())
+						.collect(Collectors.toList())));
 		return masterDataMap;
 	}
 
