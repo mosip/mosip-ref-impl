@@ -39,7 +39,7 @@ public class IdObjectReferenceValidatorConstant {
 	
 	public static final String DOB_FORMAT = "mosip.kernel.idobjectvalidator.date-format";
 	
-	public static final String LOCATION_NA = "mosip.kernel.idobjectvalidator.masterdata.locations.locationNotAvailable";
+	public static final String VALUE_NA = "mosip.kernel.idobjectvalidator.masterdata.value-not-available";
 	
 	public static final String IDENTITY_LANGUAGE_PATH = "identity.*.*.language";
 

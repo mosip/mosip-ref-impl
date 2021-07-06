@@ -22,6 +22,7 @@ import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValida
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.STRING;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.TYPE;
 import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.VALUE;
+import static io.mosip.kernel.idobjectvalidator.constant.IdObjectReferenceValidatorConstant.VALUE_NA;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -352,8 +353,12 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 				new TypeReference<Map<String, List<ObjectNode>>>() {
 				});
 		response.entrySet()
-				.forEach(entry -> masterDataMap.putAll(entry.getKey(), entry.getValue().stream().flatMap(
-						responseValue -> List.of(responseValue.get(CODE).asText(), responseValue.get(VALUE).asText()).stream())
+				.forEach(entry -> masterDataMap.putAll(entry.getKey(),
+						entry.getValue().stream()
+						.flatMap(responseValue -> List.of(env.getProperty(VALUE_NA),
+								responseValue.get(CODE).asText(), responseValue.get(VALUE).asText()).stream())
+						.filter(Objects::nonNull)
+						.map(StringUtils::trim)
 						.collect(Collectors.toList())));
 		return masterDataMap;
 	}
