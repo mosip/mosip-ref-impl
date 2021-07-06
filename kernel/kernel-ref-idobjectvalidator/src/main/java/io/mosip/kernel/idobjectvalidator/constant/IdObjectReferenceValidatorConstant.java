@@ -45,12 +45,6 @@ public class IdObjectReferenceValidatorConstant {
 
 	public static final String MASTER_DATA_URI = "mosip.idobjectvalidator.masterdata.rest.uri";
 
-	public static final String MASTER_DATA_CODE_PATH = "$.response.*.code";
-
-	public static final String MASTER_DATA_VALUE_PATH = "$.response.*.value";
-
-	public static final String MASTER_DATA_LANG_PATH = "$.response";
-
 	public static final String IS_CACHE_RESET_ENABLED = "mosip.idobjectvalidator.refresh-cache-on-unknown-value";
 
 	public static final String CACHE_RESET_CRON_PATTERN = "mosip.idobjectvalidator.scheduler.reset-cache.cron-job-pattern";
