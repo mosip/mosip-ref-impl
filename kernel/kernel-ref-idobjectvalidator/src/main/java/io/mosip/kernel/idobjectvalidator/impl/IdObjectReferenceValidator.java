@@ -84,7 +84,6 @@ import net.minidev.json.JSONArray;
  */
 @Lazy
 @RefreshScope
-@Component
 public class IdObjectReferenceValidator implements IdObjectValidator {
 
 	private final static Logger logger = Logfactory.getSlf4jLogger(IdObjectReferenceValidator.class);
