@@ -342,8 +342,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private HashSetValuedHashMap<String, String> fetchMasterData(String field) {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
-				.queryParam("langCode", languageList.stream().collect(Collectors.joining(",")))
-				.build(field);
+				.queryParam("langCode", languageList.stream().collect(Collectors.joining(","))).build(field);
 		ResponseWrapper<Object> responseObject = restTemplate
 				.exchange(requestUri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<Object>>() {
 				}).getBody();
@@ -351,14 +350,15 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		Map<String, List<ObjectNode>> response = mapper.convertValue(responseObject.getResponse(),
 				new TypeReference<Map<String, List<ObjectNode>>>() {
 				});
-		response.entrySet()
-				.forEach(entry -> masterDataMap.putAll(entry.getKey(),
-						entry.getValue().stream()
-						.flatMap(responseValue -> List.of(env.getProperty(VALUE_NA),
-								responseValue.get(CODE).asText(), responseValue.get(VALUE).asText()).stream())
-						.filter(Objects::nonNull)
-						.map(StringUtils::trim)
-						.collect(Collectors.toList())));
+		response.entrySet().forEach(entry -> masterDataMap.putAll(entry.getKey(),
+				entry.getValue().stream().flatMap(responseValue -> List
+						.of(env.getProperty(VALUE_NA , ""), 
+								responseValue.get(CODE).isNull() ? "" : responseValue.get(CODE).asText(),
+								responseValue.get(VALUE).isNull() ? "" : responseValue.get(VALUE).asText())
+						.stream())
+				.filter(StringUtils::isNotBlank)
+				.map(StringUtils::trim)
+				.collect(Collectors.toList())));
 		return masterDataMap;
 	}
 
