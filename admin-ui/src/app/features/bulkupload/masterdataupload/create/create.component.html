@@ -48,7 +48,7 @@
             </mat-form-field> 
             <div class="custom-file-input">
               <input type="button" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
-              <input type="file" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
+              <input type="file" accept=".csv" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
               <input type="text" id="fileName"  formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}"> 
               <mat-error *ngIf="fileNameError">
                 This field is required

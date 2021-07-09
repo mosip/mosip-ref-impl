@@ -20,7 +20,7 @@
     </div>
     <div class="flex-body">
       <mat-card>
-        <mat-card-content class="forms-container">
+        <mat-card-content class="forms-container" style="width: 100%">
           <div class="primary-form" style="width: 40%"> 
             <mat-form-field>
               <mat-label>{{'packet-upload.singleView.status-txt'|translate}}</mat-label>
@@ -40,7 +40,7 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>{{'packet-upload.singleView.dataAndTime-txt'|translate}}</mat-label>
-              <input matInput placeholder="{{'packet-upload.singleView.placeHolder1-txt'|translate}}" value="{{data.timeStamp | formatDate}}" readonly>
+              <input matInput placeholder="{{'packet-upload.singleView.placeHolder1-txt'|translate}}" value="{{data.timeStamp | date:'short'}}" readonly>
             </mat-form-field> 
           </div> 
           <div style="width: 10%">

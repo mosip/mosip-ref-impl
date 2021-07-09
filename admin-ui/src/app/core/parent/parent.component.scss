@@ -22,7 +22,7 @@
   }
 
   .mat-sidenav {
-    width: 155px;
+    width: 225px;
     z-index: 10;
     @media (max-width: 600px) {
       width: 140px;
@@ -37,9 +37,7 @@
       height: 100vh !important;
     }
 
-    .mat-sidenav-content {
-      margin-left: 185px !important;
-      margin-right: 30px !important;
+    .mat-sidenav-content {      
       display: flex;
       flex-direction: column;
       @media (max-width: 840px) {
@@ -48,6 +46,17 @@
       }
     }
   }
+  
+  .mat-sidenav-content-ltr {
+    margin-left: 255px !important;
+    margin-right: 30px !important;
+  }
+
+  .mat-sidenav-content-rtl {
+    margin-right: 255px !important;
+    margin-left: 30px !important;
+  }
+
   .mat-toolbar-single-row {
     height: 53px;
     @media (max-width: 600px) {

@@ -36,10 +36,23 @@ import { AuditService } from 'src/app/core/services/audit.service';
 import { HeaderService } from 'src/app/core/services/header.service';
 import { HolidayModel } from 'src/app/core/models/holiday-model';
 
+import moment from 'moment';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import defaultJson from "../../../../../assets/i18n/default.json";
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class CreateComponent {
   secondaryLanguageLabels: any;
@@ -65,6 +78,7 @@ export class CreateComponent {
   minDate = new Date();
   locCode = 0;
   initialLocationCode: "";
+  localeDtFormat = "";
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -75,7 +89,8 @@ export class CreateComponent {
     private appConfigService: AppConfigService,
     private router: Router,
     private keyboardService: MatKeyboardService,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private dateAdapter: DateAdapter<Date>
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -103,7 +118,7 @@ export class CreateComponent {
 
   initializeComponent() {
     this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
-    this.days = appConstants.days[this.primaryLang];
+    this.days = appConstants.days[this.primaryLang];    
     this.auditService.audit(16, 'ADM-096');
     this.initializeheader();
     this.initializePrimaryForm();
@@ -112,11 +127,48 @@ export class CreateComponent {
     this.getTimeSlots();
     this.getZoneData();
     this.getWorkingDays();
+    let localeId = defaultJson.languages[this.primaryLang].locale;
+    this.setLocaleForDatePicker(localeId);
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response.center.popupMessages;
       });
+  }
+
+  setLocaleForDatePicker = (localeId) => {    
+    this.dateAdapter.setLocale(localeId);
+    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    console.log(`locale for datePicker: ${localeId} : ${localeDtFormat}`);
+    this.translateService.get('demographic.date_yyyy').subscribe((year: string) => {
+      const yearLabel = year;
+      this.translateService.get('demographic.date_mm').subscribe((month: string) => {
+        const monthLabel = month;
+        this.translateService.get('demographic.date_dd').subscribe((day: string) => {
+          const dayLabel = day;
+          if (localeDtFormat.indexOf("YYYY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          else if (localeDtFormat.indexOf("YY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YY/g, yearLabel);
+          }
+          if (localeDtFormat.indexOf("MM") != -1) {
+            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
+          }
+          else if (localeDtFormat.indexOf("M") != -1) {
+            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
+          }
+          if (localeDtFormat.indexOf("DD") != -1) {
+            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
+          }
+          else if (localeDtFormat.indexOf("D") != -1) {
+            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
+          }
+          this.localeDtFormat = localeDtFormat;
+          console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
+        });  
+      });  
+    });
   }
 
   getZoneData() {

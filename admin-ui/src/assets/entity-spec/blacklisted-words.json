@@ -172,7 +172,7 @@
       "autocomplete": "false",
       "dropdown": "false",
       "datePicker": "false",
-      "apiName": "blacklistedwords",
+      "apiName": "blocklistedwords",
       "fieldName": "word",
       "methodCallName": ""
     },
@@ -183,7 +183,7 @@
       "autocomplete": "false",
       "dropdown": "true",
       "datePicker": "false",
-      "apiName": "blacklistedwords",
+      "apiName": "blocklistedwords",
       "fieldName": "langCode",
       "methodCallName": ""
     },
@@ -194,7 +194,7 @@
       "autocomplete": "false",
       "dropdown": "true",
       "datePicker": "false",
-      "apiName": "blacklistedwords",
+      "apiName": "blocklistedwords",
       "fieldName": "isActive",
       "methodCallName": ""
     }

@@ -98,20 +98,25 @@ export class MaterDataCommonBodyComponent implements OnInit {
       this.masterdataType = response.type;
       this.mapping = appConstants.masterdataMapping[response.type];
     });
+
     let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
+
     let otherLangsArr = supportedLanguages.filter(lang => lang.trim() !== this.primaryLang.trim());
-    
-    this.selectLanguagesArr = [];
-    this.secondaryLang = otherLangsArr[0].trim();
-    otherLangsArr.map((language) => {
-      if (defaultJson.languages && defaultJson.languages[language.trim()]) {
-        this.selectLanguagesArr.push({
-          code: language.trim(),
-          value: defaultJson.languages[language.trim()].nativeName,
-        });
-      }
-    });
-    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
+    if(otherLangsArr.length > 0){
+      this.selectLanguagesArr = [];
+      this.secondaryLang = otherLangsArr[0].trim();
+      otherLangsArr.map((language) => {
+        if (defaultJson.languages && defaultJson.languages[language.trim()]) {
+          this.selectLanguagesArr.push({
+            code: language.trim(),
+            value: defaultJson.languages[language.trim()].nativeName,
+          });
+        }
+      });
+      this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
+    }else{
+      this.showSecondaryForm = false;
+    }  
     this.isCreateForm = false;
     this.disableForms = false;
     this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
