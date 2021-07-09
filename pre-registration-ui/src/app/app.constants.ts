@@ -79,6 +79,7 @@ export const ERROR_CODES = {
   userBlocked: 'PRG_PAM_LGN_013',
   invalidPin: 'KER-IOV-004',
   tokenExpired: 'KER-ATH-401',
+  authenticationFailed: 'KER-401',
   invalidateToken: 'PRG_PAM_LGN_003',
   slotNotAvailable: 'PRG_BOOK_RCI_002',
   timeExpired: 'PRG_BOOK_RCI_026'
@@ -185,3 +186,6 @@ export const MODIFY_USER = "modifyUser";
 export const NEW_APPLICANT = "newApplicant";
 export const MODIFY_USER_FROM_PREVIEW = "modifyUserFromPreview";
 export const NEW_APPLICANT_FROM_PREVIEW = "addingUserFromPreview";
+
+export const FORCE_LOGOUT = "forceLogout";
+export const FORCE_LOGOUT_YES = "yes";

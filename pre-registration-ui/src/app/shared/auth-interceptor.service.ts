@@ -52,13 +52,19 @@ export class AuthInterceptorService implements HttpInterceptor {
     });
     return next.handle(copiedReq).pipe(
       catchError((error: HttpErrorResponse) => {
+        //console.log("authInterceptor");
+        //console.log(error[appConstants.ERROR]);
         if (
           error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
           (error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
             appConstants.ERROR_CODES.tokenExpired ||
             error[appConstants.ERROR][appConstants.NESTED_ERROR][0]
-              .errorCode === appConstants.ERROR_CODES.invalidateToken)
+              .errorCode === appConstants.ERROR_CODES.invalidateToken ||
+              error[appConstants.ERROR][appConstants.NESTED_ERROR][0]
+                .errorCode === appConstants.ERROR_CODES.authenticationFailed)
         ) {
+          //console.log("forcefully logout the user");
+          localStorage.setItem(appConstants.FORCE_LOGOUT, appConstants.FORCE_LOGOUT_YES);
           this.router.navigateByUrl("/");
         }
         if (error.status === 500) {
