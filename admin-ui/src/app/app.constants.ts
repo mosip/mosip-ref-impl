@@ -178,7 +178,7 @@ export const masterdataMapping = {
     headerName: 'Users'
   },
   'blacklisted-words': {
-    apiName: 'blacklistedwords',
+    apiName: 'blocklistedwords',
     specFileName: 'blacklisted-words',
     name: {
       eng: 'Blacklisted Words',
@@ -395,7 +395,7 @@ export const FilterMapping = {
     apiName: 'machines'
   },
   'blacklisted-words': {
-    apiName: 'blacklistedwords',
+    apiName: 'blocklistedwords',
     specFileName: 'blacklisted-words'
   },
   holiday: {

@@ -4,9 +4,9 @@
     <div class="flex-header" style="width: 100%;">
       <app-users-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-users-header>
     </div>
-    <div class="flex-body">
+    <div class="flex-body" style="width:100%">
       <mat-card *ngIf="primaryData">
-        <mat-card-content class="forms-container">
+        <mat-card-content class="forms-container" style="width:100%">
           <div [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
             <strong class="title"></strong>
             <br /><br />

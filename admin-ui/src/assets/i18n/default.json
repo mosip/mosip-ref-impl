@@ -1,17 +1,19 @@
 {
-    "languages": {
-      "eng": {
-        "name": "English",
-        "nativeName": "English"
-      },
-      "ara": {
-        "name": "Arabic",
-        "nativeName": "العَرَبِيَّة‎"
-      },
-      "fra": {
-        "name": "French",
-        "nativeName": "français"
-      }
+  "languages": {
+    "eng": {
+      "name": "English",
+      "nativeName": "English",
+      "locale": "en_GB"
+    },
+    "ara": {
+      "name": "Arabic",
+      "nativeName": "العَرَبِيَّة‎",
+      "locale": "ar_SA"
+    },
+    "fra": {
+      "name": "French",
+      "nativeName": "français",
+      "locale": "fr_CH"
     }
   }
-  
+}
