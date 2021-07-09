@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
   showSpinner = true;
   showLanguageDropDown = true;
   validationMessages = {};
-  //textDir = "ltr";
   siteKey: any;
   enableCaptcha = false;
   enableSendOtp: boolean;
@@ -66,17 +65,32 @@ export class LoginComponent implements OnInit {
     private regService: RegistrationService,
     private configService: ConfigService
   ) {
-    //localStorage.clear();
+    clearInterval(this.timer);
+  }
+
+  //very imp to clear the timer func 
+  ngOnDestroy(){
     clearInterval(this.timer);
   }
 
   async ngOnInit() {
-    await this.loadDefaultConfig();
-    await this.loadConfigs();
-    if (this.authService.isAuthenticated()) {
-      this.authService.onLogout();
+    //console.log(`forceLogout: ${localStorage.getItem(appConstants.FORCE_LOGOUT)}`);
+    //console.log("isAuthenticated: " + this.authService.isAuthenticated());
+    if (localStorage.getItem(appConstants.FORCE_LOGOUT) != appConstants.FORCE_LOGOUT_YES 
+      && this.authService.isAuthenticated()) {
+      //console.log("valid session redirecting to dashboard");
+      this.router.navigate([localStorage.getItem("langCode"), "dashboard"]);
+    } else {
+      if (localStorage.getItem(appConstants.FORCE_LOGOUT) == appConstants.FORCE_LOGOUT_YES) {
+        this.authService.onLogout();
+      }
+      await this.loadDefaultConfig();
+      await this.loadConfigs();
+      if (this.router.url.includes(`${localStorage.getItem("langCode")}`)) {
+        this.handleBrowserReload();
+      }
+      localStorage.setItem("dir", this.dir);
     }
-    localStorage.setItem("dir", this.dir);
   }
 
   async loadDefaultConfig() {
@@ -95,13 +109,13 @@ export class LoginComponent implements OnInit {
       this.appVersion = this.configService.getConfigByKey(
         "preregistration.ui.version"
       );
-      //this.setTimer();
       this.isCaptchaEnabled();
       this.loadLanguagesWithConfig();
       if (!localStorage.getItem("langCode")) {
         localStorage.setItem("langCode", this.languageSelectionArray[0]);
       }
-      if (!this.router.url.includes(`${localStorage.getItem("langCode")}`)) {
+      let langCodeInUrl = this.router.url.includes(`${localStorage.getItem("langCode")}`);
+      if (!langCodeInUrl) {
         this.router.navigate([`${localStorage.getItem("langCode")}`]);
       }
       this.selectedLanguage = localStorage.getItem("langCode");
@@ -112,15 +126,10 @@ export class LoginComponent implements OnInit {
       this.translate.use(this.userPreferredLanguage);
       this.loadValidationMessages();
       this.showSpinner = false;
-      if (this.router.url.includes(`${localStorage.getItem("langCode")}`)) {
-        console.log("calling handleBrowserReload");
-        this.handleBrowserReload();
-      }
     });
   }
 
   handleBrowserReload() {
-    clearInterval(this.timer);
     let otp_sent_time = null;
     if(localStorage.getItem("otp_sent_time") != null){
       otp_sent_time = localStorage.getItem("otp_sent_time").endsWith("Z")
@@ -131,9 +140,9 @@ export class LoginComponent implements OnInit {
     console.log(`otp_sent_time: ${otp_sent_time}`);
     if (otp_sent_time && user_email_or_phone) {
       let otpSentTime = moment(otp_sent_time).toISOString();
-      console.log(`otpSentTime: ${otpSentTime}`);
+      //console.log(`otpSentTime: ${otpSentTime}`);
       let currentTime = moment().toISOString();
-      console.log(`currentTime: ${currentTime}`);
+      //console.log(`currentTime: ${currentTime}`);
       let otpExpiryIntervalInSeconds = Number(
         this.configService.getConfigByKey(
           appConstants.CONFIG_KEYS.mosip_kernel_otp_expiry_time
@@ -142,14 +151,15 @@ export class LoginComponent implements OnInit {
       if (isNaN(otpExpiryIntervalInSeconds)) {
         otpExpiryIntervalInSeconds = 120; //2 mins by default
       }
-      console.log(`otpExpiryIntervalInSeconds: ${otpExpiryIntervalInSeconds}`);
+      //console.log(`otpExpiryIntervalInSeconds: ${otpExpiryIntervalInSeconds}`);
       var timeLapsedInSeconds = moment(currentTime).diff(
         moment(otpSentTime),
         "seconds"
       );
-      console.log(`timeLapsedInSeconds: ${timeLapsedInSeconds}`);
+      //console.log(`timeLapsedInSeconds: ${timeLapsedInSeconds}`);
       if (timeLapsedInSeconds <= otpExpiryIntervalInSeconds) {
         console.log("otp interval not yet expired");
+        //console.log(this.timer);
         let newOtpIntervalInSeconds =
           otpExpiryIntervalInSeconds - timeLapsedInSeconds;
         console.log(`newOtpIntervalInSeconds: ${newOtpIntervalInSeconds}`);
@@ -184,10 +194,10 @@ export class LoginComponent implements OnInit {
         }
         this.timer = setInterval(this.timerFn, 1000);
       } else {
+        console.log("otp interval expired");
         localStorage.removeItem("otp_sent_time");
         localStorage.removeItem("user_email_or_phone");
         localStorage.removeItem("show_captcha");
-        console.log("otp interval expired");
       }
     }
   }
@@ -274,8 +284,6 @@ export class LoginComponent implements OnInit {
     this.dataService
       .getI18NLanguageFiles(localStorage.getItem("langCode"))
       .subscribe((response) => {
-        console.log(localStorage.getItem("langCode"));
-        console.log(response);
         this.Languagelabels = response;
         this.validationMessages = this.Languagelabels["login"];
       });
@@ -352,6 +360,8 @@ export class LoginComponent implements OnInit {
     let secValue,
       minValue = 0;
     if (
+      document.getElementById("timer") && 
+      document.getElementById("timer").style.visibility == "visible" && 
       document.getElementById("secondsSpan") &&
       document.getElementById("secondsSpan").innerText &&
       document.getElementById("minutesSpan") &&
@@ -365,25 +375,21 @@ export class LoginComponent implements OnInit {
       if (document.getElementById("timer")) {
         document.getElementById("timer").style.visibility = "visible";
       }
-      if (document.getElementById("secondsSpan")) {
-        document.getElementById("secondsSpan").innerText = this.seconds;
-      }
-      if (document.getElementById("minutesSpan")) {
-        document.getElementById("minutesSpan").innerText = this.minutes;
-      }
     }
     if (secValue === 0) {
       secValue = 60;
       if (minValue === 0) {
+        // console.log("redirecting to initial phase on completion of timer");
         // redirecting to initial phase on completion of timer
         this.showContactDetails = true;
         this.showSendOTP = true;
         //this.showResend = true;
         this.showOTP = false;
         this.showVerify = false;
-        this.enableSendOtp = false;
+        this.enableSendOtp = true;
         if (this.enableCaptcha) {
           this.showCaptcha = true;
+          this.enableSendOtp = false;
         }
         if (document.getElementById("minutesSpan")) {
           document.getElementById("minutesSpan").innerText = this.minutes;
@@ -394,11 +400,13 @@ export class LoginComponent implements OnInit {
         clearInterval(this.timer);
         return;
       }
-      if (document.getElementById("minutesSpan")) {
+      if (document.getElementById("minutesSpan") &&
+        document.getElementById("minutesSpan").innerText) {
         document.getElementById("minutesSpan").innerText = "0" + (minValue - 1);
       }
     }
-    if (document.getElementById("secondsSpan")) {
+    if (document.getElementById("secondsSpan") &&
+      document.getElementById("secondsSpan").innerText) {
       if (secValue === 10 || secValue < 10) {
         document.getElementById("secondsSpan").innerText = "0" + --secValue;
       } else {
@@ -441,6 +449,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem("show_captcha", JSON.stringify(false));
               this.showCaptcha = false;
               // initial set up for timer
+              // console.log("setting timer");
               this.setTimer();
               if (document.getElementById("timer")) {
                 document.getElementById("timer").style.visibility = "visible";
