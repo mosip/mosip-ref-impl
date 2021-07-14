@@ -490,7 +490,7 @@ export class LoginComponent implements OnInit {
         .verifyOtp(this.inputContactDetails, this.inputOTP)
         .subscribe(
           (response) => {
-            if (!response["errors"]) {
+            if (!response[appConstants.NESTED_ERROR]) {
               clearInterval(this.timer);
               localStorage.setItem("loggedIn", "true");
               this.authService.setToken();
@@ -499,12 +499,14 @@ export class LoginComponent implements OnInit {
               this.disableVerify = false;
               this.router.navigate([this.userPreferredLanguage, "dashboard"]);
             } else {
+              //console.log(response);
               this.showVerify = false;
               this.disableVerify = false;
               this.showOtpMessage();
             }
           },
-          () => {
+          (error) => {
+            //console.log(error);
             this.disableVerify = false;
             this.showVerify = false;
             this.showErrorMessage();
@@ -563,7 +565,7 @@ export class LoginComponent implements OnInit {
   showOtpMessage() {
     this.inputOTP = "";
     let response = this.Languagelabels;
-    console.log(response);
+    //console.log(response);
     let otpmessage = response["message"]["login"]["msg3"];
     const message = {
       case: "MESSAGE",
@@ -577,7 +579,7 @@ export class LoginComponent implements OnInit {
 
   showErrorMessage() {
     let response = this.Languagelabels;
-    let errormessage = response["error"]["error"];
+    let errormessage = response[appConstants.ERROR][appConstants.ERROR];
     const message = {
       case: "MESSAGE",
       message: errormessage,

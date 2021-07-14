@@ -104,16 +104,26 @@ export class PreviewComponent implements OnInit {
       controlId = this.controlIds[i];
       updatedUIFields.forEach((control) => {
         if (control.id === controlId && control.fieldType === "dynamic") {
-          this.previewData[controlId].forEach((ele) => {
+          if (control.type === appConstants.FIELD_TYPE_SIMPLE_TYPE) {
+            this.previewData[controlId].forEach((ele) => {
+              this.dropDownFields[controlId].forEach((codeValue) => {
+                if (
+                  ele.language === codeValue.languageCode &&
+                  ele.value === codeValue.valueCode
+                ) {
+                  ele.value = codeValue.valueName;
+                }
+              });
+            });
+          }
+          if (control.type === appConstants.FIELD_TYPE_STRING) {
+            const ele = this.previewData[controlId];  
             this.dropDownFields[controlId].forEach((codeValue) => {
-              if (
-                ele.language === codeValue.languageCode &&
-                ele.value === codeValue.valueCode
-              ) {
-                ele.value = codeValue.valueName;
+              if (ele === codeValue.valueCode && this.dataCaptureLanguages[0] === codeValue.languageCode) {
+                this.previewData[controlId] = codeValue.valueName;
               }
             });
-          });
+          }
         }
       });
       if (locations.includes(controlId)) {

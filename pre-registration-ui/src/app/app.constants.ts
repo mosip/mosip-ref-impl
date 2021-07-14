@@ -189,3 +189,6 @@ export const NEW_APPLICANT_FROM_PREVIEW = "addingUserFromPreview";
 
 export const FORCE_LOGOUT = "forceLogout";
 export const FORCE_LOGOUT_YES = "yes";
+
+export const FIELD_TYPE_STRING = "string";
+export const FIELD_TYPE_SIMPLE_TYPE = "simpleType";
