@@ -1,5 +1,14 @@
 FROM nginx
 
+ARG SOURCE
+ARG COMMIT_HASH
+ARG COMMIT_ID
+ARG BUILD_TIME
+LABEL source=${SOURCE}
+LABEL commit_hash=${COMMIT_HASH}
+LABEL commit_id=${COMMIT_ID}
+LABEL build_time=${BUILD_TIME}
+
 ENV base_path=/usr/share/nginx/html
 
 ENV i18n_path=${base_path}/assets/i18n
