@@ -38,6 +38,7 @@ export class CenterSelectionComponent
   enableNextButton = false;
   bookingDataList = [];
   errorlabels: any;
+  apiErrorCodes: any;
   step = 0;
   textDir = localStorage.getItem("dir");
   showDescription = false;
@@ -79,6 +80,7 @@ export class CenterSelectionComponent
         this.preRegId = [param["appId"]];
       });
     }
+    this.getErrorLabels();
     await this.getUserInfo(this.preRegId);
     this.REGISTRATION_CENTRES = [];
     this.selectedCentre = null;
@@ -108,7 +110,7 @@ export class CenterSelectionComponent
         this.getRecommendedCenters();
       });
     this.subscriptions.push(subs);
-    this.getErrorLabels();
+    
   }
 
   getUserInfo(preRegId) {
@@ -140,6 +142,7 @@ export class CenterSelectionComponent
   getErrorLabels() {
     this.dataService.getI18NLanguageFiles(localStorage.getItem('userPrefLanguage')).subscribe((response) => {
       this.errorlabels = response["error"];
+      this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
     });
   }
 
@@ -198,13 +201,10 @@ export class CenterSelectionComponent
       .subscribe((response) => {
         if (response[appConstants.RESPONSE]) {
           this.displayResults(response["response"]);
-        } else {
-          this.displayMessageError(
-            "Error",
-            this.errorlabels.regCenterNotavailabe,
-            ""
-          );
-        }
+        } 
+      },
+      (error) => {
+        this.showErrorMessage(error, this.errorlabels.regCenterNotavailabe);
       });
     this.subscriptions.push(subs);
   }
@@ -219,6 +219,9 @@ export class CenterSelectionComponent
             this.locationNames.push(locName);
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error, this.errorlabels.regCenterNotavailabe);
         });
     });
   }
@@ -284,9 +287,8 @@ export class CenterSelectionComponent
             this.showMessage = true;
             this.totalItems = 0;
             this.selectedCentre = null;
-            this.displayMessageError("Error", this.errorlabels.error, error);
-          }
-        );
+            //this.showErrorMessage(error);
+          });
       this.subscriptions.push(subs);
     } else {
       this.showMessage = true;
@@ -343,9 +345,9 @@ export class CenterSelectionComponent
             },
             (error) => {
               this.showMessage = true;
-              this.displayMessageError("Error", this.errorlabels.error, error);
-            }
-          );
+              this.selectedCentre = null;
+              //this.showErrorMessage(error);
+            });
         this.subscriptions.push(subs);
       });
     } else {
@@ -444,32 +446,39 @@ export class CenterSelectionComponent
                 }
               });
             }
-            
             this.isWorkingDaysAvailable = true;
             resolve(true);
+          },
+          (error) => {
+            this.showErrorMessage(error);
           });
       });
     });
   }
 
-  displayMessageError(title: string, message: string, error: any) {
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      title = "";
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof CenterSelectionComponent
+   */
+   private showErrorMessage(error: any, customErrMsg?: string) {
+    const titleOnError = this.errorlabels.errorLabel;
+    let message = "";
+    if (customErrMsg) {
+      message = customErrMsg;
+    } else {
+      message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.configService);  
     }
-    const messageObj = {
-      case: "MESSAGE",
-      title: title,
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
       message: message,
+      yesButtonText: this.errorlabels.button_ok,
     };
-    const dialogRef = this.openDialog(messageObj, "400px");
+    const dialogRef = this.openDialog(body, "400px");
     dialogRef.afterClosed().subscribe(() => {
-      if (messageObj.message === this.errorlabels.regCenterNotavailabe) {
+      if (body.message === this.errorlabels.regCenterNotavailabe) {
         this.canDeactivateFlag = false;
         if (
           this.router.url.includes("multiappointment") ||
@@ -485,6 +494,7 @@ export class CenterSelectionComponent
       }
     });
   }
+
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,

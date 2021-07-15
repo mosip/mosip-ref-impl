@@ -66,7 +66,7 @@
 <div *ngIf="input.case === 'MESSAGE'" [dir]="input.textDir? input.textDir: textDir">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
   <mat-dialog-content>
-    {{ input.message }}
+    <p style="white-space: pre-line">{{ input.message }}</p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button (click)="onNoClick(true)" cdkFocusInitial class="btn-submit">
@@ -77,7 +77,7 @@
 <div *ngIf="input.case === 'CONFIRMATION'" [dir]="input.textDir? input.textDir: textDir">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
   <mat-dialog-content>
-    {{ input.message }}
+    <p style="white-space: pre-line">{{ input.message }}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick(input.noButtonText)" class="btn-cancel">
@@ -151,7 +151,7 @@
 <div class="logout-pre-message" *ngIf="input.case === 'ERROR'">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
   <mat-dialog-content>
-    {{ input.message }}
+    <p style="white-space: pre-line">{{ input.message }}</p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button (click)="onNoClick(input.yesButtonText)" mat-button [mat-dialog-close]="confirm" cdkFocusInitial

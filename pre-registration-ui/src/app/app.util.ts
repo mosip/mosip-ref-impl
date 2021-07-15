@@ -228,4 +228,52 @@ export default class Utils {
     //console.log(`applicationLanguages: ${applicationLanguages}`);
     return applicationLanguages;
   }
+
+  
+  static getErrorCode  = (error: any) => {
+    if (
+      error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR].length > 0
+    ) {
+      return error[appConstants.ERROR][appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE];
+    } else {
+      return "";
+    }
+  }  
+  
+  static authenticationFailed = (error: any) => {
+    //handle 401 exception
+    const errorCode = Utils.getErrorCode(error);
+    if (
+      errorCode === appConstants.ERROR_CODES.tokenExpired ||
+      errorCode === appConstants.ERROR_CODES.invalidateToken ||
+      errorCode === appConstants.ERROR_CODES.authenticationFailed
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  static createErrorMessage = (error: any, errorlabels: any, apiErrorCodes: any, config: any) => {
+    let message = errorlabels.error;
+    let errorCode = "";
+    if (Utils.authenticationFailed(error)) {
+      message = errorlabels["sessionInvalidLogout"];
+    } else {
+      errorCode = Utils.getErrorCode(error);
+      if (apiErrorCodes[errorCode]) {
+        message = apiErrorCodes[errorCode];
+      } 
+    }
+    const email = config[appConstants.CONFIG_KEYS.preregistartion_contact_email];
+    const phone = config[appConstants.CONFIG_KEYS.preregistartion_contact_phone];
+    if (!Utils.authenticationFailed(error)) {
+      message = message + errorlabels["contactInformation"][0] + email + errorlabels["contactInformation"][1] + phone;
+      if (errorCode != "") {
+        message = message + errorlabels["contactInformation"][2] + errorCode;
+      }
+    }
+    return message;
+  }
 }

@@ -8,10 +8,10 @@ import {
   HttpInterceptor,
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, tap } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material";
-
+import Utils from "src/app/app.util";
 import * as appConstants from "../app.constants";
 
 /**
@@ -51,22 +51,28 @@ export class AuthInterceptorService implements HttpInterceptor {
       withCredentials: true,
     });
     return next.handle(copiedReq).pipe(
-      catchError((error: HttpErrorResponse) => {
-        //console.log("authInterceptor");
-        //console.log(error[appConstants.ERROR]);
-        if (
-          error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-          (error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-            appConstants.ERROR_CODES.tokenExpired ||
-            error[appConstants.ERROR][appConstants.NESTED_ERROR][0]
-              .errorCode === appConstants.ERROR_CODES.invalidateToken ||
-              error[appConstants.ERROR][appConstants.NESTED_ERROR][0]
-                .errorCode === appConstants.ERROR_CODES.authenticationFailed)
-        ) {
-          //console.log("forcefully logout the user");
-          localStorage.setItem(appConstants.FORCE_LOGOUT, appConstants.FORCE_LOGOUT_YES);
-          this.router.navigateByUrl("/");
+      tap(response => {
+        let body = response["body"];
+        if (body && body[appConstants.NESTED_ERROR]) {
+          console.log("response is null and there are some API errors");
+          console.log(body[appConstants.NESTED_ERROR]);
+          let errNestedObject = {};
+          errNestedObject[appConstants.NESTED_ERROR] = body[appConstants.NESTED_ERROR];
+          let errObject = {};
+          errObject[appConstants.ERROR] = errNestedObject;
+          throw errObject;  
         }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (Utils.authenticationFailed(error)) {
+          console.log("forcefully logout the user");
+          localStorage.setItem(
+            appConstants.FORCE_LOGOUT,
+            appConstants.FORCE_LOGOUT_YES
+          );
+          this.router.navigateByUrl("/");  
+        }
+        //handle 500 error
         if (error.status === 500) {
           // this.router.navigateByUrl('/');
         }

@@ -4,6 +4,8 @@ export const METADATA = 'documentsMetaData';
 export const ERROR = 'error';
 export const NESTED_ERROR = 'errors';
 export const ERROR_CODE = 'errorCode';
+export const API_ERROR_CODES = 'API_ERROR_CODES';
+export const DIALOG = 'dialog';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
 export const IDSchemaVersionLabel = 'IDSchemaVersion';
@@ -120,7 +122,9 @@ export const CONFIG_KEYS = {
   mosip_mandatory_languages: 'mosip.mandatory-languages',
   mosip_optional_languages: 'mosip.optional-languages',
   mosip_min_languages_count: 'mosip.min-languages.count',
-  mosip_max_languages_count: 'mosip.max-languages.count'
+  mosip_max_languages_count: 'mosip.max-languages.count',
+  preregistartion_contact_email: 'preregistartion.contact.email',
+  preregistartion_contact_phone: 'preregistartion.contact.phone',
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {

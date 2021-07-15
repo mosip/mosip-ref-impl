@@ -592,7 +592,9 @@
     "lockIcon":"Application details cannot be modified once appointment is Booked, Cancelled or Expired"
   },
   "error": {
-    "error": "A technical error occurred and the operation cannot be completed. Any data provided may not be saved",
+    "error": "A technical error occurred and the operation cannot be completed. Any data provided may not be saved.",
+    "contactInformation": ["\n \nPlease get in touch with the system administrator with email id:"," and contact number: ","\n\n Error Code: "],
+    "sessionInvalidLogout": "Your session has expired. Please login again.",
     "button_ok": "OK",
     "postalCode": "Entered PIN is invalid",
     "email": "Entered Email is invalid",
@@ -617,5 +619,15 @@
 
   "recaptcha":{
     "errorMessage":"Recaptcha Failed. Please Re-try"
+  },
+  "API_ERROR_CODES": {
+    "PRG_PAM_APP_005": "No data found for the requested pre-registration id.",
+    "KER-MSD-046": "Template not found.",
+    "KER-MSD-026": "Location not found.",
+    "PRG_MSD_APP_001":  "Failed to fetch masterdata information.",
+    "KER-IOV-004": "Invalid input parameter - identity/residenceStatus.",
+    "PRG_CORE_REQ_015": "JSON parse error.",
+    "PRG_PAM_DOC_005": "Documents is not found for the requested pre-registration id",
+    "KER-MSD-150": "Document Category- Document Type mapping not found"
   }
 }

@@ -497,7 +497,7 @@ export class TimeSelectionComponent
       this.dialog
         .open(DialougComponent, {
           width: "400px",
-          height: "210px",
+          height: "250px",
           data: data,
         })
         .afterClosed()
@@ -528,7 +528,7 @@ export class TimeSelectionComponent
         this.dialog
           .open(DialougComponent, {
             width: "450px",
-            height: "230px",
+            height: "250px",
             data: data,
           })
           .afterClosed()
@@ -567,7 +567,7 @@ export class TimeSelectionComponent
       };
       const dialogRef = this.dialog.open(DialougComponent, {
         width: "400px",
-        height: "210px",
+        height: "250px",
         data: data,
         disableClose: true,
       });

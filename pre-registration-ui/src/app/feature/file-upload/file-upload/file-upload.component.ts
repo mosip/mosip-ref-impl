@@ -67,6 +67,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   fileIndex: number = -1;
   fileUploadLanguagelabels: any;
   errorlabels: any;
+  apiErrorCodes: any;
   fileExtension: string = "pdf";
   sameAs: string;
   disableNavigation: boolean = false;
@@ -158,8 +159,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         resolve(true);
       },
       (error) => {
-        this.displayMessage("Error", this.errorlabels.error, error);
-        resolve(true);
+        this.showErrorMessage(error);
       });
     });
   }
@@ -170,7 +170,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     .subscribe((response) => {
       if (response["message"])
         this.fileUploadLanguagelabels = response["message"];
-      if (response["error"]) this.errorlabels = response["error"];
+        this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];    
     });
   }
 
@@ -228,6 +229,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.readOnlyMode = false;
           }
           resolve(true);
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -239,8 +243,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         .subscribe((response) => {
           this.setUserFiles(response);
           resolve(true);
+        },
+        (error) => {
+          //this is fail safe operation as user may not have uploaded any documents yet
+          //so no err handling is required
+          resolve(true);
+          //this.showErrorMessage(error);
         });
-      
     });
   }
   setUserFiles(response) {
@@ -532,25 +541,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 "applicantType",
                 response["response"].applicantType.applicantTypeCode
               );
-              //console.log(`applicantType: ${response["response"].applicantType.applicantTypeCode}`);
-              //console.log("getDocumentCategories started");
               await this.getDocumentCategories(
                 response["response"].applicantType.applicantTypeCode
               );
               this.setApplicantType(response);
-              //console.log("getDocumentCategories done");
               resolve(true);
-            } else {
-              this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
-                this.errorlabels.error
-              );
-              resolve(true);
-            }
+            } 
           },
           (error) => {
-            this.displayMessage("Error", this.errorlabels.error, error);
-            resolve(true);
+            this.showErrorMessage(error);
           }
         )
       );
@@ -624,17 +623,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.onModification();
               //console.log(this.LOD);
               resolve(true);
-            } else {
-              this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
-                this.errorlabels.error
-              );
-              resolve(true);
-            }
+            } 
           },
           (error) => {
-            this.displayMessage("Error", this.errorlabels.error, error);
-            resolve(true);
+            this.showErrorMessage(error);
           }
         )
       );  
@@ -655,19 +647,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.bookingService.addApplicants(
                 response["response"]["basicDetails"]
               );
-            } else {
-              this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
-                this.errorlabels.error
-              );
-            }
+            } 
           },
-          (err) => {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.errorlabels.error,
-              err
-            );
+          (error) => {
+            //the is a fail safe operation hence no err messages are to be displayed
+            //this.showErrorMessage(error);
           },
           () => {
             this.setApplicants();
@@ -800,13 +784,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         (res) => {
           if (res[appConstants.RESPONSE]) {
             this.setByteArray(res["response"].document);
-          } else {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.errorlabels.error
-            );
-            this.start = false;
-          }
+          } 
           this.fileName = fileMeta.docName;
           this.fileDocCatCode = fileMeta.docCatCode;
           let i = 0;
@@ -842,10 +820,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.disableNavigation = false;
         },
         (error) => {
-          this.displayMessage("Error", this.errorlabels.error, error);
-        },
-        () => {}
-      );
+          this.start = false;
+          this.disableNavigation = false;
+          this.showErrorMessage(error);
+        });
     this.subscriptions.push(subs);
   }
 
@@ -917,14 +895,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.sendFile(event);
         } else {
           this.displayMessage(
-            this.fileUploadLanguagelabels.uploadDocuments.error,
+            this.errorlabels.errorLabel,
             this.fileUploadLanguagelabels.uploadDocuments.msg1
           );
           this.disableNavigation = false;
         }
       } else {
         this.displayMessage(
-          this.fileUploadLanguagelabels.uploadDocuments.error,
+          this.errorlabels.errorLabel,
           this.fileUploadLanguagelabels.uploadDocuments.msg5
         );
         this.disableNavigation = false;
@@ -935,7 +913,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (!allowedFileUploaded) {
       this.fileExtension = oldFileExtension;
       this.displayMessage(
-        this.fileUploadLanguagelabels.uploadDocuments.error,
+        this.errorlabels.errorLabel,
         this.fileUploadLanguagelabels.uploadDocuments.msg3
       );
       this.disableNavigation = false;
@@ -958,21 +936,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           .updateDocRefId(documentId, this.preRegId, docRefId)
           .subscribe(
             (response) => {
+              //docRedId saved
               this.disableNavigation = false;
-              if (response[appConstants.RESPONSE]) {
-                //docRedId saved
-              } else {
-                this.displayMessage(
-                  this.fileUploadLanguagelabels.uploadDocuments.error,
-                  this.errorlabels.error
-                );
-              }
             },
             (error) => {
               this.disableNavigation = false;
-              this.displayMessage("Error", this.errorlabels.error, error);
-            }
-          );
+              this.showErrorMessage(error);
+            });
         this.subscriptions.push(subs);
       }
     }
@@ -1112,19 +1082,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             //on file upload, update application status from "Application_Incomplete"
             //to "Pending_Appointment", if all required documents are uploaded
             await this.changeApplicationStatus();
-          } else {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.errorlabels.error
-            );
-          }
+          } 
         },
         (error) => {
-          this.displayMessage(
-            this.fileUploadLanguagelabels.uploadDocuments.error,
-            this.fileUploadLanguagelabels.uploadDocuments.msg7,
-            error
-          );
+          this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg7);
+          this.fileInputVariable.nativeElement.value = "";
+          this.disableNavigation = false;
         },
         () => {
           this.fileInputVariable.nativeElement.value = "";
@@ -1249,13 +1212,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             }
             this.disableNavigation = false;
           },
-          (err) => {
+          (error) => {
             this.disableNavigation = false;
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.fileUploadLanguagelabels.uploadDocuments.msg9,
-              err
-            );
+            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg9);
           }
         );
       this.subscriptions.push(subs);
@@ -1292,27 +1251,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
               this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
+                this.errorlabels.errorLabel,
                 this.fileUploadLanguagelabels.uploadDocuments.msg9
               );
             }
             this.disableNavigation = false;
           },
-          (err) => {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.fileUploadLanguagelabels.uploadDocuments.msg8,
-              err
-            );
+          (error) => {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
             this.disableNavigation = false;
+            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg8);
           }
         );
         this.subscriptions.push(subs);
-      // this.subscriptions.push(subs);
-      // this.sameAsselected = true;
-      // this.disableNavigation = false;
     }
   }
 
@@ -1441,24 +1393,39 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof FileUploadComponent
+   */
+   private showErrorMessage(error: any, customMsg?: string) {
+    const titleOnError = this.errorlabels.errorLabel;
+    let message = "";
+    if (customMsg) {
+      message = customMsg;
+    } else {
+      message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.config); 
+    }  
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
+      message: message,
+      yesButtonText: this.errorlabels.button_ok,
+    };
+    this.dialog.open(DialougComponent, {
+      width: "400px",
+      data: body,
+    });
+  }
+
+  /**
    *@description method to set and display error message.
    *
    * @param {string} title
    * @param {string} message
    * @memberof FileUploadComponent
    */
-  displayMessage(title: string, message: string, error?: any) {
-   
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      title = "";
-    }
+  displayMessage(title: string, message: string) {
     const messageObj = {
       case: "MESSAGE",
       title: title,
