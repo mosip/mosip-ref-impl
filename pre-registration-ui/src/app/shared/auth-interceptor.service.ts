@@ -55,12 +55,12 @@ export class AuthInterceptorService implements HttpInterceptor {
         let body = response["body"];
         if (body && body[appConstants.NESTED_ERROR]) {
           console.log("response is null and there are some API errors");
-          console.log(body[appConstants.NESTED_ERROR]);
           let errNestedObject = {};
           errNestedObject[appConstants.NESTED_ERROR] = body[appConstants.NESTED_ERROR];
           let errObject = {};
           errObject[appConstants.ERROR] = errNestedObject;
-          throw errObject;  
+          //console.log(errObject);
+          throw errObject; 
         }
       }),
       catchError((error: HttpErrorResponse) => {

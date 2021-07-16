@@ -627,7 +627,10 @@
     "PRG_MSD_APP_001":  "Failed to fetch masterdata information.",
     "KER-IOV-004": "Invalid input parameter - identity/residenceStatus.",
     "PRG_CORE_REQ_015": "JSON parse error.",
-    "PRG_PAM_DOC_005": "Documents is not found for the requested pre-registration id",
-    "KER-MSD-150": "Document Category- Document Type mapping not found"
+    "PRG_PAM_DOC_005": "Documents is not found for the requested pre-registration id.",
+    "KER-MSD-150": "Document Category- Document Type mapping not found.",
+    "PRG_BOOK_RCI_013": "Booking data not found.",
+    "PRG_BOOK_RCI_031": "Invalid Booking Date Time found for preregistration id - ",
+    "KER-MSD-042": "Registration Center not found"
   }
 }

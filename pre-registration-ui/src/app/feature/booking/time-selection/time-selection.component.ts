@@ -53,6 +53,7 @@ export class TimeSelectionComponent
   temp: NameList[] = [];
   registrationCenterLunchTime = [];
   languagelabels: any;
+  apiErrorCodes: any;
   errorlabels: any;
   showMorning: boolean;
   showAfternoon: boolean;
@@ -99,6 +100,14 @@ export class TimeSelectionComponent
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
+    this.dataService
+      .getI18NLanguageFiles(this.userPreferredLangCode)
+      .subscribe((response) => {
+        this.languagelabels = response["timeSelection"].booking;
+        this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+        this.DAYS = response["DAYS"];
+      });
     await this.getUserInfo(this.preRegId);
     await this.getRegCenterDetails();
     this.prepareNameList(this.userInfo, this.regCenterInfo);
@@ -109,13 +118,6 @@ export class TimeSelectionComponent
       this.registrationCenterLunchTime =
         this.temp[0].registrationCenter.lunchEndTime.split(":");
     }
-    this.dataService
-      .getI18NLanguageFiles(this.userPreferredLangCode)
-      .subscribe((response) => {
-        this.languagelabels = response["timeSelection"].booking;
-        this.errorlabels = response["error"];
-        this.DAYS = response["DAYS"];
-      });
     this.getSlotsforCenter(this.registrationCenter);  
   }
 
@@ -141,6 +143,9 @@ export class TimeSelectionComponent
             []
           )
         );
+      },
+      (error) => {
+        this.showErrorMessage(error);
       });
     });
   }
@@ -159,6 +164,9 @@ export class TimeSelectionComponent
               response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -400,22 +408,16 @@ export class TimeSelectionComponent
       (response) => {
         this.spinner = false;
         if (response[appConstants.RESPONSE]) {
+          //console.log(response[appConstants.RESPONSE]);
           if (response[appConstants.RESPONSE].centerDetails.length > 0) {
             this.formatJson(response[appConstants.RESPONSE].centerDetails);
           } else {
-            this.displayMessage(
-              "Error",
-              this.errorlabels.centerDetailsNotAvailable,
-              ""
-            );
+            this.showErrorMessage(null, this.errorlabels.centerDetailsNotAvailable);
           }
-        } else if (response[appConstants.NESTED_ERROR]) {
-          this.displayMessage("Error", this.errorlabels.error, "");
         }
       },
       (error) => {
-        console.log(error);
-        this.displayMessage("Error", this.errorlabels.error, error);
+        this.showErrorMessage(error);
       }
     );
     this.subscriptions.push(subs);
@@ -469,6 +471,7 @@ export class TimeSelectionComponent
               slot.fromTime,
               slot.toTime
             );
+            //console.log(bookingData);
             this.bookingDataList.push(bookingData);
           });
         }
@@ -476,10 +479,9 @@ export class TimeSelectionComponent
     });
     if (this.bookingDataList.length === 0) {
       this.disableContinueButton = false;
-      this.displayMessage(
-        "",
-        this.languagelabels.noSlotsSelectedForApplicant,
-        ""
+      this.showErrorMessage(
+        null,
+        this.languagelabels.noSlotsSelectedForApplicant
       );
       return;
     }
@@ -502,7 +504,7 @@ export class TimeSelectionComponent
         })
         .afterClosed()
         .subscribe((response) => {
-          console.log(response);
+          //console.log(response);
           if (response === true) {
             this.bookingOperationRequest();
           } else {
@@ -614,67 +616,56 @@ export class TimeSelectionComponent
                 );
               }
             });
-        } else if (
-          response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
-          appConstants.ERROR_CODES.timeExpired
-        ) {
-          let timespan =
-            response[appConstants.NESTED_ERROR][0].message.match(/\d+/g);
+        } 
+      },
+      (error) => {
+        if (Utils.getErrorCode(error) === appConstants.ERROR_CODES.timeExpired) {
+          let timespan = Utils.getErrorMessage(error).match(/\d+/g);
           let errorMessage =
             this.errorlabels.timeExpired_1 +
             timespan[0] +
             this.errorlabels.timeExpired_2;
-          this.displayMessage("Error", errorMessage, {
-            error: response,
-          });
+          this.showErrorMessage(error, errorMessage);
         } else {
-          this.displayMessage("Error", this.errorlabels.error, {
-            error: response,
-          });
+          this.showErrorMessage(error);
         }
-      },
-      (error) => {
-        this.displayMessage("Error", this.errorlabels.error, error);
       }
     );
     this.subscriptions.push(subs);
   }
 
-  displayMessage(title: string, message: string, error: any) {
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof TimeSelectionComponent
+   */
+   private showErrorMessage(error: any, customMsg?: string) {
     this.spinner = false;
     this.disableContinueButton = false;
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      title = "";
-    } else if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.slotNotAvailable
-    ) {
-      message = this.errorlabels.slotNotAvailable;
+    const titleOnError = this.errorlabels.errorLabel;
+    let errorCode = "";
+    let message = "";
+    if (customMsg) {
+      message = customMsg
+    } else {
+      errorCode = Utils.getErrorCode(error);
+      if (errorCode == appConstants.ERROR_CODES.slotNotAvailable) {
+        message = this.errorlabels.slotNotAvailable;
+      }
+      else {
+        message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.configService); 
+      }
     }
     const messageObj = {
-      case: "MESSAGE",
-      title: title,
+      case: "ERROR",
+      title: titleOnError,
       message: message,
+      yesButtonText: this.errorlabels.button_ok,
     };
     const dialogRef = this.openDialog(messageObj, "400px");
     const subs = dialogRef.afterClosed().subscribe(() => {
-      if (
-        error &&
-        error[appConstants.ERROR] &&
-        error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-        error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-          appConstants.ERROR_CODES.slotNotAvailable
-      ) {
+      if (errorCode === appConstants.ERROR_CODES.slotNotAvailable) {
         this.canDeactivateFlag = false;
         if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
@@ -701,6 +692,68 @@ export class TimeSelectionComponent
     });
     this.subscriptions.push(subs);
   }
+
+  // displayMessage(title: string, message: string, error: any) {
+  //   this.spinner = false;
+  //   this.disableContinueButton = false;
+  //   if (
+  //     error &&
+  //     error[appConstants.ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+  //       appConstants.ERROR_CODES.tokenExpired
+  //   ) {
+  //     message = this.errorlabels.tokenExpiredLogout;
+  //     title = "";
+  //   } else if (
+  //     error &&
+  //     error[appConstants.ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+  //       appConstants.ERROR_CODES.slotNotAvailable
+  //   ) {
+  //     message = this.errorlabels.slotNotAvailable;
+  //   }
+  //   const messageObj = {
+  //     case: "MESSAGE",
+  //     title: title,
+  //     message: message,
+  //   };
+  //   const dialogRef = this.openDialog(messageObj, "400px");
+  //   const subs = dialogRef.afterClosed().subscribe(() => {
+  //     if (
+  //       error &&
+  //       error[appConstants.ERROR] &&
+  //       error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+  //       error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+  //         appConstants.ERROR_CODES.slotNotAvailable
+  //     ) {
+  //       this.canDeactivateFlag = false;
+  //       if (this.router.url.includes("multiappointment")) {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/multiappointment/pick-center`
+  //         );
+  //       } else {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+  //         );
+  //       }
+  //     }
+  //     if (this.errorlabels.centerDetailsNotAvailable === messageObj.message) {
+  //       this.canDeactivateFlag = false;
+  //       if (this.router.url.includes("multiappointment")) {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/multiappointment/pick-center`
+  //         );
+  //       } else {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+  //         );
+  //       }
+  //     }
+  //   });
+  //   this.subscriptions.push(subs);
+  // }
 
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {

@@ -240,7 +240,19 @@ export default class Utils {
     } else {
       return "";
     }
-  }  
+  }
+  
+  static getErrorMessage  = (error: any) => {
+    if (
+      error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR].length > 0
+    ) {
+      return error[appConstants.ERROR][appConstants.NESTED_ERROR][0]["message"];
+    } else {
+      return "";
+    }
+  }
   
   static authenticationFailed = (error: any) => {
     //handle 401 exception
