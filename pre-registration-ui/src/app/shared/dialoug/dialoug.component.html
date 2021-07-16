@@ -138,17 +138,17 @@
     </div>
   </mat-dialog-actions>
 </div>
-<div class="logout-pre-message" *ngIf="input.case === 'POPUP'">
+<div class="logout-pre-message" *ngIf="input.case === 'POPUP'"  [dir]="input.textDir? input.textDir: textDir">
   <mat-dialog-content>
     <p>{{ input.content }}</p>
   </mat-dialog-content>
 </div>
-<div class="logout-post-message" *ngIf="input.case === 'POSTLOGOUT'">
+<div class="logout-post-message" *ngIf="input.case === 'POSTLOGOUT'"  [dir]="input.textDir? input.textDir: textDir">
   <mat-dialog-content>
     <p>{{ input.contentLogout }}</p>
   </mat-dialog-content>
 </div>
-<div class="logout-pre-message" *ngIf="input.case === 'ERROR'">
+<div class="logout-pre-message" *ngIf="input.case === 'ERROR'"  [dir]="input.textDir? input.textDir: textDir">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
   <mat-dialog-content>
     <p style="white-space: pre-line">{{ input.message }}</p>
