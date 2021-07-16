@@ -1,9 +1,8 @@
 .spinner {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  margin-top: 18vw;
+  display: flex;
 }
 .dashboard-body {
   background-color: #f4f4f4;

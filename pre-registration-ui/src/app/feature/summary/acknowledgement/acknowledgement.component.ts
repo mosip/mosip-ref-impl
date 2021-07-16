@@ -28,6 +28,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   guidelinesDetails = [];
   pdfOptions = {};
   fileBlob: Blob;
+  errorlabels: any;
+  apiErrorCodes: any;
   showSpinner: boolean = true;
   notificationRequest = new FormData();
   bookingDataPrimary = "";
@@ -61,6 +63,12 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         this.preRegIds = [param["appId"]];
       });
     }
+    this.dataStorageService
+    .getI18NLanguageFiles(this.langCode)
+    .subscribe((response) => {
+      this.errorlabels = response[appConstants.ERROR];
+      this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+    });
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
@@ -159,6 +167,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             )
           );
         }
+      },
+      (error) => {
+        this.showErrorMessage(error);
       });
     });
   }
@@ -174,6 +185,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             response[appConstants.RESPONSE].registration_center_id;
           }
           resolve(response[appConstants.RESPONSE]);
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -188,6 +202,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -511,9 +528,33 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     );
     const subs = this.dataStorageService
       .sendNotification(this.notificationRequest)
-      .subscribe(() => {});
+      .subscribe((response) => {},
+      (error) => {
+        this.showErrorMessage(error);
+      });
     this.subscriptions.push(subs);
     this.notificationRequest = new FormData();
+  }
+
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof AcknowledgementComponent
+   */
+   private showErrorMessage(error: any) {
+    const titleOnError = this.errorlabels.errorLabel;
+    const message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.configService); 
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
+      message: message,
+      yesButtonText: this.errorlabels.button_ok,
+    };
+    this.dialog.open(DialougComponent, {
+      width: "400px",
+      data: body,
+    });
   }
 
   ngOnDestroy() {

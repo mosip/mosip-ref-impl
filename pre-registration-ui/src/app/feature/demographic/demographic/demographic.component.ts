@@ -105,6 +105,7 @@ export class DemographicComponent
   loginId = "";
   user: UserModel = new UserModel();
   demographiclabels: any;
+  apiErrorCodes: any;
   errorlabels: any;
   dialoglabels: any;
   dataCaptureLabels: any;
@@ -191,6 +192,7 @@ export class DemographicComponent
     this.translate.use(this.dataCaptureLanguages[0]);
     //set the locale for date picker and moment
     this.setLocaleForDatePicker();
+    //load all labels in the first data capture language
     this.getPrimaryLabels();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
@@ -360,6 +362,7 @@ export class DemographicComponent
       .subscribe((response) => {
         this.demographiclabels = response["demographic"];
         this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
         this.dialoglabels = response["dialog"];
         this.dataCaptureLabels = response["dashboard"]["dataCaptureLanguage"];
       });
@@ -372,19 +375,16 @@ export class DemographicComponent
         this.dataStorageService.getGuidelineTemplate("consent").subscribe(
           (response) => {
             this.isConsentMessage = true;
-            if (response && response[appConstants.RESPONSE]) {
-              /*this.consentMessage = response["response"][
-                "templates"
-              ][0].fileText.split("\n");*/
-              this.consentMessage = response["response"]["templates"];
-              //console.log(this.consentMessage);
-            } else if (response[appConstants.NESTED_ERROR])
-              this.onError(this.errorlabels.error, "");
-              resolve(true);
+            /*this.consentMessage = response["response"][
+              "templates"
+            ][0].fileText.split("\n");*/
+            this.consentMessage = response[appConstants.RESPONSE]["templates"];
+            //console.log(this.consentMessage);
+            resolve(true);
           },
           (error) => {
             this.isConsentMessage = false;
-            this.onError(this.errorlabels.error, error);
+            this.showErrorMessage(error);
           }
         )
       );
@@ -399,6 +399,14 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   private async initialization() {
+    //load error related labels in user's login lang,
+    //this is required to show errors from services
+    this.dataStorageService
+    .getI18NLanguageFiles(this.langCode)
+    .subscribe((response) => {
+      this.errorlabels = response[appConstants.ERROR];
+      this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+    });
     if (localStorage.getItem(appConstants.NEW_APPLICANT) === "true") {
       this.isNewApplicant = true;
     }
@@ -427,19 +435,21 @@ export class DemographicComponent
 
   getUserInfo(preRegId) {
     return new Promise((resolve) => {
-      this.dataStorageService.getUser(preRegId).subscribe((response) => {
-        if (response[appConstants.RESPONSE]) {
+      this.dataStorageService.getUser(preRegId).subscribe(
+        (response) => {
           this.user.request = response[appConstants.RESPONSE];
-          console.log(this.user.request);
           if (this.user.request["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.incomplete &&
             this.user.request["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.pending) {
             this.readOnlyMode = true;
           } else {
             this.readOnlyMode = false;
-          }
-          resolve(response[appConstants.RESPONSE]);
-        }
-      });
+          }  
+          resolve(true);
+        },
+        (error) => {
+          this.showErrorMessage(error);
+        }  
+      );
     });
   }
 
@@ -560,8 +570,7 @@ export class DemographicComponent
           resolve(true);
         },
         (error) => {
-          console.log(error);
-          this.onError(this.errorlabels.error, error);
+          this.showErrorMessage(error);
         }
       );
     });
@@ -1107,6 +1116,9 @@ export class DemographicComponent
                   });
                 }
                 resolve(true);
+              },
+              (error) => {
+                this.showErrorMessage(error);
               }
             )
           ); 
@@ -1166,6 +1178,9 @@ export class DemographicComponent
           } else {
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         })
       );  
     });
@@ -1301,12 +1316,12 @@ export class DemographicComponent
                 ];
               resolve(true);
             } else {
-              this.onError(this.errorlabels.error, "");
+              //this.onError(this.errorlabels.error, "");
             }
           },
           (error) => {
             this.loggerService.error("Unable to fetch gender");
-            this.onError(this.errorlabels.error, error);
+            //this.onError(this.errorlabels.error, error);
           }
         )
       );
@@ -1333,12 +1348,12 @@ export class DemographicComponent
                 ];
               resolve(true);
             } else {
-              this.onError(this.errorlabels.error, "");
+              //this.onError(this.errorlabels.error, "");
             }
           },
           (error) => {
             this.loggerService.error("Unable to fetch Resident types");
-            this.onError(this.errorlabels.error, error);
+            //this.onError(this.errorlabels.error, error);
           }
         )
       );
@@ -1622,13 +1637,10 @@ export class DemographicComponent
               this.userForm.controls[toFieldName].patchValue(
                 response[appConstants.RESPONSE].to_field_value
               );
-            else {
-              //this.onError(this.errorlabels.error, "");
-            }
           },
           (error) => {
-            this.onError(this.errorlabels.error, error);
-            this.loggerService.error(error);
+            //no error handling required for failed transliteration
+            //this.loggerService.error(error);
           }
         )
       );
@@ -1683,27 +1695,15 @@ export class DemographicComponent
               .updateUser(request, this.preRegId)
               .subscribe(
                 (response) => {
-                  if (
-                    (response[appConstants.NESTED_ERROR] === null &&
-                      response[appConstants.RESPONSE] === null) ||
-                    response[appConstants.NESTED_ERROR] !== null
-                  ) {
-                    let message = "";
-                    if (
-                      response[appConstants.NESTED_ERROR][0][
-                        appConstants.ERROR_CODE
-                      ] === appConstants.ERROR_CODES.invalidPin
-                    ) {
-                      message = this.formValidation(response);
-                    } else message = this.errorlabels.error;
-                    this.onError(message, "");
-                    return;
-                  }
                   this.redirectUser();
                 },
                 (error) => {
-                  this.loggerService.error(error);
-                  this.onError(this.errorlabels.error, error);
+                  this.loggerService.error(JSON.stringify(error));
+                  const errCode = Utils.getErrorCode(error);
+                  if (errCode === appConstants.ERROR_CODES.invalidPin) {
+                    this.formValidation(error);
+                  } 
+                  this.showErrorMessage(error);
                 }
               )
           );
@@ -1711,33 +1711,16 @@ export class DemographicComponent
           this.subscriptions.push(
             this.dataStorageService.addUser(request).subscribe(
               (response) => {
-                if (
-                  (response[appConstants.NESTED_ERROR] === null &&
-                    response[appConstants.RESPONSE] === null) ||
-                  response[appConstants.NESTED_ERROR] !== null
-                ) {
-                  this.loggerService.error(JSON.stringify(response));
-                  let message = "";
-                  if (
-                    response[appConstants.NESTED_ERROR] &&
-                    response[appConstants.NESTED_ERROR][0][
-                      appConstants.ERROR_CODE
-                    ] === appConstants.ERROR_CODES.invalidPin
-                  ) {
-                    //console.log(response);
-                    message = this.formValidation(response);
-                  } else message = this.errorlabels.error;
-                  this.onError(message, "");
-                  return;
-                } else {
-                  this.preRegId =
-                    response[appConstants.RESPONSE].preRegistrationId;
-                }
+                this.preRegId = response[appConstants.RESPONSE].preRegistrationId;
                 this.redirectUser();
               },
               (error) => {
-                this.loggerService.error(error);
-                this.onError(this.errorlabels.error, error);
+                this.loggerService.error(JSON.stringify(error));
+                const errCode = Utils.getErrorCode(error);
+                if (errCode === appConstants.ERROR_CODES.invalidPin) {
+                  this.formValidation(error);
+                } 
+                this.showErrorMessage(error);
               }
             )
           );
@@ -1747,13 +1730,13 @@ export class DemographicComponent
   }
 
   formValidation(response: any) {
-    const str = response[appConstants.NESTED_ERROR][0]["message"];
+    const str = response[appConstants.ERROR][appConstants.NESTED_ERROR][0]["message"];
     const attr = str.substring(str.lastIndexOf("/") + 1);
-    let message = this.errorlabels[attr];
+    //let message = this.errorlabels[attr];
     this.userForm.controls[attr].setErrors({
       incorrect: true,
     });
-    return message;
+    //return message;
   }
 
   /**
@@ -2105,28 +2088,19 @@ export class DemographicComponent
   }
 
   /**
-   * @description This is a dialoug box whenever an erroe comes from the server, it will appear.
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
    *
    * @private
    * @memberof DemographicComponent
    */
-  private onError(message: string, error: any) {
+  private showErrorMessage(error: any) {
     this.dataUploadComplete = true;
     this.hasError = true;
-    this.titleOnError = this.errorlabels.errorLabel;
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      this.titleOnError = "";
-    }
+    const titleOnError = this.errorlabels.errorLabel;
+    const message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.config); 
     const body = {
       case: "ERROR",
-      title: this.titleOnError,
+      title: titleOnError,
       message: message,
       yesButtonText: this.errorlabels.button_ok,
     };
