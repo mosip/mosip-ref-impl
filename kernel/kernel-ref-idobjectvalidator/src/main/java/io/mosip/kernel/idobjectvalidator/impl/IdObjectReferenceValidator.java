@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -52,7 +54,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -114,7 +118,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private ObjectMapper mapper;
 
 	/** The Constant READ_OPTIONS. */
-	private static final Configuration READ_OPTIONS = Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS);
+	private static final Configuration READ_OPTIONS = Configuration.defaultConfiguration()
+			.addOptions(Option.SUPPRESS_EXCEPTIONS);
 
 	/** The Constant PATH_LIST_OPTIONS. */
 	private static final Configuration PATH_LIST_OPTIONS = Configuration.defaultConfiguration()
@@ -136,10 +141,14 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	@PostConstruct
 	public void loadData() {
 		resetCache();
+		if (env.containsProperty(CACHE_RESET_CRON_PATTERN)) {
+			ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
+			TaskScheduler scheduler = new ConcurrentTaskScheduler(localExecutor);
+			scheduler.schedule(() -> resetCache(), new CronTrigger(env.getProperty(CACHE_RESET_CRON_PATTERN)));
+		}
 		mapper.registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
 	}
 
-	@Scheduled(cron = "${" + CACHE_RESET_CRON_PATTERN + "}")
 	public void resetCache() {
 		languageList = Set.of();
 		fieldToSubTypeMapping = Map.of();
@@ -208,15 +217,18 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void extractFieldDefinitions(String identitySchema) {
 		JsonPath fieldDefPath = JsonPath.compile(SCHEMA_FIELD_DEF_PATH);
 		List<String> fieldDefPathList = fieldDefPath.read(identitySchema, PATH_LIST_OPTIONS);
-		fieldToFieldDefMapping = IntStream.range(0, fieldDefPathList.size()).boxed().collect(
-				Collectors.toMap(i -> convertToPath(fieldDefPathList.get(i)).split(SLASH)[3], i -> StringUtils.substringAfterLast(
-						JsonPath.compile(fieldDefPathList.get(i)).read(identitySchema, READ_OPTIONS), SLASH)));
+		fieldToFieldDefMapping = IntStream.range(0, fieldDefPathList.size()).boxed()
+				.collect(
+						Collectors.toMap(i -> convertToPath(fieldDefPathList.get(i)).split(SLASH)[3],
+								i -> StringUtils.substringAfterLast(
+										JsonPath.compile(fieldDefPathList.get(i)).read(identitySchema, READ_OPTIONS),
+										SLASH)));
 	}
 
 	private void populateMasterDataCache() {
 		validationDataCache.putAll(fieldToSubTypeMapping.entrySet().stream()
-				.filter(fieldEntry -> !validationDataCache.containsKey(fieldEntry.getKey())).collect(Collectors
-						.toMap(fieldEntry -> fieldEntry.getKey(), fieldEntry -> fetchMasterData(fieldEntry.getValue()))));
+				.filter(fieldEntry -> !validationDataCache.containsKey(fieldEntry.getKey())).collect(Collectors.toMap(
+						fieldEntry -> fieldEntry.getKey(), fieldEntry -> fetchMasterData(fieldEntry.getValue()))));
 		logger.debug("IdObjectReferenceValidator VALIDATION VALUES LOADED: {}", validationDataCache.toString());
 	}
 
@@ -225,14 +237,14 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 			JsonPath jsonPath = JsonPath.compile(IDENTITY_DOB_PATH);
 			JSONArray pathList = jsonPath.read(identity,
 					Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST));
-			String data = jsonPath.read(identity, Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
+			String data = jsonPath.read(identity,
+					Configuration.defaultConfiguration().addOptions(Option.SUPPRESS_EXCEPTIONS));
 			try {
-				if (Objects.nonNull(data)
-						&& LocalDate
-								.parse(data,
-										DateTimeFormatter.ofPattern(env.getProperty(DOB_FORMAT))
-												.withResolverStyle(ResolverStyle.STRICT))
-								.isAfter(DateUtils.getUTCCurrentDateTime().toLocalDate())) {
+				if (Objects.nonNull(data) && LocalDate
+						.parse(data,
+								DateTimeFormatter.ofPattern(env.getProperty(DOB_FORMAT))
+										.withResolverStyle(ResolverStyle.STRICT))
+						.isAfter(DateUtils.getUTCCurrentDateTime().toLocalDate())) {
 					String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
 							convertToPath(String.valueOf(pathList.get(0))));
 					errorList.removeIf(serviceError -> serviceError.getMessage().equals(errorMessage));
@@ -298,16 +310,18 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	}
 
 	private void validateDocumentType(Set<ServiceError> errorList, String field, Map<String, String> data) {
-		languageList.forEach(lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, data.get(TYPE)), true));
+		languageList.forEach(
+				lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, data.get(TYPE)), true));
 	}
 
 	private void validateBiometricType(Set<ServiceError> errorList, String field, Map<String, String> data) {
-		languageList.forEach(lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, data.get(VALUE)), true));
+		languageList.forEach(
+				lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, data.get(VALUE)), true));
 	}
 
 	private void validateStringType(Set<ServiceError> errorList, String field, Object data) {
-		languageList.forEach(
-				lang -> validateValue(errorList, field, null, Map.of(LANGUAGE, lang, VALUE, String.valueOf(data)), false));
+		languageList.forEach(lang -> validateValue(errorList, field, null,
+				Map.of(LANGUAGE, lang, VALUE, String.valueOf(data)), false));
 	}
 
 	private void validateValue(Set<ServiceError> errorList, String field, Integer index, Map<String, String> fieldData,
@@ -315,8 +329,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		refreshCacheOnUnknownValue(field, fieldData);
 		if (!isValueValid(field, fieldData)) {
 			// as language validation is done already, only value validation is done here
-			errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(),
-					String.format(INVALID_INPUT_PARAMETER.getMessage(), resolveValuePath(field, index, containsValue))));
+			errorList.add(new ServiceError(INVALID_INPUT_PARAMETER.getErrorCode(), String
+					.format(INVALID_INPUT_PARAMETER.getMessage(), resolveValuePath(field, index, containsValue))));
 		}
 	}
 
@@ -349,15 +363,14 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		Map<String, List<ObjectNode>> response = mapper.convertValue(responseObject.getResponse(),
 				new TypeReference<Map<String, List<ObjectNode>>>() {
 				});
-		response.entrySet().forEach(entry -> masterDataMap.putAll(entry.getKey(),
-				entry.getValue().stream().flatMap(responseValue -> List
-						.of(env.getProperty(VALUE_NA , ""), 
-								responseValue.get(CODE).isNull() ? "" : responseValue.get(CODE).asText(),
-								responseValue.get(VALUE).isNull() ? "" : responseValue.get(VALUE).asText())
-						.stream())
-				.filter(StringUtils::isNotBlank)
-				.map(StringUtils::trim)
-				.collect(Collectors.toList())));
+		response.entrySet()
+				.forEach(entry -> masterDataMap.putAll(entry.getKey(),
+						entry.getValue().stream()
+								.flatMap(responseValue -> List.of(env.getProperty(VALUE_NA, ""),
+										responseValue.get(CODE).isNull() ? "" : responseValue.get(CODE).asText(),
+										responseValue.get(VALUE).isNull() ? "" : responseValue.get(VALUE).asText())
+										.stream())
+								.filter(StringUtils::isNotBlank).map(StringUtils::trim).collect(Collectors.toList())));
 		return masterDataMap;
 	}
 
