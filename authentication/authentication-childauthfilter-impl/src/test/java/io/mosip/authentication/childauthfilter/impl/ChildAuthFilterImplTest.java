@@ -16,6 +16,10 @@ import io.mosip.authentication.core.indauth.dto.AuthRequestDTO;
 import io.mosip.authentication.core.indauth.dto.AuthTypeDTO;
 import io.mosip.authentication.core.indauth.dto.IdentityInfoDTO;
 
+/**
+ * @author Loganathan Sekar
+ *
+ */
 public class ChildAuthFilterImplTest {
 	
 	private static final int CHILD_MAX_AGE_TEST = 6;
