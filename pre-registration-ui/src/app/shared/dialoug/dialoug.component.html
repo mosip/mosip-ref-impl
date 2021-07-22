@@ -65,9 +65,7 @@
 </div>
 <div *ngIf="input.case === 'MESSAGE'" [dir]="input.textDir? input.textDir: textDir">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
-  <mat-dialog-content>
-    <p style="white-space: pre-line">{{ input.message }}</p>
-  </mat-dialog-content>
+  <mat-dialog-content style="white-space: pre-line;">{{ input.message }}</mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button (click)="onNoClick(true)" cdkFocusInitial class="btn-submit">
       {{ "dialog.action_dismiss" | translate }}
@@ -76,9 +74,7 @@
 </div>
 <div *ngIf="input.case === 'CONFIRMATION'" [dir]="input.textDir? input.textDir: textDir">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
-  <mat-dialog-content>
-    <p style="white-space: pre-line">{{ input.message }}</p>
-  </mat-dialog-content>
+  <mat-dialog-content style="white-space: pre-line;">{{ input.message }}</mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick(input.noButtonText)" class="btn-cancel">
       {{ input.noButtonText }}
@@ -148,11 +144,9 @@
     <p>{{ input.contentLogout }}</p>
   </mat-dialog-content>
 </div>
-<div class="logout-pre-message" *ngIf="input.case === 'ERROR'"  [dir]="input.textDir? input.textDir: textDir">
+<div *ngIf="input.case === 'ERROR'"  [dir]="input.textDir? input.textDir: textDir">
   <h2 mat-dialog-title *ngIf="input.title">{{ input.title }}</h2>
-  <mat-dialog-content>
-    <p style="white-space: pre-line">{{ input.message }}</p>
-  </mat-dialog-content>
+  <mat-dialog-content style="white-space: pre-line;">{{ input.message }}</mat-dialog-content>
   <mat-dialog-actions align="end">
     <button (click)="onNoClick(input.yesButtonText)" mat-button [mat-dialog-close]="confirm" cdkFocusInitial
       class="btn-submit">

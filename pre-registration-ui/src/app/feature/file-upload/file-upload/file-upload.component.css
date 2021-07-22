@@ -207,6 +207,17 @@ mat-select:focus {
   cursor: pointer;
   filter: grayscale(100%);
 }
+.file-uplaoad__body__document-name__delete {
+  float: right;
+  padding-right: 12%;
+}
+
+.file-uplaoad__body__document-name__delete img {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  filter: grayscale(100%);
+}
 .file-upload__button {
   display: inline-flex;
   justify-content: flex-end;

@@ -465,7 +465,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   openDialog(data, width, height?) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
-      height: height,
+      // height: height,
       data: data,
       restoreFocus: false
     });

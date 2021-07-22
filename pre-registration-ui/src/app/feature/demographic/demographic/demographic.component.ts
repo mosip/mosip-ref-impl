@@ -488,7 +488,7 @@ export class DemographicComponent
       this.dialog
         .open(DialougComponent, {
           width: "900px",
-          height: "95%",
+          // height: "95%",
           data: data,
           disableClose: true,
         })
@@ -1118,7 +1118,8 @@ export class DemographicComponent
                 resolve(true);
               },
               (error) => {
-                this.showErrorMessage(error);
+                //loading locations can be fail proof, no need to display err promt to user
+                //this.showErrorMessage(error);
               }
             )
           ); 
