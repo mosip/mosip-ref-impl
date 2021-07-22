@@ -972,8 +972,13 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
+      const nameAttribute = this.configService.getConfigByKey(
+        appConstants.CONFIG_KEYS.preregistartion_identity_name
+      );
       if (
-        this.user.request.demographicDetails.identity.fullName[0].language !==
+        this.user.request.demographicDetails.identity[nameAttribute] &&
+        this.user.request.demographicDetails.identity[nameAttribute].length > 0 && 
+        this.user.request.demographicDetails.identity[nameAttribute][0].language !==
         this.primaryLang
       ) {
         index = 1;
