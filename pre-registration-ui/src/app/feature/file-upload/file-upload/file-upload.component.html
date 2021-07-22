@@ -92,6 +92,9 @@
                 <div *ngFor="let file of users[0].files.documentsMetaData; let j = index">
                   <div *ngIf="file.docCatCode == document.code">
                     <span>{{ file.docName }}</span>
+                    <span *ngIf="!readOnlyMode" class="file-uplaoad__body__document-name__delete" (click)="deleteUploadedFile(file)">
+                      <img src="assets\delete.png" class="delete-img" />
+                    </span>
                     <span class="file-uplaoad__body__document-name__view" (click)="viewFile(file)">
                       <img src="assets\view.png" class="view-img" />
                     </span>

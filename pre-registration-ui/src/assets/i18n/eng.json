@@ -414,6 +414,10 @@
       "msg7": "The file could not be uploaded, please try again.",
       "msg8": "Could not copy document",
       "msg9": "Documents are missing",
+      "msg10": "File could not be deleted.Try Again.",
+      "msg11": "Please confirm that you want to delete file ",
+      "title_confirm": "Delete",
+      "button_cancel": "Cancel",
       "none": "None"
     },
     "appointmentCentreSearch": {

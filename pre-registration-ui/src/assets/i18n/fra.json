@@ -417,6 +417,10 @@
       "msg7": "Le fichier n'a pas pu être téléchargé. Veuillez réessayer.",
       "msg8": "Impossible de copier le document",
       "msg9": "Les documents sont manquants",
+      "msg10": "Le fichier n'a pas pu être supprimé. Réessayez.",
+      "msg11": "Veuillez confirmer que vous souhaitez supprimer le fichier ",
+      "title_confirm": "Supprimer",
+      "button_cancel": "Annuler",
       "none": "aucun"
     },
     "appointmentCentreSearch": {

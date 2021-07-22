@@ -828,6 +828,72 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   /**
+   *@description method to preview a specific file.
+   *
+   * @param {FileModel} file
+   * @memberof FileUploadComponent
+   */
+   deleteUploadedFile(fileMeta) {
+    //console.log(fileMeta);
+    let dialogRef = this.confirmationDialog(fileMeta.docName);
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (confirm == true) {
+        this.disableNavigation = true;
+        const subs = this.dataStorageService
+          .deleteFile(fileMeta.documentId, this.preRegId)
+          .subscribe(
+            (res) => {
+            if (res[appConstants.RESPONSE]) {
+              //console.log("deleted");
+              if (fileMeta.docCatCode === "POA") {
+                console.log(fileMeta.docCatCode);
+                this.sameAsselected = false;
+                this.registration.setSameAs("");
+                this.sameAs = this.registration.getSameAs();
+              } 
+              let allFiles = this.users[0].files.documentsMetaData;
+              if (allFiles) {
+                let updatedFiles = allFiles.filter(file => file.docCatCode !== fileMeta.docCatCode);
+                this.users[0].files.documentsMetaData = updatedFiles;
+              }
+              let index: number;
+              this.LOD.filter((ele, i) => {
+                if (ele.code === fileMeta.docCatCode) index = i;
+              });
+              this.LOD[index].selectedDocName = "";
+              this.LOD[index].selectedDocRefId = "";
+              this.uiFields.forEach((uiField) => {
+                if (uiField.subType == this.LOD[index].code) {
+                  this.userForm.controls[this.LOD[index].id].setValue("");
+                }
+              });
+              this.removeFilePreview();
+            }
+            this.disableNavigation = false;
+          },
+          (error) => {
+            this.disableNavigation = false;
+            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg10);
+          }
+        );
+        this.subscriptions.push(subs);
+      } 
+    });  
+  }
+
+  confirmationDialog(fileName: string) {
+    let body = {
+      case: "CONFIRMATION",
+      title: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
+      message: this.fileUploadLanguagelabels.uploadDocuments.msg11 + fileName,
+      yesButtonText: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
+      noButtonText: this.fileUploadLanguagelabels.uploadDocuments.button_cancel,
+    };
+    const dialogRef = this.openDialog(body, "400px");
+    return dialogRef;
+  }
+
+  /**
    *@description method to preview last available file.
    *
    * @memberof FileUploadComponent
@@ -1209,6 +1275,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                   this.userForm.controls[this.LOD[index].id].setValue("");
                 }
               });
+              this.removeFilePreview();
             }
             this.disableNavigation = false;
           },
