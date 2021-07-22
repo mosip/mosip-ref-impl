@@ -782,7 +782,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
           response[appConstants.RESPONSE].demographicDetails.identity;
         console.log(userDetails);
         const notificationDto = new NotificationDtoModel(
-          userDetails["fullName"][0].value,
+          userDetails[this.name][0].value,
           prid,
           appDate,
           appDateTime,
