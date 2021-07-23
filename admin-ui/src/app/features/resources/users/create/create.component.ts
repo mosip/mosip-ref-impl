@@ -127,7 +127,8 @@ export class CreateComponent{
     this.dataStorageService
       .getFiltersUserDetails()
       .subscribe(response => {
-        this.dropDownValues.deviceTypeCode.primary = response.response.mosipUserDtoList;
+        if(response.response.mosipUserDtoList)        
+          this.dropDownValues.deviceTypeCode.primary = response.response.mosipUserDtoList.sort((a, b) => a.name.localeCompare(b.name));
       });
   }
 

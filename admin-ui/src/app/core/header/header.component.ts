@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
       this.dataService
       .getLoggedInUserZone(
         this.headerService.getUsername(),
-        this.appConfigService.getConfig()['primaryLangCode']
+        this.headerService.getUserPreferredLanguage()
       )
       .subscribe(response => {
         if (response.response) {
