@@ -2,14 +2,17 @@ package io.mosip.authentication.demo.service;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
+import java.security.KeyStore.PrivateKeyEntry;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -27,6 +30,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -42,9 +46,10 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.bouncycastle.operator.OperatorCreationException;
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -72,13 +77,12 @@ import io.mosip.authentication.demo.dto.AuthTypeDTO;
 import io.mosip.authentication.demo.dto.CryptomanagerRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionResponseDto;
-import io.mosip.authentication.demo.dto.JWTSignatureRequestDto;
-import io.mosip.authentication.demo.dto.JWTSignatureResponseDto;
 import io.mosip.authentication.demo.dto.OtpRequestDTO;
 import io.mosip.authentication.demo.dto.RequestDTO;
 import io.mosip.authentication.demo.helper.CryptoUtility;
+import io.mosip.authentication.demo.service.util.KeyMgrUtil;
+import io.mosip.authentication.demo.service.util.SignatureUtil;
 import io.mosip.kernel.core.http.RequestWrapper;
-import io.mosip.kernel.core.http.ResponseWrapper;
 import io.mosip.kernel.core.util.CryptoUtil;
 import io.mosip.kernel.core.util.DateUtils;
 import io.mosip.kernel.core.util.HMACUtils2;
@@ -167,6 +171,37 @@ public class IdaController {
 	private String previousHash;
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
+	
+	@Autowired
+	private SignatureUtil signatureUtil;
+	
+	@Autowired
+	private KeyMgrUtil keyMgrUtil;
+	
+	@PostConstruct
+	public void postConstruct() throws NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException, CertificateException, OperatorCreationException, IOException {
+		initializeKeysAndCerts();
+	}
+
+	private void initializeKeysAndCerts() throws NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException,
+			CertificateException, IOException, OperatorCreationException {
+		String partnerId = env.getProperty("partnerId");
+		String organization = env.getProperty("partnerOrg", env.getProperty("partnerId"));
+		String dirPath = getKeysDirPath();
+		//Check if partner private (<partnerId>.p12) key is present in keys dir
+		PrivateKeyEntry keyEntry = keyMgrUtil.getKeyEntry(dirPath, partnerId);
+		if(keyEntry == null) {
+			System.out.println("Initializing parnter keys and certificates..");
+			keyMgrUtil.getPartnerCertificates(partnerId, organization, dirPath);
+			System.out.println("Completed initializing parnter keys and certificates. Location: " + dirPath);
+		} else {
+			System.out.println("Parnter keys and certificates already available.");
+		}
+	}
+
+	private String getKeysDirPath() {
+		return new File("." + File.separator + "keys").getAbsolutePath();
+	}
 	
 	@FXML
 	private void initialize() {
@@ -577,10 +612,13 @@ public class IdaController {
 			httpHeaders.add("signature", getSignature(reqJson));
 			httpHeaders.add("Content-type", MediaType.APPLICATION_JSON_VALUE);
 			HttpEntity<String> httpEntity = new HttpEntity<>(reqJson,httpHeaders);
+			String url = env.getProperty("ida.otp.url");
+			System.out.println("OTP Request URL: " + url);
+			System.out.println("OTP Request Body: " + reqJson);
 			ResponseEntity<Map> response = restTemplate.exchange(
-					env.getProperty("ida.otp.url"),
+					url,
 					HttpMethod.POST, httpEntity, Map.class);
-			System.err.println(response);
+			System.out.println(response);
 			
 			if (response.getStatusCode().is2xxSuccessful()) {
 				List errors = ((List) response.getBody().get("errors"));
@@ -597,49 +635,18 @@ public class IdaController {
 				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			}
 
-		} catch (KeyManagementException | NoSuchAlgorithmException | JsonProcessingException | UnsupportedEncodingException e) {
+		} catch (KeyManagementException | NoSuchAlgorithmException | IOException | UnrecoverableEntryException | KeyStoreException | CertificateException | OperatorCreationException | JoseException e) {
 			e.printStackTrace();
 		}
 	}	
 
-	private String getSignature(String reqJson) throws KeyManagementException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	private String getSignature(String reqJson) throws KeyManagementException, NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException, CertificateException, OperatorCreationException, JoseException, IOException {
 		return sign(reqJson, false);
 	}
 	
 	public String sign(String data, boolean isPayloadRequired)
-			throws KeyManagementException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		turnOffSslChecking();
-		RestTemplate restTemplate = new RestTemplate();
-		ClientHttpRequestInterceptor interceptor = new ClientHttpRequestInterceptor() {
-
-			@Override
-			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
-					throws IOException {
-				String authToken = generateAuthToken();
-				if (authToken != null && !authToken.isEmpty()) {
-					request.getHeaders().set("Cookie", "Authorization=" + authToken);
-				}
-				return execution.execute(request, body);
-			}
-		};
-
-		restTemplate.setInterceptors(Collections.singletonList(interceptor));
-
-		JWTSignatureRequestDto request = new JWTSignatureRequestDto();
-		request.setApplicationId("IDA");
-		request.setDataToSign(CryptoUtil.encodeBase64(data.getBytes("UTF-8")));
-		request.setIncludeCertHash(true);
-		request.setIncludeCertificate(true);
-		request.setIncludePayload(isPayloadRequired);
-		request.setReferenceId(signRefid);
-		RequestWrapper<JWTSignatureRequestDto> requestWrapper = new RequestWrapper<>();
-		requestWrapper.setRequest(request);
-		HttpEntity<RequestWrapper<JWTSignatureRequestDto>> requestEntity = new HttpEntity<>(requestWrapper);
-		ResponseEntity<ResponseWrapper<JWTSignatureResponseDto>> exchange = restTemplate.exchange(
-				env.getProperty("ida.internal.jwtSign.url"), HttpMethod.POST, requestEntity,
-				new ParameterizedTypeReference<ResponseWrapper<JWTSignatureResponseDto>>() {
-				});
-		return exchange.getBody().getResponse().getJwtSignedData();
+			throws KeyManagementException, NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException, CertificateException, OperatorCreationException, JoseException, IOException {
+		return signatureUtil.sign(data, false, true, false, null, getKeysDirPath(), env.getProperty("partnerId"));
 	}
 
 
