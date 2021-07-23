@@ -26,28 +26,59 @@ The following command should be run in the project to build the application -
 `mvn clean install -Dgpg.skip=true`
 
 
-### Launching the Application (Windows)
-1. Update the `ID-Authentication-Demo-UI.bat` batch file as below:
+### Update the `ID-Authentication-Demo-UI.bat` batch file as below:
 ```
-java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id -DmispLicenseKey=misplkey -DpartnerId=partnerId -DpartnerApiKey=partnerApiKey
--Dmosip.base.url=https://qa.mosip.io -jar ./target/authentication-demo-ui-x.x.x.jar
+java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.captureIris.deviceId=iris-device-id -Dida.request.captureFace.deviceId=face-device-id 
+-Dfinger.device.subid=device-sub-id -DmispLicenseKey=misplkey -DpartnerId=partnerId -DpartnerApiKey=partnerApiKey -DpartnerOrg=partnerOrganization
+-Dmosip.base.url=<mosip_base_url> -jar ./target/authentication-demo-ui-x.x.x.jar
 ```
 
-### Keys Explaination
+#### System Properties Explaination
 * ida.request.captureFinger.deviceId = Finger Device Id
 * ida.request.captureIris.deviceId = Iris Device Id
 * ida.request.captureFace.deviceId = Face Device Id
 * mispLicenseKey = MISP Licenese Key 
 * partnerId = Partner Id
 * partnerApiKey = Partner Api Key
+* partnerOrg = Organization value to be used in the partner certificate creation. If not specified, partner ID will be used as organization.
 * mosip.base.url = MOSIP hosted url
+* finger.device.subid = Used support fingerprint slab device
+
+Note: Use `-Dfinger.device.subid=1` to support fingerprint slab device. For single fingerprint authentication that argument can be removed.
 
 For example,
 ```
-java -Dida.request.captureFinger.deviceId=1 -Dida.request.captureIris.deviceId=2 -Dida.request.captureFace.deviceId=2 -Dmosip.base.url=https://qa.mosip.io -DmispLicenseKey=UmjbDSra8pzOGd5rVtKekTb9D6VdvOQg4Kmw5TzBdw18mbzzME -DpartnerId=748757 -DpartnerApiKey=9418294 -jar ./target/authentication-demo-ui-1.0.9.jar
+java -Dida.request.captureFinger.deviceId=1 -Dida.request.captureIris.deviceId=2 -Dida.request.captureFace.deviceId=2 -Dfinger.device.subid=1 -Dmosip.base.url=https://qa.mosip.io -DmispLicenseKey=UmjbDSra8pzOGd5rVtKekTb9D6VdvOQg4Kmw5TzBdw18mbzzME -DpartnerId=748757 -DpartnerApiKey=9418294 -DpartnerOrg=ABCBank -jar ./target/authentication-demo-ui-1.2.0.jar
 ```
 
-2. Run the batch file.
+### Partner Keys and Certificates
+#### Existing Partner Key and Certificate
+Partner private key and partner certificate will be look up during the application in `<Currecnt_Working_Directory>/keys/` folder:
+* Private key file name: <partner_id>-partner.p12
+* Partner Certificate file name:<partner_id>-partner.cer
+
+The partner certificate should have been signed by MOSIP Partner Management Service (PMS).
+
+#### Partner Keys and Certificate generation for testing:
+If the above mentioned partner private key is not available, the application will auto generate the private keys and certificates with Organization value mentioned in `partnerOrg` property. It will contain below entries under `<Currecnt_Working_Directory>/keys/` folder:
+
+* CA Private key file name: <partner_id>-ca.p12
+* CA Certificate file name:<partner_id>-ca.cer
+* Intermediate Private key file name: <partner_id>-inter.p12
+* Intermedtate Certificate file name:<partner_id>-inter.cer
+* Partner Private key file name: <partner_id>-partner.p12
+* Partner Certificate file name:<partner_id>-partner.cer
+
+Steps to follow for the partner certificate usable in the application:
+
+1. Create a partner with same partner ID and Organization name as in `partnerId` and `partnerOrg` properties.
+2. Upload the CA Certificate and Intermedtate Certificate to MOSIP-PMS's "Upload CA Certificate" Endpoint.
+3. Upload the Partner Certificate to MOSIP-PMS's "Upload Partner Certificate" Endpoint with partnerId and partnerOrg values. This will return the new partner certificate signed by MOSIP PMS.
+4. Replace `<partner_id>-partner.cer` file content with the Partner's PMS signed certificate.
+
+
+### Launching the applicatoin
+* Run the batch file.
 
 
 ## Trouble Shooting
