@@ -16,14 +16,40 @@ import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * The Class SignatureUtil.
+ *  @author Md. Taheer
+ *  @author Loganathan Sekar
+ */
 @Component
 public class SignatureUtil {
 	
+	/** The Constant SIGN_ALGO. */
 	private static final String SIGN_ALGO = "RS256";
 	
+	/** The key mgr util. */
 	@Autowired
 	private KeyMgrUtil keyMgrUtil;
 	
+	/**
+	 * Sign.
+	 *
+	 * @param dataToSign the data to sign
+	 * @param includePayload the include payload
+	 * @param includeCertificate the include certificate
+	 * @param includeCertHash the include cert hash
+	 * @param certificateUrl the certificate url
+	 * @param dirPath the dir path
+	 * @param partnerId the partner id
+	 * @return the string
+	 * @throws JoseException the jose exception
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 * @throws UnrecoverableEntryException the unrecoverable entry exception
+	 * @throws KeyStoreException the key store exception
+	 * @throws CertificateException the certificate exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws OperatorCreationException the operator creation exception
+	 */
 	public String sign(String dataToSign, boolean includePayload,
 			boolean includeCertificate, boolean includeCertHash, String certificateUrl, String dirPath, String partnerId) throws JoseException, NoSuchAlgorithmException, UnrecoverableEntryException, 
 			KeyStoreException, CertificateException, IOException, OperatorCreationException {

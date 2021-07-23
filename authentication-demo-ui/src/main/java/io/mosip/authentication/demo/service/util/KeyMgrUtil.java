@@ -61,32 +61,69 @@ import org.springframework.stereotype.Component;
 
 import io.mosip.authentication.demo.dto.CertificateChainResponseDto;
 
+
+/**
+ * The Class KeyMgrUtil.
+ * @author Md. Taheer
+ * @author Loganathan Sekar
+ */
 @Component
 public class KeyMgrUtil {
     
+    /** The Constant DOMAIN_URL. */
     private static final String DOMAIN_URL = "mosip.base.url";
 
+	/** The Constant CERTIFICATE_TYPE. */
 	private static final String CERTIFICATE_TYPE = "X.509";
 
+    /** The Constant CA_P12_FILE_NAME. */
     private static final String CA_P12_FILE_NAME = "-ca.p12";
+	
+	/** The Constant INTER_P12_FILE_NAME. */
 	private static final String INTER_P12_FILE_NAME = "-inter.p12";
+	
+	/** The Constant PARTNER_P12_FILE_NAME. */
 	private static final String PARTNER_P12_FILE_NAME = "-partner.p12";
 	
+	/** The Constant CA_CER_FILE_NAME. */
 	private static final String CA_CER_FILE_NAME = "-ca.cer";
+	
+	/** The Constant INTER_CER_FILE_NAME. */
 	private static final String INTER_CER_FILE_NAME = "-inter.cer";
+	
+	/** The Constant PARTNER_CER_FILE_NAME. */
 	private static final String PARTNER_CER_FILE_NAME = "-partner.cer";
 
+    /** The Constant TEMP_P12_PWD. */
     private static final char[] TEMP_P12_PWD = "qwerty@123".toCharArray();
 
+    /** The Constant KEY_ALIAS. */
     private static final String KEY_ALIAS = "keyalias";
+    
+    /** The Constant KEY_STORE. */
     private static final String KEY_STORE = "PKCS12";
+    
+    /** The Constant RSA_ALGO. */
     private static final String RSA_ALGO = "RSA";
+    
+    /** The Constant RSA_KEY_SIZE. */
     private static final int RSA_KEY_SIZE = 2048;
+    
+    /** The Constant SIGN_ALGO. */
     private static final String SIGN_ALGO = "SHA256withRSA";
 
+	/** The environment. */
 	@Autowired
 	private Environment environment;
 
+    /**
+     * Convert to certificate.
+     *
+     * @param certData the cert data
+     * @return the certificate
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws CertificateException the certificate exception
+     */
     public Certificate convertToCertificate(String certData) throws IOException, CertificateException {
 		StringReader strReader = new StringReader(certData);
 		PemReader pemReader = new PemReader(strReader);
@@ -155,11 +192,29 @@ public class KeyMgrUtil {
         writeContentToFile(partnerCertificate, partnerCertFilePath);
     }
 
+	/**
+	 * Write content to file.
+	 *
+	 * @param caCertificate the ca certificate
+	 * @param caCertFilePath the ca cert file path
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void writeContentToFile(String caCertificate, String caCertFilePath) throws IOException {
 		File file = new File(caCertFilePath);
 		Files.write(file.toPath(), caCertificate.getBytes(), StandardOpenOption.CREATE_NEW);
 	}
 
+    /**
+     * Gets the private key entry.
+     *
+     * @param filePath the file path
+     * @return the private key entry
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws UnrecoverableEntryException the unrecoverable entry exception
+     * @throws KeyStoreException the key store exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws CertificateException the certificate exception
+     */
     private PrivateKeyEntry getPrivateKeyEntry(String filePath) throws NoSuchAlgorithmException, UnrecoverableEntryException, 
     KeyStoreException, IOException, CertificateException{
         Path path = Paths.get(filePath);
@@ -173,6 +228,13 @@ public class KeyMgrUtil {
         return null;
     }
 
+    /**
+     * Gets the certificate.
+     *
+     * @param keyEntry the key entry
+     * @return the certificate
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private String getCertificate(PrivateKeyEntry keyEntry) throws IOException{
         StringWriter stringWriter = new StringWriter();
         JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
@@ -181,6 +243,24 @@ public class KeyMgrUtil {
         return stringWriter.toString();
     }
     
+    /**
+     * Generate keys.
+     *
+     * @param signKey the sign key
+     * @param signCertType the sign cert type
+     * @param certType the cert type
+     * @param p12FilePath the p 12 file path
+     * @param keyUsage the key usage
+     * @param dateTime the date time
+     * @param dateTimeExp the date time exp
+     * @param organization the organization
+     * @return the private key entry
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws OperatorCreationException the operator creation exception
+     * @throws CertificateException the certificate exception
+     * @throws KeyStoreException the key store exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private PrivateKeyEntry generateKeys(PrivateKey signKey, String signCertType, String certType, String p12FilePath, KeyUsage keyUsage, 
             LocalDateTime dateTime, LocalDateTime dateTimeExp, String organization) throws 
             NoSuchAlgorithmException, OperatorCreationException, CertificateException, KeyStoreException, IOException   {
@@ -211,6 +291,23 @@ public class KeyMgrUtil {
         return new PrivateKeyEntry(keyPair.getPrivate(), chain);
     }
 
+    /**
+     * Generate X 509 certificate.
+     *
+     * @param signPrivateKey the sign private key
+     * @param publicKey the public key
+     * @param signCertType the sign cert type
+     * @param certType the cert type
+     * @param keyUsage the key usage
+     * @param dateTime the date time
+     * @param dateTimeExp the date time exp
+     * @param organization the organization
+     * @return the x 509 certificate
+     * @throws OperatorCreationException the operator creation exception
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws CertIOException the cert IO exception
+     * @throws CertificateException the certificate exception
+     */
     private X509Certificate generateX509Certificate(PrivateKey signPrivateKey, PublicKey publicKey, String signCertType, 
             String certType, KeyUsage keyUsage, LocalDateTime dateTime, LocalDateTime dateTimeExp, String organization) throws 
             OperatorCreationException, NoSuchAlgorithmException, CertIOException, CertificateException {
@@ -234,6 +331,13 @@ public class KeyMgrUtil {
         return new JcaX509CertificateConverter().getCertificate(certHolder);
 	}
     
+    /**
+     * Gets the certificate attributes.
+     *
+     * @param cn the cn
+     * @param organization the organization
+     * @return the certificate attributes
+     */
     private static X500Name getCertificateAttributes(String cn, String organization) {
 		 
 		X500NameBuilder builder = new X500NameBuilder(RFC4519Style.INSTANCE);
@@ -245,6 +349,19 @@ public class KeyMgrUtil {
 		return builder.build();
 	}
 
+    /**
+     * Gets the key entry.
+     *
+     * @param dirPath the dir path
+     * @param parterId the parter id
+     * @return the key entry
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws UnrecoverableEntryException the unrecoverable entry exception
+     * @throws KeyStoreException the key store exception
+     * @throws CertificateException the certificate exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws OperatorCreationException the operator creation exception
+     */
     public PrivateKeyEntry getKeyEntry(String dirPath, String parterId) throws NoSuchAlgorithmException, UnrecoverableEntryException, 
             KeyStoreException, CertificateException, IOException, OperatorCreationException {
         String filePrepend = parterId;
@@ -253,6 +370,19 @@ public class KeyMgrUtil {
         return getPrivateKeyEntry(partnerFilePath);
     }
 
+    /**
+     * Update partner certificate.
+     *
+     * @param partnerType the partner type
+     * @param updateCert the update cert
+     * @param dirPath the dir path
+     * @return true, if successful
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws UnrecoverableEntryException the unrecoverable entry exception
+     * @throws KeyStoreException the key store exception
+     * @throws CertificateException the certificate exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public boolean updatePartnerCertificate(String partnerType, X509Certificate updateCert, String dirPath) throws NoSuchAlgorithmException, 
             UnrecoverableEntryException, KeyStoreException, CertificateException, IOException {
 
@@ -279,16 +409,36 @@ public class KeyMgrUtil {
         return false;
     }
 
+	/**
+	 * Gets the p 12 pass.
+	 *
+	 * @return the p 12 pass
+	 */
 	private char[] getP12Pass() {
 		String pass = environment.getProperty("p12.password");
 		return  pass == null ? TEMP_P12_PWD : pass.toCharArray();
 	}
     
+    /**
+     * Gets the keys dir path.
+     *
+     * @return the keys dir path
+     */
     public String getKeysDirPath() {
     	String domain = environment.getProperty(DOMAIN_URL, "localhost").replace("https://", "").replace("http://", "").replace("/", "");
 		return System.getProperty("java.io.tmpdir") + File.separator + "IDA-" + domain;
     }
 
+	/**
+	 * Gets the certificate entry.
+	 *
+	 * @param dirPath the dir path
+	 * @param partnerId the partner id
+	 * @return the certificate entry
+	 * @throws KeyStoreException the key store exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws CertificateException the certificate exception
+	 */
 	public X509Certificate getCertificateEntry(String dirPath, String partnerId) throws KeyStoreException, IOException, CertificateException {
         String partnerCertFilePath = dirPath + '/' + partnerId + PARTNER_CER_FILE_NAME;
 
@@ -304,6 +454,12 @@ public class KeyMgrUtil {
         return null;
 	}
 	
+	/**
+	 * Trim begin end.
+	 *
+	 * @param pKey the key
+	 * @return the string
+	 */
 	public static String trimBeginEnd(String pKey) {
 		pKey = pKey.replaceAll("-*BEGIN([^-]*)-*(\r?\n)?", "");
 		pKey = pKey.replaceAll("-*END([^-]*)-*(\r?\n)?", "");
