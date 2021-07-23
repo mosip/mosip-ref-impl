@@ -33,7 +33,9 @@ java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.capture
 -Dmosip.base.url=<mosip_base_url> -jar ./target/authentication-demo-ui-x.x.x.jar
 ```
 
-#### System Properties Explaination
+#### Application Properties Explaination
+Below properties can be given in VM Args or in application properties file.
+
 * ida.request.captureFinger.deviceId = Finger Device Id
 * ida.request.captureIris.deviceId = Iris Device Id
 * ida.request.captureFace.deviceId = Face Device Id
