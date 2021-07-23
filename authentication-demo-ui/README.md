@@ -53,27 +53,27 @@ java -Dida.request.captureFinger.deviceId=1 -Dida.request.captureIris.deviceId=2
 
 ### Partner Keys and Certificates
 #### Existing Partner Key and Certificate
-Partner private key and partner certificate will be look up during the application in `<Currecnt_Working_Directory>/keys/` folder:
-* Private key file name: <partner_id>-partner.p12
-* Partner Certificate file name:<partner_id>-partner.cer
+Partner private key and partner certificate will be looked up during the application in `<Currecnt_Working_Directory>/keys/` folder:
+* Private key file name: `<partner_id>-partner.p12`
+* Partner Certificate file name: `<partner_id>-partner.cer`
 
 The partner certificate should have been signed by MOSIP Partner Management Service (PMS).
 
 #### Partner Keys and Certificate generation for testing:
 If the above mentioned partner private key is not available, the application will auto generate the private keys and certificates with Organization value mentioned in `partnerOrg` property. It will contain below entries under `<Currecnt_Working_Directory>/keys/` folder:
 
-* CA Private key file name: <partner_id>-ca.p12
-* CA Certificate file name:<partner_id>-ca.cer
-* Intermediate Private key file name: <partner_id>-inter.p12
-* Intermedtate Certificate file name:<partner_id>-inter.cer
-* Partner Private key file name: <partner_id>-partner.p12
-* Partner Certificate file name:<partner_id>-partner.cer
+* CA Private key file name: `<partner_id>-ca.p12`
+* CA Certificate file name: `<partner_id>-ca.cer`
+* Intermediate Private key file name: `<partner_id>-inter.p12`
+* Intermedtate Certificate file name: `<partner_id>-inter.cer`
+* Partner Private key file name: `<partner_id>-partner.p12`
+* Partner Certificate file name: `<partner_id>-partner.cer`
 
-Steps to follow to make the partner certificate usable in the authentication demo UI application:
+Steps to follow to make the generated partner certificate usable in the authentication demo UI application:
 
 1. Create a partner with same partner ID and Organization name as in `partnerId` and `partnerOrg` properties.
 2. Upload the CA Certificate and Intermedtate Certificate to MOSIP-PMS's "Upload CA Certificate" Endpoint.
-3. Upload the Partner Certificate to MOSIP-PMS's "Upload Partner Certificate" Endpoint with partnerId and partnerOrg values. This will return the new partner certificate signed by MOSIP PMS.
+3. Upload the Partner Certificate to MOSIP-PMS's "Upload Partner Certificate" Endpoint with the same `partnerId` and `partnerOrg` property values. This will return the new partner certificate signed by MOSIP PMS.
 4. Replace `<partner_id>-partner.cer` file content with the Partner's PMS signed certificate.
 
 
