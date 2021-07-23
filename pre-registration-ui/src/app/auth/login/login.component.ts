@@ -461,26 +461,21 @@ export class LoginComponent implements OnInit {
                 document.getElementById("minutesSpan").innerText = this.minutes;
               }
               this.timer = setInterval(this.timerFn, 1000);
-            } else {
-              this.errorMessage = this.validationMessages["serverUnavailable"];
-              if(this.enableCaptcha){
-                this.inputContactDetails = "";
-                this.resetCaptcha = true;
-                this.captchaToken = null;
-                this.enableSendOtp = true;
-                console.log("Resetting captcha:" + this.resetCaptcha);
-              }
-            }
+            } 
           },
           (error) => {
             clearInterval(this.timer);
-            console.log(error);
+            //console.log(error);
+            if (this.enableCaptcha){
+              //this.inputContactDetails = "";
+              this.resetCaptcha = true;
+              this.captchaToken = null;
+              this.enableSendOtp = false;  
+              console.log("Resetting captcha:" + this.resetCaptcha);
+            }
             this.loadingMessage = "";
-            this.errorMessage = this.validationMessages["serverUnavailable"];
-            this.resetCaptcha = true;
-            this.captchaToken = null;
-            this.enableSendOtp = true;
-            console.log("Resetting captcha:" + this.resetCaptcha);
+            const otpFailedToSendMsg = this.validationMessages["serverUnavailable"];
+            this.showErrorMessage(error, otpFailedToSendMsg);
           }
         );
       // dynamic update of button text for Resend and Verify
@@ -498,18 +493,15 @@ export class LoginComponent implements OnInit {
               localStorage.setItem("loginId", this.inputContactDetails);
               this.disableVerify = false;
               this.router.navigate([this.userPreferredLanguage, "dashboard"]);
-            } else {
-              //console.log(response);
-              this.showVerify = false;
-              this.disableVerify = false;
-              this.showOtpMessage();
-            }
+            } 
           },
           (error) => {
             //console.log(error);
+            this.inputOTP = "";
             this.disableVerify = false;
             this.showVerify = false;
-            this.showErrorMessage();
+            let optInvalidMsg = this.Languagelabels["message"]["login"]["msg3"];
+            this.showErrorMessage(error, optInvalidMsg);
           }
         );
     }
@@ -577,16 +569,32 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  showErrorMessage() {
-    let response = this.Languagelabels;
-    let errormessage = response[appConstants.ERROR][appConstants.ERROR];
-    const message = {
-      case: "MESSAGE",
-      message: errormessage,
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof DemographicComponent
+   */
+   private showErrorMessage(error: any, customMsg?: string) {
+    let errorlabels = this.Languagelabels[appConstants.ERROR];
+    let apiErrorCodes = this.Languagelabels[appConstants.API_ERROR_CODES];
+    const titleOnError = errorlabels.errorLabel;
+    const errorCode = Utils.getErrorCode(error);
+    let message = "";
+    if (apiErrorCodes[errorCode]) {
+      message = apiErrorCodes[errorCode];
+    } else {
+      message = customMsg; 
+    }
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
+      message: message,
+      yesButtonText: errorlabels.button_ok,
     };
     this.dialog.open(DialougComponent, {
       width: "400px",
-      data: message,
+      data: body,
     });
   }
 }
