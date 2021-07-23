@@ -74,7 +74,7 @@ Steps to follow to make the generated partner certificate usable in the authenti
 1. Create a partner with same partner ID and Organization name as in `partnerId` and `partnerOrg` properties.
 2. Upload the CA Certificate and Intermedtate Certificate to MOSIP-PMS's "Upload CA Certificate" Endpoint.
 3. Upload the Partner Certificate to MOSIP-PMS's "Upload Partner Certificate" Endpoint with the same `partnerId` and `partnerOrg` property values. This will return the new partner certificate signed by MOSIP PMS.
-4. Replace `<partner_id>-partner.cer` file content with the Partner's PMS signed certificate.
+4. Replace `<partner_id>-partner.cer` file content with the new PMS signed partner certificate.
 
 
 ### Launching the application
