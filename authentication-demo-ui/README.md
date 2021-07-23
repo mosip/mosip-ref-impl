@@ -40,9 +40,9 @@ java -Dida.request.captureFinger.deviceId=finger-device-id -Dida.request.capture
 * mispLicenseKey = MISP Licenese Key 
 * partnerId = Partner Id
 * partnerApiKey = Partner Api Key
-* partnerOrg = Organization value to be used in the partner certificate creation. If not specified, partner ID will be used as organization.
+* partnerOrg = Organization value to be used in the partner certificate auto-generation (invoked in case the partner certificate is not present). If not specified, the partner ID will be used as organization. Refer below section on partner keys and certificates.
 * mosip.base.url = MOSIP hosted url
-* finger.device.subid = Used support fingerprint slab device
+* finger.device.subid = Used to support fingerprint slab device
 
 Note: Use `-Dfinger.device.subid=1` to support fingerprint slab device. For single fingerprint authentication that argument can be removed.
 
