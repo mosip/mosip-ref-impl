@@ -344,9 +344,9 @@ export class DemographicComponent
 
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getIdentityJson().subscribe((response) => {
+      this.dataStorageService.getIdentityJson().subscribe(async (response) => {
         //response = identityStubJson;
-        console.log(response);
+        //console.log(response);
         // this.identityData = response["identity"];
         // this.locationHeirarchy = [...response["locationHierarchy"]];
         this.identityData = response["response"]["idSchema"]["identity"];
@@ -385,7 +385,7 @@ export class DemographicComponent
         this.setLocations();
         // this.setGender();
         // this.setResident();
-        this.setDynamicFieldValues();
+        await this.setDynamicFieldValues();
         resolve(true);
       });
     });
@@ -868,15 +868,14 @@ export class DemographicComponent
   }
 
   private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues();
+    await this.getDynamicFieldValues(null);
     // if (this.primaryLang !== this.secondaryLang) {
     //   await this.getDynamicFieldValues(this.secondaryLang);
     // }
   }
-
-  getDynamicFieldValues(pageNo = 0) {
+  async getDynamicFieldValues(pageNo) {
     let pageNumber;
-    if (pageNo > 0) {
+    if (pageNo == null) {
       pageNumber = 0;
     } else {
       pageNumber = pageNo;
@@ -884,27 +883,23 @@ export class DemographicComponent
     return new Promise((resolve) => {
       this.dataStorageService
         .getDynamicFieldsandValuesForAllLang(pageNumber)
-        .subscribe((response) => {
-          //console.log(response);
+        .subscribe(async (response) => {
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
-            //console.log(field);
-            dynamicField.forEach((res) => {
-              //console.log(res);
+            dynamicField.forEach(async (res) => {
               if (field.id === res.name && res.langCode === this.primaryLang) {
-                //console.log(res["fieldVal"]);
-                this.filterOnLangCode(
+                await this.filterOnLangCode(
                   this.primaryLang,
                   res.name,
                   res["fieldVal"]
                 );
-                //console.log(this.primarydropDownFields);
               }
               if (
                 field.id === res.name &&
+                this.primaryLang !== this.secondaryLang && 
                 res.langCode === this.secondaryLang
               ) {
-                this.filterOnLangCode(
+                await this.filterOnLangCode(
                   this.secondaryLang,
                   res.name,
                   res["fieldVal"]
@@ -918,10 +913,15 @@ export class DemographicComponent
           }
           pageNumber = pageNumber + 1;
           if (totalPages > pageNumber) {
-            this.getDynamicFieldValues(pageNumber);
+            await this.getDynamicFieldValues(pageNumber);
+            resolve(true);
+          } else {
+            resolve(true);
           }
+        },
+        (error) => {
+          this.onError(this.errorlabels.error, error);
         });
-      resolve(true);
     });
   }
 
@@ -1290,9 +1290,7 @@ export class DemographicComponent
   private filterOnLangCode(langCode: string, field: string, entityArray: any) {
     return new Promise((resolve, reject) => {
       if (entityArray) {
-        //console.log(entityArray);
         entityArray.filter((element: any) => {
-          //console.log(element);
           if (element.langCode === langCode) {
             let codeValue: CodeValueModal;
             if (element.genderName) {
@@ -1709,7 +1707,7 @@ export class DemographicComponent
       }
       identityRequest = { identity: newIdentityObj };
     }
-    console.log(identityRequest);
+    //console.log(identityRequest);
     return identityRequest;
   }
 
