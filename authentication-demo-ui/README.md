@@ -69,7 +69,7 @@ If the above mentioned partner private key is not available, the application wil
 * Partner Private key file name: <partner_id>-partner.p12
 * Partner Certificate file name:<partner_id>-partner.cer
 
-Steps to follow for the partner certificate usable in the application:
+Steps to follow to make the partner certificate usable in the authentication demo UI application:
 
 1. Create a partner with same partner ID and Organization name as in `partnerId` and `partnerOrg` properties.
 2. Upload the CA Certificate and Intermedtate Certificate to MOSIP-PMS's "Upload CA Certificate" Endpoint.
@@ -77,7 +77,7 @@ Steps to follow for the partner certificate usable in the application:
 4. Replace `<partner_id>-partner.cer` file content with the Partner's PMS signed certificate.
 
 
-### Launching the applicatoin
+### Launching the application
 * Run the batch file.
 
 
