@@ -623,5 +623,60 @@
             "cancelTxt":"Cancel",
             "applyTxt":"Apply"
         }
+    },
+    "isActive":{
+        "Active":"ACTIVE",
+        "InActive":"INACTIVE"
+    },
+    "generatecsr": {
+        "title": "Generate CSR",
+        "applicationId" :"Application Id",
+        "referenceId": "ReferenceId",
+        "commonName": "Common Name",
+        "organization": "Organization",
+        "organizationUnit": "Organization unit",
+        "location": "Location",
+        "state": "State",
+        "country": "Country",
+        "button":"Generate"
+    },
+    "generatemasterkey": {
+        "title": "Generate Masterkey",
+        "applicationId" :"Application Id",
+        "referenceId": "ReferenceId",
+        "commonName": "Common Name",
+        "organization": "Organization",
+        "organizationUnit": "Organization unit",
+        "location": "Location",
+        "state": "State",
+        "country": "Country",
+        "force": "Force",
+        "objectType": "Object Type",
+        "button":"Generate"
+    },
+    "getcertificate": {
+        "title": "Get Certificate",
+        "applicationId" :"Application Id",
+        "referenceId": "ReferenceId",
+        "button":"Get Certificate"
+    },
+    "uploadcertificate": {
+        "title": "Upload Certificate",
+        "applicationId" :"Application Id",
+        "referenceId": "ReferenceId",
+        "chooseFile" : "Choose File",
+        "uploadYourFile":"Upload Your File",
+        "button":"Generate"
+    },
+    "uploadotherdomaincertificate": {
+        "title": "Upload Other Domain Certificate",
+        "applicationId" :"Application Id",
+        "referenceId": "ReferenceId",
+        "chooseFile" : "Choose File",
+        "uploadYourFile":"Upload Your File",
+        "button":"Generate"
+    },    
+    "genericerror":{
+        "fieldValidation":"This field is required"
     }
 }

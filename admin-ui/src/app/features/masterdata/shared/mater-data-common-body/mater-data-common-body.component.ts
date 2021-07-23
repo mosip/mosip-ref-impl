@@ -153,7 +153,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Device Specification";
         this.getDeviceTypes();
         this.showPanel(this.pageName);
-        this.primaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
+        this.primaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "device-types"){
         this.pageName = "Device Type";
         this.showPanel(this.pageName);

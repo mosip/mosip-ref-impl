@@ -7,7 +7,7 @@
             <img src="./assets/images/icon_center.svg" alt="img">
           </div>
           <div class="item2">
-            <h3>Generate Masterkey</h3>
+            <h3>{{'generatemasterkey.title' | translate}}</h3>
           </div>
         </div>
       </mat-card>
@@ -17,7 +17,7 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="createForm" class="primary-form" *ngIf="createForm"> 
             <mat-form-field>
-              <mat-label>Object Type</mat-label>
+              <mat-label>{{'generatemasterkey.objectType' | translate}}</mat-label>
               <mat-select formControlName="objectType">
                 <mat-option
                   *ngFor="let data of objectType"
@@ -27,11 +27,11 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <mat-label>Application Id</mat-label>
+              <mat-label>{{'generatemasterkey.applicationId' | translate}}</mat-label>
               <mat-select formControlName="applicationId">
                 <mat-option
                   *ngFor="let data of applicationId"
@@ -41,7 +41,7 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -49,11 +49,11 @@
                 #referenceId
                 matInput
                 formControlName="referenceId"
-                placeholder="ReferenceId"
+                placeholder="{{'generatemasterkey.referenceId' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -61,11 +61,11 @@
                 #commonName
                 matInput
                 formControlName="commonName"
-                placeholder="Common Name"
+                placeholder="{{'generatemasterkey.commonName' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -73,11 +73,11 @@
                 #organization
                 matInput
                 formControlName="organization"
-                placeholder="Organization"
+                placeholder="{{'generatemasterkey.organization' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -85,11 +85,11 @@
                 #organizationUnit
                 matInput
                 formControlName="organizationUnit"
-                placeholder="Organization unit"
+                placeholder="{{'generatemasterkey.organizationUnit' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -97,11 +97,11 @@
                 #location
                 matInput
                 formControlName="location"
-                placeholder="Location"
+                placeholder="{{'generatemasterkey.location' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -109,11 +109,11 @@
                 #state
                 matInput
                 formControlName="state"
-                placeholder="State"
+                placeholder="{{'generatemasterkey.state' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             
@@ -122,16 +122,16 @@
                 #country
                 matInput
                 formControlName="country"
-                placeholder="Country"
+                placeholder="{{'generatemasterkey.country' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field>
-              <mat-label>Force</mat-label>
+              <mat-label>{{'generatemasterkey.force' | translate}}</mat-label>
               <mat-select formControlName="force">
                 <mat-option
                   *ngFor="let data of force"
@@ -141,7 +141,7 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
           </div>
@@ -152,7 +152,7 @@
             mat-raised-button
             (click)="submit()"
           >
-          Generate
+          {{'generatemasterkey.button' | translate}}
           </button>
         </mat-card-actions>
       </mat-card>

@@ -622,56 +622,111 @@
             "applyTxt":"تطبيق"
         }
     },
-        "popupMessages": {
-            "create": {
-                "title": "التأكيد",
-                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
-                "yesBtnText": "تؤكد",
-                "noBtnText": "إلغاء",
-                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
-            },
-            "edit": {
-                "title": "التأكيد",
-                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
-                "yesBtnText": "تؤكد",
-                "noBtnText": "إلغاء",
-                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
-            },
-            "update-success": {
-                "title": "نجاح",
-                "message": ["يتم تحديث تفاصيل المركز بنجاح. \n معرف المركز: ", " \n اسم المركز: "],
-                "btnTxt": "حسنا"
-            },
-            "update-error": {
-                "title": "خطأ",
-                "message": "كانت هناك بعض المشاكل في تحديث المركز. حاول مرة اخرى",
-                "btnTxt": "حسنا"
-            },
-            "create-success": {
-                "title": "نجاح",
-                "message": ["تم إنشاء المركز بنجاح باستخدام معرف المركز:", "واسم المركز:"],
-                "btnTxt": "حسنا"
-            },
-            "create-error": {
-                "title": "خطأ",
-                "message": "كان هناك بعض المشكلة في إنشاء مركز. حاول مرة اخرى",
-                "btnTxt": "حسنا"
-            },
-            "navigation-popup": {
-                "title": "التأكيد",
-                "message": "هل أنت متأكد أنك تريد التنقل بعيدًا عن هذه الصفحة؟ سيتم فقد أي بيانات غير محفوظة.",
-                "yesBtnTxt": "غادر",
-                "noBtnTxt": "البقاء"
-            },
-            "noData": {
-                "title": "خطأ",
-                "message": "لا يوجد سجلات",
-                "btnTxt": "حسنا"
-            },
-            "lunchTimeValidation": {
-                "title": "خطأ",
-                "message": "يرجى تحديد توقيت المركز قبل اختيار توقيت الغداء",
-                "btnTxt": "حسنا"
-            }
+    "popupMessages": {
+        "create": {
+            "title": "التأكيد",
+            "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+            "yesBtnText": "تؤكد",
+            "noBtnText": "إلغاء",
+            "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+        },
+        "edit": {
+            "title": "التأكيد",
+            "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+            "yesBtnText": "تؤكد",
+            "noBtnText": "إلغاء",
+            "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+        },
+        "update-success": {
+            "title": "نجاح",
+            "message": ["يتم تحديث تفاصيل المركز بنجاح. \n معرف المركز: ", " \n اسم المركز: "],
+            "btnTxt": "حسنا"
+        },
+        "update-error": {
+            "title": "خطأ",
+            "message": "كانت هناك بعض المشاكل في تحديث المركز. حاول مرة اخرى",
+            "btnTxt": "حسنا"
+        },
+        "create-success": {
+            "title": "نجاح",
+            "message": ["تم إنشاء المركز بنجاح باستخدام معرف المركز:", "واسم المركز:"],
+            "btnTxt": "حسنا"
+        },
+        "create-error": {
+            "title": "خطأ",
+            "message": "كان هناك بعض المشكلة في إنشاء مركز. حاول مرة اخرى",
+            "btnTxt": "حسنا"
+        },
+        "navigation-popup": {
+            "title": "التأكيد",
+            "message": "هل أنت متأكد أنك تريد التنقل بعيدًا عن هذه الصفحة؟ سيتم فقد أي بيانات غير محفوظة.",
+            "yesBtnTxt": "غادر",
+            "noBtnTxt": "البقاء"
+        },
+        "noData": {
+            "title": "خطأ",
+            "message": "لا يوجد سجلات",
+            "btnTxt": "حسنا"
+        },
+        "lunchTimeValidation": {
+            "title": "خطأ",
+            "message": "يرجى تحديد توقيت المركز قبل اختيار توقيت الغداء",
+            "btnTxt": "حسنا"
         }
+    },
+    "isActive":{
+        "Active":"نشيط",
+        "InActive":"غير نشط"
+    },
+    "generatecsr": {
+        "title": "توليد CSR",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "commonName": "اسم شائع",
+        "organization": "منظمة",
+        "organizationUnit": "التنظيم",
+        "location": "موقع",
+        "state": "حالة",
+        "country": "دولة",
+        "button":"يولد"
+    },
+    "generatemasterkey": {
+        "title": "توليد Masterkey",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "commonName": "اسم شائع",
+        "organization": "منظمة",
+        "organizationUnit": "التنظيم",
+        "location": "موقع",
+        "state": "حالة",
+        "country": "دولة",
+        "force": "فرض",
+        "objectType": "نوع الكائن",
+        "button":"يولد"
+    },
+    "getcertificate": {
+        "title": "احصل على الشهادة",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "button":"احصل على الشهادة"
+    },
+    "uploadcertificate": {
+        "title": "تحميل الشهادة",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "chooseFile" : "اختر ملف",
+        "uploadYourFile":"ارفع ملفك",
+        "button":"يولد"
+    },
+    "uploadotherdomaincertificate": {
+        "title": "تحميل شهادة مجال أخرى",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "chooseFile" : "اختر ملف",
+        "uploadYourFile":"ارفع ملفك",
+        "button":"يولد"
+    },   
+    "genericerror":{
+        "fieldValidation":"هذه الخانة مطلوبه"
+    }
 }

@@ -97,8 +97,12 @@ export class CreateComponent {
       for (const i in this.uploadForm.controls) {
         if (this.uploadForm.controls[i]) {
           if(i === "fileName"){
-            document.getElementById("fileName").classList.add('addredborder');
-            this.fileNameError = true;
+            if(!this.uploadForm.get('fileName').value){
+              document.getElementById("fileName").classList.add('addredborder');
+              this.fileNameError = true;
+            }else{
+              console.log("this.uploadForm.get('fileName').value>>>"+this.uploadForm.get('fileName').value);
+            }
           }else{
             this.uploadForm.controls[i].markAsTouched();
           }

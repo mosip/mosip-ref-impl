@@ -7,7 +7,7 @@
             <img src="./assets/images/icon_center.svg" alt="img">
           </div>
           <div class="item2">
-            <h3>GenerateCSR</h3>
+            <h3>{{'generatecsr.title' | translate}}</h3>
           </div>
         </div>
       </mat-card>
@@ -21,11 +21,11 @@
                 #applicationId
                 matInput
                 formControlName="applicationId"
-                placeholder="Application Id"
+                placeholder="{{'generatecsr.applicationId' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -33,11 +33,11 @@
                 #referenceId
                 matInput
                 formControlName="referenceId"
-                placeholder="ReferenceId"
+                placeholder="{{'generatecsr.referenceId' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -45,11 +45,11 @@
                 #commonName
                 matInput
                 formControlName="commonName"
-                placeholder="Common Name"
+                placeholder="{{'generatecsr.commonName' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -57,11 +57,11 @@
                 #organization
                 matInput
                 formControlName="organization"
-                placeholder="Organization"
+                placeholder="{{'generatecsr.organization' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -69,11 +69,11 @@
                 #organizationUnit
                 matInput
                 formControlName="organizationUnit"
-                placeholder="Organization unit"
+                placeholder="{{'generatecsr.organizationUnit' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -81,11 +81,11 @@
                 #location
                 matInput
                 formControlName="location"
-                placeholder="Location"
+                placeholder="{{'generatecsr.location' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -93,11 +93,11 @@
                 #state
                 matInput
                 formControlName="state"
-                placeholder="State"
+                placeholder="{{'generatecsr.state' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
             
@@ -106,11 +106,11 @@
                 #country
                 matInput
                 formControlName="country"
-                placeholder="Country"
+                placeholder="{{'generatecsr.country' | translate}}"
                 [value]=""
               />
               <mat-error *ngIf="createForm.controls.applicationId.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field>
           </div>
@@ -121,7 +121,7 @@
             mat-raised-button
             (click)="submit()"
           >
-          Generate
+          {{'generatecsr.button' | translate}}
           </button>
         </mat-card-actions>
       </mat-card>

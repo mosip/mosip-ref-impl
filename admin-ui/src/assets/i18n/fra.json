@@ -623,5 +623,60 @@
             "cancelTxt":"Annuler",
             "applyTxt":"Appliquer"
         }
+    },
+    "isActive":{
+        "Active":"ACTIVE",
+        "InActive":"INACTIVE"
+    },
+    "generatecsr": {
+        "title": "Générer la RSE",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "commonName": "Nom commun",
+        "organization": "Organisation",
+        "organizationUnit": "Unité d'organisation",
+        "location": "Emplacement",
+        "state": "État",
+        "country": "Pays",
+        "button":"produire"
+    },
+    "generatemasterkey": {
+        "title": "Générer le passe-partout",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "commonName": "Nom commun",
+        "organization": "Organisation",
+        "organizationUnit": "Unité d'organisation",
+        "location": "Emplacement",
+        "state": "État",
+        "country": "Pays",
+        "force": "Obliger",
+        "objectType": "Type d'objet",
+        "button":"produire"
+    },
+    "getcertificate": {
+        "title": "Obtenir un certificat",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "button":"Obtenir un certificat"
+    },
+    "uploadcertificate": {
+        "title": "Télécharger le certificat",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "chooseFile" : "Choisir le fichier",
+        "uploadYourFile":"Téléchargez votre fichier",
+        "button":"produire"
+    },
+    "uploadotherdomaincertificate": {
+        "title": "Télécharger un autre certificat de domaine",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "chooseFile" : "Choisir le fichier",
+        "uploadYourFile":"Téléchargez votre fichier",
+        "button":"produire"
+    },  
+    "genericerror":{
+        "fieldValidation":"Ce champ est requis"
     }
 }
