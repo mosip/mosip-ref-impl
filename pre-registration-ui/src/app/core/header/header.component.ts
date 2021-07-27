@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   flag = false;
   subscription: Subscription;
   userPreferredLang: string;
-
+  textDir = localStorage.getItem("dir");
   constructor(
     public authService: AuthService,
     private translate: TranslateService,
@@ -27,8 +27,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.translate.use(localStorage.getItem("langCode")); 
+    this.textDir = localStorage.getItem("dir");
   }
-
+  textDirection() {
+    return localStorage.getItem("dir");
+  }
   onLogoClick() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate([
@@ -36,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         "dashboard",
       ]);
     } else {
-      this.router.navigate(["/"]);
+      this.router.navigate([`/${localStorage.getItem("userPrefLanguage")}`]);
     }
   }
 
@@ -58,17 +61,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     .subscribe((response) => {
       languagelabels = response["login"]["logout_msg"];
       const data = {
-        case: "MESSAGE",
+        case: "CONFIRMATION",
+        title: response["header"]["link_logout"],
         message: languagelabels,
+        yesButtonText: response["dialog"]["action_ok"],
+        noButtonText: response["dialog"]["action_close"]
       };
       this.dialog
         .open(DialougComponent, {
-          width: "350px",
+          width: "400px",
           data: data,
         })
         .afterClosed()
         .subscribe((response) => {
-          if (response) {
+          if (response === true) {
             localStorage.removeItem("loggedOutLang");
             localStorage.removeItem("loggedOut");
             this.authService.onLogout();

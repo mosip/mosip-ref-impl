@@ -1,4 +1,4 @@
-﻿app_id,key_validity_duration,is_active,cr_by,cr_dtimes
+app_id,key_validity_duration,is_active,cr_by,cr_dtimes
 PRE_REGISTRATION,1095,TRUE,mosipadmin,now()
 REGISTRATION,1095,TRUE,mosipadmin,now()
 REGISTRATION_PROCESSOR,1095,TRUE,mosipadmin,now()
@@ -11,3 +11,4 @@ PMS,1095,TRUE,mosipadmin,now()
 DATASHARE,1095,TRUE,mosipadmin,now()
 CREDENTIAL_SERVICE,1095,TRUE,mosipadmin,now()
 RESIDENT,1095,TRUE,mosipadmin,now()
+ADMIN_SERVICES,1095,TRUE,mosipadmin,now()

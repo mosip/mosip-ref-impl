@@ -174,6 +174,8 @@ public enum ErrorMessages {
 	JSON_PROCESSING_EXCEPTION("Json processing exception"),
 
 	REG_CENTER_ID_NOT_FOUND("Registration center id not found"),
+	
+	APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION("Appointment cannot be booked for incomplete application"),
 
 	CANCEL_BOOKING_CANNOT_BE_DONE("Appointment cancelling cannot be done within");
 	/**

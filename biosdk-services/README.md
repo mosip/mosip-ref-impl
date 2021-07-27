@@ -18,12 +18,12 @@ mvn clean install
 ### Run jar
 
 ```text
-java -Dloader.path=<biosdk jar provided by third-party vendors> -Dbiosdk_class=<classpath of class that implements IBioApi interface> -jar biosdk-services-<version>.jar
+java -Dloader.path=<biosdk jar provided by third-party vendors> -Dbiosdk_bioapi_impl=<classpath of class that implements IBioApi interface> -jar biosdk-services-<version>.jar
 ```
 
 For example:
 ```text
-java -Dloader.path=mock-sdk.jar -Dbiosdk_class=io.mosip.mock.sdk.impl.SampleSDK -jar biosdk-services-1.1.3.jar
+java -Dloader.path=mock-sdk.jar -Dbiosdk_bioapi_impl=io.mosip.mock.sdk.impl.SampleSDK -jar biosdk-services-1.1.3.jar
 ```
 
 ### Check service status
@@ -43,22 +43,14 @@ Service is running... Fri Jan 29 08:49:28 UTC 2021
 
 ### Build docker image
 
-Run the Dockerfile by providing biosdk_jar_path argument where biosdk_jar_path is the url of Bio SDK jar that implements IBioApi interface methods
-
-In case the third party vendor biosdk jar is not hosted, you can change the Dockerfile accordingly  
+Build the Dockerfile to create docker image
 
 ### Run docker image
 
-Run the docker image by providing biosdk_class as environment variable where biosdk_class is the path of the class that implements IBioApi interface methods
+Run the docker image by providing:
+* biosdk_zip_url (environment variable), url for third-party biosdk library zip file 
+* biosdk_bioapi_impl (environment variable) where biosdk_zip_url is the path of the class that implements IBioApi interface methods
 
-```properties
-biosdk_class=<path of the class that implements IBioApi interface methods>
-  ```
-
-for example (in case of Mock SDK)
-```properties
-biosdk_class=io.mosip.mock.sdk.impl.SampleSDK
-```
 
 ### Check service status
 ```text

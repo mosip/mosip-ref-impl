@@ -21,32 +21,25 @@ import { UserModel } from "src/app/shared/models/demographic-model/user.modal";
   styleUrls: ["./acknowledgement.component.css"],
 })
 export class AcknowledgementComponent implements OnInit, OnDestroy {
-  usersInfo = [];
-  finalUsersInfoDetails = {};
+  usersInfoArr = [];
+  ackDataArr = [];
+  ackDataItem = {};
   guidelines = [];
   guidelinesDetails = [];
-  opt = {};
+  pdfOptions = {};
   fileBlob: Blob;
+  errorlabels: any;
+  apiErrorCodes: any;
   showSpinner: boolean = true;
   notificationRequest = new FormData();
   bookingDataPrimary = "";
   bookingDataSecondary = "";
   subscriptions: Subscription[] = [];
   notificationTypes: string[];
-  preRegId: any;
-  nameList: NameList = {
-    preRegId: "",
-    fullName: "",
-    fullNameSecondaryLang: "",
-    regDto: "",
-    status: "",
-    registrationCenter: "",
-    bookingData: "",
-    postalCode: "",
-    langCode: "",
-  };
+  preRegIds: any;
   regCenterId;
   langCode;
+  textDir = localStorage.getItem("dir");
   name = "";
   applicantContactDetails = [];
   constructor(
@@ -64,21 +57,26 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     if (this.router.url.includes("multiappointment")) {
-      this.preRegId = [...JSON.parse(localStorage.getItem("multiappointment"))];
+      this.preRegIds = [...JSON.parse(localStorage.getItem("multiappointment"))];
     } else {
       this.activatedRoute.params.subscribe((param) => {
-        this.preRegId = [param["appId"]];
+        this.preRegIds = [param["appId"]];
       });
     }
+    this.dataStorageService
+    .getI18NLanguageFiles(this.langCode)
+    .subscribe((response) => {
+      this.errorlabels = response[appConstants.ERROR];
+      this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+    });
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
-    await this.getUserInfo(this.preRegId);
-    let i,
-      self = this;
-    for (i = 0; i < self.usersInfo.length; i++) {
-      await this.getRegCenterDetails(self.usersInfo[i].langCode, i);
-      await this.getLabelDetails(self.usersInfo[i].langCode, i);
+    await this.getUserInfo(this.preRegIds);
+    //console.log(this.usersInfoArr);
+    for (let i = 0; i < this.usersInfoArr.length; i++) {
+      await this.getRegCenterDetails(this.usersInfoArr[i].langCode, i);
+      await this.getLabelDetails(this.usersInfoArr[i].langCode, i);
     }
 
     let notificationTypes = this.configService
@@ -87,9 +85,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.notificationTypes = notificationTypes.map((item) =>
       item.toUpperCase()
     );
-    this.opt = {
-      margin: [0, 0.5, 0.5, 0],
-      filename: this.usersInfo[0].preRegId + ".pdf",
+    this.pdfOptions = {
+      margin: [0.25, 0.25, 0.25, 0.25],
+      filename: this.usersInfoArr[0].preRegId + ".pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 1 },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
@@ -100,31 +98,25 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.bookingService.resetSendNotification();
       this.automaticNotification();
     }
-
-    await this.manipulateUserInfo();
+    this.prepareAckDataForUI();
+    this.showSpinner = false;
   }
 
-  getUserInfo(preRegId) {
+  getUserInfo(preRegIds: string[]) {
     return new Promise((resolve) => {
-      preRegId.forEach(async (prid: any, index) => {
+      preRegIds.forEach(async (prid: any, index) => {
         await this.getUserDetails(prid).then(async (user) => {
           let regDto;
-
+          //console.log(user);
           await this.getAppointmentDetails(prid).then((appointmentDetails) => {
             regDto = appointmentDetails;
           });
-
-          let i,
-            self = this;
-          for (
-            i = 0;
-            i < user["request"].demographicDetails.identity.gender.length;
-            i++
-          ) {
-            const nameList: NameList = {
+          const demographicData = user["request"].demographicDetails.identity;
+          const applicationLanguages = Utils.getApplicationLangs(user["request"]);
+          applicationLanguages.forEach(applicationLang => {
+            const nameListObj: NameList = {
               preRegId: "",
               fullName: "",
-              fullNameSecondaryLang: "",
               regDto: "",
               status: "",
               registrationCenter: "",
@@ -133,26 +125,29 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               langCode: "",
               labelDetails: [],
             };
-            nameList.preRegId = user["request"].preRegistrationId;
-            nameList.status = user["request"].statusCode;
-            nameList.fullName =
-              user["request"].demographicDetails.identity[self.name][i].value;
-            nameList.postalCode =
-              user["request"].demographicDetails.identity.postalCode;
-            nameList.registrationCenter = "";
-            nameList.langCode =
-              user["request"].demographicDetails.identity.gender[i].language;
-            nameList.regDto = regDto;
-            self.usersInfo.push(nameList);
-          }
-
-          this.applicantContactDetails[1] =
-            user["request"].demographicDetails.identity.phone;
-          this.applicantContactDetails[0] =
-            user["request"].demographicDetails.identity.email;
+            nameListObj.preRegId = user["request"].preRegistrationId;
+            nameListObj.status = user["request"].statusCode;
+            if (demographicData[this.name]) {
+              let nameValues = demographicData[this.name];
+              nameValues.forEach(nameVal => {
+                if (nameVal["language"] == applicationLang) {
+                  nameListObj.fullName = nameVal["value"];
+                }
+              });  
+            }
+            if (demographicData["postalCode"]) {
+              nameListObj.postalCode = demographicData["postalCode"];
+            }
+            nameListObj.registrationCenter = "";
+            nameListObj.langCode = applicationLang;
+            nameListObj.regDto = regDto;
+            this.usersInfoArr.push(nameListObj);
+            //console.log(this.usersInfoArr);
+          });
+          this.applicantContactDetails[1] = demographicData["phone"];
+          this.applicantContactDetails[0] = demographicData["email"];
         });
-
-        if (index === preRegId.length - 1) {
+        if (index === preRegIds.length - 1) {
           resolve(true);
         }
       });
@@ -172,6 +167,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             )
           );
         }
+      },
+      (error) => {
+        this.showErrorMessage(error);
       });
     });
   }
@@ -181,10 +179,15 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.dataStorageService
         .getAppointmentDetails(preRegId)
         .subscribe((response) => {
-          console.log(response);
-          this.regCenterId =
+          //console.log(response);
+          if (response[appConstants.RESPONSE]) {
+            this.regCenterId =
             response[appConstants.RESPONSE].registration_center_id;
+          }
           resolve(response[appConstants.RESPONSE]);
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -195,27 +198,34 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         .getRegistrationCentersById(this.regCenterId, langCode)
         .subscribe((response) => {
           if (response[appConstants.RESPONSE]) {
-            this.usersInfo[index].registrationCenter =
+            this.usersInfoArr[index].registrationCenter =
               response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
 
-  getLabelDetails(langCode, index) {
-    this.dataStorageService
+  async getLabelDetails(langCode, index) {
+    return new Promise((resolve) => {
+      this.dataStorageService
       .getI18NLanguageFiles(langCode)
       .subscribe((response) => {
-        this.usersInfo[index].labelDetails.push(response["acknowledgement"]);
+        this.usersInfoArr[index].labelDetails.push(response["acknowledgement"]);
+        resolve(true);
       });
+    });
   }
 
-  manipulateUserInfo() {
-    let i,
-      j,
-      self = this,
-      preRegIdLabels = [],
+  prepareAckDataForUI() {
+    this.preRegIds.forEach(prid => {
+      let ackDataItem = {
+        "qrCodeBlob": null,
+      };
+      let preRegIdLabels = [],
       appDateLabels = [],
       contactPhoneLabels = [],
       messages = [],
@@ -223,84 +233,125 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       nameValues = [],
       labelRegCntrs = [],
       regCntrNames = [],
-      appLangCode = []; /*, labelRegCntrDtl = [], RegCntrDtl = []*/
-    self.finalUsersInfoDetails["qrCodeBlob"] = self.usersInfo[0].qrCodeBlob;
-    self.finalUsersInfoDetails["preRegId"] = self.usersInfo[0].preRegId;
-    self.finalUsersInfoDetails["bookingTimePrimary"] =
-      self.usersInfo[0].bookingTimePrimary;
-    self.finalUsersInfoDetails["bookingDataPrimary"] =
-      self.usersInfo[0].bookingDataPrimary;
-    self.finalUsersInfoDetails["contactPhone"] =
-      self.usersInfo[0].registrationCenter.contactPhone;
-    for (i = 0; i < self.usersInfo.length; i++) {
-      preRegIdLabels.push(self.usersInfo[i].labelDetails[0].label_pre_id);
-      appDateLabels.push(
-        self.usersInfo[i].labelDetails[0].label_appointment_date_time
-      );
-      contactPhoneLabels.push(
-        self.usersInfo[i].labelDetails[0].label_cntr_contact_number
-      );
-      messages.push(self.usersInfo[i].labelDetails[0].message);
-      labelNames.push(self.usersInfo[i].labelDetails[0].label_name);
-      nameValues.push(self.usersInfo[i].fullName);
-      labelRegCntrs.push(self.usersInfo[i].labelDetails[0].label_reg_cntr);
-      regCntrNames.push(self.usersInfo[i].registrationCenter.name);
-      appLangCode.push(self.usersInfo[i].langCode);
-      /*labelRegCntrDtl.push(self.usersInfo[i].labelDetails[0].label_reg_cntr_dtl);
-      RegCntrDtl.push(self.usersInfo[i].registrationCenter.name);*/
-    }
-    self.finalUsersInfoDetails["appLangCode"] = appLangCode;
-    self.finalUsersInfoDetails["preRegIdLabels"] = JSON.stringify(
-      preRegIdLabels
-    )
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["appDateLabels"] = JSON.stringify(appDateLabels)
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["contactPhoneLabels"] = JSON.stringify(
-      contactPhoneLabels
-    )
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["messages"] = JSON.stringify(messages)
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["labelNames"] = JSON.stringify(labelNames)
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["nameValues"] = JSON.stringify(nameValues)
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["labelRegCntrs"] = JSON.stringify(labelRegCntrs)
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    self.finalUsersInfoDetails["regCntrNames"] = JSON.stringify(regCntrNames)
-      .replace(/\[/g, "")
-      .replace(/,/g, " / ")
-      .replace(/"/g, " ")
-      .replace(/]/g, "");
-    for (j = 0; j < self.guidelines.length; j++) {
-      if (appLangCode.includes(self.guidelines[j].langCode)) {
-        self.finalUsersInfoDetails[
-          self.guidelines[j].langCode
-        ] = self.guidelines[j].fileText.split("\n");
+      appLangCode = [],
+      bookingDataPrimary = [],
+      bookingTimePrimary = [];
+
+      this.ackDataItem["preRegId"] = prid;
+      
+      this.ackDataItem["contactPhone"] =
+        this.usersInfoArr[0].registrationCenter.contactPhone;
+      
+      this.usersInfoArr.forEach(userInfo => {
+        if (userInfo.preRegId == prid) {
+          this.ackDataItem["qrCodeBlob"] = userInfo.qrCodeBlob;
+          const labels = userInfo.labelDetails[0];
+          preRegIdLabels.push(labels.label_pre_id);
+          appDateLabels.push(labels.label_appointment_date_time);
+          contactPhoneLabels.push(labels.label_cntr_contact_number);
+          labelNames.push(labels.label_name);
+          labelRegCntrs.push(labels.label_reg_cntr);
+          nameValues.push(userInfo.fullName);
+          regCntrNames.push(userInfo.registrationCenter.name);
+          appLangCode.push(userInfo.langCode);
+          //set the message in user login lang if available
+          let fltrLangs = this.usersInfoArr.filter(userInfoItm => userInfoItm.preRegId == userInfo.preRegId && userInfoItm.langCode == this.langCode);
+          if (fltrLangs.length == 1) {
+            //matching lang found
+            bookingTimePrimary.push({
+              langCode: userInfo.langCode,
+              time:userInfo.bookingTimePrimary,
+              langAvailable: true
+            });
+            bookingDataPrimary.push({
+              langCode: userInfo.langCode,
+              date:userInfo.bookingDataPrimary,
+              langAvailable: true
+            });  
+            let fltr = messages.filter(msg => msg.preRegId == fltrLangs[0].preRegId);
+            if (fltr.length == 0) {
+              messages.push({
+                "preRegId": fltrLangs[0].preRegId,
+                "message": fltrLangs[0].labelDetails[0].message
+              });
+            }
+          } else {
+            //matching lang found
+            bookingTimePrimary.push({
+              langCode: userInfo.langCode,
+              time:userInfo.bookingTimePrimary,
+              langAvailable: false
+            });
+            bookingDataPrimary.push({
+              langCode: userInfo.langCode,
+              date:userInfo.bookingDataPrimary,
+              langAvailable: false
+            });  
+            let fltr = messages.filter(msg => msg.preRegId == userInfo.preRegId);
+            if (fltr.length == 0) {
+              messages.push({
+                "preRegId": userInfo.preRegId,
+                "message": userInfo.labelDetails[0].message
+              });  
+            }
+          }
+        }
+      });
+
+      this.ackDataItem["appLangCode"] = appLangCode;
+      this.ackDataItem["bookingTimePrimary"] = bookingTimePrimary;
+      this.ackDataItem["bookingDataPrimary"] = bookingDataPrimary;
+      this.ackDataItem["preRegIdLabels"] = JSON.stringify(
+        preRegIdLabels
+      )
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      this.ackDataItem["appDateLabels"] = JSON.stringify(appDateLabels)
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      this.ackDataItem["contactPhoneLabels"] = JSON.stringify(
+        contactPhoneLabels
+      )
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      this.ackDataItem["messages"] = messages;
+      this.ackDataItem["labelNames"] = JSON.stringify(labelNames)
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      this.ackDataItem["nameValues"] = JSON.stringify(nameValues)
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      this.ackDataItem["labelRegCntrs"] = JSON.stringify(labelRegCntrs)
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      this.ackDataItem["regCntrNames"] = JSON.stringify(regCntrNames)
+        .replace(/\[/g, "")
+        .replace(/,/g, " / ")
+        .replace(/"/g, " ")
+        .replace(/]/g, "");
+      for (let j = 0; j < this.guidelines.length; j++) {
+        if (appLangCode.includes(this.guidelines[j].langCode)) {
+          this.ackDataItem[
+            this.guidelines[j].langCode
+          ] = this.guidelines[j].fileText.split("\n");
+        }
       }
-    }
+      this.ackDataArr.push(this.ackDataItem);
+      this.ackDataItem = {};
+    });
+    
   }
 
   async apiCalls() {
@@ -308,16 +359,16 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.formatDateTime();
       //await this.qrCodeForUser();
       await this.getTemplate();
-      this.showSpinner = false;
+     
       resolve(true);
     });
   }
 
   async qrCodeForUser() {
     return new Promise((resolve) => {
-      this.usersInfo.forEach(async (user) => {
+      this.usersInfoArr.forEach(async (user) => {
         await this.generateQRCode(user);
-        if (this.usersInfo.indexOf(user) === this.usersInfo.length - 1) {
+        if (this.usersInfoArr.indexOf(user) === this.usersInfoArr.length - 1) {
           resolve(true);
         }
       });
@@ -325,26 +376,31 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   formatDateTime() {
-    for (let i = 0; i < this.usersInfo.length; i++) {
-      if (!this.usersInfo[i].bookingData) {
-        this.usersInfo[i].bookingDataPrimary = Utils.getBookingDateTime(
-          this.usersInfo[i].regDto.appointment_date,
-          this.usersInfo[i].regDto.time_slot_from,
-          localStorage.getItem("langCode")
+    const ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
+    this.usersInfoArr.forEach(userInfo => {
+      if (!userInfo.bookingData) {
+        userInfo.bookingDataPrimary = Utils.getBookingDateTime(
+          userInfo.regDto.appointment_date,
+          userInfo.regDto.time_slot_from,
+          userInfo.langCode,
+          ltrLangs
         );
-        this.usersInfo[i].bookingTimePrimary = Utils.formatTime(
-          this.usersInfo[i].regDto.time_slot_from
+        userInfo.bookingTimePrimary = Utils.formatTime(
+          userInfo.regDto.time_slot_from
         );
       } else {
-        const date = this.usersInfo[i].bookingData.split(",");
-        this.usersInfo[i].bookingDataPrimary = Utils.getBookingDateTime(
+        const date = userInfo.bookingData.split(",");
+        userInfo.bookingDataPrimary = Utils.getBookingDateTime(
           date[0],
           date[1],
-          localStorage.getItem("langCode")
+          userInfo.langCode,
+          ltrLangs
         );
-        this.usersInfo[i].bookingTimePrimary = Utils.formatTime(date[1]);
-      }
-    }
+        userInfo.bookingTimePrimary = Utils.formatTime(date[1]);
+      }    
+    });  
   }
 
   automaticNotification() {
@@ -353,13 +409,13 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-
   getTemplate() {
     return new Promise((resolve) => {
       const subs = this.dataStorageService
         .getGuidelineTemplate("Onscreen-Acknowledgement")
         .subscribe((response) => {
           this.guidelines = response["response"]["templates"];
+          //console.log(this.guidelines);
           resolve(true);
         });
       this.subscriptions.push(subs);
@@ -369,13 +425,14 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   download() {
     window.scroll(0, 0);
     const element = document.getElementById("print-section");
-    html2pdf(element, this.opt);
+    
+    html2pdf(element, this.pdfOptions);
   }
 
   async generateBlob() {
     const element = document.getElementById("print-section");
     return await html2pdf()
-      .set(this.opt)
+      .set(this.pdfOptions)
       .from(element)
       .outputPdf("dataurlstring");
   }
@@ -402,16 +459,17 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   sendAcknowledgement() {
     const data = {
-      case: "APPLICANTS",
+      case: "SEND_ACKNOWLEDGEMENT",
       notificationTypes: this.notificationTypes,
     };
     const subs = this.dialog
       .open(DialougComponent, {
         width: "350px",
-        data: data,
+        data: data
       })
       .afterClosed()
       .subscribe((applicantNumber) => {
+        //console.log(applicantNumber);
         if (applicantNumber !== undefined) {
           this.sendNotification(applicantNumber, true);
         }
@@ -421,12 +479,12 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
 
   async generateQRCode(name) {
     try {
-      const index = this.usersInfo.indexOf(name);
-      if (!this.usersInfo[index].qrCodeBlob) {
+      const index = this.usersInfoArr.indexOf(name);
+      if (!this.usersInfoArr[index].qrCodeBlob) {
         return new Promise((resolve) => {});
       }
     } catch (ex) {
-      console.log("this.usersInfo[index].qrCodeBlob>>>" + ex.messages);
+      console.log("this.usersInfo[index].qrCodeBlob >>> " + ex.messages);
     }
   }
 
@@ -434,7 +492,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.fileBlob = await this.createBlob();
     let notificationObject = {};
     let preRegId;
-    this.usersInfo.forEach((user) => {
+    this.usersInfoArr.forEach((user) => {
       preRegId = user.preRegId;
       notificationObject[user.langCode] = new NotificationDtoModel(
         user.fullName,
@@ -470,9 +528,33 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     );
     const subs = this.dataStorageService
       .sendNotification(this.notificationRequest)
-      .subscribe(() => {});
+      .subscribe((response) => {},
+      (error) => {
+        this.showErrorMessage(error);
+      });
     this.subscriptions.push(subs);
     this.notificationRequest = new FormData();
+  }
+
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof AcknowledgementComponent
+   */
+   private showErrorMessage(error: any) {
+    const titleOnError = this.errorlabels.errorLabel;
+    const message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.configService); 
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
+      message: message,
+      yesButtonText: this.errorlabels.button_ok,
+    };
+    this.dialog.open(DialougComponent, {
+      width: "400px",
+      data: body,
+    });
   }
 
   ngOnDestroy() {

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,13 +55,25 @@ public class IdObjectReferenceValidatorTest {
 
 	@Autowired
 	private IdObjectValidator validator;
+	
+	private String schema;
+	
+	@Before
+	public void init() throws IOException {
+		schema = IOUtils.toString(ClassLoader.getSystemResourceAsStream("schema.json"), "UTF-8");
+	}
 
 	@Test
 	public void testValidData() throws JsonParseException, JsonMappingException, IdObjectValidationFailedException,
 			IdObjectIOException, IOException, InvalidIdSchemaException {
 		String identityString = "{\"identity\":{\"residenceStatus\":[{\"language\":\"eng\",\"value\":\"Native\"}],\"IDSchemaVersion\":1.0,\"UIN\":4920546943,\"fullName\":[{\"language\":\"eng\",\"value\":\"Ibrahim Ibn Ali\"}],\"dateOfBirth\":\"1955/04/15\",\"age\":45,\"gender\":[{\"language\":\"eng\",\"value\":\"Male\"}],\"addressLine1\":[{\"language\":\"eng\",\"value\":\"exemple d'adresse ligne 1\"}],\"addressLine2\":[{\"language\":\"eng\",\"value\":\"exemple d'adresse ligne 2\"}],\"addressLine3\":[{\"language\":\"eng\",\"value\":\"exemple d'adresse ligne 2\"}],\"region\":[{\"language\":\"eng\",\"value\":\"Rabat Sale Kenitra\"}],\"province\":[{\"language\":\"eng\",\"value\":\"Kenitra\"}],\"city\":[{\"language\":\"eng\",\"value\":\"Kenitra\"}],\"postalCode\":\"10112\",\"phone\":\"9876543210\",\"email\":\"abc@xyz.com\",\"CNIENumber\":\"6789545678909\",\"localAdministrativeAuthority\":[{\"language\":\"eng\",\"value\":\"Mograne\"}],\"parentOrGuardianRID\":212124324784912,\"parentOrGuardianUIN\":212124324784912,\"parentOrGuardianName\":[{\"language\":\"eng\",\"value\":\"salma\"}],\"proofOfAddress\":{\"format\":\"pdf\",\"type\":\"Ration Card\",\"value\":\"fileReferenceID\"},\"proofOfIdentity\":{\"format\":\"txt\",\"type\":\"DOC001\",\"value\":\"fileReferenceID\"},\"proofOfRelationship\":{\"format\":\"pdf\",\"type\":\"Birth Certificate\",\"value\":\"fileReferenceID\"},\"proofOfDateOfBirth\":{\"format\":\"pdf\",\"type\":\"passport\",\"value\":\"fileReferenceID\"},\"individualBiometrics\":{\"format\":\"cbeff\",\"version\":1.0,\"value\":\"fileReferenceID\"},\"parentOrGuardianBiometrics\":{\"format\":\"cbeff\",\"version\":1.1,\"value\":\"fileReferenceID\"}}}";
-		validator.validateIdObject("",
-				new ObjectMapper().readValue(identityString.getBytes(StandardCharsets.UTF_8), Object.class));
+		try {
+			
+			validator.validateIdObject(schema,
+					new ObjectMapper().readValue(identityString.getBytes(StandardCharsets.UTF_8), Object.class));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -67,7 +81,7 @@ public class IdObjectReferenceValidatorTest {
 			JsonMappingException, IOException, InvalidIdSchemaException {
 		try {
 			String identityString = "{\"identity\":{\"IDSchemaVersion\":1.0,\"UIN\":4920546943,\"fullName\":[{\"language\":\"ara\",\"value\":\"ابراهيم بن علي\"},{\"language\":\"eng\",\"value\":\"Ibrahim Ibn Ali\"}],\"dateOfBirth\":\"1955/04/15\",\"age\":45,\"gender\":[{\"language\":\"ara\",\"value\":\"الذكر\"},{\"language\":\"eng\",\"value\":\"male\"}],\"addressLine1\":[{\"language\":\"ara\",\"value\":\"عنوان العينة سطر 1\"},{\"language\":\"eng\",\"value\":\"exemple d'adresse ligne 1\"}],\"addressLine2\":[{\"language\":\"ara\",\"value\":\"عنوان العينة سطر 2\"},{\"language\":\"eng\",\"value\":\"exemple d'adresse ligne 2\"}],\"addressLine3\":[{\"language\":\"ara\",\"value\":\"عنوان العينة سطر 2\"},{\"language\":\"eng\",\"value\":\"exemple d'adresse ligne 2\"}],\"region\":[{\"language\":\"ara\",\"value\":\"طنجة - تطوان - الحسيمة\"},{\"language\":\"eng\",\"value\":\"T\"}],\"province\":[{\"language\":\"ara\",\"value\":\"فاس-مكناس\"},{\"language\":\"eng\",\"value\":\"Fès-Meknès\"}],\"city\":[{\"language\":\"ara\",\"value\":\"الدار البيضاء\"},{\"language\":\"eng\",\"value\":\"Casablanca\"}],\"postalCode\":\"570004\",\"phone\":\"9876543210\",\"email\":\"abc@xyz.com\",\"CNIENumber\":\"6789545678909\",\"localAdministrativeAuthority\":[{\"language\":\"ara\",\"value\":\"سلمى\"},{\"language\":\"eng\",\"value\":\"salma\"}],\"parentOrGuardianRID\":212124324784912,\"parentOrGuardianUIN\":212124324784912,\"parentOrGuardianName\":[{\"language\":\"ara\",\"value\":\"سلمى\"},{\"language\":\"eng\",\"value\":\"salma\"}],\"proofOfAddress\":{\"format\":\"pdf\",\"type\":\"drivingLicense\",\"value\":\"fileReferenceID\"},\"proofOfIdentity\":{\"format\":\"txt\",\"type\":\"passport\",\"value\":\"fileReferenceID\"},\"proofOfRelationship\":{\"format\":\"pdf\",\"type\":\"passport\",\"value\":\"fileReferenceID\"},\"proofOfDateOfBirth\":{\"format\":\"pdf\",\"type\":\"passport\",\"value\":\"fileReferenceID\"},\"individualBiometrics\":{\"format\":\"cbeff\",\"version\":1.0,\"value\":\"fileReferenceID\"},\"parentOrGuardianBiometrics\":{\"format\":\"cbeff\",\"version\":1.1,\"value\":\"fileReferenceID\"}}}";
-			validator.validateIdObject("",
+			validator.validateIdObject(schema,
 					new ObjectMapper().readValue(identityString.getBytes(StandardCharsets.UTF_8), Object.class));
 		} catch (IdObjectValidationFailedException e) {
 			assertTrue(Optional.ofNullable(e.getCodes())

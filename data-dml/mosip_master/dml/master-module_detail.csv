@@ -1,4 +1,4 @@
-﻿id,name,descr,lang_code,is_active,cr_by,cr_dtimes
+id,name,descr,lang_code,is_active,cr_by,cr_dtimes
 10001,Pre-Registration,Web portal for pre-registrations,eng,TRUE,superadmin,now()
 10001,ما قبل التسجيل,بوابة الويب للتسجيلات المسبقة,ara,TRUE,superadmin,now()
 10002,Registration Client,Desktop application for Registrations,eng,TRUE,superadmin,now()
@@ -17,3 +17,4 @@
 10004,Authentification ID,Application pour lauthentification du fournisseur de services tiers,fra,TRUE,superadmin,now()
 10005,Contrôle didentité,Portail Web pour la configuration dapplications,fra,TRUE,superadmin,now()
 10006,Portail Résident,Portail Web pour les services de génération de post-ID,fra,TRUE,superadmin,now()
+10007,PMS,Partner Management System,eng,TRUE,superadmin,now()

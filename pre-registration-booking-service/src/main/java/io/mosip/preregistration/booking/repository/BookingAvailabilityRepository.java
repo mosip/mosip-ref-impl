@@ -9,8 +9,10 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -54,10 +56,39 @@ public interface BookingAvailabilityRepository extends BaseRepository<Availibity
 	 * @param regcntr_id
 	 * @return Availability entity
 	 */
+	@Deprecated(forRemoval = true)
 	public AvailibityEntity findByFromTimeAndToTimeAndRegDateAndRegcntrId(
 			@Param("slot_from_time") LocalTime slotFromTime, @Param("slot_to_time") LocalTime slotToTime,
 			@Param("availability_date") LocalDate regDate, @Param("regcntr_id") String regcntrd);
+
+	/**
+	 * @param reg_date
+	 * @param regcntr_id
+	 * @param slot_from_time
+	 * @param slot_to_time
+	 * @return Availability entity
+	 */
+	public AvailibityEntity findByRegDateAndRegcntrIdAndFromTimeAndToTime(
+			@Param("availability_date") LocalDate regDate,
+		    @Param("regcntr_id") String regcntrd,
+			@Param("slot_from_time") LocalTime slotFromTime, @Param("slot_to_time") LocalTime slotToTime );
 	
+	
+	/**
+	 * @param reg_date
+	 * @param regcntr_id
+	 * @param slot_from_time
+	 * @param slot_to_time
+	 * @return Availability entity
+	 * This API performs a database lock. Use it with care. 
+	 */
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	public AvailibityEntity findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(
+			@Param("availability_date") LocalDate regDate,
+		    @Param("regcntr_id") String regcntrd,
+			@Param("slot_from_time") LocalTime slotFromTime, @Param("slot_to_time") LocalTime slotToTime );
+	
+
 	/**
 	 * 
 	 * @param regDate
@@ -117,7 +148,6 @@ public interface BookingAvailabilityRepository extends BaseRepository<Availibity
 	 * @param Registration endDate
 	 * @return List AvailibityEntity based registration id and registration date.
 	 */
-	public List<AvailibityEntity> findByRegcntrIdAndRegDateGreaterThanEqualAndRegDateLessThanEqualOrderByFromTimeAsc(String regcntrId, LocalDate starteDate,LocalDate endDate);
-
+	public List<AvailibityEntity> findByRegcntrIdAndRegDateGreaterThanEqualAndRegDateLessThanEqualOrderByFromTimeAsc(String regcntrId, LocalDate starteDate,LocalDate endDate); 
 
 }

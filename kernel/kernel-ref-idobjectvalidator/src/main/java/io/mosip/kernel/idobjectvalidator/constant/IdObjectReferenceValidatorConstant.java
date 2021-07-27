@@ -6,27 +6,46 @@ package io.mosip.kernel.idobjectvalidator.constant;
  * @author Manoj SP
  */
 public class IdObjectReferenceValidatorConstant {
+
+	public static final String TYPE = "type";
+
+	public static final String VALUE = "value";
+
+	public static final String CODE = "code";
+
+	public static final String LANGUAGE = "language";
+
+	public static final String BIOMETRICS_TYPE = "biometricsType";
+
+	public static final String DOCUMENT_TYPE = "documentType";
+
+	public static final String SIMPLE_TYPE = "simpleType";
+
+	public static final String STRING = "String";
+
+	public static final String SLASH = "/";
+
+	public static final String SCHEMA_FIELD_DEF_PATH = "$.properties.identity.properties.*.$ref";
+
+	public static final String SCHEMA_SUB_TYPE_PATH = "$.properties.identity.properties.*.subType";
 	
-	public static final String ROOT_PATH = "identity";
-	public static final String IDENTITY_ARRAY_VALUE_FIELD = "value";
-	public static final String MASTERDATA_LOCATIONS_PATH = "locations.*";
-	public static final String DOC_TYPE_SCHEMA_FORMAT = "identity.%s.type";
-	public static final String JSON_PATH_WILDCARD_SEARCH = "*.%s";
-	public static final String SIMPLE_TYPE_VALUE_PATH = "%s.*.value";
-	public static final String SIMPLE_TYPE_LANGUAGE_PATH = "%s.*.language";
-	public static final String IDENTITY_REFERENCE_IDENTITY_NUMBER_PATH = "identity.referenceIdentityNumber";
-	public static final String IDENTITY_LANGUAGE_PATH = "identity.*.*.language";
-	public static final String IDENTITY_GENDER_LANGUAGE_PATH = "identity.gender.*.language";
-	public static final String IDENTITY_GENDER_VALUE_PATH = "identity.gender.*.value";
-	public static final String IDENTITY_RESIDENCE_STATUS_LANGUAGE_PATH = "identity.residenceStatus.*.language";
-	public static final String IDENTITY_RESIDENCE_STATUS_VALUE_PATH = "identity.residenceStatus.*.value";
-	public static final String IDENTITY_DOB_PATH = "identity.dateOfBirth";
+	public static final String MOSIP_MANDATORY_LANG = "mosip.mandatory-languages";
+	
+	public static final String MOSIP_OPTIONAL_LANG = "mosip.optional-languages";
+	
+	public static final String IDENTITY_ID_SCHEMA_VERSION_PATH = "mosip.kernel.idobjectvalidator.identity.id-schema-version-path";
+	
+	public static final String IDENTITY_DOB_PATH = "mosip.kernel.idobjectvalidator.identity.dob-path";
+	
 	public static final String DOB_FORMAT = "mosip.kernel.idobjectvalidator.date-format";
-	public static final String MASTERDATA_GENDERTYPES_URI = "mosip.kernel.idobjectvalidator.masterdata.gendertypes.rest.uri";
-	public static final String MASTERDATA_DOCUMENT_CATEGORIES_URI = "mosip.kernel.idobjectvalidator.masterdata.documentcategories.rest.uri";
-	public static final String MASTERDATA_DOCUMENT_TYPES_URI = "mosip.kernel.idobjectvalidator.masterdata.documenttypes.rest.uri";
-	public static final String MASTERDATA_LOCATIONS_URI = "mosip.kernel.idobjectvalidator.masterdata.locations.rest.uri";
-	public static final String MASTERDATA_LOCATION_HIERARCHY_URI = "mosip.kernel.idobjectvalidator.masterdata.locationhierarchy.rest.uri";
-	public static final String MASTERDATA_INDIVIDUAL_TYPES_URI = "mosip.kernel.idobjectvalidator.masterdata.individualtypes.rest.uri";
-	public static final String LOCATION_NA = "mosip.kernel.idobjectvalidator.masterdata.locations.locationNotAvailable";
+	
+	public static final String VALUE_NA = "mosip.kernel.idobjectvalidator.masterdata.value-not-available";
+	
+	public static final String IDENTITY_LANGUAGE_PATH = "identity.*.*.language";
+
+	public static final String MASTER_DATA_URI = "mosip.idobjectvalidator.masterdata.rest.uri";
+
+	public static final String IS_CACHE_RESET_ENABLED = "mosip.idobjectvalidator.refresh-cache-on-unknown-value";
+
+	public static final String CACHE_RESET_CRON_PATTERN = "mosip.idobjectvalidator.scheduler.reset-cache.cron-job-pattern";
 }

@@ -18,9 +18,11 @@ import {
   MatToolbarModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatFormFieldModule
 } from '@angular/material';
-
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -41,7 +43,10 @@ import {
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatFormFieldModule,
+    NgxMatSelectSearchModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {}

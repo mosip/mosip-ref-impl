@@ -7,13 +7,19 @@ package io.mosip.preregistration.booking.repository.impl;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import io.mosip.kernel.core.dataaccess.exception.DataAccessLayerException;
+import io.mosip.preregistration.booking.dto.SlotTimeDto;
 import io.mosip.preregistration.booking.entity.AvailibityEntity;
 import io.mosip.preregistration.booking.errorcodes.ErrorCodes;
 import io.mosip.preregistration.booking.errorcodes.ErrorMessages;
@@ -98,6 +104,7 @@ public class BookingDAO {
 	 * @param regcntrd
 	 * @return Availibity Entity based on FromTime, ToTime, RegDate and RegcntrId.
 	 */
+	@Deprecated(forRemoval = true)
 	public AvailibityEntity findByFromTimeAndToTimeAndRegDateAndRegcntrId(LocalTime slotFromTime, LocalTime slotToTime,
 			LocalDate regDate, String regcntrd) {
 		AvailibityEntity entity = null;
@@ -116,6 +123,60 @@ public class BookingDAO {
 		}
 		return entity;
 	}
+
+	/**
+	 * @param regDate
+	 * @param regcntrd
+	 * @param slotFromTime
+	 * @param slotToTime
+	 * @return Availibity Entity based on FromTime, ToTime, RegDate and RegcntrId.
+	 */
+	public AvailibityEntity findByRegDateAndRegcntrIdAndFromTimeAndToTime(LocalDate regDate, String regcntrd, 
+		LocalTime slotFromTime, LocalTime slotToTime) {
+		AvailibityEntity entity = null;
+		try {
+			entity = bookingAvailabilityRepository.findByRegDateAndRegcntrIdAndFromTimeAndToTime(regDate, regcntrd, 
+				slotFromTime, slotToTime);
+			if (entity == null) {
+
+				throw new AvailablityNotFoundException(ErrorCodes.PRG_BOOK_RCI_002.getCode(),
+						ErrorMessages.AVAILABILITY_NOT_FOUND_FOR_THE_SELECTED_TIME.getMessage());
+			}
+
+		} catch (DataAccessLayerException e) {
+			throw new TableNotAccessibleException(ErrorCodes.PRG_BOOK_RCI_016.getCode(),
+					ErrorMessages.AVAILABILITY_TABLE_NOT_ACCESSABLE.getMessage());
+		}
+		return entity;
+	}
+
+	/**
+	 * @param slotFromTime
+	 * @param slotToTime
+	 * @param regDate
+	 * @param regcntrd
+	 * @return Availibity Entity based on FromTime, ToTime, RegDate and RegcntrId.
+	 */
+	@Transactional(propagation = Propagation.MANDATORY)
+	public AvailibityEntity findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(LocalDate regDate, String regcntrd,
+		LocalTime slotFromTime, LocalTime slotToTime) {
+		AvailibityEntity entity = null;
+		try {
+			entity = bookingAvailabilityRepository.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(regDate, regcntrd, slotFromTime,
+					slotToTime);
+			if (entity == null) {
+
+				throw new AvailablityNotFoundException(ErrorCodes.PRG_BOOK_RCI_002.getCode(),
+						ErrorMessages.AVAILABILITY_NOT_FOUND_FOR_THE_SELECTED_TIME.getMessage());
+			}
+
+		} catch (DataAccessLayerException e) {
+			throw new TableNotAccessibleException(ErrorCodes.PRG_BOOK_RCI_016.getCode(),
+					ErrorMessages.AVAILABILITY_TABLE_NOT_ACCESSABLE.getMessage());
+		}
+		return entity;
+	}
+
 
 	/**
 	 * This method find entity for status other then CANCEL.
@@ -222,14 +283,18 @@ public class BookingDAO {
 	 * @return
 	 */
 	public List<String> findByBookingDateBetweenAndRegCenterId(LocalDate fromLocaldate, LocalDate toLocaldate,
-			String regCenterId) {
-		List<String> listOfPreIds = new ArrayList<>();
+			String regCenterId,Map<String,Map<LocalDate,SlotTimeDto>> idsWithSlotTime) {
+		List<String> listOfPreIds = new ArrayList<>();		
 		try {
 			if (regCenterId != null && !regCenterId.isEmpty()) {
 				List<RegistrationBookingEntity> entities = registrationBookingRepository
 						.findByRegDateBetweenAndRegistrationCenterId(fromLocaldate, toLocaldate, regCenterId);
 				if (entities != null && !entities.isEmpty()) {
-					for (RegistrationBookingEntity entity : entities) {
+					for (RegistrationBookingEntity entity : entities) {						
+						Map<LocalDate,SlotTimeDto> appointmentDate = new HashMap<LocalDate,SlotTimeDto>();						
+						appointmentDate.put(entity.getRegDate(),
+								new SlotTimeDto(entity.getSlotFromTime(), entity.getSlotToTime()));
+						idsWithSlotTime.put(entity.getDemographicEntity().getPreRegistrationId(), appointmentDate);
 						listOfPreIds.add(entity.getDemographicEntity().getPreRegistrationId());
 					}
 				} else {

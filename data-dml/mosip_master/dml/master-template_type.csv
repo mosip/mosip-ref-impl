@@ -131,3 +131,13 @@ RS_CRE_REQ_FAILURE_EMAIL_SUB,Credential Issuance Failure EMAIL Subject,eng,TRUE,
 reg-ack-template-part,Registration Acknowledgement Template,eng,TRUE,superadmin,now()
 reg-preview-template-part,Registration Preview Template,eng,TRUE,superadmin,now()
 reg-dashboard-template,Dashboard Template,eng,TRUE,superadmin,now()
+partner-reg-sub-template,partner registration notify subject template,eng,TRUE,superadmin,now()
+partner-status-sub-template,partner status notify subject template,eng,TRUE,superadmin,now()
+partner-apikey-status-sub-template,partner apikey status notify subject template,eng,TRUE,superadmin,now()
+partner-reg-content-template,"partner registration notify content template
+",eng,TRUE,superadmin,now()
+partner-status-content-template,partner status notify content template,eng,TRUE,superadmin,now()
+apikey-status-content-template,partner apikey status notify content template,eng,TRUE,superadmin,now()
+Registration Consent,Registration Consent Template,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,Email template requesting for additional info,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,SMS template requesting for additional info,eng,TRUE,superadmin,now()

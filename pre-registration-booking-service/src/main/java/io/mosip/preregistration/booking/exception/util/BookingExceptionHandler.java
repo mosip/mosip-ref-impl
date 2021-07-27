@@ -21,6 +21,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -418,6 +419,17 @@ public class BookingExceptionHandler {
 				io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_016.getCode(), e.getMessage());
 		errorResponse.getErrors().add(error);
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(value = AccessDeniedException.class)
+	public ResponseEntity<MainResponseDTO<?>> AccessDeniedExceptionHandler(final AccessDeniedException e) {
+		MainResponseDTO<?> errorRes = new MainResponseDTO<>();
+		List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
+		ExceptionJSONInfoDTO errorDetails = new ExceptionJSONInfoDTO("KER-401", "Authentication Failed");
+		errorList.add(errorDetails);
+		errorRes.setErrors(errorList);
+		errorRes.setResponsetime(DateUtils.formatDate(new Date(), utcDateTimePattern));
+		return new ResponseEntity<>(errorRes, HttpStatus.UNAUTHORIZED);
 	}
 
 	@Autowired

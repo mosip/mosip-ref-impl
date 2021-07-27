@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.mosip.kernel.core.exception.ParseException;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.preregistration.booking.dto.AvailabilityDto;
+import io.mosip.preregistration.booking.dto.BookingDataByRegIdDto;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
 import io.mosip.preregistration.booking.dto.BookingStatus;
 import io.mosip.preregistration.booking.dto.BookingStatusDTO;
@@ -238,7 +239,7 @@ public class BookingController {
 	 * @param toDate
 	 *            the to date
 	 * @return the booked pre-ids for date range
-	 */
+	 */	
 	@PreAuthorize("hasAnyRole('INDIVIDUAL','REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
 	@GetMapping(path = "/appointment/preRegistrationId/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get Pre-Registartion ids By Booked Date Time And Registration center id")
@@ -252,5 +253,28 @@ public class BookingController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(bookingService.getBookedPreRegistrationByDate(fromDate, toDate, regCenterId));
 	}
+	 
 
+	/**
+	 * Get API to fetch all the booked pre-ids within from-date and to-date range.
+	 *
+	 * @param fromDate
+	 *            the from date
+	 * @param toDate
+	 *            the to date
+	 * @return the booked pre-ids for date range
+	 */
+	@PreAuthorize("hasAnyRole('INDIVIDUAL','REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
+	@GetMapping(path = "/appointment/registrationCenterId/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get Pre-Registartion ids By Booked Date Time And Registration center id")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Booked data successfully retrieved") })
+	public ResponseEntity<MainResponseDTO<BookingDataByRegIdDto>> getBookedDataByRegId(
+			@RequestParam(value = "from_date", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") String fromDate,
+			@RequestParam(value = "to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") String toDate,
+			@PathVariable("registrationCenterId") String regCenterId) {
+		log.info("sessionId", "idType", "id",
+				"In booking controller for fetching all booked preids " + fromDate + " to " + toDate);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(bookingService.getBookedPreRegistrations(fromDate, toDate, regCenterId));
+	}
 }

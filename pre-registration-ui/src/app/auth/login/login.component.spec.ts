@@ -175,7 +175,7 @@ describe('LoginComponent', () => {
   });
 
   it('Should test set language direction', () => {
-    component.setLanguageDirection('ara', 'fra');
+    component.setLanguageDirection('ara');
     fixture.detectChanges();
     expect(component.dir).toBe('rtl');
   });
