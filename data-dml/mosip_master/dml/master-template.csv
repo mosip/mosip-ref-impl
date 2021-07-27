@@ -461,7 +461,7 @@ Votre demande d'UIN pour l'ID d'enregistrement : $!RID est en attente car vous a
 1275,إعادة التسجيل بسبب وجود مشكلة فنية,إعادة التسجيل بسبب وجود مشكلة فنية,	txt,velocity,إعادة التسجيل بسبب وجود مشكلة فني,	10003,Registration Processor,RPR_TEC_ISSUE_EMAIL_SUB,ara,TRUE,superadmin,now()
 1276,Uin is activated successfully,Uin is activated successfully,txt,velocity,Uin is activated successfully,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,eng,TRUE,superadmin,now()
 1276,Uin est activé avec succès,Uin est activé avec succès,txt,velocity,Uin est activé avec succès,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,fra,TRUE,superadmin,now()
-1276,تم تفعيل Uin بنجاح	,تم تفعيل Uin بنجاح	txt,velocity,تم تفعيل Uin بنجاح 	,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,ara,TRUE,superadmin,now()
+1276,تم تفعيل Uin بنجاح	,تم تفعيل Uin بنجاح	,txt,velocity,تم تفعيل Uin بنجاح 	,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,ara,TRUE,superadmin,now()
 1277,Uin is deactivated,Uin is deactivated,txt,velocity,Uin is deactivated,10003,Registration Processor,RPR_UIN_DEAC_EMAIL_SUB,eng,TRUE,superadmin,now()
 1277,Uin est désactivé,Uin est désactivé,txt,velocity,Uin est désactivé,10003,Registration Processor,RPR_UIN_DEAC_EMAIL_SUB,fra,TRUE,superadmin,now()
 1277,تم إلغاء تنشيط Uin	,تم إلغاء تنشيط Uin	,txt,velocity,	تم إلغاء تنشيط Uin,10003,Registration Processor,RPR_UIN_DEAC_EMAIL_SUB,ara,TRUE,superadmin,now()
