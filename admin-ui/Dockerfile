@@ -59,7 +59,6 @@ EXPOSE 8080
 
 #get the admin i18n bundle zip from artifactory
 CMD if [ "$is_remote_resource_env" = "present" ]; then \
-    echo "removing old assets" ; \
     rm -fr "${i18n_path}"/* ; \
     rm -fr "${entity_spec_path}"/* ; \
     wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip ; \
