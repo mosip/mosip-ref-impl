@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { HeaderService } from "src/app/core/services/header.service";
+import defaultJson from "../../../../assets/i18n/default.json";
 
 @Component({
   selector: 'app-single-view',
@@ -30,6 +31,7 @@ export class SingleViewComponent implements OnDestroy {
   showSpinner = true;
   subscribed: any;
   masterdataType: string;
+  masterDataName: string;
 
   fetchRequest = {} as CenterRequest;
 
@@ -71,11 +73,13 @@ export class SingleViewComponent implements OnDestroy {
       this.id = response.id;
       this.masterdataType = response.type;
       this.mapping = appConstants.masterdataMapping[response.type];
+      this.masterDataName = defaultJson.masterdataMapping[response.type].name[this.primaryLangCode];
     });
     this.loadData();
   }
 
   async loadData() {
+
     this.dataStorageService
       .getSpecFileForMasterDataEntity(this.mapping.specFileName)
       .subscribe(response => {

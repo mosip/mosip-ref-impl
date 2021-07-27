@@ -13,6 +13,7 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { HeaderService } from "src/app/core/services/header.service";
+import defaultJson from "../../../../assets/i18n/default.json";
 
 @Component({
   selector: 'app-list-view',
@@ -38,6 +39,7 @@ export class ListViewComponent implements OnDestroy {
   masterDataType: string;
   auditEventId: string[];
   primaryLang: string;
+  masterDataName: string;
 
   constructor(
     private router: Router,
@@ -99,6 +101,7 @@ export class ListViewComponent implements OnDestroy {
     return new Promise((resolve, reject) => {
       const routeParts = this.activatedRoute.snapshot.params.type;
       this.mapping = appConstants.masterdataMapping[`${routeParts}`];
+      this.masterDataName = defaultJson.masterdataMapping[`${routeParts}`].name[this.primaryLang];
       this.headerName =
         appConstants.masterdataMapping[`${routeParts}`].headerName;
       console.log(this.mapping);
