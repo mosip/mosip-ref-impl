@@ -198,7 +198,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       await this.getApplicantTypeID();
       //on page load, update application status from "Application_Incomplete"
       //to "Pending_Appointment", if all required documents are uploaded
-      await this.changeApplicationStatus();
+      await this.changeStatusToPending();
+      //on page load, update application status from "Pending_Appointment"
+      //to "Application_Incomplete", if all required documents are NOT uploaded
+      await this.changeStatusToIncomplete(); 
       this.dataLoaded = true;
     } else {
       if (!this.users[0].files) {
@@ -868,6 +871,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 }
               });
               this.removeFilePreview();
+              //When users deletes uploaded file, then we have to move
+              //application back to "Incomplete" status.
+              this.changeStatusToIncomplete(); 
             }
             this.disableNavigation = false;
           },
@@ -1147,7 +1153,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.updateUsers(response);
             //on file upload, update application status from "Application_Incomplete"
             //to "Pending_Appointment", if all required documents are uploaded
-            await this.changeApplicationStatus();
+            await this.changeStatusToPending();
           } 
         },
         (error) => {
@@ -1212,8 +1218,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile = [];
   }
 
-  changeApplicationStatus = async () => {
-    //console.log("changeApplicationStatus");
+  changeStatusToPending = async () => {
+    //console.log("changeStatusToPending");
     //check if all required documents have been uploaded
     this.uiFields.forEach((control) => {
       const controlId = control.id;
@@ -1226,7 +1232,36 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     //then update it to "Pending_Appointment"
     if (this.userForm.valid) {
       //console.log("calling updateApplicationStatus");
-      await this.updateApplicationStatus();
+      await this.updateApplicationStatus(appConstants.APPLICATION_STATUS_CODES.incomplete, 
+        appConstants.APPLICATION_STATUS_CODES.pending);
+    } 
+    //Mark all form fields are untouched to prevent errors before Submit. 
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsUntouched();
+      }
+    });
+  }
+
+  //When users deletes uploaded file, then we have to move
+  //application back to "Incomplete" status.
+  changeStatusToIncomplete = async () => {
+    //console.log("changeStatusToIncomplete");
+    //check if all required documents have been uploaded
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsTouched();
+      }
+    });
+    //console.log(this.userForm.valid);
+    //if yes, and if application status is "Pending_Appointment",
+    //then update it to "Application_Incomplete"
+    if (!this.userForm.valid) {
+      //console.log("calling updateApplicationStatus");
+      await this.updateApplicationStatus(appConstants.APPLICATION_STATUS_CODES.pending, 
+        appConstants.APPLICATION_STATUS_CODES.incomplete);
     } 
     //Mark all form fields are untouched to prevent errors before Submit. 
     this.uiFields.forEach((control) => {
@@ -1276,6 +1311,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 }
               });
               this.removeFilePreview();
+              //When users deletes uploaded file, then we have to move
+              //application back to "Incomplete" status.
+              this.changeStatusToIncomplete(); 
             }
             this.disableNavigation = false;
           },
@@ -1297,7 +1335,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.updateUsers(response);
               //on copy document, update application status from "Application_Incomplete"
               //to "Pending_Appointment", if all required documents are uploaded
-              await this.changeApplicationStatus();
+              await this.changeStatusToPending();
               let index: number;
               let poaTypes = [];
               this.LOD.filter((ele, i) => {
@@ -1401,7 +1439,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         }
       });
       if (this.userForm.valid) {
-        await this.updateApplicationStatus();
+        await this.updateApplicationStatus(appConstants.APPLICATION_STATUS_CODES.incomplete, 
+          appConstants.APPLICATION_STATUS_CODES.pending);
         localStorage.setItem("modifyDocument", "false");
         let url = Utils.getURL(this.router.url, "summary");
         this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
@@ -1409,16 +1448,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateApplicationStatus = async () => {
+  //eg: update the application status from "Application_Incomplete" to "Pending_Appointment"
+  updateApplicationStatus = async (fromStatus: string, toStatus: string) => {
     return new Promise((resolve) => {
-      //update the application status from "Application_Incomplete" to "Pending_Appointment"
       this.dataStorageService.getApplicationStatus(this.users[0].preRegId).subscribe(
         (response) => {
           const applicationStatus = response["response"]["statusCode"];
-          if (applicationStatus === appConstants.APPLICATION_STATUS_CODES.incomplete) {
-            console.log("updating application status from incomplete to pending");
+          if (applicationStatus === fromStatus) {
+            console.log(`updating application status from ${fromStatus} to ${toStatus}`);
             this.dataStorageService.updateApplicationStatus(
-            this.users[0].preRegId, appConstants.APPLICATION_STATUS_CODES.pending)
+            this.users[0].preRegId, toStatus)
             .subscribe(
               (response) => {
                 resolve(true);
