@@ -59,9 +59,9 @@ EXPOSE 8080
 
 #get the admin i18n bundle zip from artifactory
 CMD if [ "$is_remote_resource_env" = "present" ]; then \
-	rm -fr "${i18n_path}"/admin-i18n-bundle.zip;\
-	wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip;\
-	rm -fr "${entity_spec_path}"/admin-entity-spec-bundle.zip;\
+    rm -fr "${i18n_path}"/admin-i18n-bundle.zip;\
+    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip;\
+    rm -fr "${entity_spec_path}"/admin-entity-spec-bundle.zip;\
     wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip;\
     cd ${entity_spec_path} ;\
     unzip admin-entity-spec-bundle.zip ;\
@@ -79,5 +79,6 @@ CMD if [ "$is_remote_resource_env" = "present" ]; then \
     unzip admin-i18n-bundle.zip ;\
     cp -vrf -vf admin-i18n-bundle/i18n/* .  ;\
     nginx ;\
-    sleep infinity
+    sleep infinity ;\
+    fi
 	
