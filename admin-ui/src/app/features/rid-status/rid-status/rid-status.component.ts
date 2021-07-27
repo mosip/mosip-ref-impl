@@ -116,14 +116,12 @@ export class RidStatusComponent implements OnInit {
     console.log(JSON.stringify(this.requestModel));
     this.dataStroageService
       .getridDetails(this.requestModel)
-      .subscribe(({ response, errors }) => {
-        console.log(response);
+      .subscribe(({ response, errors }) => {        
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalRecord;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
           this.paginatorOptions.pageSize = filters.pagination.pageFetch;
-          console.log(this.paginatorOptions);
-          if (response.data != null) {
+          if (response.data.length) {
             this.datas = [...response.data];
           } else {
             this.noData = true;
