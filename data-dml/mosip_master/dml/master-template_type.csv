@@ -147,4 +147,3 @@ RPR_UIN_REAC_EMAIL_SUB,Uin is activated successfully,eng,TRUE,superadmin,now()
 RPR_UIN_DEAC_EMAIL_SUB,Uin is deactivated,eng,TRUE,superadmin,now()
 RPR_UIN_GEN_EMAIL_SUB,UIN Generated,eng,TRUE,superadmin,now()
 RPR_UIN_UPD_EMAIL_SUB,UIN Details Updated,eng,TRUE,superadmin,now()
-
