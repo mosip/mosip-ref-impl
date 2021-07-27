@@ -250,7 +250,7 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <strong class="title">{{ languageNames[secondaryLang] }}</strong>
+                <strong class="title">{{ secondaryLangDisplay }}</strong>
                 <span
                   *ngIf="!disableForms"
                   matTooltip="{{languageNames['keyboard-tooltip'] | translate }}"
@@ -495,7 +495,7 @@
           </div>
         <mat-divider [vertical]="true" [inset]="true"></mat-divider>
           <div *ngIf="showSecondaryForm" class="secondary-form">
-            <strong class="title">{{ languageNames[secondaryLang] }}</strong>
+            <strong class="title">{{ secondaryLangDisplay }}</strong>
             <span
               *ngIf="!disableForms"
               matTooltip="{{languageNames['keyboard-tooltip'] | translate }}"
@@ -523,10 +523,10 @@
           </mat-card-content>
         <mat-card-actions class="action-buttons">
         <button id="createButton" mat-raised-button (click)="submit()">
-        Save
+        {{ "center.create" | translate }}
         </button>
         <button mat-raised-button (click)="changePage('list')">
-        Cancel
+        {{ "center.cancel" | translate }}
         </button>
         </mat-card-actions>
     </mat-card>

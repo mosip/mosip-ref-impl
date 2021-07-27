@@ -5,7 +5,10 @@
       "buttonName": {
         "eng": "Edit",
         "ara": "تصحيح",
-        "fra": "modifier"
+        "fra": "modifier",
+        "hin": "संपादित करें ",
+        "kan": "ತಿದ್ದು",
+        "tam": "தொகு "
       },
       "actionURL": "",
       "redirectURL": "/admin/resources/users/single-view/$id",
@@ -17,7 +20,10 @@
       "buttonName": {
         "eng": "Map User",
         "ara": "إضافة مركز",
-        "fra": "Ajouter le centre"
+        "fra": "Ajouter le centre",
+        "hin": "मानचित्र उपयोगकर्ता ",
+        "kan": "ನಕ್ಷೆ ಬಳಕೆದಾರ ",
+        "tam": "வரைபட பயனர்  "
       },
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
@@ -52,20 +58,26 @@
       "label": {
         "eng": "Zone Code",
         "ara": "نوع المركز",
-        "fra": "Type de centre"
+        "fra": "Type de centre",
+        "hin": "जोन कोड ",
+        "kan": "ವಲಯ ಕೋಡ್  ",
+        "tam": "மண்டல குறியீடு   "
       },
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
       "LinkURL": ""
-    },    
+    },
     {
       "name": "regCenterId",
       "showInListView": "",
       "label": {
         "eng": "Center Id",
         "ara": "المستخدمين",
-        "fra": "Utilisateur"
+        "fra": "Utilisateur",
+        "hin": "केंद्र आईडी  ",
+        "kan": "ಸೆಂಟರ್ ಐಡಿ ",
+        "tam": "மைய ஐடி  "
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -78,7 +90,10 @@
       "label": {
         "eng": "CreatedBy",
         "ara": "الشخص المسؤول",
-        "fra": "Personne-ressource"
+        "fra": "Personne-ressource",
+        "hin": "के द्वारा बनाई गई ",
+        "kan": "ರಚಿಸಿದವರು",
+        "tam": "உருவாக்கப்பட்டது  "
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -91,7 +106,10 @@
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé"
+        "fra": "Temps créé",
+        "hin": "बनाया गया समय ",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ ",
+        "tam": "நேரம் உருவாக்கப்பட்டது "
       },
       "sortOrder": "",
       "showAsLink": "",

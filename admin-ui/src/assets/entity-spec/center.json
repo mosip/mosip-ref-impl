@@ -1,23 +1,28 @@
 {
   "auditEventIds": ["ADM-027", "ADM-049"],
-  "actionButtons": [
-    {
-      "buttonName": {
-        "eng": "Activate",
-        "ara": "تنشيط",
-        "fra": "déclencher"
-      },
-      "actionURL": "",
-      "redirectURL": "",
-      "showIn": "Ellipsis",
-      "validations": "",
-      "callBackFunction": "activateCenter"
+  "actionButtons": [{
+    "buttonName": {
+      "eng": "Activate",
+      "ara": "تنشيط",
+      "fra": "déclencher",
+      "tam": "செயல்படுத்த",
+      "hin": "सक्रिय",
+      "kan": "ಸಕ್ರಿಯಗೊಳಿಸಿ"
     },
+    "actionURL": "",
+    "redirectURL": "",
+    "showIn": "Ellipsis",
+    "validations": "",
+    "callBackFunction": "activateCenter"
+  },
     {
       "buttonName": {
         "eng": "Deactivate",
         "ara": "الغاء تنشيط",
-        "fra": "désactiver"
+        "fra": "désactiver",
+        "tam": "செயலிழக்க",
+        "hin": "निष्क्रिय करें",
+        "kan": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ"
       },
       "actionURL": "",
       "redirectURL": "",
@@ -29,7 +34,11 @@
       "buttonName": {
         "eng": "Decommission",
         "ara": "وقف التشغيل",
-        "fra": "mettre hors service"
+        "fra": "mettre hors service",
+        "tam": "நீக்கம்",
+        "hin": "डीकमिशन",
+        "kan": "ಡಿಕೊಮಿಷನ್"
+
       },
       "actionURL": "",
       "redirectURL": "",
@@ -41,7 +50,10 @@
       "buttonName": {
         "eng": "Edit",
         "ara": "تصحيح",
-        "fra": "modifier"
+        "fra": "modifier",
+        "tam": "தொகு",
+        "hin": "संपादित करें",
+        "kan": "ತಿದ್ದು"
       },
       "actionURL": "",
       "redirectURL": "/admin/resources/centers/single-view/$id",
@@ -53,7 +65,10 @@
       "buttonName": {
         "eng": "Create Center",
         "ara": "إضافة مركز",
-        "fra": "Ajouter le centre"
+        "fra": "Ajouter le centre",
+        "tam": "மையத்தை உருவாக்கவும்",
+        "hin": "केंद्र बनाएं",
+        "kan": "ಕೇಂದ್ರವನ್ನು ರಚಿಸಿ"
       },
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
@@ -63,37 +78,58 @@
       "validations": ""
     },
     {
-      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "buttonName": {
+        "eng": "Filter",
+        "ara": "تصفيه",
+        "fra": "filtre",
+        "tam": "வடிகட்டி",
+        "hin": "फ़िल्टर",
+        "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ"
+      },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
-      "actionURL": { "case": "filter" },
+      "actionURL": {
+        "case": "filter"
+      },
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
     },
     {
-      "buttonName": { 
-        "eng": "Centers not available in English", 
-        "ara": "المراكز غير متوفرة باللغة الإنجليزية", 
-        "fra": "Centres non disponibles en anglais" 
+      "buttonName": {
+        "eng": "Centers not available in English",
+        "ara": "المراكز غير متوفرة باللغة الإنجليزية",
+        "fra": "Centres non disponibles en anglais",
+        "tam": "மையங்கள் ஆங்கிலத்தில் கிடைக்கவில்லை",
+        "hin": "केंद्र अंग्रेजी में उपलब्ध नहीं हैं",
+        "kan": "ಕೇಂದ್ರಗಳು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
       },
       "imagePath": "",
       "actionListType": "action",
-      "actionURL": { 
+      "actionURL": {
         "case": "missingData",
-        "title": { 
-          "eng": "Centers not available in English", 
-          "ara": "المراكز غير متوفرة باللغة الإنجليزية", 
-          "fra": "Centres non disponibles en anglais" 
+        "title": {
+          "eng": "Centers not available in English",
+          "ara": "المراكز غير متوفرة باللغة الإنجليزية",
+          "fra": "Centres non disponibles en anglais",
+          "tam": "மையங்கள் ஆங்கிலத்தில் கிடைக்கவில்லை",
+          "hin": "केंद्र अंग्रेजी में उपलब्ध नहीं हैं",
+          "kan": "ಕೇಂದ್ರಗಳು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
         },
-        "columnNames": [{ 
-          "eng": "Center Id", 
-          "ara": "معرف المركز", 
-          "fra": "Identifiant du centre" 
-        },{ 
-          "eng": "Center Name", 
-          "ara": "اسم المركز", 
-          "fra": "Nom du centre" 
+        "columnNames": [{
+          "eng": "Center Id",
+          "ara": "معرف المركز",
+          "fra": "Identifiant du centre",
+          "tam": "மைய ஐடி",
+          "hin": "केंद्र आईडी",
+          "kan": "ಸೆಂಟರ್ ಐಡಿ"
+        }, {
+          "eng": "Center Name",
+          "ara": "اسم المركز",
+          "fra": "Nom du centre",
+          "tam": "மையத்தின் பெயர்",
+          "hin": "केंद्र का नाम",
+          "kan": "ಕೇಂದ್ರದ ಹೆಸರು"
         }],
         "fieldName": "name"
       },
@@ -102,23 +138,32 @@
       "validations": ""
     }
   ],
-  "columnsToDisplay": [
-    {
-      "name": "name",
-      "showInListView": "true",
-      "label": { "eng": "Center", "ara": "مركز ", "fra": "Centre" },
-      "sortOrder": "3",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
+  "columnsToDisplay": [{
+    "name": "name",
+    "showInListView": "true",
+    "label": {
+      "eng": "Center",
+      "ara": "مركز ",
+      "fra": "Centre",
+      "tam": "மையம்",
+      "hin": "केंद्र",
+      "kan": "ಕೇಂದ್ರ"
     },
+    "sortOrder": "3",
+    "showAsLink": "",
+    "linkType": "",
+    "LinkURL": ""
+  },
     {
       "name": "centerTypeName",
       "showInListView": "true",
       "label": {
         "eng": "Center Type",
         "ara": "نوع المركز",
-        "fra": "Type de centre"
+        "fra": "Type de centre",
+        "tam": "மைய வகை",
+        "hin": "केंद्र प्रकार",
+        "kan": "ಕೇಂದ್ರ ಪ್ರಕಾರ"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -128,7 +173,14 @@
     {
       "name": "isActive",
       "showInListView": "true",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "label": {
+        "eng": "Status",
+        "ara": "الحالة",
+        "fra": "Statut",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -140,7 +192,10 @@
       "label": {
         "eng": "Users",
         "ara": "المستخدمين",
-        "fra": "Utilisateur"
+        "fra": "Utilisateur",
+        "tam": "பயனர்கள்",
+        "hin": "उपयोगकर्ता",
+        "kan": "ಬಳಕೆದಾರರು"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -153,7 +208,10 @@
       "label": {
         "eng": "Devices",
         "ara": "الأجهزة",
-        "fra": "Dispositifs"
+        "fra": "Dispositifs",
+        "tam": "சாதனங்கள்",
+        "hin": "उपकरण",
+        "kan": "ಸಾಧನಗಳು"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -166,7 +224,10 @@
       "label": {
         "eng": "Machines",
         "ara": "آلات",
-        "fra": "Machines"
+        "fra": "Machines",
+        "tam": "இயந்திரங்கள்",
+        "hin": "मशीनों",
+        "kan": "ಯಂತ್ರಗಳು"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -179,7 +240,10 @@
       "label": {
         "eng": "Contact Phone",
         "ara": "هاتف مُتَكَون",
-        "fra": "Téléphone Contact"
+        "fra": "Téléphone Contact",
+        "tam": "தொலைபேசியைத் தொடர்பு கொள்ளுங்கள்",
+        "hin": "संपर्क फ़ोन",
+        "kan": "ಫೋನ್ ಸಂಪರ್ಕಿಸಿ"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -192,7 +256,10 @@
       "label": {
         "eng": "Contact Person",
         "ara": "الشخص المسؤول",
-        "fra": "Personne-ressource"
+        "fra": "Personne-ressource",
+        "tam": "நபரைத் தொடர்பு கொள்ளுங்கள்",
+        "hin": "संपर्क व्यक्ति",
+        "kan": "ವ್ಯಕ್ತಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -205,7 +272,10 @@
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé"
+        "fra": "Temps créé",
+        "tam": "Created Time",
+        "hin": "बनाया गया समय",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -218,22 +288,35 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": [
-    {
-      "filtername": "name",
-      "filterlabel": { "eng": "Center Name", "ara": "اسم المركز", "fra": "Nom du centre" },
-      "filterType": "equals",
-      "fieldType": "input",
-      "autocomplete": "false",
-      "dropdown": "false",
-      "datePicker": "false",
-      "apiName": "registrationcenters",
-      "fieldName": "name",
-      "methodCallName": ""
+  "filterColumns": [{
+    "filtername": "name",
+    "filterlabel": {
+      "eng": "Center Name",
+      "ara": "اسم المركز",
+      "fra": "Nom du centre",
+      "tam": "மையத்தின் பெயர்",
+      "hin": "केंद्र का नाम",
+      "kan": "ಕೇಂದ್ರದ ಹೆಸರು"
     },
+    "filterType": "equals",
+    "fieldType": "input",
+    "autocomplete": "false",
+    "dropdown": "false",
+    "datePicker": "false",
+    "apiName": "registrationcenters",
+    "fieldName": "name",
+    "methodCallName": ""
+  },
     {
       "filtername": "centerTypeName",
-      "filterlabel": { "eng": "Center Type", "ara":"نوع المركز", "fra": "Type de centre" },
+      "filterlabel": {
+        "eng": "Center Type",
+        "ara": "نوع المركز",
+        "fra": "Type de centre",
+        "tam": "மைய வகை",
+        "hin": "केंद्र प्रकार",
+        "kan": "ಕೇಂದ್ರ ಪ್ರಕಾರ"
+      },
       "filterType": "contains",
       "fieldType": "mat-select",
       "autocomplete": "false",
@@ -245,7 +328,14 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": { "eng": "Status", "ara":"الحالة", "fra": "Statut" },
+      "filterlabel": {
+        "eng": "Status",
+        "ara": "الحالة",
+        "fra": "Statut",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
@@ -257,7 +347,14 @@
     },
     {
       "filtername": "region",
-      "filterlabel": { "eng": "Region", "ara":"منطقة", "fra": "Région" },
+      "filterlabel": {
+        "eng": "Region",
+        "ara": "منطقة",
+        "fra": "Région",
+        "tam": "பிராந்தியம்",
+        "hin": "क्षेत्र",
+        "kan": "ಪ್ರದೇಶ"
+      },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
@@ -269,7 +366,14 @@
     },
     {
       "filtername": "province",
-      "filterlabel": { "eng": "Province", "ara":"المحافظة", "fra": "Province" },
+      "filterlabel": {
+        "eng": "Province",
+        "ara": "المحافظة",
+        "fra": "Province",
+        "tam": "மாகாணம்",
+        "hin": "प्रांत",
+        "kan": "ಪ್ರಾಂತ್ಯ"
+      },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
@@ -281,7 +385,14 @@
     },
     {
       "filtername": "city",
-      "filterlabel": { "eng": "City", "ara":"مدينة", "fra": "Ville" },
+      "filterlabel": {
+        "eng": "City",
+        "ara": "مدينة",
+        "fra": "Ville",
+        "tam": "நகரம்",
+        "hin": "शहर",
+        "kan": "ನಗರ"
+      },
       "uiField": "string",
       "filterType": "contains",
       "fieldType": "input",
@@ -294,7 +405,14 @@
     },
     {
       "filtername": "Zone",
-      "filterlabel": { "eng": "Zone", "ara":"منطقة", "fra": "Zone" },
+      "filterlabel": {
+        "eng": "Zone",
+        "ara": "منطقة",
+        "fra": "Zone",
+        "tam": "மண்டலம்",
+        "hin": "क्षेत्र",
+        "kan": "ವಲಯ"
+      },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",
@@ -306,7 +424,14 @@
     },
     {
       "filtername": "postalCode",
-      "filterlabel": { "eng": "Pin Code", "ara":"الرقم السري", "fra": "Code PIN" },
+      "filterlabel": {
+        "eng": "Pin Code",
+        "ara": "الرقم السري",
+        "fra": "Code PIN",
+        "tam": "அஞ்சல் குறியீடு",
+        "hin": "पिन कोड",
+        "kan": "ಪಿನ್ ಕೋಡ್"
+      },
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "true",

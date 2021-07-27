@@ -5,7 +5,10 @@
       "buttonName": {
         "eng": "Activate",
         "ara": "تنشيط",
-        "fra": "déclencher"
+        "fra": "déclencher",
+        "hin": "सक्रिय",
+        "kan": "ಸಕ್ರಿಯಗೊಳಿಸಿ",
+        "tam": "செயல்படுத்த"
       },
       "actionURL": "",
       "redirectURL": "",
@@ -17,7 +20,10 @@
       "buttonName": {
         "eng": "Deactivate",
         "ara": "الغاء تنشيط",
-        "fra": "désactiver"
+        "fra": "désactiver",
+        "hin": "निष्क्रिय करें",
+        "kan": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ",
+        "tam": "செயலிழக்க"
       },
       "actionURL": "",
       "redirectURL": "",
@@ -29,7 +35,10 @@
       "buttonName": {
         "eng": "Edit",
         "ara": "تصحيح",
-        "fra": "modifier"
+        "fra": "modifier",
+        "hin": "संपादित करें",
+        "kan": "ತಿದ್ದು",
+        "tam": "தொகு"
       },
       "actionURL": "",
       "redirectURL": "/admin/masterdata/gender-type/single-view/$id",
@@ -41,7 +50,10 @@
       "buttonName": {
         "eng": "Create",
         "ara": "إضافة مركز",
-        "fra": "Ajouter le centre"
+        "fra": "Ajouter le centre",
+        "hin": "बनाएं",
+        "kan": "ರಚಿಸಿ",
+        "tam": "உருவாக்கு"
       },
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
@@ -51,7 +63,7 @@
       "validations": ""
     },
     {
-      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre","hin": "फ़िल्टर", "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ","tam": "வடிகட்டி"},
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
       "actionURL": { "case": "filter" },
@@ -65,7 +77,7 @@
       "name": "code",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
+      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code","hin": "कोड", "kan": "ಕೋಡ್", "tam": "குறியீடு" },
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -77,7 +89,7 @@
       "name": "genderName",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": " Gender Name", "ara": "اسم", "fra": "prénom" },
+      "label": { "eng": " Gender Name", "ara": "اسم", "fra": "prénom","hin": " लिंग का नाम", "kan": "ಲಿಂಗ ಹೆಸರು", "tam": "பாலின பெயர்" },
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
@@ -89,7 +101,7 @@
       "name": "isActive",
       "showInListView": "true",
       "showInSingleView": "false",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -103,7 +115,10 @@
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé"
+        "fra": "Temps créé",
+        "hin": "बनाया गया समय",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ",
+        "tam": "நேரம் உருவாக்கப்பட்டது"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -116,7 +131,10 @@
       "label": {
         "eng": "Created By",
         "ara": "تم إنشاؤه من قبل",
-        "fra": "Créé par"
+        "fra": "Créé par",
+        "hin": "के द्वारा बनाई गई",
+        "kan": "ರಚಿಸಿದವರು",
+        "tam": "உருவாக்கியது"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -129,7 +147,10 @@
       "label": {
         "eng": "Updated By",
         "ara": "تم التحديث بواسطة",
-        "fra": "Mise à jour par"
+        "fra": "Mise à jour par",
+        "hin": "द्वारा अपडेट",
+        "kan": "ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ",
+        "tam": "புதுப்பிக்கப்பட்டது"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -142,7 +163,10 @@
       "label": {
         "eng": "Updated Time",
         "ara": "وقت التحديث",
-        "fra": "Temps mis à jour"
+        "fra": "Temps mis à jour",
+        "hin": "अद्यतन समय",
+        "kan": "ನವೀಕರಿಸಿದ ಸಮಯ",
+        "tam": "புதுப்பிக்கப்பட்ட நேரம்"
       },
       "sortOrder": "3",
       "showAsLink": "",
@@ -158,7 +182,7 @@
   "filterColumns":  [
     {
       "filtername": "genderName",
-      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom","hin": "नाम", "kan": "ಹೆಸರು", "tam": "பெயர்"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
@@ -169,7 +193,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

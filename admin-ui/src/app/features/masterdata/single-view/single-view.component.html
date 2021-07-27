@@ -6,7 +6,7 @@
 <br><br>
 <app-mater-data-common-view
         *ngIf="mapping && specFileData && !showSpinner"
-        [masterDataName]="mapping.name[primaryLangCode]"
+        [masterDataName]="masterDataName"
         [headerData]="headerData"
         [primaryData]="primaryData"
         [secondaryData]="secondaryData"
