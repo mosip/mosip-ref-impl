@@ -79,4 +79,5 @@ CMD if [ "$is_remote_resource_env" = "present" ]; then \
     unzip admin-i18n-bundle.zip ;\
     cp -vrf -vf admin-i18n-bundle/i18n/* .  ;\
     nginx ;\
+	sleep infinity
 	
