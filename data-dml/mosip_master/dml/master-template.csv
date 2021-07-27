@@ -1,4 +1,4 @@
-﻿id,name,descr,file_format_code,model,file_txt,module_id,module_name,template_typ_code,lang_code,is_active,cr_by,cr_dtimes
+id,name,descr,file_format_code,model,file_txt,module_id,module_name,template_typ_code,lang_code,is_active,cr_by,cr_dtimes
 1101,Template for authorization content,Template for authorization content,txt,velocity,Dear $name Your Authentication of $idvidType $idvid using $authType on $date at $time Hrs $status at a device deployed by MOSIP Services,10004,ID Authentication,auth-email-content,eng,TRUE,superadmin,now()
 1102,Template for authorization subject,Template for authorization subject,txt,velocity,$idvidType $idvid Authentication $status,10004,ID Authentication,auth-email-subject,eng,TRUE,superadmin,now()
 1103,Template for authorization SMS,Template for authorization SMS,txt,velocity,Your Authentication of $idvidType $idvid using $authType on $date at $time Hrs $status at a device deployed by MOSIP Services.,10004,ID Authentication,auth-sms,eng,TRUE,superadmin,now()
@@ -436,7 +436,7 @@ Your request for UIN for Registration ID: $!RID is on hold because of requiring 
 Thank You",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,eng,TRUE,superadmin,now()
 1272,Modèle d'e-mail demandant des informations supplémentaires,Modèle d'e-mail demandant des informations supplémentaires,txt,velocity,"Cher $!name_fra,
 
-Votre demande d'UIN pour l'ID d'enregistrement : $!RID est en attente car vous avez besoin de détails supplémentaires avec AdditionalInfoRequestId $!additionalInfoRequestId et additionalInfoProcess $!additionalInfoProcess. Veuillez visiter votre bureau d'enregistrement le plus proche ou visitez https://mosip.io/grievances pour progresser sur l'application de l'UIN
+Votre demande d'UIN pour l'ID d'enregistrement : $!RID est en attente car vous avez besoin de détails supplémentaires avec AdditionalInfoRequestId $!additionalInfoRequestId et additionalInfoProcess $!additionalInfoProcess. Veuillez visiter votre bureau d'enregistrement le plus proche ou visitez https://mosip.io/grievances pour progresser sur l'application de l'UIN
 
 Merci",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,fra,TRUE,superadmin,now()
 1272,طلب قالب البريد الإلكتروني للحصول على معلومات إضافية,طلب قالب البريد الإلكتروني للحصول على معلومات إضافية,txt,velocity,"عزيزي $!name_ara ،
@@ -449,7 +449,25 @@ Merci",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,fra,TRU
 Your request for UIN for Registration ID: $!RID is on hold because of requiring additional details with AdditionalInfoRequestId $!additionalInfoRequestId and  additionalInfoProcess $!additionalInfoProcess. Please visit your nearest Registration office or visit https://mosip.io/grievances for progressing on the application of UIN.",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,eng,TRUE,superadmin,now()
 1273,Modèle de SMS demandant des informations supplémentaires,Modèle de SMS demandant des informations supplémentaires,txt,velocity,"Cher $!name_fra,
 
-Votre demande d'UIN pour l'ID d'enregistrement : $!RID est en attente car vous avez besoin de détails supplémentaires avec AdditionalInfoRequestId $!additionalInfoRequestId et additionalInfoProcess $!additionalInfoProcess. Veuillez visiter votre bureau d'enregistrement le plus proche ou visitez https://mosip.io/grievances pour progresser sur l'application de l'UIN.",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,fra,TRUE,superadmin,now()
+Votre demande d'UIN pour l'ID d'enregistrement : $!RID est en attente car vous avez besoin de détails supplémentaires avec AdditionalInfoRequestId $!additionalInfoRequestId et additionalInfoProcess $!additionalInfoProcess. Veuillez visiter votre bureau d'enregistrement le plus proche ou visitez https://mosip.io/grievances pour progresser sur l'application de l'UIN.",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,fra,TRUE,superadmin,now()
 1273,طلب نموذج SMS للحصول على معلومات إضافية,طلب نموذج SMS للحصول على معلومات إضافية,txt,velocity,"عزيزي $!name_ara ،
 
 طلبك لـ UIN لمعرف التسجيل: $!RID معلق بسبب طلب تفاصيل إضافية مع AdditionalInfoRequestId $!extraInfoRequestId و extraInfoProcess $!extraInfoProcess. يرجى زيارة أقرب مكتب تسجيل أو زيارة https://mosip.io/grievances للتقدم في تطبيق UIN",10003,Registration Processor,RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,ara,TRUE,superadmin,now()
+1274,Registration Failed because you have already Registered,Registration Failed because you have already Registered,txt,velocity,Registration Failed because you have already Registered,10003,Registration Processor,RPR_DUP_UIN_EMAIL_SUB,eng,TRUE,superadmin,now()
+1274,L'inscription a échoué car vous êtes déjà inscrit,L'inscription a échoué car vous êtes déjà inscrit,txt,velocity,L'inscription a échoué car vous êtes déjà inscrit,10003,Registration Processor,RPR_DUP_UIN_EMAIL_SUB,fra,TRUE,superadmin,now()
+1274,فشل التسجيل لأنك قمت بالتسجيل بالفعل,	فشل التسجيل لأنك قمت بالتسجيل بالفعل	,txt,velocity,فشل التسجيل لأنك قمت بالتسجيل بالفعل	,10003	, Registration Processor,RPR_DUP_UIN_EMAIL_SUB,ara,TRUE,superadmin,now()
+1275,Re-Register because there was a Technical Issue,Re-Register because there was a Technical Issue,txt,velocity,Re-Register because there was a Technical Issue,10003,Registration Processor,RPR_TEC_ISSUE_EMAIL_SUB,eng,TRUE,superadmin,now()
+1275,Réinscrivez-vous car il y a eu un problème technique,Réinscrivez-vous car il y a eu un problème technique,txt,velocity,Réinscrivez-vous car il y a eu un problème technique,10003,Registration Processor,RPR_TEC_ISSUE_EMAIL_SUB,fra,TRUE,superadmin,now()
+1275,إعادة التسجيل بسبب وجود مشكلة فنية,إعادة التسجيل بسبب وجود مشكلة فنية,	txt,velocity,إعادة التسجيل بسبب وجود مشكلة فني,	10003,Registration Processor,RPR_TEC_ISSUE_EMAIL_SUB,ara,TRUE,superadmin,now()
+1276,Uin is activated successfully,Uin is activated successfully,txt,velocity,Uin is activated successfully,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,eng,TRUE,superadmin,now()
+1276,Uin est activé avec succès,Uin est activé avec succès,txt,velocity,Uin est activé avec succès,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,fra,TRUE,superadmin,now()
+1276,تم تفعيل Uin بنجاح	,تم تفعيل Uin بنجاح	,txt,velocity,تم تفعيل Uin بنجاح 	,10003,Registration Processor,RPR_UIN_REAC_EMAIL_SUB,ara,TRUE,superadmin,now()
+1277,Uin is deactivated,Uin is deactivated,txt,velocity,Uin is deactivated,10003,Registration Processor,RPR_UIN_DEAC_EMAIL_SUB,eng,TRUE,superadmin,now()
+1277,Uin est désactivé,Uin est désactivé,txt,velocity,Uin est désactivé,10003,Registration Processor,RPR_UIN_DEAC_EMAIL_SUB,fra,TRUE,superadmin,now()
+1277,تم إلغاء تنشيط Uin	,تم إلغاء تنشيط Uin	,txt,velocity,	تم إلغاء تنشيط Uin,10003,Registration Processor,RPR_UIN_DEAC_EMAIL_SUB,ara,TRUE,superadmin,now()
+1278,UIN Generated,UIN Generated,txt,velocity,UIN Generated,10003,Registration Processor,RPR_UIN_GEN_EMAIL_SUB,eng,TRUE,superadmin,now()
+1278,UIN généré,UIN généré,txt,velocity,UIN généré,10003,Registration Processor,RPR_UIN_GEN_EMAIL_SUB,fra,TRUE,superadmin,now()
+1278,تم إنشاء UIN	,تم إنشاء UIN	,txt,velocity,	تم إنشاء UIN	,10003,Registration Processor,RPR_UIN_GEN_EMAIL_SUB,ara,TRUE,superadmin,now()
+1279,UIN Details Updated,UIN Details Updated,txt,velocity,UIN Details Updated,10003,Registration Processor,RPR_UIN_UPD_EMAIL_SUB,eng,TRUE,superadmin,now()
+1279,Détails UIN mis à jour,Détails UIN mis à jour,txt,velocity,Détails UIN mis à jour,10003,Registration Processor,RPR_UIN_UPD_EMAIL_SUB,fra,TRUE,superadmin,now()
+1279,تم تحديث تفاصيل UIN,	تم تحديث تفاصيل UIN,txt,velocity,	تم تحديث تفاصيل UIN,10003,Registration Processor,RPR_UIN_UPD_EMAIL_SUB,ara,TRUE,superadmin,now()
