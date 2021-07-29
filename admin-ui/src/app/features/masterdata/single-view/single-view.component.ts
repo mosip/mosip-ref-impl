@@ -91,7 +91,7 @@ export class SingleViewComponent implements OnDestroy {
         this.primaryLangCode = this.id.split('$')[1];
         this.id = this.id.split('$')[0];
       }     
-      await this.getData("eng", true);
+      await this.getData(this.primaryLangCode, true);
     } else {
       await this.getData(this.primaryLangCode, true);
       /*if (this.showSecondaryForm) {
