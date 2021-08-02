@@ -1,6 +1,10 @@
 # Bio SDK services
 
+## Introduction
+
 This service provides implementation of IBioAPI over REST. Bio SDK client is used to provide java methods to connect with services. 
+
+![](docs/BioSDKIntergration.jpg)
 
 ## Requirements:
 * Java version = 11.X.X
