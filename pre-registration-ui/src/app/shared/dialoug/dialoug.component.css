@@ -5,12 +5,12 @@
   border-color: 1px solid #fd518c;
   box-sizing: border-box;
   outline: 0;
-  width: 100%;
+  min-width: 100%;
   height: 100%;
 }
 ::ng-deep.mat-dialog-content {
   padding: 5px 1.5rem 1.5rem 1.7rem;
-  width: 100%;
+  min-width: 100%;
   font-size: 0.9rem;
   height: 100%;
   overflow: auto;
@@ -57,7 +57,9 @@ mat-form-field {
   padding-bottom: 20px;
 }
 .content-display-iniline-block {
-  display: inline-block;
+  display: flex;
+  font-size: 0.8rem;
+  padding: 10px;
 }
 .mat-dialog-title {
   color: #fd518c;
