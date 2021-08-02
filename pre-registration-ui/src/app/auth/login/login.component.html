@@ -49,7 +49,9 @@
                 matInput
                 [(ngModel)]="inputContactDetails"
                 placeholder="{{ 'login.label_email_num' | translate }}"
+                title="{{ 'login.label_email_num' | translate }}"
                 id="inputFieldContact"
+                (input)="verifyInput()"  
                 required
               />
             </mat-form-field>

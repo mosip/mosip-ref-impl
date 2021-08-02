@@ -41,7 +41,8 @@
               <mat-form-field *ngIf="displayHidden">
                 <input matInput [formControlName]="document.id" />
               </mat-form-field>
-              <mat-form-field class="file-upload__input">
+              <mat-form-field class="file-upload__input"
+                [ngStyle]="textDirection[0] == 'ltr'? {'float':'left'} : {'float':'right'}">
                 <mat-label>{{document.labelName[dataCaptureLanguages[0]]}}</mat-label>
                 <mat-select #ref (selectionChange)="changeStatus(ref, i)" [(value)]="document.selectedDocName"
                   disableOptionCentering placeholder="{{ document.code }}" (selectionChange)="selectChange($event, i)"
@@ -70,9 +71,10 @@
               <span *ngIf="document.code === 'POA' && allApplicants">
                 <span *ngIf="allApplicants.length >= 1"> {{ 'documents.OR' | translate }}</span>
                 <span *ngIf="allApplicants.length >= 1">
-                  <mat-form-field class="file-upload__or">
+                  <mat-form-field class="file-upload__or"
+                    [ngStyle]="textDirection[0] == 'ltr'? {'float':'left'} : {'float':'right'}">
                     <mat-select placeholder="{{ 'documents.sameAs' | translate }}"
-                      [disabled]="disableNavigation ||  readOnlyMode" 
+                      [disabled]="disableNavigation ||  readOnlyMode"
                       (selectionChange)="sameAsChange($event, users[0].files.documentsMetaData)" [(value)]="sameAs">
                       <mat-option value="">
                         {{ 'documents.sameAsNone' | translate }}
@@ -90,9 +92,11 @@
               </span>
               <div class="file-upload__body__document-name">
                 <div *ngFor="let file of users[0].files.documentsMetaData; let j = index">
-                  <div *ngIf="file.docCatCode == document.code">
+                  <div *ngIf="file.docCatCode == document.code"
+                    [ngStyle]="textDirection[0] == 'ltr'? {'float':'left'} : {'float':'right'}">
                     <span>{{ file.docName }}</span>
-                    <span *ngIf="!readOnlyMode" class="file-uplaoad__body__document-name__delete" (click)="deleteUploadedFile(file)">
+                    <span *ngIf="!readOnlyMode" class="file-uplaoad__body__document-name__delete"
+                      (click)="deleteUploadedFile(file)">
                       <img src="assets\delete.png" class="delete-img" />
                     </span>
                     <span class="file-uplaoad__body__document-name__view" (click)="viewFile(file)">

@@ -133,9 +133,11 @@
                 >
                   {{ data.availability }}
                   {{ "timeSelection.text_slots" | translate }}
+                  &nbsp;&nbsp;
                   <span
                     *ngIf="data.names.length !== 0"
                     class="card-slot-text-span-number circleBase"
+                    style="float: inline-end;"
                     >{{ data.names.length
                     }}<img
                         src="assets/slots.png"

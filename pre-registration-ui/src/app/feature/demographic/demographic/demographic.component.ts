@@ -488,7 +488,6 @@ export class DemographicComponent
       this.dialog
         .open(DialougComponent, {
           width: "900px",
-          // height: "95%",
           data: data,
           disableClose: true,
         })
@@ -1442,6 +1441,7 @@ export class DemographicComponent
         if (this.dataModification) {
           this.hasDobChangedFromChildToAdult(controlId);
         }
+        //this.userForm.controls[controlId].markAsTouched();
       } else {
         this.userForm.controls[controlId].setValue("");
         this.userForm.controls[controlId].markAsTouched();

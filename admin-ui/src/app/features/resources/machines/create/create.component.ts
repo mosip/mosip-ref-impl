@@ -114,7 +114,7 @@ export class CreateComponent {
     });
     this.primaryLang = this.headerService.getUserPreferredLanguage();
     translateService.use(this.primaryLang);
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
   }
 
   scrollPage(

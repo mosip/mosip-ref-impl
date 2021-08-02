@@ -101,7 +101,7 @@ export class CreateComponent {
     this.primaryLang = this.headerService.getUserPreferredLanguage();
     // tslint:disable-next-line:no-string-literal
     translateService.use(this.primaryLang);
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
     this.isPrimaryLangRTL = false;
     let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');

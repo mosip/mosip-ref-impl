@@ -14,6 +14,151 @@
       "name": "French",
       "nativeName": "français",
       "locale": "fr_CH"
+    },
+    "hin": {
+      "name": "Hindi",
+      "nativeName": "हिंदी",
+      "locale": "hi_IN"
+    },
+    "tam": {
+      "name": "Tamil",
+      "nativeName": "தமிழ்",
+      "locale": "ta_IN"
+    },
+    "kan": {
+      "name": "Kannada",
+      "nativeName": "ಕನ್ನಡ",
+      "locale": "kn_IN"
+    }
+  },
+  "keyboardMapping" :{
+    "eng": "en",
+    "fra": "fr",
+    "ara": "ar",
+    "hin": "hi",
+    "tam": "ta",
+    "kan": "ka"
+  },
+  "masterdataMapping" :{
+    "blacklisted-words": {
+      "name": {
+        "eng": "Blacklisted Words",
+        "ara": "كلمات في القائمة السوداء",
+        "fra": "Mots sur la liste noire",
+        "tam": "தடுப்புப்பட்டியல் சொற்கள்",
+        "kan": "ನಿರ್ಬಂಧಿಸಲಾದ ಪದಗಳು",
+        "hin": "ब्लॉक लिस्टेड शब्द"
+      }
+    },
+    "holiday": {
+      "name": {
+        "eng": "Holiday",
+        "ara": "قائمة عطلة",
+        "fra": "Liste de vacances",
+        "tam": "விடுமுறை",
+        "kan": "ರಜಾದಿನ",
+        "hin": "छुट्टी"
+      }
+    },
+    "document-type": {
+      "name": {
+        "eng": "Document Type",
+        "ara": "أنواع المستندات",
+        "fra": "Types de documents",
+        "tam": "ஆவண வகை",
+        "kan": "ಡಾಕ್ಯುಮೆಂಟ್ ಪ್ರಕಾರ",
+        "hin": "दस्तावेज़ का प्रकार"
+      }
+    },
+    "templates": {
+      "name": {
+        "eng": "Templates",
+        "ara": "قوالب",
+        "fra": "Modèles",
+        "tam": "வார்ப்புருக்கள்",
+        "kan": "ಟೆಂಪ್ಲೇಟ್‌ಗಳು",
+        "hin": "टेम्पलेट्स"
+      }
+    },
+    "machine-type": {
+      "name": {
+        "eng": "Machine Types",
+        "ara": "أنواع الآلات",
+        "fra": "Types de machines",
+        "tam": "இயந்திர வகைகள்",
+        "kan": "ಯಂತ್ರ ಪ್ರಕಾರಗಳು",
+        "hin": "मशीन के प्रकार"
+      }
+    },
+    "device-types": {
+      "name": {
+        "eng": "Device Types",
+        "ara": "أنواع الأجهزة",
+        "fra": "Types de périphériques",
+        "tam": "சாதன வகைகள்",
+        "kan": "ಸಾಧನ ಪ್ರಕಾರಗಳು",
+        "hin": "डिवाइस के प्रकार"
+      }
+    },
+    "document-categories": {
+      "name": {
+        "eng": "Document Categories",
+        "ara": "فئات المستندات",
+        "fra": "Catégories de document",
+        "tam": "ஆவண வகைகள்",
+        "kan": "ಡಾಕ್ಯುಮೆಂಟ್ ವರ್ಗಗಳು",
+        "hin": "दस्तावेज़ श्रेणियाँ"
+      }
+    },
+    "machine-specs": {
+      "name": {
+        "eng": "Machine Specification",
+        "ara": "المواصفات الجهاز",
+        "fra": "Spécifications de la machin",
+        "tam": "இயந்திர விவரக்குறிப்பு",
+        "kan": "ಯಂತ್ರ ವಿವರಣೆ",
+        "hin": "मशीन विशिष्टता"
+      }
+    },
+    "device-specs": {
+      "name": {
+        "eng": "Device Specification",
+        "ara": "مواصفات الجهاز",
+        "fra": "Spécifications de l\"appareil",
+        "tam": "சாதன விவரக்குறிப்பு",
+        "kan": "ಸಾಧನ ವಿವರಣೆ",
+        "hin": "डिवाइस विशिष्टता"
+      }
+    },
+    "center-type": {
+      "name": {
+        "eng": "Center Type",
+        "ara": "نوع المركز",
+        "fra": "Type de centre",
+        "tam": "மைய வகை",
+        "kan": "ಕೇಂದ್ರ ಪ್ರಕಾರ",
+        "hin": "केंद्र प्रकार"
+      }
+    },
+    "dynamicfields": {
+      "name": {
+        "eng": "Dynamic Field",
+        "ara": "مجال ديناميكي",
+        "fra": "Champ dynamique",
+        "tam": "டைனமிக் புலம்",
+        "kan": "ಡೈನಾಮಿಕ್ ಫೀಲ್ಡ್",
+        "hin": "गतिशील क्षेत्र"
+      }
+    },
+    "documentCategoryMapping": {
+      "name": {
+        "eng": "Document Category - Type Mapping",
+        "ara": "فئة الوثيقة - نوع التعيين",
+        "fra": "Catégorie de document - Mappage de types",
+        "tam": "ஆவண வகை - வகை மேப்பிங்",
+        "kan": "ಡಾಕ್ಯುಮೆಂಟ್ ವರ್ಗ - ಟೈಪ್ ಮ್ಯಾಪಿಂಗ್",
+        "hin": "दस्तावेज़ श्रेणी - प्रकार मानचित्रण"
+      }
     }
   }
 }

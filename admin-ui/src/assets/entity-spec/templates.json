@@ -5,7 +5,10 @@
       "buttonName": {
         "eng": "Activate",
         "ara": "تنشيط",
-        "fra": "déclencher"
+        "fra": "déclencher",
+        "hin": "सक्रिय ",
+        "kan": "ಸಕ್ರಿಯಗೊಳಿಸಿ  ",
+        "tam": "செயல்படுத்த "
       },
       "actionURL": "",
       "redirectURL": "",
@@ -17,7 +20,10 @@
       "buttonName": {
         "eng": "Deactivate",
         "ara": "الغاء تنشيط",
-        "fra": "désactiver"
+        "fra": "désactiver",
+        "hin": "निष्क्रिय करें  ",
+        "kan": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ   ",
+        "tam": "செயலிழக்க  "
       },
       "actionURL": "",
       "redirectURL": "",
@@ -29,7 +35,10 @@
       "buttonName": {
         "eng": "Edit",
         "ara": "تصحيح",
-        "fra": "modifier"
+        "fra": "modifier",
+        "hin": "संपादित करें ",
+        "kan": "ತಿದ್ದು  ",
+        "tam": "தொகு   "
       },
       "actionURL": "",
       "redirectURL": "/admin/masterdata/templates/single-view/$id",
@@ -41,7 +50,10 @@
       "buttonName": {
         "eng": "Create",
         "ara": "إضافة مركز",
-        "fra": "Ajouter le centre"
+        "fra": "Ajouter le centre",
+        "hin": "सर्जन करना  ",
+        "kan": "ರಚಿಸಿ  ",
+        "tam": "உருவாக்கு    "
       },
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
@@ -60,28 +72,40 @@
       "validations": ""
     },
     {
-      "buttonName": { 
-        "eng": "Template not available in English", 
-        "ara": "النموذج غير متوفر باللغة العربية", 
-        "fra": "Modèle non disponible en français" 
+      "buttonName": {
+        "eng": "Template not available in English",
+        "ara": "النموذج غير متوفر باللغة العربية",
+        "fra": "Modèle non disponible en français" ,
+        "hin": "टेम्प्लेट हिंदी में उपलब्ध नहीं है  ",
+        "kan": "ಕನ್ನಡದಲ್ಲಿ ಟೆಂಪ್ಲೇಟು ಲಭ್ಯವಿಲ್ಲ ",
+        "tam": "வார்ப்புரு தமிழில் கிடைக்கவில்லை   "
       },
       "imagePath": "",
       "actionListType": "action",
-      "actionURL": { 
+      "actionURL": {
         "case": "missingData",
-        "title": { 
-          "eng": "Template not available in English", 
-          "ara": "النموذج غير متوفر باللغة العربية", 
-          "fra": "Modèle non disponible en français" 
+        "title": {
+          "eng": "Template not available in English",
+          "ara": "النموذج غير متوفر باللغة العربية",
+          "fra": "Modèle non disponible en français" ,
+          "hin": "टेम्प्लेट हिंदी में उपलब्ध नहीं है  ",
+          "kan": "ಕನ್ನಡದಲ್ಲಿ ಟೆಂಪ್ಲೇಟು ಲಭ್ಯವಿಲ್ಲ ",
+          "tam": "வார்ப்புரு தமிழில் கிடைக்கவில்லை   "
         },
-        "columnNames": [{ 
+        "columnNames": [{
           "eng": "Template ID",
           "ara": "معرف القالب",
-          "fra": "ID de modèle"
-        },{ 
+          "fra": "ID de modèle",
+          "hin": "टेम्पलेट आईडी   ",
+          "kan": "ಟೆಂಪ್ಲೇಟು ID ",
+          "tam": "வார்ப்புரு ஐடி   "
+        },{
           "eng": "Name",
           "ara": "اسم",
-          "fra": "nom"
+          "fra": "nom",
+          "hin": "नाम    ",
+          "kan": "ಹೆಸರು  ",
+          "tam": "பெயர்  "
         }],
         "fieldName": "name"
       },
@@ -98,7 +122,10 @@
       "label": {
         "eng": "Name",
         "ara": "اسم",
-        "fra": "nom"
+        "fra": "nom",
+        "hin": "नाम    ",
+        "kan": "ಹೆಸರು  ",
+        "tam": "பெயர்  "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -114,7 +141,10 @@
       "label": {
         "eng": "Description",
         "ara": "وصف",
-        "fra": "décrire"
+        "fra": "décrire",
+        "hin": "विवरण    ",
+        "kan": "ವಿವರಣೆ   ",
+        "tam": "விளக்கம்  "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -130,7 +160,10 @@
       "label": {
         "eng": "Model",
         "ara": "نموذج",
-        "fra": "forme"
+        "fra": "forme",
+        "hin": "नमूना ",
+        "kan": "ಮಾದರಿ  ",
+        "tam": "மாதிரி "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -146,7 +179,10 @@
       "label": {
         "eng": "Scenario",
         "ara": "السيناريو",
-        "fra": "scénario"
+        "fra": "scénario",
+        "hin": "परिदृश्य ",
+        "kan": "ಸನ್ನಿವೇಶ   ",
+        "tam": "காட்சி "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -162,7 +198,10 @@
       "label": {
         "eng": "Template Format",
         "ara": "تنسيق القالب",
-        "fra": "Modèle de format"
+        "fra": "Modèle de format",
+        "hin": "टेम्पलेट प्रारूप ",
+        "kan": "ಟೆಂಪ್ಲೇಟು ಸ್ವರೂಪ    ",
+        "tam": "வார்ப்புரு வடிவம்"
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -170,7 +209,7 @@
       "LinkURL": "",
       "inputType": "dropdown",
       "ismandatory": "true"
-    },    
+    },
     {
       "name": "templateTypeCode",
       "showInListView": "false",
@@ -178,7 +217,10 @@
       "label": {
         "eng": "Template",
         "ara": "قالب",
-        "fra": "format"
+        "fra": "format",
+        "hin": "टेम्पलेट ",
+        "kan": "ಟೆಂಪ್ಲೇಟು  ",
+        "tam": "வார்ப்புரு "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -194,7 +236,10 @@
       "label": {
         "eng": "Module Id",
         "ara": "معرف الوحدة النمطية",
-        "fra": "ID module"
+        "fra": "ID module",
+        "hin": "मॉड्यूल आईडी  ",
+        "kan": "ಮಾಡ್ಯೂಲ್ ಐಡಿ ",
+        "tam": "தொகுதி ஐடி "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -210,7 +255,10 @@
       "label": {
         "eng": "Module Name",
         "ara": "اسم الوحدة النمطية",
-        "fra": "Nom du module"
+        "fra": "Nom du module",
+        "hin": "मोड्यूल का नाम  ",
+        "kan": "ಮಾಡ್ಯೂಲ್ ಹೆಸರು  ",
+        "tam": "தொகுதி பெயர் "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -238,7 +286,10 @@
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé"
+        "fra": "Temps créé",
+        "hin": "बनाया गया समय  ",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ   ",
+        "tam": "நேரம் உருவாக்கப்பட்டது  "
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -252,7 +303,10 @@
       "label": {
         "eng": "Created By",
         "ara": "تم إنشاؤه من قبل",
-        "fra": "Créé par"
+        "fra": "Créé par",
+        "hin": "बनाया गया समय  ",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ  ",
+        "tam": "நேரம் உருவாக்கப்பட்டது  "
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -266,7 +320,10 @@
       "label": {
         "eng": "Updated By",
         "ara": "تم التحديث بواسطة",
-        "fra": "Mise à jour par"
+        "fra": "Mise à jour par",
+        "hin": "द्वारा अपडेट   ",
+        "kan": "ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ   ",
+        "tam": "புதுப்பிக்கப்பட்டது   "
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -280,7 +337,10 @@
       "label": {
         "eng": "Updated Time",
         "ara": "وقت التحديث",
-        "fra": "Temps mis à jour"
+        "fra": "Temps mis à jour",
+        "hin": "दअपडेट किया गया समय  ",
+        "kan": "ನವೀಕರಿಸಿದ ಸಮಯ   ",
+        "tam": "புதுப்பிக்கப்பட்ட நேரம்  "
       },
       "sortOrder": "3",
       "showAsLink": "",
@@ -294,7 +354,10 @@
       "label": {
         "eng": "Template ID",
         "ara": "معرف القالب",
-        "fra": "ID de modèle"
+        "fra": "ID de modèle",
+        "hin": "टेम्पलेट आईडी   ",
+        "kan": "ಟೆಂಪ್ಲೇಟು ID ",
+        "tam": "வார்ப்புரு ஐடி   "
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -313,7 +376,10 @@
       "filterlabel": {
         "eng": "Name",
         "ara": "اسم",
-        "fra": "nom"
+        "fra": "nom",
+        "hin": "नाम    ",
+        "kan": "ಹೆಸರು  ",
+        "tam": "பெயர்  "
       },
       "filterType": "equals",
       "autocomplete": "false",
@@ -328,7 +394,10 @@
       "filterlabel": {
         "eng": "Module Name",
         "ara": "اسم الوحدة النمطية",
-        "fra": "Nom du module"
+        "fra": "Nom du module",
+        "hin": "मोड्यूल का नाम  ",
+        "kan": "ಮಾಡ್ಯೂಲ್ ಹೆಸರು  ",
+        "tam": "தொகுதி பெயர் "
       },
       "filterType": "equals",
       "autocomplete": "false",

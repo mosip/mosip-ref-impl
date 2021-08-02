@@ -54,7 +54,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   @Input() primaryLang: string;
   @Input() secondaryLang: string;
   @Input() masterdataType: any;
-
+  secondaryLangDisplay: any;
   dropDownValues = new CenterDropdown();
   fetchRequest = {} as CenterRequest;
   id: string;
@@ -66,7 +66,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
   languageNames = {
     ara: 'عربى',
     fra: 'French',
-    eng: 'English'
+    eng: 'English',
+    hin: 'हिंदी',
+    kan: 'ಕನ್ನಡ',
+    tam: 'தமிழ்'
   };
   showSecondaryForm: boolean;
   isCreateForm:boolean;
@@ -119,8 +122,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }  
     this.isCreateForm = false;
     this.disableForms = false;
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
+    this.secondaryKeyboard = defaultJson.keyboardMapping[this.secondaryLang];
     let url = this.router.url.split('/')[3];
     this.url = this.router.url.split('/')[3];
     if(!this.primaryData){
@@ -267,7 +270,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
   captureLanguage(event: any, language : string){
     if (event.source.selected) {
       this.secondaryLang = language;
-      this.secondaryKeyboard = appConstants.keyboardMapping[language];
+      this.secondaryLangDisplay = event.source.viewValue;
+      this.secondaryKeyboard = defaultJson.keyboardMapping[language];
       this.getData(language);
     }
   }

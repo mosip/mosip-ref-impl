@@ -171,7 +171,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Users',
       ara: 'قوالب',
-      fra: 'Modèles'
+      fra: 'Modèles',
+      tam: 'பயனர்கள்',
+      kan: 'ಬಳಕೆದಾರರು',
+      hin: 'उपयोगकर्ताओं'
     },
     nameKey: 'name',
     idKey: 'id',
@@ -183,7 +186,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Blacklisted Words',
       ara: 'كلمات في القائمة السوداء',
-      fra: 'Mots sur la liste noire'
+      fra: 'Mots sur la liste noire',
+      tam: 'தடுப்புப்பட்டியல் சொற்கள்',
+      kan: 'ನಿರ್ಬಂಧಿಸಲಾದ ಪದಗಳು',
+      hin: 'ब्लॉक लिस्टेड शब्द'
     },
     nameKey: 'word',
     idKey: 'word',
@@ -195,7 +201,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Holiday',
       ara: 'قائمة عطلة',
-      fra: 'Liste de vacances'
+      fra: 'Liste de vacances',
+      tam: 'விடுமுறை',
+      kan: 'ರಜಾದಿನ',
+      hin: 'छुट्टी'
     },
     nameKey: 'holidayName',
     idKey: 'holidayId',
@@ -207,7 +216,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Document Type',
       ara: 'أنواع المستندات',
-      fra: 'Types de documents'
+      fra: 'Types de documents',
+      tam: 'ஆவண வகை',
+      kan: 'ಡಾಕ್ಯುಮೆಂಟ್ ಪ್ರಕಾರ',
+      hin: 'दस्तावेज़ का प्रकार'
     },
     nameKey: 'name',
     idKey: 'code',
@@ -231,7 +243,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Templates',
       ara: 'قوالب',
-      fra: 'Modèles'
+      fra: 'Modèles',
+      tam: 'வார்ப்புருக்கள்',
+      kan: 'ಟೆಂಪ್ಲೇಟ್‌ಗಳು',
+      hin: 'टेम्पलेट्स'
     },
     nameKey: 'name',
     idKey: 'id',
@@ -243,7 +258,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Machine Types',
       ara: 'أنواع الآلات',
-      fra: 'Types de machines'
+      fra: 'Types de machines',
+      tam: 'இயந்திர வகைகள்',
+      kan: 'ಯಂತ್ರ ಪ್ರಕಾರಗಳು',
+      hin: 'मशीन के प्रकार'
     },
     nameKey: 'name',
     idKey: 'code',
@@ -255,7 +273,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Device Types',
       ara: 'أنواع الأجهزة',
-      fra: 'Types de périphériques'
+      fra: 'Types de périphériques',
+      tam: 'சாதன வகைகள்',
+      kan: 'ಸಾಧನ ಪ್ರಕಾರಗಳು',
+      hin: 'डिवाइस के प्रकार'
     },
     nameKey: 'name',
     idKey: 'code',
@@ -267,7 +288,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Document Categories',
       ara: 'فئات المستندات',
-      fra: 'Catégories de document'
+      fra: 'Catégories de document',
+      tam: 'ஆவண வகைகள்',
+      kan: 'ಡಾಕ್ಯುಮೆಂಟ್ ವರ್ಗಗಳು',
+      hin: 'दस्तावेज़ श्रेणियाँ'
     },
     nameKey: 'name',
     idKey: 'code',
@@ -279,7 +303,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Machine Specification',
       ara: 'المواصفات الجهاز',
-      fra: 'Spécifications de la machin'
+      fra: 'Spécifications de la machin',
+      tam: 'இயந்திர விவரக்குறிப்பு',
+      kan: 'ಯಂತ್ರ ವಿವರಣೆ',
+      hin: 'मशीन विशिष्टता'
     },
     nameKey: 'name',
     idKey: 'id',
@@ -291,7 +318,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Device Specification',
       ara: 'مواصفات الجهاز',
-      fra: 'Spécifications de l\'appareil'
+      fra: 'Spécifications de l\'appareil',
+      tam: 'சாதன விவரக்குறிப்பு',
+      kan: 'ಸಾಧನ ವಿವರಣೆ',
+      hin: 'डिवाइस विशिष्टता'
     },
     nameKey: 'name',
     idKey: 'id',
@@ -303,7 +333,10 @@ export const masterdataMapping = {
     name: {
       eng: 'Center Type',
       ara: 'نوع المركز',
-      fra: 'Type de centre'
+      fra: 'Type de centre',
+      tam: 'மைய வகை',
+      kan: 'ಕೇಂದ್ರ ಪ್ರಕಾರ',
+      hin: 'केंद्र प्रकार'
     },
     nameKey: 'name',
     idKey: 'code',
@@ -327,7 +360,10 @@ export const masterdataMapping = {
     name: {
       "eng": "Dynamic Field",
       "ara": "مجال ديناميكي",
-      "fra": "Champ dynamique"
+      "fra": "Champ dynamique",
+      tam: 'டைனமிக் புலம்',
+      kan: 'ಡೈನಾಮಿಕ್ ಫೀಲ್ಡ್',
+      hin: 'गतिशील क्षेत्र'
     },
     nameKey: 'name',
     idKey: 'id',
@@ -467,7 +503,10 @@ export const FilterMapping = {
 export const keyboardMapping = {
   eng: 'en',
   fra: 'fr',
-  ara: 'ar'
+  ara: 'ar',
+  hin: 'hi',
+  tam: 'ta',
+  kan: 'ka'
 };
 
 export const days = {

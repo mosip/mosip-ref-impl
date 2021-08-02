@@ -161,8 +161,8 @@ export class EditComponent {
       this.showSecondaryForm = false;
     }
     //Set the keyboard mapping
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
+    this.secondaryKeyboard = defaultJson.keyboardMapping[this.secondaryLang];
     // Set the language orientation LTR or RTL
     this.isPrimaryLangRTL = false;
     this.isSecondaryLangRTL = false;
@@ -480,7 +480,7 @@ export class EditComponent {
 
   reloadSecondaryFormWithNewLang = (selectedNewLangCode: string) => {
     this.secondaryLang = selectedNewLangCode;
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.secondaryKeyboard = defaultJson.keyboardMapping[this.secondaryLang];
     this.secondaryForm.reset();
     for (const i in this.secondaryForm.controls) {
       if (this.secondaryForm.controls[i]) {
