@@ -35,29 +35,13 @@ const copyto = async (context, args, uiField) => {
               uiField2.controlType == "dropdown" ||
               uiField2.controlType == "button"
             ) {
-              //context.dropdownApiCall(uiField2.id);
-              //context.userForm.controls[uiField2.id].setValue(fromFieldValue);
-              let promisesResolved = [];
+              context.selectOptionsDataArray[`${uiField2.id}`] =
+                context.selectOptionsDataArray[`${uiField1.id}`];
+              context.userForm.controls[uiField2.id].setValue(fromFieldValue);
+              context.userForm.controls[uiField2.id].disable();
+              context.searchInDropdown(uiField2.id);
               if (context.isThisFieldInLocationHeirarchies(uiField2.id)) {
-                const locationIndex = context.getIndexInLocationHeirarchy(
-                  uiField2.id
-                );
-                const parentLocationName = context.getLocationNameFromIndex(
-                  uiField2.id,
-                  locationIndex - 1
-                );
-                if (parentLocationName) {
-                  let locationCode = context.userForm.controls[parentLocationName].value;
-                  if (locationCode) {
-                    context.selectOptionsDataArray[uiField2.id] = [];
-                    promisesResolved.push(context.loadLocationData(locationCode, uiField2.id));
-                  }
-                }
-                await Promise.all(promisesResolved).then((values) => {
-                  context.userForm.controls[uiField2.id].setValue(fromFieldValue);
-                  console.log(context.userForm.controls[uiField2.id].value);
-                  return;
-                });
+                context.resetLocationFields(uiField2.id);
               }
             } else {
               context.userForm.controls[uiField2.id].setValue(fromFieldValue);

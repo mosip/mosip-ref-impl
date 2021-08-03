@@ -36,8 +36,8 @@ export class DataStorageService {
   BASE_URL = this.appConfigService.getConfig()["BASE_URL"];
   PRE_REG_URL = this.appConfigService.getConfig()["PRE_REG_URL"];
 
-  getI18NLanguageFiles(langCode:string){
-   return this.httpClient.get(`./assets/i18n/${langCode}.json`);
+  getI18NLanguageFiles(langCode: string) {
+    return this.httpClient.get(`./assets/i18n/${langCode}.json`);
   }
 
   getUsers(userId: string) {
@@ -60,7 +60,7 @@ export class DataStorageService {
       appConstants.APPEND_URL.applicants +
       appConstants.APPENDER +
       preRegId;
-    console.log("url>>>>"+url);
+    //console.log("url>>>>" + url);
     return this.httpClient.get(url);
   }
 
@@ -72,7 +72,11 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   getGenderDetails() {
-    const url = this.BASE_URL + this.PRE_REG_URL + 'proxy' + appConstants.APPEND_URL.gender;
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
+      appConstants.APPEND_URL.gender;
     return this.httpClient.get(url);
   }
 
@@ -84,7 +88,11 @@ export class DataStorageService {
    * @memberof DataStorageService
    */
   getResidentDetails() {
-    const url = this.BASE_URL + this.PRE_REG_URL + 'proxy' + appConstants.APPEND_URL.resident;
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
+      appConstants.APPEND_URL.resident;
     return this.httpClient.get(url);
   }
 
@@ -170,7 +178,8 @@ export class DataStorageService {
   getNearbyRegistrationCenters(coords: any) {
     return this.httpClient.get(
       this.BASE_URL +
-        this.PRE_REG_URL + 'proxy' +
+        this.PRE_REG_URL +
+        "proxy" +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.nearby_registration_centers +
         localStorage.getItem("langCode") +
@@ -188,7 +197,8 @@ export class DataStorageService {
   getRegistrationCentersByName(locType: string, text: string) {
     return this.httpClient.get(
       this.BASE_URL +
-        this.PRE_REG_URL + 'proxy' +
+        this.PRE_REG_URL +
+        "proxy" +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.registration_centers_by_name +
         localStorage.getItem("langCode") +
@@ -199,27 +209,39 @@ export class DataStorageService {
     );
   }
 
-  getRegistrationCentersByNamePageWise(locType: string, text: string, pageNumber: number, pageSize: number) {
-    let url = this.BASE_URL +
-    this.PRE_REG_URL + 'proxy' +
-    appConstants.APPEND_URL.master_data +
-    appConstants.APPEND_URL.registration_centers_by_name +
-    "page/" +
-    localStorage.getItem("langCode") +
-    "/" +
-    locType +
-    "/" +
-    encodeURIComponent(text) + "/?" +
-    "pageNumber=" + pageNumber + 
-    "&pageSize=" + pageSize +
-    "&orderBy=desc&sortBy=createdDateTime";
-    console.log(url);
+  getRegistrationCentersByNamePageWise(
+    locType: string,
+    text: string,
+    pageNumber: number,
+    pageSize: number
+  ) {
+    let url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
+      appConstants.APPEND_URL.master_data +
+      appConstants.APPEND_URL.registration_centers_by_name +
+      "page/" +
+      localStorage.getItem("langCode") +
+      "/" +
+      locType +
+      "/" +
+      encodeURIComponent(text) +
+      "/?" +
+      "pageNumber=" +
+      pageNumber +
+      "&pageSize=" +
+      pageSize +
+      "&orderBy=desc&sortBy=createdDateTime";
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
   getLocationTypeData() {
     return this.httpClient.get(
-      this.BASE_URL +  this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        "proxy" +
         appConstants.APPEND_URL.master_data +
         "locations/" +
         localStorage.getItem("langCode")
@@ -227,18 +249,24 @@ export class DataStorageService {
   }
 
   getLocationInfoForLocCode(locCode: string, langCode: string) {
-    let url = this.BASE_URL +  this.PRE_REG_URL + 'proxy' +
-    appConstants.APPEND_URL.master_data +
-    "locations/info/" +
-    locCode + "/" + 
-    langCode;
-    console.log(url);
+    let url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
+      appConstants.APPEND_URL.master_data +
+      "locations/info/" +
+      locCode +
+      "/" +
+      langCode;
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
   getLocationsHierarchyByLangCode(langCode: string, locCode: string) {
     return this.httpClient.get(
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        "proxy" +
         appConstants.APPEND_URL.master_data +
         "locations/" +
         locCode +
@@ -287,7 +315,9 @@ export class DataStorageService {
    */
   getLocationImmediateHierearchy(lang: string, location: string) {
     const url =
-      this.BASE_URL  + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       appConstants.APPEND_URL.location_immediate_children +
       location +
@@ -359,16 +389,16 @@ export class DataStorageService {
 
   sendNotification(data: FormData) {
     return this.httpClient.post(
-      this.BASE_URL +
-        this.PRE_REG_URL +
-        appConstants.APPEND_URL.notification,
+      this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.notification,
       data
     );
   }
 
   getLocationOnLocationCodeAndLangCode(locationCode, langCode) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       "locations/" +
       locationCode +
@@ -382,9 +412,11 @@ export class DataStorageService {
     locationHierarchyCode: number,
     data: string[]
   ) {
-    console.log(data);
+    //console.log(data);
     let url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       "registrationcenters/" +
       langCode +
@@ -400,13 +432,15 @@ export class DataStorageService {
     if (url.charAt(url.length - 1) === "&") {
       url = url.substring(0, url.length - 1);
     }
-    console.log(url);
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
   getRegistrationCenterByIdAndLangCode(id: string, langCode: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       "registrationcenters/" +
       id +
@@ -417,18 +451,22 @@ export class DataStorageService {
 
   getGuidelineTemplate(templateType: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       "templates/templatetypecodes" +
       "/" +
       templateType;
-      localStorage.setItem("consentUrl",url);
+    localStorage.setItem("consentUrl", url);
     return this.httpClient.get(url);
   }
 
   getApplicantType(docuemntCategoryDto) {
     return this.httpClient.post(
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        "proxy" +
         appConstants.APPEND_URL.applicantType +
         appConstants.APPEND_URL.getApplicantType,
       docuemntCategoryDto
@@ -437,16 +475,34 @@ export class DataStorageService {
 
   getDocumentCategories(applicantCode) {
     const APPLICANT_VALID_DOCUMENTS_URL =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
+      appConstants.APPEND_URL.location +
+      appConstants.APPEND_URL.validDocument +
+      applicantCode +
+      "/languages";
+    //console.log(APPLICANT_VALID_DOCUMENTS_URL);
+    return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
+      params: new HttpParams().append(
+        appConstants.PARAMS_KEYS.getDocumentCategories,
+        localStorage.getItem("langCode")
+      ),
+    });
+  }
+  
+  getDocumentCategoriesByLang(applicantCode, langCode) {
+    const APPLICANT_VALID_DOCUMENTS_URL =
       this.BASE_URL + this.PRE_REG_URL + 'proxy' +
       appConstants.APPEND_URL.location +
       appConstants.APPEND_URL.validDocument +
       applicantCode +
       "/languages";
-    console.log(APPLICANT_VALID_DOCUMENTS_URL);  
+    //console.log(APPLICANT_VALID_DOCUMENTS_URL);  
     return this.httpClient.get(APPLICANT_VALID_DOCUMENTS_URL, {
       params: new HttpParams().append(
         appConstants.PARAMS_KEYS.getDocumentCategories,
-        localStorage.getItem("langCode")
+        langCode
       ),
     });
   }
@@ -461,7 +517,7 @@ export class DataStorageService {
     return this.httpClient.get(url);
   }
 
-  sendOtp(userId: string,langCode: string) {
+  sendOtp(userId: string, langCode: string) {
     const req = {
       langCode: langCode,
       userId: userId,
@@ -473,7 +529,26 @@ export class DataStorageService {
       this.BASE_URL +
       this.PRE_REG_URL +
       appConstants.APPEND_URL.auth +
-      appConstants.APPEND_URL.send_otp + "/" + "langcode";
+      appConstants.APPEND_URL.send_otp +
+      "/" +
+      "langcode";
+    return this.httpClient.post(url, obj);
+  }
+
+  sendOtpWithCaptcha(userId: string, langCode: string, captchaToken: string) {
+    const req = {
+      langCode: langCode,
+      userId: userId,
+      captchaToken: captchaToken,
+    };
+
+    const obj = new RequestModel(appConstants.IDS.sendOtp, req);
+
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.auth +
+      "sendOtpWithCaptcha";
     return this.httpClient.post(url, obj);
   }
 
@@ -503,7 +578,9 @@ export class DataStorageService {
    */
   getWorkingDays(registartionCenterId: string, langCode: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       "workingdays/" +
       registartionCenterId +
@@ -528,7 +605,7 @@ export class DataStorageService {
   }
 
   verifyGCaptcha(captcha) {
-    console.log(captcha);
+    //console.log(captcha);
     const headers = new HttpHeaders({ "Content-Type": "application/json" });
     const url =
       this.BASE_URL + this.PRE_REG_URL + appConstants.APPEND_URL.captcha;
@@ -537,13 +614,15 @@ export class DataStorageService {
 
   getIdentityJson() {
     //const url = this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
-    let url = this.BASE_URL + this.PRE_REG_URL+ `uispec/latest`;
+    let url = this.BASE_URL + this.PRE_REG_URL + `uispec/latest`;
     return this.httpClient.get(url);
   }
 
   getRegistrationCentersById(regCenterId, langCode: string) {
     return this.httpClient.get(
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+        this.PRE_REG_URL +
+        "proxy" +
         appConstants.APPEND_URL.master_data +
         appConstants.APPEND_URL.registration_centers_by_name +
         regCenterId +
@@ -564,39 +643,52 @@ export class DataStorageService {
 
   getDynamicFieldsandValues(langCode) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
-    //console.log(url);
+    ////console.log(url);
     return this.httpClient.get(url);
   }
 
   getDynamicFieldsandValuesForAllLang(pageNumber: string) {
     const url =
-      this.BASE_URL + this.PRE_REG_URL + 'proxy' +
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      "proxy" +
       appConstants.APPEND_URL.master_data +
       `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
-    //console.log(url);
+    ////console.log(url);
     return this.httpClient.get(url);
   }
-  
+
   updateDocRefId(fileDocumentId, preId, docRefId) {
-    const url = `${this.BASE_URL}${this.PRE_REG_URL}` +
+    const url =
+      `${this.BASE_URL}${this.PRE_REG_URL}` +
       `${appConstants.APPEND_URL.updateDocRefId}${fileDocumentId}` +
-      `?${appConstants.PARAMS_KEYS.preRegistrationId}=${preId}`+
+      `?${appConstants.PARAMS_KEYS.preRegistrationId}=${preId}` +
       `&${appConstants.PARAMS_KEYS.docRefId}=${docRefId}`;
     return this.httpClient.put(url, {});
   }
- 
-  logAudit(auditRequest: AuditModel){
-    let request = new RequestModel("",auditRequest);
-   const url = this.BASE_URL + this.PRE_REG_URL + 'logAudit';
-   return this.httpClient.post(url, request);
+
+  logAudit(auditRequest: AuditModel) {
+    let request = new RequestModel("", auditRequest);
+    const url = this.BASE_URL + this.PRE_REG_URL + "logAudit";
+    return this.httpClient.post(url, request);
   }
 
-  getApplicationStatus(prid: String){
-   const requesturl = this.BASE_URL + this.PRE_REG_URL + `applications/status/${prid}`;
-   return this.httpClient.get(requesturl);
+  updateApplicationStatus(prid: String, statusCode: string) {
+    const requesturl =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      `applications/status/${prid}?statusCode=${statusCode}`;
+    return this.httpClient.put(requesturl, {});
   }
 
+  getApplicationStatus(prid: String) {
+    const requesturl =
+      this.BASE_URL + this.PRE_REG_URL + `applications/status/${prid}`;
+    return this.httpClient.get(requesturl);
+  }
 }

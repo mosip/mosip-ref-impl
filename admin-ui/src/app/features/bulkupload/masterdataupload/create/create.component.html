@@ -7,7 +7,7 @@
             <img src="./assets/images/icon_center.svg" alt="img">
           </div>
           <div class="item2">
-            <h3>Master Data Upload</h3>
+            <h3>{{labelanddatas.title |translate}}</h3>
           </div>
         </div>
       </mat-card>
@@ -28,6 +28,9 @@
                   {{data.label | translate }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="uploadForm.controls.operation.touched">
+                This field is required
+              </mat-error>
             </mat-form-field> 
             <mat-form-field>
               <mat-label>{{labelanddatas.tableName | translate }}</mat-label>
@@ -39,12 +42,18 @@
                   {{data.value | translate }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="uploadForm.controls.tableName.touched">
+                This field is required
+              </mat-error>
             </mat-form-field> 
             <div class="custom-file-input">
               <input type="button" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
-              <input type="file" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" [value]="fileName" placeholder="{{labelanddatas.uploadFile | translate }}">                
-            </div>           
+              <input type="file" accept=".csv" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
+              <input type="text" id="fileName"  formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}"> 
+              <mat-error *ngIf="fileNameError">
+                This field is required
+              </mat-error>  
+            </div>                       
           </div> 
         </mat-card-content>
         <mat-card-actions class="action-buttons">

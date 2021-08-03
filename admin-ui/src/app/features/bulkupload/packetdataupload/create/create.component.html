@@ -19,7 +19,10 @@
             <div class="custom-file-input">
               <input type="button" value="{{'packet-upload.createView.input-btn-text' | translate}}" class="browseInput">
               <input type="file" multiple="multiple" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="{{'packet-upload.createView.input-text1' | translate}}" />
-              <input type="text" [value]="fileName" placeholder="{{'packet-upload.createView.input-text2' | translate}}">                
+              <input type="text" id="fileName" [value]="fileName" placeholder="{{'packet-upload.createView.input-text2' | translate}}"> 
+              <mat-error *ngIf="fileNameError">
+                This field is required
+              </mat-error>               
             </div>           
           </div> 
         </mat-card-content>

@@ -7,7 +7,7 @@
             <img src="./assets/images/icon_center.svg" alt="img">
           </div>
           <div class="item2">
-            <h3>Upload Certificate</h3>
+            <h3>{{'uploadotherdomaincertificate.title' | translate}}</h3>
           </div>
         </div>
       </mat-card>
@@ -30,7 +30,7 @@
                 #applicationId
                 matInput
                 formControlName="applicationId"
-                placeholder="Application Id"
+                placeholder="{{'uploadotherdomaincertificate.applicationId' | translate}}"
                 [value]=""
               />
             </mat-form-field>
@@ -39,14 +39,14 @@
                 #referenceId
                 matInput
                 formControlName="referenceId"
-                placeholder="ReferenceId"
+                placeholder="{{'uploadotherdomaincertificate.referenceId' | translate}}"
                 [value]=""
               />
             </mat-form-field>
             <div class="custom-file-input">
-              <input type="button" value="Choose File" class="browseInput">
+              <input type="button" value="{{'uploadotherdomaincertificate.chooseFile' | translate}}" class="browseInput">
               <input type="file" #fileInput (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" [value]="fileName" placeholder="Upload Your File">                
+              <input type="text" [value]="fileName" placeholder="{{'uploadotherdomaincertificate.uploadYourFile' | translate}}">                
             </div>
           </div>
         </mat-card-content>
@@ -56,7 +56,7 @@
             mat-raised-button
             (click)="submit()"
           >
-          Generate
+          {{'uploadotherdomaincertificate.button' | translate}}
           </button>
         </mat-card-actions>
       </mat-card>

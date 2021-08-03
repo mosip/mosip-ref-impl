@@ -27,6 +27,7 @@ export class DialougComponent implements OnInit {
   applicantNumber;
   checkCondition;
   applicantEmail;
+  textDir = localStorage.getItem("dir");
   inputList = [];
   invalidApplicantNumber = false;
   invalidApplicantEmail = false;
@@ -135,8 +136,8 @@ export class DialougComponent implements OnInit {
 
   cancelConsent(message) {
     let consentText = [];
-    message.forEach(element => {
-      consentText.push(element['fileText']);
+    message.forEach((element) => {
+      consentText.push(element["fileText"]);
     });
     let description = {
       url: localStorage.getItem("consentUrl"),
@@ -147,65 +148,71 @@ export class DialougComponent implements OnInit {
     auditObj.actionUserId = localStorage.getItem("loginId");
     auditObj.eventName = "CONSENT";
     auditObj.description = JSON.stringify(description);
-    this.dataService.logAudit(auditObj).subscribe(res => {});
+    this.dataService.logAudit(auditObj).subscribe((res) => {});
   }
 
-  async userRedirection() {
+  async userRedirection(textDirection) {
     if (
-      localStorage.getItem("newApplicant") === "true" &&
-      localStorage.getItem("addingUserFromPreview") === "true"
+      localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
+      localStorage.getItem(appConstants.NEW_APPLICANT_FROM_PREVIEW) === "true"
     ) {
-      await this.thirdPopUp();
+      await this.thirdPopUp(textDirection);
     } else if (
-      localStorage.getItem("newApplicant") === "true" &&
+      localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       Number(localStorage.getItem("noOfApplicant")) > 0
     ) {
-      await this.secondPopUp();
+      await this.secondPopUp(textDirection);
     } else if (
-      localStorage.getItem("newApplicant") === "true" &&
+      localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       Number(localStorage.getItem("noOfApplicant")) === 0
     ) {
-      await this.firstPopUp();
+      await this.firstPopUp(textDirection);
     }
   }
 
-  firstPopUp() {
+  firstPopUp(textDirection) {
     const data = {
       case: "MESSAGE",
+      textDir: textDirection,
       message: this.input.alertMessageFirst,
     };
     this.dialogBox
       .open(DialougComponent, {
-        width: "460px",
+        width: "400px",
         data: data,
+        disableClose: true
       })
       .afterClosed()
       .subscribe(() => this.loggingUserOut());
   }
 
-  secondPopUp() {
+  secondPopUp(textDirection) {
     const data = {
       case: "MESSAGE",
+      textDir: textDirection,
       message: this.input.alertMessageSecond,
     };
     this.dialogBox
       .open(DialougComponent, {
-        width: "460px",
+        width: "400px",
         data: data,
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() => this.redirectingUser());
   }
 
-  thirdPopUp() {
+  thirdPopUp(textDirection) {
     const data = {
       case: "MESSAGE",
+      textDir: textDirection,
       message: this.input.alertMessageThird,
     };
     this.dialogBox
       .open(DialougComponent, {
-        width: "460px",
+        width: "400px",
         data: data,
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() => this.redirectingUser());
@@ -221,7 +228,8 @@ export class DialougComponent implements OnInit {
     if (url) {
       preRegId = url.split("/")[4];
     }
-    if (localStorage.getItem("addingUserFromPreview") === "true") {
+    console.log(`preRegId: ${preRegId}`);
+    if (localStorage.getItem(appConstants.NEW_APPLICANT_FROM_PREVIEW) === "true") {
       this.router.navigate([
         `${localStorage.getItem(
           "langCode"
@@ -229,5 +237,9 @@ export class DialougComponent implements OnInit {
       ]);
     } else
       this.router.navigate([`${localStorage.getItem("langCode")}/dashboard`]);
+  }
+
+  applicationCancelAndDiscardSubmit(selectedOption) {
+      this.dialogRef.close(selectedOption);
   }
 }

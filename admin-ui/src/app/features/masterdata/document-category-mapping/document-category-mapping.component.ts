@@ -6,6 +6,8 @@ import { DocumentCategoryMappingService } from 'src/app/core/services/document-c
 import { AuditService } from 'src/app/core/services/audit.service';
 import * as appConstants from '../../../app.constants';
 import { Router } from '@angular/router';
+import { HeaderService } from "src/app/core/services/header.service";
+
 @Component({
   selector: 'app-document-category-mapping',
   templateUrl: './document-category-mapping.component.html',
@@ -29,8 +31,9 @@ export class DocumentCategoryMappingComponent implements OnInit {
               private appConfigService: AppConfigService,
               private docCategoryMapping: DocumentCategoryMappingService,
               private router: Router,
-              private auditService: AuditService) {
-    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
+              private auditService: AuditService, 
+              private headerService: HeaderService) {
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     translateService.use(this.primaryLang);
   }
 
@@ -78,7 +81,6 @@ export class DocumentCategoryMappingComponent implements OnInit {
           isActive: obj.isActive
       };
     });
-    console.log("newMappedDoc>>>",newMappedDoc);
     if(newMappedDoc.length > 0){
       for (const mapKey of newMappedDoc) {
         const mapDoc = mapKey;
@@ -86,7 +88,6 @@ export class DocumentCategoryMappingComponent implements OnInit {
           const unMapDoc = unMappedDoc.map((doc: any) => {
             return doc.name;
           }).indexOf(mapDoc.name);
-          console.log("unMapDoc>>>",unMapDoc);
           if(unMapDoc >= 0) {
             unMappedDoc.splice(unMapDoc, 1);
             this.unMappedDocList = unMappedDoc;
@@ -94,9 +95,13 @@ export class DocumentCategoryMappingComponent implements OnInit {
           }
         }
       }
-    }else{
-      this.unMappedDocList = unMappedDoc;
-      this.unMappedDocCount = this.unMappedDocList.length;
+    }else{      
+      if(unMappedDoc){
+        this.unMappedDocList = unMappedDoc;
+        this.unMappedDocCount = this.unMappedDocList.length;
+      }else{
+        this.unMappedDocList = [];
+      }
     }    
     this.mappedDocList = newMappedDoc;
     this.mappedDocCount = this.mappedDocList.length;

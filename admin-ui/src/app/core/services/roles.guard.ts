@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { AppConfigService } from 'src/app/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
+import {MatKeyboardService} from 'ngx7-material-keyboard';
 
 @Injectable({
   providedIn: 'root'
@@ -19,19 +20,21 @@ export class RolesGuard implements CanActivate {
               private dialog: MatDialog,
               private router: Router,
               private appService: AppConfigService,
+              private keyboardService: MatKeyboardService,
               private translateService: TranslateService) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (this.keyboardService.isOpened) {
+      this.keyboardService.dismiss();
+    }
     const x = appConstants.navItems.filter(item => state.url.indexOf(item.route) >= 0);
     let flag = false;
     if (x[0].children) {
       const y = x[0].children.filter(item => state.url.indexOf(item.route) >= 0);
-      console.log("y[0].roles>>>"+y[0].roles);
       flag = this.checkRole(y[0].roles);
     } else {
-      console.log("x[0].roles>>>"+x[0].roles);
       flag = this.checkRole(x[0].roles);
     }
     if (flag) {

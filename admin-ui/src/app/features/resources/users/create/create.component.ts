@@ -111,7 +111,11 @@ export class CreateComponent{
     this.dataStorageService
       .getFiltersCenterDetailsBasedonZone(this.primaryLang, zoneCode)
       .subscribe(response => {
-        this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
+        if(!response.errors){
+          this.dropDownValues.regCenterCode.primary = response.response.registrationCenters;
+        }else{
+          this.dropDownValues.regCenterCode.primary = [];
+        }
       });
   }
 
@@ -123,7 +127,8 @@ export class CreateComponent{
     this.dataStorageService
       .getFiltersUserDetails()
       .subscribe(response => {
-        this.dropDownValues.deviceTypeCode.primary = response.response.mosipUserDtoList;
+        if(response.response.mosipUserDtoList)        
+          this.dropDownValues.deviceTypeCode.primary = response.response.mosipUserDtoList.sort((a, b) => a.name.localeCompare(b.name));
       });
   }
 

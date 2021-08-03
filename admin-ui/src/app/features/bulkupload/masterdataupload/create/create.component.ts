@@ -20,7 +20,7 @@ export class CreateComponent {
   uploadForm: FormGroup;
   labelanddatas:any;
   subscribed: any;
-  fileName = "";
+  fileNameError:boolean = false;
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -53,6 +53,7 @@ export class CreateComponent {
     this.uploadForm = this.formBuilder.group({
       category : ['masterdata'],
       files: ['', [Validators.required]],
+      fileName: ['', [Validators.required]],
       operation: ['', [Validators.required]],
       tableName: ['', [Validators.required]],
     });
@@ -62,13 +63,15 @@ export class CreateComponent {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.uploadForm.get('files').setValue(file);
-      this.fileName = file.name;
+      this.uploadForm.get('fileName').setValue(file.name);
+      document.getElementById("fileName").classList.remove('addredborder');
+      this.fileNameError = false;
     }
   }
 
   onFileClick(event){
-    event.target.value = ''
-    this.fileName = '';
+    event.target.value = '';
+    this.uploadForm.get('fileName').setValue('');
   }
 
   submit(){
@@ -93,7 +96,17 @@ export class CreateComponent {
     } else {
       for (const i in this.uploadForm.controls) {
         if (this.uploadForm.controls[i]) {
-          this.uploadForm.controls[i].markAsTouched();
+          if(i === "fileName"){
+            if(!this.uploadForm.get('fileName').value){
+              document.getElementById("fileName").classList.add('addredborder');
+              this.fileNameError = true;
+            }else{
+              console.log("this.uploadForm.get('fileName').value>>>"+this.uploadForm.get('fileName').value);
+            }
+          }else{
+            this.uploadForm.controls[i].markAsTouched();
+          }
+          
         }
       }
     }  
@@ -114,25 +127,35 @@ export class CreateComponent {
   showMessage(uploadResponse){
     let data = {};
     let self = this;
-    let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
-    if(uploadResponse.response.status == "FAILED"){
-      for( let prop in statusDescription ){
-        console.log( statusDescription[prop] );
+    if(uploadResponse.errors.length == 0){
+      let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
+      if(uploadResponse.response.status == "FAILED"){
+        for( let prop in statusDescription ){
+          console.log( statusDescription[prop] );
+        }
+        data = {
+          case: 'MESSAGE',
+          title: "Failure !",
+          message: uploadResponse.response.statusDescription,
+          btnTxt: "DONE"
+        };
+      }else{
+        data = {
+          case: 'MESSAGE',
+          title: "Success",
+          message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
+          btnTxt: "DONE"
+        };
       }
-      data = {
-        case: 'MESSAGE',
-        title: "Failure !",
-        message: uploadResponse.response.statusDescription,
-        btnTxt: "DONE"
-      };
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Success",
-        message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
+        title: "Failure !",
+        message: uploadResponse.errors[0].message,
         btnTxt: "DONE"
       };
     }
+    
       
     const dialogRef = self.dialog.open(DialogComponent, {
       width: '550px',

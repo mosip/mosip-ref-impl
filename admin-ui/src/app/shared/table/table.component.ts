@@ -88,12 +88,21 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   selectedRow(data: any, specData: any) {
-    const currentRouteType = this.router.url.split('/')[3];
-    const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    let currentRouteType = this.router.url.split('/')[3];
+    let id = null;
+    if(!currentRouteType.includes("view")){
+      id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    }else{
+      currentRouteType = this.router.url.split('/')[2];
+      id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
+    }
+    
     if (specData.callBackFunction && specData.callBackFunction !== '') {
-      console.log("selectedRow id.idKey>>>"+id.idKey);
-      console.log("data>>>"+JSON.stringify(data));
-      this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
+      if (currentRouteType.toLowerCase() === 'blacklisted-words') {
+        this.commonService[specData.callBackFunction]({...data}, specData.redirectURL +"$"+data.langCode, id.idKey);
+      }else{
+        this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
+      }
     }
   }
 
@@ -169,6 +178,8 @@ export class TableComponent implements OnInit, OnChanges {
           this.ellipsisList.splice(index, 1);
         }
       });
+    }else{
+      this.ellipsisList = [...this.buttonList];
     }
   }
 

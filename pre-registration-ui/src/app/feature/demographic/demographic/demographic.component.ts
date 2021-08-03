@@ -36,12 +36,15 @@ import { LogService } from "src/app/shared/logger/log.service";
 import { FormDeactivateGuardService } from "src/app/shared/can-deactivate-guard/form-guard/form-deactivate-guard.service";
 import { Subscription } from "rxjs";
 import { Engine, Rule } from "json-rules-engine";
-import moment from "moment";
+import moment from 'moment';
 import { AuditModel } from "src/app/shared/models/demographic-model/audit.model";
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import identityStubJson from "../../../../assets/identity-spec1.json";
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import identityStubJson from "../../../../assets/identity-spec.json";
+import { RouterExtService } from "src/app/shared/router/router-ext.service";
 
 /**
  * @description This component takes care of the demographic page.
@@ -56,6 +59,14 @@ import identityStubJson from "../../../../assets/identity-spec1.json";
   selector: "app-demographic",
   templateUrl: "./demographic.component.html",
   styleUrls: ["./demographic.component.css"],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 
 export class DemographicComponent
@@ -72,12 +83,7 @@ export class DemographicComponent
   defaultDay: string;
   defaultMonth: string;
   defaultLocation: string;
-  date: string = "";
-  month: string = "";
-  year: string = "";
   currentAge: string = "";
-  ageOrDobPref = "";
-  showDate = false;
   isNewApplicant = false;
   checked = true;
   dataUploadComplete = true;
@@ -91,7 +97,6 @@ export class DemographicComponent
   isReadOnly = false;
   step: number = 0;
   id: number;
-  oldAge: number;
   oldKeyBoardIndex: number;
   numberOfApplicants: number;
   userForm = new FormGroup({});
@@ -100,7 +105,10 @@ export class DemographicComponent
   loginId = "";
   user: UserModel = new UserModel();
   demographiclabels: any;
+  apiErrorCodes: any;
   errorlabels: any;
+  dialoglabels: any;
+  dataCaptureLabels: any;
   uppermostLocationHierarchy: any;
   genders: any;
   residenceStatus: any;
@@ -108,9 +116,9 @@ export class DemographicComponent
   config = {};
   consentMessage = [];
   titleOnError = "";
-  @ViewChild("dd") dd: ElementRef;
-  @ViewChild("mm") mm: ElementRef;
-  @ViewChild("yyyy") yyyy: ElementRef;
+  dateOfBirthFieldId = "";
+  isNavigateToDemographic = false;
+  _moment = moment;
   @ViewChild("age") age: ElementRef;
   private _keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren("keyboardRef", { read: ElementRef })
@@ -132,6 +140,9 @@ export class DemographicComponent
   changeActionsNamesArr = [];
   identitySchemaVersion = "";
   readOnlyMode = false;
+  showChangeDataCaptureLangBtn = false;
+  localeDtFormat = "";
+  serverDtFormat = "YYYY/MM/DD";
   @ViewChild('singleSelect') singleSelect: MatSelect;
   /* Subject that emits when the component has been destroyed. */
   protected _onDestroy = new Subject<void>();
@@ -155,15 +166,19 @@ export class DemographicComponent
     private configService: ConfigService,
     private translate: TranslateService,
     public dialog: MatDialog,
+    private routerService: RouterExtService,
     private matKeyboardService: MatKeyboardService,
+    private dateAdapter: DateAdapter<Date>,
     private loggerService: LogService // private errorService: ErrorService
   ) {
     super(dialog);
+    this.translate.use(this.langCode);
     this.subscriptions.push(
       this.regService
         .getMessage()
         .subscribe((message) => (this.message = message))
     );
+    
   }
   /**
    * @description This is the angular life cycle hook called upon loading the component.
@@ -171,21 +186,23 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   async ngOnInit() {
-    
     await this.initialization();
     await this.initializeDataCaptureLanguages();
     //set translation service
     this.translate.use(this.dataCaptureLanguages[0]);
+    //set the locale for date picker and moment
+    this.setLocaleForDatePicker();
+    //load all labels in the first data capture language
+    this.getPrimaryLabels();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
-    this.getPrimaryLabels();
     await this.getConsentMessage();
     // this.validationMessage = appConstants.errorMessages;
     this.initForm();
     await this.setFormControlValues();
     if (!this.dataModification) {
       if (this.isConsentMessage)
-        this.consentMultiLangDeclaration(); /*this.consentDeclaration();*/
+        this.consentDeclaration(); 
     }
     this.onChangeHandler("");
     if (this.readOnlyMode) {
@@ -205,6 +222,7 @@ export class DemographicComponent
           });
       }  
     });
+    this.checkToShowLangChangeBtn();
     console.log("exiting");
     this.primaryuserForm = true;
   }
@@ -229,12 +247,10 @@ export class DemographicComponent
   }
 
   protected searchInDropdown(controlId: string) {
-    console.log("searchInDropdown");
     if (this.selectOptionsDataArray[`${controlId}`].length > 0) {
       // get the search keyword
       const searchCtrlId = controlId + "_search";
       let search = this.userForm.controls[`${searchCtrlId}`].value;
-      console.log(`search: ${search}`);
       const selectData = this.selectOptionsDataArray[`${controlId}`];
       if (!search) {
         this.filteredSelectOptions[controlId].next(selectData.slice());
@@ -254,14 +270,56 @@ export class DemographicComponent
       return;
     }
   }
+  setLocaleForDatePicker = () => {
+    let localeId = this.dataCaptureLanguages[0].substring(0, 2);
+    JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
+      (element) => {
+        if (this.dataCaptureLanguages[0] === element.code && element.locale) {
+          localeId = element.locale;
+        }
+      }
+    ); 
+    this.dateAdapter.setLocale(localeId);
+    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    console.log(`locale for datePicker: ${localeId} : ${localeDtFormat}`);
+    this.translate.get('demographic.date_yyyy').subscribe((year: string) => {
+      const yearLabel = year;
+      this.translate.get('demographic.date_mm').subscribe((month: string) => {
+        const monthLabel = month;
+        this.translate.get('demographic.date_dd').subscribe((day: string) => {
+          const dayLabel = day;
+          if (localeDtFormat.indexOf("YYYY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          else if (localeDtFormat.indexOf("YY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YY/g, yearLabel);
+          }
+          if (localeDtFormat.indexOf("MM") != -1) {
+            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
+          }
+          else if (localeDtFormat.indexOf("M") != -1) {
+            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
+          }
+          if (localeDtFormat.indexOf("DD") != -1) {
+            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
+          }
+          else if (localeDtFormat.indexOf("D") != -1) {
+            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
+          }
+          this.localeDtFormat = localeDtFormat;
+          console.log(`locale for datePicker: ${localeId} : ${this.localeDtFormat}`);
+        });  
+      });  
+    });
+  }
 
   initializeDataCaptureLanguages = async () => {
     if (!this.dataModification) {
       this.dataCaptureLanguages = JSON.parse(
-        localStorage.getItem("dataCaptureLanguages")
+        localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES)
       );
       this.dataCaptureLanguagesLabels = JSON.parse(
-        localStorage.getItem("dataCaptureLanguagesLabels")
+        localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGE_LABELS)
       );
       this.dataCaptureLanguages.forEach((langCode) => {
         //set the language direction as well
@@ -275,27 +333,12 @@ export class DemographicComponent
       if (this.user.request === undefined) {
         await this.getUserInfo(this.preRegId);
       }
-      const identityObj = this.user.request.demographicDetails.identity;
-      if (identityObj) {
-        let keyArr: any[] = Object.keys(identityObj);
-        for (let index = 0; index < keyArr.length; index++) {
-          const elementKey = keyArr[index];
-          let dataArr = identityObj[elementKey];
-          if (Array.isArray(dataArr)) {
-            dataArr.forEach((dataArrElement) => {
-              if (
-                !this.dataCaptureLanguages.includes(dataArrElement.language)
-              ) {
-                this.dataCaptureLanguages.push(dataArrElement.language);
-              }
-            });
-          }
-        }
-      } else if (this.user.request.langCode) {
-        this.dataCaptureLanguages = [this.user.request.langCode];
-      }
+      this.dataCaptureLanguages = Utils.getApplicationLangs(this.user.request);
+      //reorder the languages, by making user login lang as first one in the array
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.langCode);
+      //populate the lang labels
       this.dataCaptureLanguages.forEach((langCode) => {
-        JSON.parse(localStorage.getItem("languageCodeValue")).forEach(
+        JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
           (element) => {
             if (langCode === element.code) {
               this.dataCaptureLanguagesLabels.push(element.value);
@@ -319,6 +362,9 @@ export class DemographicComponent
       .subscribe((response) => {
         this.demographiclabels = response["demographic"];
         this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+        this.dialoglabels = response["dialog"];
+        this.dataCaptureLabels = response["dashboard"]["dataCaptureLanguage"];
       });
   }
   
@@ -329,19 +375,16 @@ export class DemographicComponent
         this.dataStorageService.getGuidelineTemplate("consent").subscribe(
           (response) => {
             this.isConsentMessage = true;
-            if (response && response[appConstants.RESPONSE]) {
-              /*this.consentMessage = response["response"][
-                "templates"
-              ][0].fileText.split("\n");*/
-              this.consentMessage = response["response"]["templates"];
-              //console.log(this.consentMessage);
-            } else if (response[appConstants.NESTED_ERROR])
-              this.onError(this.errorlabels.error, "");
+            /*this.consentMessage = response["response"][
+              "templates"
+            ][0].fileText.split("\n");*/
+            this.consentMessage = response[appConstants.RESPONSE]["templates"];
+            //console.log(this.consentMessage);
             resolve(true);
           },
           (error) => {
             this.isConsentMessage = false;
-            this.onError(this.errorlabels.error, error);
+            this.showErrorMessage(error);
           }
         )
       );
@@ -356,15 +399,23 @@ export class DemographicComponent
    * @memberof DemographicComponent
    */
   private async initialization() {
-    if (localStorage.getItem("newApplicant") === "true") {
+    //load error related labels in user's login lang,
+    //this is required to show errors from services
+    this.dataStorageService
+    .getI18NLanguageFiles(this.langCode)
+    .subscribe((response) => {
+      this.errorlabels = response[appConstants.ERROR];
+      this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+    });
+    if (localStorage.getItem(appConstants.NEW_APPLICANT) === "true") {
       this.isNewApplicant = true;
     }
-    if (localStorage.getItem("modifyUser") === "true") {
-      //console.log(localStorage.getItem("modifyUser"));
+    if (localStorage.getItem(appConstants.MODIFY_USER) === "true") {
+      //console.log(localStorage.getItem(appConstants.MODIFY_USER));
       this.dataModification = true;
       await this.getPreRegId();
       await this.getUserInfo(this.preRegId);
-      if (localStorage.getItem("modifyUserFromPreview") === "true") {
+      if (localStorage.getItem(appConstants.MODIFY_USER_FROM_PREVIEW) === "true") {
         this.showPreviewButton = true;
       }
 
@@ -384,56 +435,33 @@ export class DemographicComponent
 
   getUserInfo(preRegId) {
     return new Promise((resolve) => {
-      this.dataStorageService.getUser(preRegId).subscribe((response) => {
-        if (response[appConstants.RESPONSE]) {
+      this.dataStorageService.getUser(preRegId).subscribe(
+        (response) => {
           this.user.request = response[appConstants.RESPONSE];
-          console.log(this.user.request);
-          if (this.user.request["statusCode"] !== "Pending_Appointment") {
+          if (this.user.request["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.incomplete &&
+            this.user.request["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.pending) {
             this.readOnlyMode = true;
           } else {
             this.readOnlyMode = false;
-          }
-          resolve(response[appConstants.RESPONSE]);
-        }
-      });
+          }  
+          resolve(true);
+        },
+        (error) => {
+          this.showErrorMessage(error);
+        }  
+      );
     });
   }
 
-  /**
-   * @description This is the consent form, which applicant has to agree upon to proceed forward.
-   *
-   * @private
-   * @memberof DemographicComponent
-   */
   private consentDeclaration() {
-    if (this.demographiclabels) {
-      const data = {
-        case: "CONSENTPOPUP",
-        title: this.demographiclabels.consent.title,
-        subtitle: this.demographiclabels.consent.subtitle,
-        message: this.consentMessage,
-        checkCondition: this.demographiclabels.consent.checkCondition,
-        acceptButton: this.demographiclabels.consent.acceptButton,
-        alertMessageFirst: this.demographiclabels.consent.alertMessageFirst,
-        alertMessageSecond: this.demographiclabels.consent.alertMessageSecond,
-        alertMessageThird: this.demographiclabels.consent.alertMessageThird,
-      };
-      this.dialog.open(DialougComponent, {
-        width: "550px",
-        data: data,
-        disableClose: true,
-      });
-    }
-  }
-
-  private consentMultiLangDeclaration() {
     if (this.demographiclabels) {
       let newDataStructure = [];
       let consentText = [];
-      this.consentMessage.forEach((obj) => {
-        if (this.dataCaptureLanguages.includes(obj.langCode)) {
-          consentText.push(obj.fileText.split("\n"));
-          this.dataStorageService
+      this.dataCaptureLanguages.forEach((lang) => {
+        this.consentMessage.forEach((obj) => {
+          if (lang === obj.langCode) {
+            consentText.push(obj.fileText.split("\n"));
+            this.dataStorageService
             .getI18NLanguageFiles(obj.langCode)
             .subscribe((response) => {
               let labels = response["demographic"];
@@ -443,11 +471,15 @@ export class DemographicComponent
               structure["langCode"] = obj.langCode;
               newDataStructure.push(structure);
             });
-        }
-      });
+          }
+        });    
+      });  
       const data = {
-        case: "CONSENTPOPUPMULTILANG",
+        case: "CONSENTPOPUP",
         data: newDataStructure,
+        textDirectionArr: this.textDirection,
+        title: this.demographiclabels.consent.title,
+        cancelBtn: this.demographiclabels.consent.cancelButton,
         alertMessageFirst: this.demographiclabels.consent.alertMessageFirst,
         alertMessageSecond: this.demographiclabels.consent.alertMessageSecond,
         alertMessageThird: this.demographiclabels.consent.alertMessageThird,
@@ -455,8 +487,7 @@ export class DemographicComponent
       };
       this.dialog
         .open(DialougComponent, {
-          width: "950px",
-          height: "590px",
+          width: "900px",
           data: data,
           disableClose: true,
         })
@@ -495,6 +526,7 @@ export class DemographicComponent
           this.identitySchemaVersion =
             response[appConstants.RESPONSE]["idSchemaVersion"];
           console.log(`identitySchemaVersion: ${this.identitySchemaVersion}`);
+          //console.log(this.identityData);
           if (Array.isArray(locationHeirarchiesFromJson[0])) {
             this.locationHeirarchies = locationHeirarchiesFromJson;
           } else {
@@ -522,14 +554,6 @@ export class DemographicComponent
           //set the alignmentGroups for UI rendering, by default, 3 containers with multilang controls will appear in a row
           //you can update this by combining controls using "alignmentGroup", "containerStyle" and "headerStyle" in UI specs.
           this.setAlignmentGroups();
-          //this.alignmentGroups.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
-          this.alignmentGroups.map((alignmentGroup) => {
-            this.uiFieldsForAlignmentGroups[alignmentGroup] = [];
-            let uiFieldsFiltered = this.uiFields.filter(
-              (uiField) => uiField.alignmentGroup == alignmentGroup
-            );
-            this.uiFieldsForAlignmentGroups[alignmentGroup] = uiFieldsFiltered;
-          });
           this.dynamicFields = this.uiFields.filter(
             (fields) =>
               (fields.controlType === "dropdown" ||
@@ -545,8 +569,7 @@ export class DemographicComponent
           resolve(true);
         },
         (error) => {
-          console.log(error);
-          this.onError(this.errorlabels.error, error);
+          this.showErrorMessage(error);
         }
       );
     });
@@ -554,27 +577,27 @@ export class DemographicComponent
 
   setAlignmentGroups() {
     let rowIndex = 0;
-    let counter = 0;
     this.uiFields.forEach((obj, index) => {
       if (obj.alignmentGroup && obj.alignmentGroup != null) {
         if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
+          this.uiFieldsForAlignmentGroups[obj.alignmentGroup] = [];
           this.alignmentGroups.push(obj.alignmentGroup);
-        }
-      } else {
-        if (counter % 3 === 0) {
           rowIndex = rowIndex + 1;
         }
+        this.uiFieldsForAlignmentGroups[obj.alignmentGroup].push(obj); 
+      }
+      else {
         let alignmentGroup = "defaultrow" + rowIndex;
-        counter = counter + 1;
         obj["alignmentGroup"] = alignmentGroup;
         if (!this.alignmentGroups.includes(obj.alignmentGroup)) {
+          this.uiFieldsForAlignmentGroups[obj.alignmentGroup] = [];
           this.alignmentGroups.push(obj.alignmentGroup);
-          if (obj.containerStyle != null || obj.headerStyle != null) {
-            rowIndex = rowIndex + 1;
-          }
         }
-      }
+        this.uiFieldsForAlignmentGroups[obj.alignmentGroup].push(obj);
+      }  
     });
+    //console.log(this.alignmentGroups);
+    //console.log(this.uiFieldsForAlignmentGroups);
   }
 
   /**
@@ -599,6 +622,11 @@ export class DemographicComponent
             const searchCtrlId = controlId + "_search";
             this.userForm.addControl(searchCtrlId, new FormControl(""));
           }  
+          if (control.controlType === "ageDate") {
+            this.dateOfBirthFieldId = controlId;
+            const dtCtrlId = controlId + "_dateCtrl";
+            this.userForm.addControl(dtCtrlId, new FormControl(""));
+          }  
         }
       });
     });
@@ -606,6 +634,7 @@ export class DemographicComponent
 
   isControlInMultiLang(control: any) {
     if (
+      control.controlType !== "ageDate" &&
       control.controlType !== "date" &&
       control.controlType !== "dropdown" &&
       control.controlType !== "button" &&
@@ -670,7 +699,7 @@ export class DemographicComponent
     let items = this.getLocationHierarchy(fieldId);
     return items.length > 0 ? true : false;
   };
-
+ 
   getIndexInLocationHeirarchy = (fieldId) => {
     let items = this.getLocationHierarchy(fieldId);
     return items.indexOf(fieldId);
@@ -701,7 +730,7 @@ export class DemographicComponent
    */
   async dropdownApiCall(controlId: string) {
     if (this.isThisFieldInLocationHeirarchies(controlId)) {  
-      console.log("dropdownApiCall : " + controlId);
+      //console.log("dropdownApiCall : " + controlId);
       if (this.getIndexInLocationHeirarchy(controlId) !== 0) {
         this.selectOptionsDataArray[controlId] = [];
         this.filteredSelectOptions[controlId] = new ReplaySubject<CodeValueModal[]>(1);
@@ -784,14 +813,15 @@ export class DemographicComponent
    * and fields are shown/hidden in the UI form.
    */
   async onChangeHandler(selectedFieldId: string) {
-    //console.log("onChangeHandler " + selectedFieldId);
+    console.log("onChangeHandler " + selectedFieldId);
     //if (!this.dataModification || (this.dataModification && this.userForm.valid) ) {
     //populate form data in json for json-rules-engine to evalatute the conditions
     const identityFormData = this.createIdentityJSONDynamic(true);
     let isChild = false;
     let currentAge = null;
-    if (identityFormData.identity["dateOfBirth"]) {
-      let calcAge = this.calculateAge(identityFormData.identity["dateOfBirth"]);
+    if (this.dateOfBirthFieldId != "" && identityFormData.identity[this.dateOfBirthFieldId]) {
+      const dateOfBirthDt = identityFormData.identity[this.dateOfBirthFieldId];
+      let calcAge = this.calculateAge(dateOfBirthDt);
       if (calcAge !== "" && Number(calcAge) > -1) {
         currentAge = Number(calcAge);
       }
@@ -1044,7 +1074,7 @@ export class DemographicComponent
    * @param fieldName location dropdown control Name
    */
   resetLocationFields(fieldName: string) {
-    console.log("resetLocationFields " + fieldName);
+    //console.log("resetLocationFields " + fieldName);
     if (this.isThisFieldInLocationHeirarchies(fieldName)) {
       const locationFields = this.getLocationHierarchy(fieldName);
       const index = locationFields.indexOf(fieldName);
@@ -1085,6 +1115,10 @@ export class DemographicComponent
                   });
                 }
                 resolve(true);
+              },
+              (error) => {
+                //loading locations can be fail proof, no need to display err promt to user
+                //this.showErrorMessage(error);
               }
             )
           ); 
@@ -1144,6 +1178,9 @@ export class DemographicComponent
           } else {
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         })
       );  
     });
@@ -1209,14 +1246,18 @@ export class DemographicComponent
                 }
               });
             } else {
-              if (control.id === "dateOfBirth") {
-                this.setDateOfBirth();
+              if (control.controlType === "ageDate") {
+                this.setDateOfBirth(control.id);
               }
-              if (control.type === "string") {
+              if (control.controlType === "date") {
+                this.setDate(control.id);
+              }
+              else if (control.type === "string") {
                 this.userForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[`${control.id}`]
                 );
-              } else if (control.type === "simpleType") {
+              }
+              else if (control.type === "simpleType") {
                 this.userForm.controls[`${control.id}`].setValue(
                   this.user.request.demographicDetails.identity[control.id][0]
                     .value
@@ -1237,9 +1278,10 @@ export class DemographicComponent
                   if (parentLocationName) {
                     let locationCode = this.userForm.controls[parentLocationName].value;
                     if (locationCode) {
-                      //console.log(`fetching locations for: ${control.id}`);
-                      //console.log(`with parent: ${parentLocationName} having value: ${locationCode}`);
+                      // console.log(`fetching locations for: ${control.id}`);
+                      // console.log(`with parent: ${parentLocationName} having value: ${locationCode}`);
                       promisesResolved.push(await this.loadLocationData(locationCode, control.id));
+                      //console.log(this.selectOptionsDataArray[control.id]);
                     }
                   }
                 }
@@ -1248,7 +1290,7 @@ export class DemographicComponent
           }
         });
         Promise.all(promisesResolved).then((values) => {
-          //console.log(`done fetching locations`);
+          console.log(`done fetching locations`);
           resolve(true);
         });
       }
@@ -1274,12 +1316,12 @@ export class DemographicComponent
                 ];
               resolve(true);
             } else {
-              this.onError(this.errorlabels.error, "");
+              //this.onError(this.errorlabels.error, "");
             }
           },
           (error) => {
             this.loggerService.error("Unable to fetch gender");
-            this.onError(this.errorlabels.error, error);
+            //this.onError(this.errorlabels.error, error);
           }
         )
       );
@@ -1306,42 +1348,45 @@ export class DemographicComponent
                 ];
               resolve(true);
             } else {
-              this.onError(this.errorlabels.error, "");
+              //this.onError(this.errorlabels.error, "");
             }
           },
           (error) => {
             this.loggerService.error("Unable to fetch Resident types");
-            this.onError(this.errorlabels.error, error);
+            //this.onError(this.errorlabels.error, error);
           }
         )
       );
     });
   }
 
-  setDateOfBirth() {
-    this.date = this.user.request.demographicDetails.identity[
-      "dateOfBirth"
-    ].split("/")[2];
-    this.month = this.user.request.demographicDetails.identity[
-      "dateOfBirth"
-    ].split("/")[1];
-    this.year = this.user.request.demographicDetails.identity[
-      "dateOfBirth"
-    ].split("/")[0];
-    this.currentAge = this.calculateAge(
-      this.user.request.demographicDetails.identity["dateOfBirth"]
-    ).toString();
-
-    this.userForm.controls[`dateOfBirth`].setValue(
-      this.user.request.demographicDetails.identity["dateOfBirth"]
-    );
+  setDateOfBirth(controlId: string) {
+    const dateValStr = this.user.request.demographicDetails.identity[controlId];
+    const dateMomentObj = moment(dateValStr, this.serverDtFormat, true);
+    if (dateMomentObj.isValid()) {
+      let calcAge = this.calculateAge(dateValStr).toString();
+      if (calcAge !== "" && Number(calcAge) > -1) {
+        this.currentAge = calcAge;
+      }
+      this.userForm.controls[controlId].setValue(dateValStr);
+      this.userForm.controls[`${controlId}_dateCtrl`].setValue(dateMomentObj);
+    } 
   }
+
+  setDate(controlId: string) {
+    const dateValStr = this.user.request.demographicDetails.identity[controlId];
+    const dateMomentObj = moment(dateValStr, this.serverDtFormat, true);
+    if (dateMomentObj.isValid()) {
+      this.userForm.controls[controlId].setValue(dateMomentObj);
+    } 
+  }
+
   /**
    * @description This is called when age is changed and the date of birth will get calculated.
    *
    * @memberof DemographicComponent
    */
-  onAgeChange() {
+  onAgeChange(dateFieldId: string) {
     this.defaultDay = this.config[
       appConstants.CONFIG_KEYS.mosip_default_dob_day
     ];
@@ -1352,34 +1397,24 @@ export class DemographicComponent
       appConstants.CONFIG_KEYS.mosip_id_validation_identity_age
     ];
     const ageRegex = new RegExp(this.agePattern);
-    if (this.age.nativeElement.value) {
-      if (ageRegex.test(this.age.nativeElement.value)) {
-        this.currentAge = this.age.nativeElement.value;
+    const ageVal = this.age.nativeElement.value;
+    if (ageVal) {
+      if (ageRegex.test(ageVal) && Number(ageVal) > -1 && Number(ageVal) < 150 ) {
+        this.currentAge = ageVal;
         const now = new Date();
         const calulatedYear = now.getFullYear() - Number(this.currentAge);
-        this.dd.nativeElement.value = this.defaultDay;
-        this.mm.nativeElement.value = this.defaultMonth;
-        this.yyyy.nativeElement.value = calulatedYear;
-        this.date = this.defaultDay;
-        this.month = this.defaultMonth;
-        this.year = calulatedYear.toString();
-        this.userForm.controls["dateOfBirth"].setValue(
-          calulatedYear + "/" + this.defaultMonth + "/" + this.defaultDay
-        );
-        // this.userForm.controls["dateOfBirth"].setErrors(null);
+        const newDate =  calulatedYear +  "/" + this.defaultMonth + "/" + this.defaultDay;
+        const newMomentObj = moment(newDate, this.serverDtFormat);
+        this.userForm.controls[dateFieldId].setValue(newDate);
+        this.userForm.controls[`${dateFieldId}_dateCtrl`].setValue(newMomentObj);
+        this.userForm.controls[dateFieldId].setErrors(null);
         if (this.dataModification) {
-          this.hasDobChanged();
+          this.hasDobChangedFromChildToAdult(dateFieldId);
         }
-        //console.log(this.userForm);
       } else {
-        this.dd.nativeElement.value = "";
-        this.mm.nativeElement.value = "";
-        this.yyyy.nativeElement.value = "";
-        this.date = "";
-        this.month = "";
-        this.year = "";
-        this.userForm.controls["dateOfBirth"].markAsTouched();
-        this.userForm.controls["dateOfBirth"].setErrors({
+        this.userForm.controls[dateFieldId].setValue("");
+        this.userForm.controls[dateFieldId].markAsTouched();
+        this.userForm.controls[dateFieldId].setErrors({
           incorrect: true,
         });
       }
@@ -1392,28 +1427,38 @@ export class DemographicComponent
    *
    * @memberof DemographicComponent
    */
-  onDOBChange() {
-    this.date = this.dd.nativeElement.value;
-    this.month = this.mm.nativeElement.value;
-    this.year = this.yyyy.nativeElement.value;
-    if (this.date !== "" && this.month !== "" && this.year !== "") {
-      const newDate = this.year + "/" + this.month + "/" + this.date;
-      //console.log(newDate);
-      if (moment(newDate, "YYYY/MM/DD", true).isValid()) {
-        this.currentAge = this.calculateAge(newDate).toString();
+  onDOBChange(controlId: string) {
+    const dtCtrlId = controlId + "_dateCtrl";
+    const newDtMomentObj = this.userForm.controls[`${dtCtrlId}`].value;
+    if (newDtMomentObj && newDtMomentObj.isValid()) {
+      newDtMomentObj.locale('en-GB');
+      let formattedDt  = newDtMomentObj.format(this.serverDtFormat);
+      let calcAge = this.calculateAge(formattedDt).toString();
+      if (calcAge !== "" && Number(calcAge) > -1) {
+        this.currentAge = calcAge;
         this.age.nativeElement.value = this.currentAge;
-        this.userForm.controls["dateOfBirth"].setValue(newDate);
+        this.userForm.controls[controlId].setValue(formattedDt);
         if (this.dataModification) {
-          this.hasDobChanged();
+          this.hasDobChangedFromChildToAdult(controlId);
         }
+        //this.userForm.controls[controlId].markAsTouched();
       } else {
-        this.userForm.controls["dateOfBirth"].markAsTouched();
-        this.userForm.controls["dateOfBirth"].setErrors({
+        this.userForm.controls[controlId].setValue("");
+        this.userForm.controls[controlId].markAsTouched();
+        this.userForm.controls[controlId].setErrors({
           incorrect: true,
         });
         this.currentAge = "";
-        this.age.nativeElement.value = "";
-      }
+        this.age.nativeElement.value = "";  
+      }  
+    } else {
+      this.userForm.controls[controlId].setValue("");
+      this.userForm.controls[controlId].markAsTouched();
+      this.userForm.controls[controlId].setErrors({
+        incorrect: true,
+      });
+      this.currentAge = "";
+      this.age.nativeElement.value = "";
     }
   }
 
@@ -1424,26 +1469,20 @@ export class DemographicComponent
    * @returns
    * @memberof DemographicComponent
    */
-
-  calculateAge(bDay) {
-    const now = new Date();
-    const born = new Date(bDay);
-    const years = Math.floor(
-      (now.getTime() - born.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
-    );
-    if (years > 150) {
-      this.userForm.controls["dateOfBirth"].markAsTouched();
-      this.userForm.controls["dateOfBirth"].setErrors({
-        incorrect: true,
-      });
-      this.yyyy.nativeElement.value = "";
-      this.date = "";
-      this.month = "";
-      this.year = "";
-      return "";
-    } else {
-      return years;
-    }
+  calculateAge(dateStr: string) {
+    if (moment(dateStr, this.serverDtFormat, true).isValid()) {
+      const now = new Date();
+      const born = new Date(dateStr);
+      const years = Math.floor(
+        (now.getTime() - born.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+      );
+      if (years > 150 || years < 0) {
+        return "";
+      } else {
+        return years;
+      }
+    }  
+    return "";
   }
 
   /**
@@ -1573,38 +1612,6 @@ export class DemographicComponent
   }
 
   /**
-   * @description This method is to format the date event to yyyy/mm/dd format
-   *
-   * @param event date event
-   */
-  dateEvent(event) {
-    const date = new Date(event.value);
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    const datee = date.getDate();
-
-    let monthOfYear = "";
-    let dateOfMonth = "";
-    if (month < 10) {
-      monthOfYear = "0" + month;
-    } else {
-      monthOfYear = month.toString();
-    }
-
-    if (datee < 10) {
-      dateOfMonth = "0" + datee;
-    } else {
-      dateOfMonth = datee.toString();
-    }
-
-    const formattedDate = `${year}/${monthOfYear}/${dateOfMonth}`;
-    this.userForm.controls["dateOfBirth"].setValue(formattedDate);
-    if (this.dataModification) {
-      this.hasDobChanged();
-    }
-  }
-
-  /**
    * @description This is used for the tranliteration.
    *
    * @param {FormControl} fromControl
@@ -1618,9 +1625,10 @@ export class DemographicComponent
     toFieldName: string
   ) {
     if (this.userForm.controls[fromFieldName].value !== "") {
+      let fromVal = this.userForm.controls[fromFieldName].value;
       const request: any = {
         from_field_lang: fromLang,
-        from_field_value: this.userForm.controls[fromFieldName].value,
+        from_field_value: fromVal,
         to_field_lang: toLang,
       };
       this.subscriptions.push(
@@ -1630,13 +1638,10 @@ export class DemographicComponent
               this.userForm.controls[toFieldName].patchValue(
                 response[appConstants.RESPONSE].to_field_value
               );
-            else {
-              //this.onError(this.errorlabels.error, "");
-            }
           },
           (error) => {
-            this.onError(this.errorlabels.error, error);
-            this.loggerService.error(error);
+            //no error handling required for failed transliteration
+            //this.loggerService.error(error);
           }
         )
       );
@@ -1691,27 +1696,15 @@ export class DemographicComponent
               .updateUser(request, this.preRegId)
               .subscribe(
                 (response) => {
-                  if (
-                    (response[appConstants.NESTED_ERROR] === null &&
-                      response[appConstants.RESPONSE] === null) ||
-                    response[appConstants.NESTED_ERROR] !== null
-                  ) {
-                    let message = "";
-                    if (
-                      response[appConstants.NESTED_ERROR][0][
-                        appConstants.ERROR_CODE
-                      ] === appConstants.ERROR_CODES.invalidPin
-                    ) {
-                      message = this.formValidation(response);
-                    } else message = this.errorlabels.error;
-                    this.onError(message, "");
-                    return;
-                  }
                   this.redirectUser();
                 },
                 (error) => {
-                  this.loggerService.error(error);
-                  this.onError(this.errorlabels.error, error);
+                  this.loggerService.error(JSON.stringify(error));
+                  const errCode = Utils.getErrorCode(error);
+                  if (errCode === appConstants.ERROR_CODES.invalidPin) {
+                    this.formValidation(error);
+                  } 
+                  this.showErrorMessage(error);
                 }
               )
           );
@@ -1719,33 +1712,16 @@ export class DemographicComponent
           this.subscriptions.push(
             this.dataStorageService.addUser(request).subscribe(
               (response) => {
-                if (
-                  (response[appConstants.NESTED_ERROR] === null &&
-                    response[appConstants.RESPONSE] === null) ||
-                  response[appConstants.NESTED_ERROR] !== null
-                ) {
-                  this.loggerService.error(JSON.stringify(response));
-                  let message = "";
-                  if (
-                    response[appConstants.NESTED_ERROR] &&
-                    response[appConstants.NESTED_ERROR][0][
-                      appConstants.ERROR_CODE
-                    ] === appConstants.ERROR_CODES.invalidPin
-                  ) {
-                    console.log(response);
-                    message = this.formValidation(response);
-                  } else message = this.errorlabels.error;
-                  this.onError(message, "");
-                  return;
-                } else {
-                  this.preRegId =
-                    response[appConstants.RESPONSE].preRegistrationId;
-                }
+                this.preRegId = response[appConstants.RESPONSE].preRegistrationId;
                 this.redirectUser();
               },
               (error) => {
-                this.loggerService.error(error);
-                this.onError(this.errorlabels.error, error);
+                this.loggerService.error(JSON.stringify(error));
+                const errCode = Utils.getErrorCode(error);
+                if (errCode === appConstants.ERROR_CODES.invalidPin) {
+                  this.formValidation(error);
+                } 
+                this.showErrorMessage(error);
               }
             )
           );
@@ -1755,13 +1731,13 @@ export class DemographicComponent
   }
 
   formValidation(response: any) {
-    const str = response[appConstants.NESTED_ERROR][0]["message"];
+    const str = response[appConstants.ERROR][appConstants.NESTED_ERROR][0]["message"];
     const attr = str.substring(str.lastIndexOf("/") + 1);
-    let message = this.errorlabels[attr];
+    //let message = this.errorlabels[attr];
     this.userForm.controls[attr].setErrors({
       incorrect: true,
     });
-    return message;
+    //return message;
   }
 
   /**
@@ -1774,13 +1750,13 @@ export class DemographicComponent
     this.checked = true;
     this.dataUploadComplete = true;
     let url = "";
-    if (localStorage.getItem("modifyUserFromPreview") === "true") {
+    if (localStorage.getItem(appConstants.MODIFY_USER_FROM_PREVIEW) === "true" && this.preRegId) {
       url = Utils.getURL(this.router.url, "summary");
-      localStorage.setItem("modifyUserFromPreview", "false");
+      localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "false");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
       url = Utils.getURL(this.router.url, "file-upload");
-      localStorage.removeItem("addingUserFromPreview");
+      localStorage.removeItem(appConstants.NEW_APPLICANT_FROM_PREVIEW);
       this.router.navigate([url, this.preRegId]);
     }
   }
@@ -1820,10 +1796,14 @@ export class DemographicComponent
           }
         }
       }
-    } else if (typeof identity[element] === "string") {
-      if (this.userForm.controls[`${element}`]) {
-        attr = this.userForm.controls[`${element}`].value;
-      }
+    } else if (typeof identity[element] === "string" && this.userForm.controls[`${element}`]) {
+      const momentObj = moment(this.userForm.controls[`${element}`].value, this.serverDtFormat, true);   
+      if (momentObj.isValid()) {
+        momentObj.locale('en-GB');
+        attr = momentObj.format(this.serverDtFormat);
+      } else {
+        attr = this.userForm.controls[`${element}`].value;  
+      }  
     }
     identity[element] = attr;
   }
@@ -1943,9 +1923,15 @@ export class DemographicComponent
     if (this.user.request) {
       langCode = this.user.request.langCode;
     }
+    let requiredFields = [];
+    this.identityData.forEach((field) => {
+      if (field.required === true && !(field.controlType === "fileupload")) {
+        requiredFields.push(field.id);
+      }
+    });  
     const request = {
       langCode: langCode,
-      //dataCaptureLanguages: this.dataCaptureLanguages,
+      requiredFields: requiredFields,
       demographicDetails: identity,
     };
     return request;
@@ -1983,54 +1969,144 @@ export class DemographicComponent
     return req;
   }
 
-  hasDobChanged() {
-    const currentDob = this.user.request.demographicDetails.identity
-      .dateOfBirth;
-    const changedDob = this.userForm.controls["dateOfBirth"].value;
-    const currentDobYears = this.calculateAge(currentDob);
-    const changedDobYears = this.calculateAge(changedDob);
-    const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
-    if (this.showPreviewButton) {
-      if (
-        (currentDobYears < ageToBeAdult && changedDobYears < ageToBeAdult) ||
-        (currentDobYears > ageToBeAdult && changedDobYears > ageToBeAdult)
-      ) {
-        this.showPreviewButton = true;
-      } else {
-        this.showPreviewButton = false;
-        localStorage.setItem("modifyUserFromPreview", "false");
+  hasDobChangedFromChildToAdult(controlId: string) {
+    //console.log("hasDobChangedFromChildToAdult");
+    const currentDob = this.user.request.demographicDetails.identity[controlId];
+    const changedDob = this.userForm.controls[controlId].value;
+    if (moment(currentDob, this.serverDtFormat, true).isValid() 
+      && moment(changedDob, this.serverDtFormat, true).isValid()) {
+      const currentDobYears = this.calculateAge(currentDob);
+      const changedDobYears = this.calculateAge(changedDob);
+      const ageToBeAdult = this.config[appConstants.CONFIG_KEYS.mosip_adult_age];
+      if (this.showPreviewButton) {
+        if (
+          (currentDobYears < ageToBeAdult && changedDobYears < ageToBeAdult) ||
+          (currentDobYears > ageToBeAdult && changedDobYears > ageToBeAdult)
+        ) {
+          this.showPreviewButton = true;
+        } else {
+          this.showPreviewButton = false;
+          localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "false");
+        }
       }
     }
   }
 
+  checkToShowLangChangeBtn = () => {
+    const mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+    const optionalLanguages = Utils.getOptionalLangs(this.configService);
+    const maxLanguage = Utils.getMaxLangs(this.configService);
+    if (
+      maxLanguage > 1 &&
+      optionalLanguages.length > 0 &&
+      maxLanguage !== mandatoryLanguages.length
+    ) {
+      this.showChangeDataCaptureLangBtn = true;
+    }  
+  }
+
+  changeDataCaptureLanguages = () => {
+    
+    if (this.userForm.dirty) {
+      const message = this.demographiclabels["change_data_capture_langs_msg"];
+      const ok_text = this.dialoglabels["action_ok"];
+      const no_text = this.dialoglabels["title_discard"];
+      const body = {
+        case: "CONFIRMATION",
+        textDir: this.textDirection[0],
+        message: message,
+        yesButtonText: ok_text,
+        noButtonText: no_text,
+      };
+      this.dialog
+      .open(DialougComponent, { width: "400px", data: body })
+      .beforeClosed()
+      .subscribe((res) => {
+        if (res === true) {
+          this.canDeactivateFlag = false;
+          this.showLangSelectionPopup();
+        }  
+      });
+    } else {
+      this.canDeactivateFlag = false;
+      this.showLangSelectionPopup();
+    }
+  }
+
   /**
-   * @description This is a dialoug box whenever an erroe comes from the server, it will appear.
+   * This method navigate the user to demographic page if user clicks on Change Data Capture Languages   
+   */
+   async showLangSelectionPopup() {
+    const mandatoryLanguages = Utils.getMandatoryLangs(this.configService);
+    const maxLanguage = Utils.getMaxLangs(this.configService);
+    const minLanguage = Utils.getMinLangs(this.configService);
+    await this.openLangSelectionPopup(mandatoryLanguages, minLanguage, maxLanguage);
+    if (this.isNavigateToDemographic) {
+      let dataCaptureLanguagesLabels = Utils.getLanguageLabels(localStorage.getItem(appConstants.DATA_CAPTURE_LANGUAGES), 
+        localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES));
+      localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGE_LABELS, JSON.stringify(dataCaptureLanguagesLabels));
+      localStorage.setItem(appConstants.MODIFY_USER, "false");
+      localStorage.setItem(appConstants.NEW_APPLICANT, "true");
+      let previousUrl = this.routerService.getPreviousUrl();
+      const newUrl = `/${this.langCode}/pre-registration/demographic/new`;
+      if (previousUrl === newUrl) {
+        previousUrl = `${this.langCode}/dashboard`;
+      }
+      this.router.navigateByUrl(previousUrl, { skipLocationChange: true }).then(() => {
+        this.router.navigate([newUrl])
+      });
+    }
+  }
+  
+  openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
+    return new Promise((resolve) => {
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0],
+        this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
+      dialogRef.afterClosed().subscribe((res) => {
+        //console.log(res);
+        if (res == undefined) {
+          this.isNavigateToDemographic = false;
+        } else {
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.langCode);
+          localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
+          console.log("done");
+          this.isNavigateToDemographic = true;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  openDialog(data, width, height?, panelClass?) {
+    const dialogRef = this.dialog.open(DialougComponent, {
+      width: width,
+      height: height,
+      data: data,
+      restoreFocus: false
+    });
+    return dialogRef;
+  }
+
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
    *
    * @private
    * @memberof DemographicComponent
    */
-  private onError(message: string, error: any) {
+  private showErrorMessage(error: any) {
     this.dataUploadComplete = true;
     this.hasError = true;
-    this.titleOnError = this.errorlabels.errorLabel;
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      this.titleOnError = "";
-    }
+    const titleOnError = this.errorlabels.errorLabel;
+    const message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.config); 
     const body = {
       case: "ERROR",
-      title: this.titleOnError,
+      title: titleOnError,
       message: message,
       yesButtonText: this.errorlabels.button_ok,
     };
     this.dialog.open(DialougComponent, {
-      width: "250px",
+      width: "400px",
       data: body,
     });
   }
@@ -2064,7 +2140,17 @@ export class DemographicComponent
     });
     let index = multiLangControls.indexOf(formControlName);
     if (index > -1) {
-      let lang = langCode.substring(0, 2);
+      let localeId = langCode.substring(0, 2);
+      JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
+        (element) => {
+          if (langCode === element.code && element.locale) {
+            localeId = element.locale;
+          }
+        }
+      ); 
+      if (localeId.indexOf('_') > -1) {
+        localeId = localeId.substring(0, localeId.indexOf('_'));
+      }
       if (this.userForm.controls[formControlName]) {
         control = this.userForm.controls[formControlName];
       }
@@ -2075,7 +2161,7 @@ export class DemographicComponent
         this.oldKeyBoardIndex = index;
         el = this._attachToElementMesOne._results[index];
         el.nativeElement.focus();
-        this._keyboardRef = this.matKeyboardService.open(lang);
+        this._keyboardRef = this.matKeyboardService.open(localeId);
         this._keyboardRef.instance.setInputInstance(el);
         this._keyboardRef.instance.attachControl(control);
       }

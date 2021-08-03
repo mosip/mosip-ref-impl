@@ -31,4 +31,3 @@ coverage/*
 .editorconfig
 e2e/*
 proxy.conf.json
-src/assets/i18n

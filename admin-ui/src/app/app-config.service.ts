@@ -12,7 +12,7 @@ export class AppConfigService {
 
   async loadAppConfig() {
     this.appConfig = await this.http.get("./assets/config.json").toPromise();
-    if (this.appConfig.primaryLangCode) {
+    /*if (this.appConfig.primaryLangCode) {*/
       this.appConfig["primaryLangCode"] = this.headerService.getUserPreferredLanguage();
       this.appConfig["secondaryLangCode"] = this.appConfig.secondaryLangCode;
       this.http.get(this.appConfig.baseUrl + "masterdata/configs").subscribe(
@@ -29,7 +29,7 @@ export class AppConfigService {
           console.log(error);
         }
       );
-    }
+    /*}*/
   }
 
   getConfig() {

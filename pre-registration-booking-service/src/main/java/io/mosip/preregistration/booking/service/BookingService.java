@@ -139,9 +139,6 @@ public class BookingService implements BookingServiceIntf {
 	@Value("${mosip.preregistration.booking.delete.old.id}")
 	String idUrlDeleteOld;
 
-	@Value("${mosip.primary-language}")
-	String primaryLang;
-
 	@Autowired
 	private ValidationUtil validationUtil;
 

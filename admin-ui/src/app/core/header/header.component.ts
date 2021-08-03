@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
     private dataService: DataStorageService
   ) {
     // tslint:disable-next-line:no-string-literal
-    translateService.use(appConfigService.getConfig()['primaryLangCode']);
+    translateService.use(this.headerService.getUserPreferredLanguage());
     this.appVersion = appConfigService.getConfig()['version'];
   }
 
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
       this.dataService
       .getLoggedInUserZone(
         this.headerService.getUsername(),
-        this.appConfigService.getConfig()['primaryLangCode']
+        this.headerService.getUserPreferredLanguage()
       )
       .subscribe(response => {
         if (response.response) {

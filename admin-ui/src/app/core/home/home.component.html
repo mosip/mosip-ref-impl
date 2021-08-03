@@ -1,6 +1,6 @@
 <div id="home-component" style="text-align: center;margin-top: 60px;margin-left: -10em;">
-  <h3 class="mat-h1">
-    Welcome to Mosip Admin portal !
+  <h3 class="mat-h1" *ngIf="labels">
+    {{labels.welcomeMessage | translate }}
   </h3>
 </div>
 

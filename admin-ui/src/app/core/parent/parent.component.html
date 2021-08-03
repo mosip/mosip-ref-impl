@@ -1,4 +1,4 @@
-<div id="parent-component">
+<div id="parent-component" dir="{{sitealignment}}">
   <div class="fixed-topnav">
     <app-header [screenResize]="screenWidth">></app-header>
   </div>
@@ -10,6 +10,6 @@
         </div>
       </mat-nav-list>
     </mat-sidenav>
-        <router-outlet></router-outlet>
+    <router-outlet [ngClass]="{'mat-sidenav-content-rtl':sitealignment==='rtl', 'mat-sidenav-content-ltr':sitealignment==='ltr'}"></router-outlet>
   </mat-sidenav-container>
 </div>

@@ -56,7 +56,7 @@ h3 {
 // common css
 #flex-single-view {
   // padding-top: 10px;
-  overflow: auto;
+  overflow: hidden;
   .navigation {
     .material-icons {
       cursor: pointer;
@@ -67,14 +67,30 @@ h3 {
     margin:0px !important;
   }
   #flex-container {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 87vh;
     padding-bottom: 20px;
     scrollbar-width: none;
-    -ms-overflow-style: none;
+    
+    /* width */
     &::-webkit-scrollbar {
-      width: 0px;
-      background: transparent;
+      width: .8em;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+     
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888; 
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555; 
     }
   }
 

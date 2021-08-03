@@ -28,7 +28,7 @@
     </button>
     <mat-menu #menu="matMenu" backdropClass="elipses">
       <ng-container *ngFor="let item of dataList">
-        <button (click)="onItem()" mat-menu-item>{{item?.buttonName?.eng}}</button>
+        <button (click)="onItem()" mat-menu-item>{{ 'headermessage.Logout' | translate }}</button>
       </ng-container>
     </mat-menu>
   </div>

@@ -22,7 +22,7 @@ import {
   MatFormFieldModule
 } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -45,7 +45,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatNativeDateModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {}

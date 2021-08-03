@@ -33,6 +33,9 @@
             "subItem5": "تحميل شهادة مجال أخرى"
         }
     },
+    "dashboard": {
+        "welcomeMessage":"مرحبا بكم في بوابة الادارية Mosip!"
+    },
     "center": {
         "title":"مراكز",
         "center-detail-view" : "عرض مركز التفاصيل",
@@ -156,7 +159,7 @@
             },
             "workingDays": {
                 "required": "الرجاء تحديد يوم واحد على الأقل"
-            } 
+            }
         },
         "popupMessages": {
             "create": {
@@ -481,75 +484,118 @@
     "packet-upload":{
         "header":"تحميل الحزمة",
         "singleView":{
-          "detailed-view-txt":"عرض تفصيلي",
-          "status-txt":"حالة",
-          "uploadedBy-txt": "تم الرفع بواسطة",
-          "count-txt":"عدد",
-          "dataAndTime-txt" : "التاريخ و الوقت",
-          "failureDescription-txt":"فشل الوصف",
-          "placeHolder1-txt":"اسم الطاولة",
-          "placeHolder2-txt":"عمليات"
+            "detailed-view-txt":"عرض تفصيلي",
+            "status-txt":"حالة",
+            "uploadedBy-txt": "تم الرفع بواسطة",
+            "count-txt":"عدد",
+            "dataAndTime-txt" : "التاريخ و الوقت",
+            "failureDescription-txt":"فشل الوصف",
+            "placeHolder1-txt":"اسم الطاولة",
+            "placeHolder2-txt":"عمليات"
         },
         "createView":{
-          "input-btn-text":"اختر ملف",
-          "input-text1":"رفع ملف...",
-          "input-text2":"ارفع ملفك",
-          "upload-btn":"تحميل",
-          "cancel-btn":"إلغاء",
-          "popupMessaages":{
-              "popup1":{
-                  "uploadConfirm":"تأكيد تحميل الحزمة",
-                  "message":"ستتم معالجة الحزمة. \n الرجاء التأكد من صحة جميع المعلومات. \n \n \n ستبدأ المعاملة بمجرد النقر فوق تأكيد",
-                  "confirmBtnTxt":"تؤكد",
-                  "cancelBtnTxt":"يلغي"
-              },
-              "popup2":{
-                  "title":"بالفشل !",
-                  "btnTxt":"انتهى"
-              },
-              "popup3":{
-                  "title":"نجاح",
-                  "message" :"تم تحميل ملفك بنجاح. \n تحميل البيانات قيد التقدم حاليًا. \n \n \n معرّف المعاملة:",
-                  "btnTxt":"انتهى"
-              }
-       
-          }
+            "input-btn-text":"اختر ملف",
+            "input-text1":"رفع ملف...",
+            "input-text2":"ارفع ملفك",
+            "upload-btn":"تحميل",
+            "cancel-btn":"إلغاء",
+            "popupMessaages":{
+                "popup1":{
+                    "uploadConfirm":"تأكيد تحميل الحزمة",
+                    "message":"ستتم معالجة الحزمة. \n الرجاء التأكد من صحة جميع المعلومات. \n \n \n ستبدأ المعاملة بمجرد النقر فوق تأكيد",
+                    "confirmBtnTxt":"تؤكد",
+                    "cancelBtnTxt":"يلغي"
+                },
+                "popup2":{
+                    "title":"بالفشل !",
+                    "btnTxt":"انتهى"
+                },
+                "popup3":{
+                    "title":"نجاح",
+                    "message" :"تم تحميل ملفك بنجاح. \n تحميل البيانات قيد التقدم حاليًا. \n \n \n معرّف المعاملة:",
+                    "btnTxt":"انتهى"
+                }
+
+            }
         }
-      },
+    },
     "actionMessages" : {
         "decommission": {
-            "success-message": ["مركز التسجيل ", " تم إيقاف التشغيل بنجاح"],
+            "success-message": ["", "خرجت من الخدمة بنجاح"],
             "success-title": "نجاح",
-            "error-message": ["لا يمكن إنهاء التفويض"
-                ,"لا يمكن إيقاف تشغيل المركز نظرًا لأن بعض الموارد (المستخدمون / الأجهزة / الأجهزة) لا تزال قيد التعيين إليه. \n الرجاء إلغاء تعيين هذه الموارد قبل إيقاف تشغيل المركز"],
+            "error-message": ["لا يمكن إنهاء التفويض", "لا يزال يتم تعيينه مع بعض الموارد الأخرى. \nيرجى إلغاء تعيين الموارد قبل إيقاف التشغيل"],
             "error-title": "خطأ",
-            "btnTxt": "حسنا",
-            "yesBtnTxt": "تؤكد",
-            "noBtnTxt": "إلغاء",
-            "confirmation-message": ["هل ترغب في إيقاف تشغيل مركز التسجيل", "? \n لا يمكنك التراجع عن هذا الإجراء بمجرد النقر فوق \"تأكيد\"."],
-            "confirmation-title": "التأكيد"
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد الخروج من الخدمة ", " ? \n لا يمكنك التراجع عن هذا الإجراء بمجرد النقر فوق "],
+            "confirmation-title": "تأكيد"
         },
         "activate": {
-            "success-message": ["مركز التسجيل ", " تم تفعيله بنجاح"],
+            "success-message": ["", "تم تفعيله بنجاح"],
             "success-title": "نجاح",
-            "error-message": "لا يمكن تنشيط المركز",
+            "error-message": ["", "لا يمكن التنشيط"],
             "error-title": "خطأ",
-            "btnTxt": "حسنا",
-            "yesBtnTxt": "تؤكد",
-            "noBtnTxt": "إلغاء",
-            "confirmation-message": ["هل تريد تفعيل مركز التسجيل", "? \n يمكنك إلغاء تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه نشط"],
-            "confirmation-title": "التأكيد"
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد التفعيل", "? \nيمكنك إلغاء تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه نشط"],
+            "confirmation-title": "تأكيد"
         },
         "deactivate": {
-            "success-message": ["مركز التسجيل ", " تم إلغاء تنشيطه بنجاح"],
+            "success-message": ["", "تم إلغاء تنشيطه بنجاح"],
             "success-title": "نجاح",
-            "error-message": "لا يمكن إلغاء تنشيط المركز",
+            "error-message": ["", "تعذر إلغاء التنشيط"],
             "error-title": "خطأ",
-            "btnTxt": "حسنا",
-            "yesBtnTxt": "تؤكد",
-            "noBtnTxt": "إلغاء",
-            "confirmation-message": ["هل تريد إلغاء تنشيط مركز التسجيل", " ? \n يمكنك تفعيلها في وقت لاحق إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
-            "confirmation-title": "التأكيد"
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد إلغاء التنشيط", " ? \nيمكنك تنشيطه لاحقًا إذا كنت ترغب في ذلك. حتى ذلك الحين سيتم تعيينه على أنه غير نشط"],
+            "confirmation-title": "تأكيد"
+        },
+        "resumeprocessingandremovehotlistedtag": {
+            "success-message": ["", "يتم استئناف المعالجة وإزالتها من علامة القائمة الساخنة"],
+            "success-title": "نجاح",
+            "error-message": ["", "تعذر استئناف المعالجة والإزالة من العلامة المدرجة في القائمة الساخنة"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد تنفيذ إجراء استئناف المعالجة وإزالة العلامة المدرجة في القائمة الساخنة على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
+        },
+        "resumefrombeginning": {
+            "success-message": ["", "تم استئنافه من البداية"],
+            "success-title": "نجاح",
+            "error-message": ["", "تعذر الاستئناف والإزالة من العلامة المدرجة في القائمة الساخنة"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد إجراء استئناف من البداية على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
+        },
+        "resumefrombeginningandremovehotlistedtag": {
+            "success-message": ["", "تم استئنافه من البداية وإزالته من العلامة المدرجة في القائمة الساخنة"],
+            "success-title": "نجاح",
+            "error-message": ["", "تعذر الاستئناف من البداية والإزالة من العلامة المدرجة في القائمة الساخنة"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد تنفيذ إجراء استئناف من البداية وإزالة علامة قائمة ساخنة على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
+        },
+        "stopprocessing": {
+            "success-message": ["", "توقف"],
+            "success-title": "نجاح",
+            "error-message": ["", "لا يمكن إيقافه"],
+            "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد تنفيذ إجراء إيقاف المعالجة على RID", " ? \n"],
+            "confirmation-title": "تأكيد"
         }
     },
     "detailView":{
@@ -576,56 +622,123 @@
             "applyTxt":"تطبيق"
         }
     },
-        "popupMessages": {
-            "create": {
-                "title": "التأكيد",
-                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
-                "yesBtnText": "تؤكد",
-                "noBtnText": "إلغاء",
-                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
-            },
-            "edit": {
-                "title": "التأكيد",
-                "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
-                "yesBtnText": "تؤكد",
-                "noBtnText": "إلغاء",
-                "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
-            },
-            "update-success": {
-                "title": "نجاح",
-                "message": ["يتم تحديث تفاصيل المركز بنجاح. \n معرف المركز: ", " \n اسم المركز: "],
-                "btnTxt": "حسنا"
-            },
-            "update-error": {
-                "title": "خطأ",
-                "message": "كانت هناك بعض المشاكل في تحديث المركز. حاول مرة اخرى",
-                "btnTxt": "حسنا"
-            },
-            "create-success": {
-                "title": "نجاح",
-                "message": ["تم إنشاء المركز بنجاح باستخدام معرف المركز:", "واسم المركز:"],
-                "btnTxt": "حسنا"
-            },
-            "create-error": {
-                "title": "خطأ",
-                "message": "كان هناك بعض المشكلة في إنشاء مركز. حاول مرة اخرى",
-                "btnTxt": "حسنا"
-            },
-            "navigation-popup": {
-                "title": "التأكيد",
-                "message": "هل أنت متأكد أنك تريد التنقل بعيدًا عن هذه الصفحة؟ سيتم فقد أي بيانات غير محفوظة.",
-                "yesBtnTxt": "غادر",
-                "noBtnTxt": "البقاء"
-            },
-            "noData": {
-                "title": "خطأ",
-                "message": "لا يوجد سجلات",
-                "btnTxt": "حسنا"
-            },
-            "lunchTimeValidation": {
-                "title": "خطأ",
-                "message": "يرجى تحديد توقيت المركز قبل اختيار توقيت الغداء",
-                "btnTxt": "حسنا"
-            }
+    "popupMessages": {
+        "create": {
+            "title": "التأكيد",
+            "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+            "yesBtnText": "تؤكد",
+            "noBtnText": "إلغاء",
+            "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+        },
+        "edit": {
+            "title": "التأكيد",
+            "message": "انقر فوق 'نعم' لإنشاء / تحرير مركز",
+            "yesBtnText": "تؤكد",
+            "noBtnText": "إلغاء",
+            "mandatorySecondaryFields": "لم تقم بملء البيانات باللغة الثانوية. سيتم إنشاء المركز باللغة الأساسية فقط. هل تريد الاستمرار؟"
+        },
+        "update-success": {
+            "title": "نجاح",
+            "message": ["يتم تحديث تفاصيل المركز بنجاح. \n معرف المركز: ", " \n اسم المركز: "],
+            "btnTxt": "حسنا"
+        },
+        "update-error": {
+            "title": "خطأ",
+            "message": "كانت هناك بعض المشاكل في تحديث المركز. حاول مرة اخرى",
+            "btnTxt": "حسنا"
+        },
+        "create-success": {
+            "title": "نجاح",
+            "message": ["تم إنشاء المركز بنجاح باستخدام معرف المركز:", "واسم المركز:"],
+            "btnTxt": "حسنا"
+        },
+        "create-error": {
+            "title": "خطأ",
+            "message": "كان هناك بعض المشكلة في إنشاء مركز. حاول مرة اخرى",
+            "btnTxt": "حسنا"
+        },
+        "navigation-popup": {
+            "title": "التأكيد",
+            "message": "هل أنت متأكد أنك تريد التنقل بعيدًا عن هذه الصفحة؟ سيتم فقد أي بيانات غير محفوظة.",
+            "yesBtnTxt": "غادر",
+            "noBtnTxt": "البقاء"
+        },
+        "noData": {
+            "title": "خطأ",
+            "message": "لا يوجد سجلات",
+            "btnTxt": "حسنا"
+        },
+        "lunchTimeValidation": {
+            "title": "خطأ",
+            "message": "يرجى تحديد توقيت المركز قبل اختيار توقيت الغداء",
+            "btnTxt": "حسنا"
         }
+    },
+    "isActive":{
+        "Active":"نشيط",
+        "InActive":"غير نشط"
+    },
+    "generatecsr": {
+        "title": "توليد CSR",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "commonName": "اسم شائع",
+        "organization": "منظمة",
+        "organizationUnit": "التنظيم",
+        "location": "موقع",
+        "state": "حالة",
+        "country": "دولة",
+        "button":"يولد"
+    },
+    "generatemasterkey": {
+        "title": "توليد Masterkey",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "commonName": "اسم شائع",
+        "organization": "منظمة",
+        "organizationUnit": "التنظيم",
+        "location": "موقع",
+        "state": "حالة",
+        "country": "دولة",
+        "force": "فرض",
+        "objectType": "نوع الكائن",
+        "button":"يولد"
+    },
+    "getcertificate": {
+        "title": "احصل على الشهادة",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "button":"احصل على الشهادة"
+    },
+    "uploadcertificate": {
+        "title": "تحميل الشهادة",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "chooseFile" : "اختر ملف",
+        "uploadYourFile":"ارفع ملفك",
+        "button":"يولد"
+    },
+    "uploadotherdomaincertificate": {
+        "title": "تحميل شهادة مجال أخرى",
+        "applicationId" :"رقم الاستمارة",
+        "referenceId": "الرقم المرجعي",
+        "chooseFile" : "اختر ملف",
+        "uploadYourFile":"ارفع ملفك",
+        "button":"يولد"
+    },
+    "genericerror":{
+        "fieldValidation":"هذه الخانة مطلوبه"
+    },
+    "genericmessage":{
+        "successLabel":"النجاح",
+        "successButton":"حسنا",
+        "errorLabel":"خطأ",
+        "createMessage":"تم إنشاؤه بنجاح",
+        "updateMessage":"تم التحديث بنجاح"
+    },
+    "headermessage":{
+        "vesion":"إصدار واجهة المستخدم الإدارية",
+        "Zone":"منطقة",
+        "Logout":"تسجيل خروج"
+    }
 }

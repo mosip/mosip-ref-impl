@@ -26,7 +26,6 @@ import identityStubJson from "../../../../assets/identity-spec.json";
   styleUrls: ["./file-upload.component.css"],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
-  textDir = localStorage.getItem("dir");
   selected = [];
   @ViewChild("fileUpload")
   fileInputVariable: ElementRef;
@@ -58,11 +57,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     docTypeCode: "",
   };
   selectedDocuments: SelectedDocuments[] = [];
-
+  dataCaptureLanguages = [];
+  dataCaptureLanguagesLabels = [];
+  textDirection = [];
+  ltrLangs = this.config
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
   LOD: DocumentCategory[] = [];
   fileIndex: number = -1;
   fileUploadLanguagelabels: any;
   errorlabels: any;
+  apiErrorCodes: any;
   fileExtension: string = "pdf";
   sameAs: string;
   disableNavigation: boolean = false;
@@ -72,7 +77,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   flag: boolean;
   zoom: number = 0.5;
   userPrefLanguage = localStorage.getItem("userPrefLanguage");
-  userPrefLanguageIsLtr = false;
   userForm = new FormGroup({});
   validationMessage: any;
   documentUploadRequestBody: DocumentUploadRequestDTO = {
@@ -94,7 +98,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   applicants: any[] = [];
   allowedFiles: string[];
   firstFile: Boolean = true;
-
   subscriptions: Subscription[] = [];
   identityData = [];
   uiFields = [];
@@ -115,27 +118,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     private loggerService: LogService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.initiateComponent();
-    let ltrLangs = this.config
-      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
-      .split(",");
-    if (ltrLangs.includes(this.userPrefLanguage)) {
-      this.userPrefLanguageIsLtr = true;
-    } else {
-      this.userPrefLanguageIsLtr = false;
-    }
-    
+    this.translate.use(this.userPrefLanguage);
   }
 
-  async ngOnInit() {
-    
+  async ngOnInit() { 
+    this.getPrimaryLabels(this.userPrefLanguage);
+    await this.initiateComponent();
     this.getFileSize();
-    this.getPrimaryLabels();
-    this.allowedFiles = this.config
-      .getConfigByKey(
-        appConstants.CONFIG_KEYS.preregistration_document_alllowe_files
-      )
-      .split(",");
+    this.getPrimaryLabels(this.dataCaptureLanguages[0]);
+    this.allowedFiles = this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files).split(",");
     this.getAllowedFileTypes(this.allowedFiles);
     this.loginId = localStorage.getItem("loginId");
     await this.getAllApplicants();
@@ -145,13 +136,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.sameAsselected = true;
     }
-    this.dataStorageService
-      .getI18NLanguageFiles(this.userPrefLanguage)
-      .subscribe((response) => {
-        if (response["message"])
-          this.fileUploadLanguagelabels = response["message"];
-        if (response["error"]) this.errorlabels = response["error"];
-      });
     this.name = this.config.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
@@ -163,7 +147,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   async getIdentityJsonFormat() {
     return new Promise((resolve) => {
       this.dataStorageService.getIdentityJson().subscribe((response) => {
-        response = identityStubJson;
+        //response = identityStubJson;
         let identityJsonSpec =
           response[appConstants.RESPONSE]["jsonSpec"]["identity"];
         this.identityData = identityJsonSpec["identity"];
@@ -173,11 +157,23 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           }
         });
         resolve(true);
+      },
+      (error) => {
+        this.showErrorMessage(error);
       });
     });
   }
 
-  private getPrimaryLabels() {}
+  private getPrimaryLabels(lang) {
+    this.dataStorageService
+    .getI18NLanguageFiles(lang)
+    .subscribe((response) => {
+      if (response["message"])
+        this.fileUploadLanguagelabels = response["message"];
+        this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];    
+    });
+  }
 
   /**
    *@description This method initialises the users array and the language set by the user.
@@ -185,8 +181,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   private async initiateComponent() {
+
     await this.getIdentityJsonFormat();
-    this.translate.use(this.userPrefLanguage);
     this.isModify = localStorage.getItem("modifyDocument");
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
@@ -197,8 +193,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       if (!this.users[0].files) {
         this.users[0].files = this.userFiles;
       }
+      this.initializeDataCaptureLanguages();
+      this.translate.use(this.dataCaptureLanguages[0]);
       await this.getApplicantTypeID();
-      console.log("dataLoaded");
+      //on page load, update application status from "Application_Incomplete"
+      //to "Pending_Appointment", if all required documents are uploaded
+      await this.changeStatusToPending();
+      //on page load, update application status from "Pending_Appointment"
+      //to "Application_Incomplete", if all required documents are NOT uploaded
+      await this.changeStatusToIncomplete(); 
       this.dataLoaded = true;
     } else {
       if (!this.users[0].files) {
@@ -222,13 +225,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             )
           );
           let resp = response[appConstants.RESPONSE];
-          if (resp["statusCode"] !== "Pending_Appointment") {
+          if (resp["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.incomplete &&
+            resp["statusCode"] !== appConstants.APPLICATION_STATUS_CODES.pending) {
             this.readOnlyMode = true;
           } else {
             this.readOnlyMode = false;
           }
-         
           resolve(true);
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -240,8 +246,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         .subscribe((response) => {
           this.setUserFiles(response);
           resolve(true);
+        },
+        (error) => {
+          //this is fail safe operation as user may not have uploaded any documents yet
+          //so no err handling is required
+          resolve(true);
+          //this.showErrorMessage(error);
         });
-      
     });
   }
   setUserFiles(response) {
@@ -255,6 +266,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     }
     this.userFiles["documentsMetaData"] = this.userFile;
   }
+
   onModification() {
     if (
       this.users[0].files &&
@@ -293,39 +305,55 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else return;
   }
 
+  initializeDataCaptureLanguages = async () => {
+    if (this.users.length > 0) {
+      const identityObj = this.users[0].request.demographicDetails.identity;
+      if (identityObj) {
+        let keyArr: any[] = Object.keys(identityObj);
+        for (let index = 0; index < keyArr.length; index++) {
+          const elementKey = keyArr[index];
+          let dataArr = identityObj[elementKey];
+          if (Array.isArray(dataArr)) {
+            dataArr.forEach((dataArrElement) => {
+              if (
+                !this.dataCaptureLanguages.includes(dataArrElement.language)
+              ) {
+                this.dataCaptureLanguages.push(dataArrElement.language);
+              }
+            });
+          }
+        }
+      } else if (this.users[0].request.langCode) {
+        this.dataCaptureLanguages = [this.users[0].request.langCode];
+      }
+      //reorder the languages, by making user login lang as first one in the array
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.userPrefLanguage);
+      //populate the lang labels
+      this.dataCaptureLanguages.forEach((langCode) => {
+        JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
+          (element) => {
+            if (langCode === element.code) {
+              this.dataCaptureLanguagesLabels.push(element.value);
+            }
+          }
+        );
+        //set the language direction as well
+        if (this.ltrLangs.includes(langCode)) {
+          this.textDirection.push("ltr");
+        } else {
+          this.textDirection.push("rtl");
+        }
+      });
+    }
+    console.log(this.dataCaptureLanguages);
+  };
+
   /**
    *@description method to change the current user to be shown as None value in the same as array.
    *@private
    * @memberof FileUploadComponent
    */
   private setNoneApplicant() {
-    // const noneApplicant = {
-    //   demographicMetadata: {
-    //     [""]: [
-    //       {
-    //         language: this.userPrefLanguage,
-    //         value: "None",
-    //       },
-    //     ],
-    //   },
-    //   preRegistrationId: "",
-    // };
-    // let i: number = 0;
-    // const temp = JSON.parse(
-    //   JSON.stringify(this.allApplicants.push(noneApplicant))
-    // );
-    // let noneCount: Boolean = this.isNoneAvailable();
-    // for (let applicant of this.allApplicants) {
-    //   if (this.users) {
-    //     if (applicant.preRegistrationId == this.preRegId) {
-    //       this.allApplicants.splice(i, 1);
-    //       //this.allApplicants.push(noneApplicant);
-    //       console.log(JSON.stringify(this.allApplicants));
-    //       //this.removeExtraNone();
-    //     }
-    //     i++;
-    //   }
-    // }
     let allApplicants = this.allApplicants;
     if (this.users && allApplicants) {
       let filtered = allApplicants.filter(applicant => applicant.preRegistrationId !== this.preRegId);
@@ -432,7 +460,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     for (let applicant of allApplicants) {
       for (let name of applicant) {
         if (
-          name["demographicMetadata"][name][j].language != this.userPrefLanguage
+          name["demographicMetadata"][name][j].language != this.dataCaptureLanguages[0]
         ) {
           allApplicants[i].demographicMetadata.firstName.splice(j, 1);
         }
@@ -478,12 +506,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
     requestDTO.attribute =
       appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    // for (let language of this.users[0].request.demographicDetails.identity
-    //   .residenceStatus) {
-    //   if (language.language === this.userPrefLanguage) {
-    //     requestDTO.value = language.value;
-    //   }
-    // }
+    
     requestDTO.value =
       this.users[0].request.demographicDetails.identity.residenceStatus[0].value;
     requestArray.attributes.push(requestDTO);
@@ -521,25 +544,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                 "applicantType",
                 response["response"].applicantType.applicantTypeCode
               );
-              //console.log(`applicantType: ${response["response"].applicantType.applicantTypeCode}`);
-              //console.log("getDocumentCategories started");
               await this.getDocumentCategories(
                 response["response"].applicantType.applicantTypeCode
               );
               this.setApplicantType(response);
-              //console.log("getDocumentCategories done");
               resolve(true);
-            } else {
-              this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
-                this.errorlabels.error
-              );
-              resolve(true);
-            }
+            } 
           },
           (error) => {
-            this.displayMessage("Error", this.errorlabels.error, error);
-            resolve(true);
+            this.showErrorMessage(error);
           }
         )
       );
@@ -565,7 +578,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => {
       this.subscriptions.push(
         this.dataStorageService
-        .getDocumentCategories(applicantcode)
+        .getDocumentCategoriesByLang(applicantcode, this.dataCaptureLanguages[0])
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
@@ -576,8 +589,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                   if (uiField.subType == documentCategory.code) {
                     if (uiField.inputRequired) {
                       documentCategory["required"] = uiField.required;
-                      documentCategory["labelName"] =
-                        uiField.labelName[this.userPrefLanguage];
+                      documentCategory["labelName"] = uiField.labelName;
                       documentCategory["containerStyle"] = uiField.containerStyle;
                       documentCategory["headerStyle"] = uiField.headerStyle;
                       documentCategory["id"] = uiField.id;
@@ -614,17 +626,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.onModification();
               //console.log(this.LOD);
               resolve(true);
-            } else {
-              this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
-                this.errorlabels.error
-              );
-              resolve(true);
-            }
+            } 
           },
           (error) => {
-            this.displayMessage("Error", this.errorlabels.error, error);
-            resolve(true);
+            this.showErrorMessage(error);
           }
         )
       );  
@@ -645,19 +650,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.bookingService.addApplicants(
                 response["response"]["basicDetails"]
               );
-            } else {
-              this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
-                this.errorlabels.error
-              );
-            }
+            } 
           },
-          (err) => {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.errorlabels.error,
-              err
-            );
+          (error) => {
+            //the is a fail safe operation hence no err messages are to be displayed
+            //this.showErrorMessage(error);
           },
           () => {
             this.setApplicants();
@@ -790,13 +787,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         (res) => {
           if (res[appConstants.RESPONSE]) {
             this.setByteArray(res["response"].document);
-          } else {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.errorlabels.error
-            );
-            this.start = false;
-          }
+          } 
           this.fileName = fileMeta.docName;
           this.fileDocCatCode = fileMeta.docCatCode;
           let i = 0;
@@ -832,11 +823,80 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.disableNavigation = false;
         },
         (error) => {
-          this.displayMessage("Error", this.errorlabels.error, error);
-        },
-        () => {}
-      );
+          this.start = false;
+          this.disableNavigation = false;
+          this.showErrorMessage(error);
+        });
     this.subscriptions.push(subs);
+  }
+
+  /**
+   *@description method to preview a specific file.
+   *
+   * @param {FileModel} file
+   * @memberof FileUploadComponent
+   */
+   deleteUploadedFile(fileMeta) {
+    //console.log(fileMeta);
+    let dialogRef = this.confirmationDialog(fileMeta.docName);
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (confirm == true) {
+        this.disableNavigation = true;
+        const subs = this.dataStorageService
+          .deleteFile(fileMeta.documentId, this.preRegId)
+          .subscribe(
+            (res) => {
+            if (res[appConstants.RESPONSE]) {
+              //console.log("deleted");
+              if (fileMeta.docCatCode === "POA") {
+                console.log(fileMeta.docCatCode);
+                this.sameAsselected = false;
+                this.registration.setSameAs("");
+                this.sameAs = this.registration.getSameAs();
+              } 
+              let allFiles = this.users[0].files.documentsMetaData;
+              if (allFiles) {
+                let updatedFiles = allFiles.filter(file => file.docCatCode !== fileMeta.docCatCode);
+                this.users[0].files.documentsMetaData = updatedFiles;
+              }
+              let index: number;
+              this.LOD.filter((ele, i) => {
+                if (ele.code === fileMeta.docCatCode) index = i;
+              });
+              this.LOD[index].selectedDocName = "";
+              this.LOD[index].selectedDocRefId = "";
+              this.uiFields.forEach((uiField) => {
+                if (uiField.subType == this.LOD[index].code) {
+                  this.userForm.controls[this.LOD[index].id].setValue("");
+                }
+              });
+              this.removeFilePreview();
+              //When users deletes uploaded file, then we have to move
+              //application back to "Incomplete" status.
+              this.changeStatusToIncomplete(); 
+            }
+            this.disableNavigation = false;
+          },
+          (error) => {
+            this.disableNavigation = false;
+            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg10);
+          }
+        );
+        this.subscriptions.push(subs);
+      } 
+    });  
+  }
+
+  confirmationDialog(fileName: string) {
+    let body = {
+      case: "CONFIRMATION",
+      title: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
+      message: this.fileUploadLanguagelabels.uploadDocuments.msg11 + fileName,
+      yesButtonText: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
+      noButtonText: this.fileUploadLanguagelabels.uploadDocuments.button_cancel,
+    };
+    const dialogRef = this.openDialog(body, "400px");
+    return dialogRef;
   }
 
   /**
@@ -907,14 +967,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           this.sendFile(event);
         } else {
           this.displayMessage(
-            this.fileUploadLanguagelabels.uploadDocuments.error,
+            this.errorlabels.errorLabel,
             this.fileUploadLanguagelabels.uploadDocuments.msg1
           );
           this.disableNavigation = false;
         }
       } else {
         this.displayMessage(
-          this.fileUploadLanguagelabels.uploadDocuments.error,
+          this.errorlabels.errorLabel,
           this.fileUploadLanguagelabels.uploadDocuments.msg5
         );
         this.disableNavigation = false;
@@ -925,7 +985,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     if (!allowedFileUploaded) {
       this.fileExtension = oldFileExtension;
       this.displayMessage(
-        this.fileUploadLanguagelabels.uploadDocuments.error,
+        this.errorlabels.errorLabel,
         this.fileUploadLanguagelabels.uploadDocuments.msg3
       );
       this.disableNavigation = false;
@@ -948,21 +1008,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           .updateDocRefId(documentId, this.preRegId, docRefId)
           .subscribe(
             (response) => {
+              //docRedId saved
               this.disableNavigation = false;
-              if (response[appConstants.RESPONSE]) {
-                //docRedId saved
-              } else {
-                this.displayMessage(
-                  this.fileUploadLanguagelabels.uploadDocuments.error,
-                  this.errorlabels.error
-                );
-              }
             },
             (error) => {
               this.disableNavigation = false;
-              this.displayMessage("Error", this.errorlabels.error, error);
-            }
-          );
+              this.showErrorMessage(error);
+            });
         this.subscriptions.push(subs);
       }
     }
@@ -1065,7 +1117,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   setJsonString(docName: string, docCode: string, docRefId: string) {
     this.documentUploadRequestBody.docCatCode = docCode;
-    this.documentUploadRequestBody.langCode = this.userPrefLanguage;
+    this.documentUploadRequestBody.langCode = this.dataCaptureLanguages[0];
     this.documentUploadRequestBody.docTypCode = docName;
     this.documentUploadRequestBody.docRefId = docRefId;
     this.documentRequest = new RequestModel(
@@ -1096,22 +1148,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     const subs = this.dataStorageService
       .sendFile(this.formData, this.users[0].preRegId)
       .subscribe(
-        (response) => {
+        async (response) => {
           if (response[appConstants.RESPONSE]) {
             this.updateUsers(response);
-          } else {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.errorlabels.error
-            );
-          }
+            //on file upload, update application status from "Application_Incomplete"
+            //to "Pending_Appointment", if all required documents are uploaded
+            await this.changeStatusToPending();
+          } 
         },
         (error) => {
-          this.displayMessage(
-            this.fileUploadLanguagelabels.uploadDocuments.error,
-            this.fileUploadLanguagelabels.uploadDocuments.msg7,
-            error
-          );
+          this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg7);
+          this.fileInputVariable.nativeElement.value = "";
+          this.disableNavigation = false;
         },
         () => {
           this.fileInputVariable.nativeElement.value = "";
@@ -1170,6 +1218,60 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.userFile = [];
   }
 
+  changeStatusToPending = async () => {
+    //console.log("changeStatusToPending");
+    //check if all required documents have been uploaded
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsTouched();
+      }
+    });
+    //console.log(this.userForm.valid);
+    //if yes, and if application status is "Application_Incomplete",
+    //then update it to "Pending_Appointment"
+    if (this.userForm.valid) {
+      //console.log("calling updateApplicationStatus");
+      await this.updateApplicationStatus(appConstants.APPLICATION_STATUS_CODES.incomplete, 
+        appConstants.APPLICATION_STATUS_CODES.pending);
+    } 
+    //Mark all form fields are untouched to prevent errors before Submit. 
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsUntouched();
+      }
+    });
+  }
+
+  //When users deletes uploaded file, then we have to move
+  //application back to "Incomplete" status.
+  changeStatusToIncomplete = async () => {
+    //console.log("changeStatusToIncomplete");
+    //check if all required documents have been uploaded
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsTouched();
+      }
+    });
+    //console.log(this.userForm.valid);
+    //if yes, and if application status is "Pending_Appointment",
+    //then update it to "Application_Incomplete"
+    if (!this.userForm.valid) {
+      //console.log("calling updateApplicationStatus");
+      await this.updateApplicationStatus(appConstants.APPLICATION_STATUS_CODES.pending, 
+        appConstants.APPLICATION_STATUS_CODES.incomplete);
+    } 
+    //Mark all form fields are untouched to prevent errors before Submit. 
+    this.uiFields.forEach((control) => {
+      const controlId = control.id;
+      if (this.userForm.controls[`${controlId}`]) {
+        this.userForm.controls[`${controlId}`].markAsUntouched();
+      }
+    });
+  }
+
   openFile() {
     const file = new Blob(this.users[0].files[0][0].multipartFile, {
       type: "application/pdf",
@@ -1208,16 +1310,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                   this.userForm.controls[this.LOD[index].id].setValue("");
                 }
               });
+              this.removeFilePreview();
+              //When users deletes uploaded file, then we have to move
+              //application back to "Incomplete" status.
+              this.changeStatusToIncomplete(); 
             }
             this.disableNavigation = false;
           },
-          (err) => {
+          (error) => {
             this.disableNavigation = false;
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.fileUploadLanguagelabels.uploadDocuments.msg9,
-              err
-            );
+            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg9);
           }
         );
       this.subscriptions.push(subs);
@@ -1226,11 +1328,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       const subs = this.dataStorageService
         .copyDocument(event.value, this.users[0].preRegId)
         .subscribe(
-          (response) => {
+          async (response) => {
             if (response[appConstants.RESPONSE]) {
               this.registration.setSameAs(event.value);
               this.removePOADocument();
               this.updateUsers(response);
+              //on copy document, update application status from "Application_Incomplete"
+              //to "Pending_Appointment", if all required documents are uploaded
+              await this.changeStatusToPending();
               let index: number;
               let poaTypes = [];
               this.LOD.filter((ele, i) => {
@@ -1251,27 +1356,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
               this.displayMessage(
-                this.fileUploadLanguagelabels.uploadDocuments.error,
+                this.errorlabels.errorLabel,
                 this.fileUploadLanguagelabels.uploadDocuments.msg9
               );
             }
             this.disableNavigation = false;
           },
-          (err) => {
-            this.displayMessage(
-              this.fileUploadLanguagelabels.uploadDocuments.error,
-              this.fileUploadLanguagelabels.uploadDocuments.msg8,
-              err
-            );
+          (error) => {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
             this.disableNavigation = false;
+            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg8);
           }
         );
         this.subscriptions.push(subs);
-      // this.subscriptions.push(subs);
-      // this.sameAsselected = true;
-      // this.disableNavigation = false;
     }
   }
 
@@ -1316,7 +1414,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @memberof FileUploadComponent
    */
   onBack() {
-    localStorage.setItem("modifyUser", "true");
+    localStorage.setItem(appConstants.MODIFY_USER, "true");
     let url = Utils.getURL(this.router.url, "demographic");
     this.router.navigateByUrl(url + `/${this.preRegId}`);
   }
@@ -1326,18 +1424,56 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    *
    * @memberof FileUploadComponent
    */
-  onNext() {
+  async onNext() {
     if (this.readOnlyMode) {
       localStorage.setItem("modifyDocument", "false");
       let url = Utils.getURL(this.router.url, "summary");
       this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
     } else {
+      //on next, update application status from "Application_Incomplete"
+      //to "Pending_Appointment", if all required documents are uploaded
+      this.uiFields.forEach((control) => {
+        const controlId = control.id;
+        if (this.userForm.controls[`${controlId}`]) {
+          this.userForm.controls[`${controlId}`].markAsTouched();
+        }
+      });
       if (this.userForm.valid) {
+        await this.updateApplicationStatus(appConstants.APPLICATION_STATUS_CODES.incomplete, 
+          appConstants.APPLICATION_STATUS_CODES.pending);
         localStorage.setItem("modifyDocument", "false");
         let url = Utils.getURL(this.router.url, "summary");
         this.router.navigateByUrl(url + `/${this.preRegId}/preview`);
       }
     }
+  }
+
+  //eg: update the application status from "Application_Incomplete" to "Pending_Appointment"
+  updateApplicationStatus = async (fromStatus: string, toStatus: string) => {
+    return new Promise((resolve) => {
+      this.dataStorageService.getApplicationStatus(this.users[0].preRegId).subscribe(
+        (response) => {
+          const applicationStatus = response["response"]["statusCode"];
+          if (applicationStatus === fromStatus) {
+            console.log(`updating application status from ${fromStatus} to ${toStatus}`);
+            this.dataStorageService.updateApplicationStatus(
+            this.users[0].preRegId, toStatus)
+            .subscribe(
+              (response) => {
+                resolve(true);
+              },
+              (error) => {
+                resolve(true);      
+              }
+            );
+          }
+          resolve(true);
+        },
+        (error) => {
+          resolve(true);      
+        }
+      );
+    });  
   }
 
   /**
@@ -1363,28 +1499,45 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof FileUploadComponent
+   */
+   private showErrorMessage(error: any, customMsg?: string) {
+    const titleOnError = this.errorlabels.errorLabel;
+    let message = "";
+    if (customMsg) {
+      message = customMsg;
+    } else {
+      message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.config); 
+    }  
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
+      message: message,
+      yesButtonText: this.errorlabels.button_ok,
+    };
+    this.dialog.open(DialougComponent, {
+      width: "400px",
+      data: body,
+    });
+  }
+
+  /**
    *@description method to set and display error message.
    *
    * @param {string} title
    * @param {string} message
    * @memberof FileUploadComponent
    */
-  displayMessage(title: string, message: string, error?: any) {
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      title = "";
-    }
+  displayMessage(title: string, message: string) {
     const messageObj = {
       case: "MESSAGE",
       title: title,
       message: message,
     };
-    this.openDialog(messageObj, "250px");
+    this.openDialog(messageObj, "400px");
   }
 
   /**

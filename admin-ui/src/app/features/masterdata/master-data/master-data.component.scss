@@ -23,11 +23,6 @@
   max-height: 80vh;
   // padding-bottom: 20px;
   scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-  }
   .header {
     border-bottom: 1px solid #c6c6c6 !important;
     font-family: "Roboto", sans-serif;

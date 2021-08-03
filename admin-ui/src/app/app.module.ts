@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppConfigService } from './app-config.service';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatKeyboardModule } from 'ngx7-material-keyboard';
 
 const appInitialization = (appConfig: AppConfigService) => {
   return () => {
@@ -30,6 +31,7 @@ const appInitialization = (appConfig: AppConfigService) => {
     BrowserAnimationsModule,
     MaterialModule, 
     FormsModule, 
+    MatKeyboardModule,
     ReactiveFormsModule
   ],
   providers: [CookieService,

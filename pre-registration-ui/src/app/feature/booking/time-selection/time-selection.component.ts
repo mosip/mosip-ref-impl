@@ -6,7 +6,7 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { DialougComponent } from "../../../shared/dialoug/dialoug.component";
 import { Router, ActivatedRoute } from "@angular/router";
 import smoothscroll from "smoothscroll-polyfill";
@@ -39,10 +39,12 @@ export class TimeSelectionComponent
   registrationCenter: String;
   selectedCard: number;
   selectedTile = 0;
+  showNote = false;
   limit = [];
   showAddButton = false;
   names: NameList[] = [];
   deletedNames = [];
+  selectedNames = [];
   availabilityData = [];
   days: number;
   disableAddButton = false;
@@ -51,6 +53,7 @@ export class TimeSelectionComponent
   temp: NameList[] = [];
   registrationCenterLunchTime = [];
   languagelabels: any;
+  apiErrorCodes: any;
   errorlabels: any;
   showMorning: boolean;
   showAfternoon: boolean;
@@ -75,7 +78,8 @@ export class TimeSelectionComponent
     private router: Router,
     private translate: TranslateService,
     private configService: ConfigService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {
     super(dialog);
     smoothscroll.polyfill();
@@ -96,6 +100,14 @@ export class TimeSelectionComponent
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistartion_identity_name
     );
+    this.dataService
+      .getI18NLanguageFiles(this.userPreferredLangCode)
+      .subscribe((response) => {
+        this.languagelabels = response["timeSelection"].booking;
+        this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+        this.DAYS = response["DAYS"];
+      });
     await this.getUserInfo(this.preRegId);
     await this.getRegCenterDetails();
     this.prepareNameList(this.userInfo, this.regCenterInfo);
@@ -106,14 +118,7 @@ export class TimeSelectionComponent
       this.registrationCenterLunchTime =
         this.temp[0].registrationCenter.lunchEndTime.split(":");
     }
-    this.getSlotsforCenter(this.registrationCenter);
-    this.dataService
-      .getI18NLanguageFiles(this.userPreferredLangCode)
-      .subscribe((response) => {
-        this.languagelabels = response["timeSelection"].booking;
-        this.errorlabels = response["error"];
-        this.DAYS = response["DAYS"];
-      });
+    this.getSlotsforCenter(this.registrationCenter);  
   }
 
   getUserInfo(preRegId) {
@@ -138,6 +143,9 @@ export class TimeSelectionComponent
             []
           )
         );
+      },
+      (error) => {
+        this.showErrorMessage(error);
       });
     });
   }
@@ -156,6 +164,9 @@ export class TimeSelectionComponent
               response[appConstants.RESPONSE].registrationCenters[0];
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -173,27 +184,45 @@ export class TimeSelectionComponent
         bookingData: "",
         postalCode: "",
       };
-
+      const demographicData = user["request"].demographicDetails.identity;
+      const applicationLanguages = Utils.getApplicationLangs(user["request"]);
+      let filteredLangs = applicationLanguages.filter(applicationLang => 
+        applicationLang == this.userPreferredLangCode
+      );
+      if (filteredLangs.length > 0) {
+        let nameValues = demographicData[this.name];
+        nameValues.forEach(nameVal => {
+          if (nameVal["language"] == this.userPreferredLangCode) {
+            nameList.fullName = nameVal["value"];
+          }
+        });  
+      } else {
+        nameList.fullName =
+        demographicData[this.name][0].value;
+      }
       nameList.preRegId = user.request.preRegistrationId;
       nameList.status = user.request.statusCode;
-      nameList.fullName =
-        user["request"].demographicDetails.identity[this.name][0].value;
-      nameList.postalCode = user.request.demographicDetails.identity.postalCode;
+      nameList.postalCode = demographicData["postalCode"];
       nameList.registrationCenter = regCenterInfo;
+      console.log(`user.request.statusCode: ${user.request.statusCode}`);
+      if (user.request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending) {
+        this.showNote = true;
+      }  
       this.names.push(nameList);
       this.temp.push(nameList);
     });
   }
 
   public scrollRight(): void {
+    console.log(this.widgetsContent.nativeElement.scrollWidth);
     // for edge browser
     this.widgetsContent.nativeElement.scrollBy({
-      left: this.widgetsContent.nativeElement.scrollLeft + 100,
+      left: this.widgetsContent.nativeElement.scrollLeft + 750,
       behavior: "smooth",
     });
     // for chrome browser
     this.widgetsContent.nativeElement.scrollTo({
-      left: this.widgetsContent.nativeElement.scrollLeft + 100,
+      left: this.widgetsContent.nativeElement.scrollLeft + 750,
       behavior: "smooth",
     });
   }
@@ -201,12 +230,12 @@ export class TimeSelectionComponent
   public scrollLeft(): void {
     // for edge browser
     this.widgetsContent.nativeElement.scrollBy({
-      left: this.widgetsContent.nativeElement.scrollLeft - 100,
+      left: this.widgetsContent.nativeElement.scrollLeft - 750,
       behavior: "smooth",
     });
     //for chrome browser
     this.widgetsContent.nativeElement.scrollTo({
-      left: this.widgetsContent.nativeElement.scrollLeft - 100,
+      left: this.widgetsContent.nativeElement.scrollLeft - 750,
       behavior: "smooth",
     });
   }
@@ -232,6 +261,7 @@ export class TimeSelectionComponent
     this.availabilityData[this.selectedTile].timeSlots[
       this.selectedCard
     ].names.splice(index, 1);
+    this.selectedNames.splice(index, 1);
     this.canAddApplicant(
       this.availabilityData[this.selectedTile].timeSlots[this.selectedCard]
     );
@@ -246,6 +276,23 @@ export class TimeSelectionComponent
       this.availabilityData[this.selectedTile].timeSlots[
         this.selectedCard
       ].names.push(this.deletedNames[index]);
+      let selectedObj = {
+        name: this.deletedNames[index].fullName,
+        bookingData: {
+          displayTime:
+            this.availabilityData[this.selectedTile].timeSlots[
+              this.selectedCard
+            ].displayTime,
+          tag: this.availabilityData[this.selectedTile].timeSlots[
+            this.selectedCard
+          ].tag,
+          tagLabel: this.availabilityData[this.selectedTile].timeSlots[
+            this.selectedCard
+          ].tagLabel,
+          date: this.availabilityData[this.selectedTile].displayDate,
+        },
+      };
+      this.selectedNames.push(selectedObj);
       this.deletedNames.splice(index, 1);
     }
   }
@@ -263,6 +310,13 @@ export class TimeSelectionComponent
   formatJson(centerDetails: any) {
     centerDetails.forEach((element) => {
       let sumAvailability = 0;
+      let morningLabelText = "", afternoonLabelText = "";
+      this.translate.get('timeSelection.text_morning').subscribe((label: string) => {
+        morningLabelText = label;
+      });
+      this.translate.get('timeSelection.text_afternoon').subscribe((label: string) => {
+        afternoonLabelText = label;
+      });  
       element.timeSlots.forEach((slot) => {
         sumAvailability += slot.availability;
         slot.names = [];
@@ -270,6 +324,7 @@ export class TimeSelectionComponent
         let toTime = slot.toTime.split(":");
         if (this.registrationCenterLunchTime[0] === null) {
           slot.tag = "morning";
+          slot.tagLabel = morningLabelText; 
           element.showMorning = true;
           this.morningSlotAvailable = true;
           this.afternoonSlotAvailable = false;
@@ -278,15 +333,18 @@ export class TimeSelectionComponent
           this.registrationCenterLunchTime[0].split(":")[0] === "00"
         ) {
           slot.tag = "morning";
+          slot.tagLabel = morningLabelText;
           element.showMorning = true;
           this.morningSlotAvailable = true;
           this.afternoonSlotAvailable = false;
         } else if (fromTime[0] < this.registrationCenterLunchTime[0]) {
           slot.tag = "morning";
+          slot.tagLabel = morningLabelText;
           element.showMorning = true;
           this.morningSlotAvailable = true;
         } else {
           slot.tag = "afternoon";
+          slot.tagLabel = afternoonLabelText;
           element.showAfternoon = true;
           this.afternoonSlotAvailable = true;
         }
@@ -299,10 +357,14 @@ export class TimeSelectionComponent
       });
       element.TotalAvailable = sumAvailability;
       element.inActive = false;
+      const ltrLangs = this.configService
+      .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+      .split(",");
       element.displayDate = Utils.getBookingDateTime(
         element.date,
         "",
-        this.userPreferredLangCode
+        this.userPreferredLangCode,
+        ltrLangs
       );
       let index = new Date(Date.parse(element.date)).getDay();
       element.displayDay = this.DAYS[index];
@@ -346,22 +408,16 @@ export class TimeSelectionComponent
       (response) => {
         this.spinner = false;
         if (response[appConstants.RESPONSE]) {
+          //console.log(response[appConstants.RESPONSE]);
           if (response[appConstants.RESPONSE].centerDetails.length > 0) {
             this.formatJson(response[appConstants.RESPONSE].centerDetails);
           } else {
-            this.displayMessage(
-              "Error",
-              this.errorlabels.centerDetailsNotAvailable,
-              ""
-            );
+            this.showErrorMessage(null, this.errorlabels.centerDetailsNotAvailable);
           }
-        } else if (response[appConstants.NESTED_ERROR]) {
-          this.displayMessage("Error", this.errorlabels.error, "");
         }
       },
       (error) => {
-        console.log(error);
-        this.displayMessage("Error", this.errorlabels.error, error);
+        this.showErrorMessage(error);
       }
     );
     this.subscriptions.push(subs);
@@ -415,6 +471,7 @@ export class TimeSelectionComponent
               slot.fromTime,
               slot.toTime
             );
+            //console.log(bookingData);
             this.bookingDataList.push(bookingData);
           });
         }
@@ -422,10 +479,16 @@ export class TimeSelectionComponent
     });
     if (this.bookingDataList.length === 0) {
       this.disableContinueButton = false;
+      this.showErrorMessage(
+        null,
+        this.languagelabels.noSlotsSelectedForApplicant
+      );
       return;
     }
-    await this.getApplicationStatus(this.preRegId);
-    if (this.applicationStatus === "Pending_Appointment") {
+    if (
+      !this.router.url.includes("multiappointment") &&
+      this.userInfo[0].request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending
+    ) {
       const data = {
         case: "CONFIRMATION",
         title: this.languagelabels.applicationLockConfirm.title,
@@ -435,17 +498,52 @@ export class TimeSelectionComponent
       };
       this.dialog
         .open(DialougComponent, {
-          width: "450px",
-          height: "220px",
+          width: "400px",
+          //height: "250px",
           data: data,
         })
         .afterClosed()
         .subscribe((response) => {
-          console.log(response);
+          //console.log(response);
           if (response === true) {
             this.bookingOperationRequest();
+          } else {
+            this.disableContinueButton = false;
           }
         });
+    } else if (this.router.url.includes("multiappointment")) {
+      let pridWithNoBookings = [];
+      this.userInfo.forEach((user) => {
+        if (user.request.statusCode === appConstants.APPLICATION_STATUS_CODES.pending) {
+          pridWithNoBookings.push(user.request.preRegistrationId);
+        }
+      });
+      if (pridWithNoBookings.length !== 0) {
+        const data = {
+          case: "CONFIRMATION",
+          title: this.languagelabels.applicationLockConfirm.title,
+          message: this.languagelabels.applicationLockConfirm.message,
+          noButtonText: this.languagelabels.applicationLockConfirm.noButtonText,
+          yesButtonText:
+            this.languagelabels.applicationLockConfirm.yesButtonText,
+        };
+        this.dialog
+          .open(DialougComponent, {
+            width: "450px",
+            //height: "250px",
+            data: data,
+          })
+          .afterClosed()
+          .subscribe((response) => {
+            if (response === true) {
+              this.bookingOperationRequest();
+            } else {
+              this.disableContinueButton = false;
+            }
+          });
+      } else {
+        this.bookingOperationRequest();
+      }
     } else {
       this.bookingOperationRequest();
     }
@@ -459,7 +557,6 @@ export class TimeSelectionComponent
     if (this.deletedNames.length !== 0) {
       const data = {
         case: "CONFIRMATION",
-        title: "",
         message:
           this.languagelabels.deletedApplicant1[0] +
           ' - "' +
@@ -471,7 +568,8 @@ export class TimeSelectionComponent
         noButtonText: this.languagelabels.noButtonText,
       };
       const dialogRef = this.dialog.open(DialougComponent, {
-        width: "350px",
+        width: "400px",
+        //height: "250px",
         data: data,
         disableClose: true,
       });
@@ -500,7 +598,7 @@ export class TimeSelectionComponent
           };
           this.dialog
             .open(DialougComponent, {
-              width: "350px",
+              width: "400px",
               data: data,
             })
             .afterClosed()
@@ -518,74 +616,56 @@ export class TimeSelectionComponent
                 );
               }
             });
-        } else if (
-          response[appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE] ===
-          appConstants.ERROR_CODES.timeExpired
-        ) {
-          let timespan =
-            response[appConstants.NESTED_ERROR][0].message.match(/\d+/g);
+        } 
+      },
+      (error) => {
+        if (Utils.getErrorCode(error) === appConstants.ERROR_CODES.timeExpired) {
+          let timespan = Utils.getErrorMessage(error).match(/\d+/g);
           let errorMessage =
             this.errorlabels.timeExpired_1 +
             timespan[0] +
             this.errorlabels.timeExpired_2;
-          this.displayMessage("Error", errorMessage, {
-            error: response,
-          });
+          this.showErrorMessage(error, errorMessage);
         } else {
-          this.displayMessage("Error", this.errorlabels.error, {
-            error: response,
-          });
+          this.showErrorMessage(error);
         }
-      },
-      (error) => {
-        this.displayMessage("Error", this.errorlabels.error, error);
       }
     );
     this.subscriptions.push(subs);
   }
 
-  getApplicationStatus(prid) {
-    return new Promise((resolve) => {
-      this.dataService.getApplicationStatus(prid).subscribe((response) => {
-        this.applicationStatus = response["response"]["statusCode"];
-        resolve(true);
-      });
-    });
-  }
-
-  displayMessage(title: string, message: string, error: any) {
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof TimeSelectionComponent
+   */
+   private showErrorMessage(error: any, customMsg?: string) {
     this.spinner = false;
     this.disableContinueButton = false;
-    if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.tokenExpired
-    ) {
-      message = this.errorlabels.tokenExpiredLogout;
-      title = "";
-    } else if (
-      error &&
-      error[appConstants.ERROR] &&
-      error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-        appConstants.ERROR_CODES.slotNotAvailable
-    ) {
-      message = this.errorlabels.slotNotAvailable;
+    const titleOnError = this.errorlabels.errorLabel;
+    let errorCode = "";
+    let message = "";
+    if (customMsg) {
+      message = customMsg
+    } else {
+      errorCode = Utils.getErrorCode(error);
+      if (errorCode == appConstants.ERROR_CODES.slotNotAvailable) {
+        message = this.errorlabels.slotNotAvailable;
+      }
+      else {
+        message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.configService); 
+      }
     }
     const messageObj = {
-      case: "MESSAGE",
-      title: title,
+      case: "ERROR",
+      title: titleOnError,
       message: message,
+      yesButtonText: this.errorlabels.button_ok,
     };
-    const dialogRef = this.openDialog(messageObj, "250px");
+    const dialogRef = this.openDialog(messageObj, "400px");
     const subs = dialogRef.afterClosed().subscribe(() => {
-      if (
-        error &&
-        error[appConstants.ERROR] &&
-        error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
-          appConstants.ERROR_CODES.slotNotAvailable
-      ) {
+      if (errorCode === appConstants.ERROR_CODES.slotNotAvailable) {
         this.canDeactivateFlag = false;
         if (this.router.url.includes("multiappointment")) {
           this.router.navigateByUrl(
@@ -612,6 +692,68 @@ export class TimeSelectionComponent
     });
     this.subscriptions.push(subs);
   }
+
+  // displayMessage(title: string, message: string, error: any) {
+  //   this.spinner = false;
+  //   this.disableContinueButton = false;
+  //   if (
+  //     error &&
+  //     error[appConstants.ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+  //       appConstants.ERROR_CODES.tokenExpired
+  //   ) {
+  //     message = this.errorlabels.tokenExpiredLogout;
+  //     title = "";
+  //   } else if (
+  //     error &&
+  //     error[appConstants.ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+  //     error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+  //       appConstants.ERROR_CODES.slotNotAvailable
+  //   ) {
+  //     message = this.errorlabels.slotNotAvailable;
+  //   }
+  //   const messageObj = {
+  //     case: "MESSAGE",
+  //     title: title,
+  //     message: message,
+  //   };
+  //   const dialogRef = this.openDialog(messageObj, "400px");
+  //   const subs = dialogRef.afterClosed().subscribe(() => {
+  //     if (
+  //       error &&
+  //       error[appConstants.ERROR] &&
+  //       error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+  //       error[appConstants.ERROR][appConstants.NESTED_ERROR][0].errorCode ===
+  //         appConstants.ERROR_CODES.slotNotAvailable
+  //     ) {
+  //       this.canDeactivateFlag = false;
+  //       if (this.router.url.includes("multiappointment")) {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/multiappointment/pick-center`
+  //         );
+  //       } else {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+  //         );
+  //       }
+  //     }
+  //     if (this.errorlabels.centerDetailsNotAvailable === messageObj.message) {
+  //       this.canDeactivateFlag = false;
+  //       if (this.router.url.includes("multiappointment")) {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/multiappointment/pick-center`
+  //         );
+  //       } else {
+  //         this.router.navigateByUrl(
+  //           `${this.userPreferredLangCode}/pre-registration/booking/${this.preRegId[0]}/pick-center`
+  //         );
+  //       }
+  //     }
+  //   });
+  //   this.subscriptions.push(subs);
+  // }
 
   openDialog(data, width) {
     const dialogRef = this.dialog.open(DialougComponent, {

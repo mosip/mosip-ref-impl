@@ -52,7 +52,7 @@
               "ara": "تاريخ الولادة",
               "fra": "Date de naissance"
             },
-            "controlType": "date",
+            "controlType": "ageDate",
             "inputRequired": true,
             "fieldType": "default",
             "type": "string",
@@ -308,7 +308,7 @@
             "inputRequired": true,
             "validators": [],
             "subType": "POA",
-            "required": true
+            "required": false
           },
           {
             "id": "proofOfIdentity",
@@ -336,7 +336,7 @@
             "inputRequired": true,
             "validators": [],
             "subType": "POR",
-            "required": false
+            "required": true
           },
           {
             "id": "proofOfDateOfBirth",

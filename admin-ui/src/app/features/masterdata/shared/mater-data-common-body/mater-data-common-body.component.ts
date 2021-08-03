@@ -3,7 +3,8 @@ import {
   OnInit,
   ElementRef,
   ViewChildren,
-  Input
+  Input,
+  HostListener 
 } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +29,8 @@ import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import defaultJson from "../../../../../assets/i18n/default.json";
+import { HeaderService } from 'src/app/core/services/header.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mater-data-common-body',
@@ -53,18 +56,22 @@ export class MaterDataCommonBodyComponent implements OnInit {
   @Input() primaryLang: string;
   @Input() secondaryLang: string;
   @Input() masterdataType: any;
-
+  secondaryLangDisplay: any;
   dropDownValues = new CenterDropdown();
   fetchRequest = {} as CenterRequest;
   id: string;
   mapping: any;
   url:string;
   saveSecondaryForm:boolean;
+  fieldsCount:number;
 
   languageNames = {
     ara: 'عربى',
     fra: 'French',
-    eng: 'English'
+    eng: 'English',
+    hin: 'हिंदी',
+    kan: 'ಕನ್ನಡ',
+    tam: 'தமிழ்'
   };
   showSecondaryForm: boolean;
   isCreateForm:boolean;
@@ -72,7 +79,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
   primaryKeyboard: string;
   secondaryKeyboard: string;
   keyboardType: string;
-
+  masterDataName:string;
+  primaryLangCode:string;
+  
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
@@ -80,34 +89,52 @@ export class MaterDataCommonBodyComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private keyboardService: MatKeyboardService,
-    private appConfigService: AppConfigService,
+    private appConfigService: AppConfigService, 
+    private headerService: HeaderService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit() {
-    
+    this.fieldsCount = 0;
+    this.primaryLangCode = this.headerService.getUserPreferredLanguage();
+    this.fields.forEach(obj => {
+      if(obj.inputType === "text" && obj.showInSingleView === "true"){
+        this.fieldsCount++;
+      }        
+    });
     this.activatedRoute.params.subscribe(response => {
       this.id = response.id;
       this.masterdataType = response.type;
       this.mapping = appConstants.masterdataMapping[response.type];
+      this.masterDataName = defaultJson.masterdataMapping[response.type].name[this.primaryLangCode];
     });
+    this.translateService
+      .getTranslation(this.primaryLang)
+      .subscribe(response => {
+        this.popupMessages = response;
+      });
     let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
+
     let otherLangsArr = supportedLanguages.filter(lang => lang.trim() !== this.primaryLang.trim());
-    
-    this.selectLanguagesArr = [];
-    this.secondaryLang = otherLangsArr[0].trim();
-    otherLangsArr.map((language) => {
-      if (defaultJson.languages && defaultJson.languages[language.trim()]) {
-        this.selectLanguagesArr.push({
-          code: language.trim(),
-          value: defaultJson.languages[language.trim()].nativeName,
-        });
-      }
-    });
-    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
+    if(otherLangsArr.length > 0){
+      this.selectLanguagesArr = [];
+      this.secondaryLang = otherLangsArr[0].trim();
+      otherLangsArr.map((language) => {
+        if (defaultJson.languages && defaultJson.languages[language.trim()]) {
+          this.selectLanguagesArr.push({
+            code: language.trim(),
+            value: defaultJson.languages[language.trim()].nativeName,
+          });
+        }
+      });
+      this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
+    }else{
+      this.showSecondaryForm = false;
+    }  
     this.isCreateForm = false;
     this.disableForms = false;
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
+    this.secondaryKeyboard = defaultJson.keyboardMapping[this.secondaryLang];
     let url = this.router.url.split('/')[3];
     this.url = this.router.url.split('/')[3];
     if(!this.primaryData){
@@ -140,7 +167,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Device Specification";
         this.getDeviceTypes();
         this.showPanel(this.pageName);
-        this.primaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
+        this.primaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true};
       }else if(url === "device-types"){
         this.pageName = "Device Type";
         this.showPanel(this.pageName);
@@ -163,7 +190,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "holiday"){
         this.pageName = "Holiday";
         this.primaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.primaryLang,"isActive":true};
-        this.getZoneData();
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";  
         let name = "";      
@@ -217,13 +244,20 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Document Category";
       }else if(url === "holiday"){
         this.pageName = "Holiday";
-        this.getZoneData();
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
         this.showPanel(this.pageName);
       }
     }
     this.setSecondaryFrom("");
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (this.keyboardService.isOpened) {
+      this.keyboardService.dismiss();
+      this.keyboardRef = undefined;
+    }
   }
 
   showPanel(pageName : string){
@@ -247,7 +281,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
   captureLanguage(event: any, language : string){
     if (event.source.selected) {
       this.secondaryLang = language;
-      this.secondaryKeyboard = appConstants.keyboardMapping[language];
+      this.secondaryLangDisplay = event.source.viewValue;
+      this.secondaryKeyboard = defaultJson.keyboardMapping[language];
       this.getData(language);
     }
   }
@@ -308,9 +343,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
           this.secondaryData.code = this.primaryData.code;
       }else if(this.url === "holiday"){
         this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.secondaryLang,"isActive":true};
-        this.getZoneData();
-        /*if(type === "setValue")
-          this.secondaryData.holidayName = this.primaryData.holidayName*/;        
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(this.url === "templates"){
         this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
         this.getTemplateFileFormat();
@@ -458,15 +491,38 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   getHierarchyLevel() {
-    this.dataStorageService
+    this.dropDownValues.hierarchyLevelCode.primary = ['region', 'province', 'city', 'laa', 'postalCode', 'zone'];
+    /*this.dataStorageService
       .getDropDownValuesForMasterData('locations/'+this.primaryLang)
       .subscribe(response => {
-        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations.sort((a, b) => { return a.locationHierarchylevel - b.locationHierarchylevel;});
-      });
-    this.dataStorageService
+        this.dropDownValues.hierarchyLevelCode.primary = response.response.locations.sort((a, b) => { 
+            return a.locationHierarchylevel - b.locationHierarchylevel;
+        });
+      });*/
+
+    let initialLocationCode = this.appConfigService.getConfig()['countryCode'];
+    this.loadLocationData(initialLocationCode);
+
+    /*this.dataStorageService
       .getDropDownValuesForMasterData('locations/'+this.secondaryLang)
       .subscribe(response => {
         this.dropDownValues.hierarchyLevelCode.secondary = response.response.locations.sort((a, b) => { return a.locationHierarchylevel - b.locationHierarchylevel;});
+      });*/
+  }
+
+  loadLocationData(locationCode: string) {
+    this.dataStorageService
+      .getImmediateChildren(locationCode, this.primaryLang)
+      .subscribe(response => {
+        this.dropDownValues['locationCode'].primary =
+          response['response']['locations'];
+      });
+
+    this.dataStorageService
+      .getImmediateChildren(locationCode, this.secondaryLang)
+      .subscribe(response => {
+        this.dropDownValues['locationCode'].secondary =
+          response['response']['locations'];
       });
   }
 
@@ -494,6 +550,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureValue(event: any, formControlName: string, type: string) {
+    console.log("type>>>"+type);
     if (type === 'primary') {
       this.primaryData[formControlName] = event.target.value;
     } else if (type === 'secondary') {
@@ -606,7 +663,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               );
               this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.pageName+" Created Successfully";
+                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -628,7 +685,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
                   }
               });
             }else{
-              let url = this.pageName+" Created Successfully";
+              this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
+              let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
               this.showMessage(url)
                 .afterClosed()
                 .subscribe(() => {
@@ -707,7 +765,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               if(this.saveSecondaryForm){
                 this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.pageName+" Created Successfully";
+                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -731,7 +789,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               }else{
                 this.dataStorageService.updateData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.pageName+" Updated Successfully";
+                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -754,7 +812,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 });
               }
             }else{
-              let url = this.pageName+" Updated Successfully";
+              this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
+              let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
                 this.showMessage(url)
                   .afterClosed()
                   .subscribe(() => {
@@ -779,14 +838,14 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }
   }
 
-  showMessage(message: string) {
+  showMessage(message: string) {    
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: {
         case: 'MESSAGE',
-        title: 'Success',
+        title: this.popupMessages.genericmessage.successLabel,
         message: message,
-        btnTxt: 'Ok'
+        btnTxt: this.popupMessages.genericmessage.successButton
       }
     });
     return dialogRef;
@@ -798,9 +857,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
         width: '350px',
         data: {
           case: 'MESSAGE',
-          title: 'Error',
+          title: this.popupMessages.genericmessage.errorLabel,
           message: message,
-          btnTxt: 'Ok'
+          btnTxt: this.popupMessages.genericmessage.successButton
         },
         disableClose: true
       });
