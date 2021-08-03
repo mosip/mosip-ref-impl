@@ -98,7 +98,7 @@ export class PreviewComponent implements OnInit {
 
   async getIdentityJsonFormat() {
     return new Promise((resolve, reject) => {
-      this.dataStorageService.getIdentityJson().subscribe((response) => {
+      this.dataStorageService.getIdentityJson().subscribe(async (response) => {
         console.log(response);
         this.identityData = response["response"]["idSchema"]["identity"];
         this.locationHeirarchy = [
@@ -130,7 +130,7 @@ export class PreviewComponent implements OnInit {
              fields.fieldType === "dynamic"
         );
         this.getIntialDropDownArrays();
-        this.setDynamicFieldValues();
+        await this.setDynamicFieldValues();
         resolve(true);
       });
     });
@@ -148,12 +148,11 @@ export class PreviewComponent implements OnInit {
   }
 
   private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues();
+    await this.getDynamicFieldValues(null);
   }
-
-  getDynamicFieldValues(pageNo = 0) {
+  async getDynamicFieldValues(pageNo) {
     let pageNumber;
-    if (pageNo > 0) {
+    if (pageNo == null) {
       pageNumber = 0;
     } else {
       pageNumber = pageNo;
@@ -161,27 +160,23 @@ export class PreviewComponent implements OnInit {
     return new Promise((resolve) => {
       this.dataStorageService
         .getDynamicFieldsandValuesForAllLang(pageNumber)
-        .subscribe((response) => {
-          //console.log(response);
+        .subscribe(async (response) => {
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
-            //console.log(field);
-            dynamicField.forEach((res) => {
-              // console.log(res);
+            dynamicField.forEach(async (res) => {
               if (field.id === res.name && res.langCode === this.primaryLanguage) {
-                // console.log(res["fieldVal"]);
-                this.filterOnLangCode(
+                await this.filterOnLangCode(
                   this.primaryLanguage,
                   res.name,
                   res["fieldVal"]
                 );
-                //console.log(this.primarydropDownFields);
               }
               if (
                 field.id === res.name &&
+                this.primaryLanguage !== this.secondaryLanguage && 
                 res.langCode === this.secondaryLanguage
               ) {
-                this.filterOnLangCode(
+                await this.filterOnLangCode(
                   this.secondaryLanguage,
                   res.name,
                   res["fieldVal"]
@@ -195,10 +190,12 @@ export class PreviewComponent implements OnInit {
           }
           pageNumber = pageNumber + 1;
           if (totalPages > pageNumber) {
-            this.getDynamicFieldValues(pageNumber);
+            await this.getDynamicFieldValues(pageNumber);
+            resolve(true);
+          } else {
+            resolve(true);
           }
         });
-      resolve(true);
     });
   }
 
