@@ -103,12 +103,12 @@
 /* ::ng-deep .mat-form-field-label .mat-select-placeholder {
 
 } */
-.mat-input-element {
+
+::ng-deep.mat-input-element {
   padding-top: 5px !important;
 }
 ::ng-deep.mat-select-value {
-  padding: 2px !important;
-  /* line-height: 20px !important; */
+  padding-top: 5px !important;
 }
 
 ::ng-deep.mat-datepicker-content .mat-calendar {
