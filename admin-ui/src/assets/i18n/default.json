@@ -42,9 +42,9 @@
   "masterdataMapping" :{
     "blacklisted-words": {
       "name": {
-        "eng": "Blacklisted Words",
-        "ara": "كلمات في القائمة السوداء",
-        "fra": "Mots sur la liste noire",
+        "eng": "Blocklisted Words",
+        "ara": "الكلمات المحظورة",
+        "fra": "Mots bloqués",
         "tam": "தடுப்புப்பட்டியல் சொற்கள்",
         "kan": "ನಿರ್ಬಂಧಿಸಲಾದ ಪದಗಳು",
         "hin": "ब्लॉक लिस्टेड शब्द"
