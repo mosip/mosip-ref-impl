@@ -205,18 +205,7 @@
 
 .card-slot-text-span-number {
   font-size: 0.6rem !important;
-  margin-left: 9rem;
-  font-weight: 600;
   color:rgb(0, 0, 0);
-}
-
-.card-slot-text-span-image {
-  margin-left: 2px;
-}
-
-.card-slot-text-span-image img {
-  height: 1rem;
-  width: 1rem;
 }
 
 .card-slot-text-selected {
@@ -224,7 +213,9 @@
   font-weight: 500;
   color: white;
 }
-
+.circleBase {
+  border-radius: 10%;
+}
 .sizing {
   height: 130px;
   display: inline-block;

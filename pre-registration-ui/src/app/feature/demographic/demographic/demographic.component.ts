@@ -488,7 +488,6 @@ export class DemographicComponent
       this.dialog
         .open(DialougComponent, {
           width: "900px",
-          // height: "95%",
           data: data,
           disableClose: true,
         })
@@ -1442,6 +1441,7 @@ export class DemographicComponent
         if (this.dataModification) {
           this.hasDobChangedFromChildToAdult(controlId);
         }
+        //this.userForm.controls[controlId].markAsTouched();
       } else {
         this.userForm.controls[controlId].setValue("");
         this.userForm.controls[controlId].markAsTouched();
@@ -2140,7 +2140,17 @@ export class DemographicComponent
     });
     let index = multiLangControls.indexOf(formControlName);
     if (index > -1) {
-      let lang = langCode.substring(0, 2);
+      let localeId = langCode.substring(0, 2);
+      JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
+        (element) => {
+          if (langCode === element.code && element.locale) {
+            localeId = element.locale;
+          }
+        }
+      ); 
+      if (localeId.indexOf('_') > -1) {
+        localeId = localeId.substring(0, localeId.indexOf('_'));
+      }
       if (this.userForm.controls[formControlName]) {
         control = this.userForm.controls[formControlName];
       }
@@ -2151,7 +2161,7 @@ export class DemographicComponent
         this.oldKeyBoardIndex = index;
         el = this._attachToElementMesOne._results[index];
         el.nativeElement.focus();
-        this._keyboardRef = this.matKeyboardService.open(lang);
+        this._keyboardRef = this.matKeyboardService.open(localeId);
         this._keyboardRef.instance.setInputInstance(el);
         this._keyboardRef.instance.attachControl(control);
       }

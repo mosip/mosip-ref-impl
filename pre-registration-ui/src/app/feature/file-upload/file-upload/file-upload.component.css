@@ -297,11 +297,11 @@ mat-select:focus {
   flex: 1 1 auto;
 }
 
- .mat-form-field-hide-placeholder .mat-select-placeholder {
+.mat-form-field-hide-placeholder .mat-select-placeholder {
   padding: 5px !important;
 }
 .mat-select-value {
-   padding: 2px !important;
+   padding: 5px !important;
    line-height: 23px !important;
 }
 
@@ -314,6 +314,7 @@ mat-select:focus {
 }
 .fieldContainer {
   flex: 1;
+  min-height: 100%;
   margin-right: 10px;
   margin-bottom: 3%; /* (100-32*3)/2 */
 }
@@ -328,4 +329,10 @@ mat-select:focus {
   padding: 10px;
   max-width: 500px;
   box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
+}
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
+}
+::ng-deep.mat-select-value {
+  padding-top: 5px !important;
 }

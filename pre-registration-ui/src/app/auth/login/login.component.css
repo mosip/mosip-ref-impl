@@ -53,13 +53,19 @@
 mat-form-field {
   width: 100%;
   height: 100%;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .pinkBg {
   background-color: #fe528d;
 }
-
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
+}
+::ng-deep.mat-select-value {
+  padding: 2px !important;
+  /* line-height: 20px !important; */
+}
 .whiteText {
   color: white;
 }
