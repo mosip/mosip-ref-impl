@@ -138,7 +138,7 @@
       "name": "holidayDesc",
       "showInListView": "false",
       "showInSingleView": "true",
-      "label": { "eng": "Description", "ara": "وصف", "fra": "description",,"hin": "विवरण", "kan": "ವಿವರಣೆ", "tam": "விளக்கம்"},
+      "label": { "eng": "Description", "ara": "وصف", "fra": "description","hin": "विवरण", "kan": "ವಿವರಣೆ", "tam": "விளக்கம்"},
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",

@@ -3,7 +3,7 @@ import { LogoutService } from './../../core/services/logout.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { AppConfigService } from 'src/app/app-config.service';
-
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-hamburger-menu',
   templateUrl: './hamburger-menu.component.html',
@@ -19,12 +19,14 @@ export class HamburgerComponent implements OnInit {
   dataList: any[];
   primaryLanguage: string;
   constructor(
+    private translateService: TranslateService,
     private headerService: HeaderService,
     private logoutService: LogoutService,
     private auditService: AuditService,
     private appConfig: AppConfigService
-  ) {
-    this.primaryLanguage = this.appConfig.getConfig()['primaryLangCode'];
+  ) {    
+    this.primaryLanguage = this.headerService.getUserPreferredLanguage();
+    translateService.use(this.primaryLanguage);
   }
 
   ngOnInit() {
