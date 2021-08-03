@@ -356,6 +356,12 @@ export class LoginComponent implements OnInit {
       this.showVerify = false;
     }
   }
+
+  verifyInput() {
+    //this.loginIdValidator();
+    this.errorMessage ="";
+  }
+
   timerFn = () => {
     let secValue,
       minValue = 0;

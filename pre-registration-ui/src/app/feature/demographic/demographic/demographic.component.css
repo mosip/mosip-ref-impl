@@ -5,7 +5,9 @@
 :ng-deep .mat-focused {
   border-bottom: 1px solid #22a8c9;
 }
-
+::ng-deep .mat-form-field .mat-form-field-label {
+  padding-top: 3px;
+}
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
   /* margin-bottom: 3px; */
   color: #22a8c9;
@@ -101,12 +103,12 @@
 /* ::ng-deep .mat-form-field-label .mat-select-placeholder {
 
 } */
-.mat-input-element {
-  padding: 2.5px !important;
+
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
 }
 ::ng-deep.mat-select-value {
-  padding: 2px !important;
-  /* line-height: 20px !important; */
+  padding-top: 5px !important;
 }
 
 ::ng-deep.mat-datepicker-content .mat-calendar {
@@ -164,15 +166,17 @@ mat-icon {
 .user__age-or-date {
   display: flex;
   width: 100%;
+  /* flex-direction: column; */
   align-items: center;
 }
 
 .user__age-or-date > div {
-  width: 100%;
+  width: 40%;
 }
 
 .user__date {
   display: flex;
+  width: 40%;
 }
 
 .user__form .user__date mat-form-field {
@@ -187,6 +191,7 @@ mat-icon {
 .user__age {
   text-align: end;
   display: flex;
+  width: 60%;
   justify-content: flex-start;
 }
 
