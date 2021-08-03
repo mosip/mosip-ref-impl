@@ -59,7 +59,7 @@ mat-form-field {
 .pinkBg {
   background-color: #fe528d;
 }
-.mat-input-element {
+::ng-deep.mat-input-element {
   padding-top: 5px !important;
 }
 ::ng-deep.mat-select-value {
