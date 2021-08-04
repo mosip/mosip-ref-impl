@@ -389,7 +389,7 @@ export class CreateComponent {
         data = {
           case: 'CONFIRMATION',
           title: this.popupMessages['create'].title,
-          message: this.popupMessages['create'].message[0]+ this.primaryForm.controls.name.value + this.popupMessages['create'].message[1],
+          message: 'Are you sure about the data has been filled is correct?',
           yesBtnTxt: this.popupMessages['create'].yesBtnText,
           noBtnTxt: this.popupMessages['create'].noBtnText,
         };
