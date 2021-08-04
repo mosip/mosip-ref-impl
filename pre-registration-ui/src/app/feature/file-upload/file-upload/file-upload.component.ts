@@ -485,9 +485,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       for (let index = 0; index < keyArr.length; index++) {
         const element = keyArr[index];
         if (element != appConstants.IDSchemaVersionLabel) {
+          let elemValue = identityObj[element];
+          this.identityData.forEach((obj) => {
+            if (element === obj.id && obj.controlType === "ageDate" || obj.controlType === "date") {
+              elemValue = elemValue.replace(/\//g, "-") + "T11:46:12.640Z";
+            }
+          });
           attributesArr.push({
             "attribute": element,
-            "value": identityObj[element] 
+            "value": elemValue
           }); 
         }
       }
