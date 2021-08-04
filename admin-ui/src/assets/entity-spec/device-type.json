@@ -224,7 +224,7 @@
     },
     {
       "filtername": "isActive",
-      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" "tam": "நிலை",
+      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut", "tam": "நிலை",
         "hin": "स्थिति",
         "kan": "ಸ್ಥಿತಿ"},
       "filterType": "equals",

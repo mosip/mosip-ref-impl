@@ -58,7 +58,7 @@ td.mat-footer-cell:last-child {
   background-color: #e6e7e7;
   color: #54595a;
   text-transform: uppercase;
-  font-size: 9px;
+  font-size: 8px;
   line-height: 7px;
   font-family: "Roboto", sans-serif;
   opacity: 1;
@@ -119,4 +119,7 @@ td.mat-footer-cell:last-child {
 }
 .image-fade {
   opacity: 0.2;
+}
+.mat-header-cell:first-child,.mat-cell:first-child{
+  text-align:left;
 }

@@ -1,0 +1,860 @@
+{
+	"menuItems": {
+		"item1": {
+			"title": "ಮನೆ"
+		},
+		"item2": {
+			"title": "ಸಂಪನ್ಮೂಲಗಳು",
+			"subItem1": "ಸೆಂಟರ್",
+			"subItem2": "ಸಾಧನಗಳು",
+			"subItem3": "ಬಳಕೆದಾರರು",
+			"subItem4": "ಯಂತ್ರಗಳು"
+		},
+		"item3": {
+			"title": "ಮಾಸ್ಟರ್ ಡೇಟಾ"
+		},
+		"item4": {
+			"title": "ಪ್ಯಾಕೆಟ್ ಸ್ಥಿತಿ"
+		},
+		"item5": {
+			"title": "ವಿರಾಮ / ಪುನರಾರಂಭ RID"
+		},
+		"item6": {
+			"title": "ಬೃಹತ್ ಅಪ್‌ಲೋಡ್",
+			"subItem1": "ಮಾಸ್ಟರ್ ಡೇಟಾ",
+			"subItem2": "ಪ್ಯಾಕೆಟ್‌ಗಳು"
+		},
+		"item7": {
+			"title": "ಕೀ ಮ್ಯಾನೇಜರ್",
+			"subItem1": "ಜನರೇಟ್‌ಸಿಎಸ್ಆರ್",
+			"subItem2": "ಮಾಸ್ಟರ್ ಕೀಲಿಯನ್ನು ರಚಿಸಿ",
+			"subItem3": "ಪ್ರಮಾಣಪತ್ರ ಪಡೆಯಿರಿ",
+			"subItem4": "ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+			"subItem5": "ಇತರ ಡೊಮೇನ್ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
+		}
+	},
+	"dashboard": {
+		"welcomeMessage": "ಮೊಸಿಪ್ ಅಡ್ಮಿನ್ ಪೋರ್ಟಲ್ ಗೆ ಸ್ವಾಗತ!"
+	},
+	"center": {
+		"title": "ಕೇಂದ್ರಗಳು",
+		"center-detail-view": "ಕೇಂದ್ರ ವಿವರ ವೀಕ್ಷಣೆ",
+		"center-name": "ಕೇಂದ್ರದ ಹೆಸರು",
+		"center-id": "ಸೆಂಟರ್ ಐಡಿ",
+		"status": "ಸ್ಥಿತಿ",
+		"created-on": "ರಚಿಸಲಾಗಿದೆ",
+		"created-by": "ರಚಿಸಿದವರು",
+		"updated-on": "ನವೀಕರಿಸಲಾಗಿದೆ",
+		"updated-by": "ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ",
+		"center-details": "ಕೇಂದ್ರ ವಿವರಗಳು",
+		"registration-center-name": "ನೋಂದಣಿ ಕೇಂದ್ರದ ಹೆಸರು",
+		"registration-center-type": "ನೋಂದಣಿ ಕೇಂದ್ರ ಪ್ರಕಾರ",
+		"contact-person": "ವ್ಯಕ್ತಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"contact-number": "ಸಂಪರ್ಕ ಸಂಖ್ಯೆ - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"location-details": "ಸ್ಥಳ ವಿವರಗಳು",
+		"longitude": "ರೇಖಾಂಶ",
+		"latitude": "ಅಕ್ಷಾಂಶ",
+		"address1": "ವಿಳಾಸ ಸಾಲು 1",
+		"address2": "ವಿಳಾಸ ಸಾಲು 2 - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"address3": "ವಿಳಾಸ ಸಾಲು 3 - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"region": "ಪ್ರದೇಶ",
+		"province": "ಪ್ರಾಂತ್ಯ",
+		"city": "ನಗರ",
+		"laa": "ವಲಯ",
+		"postal-code": "ಅಂಚೆ ಕೋಡ್",
+		"zone": "ಆಡಳಿತ ವಲಯ",
+		"operational-details": "ಕಾರ್ಯಾಚರಣೆಯ ವಿವರಗಳು",
+		"holiday-zone": "ಹಾಲಿಡೇ ವಲಯ",
+		"working-hrs": "ಕೆಲಸದ ಸಮಯ - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"no-kiosk": "ನಂ. ಕಿಯೋಸ್ಕ್",
+		"per-kiosk-process-time": "ಪ್ರತಿ ಕಿಯೋಸ್ಕ್ ಪ್ರಕ್ರಿಯೆಯ ಸಮಯ (ನಿಮಿಷಗಳು)",
+		"start-time": "ಪ್ರಾರಂಭ ಸಮಯ",
+		"end-time": "ಅಂತಿಮ ಸಮಯ",
+		"lunch-start-time": "ಊಟ ಪ್ರಾರಂಭದ ಸಮಯ - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"lunch-end-time": "ಊಟ ಅಂತಿಮ ಸಮಯ - ಅನಿವಾರ್ಯವಲ್ಲ",
+		"edit": "ಸಂಪಾದಿಸು",
+		"create": "ರಚಿಸು",
+		"cancel": "ರದ್ದುಮಾಡು",
+		"language": "ಕನ್ನಡ",
+		"keyboard-tooltip": "ವರ್ಚುವಲ್ ಕೀಬೋರ್ಡ್ (ಇಂಗ್ಲಿಷ್) ಗಾಗಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
+		"isActive": "ಸ್ಥಿತಿ",
+		"update": "ನವೀಕರಿಸಿ",
+		"workingDays": "ವರ್ಕಿಂಗ್ ಡೇಸ್",
+		"holidays": "ಅಸಾಧಾರಣ ರಜಾದಿನಗಳು",
+		"add-button": "ಸೇರಿಸಿ",
+		"datepicker-placeholder": "ದಿನಾಂಕವನ್ನು ಆರಿಸಿ",
+		"devices-tooltip": "ಸಾಧನವು ಫಿಂಗರ್ಪ್ರಿಂಟ್ ಸ್ಕ್ಯಾನರ್, ಐರಿಸ್ ಸ್ಕ್ಯಾನರ್, ವೆಬ್ ಕ್ಯಾಮೆರಾ, ಪ್ರಿಂಟರ್ ಅನ್ನು ಒಳಗೊಂಡಿದೆ",
+		"selectLanguage": "ಭಾಷೆಯನ್ನು ಆರಿಸಿ",
+		"editCommonDetails": "ದಯವಿಟ್ಟು ಇತರ ಕೇಂದ್ರ ವಿವರಗಳನ್ನು ಇಲ್ಲಿ ಸಂಪಾದಿಸಿ",
+		"validationMessages": {
+			"name": {
+				"required": "ಕೇಂದ್ರದ ಹೆಸರು ಅಗತ್ಯವಿದೆ",
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (128)"
+			},
+			"centerTypeCode": {
+				"required": "ಕೇಂದ್ರ ಪ್ರಕಾರದ ಅಗತ್ಯವಿದೆ"
+			},
+			"contactPerson": {
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (128)"
+			},
+			"contactPhone": {
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (16)"
+			},
+			"longitude": {
+				"required": "ರೇಖಾಂಶ ಅಗತ್ಯವಿದೆ",
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (32)",
+				"validLatLong": "ದಶಮಾಂಶದ ನಂತರ ಕನಿಷ್ಠ 4 ಅಂಕೆಗಳು ಕಡ್ಡಾಯವಾಗಿದೆ",
+				"validNumber": "ದಯವಿಟ್ಟು ಅಂಕೆಗಳನ್ನು ಮಾತ್ರ ನಮೂದಿಸಿ"
+			},
+			"latitude": {
+				"required": "ರೇಖಾಂಶ ಅಗತ್ಯವಿದೆ",
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (32)",
+				"validLatLong": "ದಶಮಾಂಶದ ನಂತರ ಕನಿಷ್ಠ 4 ಅಂಕೆಗಳು ಕಡ್ಡಾಯವಾಗಿದೆ",
+				"validNumber": "ದಯವಿಟ್ಟು ಅಂಕೆಗಳನ್ನು ಮಾತ್ರ ನಮೂದಿಸಿ"
+			},
+			"addressLine1": {
+				"required": "ವಿಳಾಸ ಸಾಲು 1 ಅಗತ್ಯವಿದೆ",
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (256)"
+			},
+			"addressLine2": {
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (256)"
+			},
+			"addressLine3": {
+				"max-length": "ಮೀರಿದ ಗರಿಷ್ಠ ಉದ್ದ (256)"
+			},
+			"region": {
+				"required": "ಪ್ರದೇಶ ಅಗತ್ಯವಿದೆ"
+			},
+			"province": {
+				"required": "ಪ್ರಾಂತ್ಯದ ಅಗತ್ಯವಿದೆ"
+			},
+			"city": {
+				"required": "ನಗರ ಅಗತ್ಯವಿದೆ"
+			},
+			"laa": {
+				"required": "ವಲಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"postalCode": {
+				"required": "ಅಂಚೆ ಕೋಡ್ ಅಗತ್ಯವಿದೆ"
+			},
+			"zone": {
+				"required": "ಆಡಳಿತ ವಲಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"holidayZone": {
+				"required": "ಹಾಲಿಡೇ ವಲಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"noKiosk": {
+				"required": "ಕಿಯೋಸ್ಕ್ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
+				"min": "ಕಿಯೋಸ್ಕ್ನ ಕನಿಷ್ಠ ಸಂಖ್ಯೆ 0",
+				"invalidNoKiosk": "ಕಿಯೋಸ್ಕ್ ಅಮಾನ್ಯ ಸಂಖ್ಯೆ ನಮೂದಿಸಲಾಗಿದೆ"
+			},
+			"processingTime": {
+				"required": "ಪ್ರತಿ ಕಿಯೋಸ್ಕ್ ಸಂಸ್ಕರಣೆಯ ಸಮಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"startTime": {
+				"required": "ಕೇಂದ್ರ ಪ್ರಾರಂಭ ಸಮಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"endTime": {
+				"required": "ಸೆಂಟರ್ ಎಂಡ್ ಟೈಮ್ ಅಗತ್ಯವಿದೆ"
+			},
+			"workingDays": {
+				"required": "ದಯವಿಟ್ಟು ಕನಿಷ್ಠ ಒಂದು ದಿನ ಆಯ್ಕೆಮಾಡಿ"
+			}
+		},
+		"popupMessages": {
+			"create": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": ["ನೀವು", "ನಲ್ಲಿ ನೋಂದಣಿ ಕೇಂದ್ರವನ್ನು ರಚಿಸಲಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.", "ನೀವು ದೃ irm ೀಕರಿಸಿದ ನಂತರ ಕೇಂದ್ರ ID ಅನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ"],
+				"yesBtnText": "ಖಚಿತಪಡಿಸಿ",
+				"noBtnText": "ರದ್ದುಮಾಡು",
+				"mandatorySecondaryFields": "ನೀವು ಕಡ್ಡಾಯ ಡೇಟಾವನ್ನು ದ್ವಿತೀಯ ಭಾಷೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡಿಲ್ಲ. ಆದ್ದರಿಂದ ನೋಂದಣಿ ಕೇಂದ್ರವನ್ನು ಪ್ರಾಥಮಿಕ ಭಾಷೆಗೆ ಮಾತ್ರ ರಚಿಸಲಾಗುತ್ತದೆ / ನವೀಕರಿಸಲಾಗುತ್ತದೆ. ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?"
+			},
+			"edit": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": "ನೀವು ನೋಂದಣಿ ಕೇಂದ್ರವನ್ನು ನವೀಕರಿಸಲಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ",
+				"yesBtnText": "ಖಚಿತಪಡಿಸಿ",
+				"noBtnText": "ರದ್ದುಮಾಡು",
+				"mandatorySecondaryFields": "ನೀವು ಕಡ್ಡಾಯ ಡೇಟಾವನ್ನು ದ್ವಿತೀಯ ಭಾಷೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡಿಲ್ಲ. ಆದ್ದರಿಂದ ನೋಂದಣಿ ಕೇಂದ್ರವನ್ನು ಪ್ರಾಥಮಿಕ ಭಾಷೆಗೆ ಮಾತ್ರ ನವೀಕರಿಸಲಾಗುತ್ತದೆ. ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?"
+			},
+			"update-success": {
+				"title": "ಯಶಸ್ಸು",
+				"message": ["ಕೇಂದ್ರದ ವಿವರಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ. ID n\n ಕೇಂದ್ರ ID:", "\n\n ಕೇಂದ್ರದ ಹೆಸರು:"],
+				"btnTxt": "ಸರಿ"
+			},
+			"update-error": {
+				"title": "ದೋಷ",
+				"message": "ಕೇಂದ್ರವನ್ನು ನವೀಕರಿಸುವಲ್ಲಿ ಕೆಲವು ಸಮಸ್ಯೆಗಳಿವೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+				"btnTxt": "ಸರಿ"
+			},
+			"create-success": {
+				"title": "ಯಶಸ್ಸು",
+				"message": ["ಕೇಂದ್ರವನ್ನು ID ಯೊಂದಿಗೆ ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ:", "ಮತ್ತು ಕೇಂದ್ರದ ಹೆಸರು:"],
+				"btnTxt": "ಸರಿ"
+			},
+			"create-error": {
+				"title": "ದೋಷ",
+				"message": "ಕೇಂದ್ರವನ್ನು ರಚಿಸುವಲ್ಲಿ ಕೆಲವು ಸಮಸ್ಯೆಗಳಿವೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+				"btnTxt": "ಸರಿ"
+			},
+			"navigation-popup": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": "ಈ ಪುಟದಿಂದ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಉಳಿಸದ ಯಾವುದೇ ಡೇಟಾ ಕಳೆದುಹೋಗುತ್ತದೆ.",
+				"yesBtnTxt": "ಬಿಡಿ",
+				"noBtnTxt": "ಉಳಿಯಿರಿ"
+			},
+			"noData": {
+				"title": "ದೋಷ",
+				"message": "ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ",
+				"btnTxt": "ಸರಿ"
+			},
+			"lunchTimeValidation": {
+				"title": "ದೋಷ",
+				"message": "ಊಟ ಸಮಯವನ್ನು ಆಯ್ಕೆ ಮಾಡುವ ಮೊದಲು ದಯವಿಟ್ಟು ಕೇಂದ್ರ ಸಮಯವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ",
+				"btnTxt": "ಸರಿ"
+			}
+		}
+	},
+	"singleView": {
+		"errorMessages": [
+			"ಯಾವುದೇ ದಾಖಲೆ ಕಂಡುಬಂದಿಲ್ಲ",
+			"ತಾಂತ್ರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ"
+		],
+		"buttonText": "ಸರಿ",
+		"title": "ದೋಷ"
+	},
+	"masterData": {
+		"master-data": "ಮಾಸ್ಟರ್ ಡೇಟಾ",
+		"total-no": "ಒಟ್ಟು ಸಂಖ್ಯೆ",
+		"common": "ಸಾಮಾನ್ಯ",
+		"device-definition": "ಸಾಧನ ವ್ಯಾಖ್ಯಾನ",
+		"machine-definition": "ಯಂತ್ರ ವ್ಯಾಖ್ಯಾನ",
+		"document-definition": "ಡಾಕ್ಯುಮೆಂಟ್ ಡೆಫಿನಿಷನ್",
+		"doc-category-mapping": "ಡಾಕ್ಯುಮೆಂಟ್ ವರ್ಗ - ಟೈಪ್ ಮ್ಯಾಪಿಂಗ್",
+		"category": "ವರ್ಗ",
+		"mapped-documents": "ಮ್ಯಾಪ್ಡ್ ಡಾಕ್ಯುಮೆಂಟ್ಸ್",
+		"unmapped-documents": "ಅನ್‌ಮ್ಯಾಪ್ಡ್ ಡಾಕ್ಯುಮೆಂಟ್ಸ್",
+		"masterDataTypes": "ಮಾಸ್ಟರ್‌ಡೇಟಾ ಪ್ರಕಾರಗಳು",
+		"dynamicField": "ಡೈನಾಮಿಕ್ ಫೀಲ್ಡ್"
+	},
+	"masterdataupload": {
+		"title": "ಮಾಸ್ಟರ್ ಡೇಟಾ ಅಪ್‌ಲೋಡ್"
+	},
+	"devices": {
+		"id": "ಕೋಡ್",
+		"title": "ಸಾಧನಗಳು",
+		"header": "ಸಾಧನ",
+		"name": "ಸಾಧನದ ಹೆಸರು",
+		"serialNumber": "ಸರಣಿ ಸಂಖ್ಯೆ",
+		"macAddress": "MAC ವಿಳಾಸ",
+		"ipAddress": "IP ವಿಳಾಸ",
+		"validity": "ಮಾನ್ಯ ದಿನಾಂಕ ಸಮಯ",
+		"isActive": "ಸ್ಥಿತಿ",
+		"zone": "ಆಡಳಿತ ವಲಯ",
+		"deviceSpecId": "ಸಾಧನ ನಿರ್ದಿಷ್ಟ ಹೆಸರು",
+		"language": "ಕನ್ನಡ",
+		"edit": "ಸಂಪಾದಿಸು",
+		"create": "ರಚಿಸು",
+		"cancel": "ರದ್ದುಮಾಡು",
+		"status": "ಸ್ಥಿತಿ",
+		"keyboard-tooltip": "ವರ್ಚುವಲ್ ಕೀಬೋರ್ಡ್ (ಇಂಗ್ಲಿಷ್) ಗಾಗಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
+		"errorMessages": {
+			"title": "ದೋಷ",
+			"message": "ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ",
+			"btnTxt": "ಸರಿ"
+		},
+		"validationMessages": {
+			"name": {
+				"required": "ಸಾಧನದ ಹೆಸರು ಅಗತ್ಯವಿದೆ"
+			},
+			"serialNumber": {
+				"required": "ಕ್ರಮ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ"
+			},
+			"macAddress": {
+				"required": "MAC ವಿಳಾಸ ಅಗತ್ಯವಿದೆ"
+			},
+			"ipAddress": {
+				"required": "ಐಪಿ ವಿಳಾಸ ಅಗತ್ಯವಿದೆ"
+			},
+			"validity": {
+				"required": "ಮಾನ್ಯತೆ ಅಗತ್ಯವಿದೆ"
+			},
+			"isActive": {
+				"required": "ಸ್ಥಿತಿ ಅಗತ್ಯವಿದೆ"
+			},
+			"zone": {
+				"required": "ಆಡಳಿತ ವಲಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"deviceSpecId": {
+				"required": "ಸಾಧನ ಸ್ಪೆಸಿಡ್ ಅಗತ್ಯವಿದೆ"
+			},
+			"regCenterId": {
+				"required": "ಕೇಂದ್ರದ ಹೆಸರು ಅಗತ್ಯವಿದೆ"
+			}
+		},
+		"popupMessages": {
+			"create": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": ["ನೀವು", "ನಲ್ಲಿ ನೋಂದಣಿ ಸಾಧನವನ್ನು ರಚಿಸಲಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ. ನೀವು ದೃ irm ೀಕರಿಸಿದ ನಂತರ ಸಾಧನ ID ಅನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ"],
+				"yesBtnText": "ಖಚಿತಪಡಿಸಿ",
+				"noBtnText": "ರದ್ದುಮಾಡು",
+				"mandatorySecondaryFields": "ನೀವು ಕಡ್ಡಾಯ ಡೇಟಾವನ್ನು ದ್ವಿತೀಯ ಭಾಷೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡಿಲ್ಲ. ನೋಂದಣಿ ಸಾಧನವನ್ನು ಪ್ರಾಥಮಿಕ ಭಾಷೆಯಲ್ಲಿ ಮಾತ್ರ ರಚಿಸಲಾಗುತ್ತದೆ. ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?"
+			},
+			"edit": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": "ನೀವು ನೋಂದಣಿ ಸಾಧನವನ್ನು ನವೀಕರಿಸಲಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ",
+				"yesBtnText": "ಖಚಿತಪಡಿಸಿ",
+				"noBtnText": "ರದ್ದುಮಾಡು",
+				"mandatorySecondaryFields": "ನೀವು ಕಡ್ಡಾಯ ಡೇಟಾವನ್ನು ದ್ವಿತೀಯ ಭಾಷೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡಿಲ್ಲ. ನೋಂದಣಿ ಸಾಧನವನ್ನು ಪ್ರಾಥಮಿಕ ಭಾಷೆಯಲ್ಲಿ ಮಾತ್ರ ರಚಿಸಲಾಗುತ್ತದೆ. ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?"
+			},
+			"update-success": {
+				"title": "ಯಶಸ್ಸು",
+				"message": ["ಸಾಧನದ ವಿವರಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ. ID n ಸಾಧನ ID:", "\n ಸಾಧನದ ಹೆಸರು:"],
+				"btnTxt": "ಸರಿ"
+			},
+			"update-error": {
+				"title": "ದೋಷ",
+				"message": "ಸಾಧನವನ್ನು ನವೀಕರಿಸುವಲ್ಲಿ ಕೆಲವು ಸಮಸ್ಯೆಗಳಿವೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+				"btnTxt": "ಸರಿ"
+			},
+			"create-success": {
+				"title": "ಯಶಸ್ಸು",
+				"message": ["ಸಾಧನವನ್ನು ID ಯೊಂದಿಗೆ ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ:", "ಮತ್ತು ಸಾಧನದ ಹೆಸರು:"],
+				"btnTxt": "ಸರಿ"
+			},
+			"create-error": {
+				"title": "ದೋಷ",
+				"message": "ಸಾಧನವನ್ನು ರಚಿಸುವಲ್ಲಿ ಕೆಲವು ಸಮಸ್ಯೆಗಳಿವೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+				"btnTxt": "ಸರಿ"
+			},
+			"navigation-popup": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": "ಈ ಪುಟದಿಂದ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಉಳಿಸದ ಯಾವುದೇ ಡೇಟಾ ಕಳೆದುಹೋಗುತ್ತದೆ.",
+				"yesBtnTxt": "ಬಿಡಿ",
+				"noBtnTxt": "ಉಳಿಯಿರಿ"
+			},
+			"noData": {
+				"title": "ದೋಷ",
+				"message": "ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ",
+				"btnTxt": "ಸರಿ"
+			}
+		}
+	},
+	"machines": {
+		"title": "ಯಂತ್ರಗಳು",
+		"header": "ಯಂತ್ರ",
+		"name": "ಯಂತ್ರದ ಹೆಸರು",
+		"machineSpecId": "ಯಂತ್ರಗಳ ನಿರ್ದಿಷ್ಟ ID",
+		"serialNumber": "ಸರಣಿ ಸಂಖ್ಯೆ",
+		"macAddress": "MAC ವಿಳಾಸ",
+		"ipAddress": "IP ವಿಳಾಸ",
+		"validity": "ಮಾನ್ಯ ದಿನಾಂಕ ಸಮಯ",
+		"isActive": "ಸ್ಥಿತಿ",
+		"zone": "ಆಡಳಿತ ವಲಯ",
+		"publicKey": "ಪಬ್ಲಿಕ್ ಕೀ",
+		"signPublicKey": "ಸಾರ್ವಜನಿಕ ಕೀಲಿಯನ್ನು ಸಹಿ ಮಾಡಿ",
+		"language": "ಕನ್ನಡ",
+		"edit": "ಸಂಪಾದಿಸು",
+		"create": "ರಚಿಸು",
+		"cancel": "ರದ್ದುಮಾಡು",
+		"update": "ನವೀಕರಿಸಿ",
+		"keyboard-tooltip": "ವರ್ಚುವಲ್ ಕೀಬೋರ್ಡ್ (ಇಂಗ್ಲಿಷ್) ಗಾಗಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
+		"errorMessages": {
+			"title": "ದೋಷ",
+			"message": "ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ",
+			"btnTxt": "ಸರಿ"
+		},
+		"validationMessages": {
+			"name": {
+				"required": "ಯಂತ್ರದ ಹೆಸರು ಅಗತ್ಯವಿದೆ"
+			},
+			"serialNumber": {
+				"required": "ಕ್ರಮ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ"
+			},
+			"macAddress": {
+				"required": "MAC ವಿಳಾಸ ಅಗತ್ಯವಿದೆ"
+			},
+			"ipAddress": {
+				"required": "ಐಪಿ ವಿಳಾಸ ಅಗತ್ಯವಿದೆ"
+			},
+			"validity": {
+				"required": "ಮಾನ್ಯತೆ ಅಗತ್ಯವಿದೆ"
+			},
+			"isActive": {
+				"required": "ಸ್ಥಿತಿ ಅಗತ್ಯವಿದೆ"
+			},
+			"zone": {
+				"required": "ಆಡಳಿತ ವಲಯ ಅಗತ್ಯವಿದೆ"
+			},
+			"machineSpecId": {
+				"required": "ಯಂತ್ರಗಳ ನಿರ್ದಿಷ್ಟ ID ಅಗತ್ಯವಿದೆ"
+			},
+			"publicKey": {
+				"required": "ಸಾರ್ವಜನಿಕ ಕೀ ಅಗತ್ಯವಿದೆ"
+			},
+			"signPublicKey": {
+				"required": "ಸೈನ್ ಪಬ್ಲಿಕ್ ಕೀ ಅಗತ್ಯವಿದೆ"
+			}
+		},
+		"popupMessages": {
+			"create": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": ["ನೀವು ಯಂತ್ರ ವಿವರಗಳನ್ನು ರಚಿಸಲಿದ್ದೀರಿ", ". ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ. ನೀವು ಖಚಿತಪಡಿಸಿದ ನಂತರ ಯಂತ್ರ ID ಅನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ"],
+				"yesBtnText": "ಖಚಿತಪಡಿಸಿ",
+				"noBtnText": "ರದ್ದುಮಾಡು",
+				"mandatorySecondaryFields": "ನೀವು ಕಡ್ಡಾಯ ಡೇಟಾವನ್ನು ದ್ವಿತೀಯ ಭಾಷೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡಿಲ್ಲ. ಯಂತ್ರದ ವಿವರಗಳನ್ನು ಪ್ರಾಥಮಿಕ ಭಾಷೆಯಲ್ಲಿ ಮಾತ್ರ ರಚಿಸಲಾಗುತ್ತದೆ. ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?"
+			},
+			"edit": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": "ನೀವು ಯಂತ್ರ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಲು ಹೊರಟಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ",
+				"yesBtnText": "ಖಚಿತಪಡಿಸಿ",
+				"noBtnText": "ರದ್ದುಮಾಡು",
+				"mandatorySecondaryFields": "ನೀವು ಕಡ್ಡಾಯ ಡೇಟಾವನ್ನು ದ್ವಿತೀಯ ಭಾಷೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡಿಲ್ಲ. ಯಂತ್ರದ ವಿವರಗಳನ್ನು ಪ್ರಾಥಮಿಕ ಭಾಷೆಯಲ್ಲಿ ಮಾತ್ರ ರಚಿಸಲಾಗುತ್ತದೆ. ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?"
+			},
+			"update-success": {
+				"title": "ಯಶಸ್ಸು",
+				"message": ["ಯಂತ್ರದ ವಿವರಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ. ಯಂತ್ರ ID:", "ಮತ್ತು ಯಂತ್ರದ ಹೆಸರು:"],
+				"btnTxt": "ಸರಿ"
+			},
+			"update-error": {
+				"title": "ದೋಷ",
+				"message": "ಯಂತ್ರ ವಿವರಗಳನ್ನು ನವೀಕರಿಸುವಲ್ಲಿ ಕೆಲವು ಸಮಸ್ಯೆಗಳಿವೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+				"btnTxt": "ಸರಿ"
+			},
+			"create-success": {
+				"title": "ಯಶಸ್ಸು",
+				"message": ["ಯಂತ್ರ ID ಯೊಂದಿಗೆ ಯಂತ್ರವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ:", "ಮತ್ತು ಯಂತ್ರದ ಹೆಸರು:"],
+				"btnTxt": "ಸರಿ"
+			},
+			"create-error": {
+				"title": "ದೋಷ",
+				"message": "ಯಂತ್ರ ವಿವರಗಳನ್ನು ರಚಿಸುವಲ್ಲಿ ಕೆಲವು ಸಮಸ್ಯೆಗಳಿವೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+				"btnTxt": "ಸರಿ"
+			},
+			"navigation-popup": {
+				"title": "ದೃಢೀಕರಣ",
+				"message": "ಈ ಪುಟದಿಂದ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಉಳಿಸದ ಯಾವುದೇ ಡೇಟಾ ಕಳೆದುಹೋಗುತ್ತದೆ.",
+				"yesBtnTxt": "ಬಿಡಿ",
+				"noBtnTxt": "ಉಳಿಯಿರಿ"
+			},
+			"noData": {
+				"title": "ದೋಷ",
+				"message": "ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ",
+				"btnTxt": "ಸರಿ"
+			}
+		}
+	},
+	"errorPopup": {
+		"noData": {
+			"title": "ಯಾವುದೇ ದಾಖಲೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+			"message": "No records present for the requested search",
+			"btnTxt": "ಸರಿ"
+		},
+		"technicalError": {
+			"title": "ತಾಂತ್ರಿಕ ದೋಷ",
+			"message": "ತಾಂತ್ರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ. ಮುಂದುವರೆಯಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ ಅಥವಾ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+			"btnTxt": "ಸರಿ"
+		},
+		"unauthorized": {
+			"title": "ಅಧಿಕಾರ ದೋಷ",
+			"message": "ಈ ಪುಟವನ್ನು ಭೇಟಿ ಮಾಡಲು ನಿಮಗೆ ಅಧಿಕಾರವಿಲ್ಲ",
+			"btnTxt": "ಸರಿ"
+		}
+	},
+	"validationMessages": {
+		"required": "ದಿನಾಂಕ ವ್ಯಾಪ್ತಿಯಿಂದ ಫಿಲ್ಟರ್ ಮಾಡಲು ದಯವಿಟ್ಟು ‘ಗೆ’ ಮತ್ತು ‘ಇಂದ’ ಕ್ಷೇತ್ರ ಎರಡನ್ನೂ ಭರ್ತಿ ಮಾಡಿ",
+		"range": " 'ದಿನಾಂಕದಿಂದ ''ದಿನಾಂಕವು' ದಿನಾಂಕದಿಂದ 'ಮೊದಲು ಇರಬಾರದು'",
+		"invalid": "ದಯವಿಟ್ಟು ದಿನಾಂಕಕ್ಕಾಗಿ ಮಾನ್ಯ ಮೌಲ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+	},
+	"packet-status": {
+		"header": "ಪ್ಯಾಕೆಟ್ ಸ್ಥಿತಿ",
+		"input-text": "ಐಡಿ ನಮೂದಿಸಿ",
+		"text": "ಪ್ಯಾಕೆಟ್ ಸ್ಥಿತಿಯನ್ನು ಪರೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ನೋಂದಣಿ ID ಅನ್ನು ನಮೂದಿಸಿ",
+		"error": "ಅಮಾನ್ಯ ನೋಂದಣಿ ID ನಮೂದಿಸಲಾಗಿದೆ",
+		"id": "ನೋಂದಣಿ ಐಡಿ",
+		"status": "ಸ್ಥಿತಿ",
+		"viewMore": "ಇನ್ನಷ್ಟು ವೀಕ್ಷಿಸಿ",
+		"viewLess": "ಕಡಿಮೆ ವೀಕ್ಷಿಸಿ",
+		"errorMessages": {
+			"title": "ದೋಷ",
+			"message": "ಆರ್ಐಡಿ ಕಂಡುಬಂದಿಲ್ಲ",
+			"btnTxt": "ಸರಿ"
+		},
+		"statuscheckFailed": "ವಿಫಲವಾಗಿದೆ",
+		"statuscheckCompleted": "ಪೂರ್ಣಗೊಂಡಿದೆ"
+
+	},
+	"packet-upload": {
+		"header": "ಪ್ಯಾಕೆಟ್ ಅಪ್‌ಲೋಡ್",
+		"singleView": {
+			"detailed-view-txt": "ವಿವರವಾದ ನೋಟ",
+			"status-txt": "ಸ್ಥಿತಿ",
+			"uploadedBy-txt": "ಅಪ್‌ಲೋಡ್ ಮಾಡಿದವರು",
+			"count-txt": "ಎಣಿಸು",
+			"dataAndTime-txt": "ದಿನಾಂಕ ಮತ್ತು ಸಮಯ",
+			"failureDescription-txt": "ವೈಫಲ್ಯ ವಿವರಣೆ",
+			"placeHolder1-txt": "ಟೇಬಲ್ ಹೆಸರು",
+			"placeHolder2-txt": "ಕಾರ್ಯಾಚರಣೆಗಳು"
+		},
+		"createView": {
+			"input-btn-text": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ",
+			"input-text1": "ಫೈಲ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ ...",
+			"input-text2": "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ",
+			"upload-btn": "ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+			"cancel-btn": "ರದ್ದುಗೊಳಿಸಿ",
+			"popupMessaages": {
+				"popup1": {
+					"uploadConfirm": "ಪ್ಯಾಕೆಟ್ ಅಪ್‌ಲೋಡ್ ಅನ್ನು ದೃ irm ೀಕರಿಸಿ",
+					"message": "ಪ್ಯಾಕೆಟ್ ಅನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತದೆ. ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಸರಿಯಾಗಿದೆಯೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ. \n\n\n ನೀವು ಖಚಿತಪಡಿಸಿದ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿದ ನಂತರ ವ್ಯವಹಾರ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.",
+					"confirmBtnTxt": "ಖಚಿತಪಡಿಸಿ",
+					"cancelBtnTxt": "ರದ್ದುಮಾಡು"
+				},
+				"popup2": {
+					"title": "ವಿಫಲತೆ!",
+					"btnTxt": "ಮುಗಿದಿದೆ"
+				},
+				"popup3": {
+					"title": "ಯಶಸ್ಸು",
+					"message": "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ. ಡೇಟಾ ಅಪ್‌ಲೋಡ್ ಪ್ರಸ್ತುತ ಪ್ರಗತಿಯಲ್ಲಿದೆ. \n\n\n ವಹಿವಾಟು ID:",
+					"btnTxt": "ಮುಗಿದಿದೆ"
+				}
+
+			}
+		}
+	},
+	"actionMessages": {
+		"decommission": {
+			"success-message": ["", "ಯಶಸ್ವಿಯಾಗಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["ಡಿಕೊಮಿಷನ್ ಸಾಧ್ಯವಿಲ್ಲ", "ಇನ್ನೂ ಕೆಲವು ಸಂಪನ್ಮೂಲಗಳೊಂದಿಗೆ ಮ್ಯಾಪ್ ಮಾಡಲಾಗಿದೆ. om n ಸಂಪನ್ಮೂಲಗಳನ್ನು ಡಿಕೊಮಿಷನ್ ಮಾಡುವ ಮೊದಲು ಅನ್-ಮ್ಯಾಪ್ ಮಾಡಿ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ಖಚಿತಪಡಿಸಿ",
+			"noBtnTxt": "ರದ್ದುಮಾಡು",
+			"confirmation-message": ["ನೀವು ರದ್ದುಗೊಳಿಸಲು ಬಯಸುತ್ತೀರಾ", "? \n ನೀವು ದೃ irm ೀಕರಿಸಿ ಕ್ಲಿಕ್ ಮಾಡಿದ ನಂತರ ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ."],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		},
+		"activate": {
+			"success-message": ["", "ಯಶಸ್ವಿಯಾಗಿ ಸಕ್ರಿಯಗೊಂಡಿದೆ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["", "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಲಿಲ್ಲ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ಖಚಿತಪಡಿಸಿ",
+			"noBtnTxt": "ರದ್ದುಮಾಡು",
+			"confirmation-message": ["ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ", "? \n ನೀವು ಬಯಸಿದರೆ ನೀವು ಅದನ್ನು ನಂತರ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು. ಅಲ್ಲಿಯವರೆಗೆ ಅದನ್ನು ಸಕ್ರಿಯ ಎಂದು ಹೊಂದಿಸಲಾಗುವುದು"],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		},
+		"deactivate": {
+			"success-message": ["", "ಯಶಸ್ವಿಯಾಗಿ ನಿಷ್ಕ್ರಿಯಗೊಂಡಿದೆ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["", "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಲಿಲ್ಲ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ಖಚಿತಪಡಿಸಿ",
+			"noBtnTxt": "ರದ್ದುಮಾಡು",
+			"confirmation-message": ["ನೀವು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ", "? \n ನೀವು ಬಯಸಿದರೆ ನೀವು ಅದನ್ನು ನಂತರ ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು. ಅಲ್ಲಿಯವರೆಗೆ ಅದನ್ನು ನಿಷ್ಕ್ರಿಯ ಎಂದು ಹೊಂದಿಸಲಾಗುವುದು"],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		}
+	},
+	"resumeprocessingandremovehotlistedtag": {
+		"success-message": ["", " ಪ್ರಕ್ರಿಯೆಪುನರಾರಂಭಿಸಲಾಗಿದೆ ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"],
+		"success-title": "ಯಶಸ್ಸು",
+		"error-message": ["", " ಪ್ರಕ್ರಿಯೆಪುನರಾರಂಭ ಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+		"error-title": "ದೋಷ",
+		"btnTxt": "ಮುಗಿದಿದೆ",
+		"yesBtnTxt": "ದೃಢೀಕರಣ",
+		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+		"confirmation-message": ["ನೀವು ಕ್ರಿಯೆ ರೆಸ್ಯೂಮ್ ಪ್ರೊಸೆಸಿಂಗ್ ಮಾಡಲು ಬಯಸುವಿರಾ ಮತ್ತು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕು ", " ? \n"],
+		"confirmation-title": "ದೃಢೀಕರಣ"
+	},
+	"resumefrombeginning": {
+		"success-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭವಾಗಿದೆ"],
+		"success-title": "ಯಶಸ್ಸು",
+		"error-message": ["", " ಮತ್ತೆ ಮತ್ತೆ ಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+		"error-title": "ದೋಷ",
+		"btnTxt": "ಮುಗಿದಿದೆ",
+		"yesBtnTxt": "ದೃಢೀಕರಣ",
+		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+		"confirmation-message": ["ನೀವು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಆರಂಭದಿಂದ ಕ್ರಿಯೆ ಪುನರಾರಂಭ ಮಾಡಲು ಬಯಸುವಿರಾ ", " ? \n"],
+		"confirmation-title": "ದೃಢೀಕರಣ"
+	},
+	"resumefrombeginningandremovehotlistedtag": {
+		"success-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+		"success-title": "ಯಶಸ್ಸು",
+		"error-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+		"error-title": "ದೋಷ",
+		"btnTxt": "ಮುಗಿದಿದೆ",
+		"yesBtnTxt": "ದೃಢೀಕರಣ",
+		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+		"confirmation-message": ["ಆರಂಭದಿಂದ ಕ್ರಿಯೆ ರೆಸ್ಯೂಮ್ ಮಾಡಲು ನೀವು ಬಯಸುವಿರಾ ಮತ್ತು ಆರ್ ಐಡಿಯಲ್ಲಿ ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕು ", " ? \n"],
+		"confirmation-title": "ದೃಢೀಕರಣ"
+	},
+	"stopprocessing": {
+		"success-message": ["", " ನಿಲ್ಲಿಸಲಾಗಿದೆ"],
+		"success-title": "ಯಶಸ್ಸು",
+		"error-message": ["", " ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"],
+		"error-title": "ದೋಷ",
+		"btnTxt": "ಮುಗಿದಿದೆ",
+		"yesBtnTxt": "ದೃಢೀಕರಣ",
+		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+		"confirmation-message": ["ನೀವು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಕ್ರಿಯೆ ನಿಲ್ಲಿಸು ಪ್ರಕ್ರಿಯೆ ಮಾಡಲು ಬಯಸುವಿರಾ ", " ? \n"],
+		"confirmation-title": "ದೃಢೀಕರಣ"
+	},
+
+	"detailView": {
+		"detail": "ವಿವರ ವೀಕ್ಷಣೆ"
+	},
+	"users": {
+		"redirectMessage": "ಕೀಕ್ಲೋಕ್ನ ಬಳಕೆದಾರರ ಪಟ್ಟಿಗೆ ಮರುನಿರ್ದೇಶಿಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ"
+	},
+	"bulkUpload": {
+		"operation": "ಕಾರ್ಯಾಚರಣೆ",
+		"operationCtrl": [{
+			"label ": "ಸೇರಿಸಿ ",
+			"value": "ಸೇರಿಸಿ"
+		},
+			{
+				"label": "ನವೀಕರಿಸಿ",
+				"value": "ನವೀಕರಿಸಿ"
+			},
+			{
+				"label": "ಅಳಿಸು",
+				"value": "ಅಳಿಸು"
+			}
+		],
+		"tableName": "ಟೇಬಲ್ ಹೆಸರನ್ನು ಆರಿಸಿ",
+		"chooseFile": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ",
+		"uploadFile": "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+		"upload": "ಅಪ್‌ಲೋಡ್",
+		"cancel": "ರದ್ದುಮಾಡು",
+		"tableNames": [{
+			"id": "applicant_valid_document",
+			"value": "ಅರ್ಜಿದಾರ ಮಾನ್ಯ ದಾಖಲೆ"
+		}, {
+			"id": "appl_form_type",
+			"value": "ಅಪ್ಲಿಕೇಶನ್"
+		}, {
+			"id": "biometric_attribute",
+			"value": "ಬಯೋಮೆಟ್ರಿಕ್ ವಿಶೇಷಣ"
+		}, {
+			"id": "biometric_type",
+			"value": "ಬಯೋಮೆಟ್ರಿಕ್ ಪ್ರಕಾರ"
+		}, {
+			"id": "blacklisted_words",
+			"value": "ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಿದ ಪದಗಳು"
+		}, {
+			"id": "daysofweek_list",
+			"value": "ವಾರದ ದಿನಗಳು"
+		}, {
+			"id": "device_master",
+			"value": "ಸಾಧನ"
+		}, {
+			"id": "registered_device_master",
+			"value": "ಸಾಧನ ನೋಂದಣಿ"
+		}, {
+			"id": "device_spec",
+			"value": "ಸಾಧನ ದ ವಿಶೇಷಣ"
+		}, {
+			"id": "device_type",
+			"value": "ಸಾಧನಪ್ರಕಾರ"
+		}, {
+			"id": "doc_category",
+			"value": "ದಾಖಲೆ ವರ್ಗ"
+		}, {
+			"id": "doc_type",
+			"value": "ದಾಖಲೆ ಪ್ರಕಾರ"
+		}, {
+			"id": "dynamic_field",
+			"value": "ಡೈನಾಮಿಕ್ ಫೀಲ್ಡ್"
+		}, {
+			"id": "reg_exceptional_holiday",
+			"value": "ಅಸಾಧಾರಣ ರಜಾದಿನ"
+		}, {
+			"id": "foundational_trust_provider",
+			"value": "ಫೌಂಡೇಶನ್ ಟ್ರಸ್ಟ್ ಪ್ರೊವೈಡರ್"
+		}, {
+			"id": "gender",
+			"value": "ಲಿಂಗ"
+		}, {
+			"id": "loc_holiday",
+			"value": "ರಜಾದಿನ"
+		}, {
+			"id": "identity_schema",
+			"value": "ಗುರುತುಸ್ಕೀಮಾ"
+		}, {
+			"id": "id_type",
+			"value": "ಐಡಿಟೈಪ್"
+		}, {
+			"id": "individual_type",
+			"value": "ವೈಯಕ್ತಿಕ ಪ್ರಕಾರ"
+		}, {
+			"id": "language",
+			"value": "ಭಾಷೆ"
+		}, {
+			"id": "location",
+			"value": "ಸ್ಥಾನ"
+		}, {
+			"id": "loc_hierarchy_list",
+			"value": "ಸ್ಥಾನ ಶ್ರೇಣಿ"
+		}, {
+			"id": "machine_master",
+			"value": "ಯಂತ್ರ"
+		}, {
+			"id": "machine_spec",
+			"value": "ಯಂತ್ರ ವಿಶೇಷಣ"
+		}, {
+			"id": "machine_type",
+			"value": "ಯಂತ್ರಪ್ರಕಾರ"
+		}, {
+			"id": "module_detail",
+			"value": "ಮಾಡ್ಯೂಲ್ ವಿವರ"
+		}, {
+			"id": "mosip_device_service",
+			"value": "ಮೊಸಿಪ್ ಸಾಧನ ಸೇವೆ"
+		}, {
+			"id": "reason_category",
+			"value": "ಕಾರಣ ವರ್ಗ"
+		}, {
+			"id": "reason_list",
+			"value": "ಕಾರಣ ಪಟ್ಟಿ"
+		}, {
+			"id": "reg_exceptional_holiday",
+			"value": "ನೋಂದಣಿ ಅಸಾಧಾರಣ ರಜಾದಿನ"
+		}, {
+			"id": "registered_device_master",
+			"value": "ನೋಂದಾಯಿತ ಸಾಧನ"
+		}, {
+			"id": "registration_center",
+			"value": "ನೋಂದಣಿ ಕೇಂದ್ರ"
+		}, {
+			"id": "reg_center_device",
+			"value": "ನೋಂದಣಿ ಕೇಂದ್ರ ಸಾಧನ"
+		}, {
+			"id": "reg_center_machine",
+			"value": "ನೋಂದಣಿ ಕೇಂದ್ರ ಸಾಧನ ..."
+		}, {
+			"id": "reg_center_machine_device",
+			"value": "ನೋಂದಣಿ ಕೇಂದ್ರ ಯಂತ್ರ ಸಾಧನ"
+		}, {
+			"id": "reg_center_type",
+			"value": "ನೋಂದಣಿಕೇಂದ್ರಪ್ರಕಾರ"
+		}, {
+			"id": "reg_center_user",
+			"value": "ನೋಂದಣಿ ಕೇಂದ್ರ ಬಳಕೆದಾರ"
+		}, {
+			"id": "reg_center_user_machine",
+			"value": "ನೋಂದಣಿ ಕೇಂದ್ರ ಬಳಕೆದಾರ ಯಂತ್ರ"
+		}, {
+			"id": "reg_device_sub_type",
+			"value": "ನೋಂದಣಿ ಸಾಧನ ಉಪ ಪ್ರಕಾರ"
+		}, {
+			"id": "reg_device_type",
+			"value": "ನೋಂದಣಿ ಸಾಧನ ಪ್ರಕಾರ"
+		}, {
+			"id": "reg_working_nonworking",
+			"value": "ನೋಂದಣಿ ಕೆಲಸ ಮಾಡದ ಕೆಲಸ"
+		}, {
+			"id": "schema_def",
+			"value": "ಸ್ಕೀಮಾ ವ್ಯಾಖ್ಯಾನ"
+		}, {
+			"id": "template",
+			"value": "ಟೆಂಪ್ಲೇಟ್"
+		}, {
+			"id": "template_file_format",
+			"value": "ಟೆಂಪ್ಲೇಟ್ ಫೈಲ್ ಸ್ವರೂಪ"
+		}, {
+			"id": "template_type",
+			"value": "ಟೆಂಪ್ಲೇಟ್ ಪ್ರಕಾರ"
+		}, {
+			"id": "title",
+			"value": "ಶೀರ್ಷಿಕೆ"
+		}, {
+			"id": "user_detail",
+			"value": "ಬಳಕೆದಾರ ವಿವರಗಳು"
+		}, {
+			"id": "valid_document",
+			"value": "ಮಾನ್ಯ ದಾಖಲೆ"
+		}, {
+			"id": "zone",
+			"value": "ವಲಯ"
+		}, {
+			"id": "zone_user",
+			"value": "ವಲಯ ಬಳಕೆದಾರ"
+		}]
+	},
+	"filters": {
+		"titleTxt": "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಸೇರಿಸಿ",
+		"footerButtons": {
+			"resetTxt": "ಮರುಹೊಂದಿಸು",
+			"cancelTxt": "ರದ್ದುಮಾಡು",
+			"applyTxt": "ಅನ್ವಯಿಸು"
+		}
+	},
+	"isActive": {
+		"Active": "ಸಕ್ರಿಯ",
+		"InActive": "ನಿಷ್ಕ್ರಿಯ"
+	},
+	"generatecsr": {
+		"title": "ಸಿಎಸ್ಆರ್ ರಚಿಸಿ",
+		"applicationId": "ಅಪ್ಲಿಕೇಶನ್ ಐಡಿ",
+		"referenceId": "ReferenceId",
+		"commonName": "ಸಾಮಾನ್ಯ ಹೆಸರು",
+		"organization": "ಸಂಸ್ಥೆ",
+		"organizationUnit": "ಸಂಸ್ಥೆ ಘಟಕ",
+		"location": "ಸ್ಥಳ",
+		"state": "ರಾಜ್ಯ",
+		"country": "ದೇಶ",
+		"button": "ರಚಿಸು"
+	},
+	"generatemasterkey": {
+		"title": "ಮಾಸ್ಟರ್\u200Cಕೀ ರಚಿಸಿ",
+		"applicationId": "ಅಪ್ಲಿಕೇಶನ್ ಐಡಿ",
+		"referenceId": "ReferenceId",
+		"commonName": "ಸಾಮಾನ್ಯ ಹೆಸರು",
+		"organization": "ಸಂಸ್ಥೆ",
+		"organizationUnit": "ಸಂಸ್ಥೆ ಘಟಕ",
+		"location": "ಸ್ಥಳ",
+		"state": "ರಾಜ್ಯ",
+		"country": "ದೇಶ",
+		"force": "ಫೋರ್ಸ್",
+		"objectType": "ಆಬ್ಜೆಕ್ಟ್ ಪ್ರಕಾರ",
+		"button": "ರಚಿಸು"
+	},
+	"getcertificate": {
+		"title": "ಪ್ರಮಾಣಪತ್ರ ಪಡೆಯಿರಿ",
+		"applicationId": "ಅಪ್ಲಿಕೇಶನ್ ಐಡಿ",
+		"referenceId": "ReferenceId",
+		"button": "ಪ್ರಮಾಣಪತ್ರ ಪಡೆಯಿರಿ"
+	},
+	"uploadcertificate": {
+		"title": "ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಪ್\u200Cಲೋಡ್ ಮಾಡಿ",
+		"applicationId": "ಅಪ್ಲಿಕೇಶನ್ ಐಡಿ",
+		"referenceId": "ReferenceId",
+		"chooseFile": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ",
+		"uploadYourFile": "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಅಪ್\u200Cಲೋಡ್ ಮಾಡಿ",
+		"button": "ರಚಿಸು"
+	},
+	"uploadotherdomaincertificate": {
+		"title": "ಇತರ ಡೊಮೇನ್ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಪ್\u200Cಲೋಡ್ ಮಾಡಿ",
+		"applicationId": "ಅಪ್ಲಿಕೇಶನ್ ಐಡಿ",
+		"referenceId": "ReferenceId",
+		"chooseFile": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ",
+		"uploadYourFile": "ನಿಮ್ಮ ಫೈಲ್ ಅನ್ನು ಅಪ್\u200Cಲೋಡ್ ಮಾಡಿ",
+		"button": "ರಚಿಸು"
+	},
+	"genericerror": {
+		"fieldValidation": "ಈ ಕ್ಷೇತ್ರದ ಅಗತ್ಯವಿದೆ"
+	},
+    "genericmessage":{
+        "successLabel":"ಯಶಸ್ಸು",
+        "successButton":"ಸರಿ",
+        "errorLabel":"ತಪ್ಪು",
+        "createMessage":"ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ",
+        "updateMessage":"ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ"
+    },
+    "headermessage":{
+        "vesion":"ನಿರ್ವಾಹಕ UI ಆವೃತ್ತಿ",
+        "Zone":"ವಲಯ",
+        "Logout":"ಲಾಗ್ ಔಟ್"
+    }
+}
