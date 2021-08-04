@@ -478,65 +478,41 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   async getApplicantTypeID() {
     //console.log("getApplicantTypeID");
-    let requestDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let DOBDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let genderDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let biometricDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let requestArray = {
-      attributes: [],
-    };
-    let DOCUMENT_CATEGORY_DTO: RequestModel;
-    let DOB = this.users[0].request.demographicDetails.identity.dateOfBirth;
-
-    requestDTO.attribute =
-      appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    
-    requestDTO.value =
-      this.users[0].request.demographicDetails.identity.residenceStatus[0].value;
-    requestArray.attributes.push(requestDTO);
-
-    DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;
-    DOBDTO.value = DOB.replace(/\//g, "-") + "T11:46:12.640Z";
-
-    requestArray.attributes.push(DOBDTO);
-
-    genderDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.genderCode;
-    genderDTO.value =
-      this.users[0].request.demographicDetails.identity.gender[0].value;
-
-    requestArray.attributes.push(genderDTO);
-
-    biometricDTO.attribute =
-      appConstants.APPLICANT_TYPE_ATTRIBUTES.biometricAvailable;
-    biometricDTO.value = false;
-
-    requestArray.attributes.push(biometricDTO);
-
-    DOCUMENT_CATEGORY_DTO = new RequestModel(
+    let attributesArr = [];
+    const identityObj = this.users[0].request.demographicDetails.identity;
+    if (identityObj) {
+      let keyArr: any[] = Object.keys(identityObj);
+      for (let index = 0; index < keyArr.length; index++) {
+        const element = keyArr[index];
+        if (element != appConstants.IDSchemaVersionLabel) {
+          let elemValue = identityObj[element];
+          this.identityData.forEach((obj) => {
+            if (element === obj.id && obj.controlType === "ageDate" || obj.controlType === "date") {
+              elemValue = elemValue.replace(/\//g, "-") + "T11:46:12.640Z";
+            }
+          });
+          attributesArr.push({
+            "attribute": element,
+            "value": elemValue
+          }); 
+        }
+      }
+    }
+    attributesArr.push({
+      "attribute": appConstants.APPLICANT_TYPE_ATTRIBUTES.biometricAvailable,
+      "value": false 
+    });
+    let applicantTypeReq = new RequestModel(
       appConstants.IDS.applicantTypeId,
-      requestArray,
+      {
+        "attributes": attributesArr
+      },
       {}
     );
     return new Promise((resolve) => {
       this.subscriptions.push(
         this.dataStorageService
-        .getApplicantType(DOCUMENT_CATEGORY_DTO)
+        .getApplicantType(applicantTypeReq)
         .subscribe(
           async (response) => {
             if (response[appConstants.RESPONSE]) {

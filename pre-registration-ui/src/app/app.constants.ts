@@ -160,9 +160,9 @@ export const APPLICATION_STATUS_CODES = {
 };
 
 export const APPLICANT_TYPE_ATTRIBUTES = {
-  individualTypeCode: 'individualTypeCode',
-  dateofbirth: 'dateofbirth',
-  genderCode: 'genderCode',
+  // individualTypeCode: 'individualTypeCode',
+  // dateofbirth: 'dateofbirth',
+  // genderCode: 'genderCode',
   biometricAvailable: 'biometricAvailable'
 };
 
