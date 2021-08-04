@@ -327,7 +327,7 @@
     },
     {
       "filtername": "city",
-      "filterlabel":{ "eng": "City", "ara":"مدينة", "fra": "Ville","hin": "शहर","kan": "ನಗರ","tam": "நகரம்", },
+      "filterlabel":{ "eng": "City", "ara":"مدينة", "fra": "Ville","hin": "शहर","kan": "ನಗರ","tam": "நகரம்" },
       "uiField": "string",
       "filterType": "contains",
       "fieldType": "input",

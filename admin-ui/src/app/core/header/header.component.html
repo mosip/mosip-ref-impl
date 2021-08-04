@@ -17,11 +17,11 @@
     >&nbsp;
     <span [ngStyle]="{ display: screenResize > 840 ? 'inline-block' : 'none' }"
       ><b class="mosip-text">MOSIP</b
-      ><b class="version-txt"> Admin UI version : {{ appVersion }}</b></span
+      ><b class="version-txt"> {{ 'headermessage.vesion' | translate }} : {{ appVersion }}</b></span
     >
   </div>
   <div class="zone">
-    <span class="zone-text">Zone - {{ zone }}</span>
+    <span class="zone-text">{{ 'headermessage.Zone' | translate }} - {{ zone }}</span>
   </div>
   <div class="profile">
     <app-hamburger-menu [data]="profile"></app-hamburger-menu>

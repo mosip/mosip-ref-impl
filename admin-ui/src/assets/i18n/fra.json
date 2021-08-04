@@ -675,8 +675,20 @@
         "chooseFile" : "Choisir le fichier",
         "uploadYourFile":"Téléchargez votre fichier",
         "button":"produire"
-    },  
+    },
     "genericerror":{
         "fieldValidation":"Ce champ est requis"
+    },
+    "genericmessage":{
+        "successLabel":"Succès",
+        "successButton":"D'accord",
+        "errorLabel":"Erreur",
+        "createMessage":"Créé avec succès",
+        "updateMessage":"Mis à jour avec succés"
+    },
+    "headermessage":{
+        "vesion":"Version de l'interface utilisateur d'administration",
+        "Zone":"Zone",
+        "Logout":"Se déconnecter"
     }
 }
