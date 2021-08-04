@@ -29,7 +29,9 @@
               *ngFor="let button of actionButtonElipses; let i = index;"
               (click)="selectedRow(headerData.id, button)"
             >
-            <span>{{ button.buttonName[primaryLang] }}</span>
+            <span *ngIf="lang === 'eng'">{{ button.buttonName.eng }}</span>
+            <span *ngIf="lang === 'fra'">{{ button.buttonName.fra }}</span>
+            <span *ngIf="lang === 'ara'">{{ button.buttonName.ara }}</span>
             </button>
           </mat-menu>
         </div>

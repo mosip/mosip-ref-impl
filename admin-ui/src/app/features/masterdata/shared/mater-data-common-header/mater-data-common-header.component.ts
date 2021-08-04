@@ -6,16 +6,13 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { CenterModel } from 'src/app/core/models/center.model';
 import * as appConstants from '../../../../app.constants';
-import { HeaderService } from 'src/app/core/services/header.service';
-import { TranslateService } from '@ngx-translate/core';
-
 @Component({
   selector: 'app-mater-data-common-header',
   templateUrl: './mater-data-common-header.component.html'
 })
 export class MaterDataCommonHeaderComponent implements OnInit {
   actionButtonElipses = new Array();
-  primaryLang: string;
+  lang: string;
   @Input() masterDataName: string;
   @Input() headerData: HeaderModel;
 
@@ -23,12 +20,9 @@ export class MaterDataCommonHeaderComponent implements OnInit {
   	private router: Router,
   	private dataStorageSerice: DataStorageService,
     private appService: AppConfigService,
-    private commonService: CommonService, 
-    private translateService: TranslateService,
-    private headerService: HeaderService
+    private commonService: CommonService
   	) { 
-    this.primaryLang = this.headerService.getUserPreferredLanguage();
-    translateService.use(this.primaryLang);
+  	this.lang = appService.getConfig()['primaryLangCode'];
   }
 
   ngOnInit() {

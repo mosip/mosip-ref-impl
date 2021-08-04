@@ -29,8 +29,6 @@ import { CenterRequest } from 'src/app/core/models/centerRequest.model';
 import { FilterModel } from 'src/app/core/models/filter.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import defaultJson from "../../../../../assets/i18n/default.json";
-import { HeaderService } from 'src/app/core/services/header.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mater-data-common-body',
@@ -79,9 +77,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   primaryKeyboard: string;
   secondaryKeyboard: string;
   keyboardType: string;
-  masterDataName:string;
-  primaryLangCode:string;
-  
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
@@ -89,14 +85,12 @@ export class MaterDataCommonBodyComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private keyboardService: MatKeyboardService,
-    private appConfigService: AppConfigService, 
-    private headerService: HeaderService,
-    private translateService: TranslateService,
+    private appConfigService: AppConfigService,
   ) { }
 
   ngOnInit() {
     this.fieldsCount = 0;
-    this.primaryLangCode = this.headerService.getUserPreferredLanguage();
+
     this.fields.forEach(obj => {
       if(obj.inputType === "text" && obj.showInSingleView === "true"){
         this.fieldsCount++;
@@ -106,13 +100,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
       this.id = response.id;
       this.masterdataType = response.type;
       this.mapping = appConstants.masterdataMapping[response.type];
-      this.masterDataName = defaultJson.masterdataMapping[response.type].name[this.primaryLangCode];
     });
-    this.translateService
-      .getTranslation(this.primaryLang)
-      .subscribe(response => {
-        this.popupMessages = response;
-      });
+
     let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
 
     let otherLangsArr = supportedLanguages.filter(lang => lang.trim() !== this.primaryLang.trim());
@@ -381,7 +370,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
     index: number
   ) {
     this.selectedField = element;
+    console.log("formControlName>>>"+formControlName+"<<<index>>>"+index);
     if (this.keyboardRef) {
+      console.log("this.attachToElementMesOne._results[index]>>>"+JSON.stringify(this.attachToElementMesOne._results[index]));
       this.keyboardRef.instance.setInputInstance(
         this.attachToElementMesOne._results[index]
       );
@@ -550,7 +541,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureValue(event: any, formControlName: string, type: string) {
-    console.log("type>>>"+type);
     if (type === 'primary') {
       this.primaryData[formControlName] = event.target.value;
     } else if (type === 'secondary') {
@@ -663,7 +653,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               );
               this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
+                    let url = this.pageName+" Created Successfully";
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -686,7 +676,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               });
             }else{
               this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
-              let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
+              let url = this.pageName+" Created Successfully";
               this.showMessage(url)
                 .afterClosed()
                 .subscribe(() => {
@@ -765,7 +755,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               if(this.saveSecondaryForm){
                 this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
+                    let url = this.pageName+" Created Successfully";
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -789,7 +779,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               }else{
                 this.dataStorageService.updateData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
+                    let url = this.pageName+" Updated Successfully";
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -813,7 +803,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               }
             }else{
               this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
-              let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
+              let url = this.pageName+" Updated Successfully";
                 this.showMessage(url)
                   .afterClosed()
                   .subscribe(() => {
@@ -838,14 +828,14 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }
   }
 
-  showMessage(message: string) {    
+  showMessage(message: string) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: {
         case: 'MESSAGE',
-        title: this.popupMessages.genericmessage.successLabel,
+        title: 'Success',
         message: message,
-        btnTxt: this.popupMessages.genericmessage.successButton
+        btnTxt: 'Ok'
       }
     });
     return dialogRef;
@@ -857,9 +847,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
         width: '350px',
         data: {
           case: 'MESSAGE',
-          title: this.popupMessages.genericmessage.errorLabel,
+          title: 'Error',
           message: message,
-          btnTxt: this.popupMessages.genericmessage.successButton
+          btnTxt: 'Ok'
         },
         disableClose: true
       });
