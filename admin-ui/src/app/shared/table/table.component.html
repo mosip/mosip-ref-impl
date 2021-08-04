@@ -46,7 +46,7 @@
             *ngIf="item === 'name'&& imageSource"
             [ngClass]="{'image-fade': data.isActive === false}"
             style="padding-right:15px;"
-          /><span *ngIf="item === 'fieldVal' && data[item]">Code : {{data[item].code}} | Value : {{data[item].value}}</span><span *ngIf="item !== 'fieldVal'"><span *ngIf="item !== 'isActive'">{{  data[item] | mapStatus }}</span><span *ngIf="item === 'isActive'"><span *ngIf="data[item] === true">{{'isActive.Active'|translate}}</span><span *ngIf="data[item] === false">{{'isActive.InActive'|translate}}</span></span></span></span
+          /><span *ngIf="item === 'fieldVal' && data[item]">Code : {{data[item].code}} | Value : {{data[item].value}}</span><span *ngIf="item !== 'fieldVal'"><span *ngIf="item !== 'isActive'"><span *ngIf="item !== 'createdDateTime'">{{  data[item] | mapStatus }}</span><span *ngIf="item === 'createdDateTime'">{{ data[item] | createFormatDate}}</span></span><span *ngIf="item === 'isActive'"><span *ngIf="data[item] === true">{{'isActive.Active'|translate}}</span><span *ngIf="data[item] === false">{{'isActive.InActive'|translate}}</span></span></span></span
         >
       </td>
       <td class="mat-cell mat-header-cell" *ngIf="buttonList.length>0" >

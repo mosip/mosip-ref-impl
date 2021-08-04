@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { AppConfigService } from 'src/app/app-config.service';
 import { URL } from 'src/app/app.constants';
-
+import { HeaderService } from "src/app/core/services/header.service";
 
 
 @Injectable({
@@ -16,8 +16,8 @@ export class DocumentCategoryMappingService {
   primaryLang: any;
   private BASE_URL: string;
 
-  constructor(private http: HttpClient, private appConfigService: AppConfigService) {
-    this.primaryLang = appConfigService.getConfig()['primaryLangCode'];
+  constructor(private http: HttpClient, private appConfigService: AppConfigService, private headerService: HeaderService) {
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     this.BASE_URL = appConfigService.getConfig().baseUrl;
   }
 
