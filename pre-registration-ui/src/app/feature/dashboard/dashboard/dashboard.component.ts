@@ -774,11 +774,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
    private showErrorMessage(error: any, customTitle?: string, customMsg?: string) {
-    let titleOnError = "";
+    let titleOnError = this.errorLanguagelabels.errorLabel;
     if (customTitle) {
       titleOnError = customTitle;
     }
-    this.errorLanguagelabels.errorLabel;
+    
     let message = "";
     if (customMsg) {
       message = customMsg;
