@@ -598,6 +598,17 @@
             "noBtnTxt": "ரத்துசெய் ",
             "confirmation-message": ["பதிவு ஐடியில் செயலாக்கத்தை நிறுத்துங்கள்  ", " ? \n"],
             "confirmation-title": "உறுதிப்படுத்தல் "
+        },
+        "deleteUser": {
+            "success-message": ["", " நீக்கப்பட்டது"],
+            "success-title": "வெற்றி ",
+            "error-message": ["", " நீக்க முடியாது"],
+            "error-title": "பிழை ",
+            "btnTxt": "முடிந்தது ",
+            "yesBtnTxt": "உறுதிப்படுத்தவும் ",
+            "noBtnTxt": "ரத்துசெய் ",
+            "confirmation-message": ["பயனரை நீக்க வேண்டுமா ", " ? \n"],
+            "confirmation-title": "உறுதிப்படுத்தல் "
         }
     },
     "detailView": {
