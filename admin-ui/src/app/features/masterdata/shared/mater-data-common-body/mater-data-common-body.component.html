@@ -5,7 +5,7 @@
                 <div style="padding-bottom: 50px;"></div>
                 <strong class="title">{{'center.language' | translate }}</strong>
                 <span
-                  *ngIf="!disableForms && pageName !=='Blacklisted Word'"
+                  *ngIf="!disableForms"
                   matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
                   (click)="openKeyboard('primary')"
                   style="float: right; color: grey; cursor: pointer;"
@@ -18,7 +18,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (blur)="captureValue($event, field.name, 'primary')"
                         (focus)="scrollPage(field.name, 'primary', field.name, i)"
                         matInput
                         placeholder="{{
@@ -31,7 +31,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (blur)="captureValue($event, field.name, 'primary')"
                         (focus)="scrollPage(field.name, 'primary', field.name, i)"
                         matInput
                         placeholder="{{
@@ -46,7 +46,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (blur)="captureValue($event, field.name, 'primary')"
                         (focus)="scrollPage(field.name, 'primary', field.name, i)"
                         matInput
                         placeholder="{{
@@ -61,7 +61,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'primary')"
+                        (blur)="captureValue($event, field.name, 'primary')"
                         (focus)="scrollPage(field.name, 'primary', field.name, i)"
                         matInput
                         placeholder="{{
@@ -265,7 +265,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'secondary')"
+                        (blur)="captureValue($event, field.name, 'secondary')"
                         (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
                         matInput
                         placeholder="{{
@@ -278,7 +278,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'secondary')"
+                        (blur)="captureValue($event, field.name, 'secondary')"
                         (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
                         matInput
                         placeholder="{{
@@ -291,7 +291,7 @@
                       <input
                         #keyboardRef
                         #{{field.name}}
-                        (keyup)="captureValue($event, field.name, 'secondary')"
+                        (blur)="captureValue($event, field.name, 'secondary')"
                         (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
                         matInput
                         placeholder="{{

@@ -13,6 +13,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StatusPipe } from './pipes/status.pipe';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { MapStatusPipe } from './pipes/map-status.pipe';
+import { CreateDateFormatPipe } from './pipes/create-date-format.pipe';
 
 @NgModule({
   imports: [CommonModule, MaterialModule, I18nModule , ReactiveFormsModule, FormsModule],
@@ -25,7 +26,8 @@ import { MapStatusPipe } from './pipes/map-status.pipe';
     ErrorComponent,
     StatusPipe,
     DateFormatPipe,
-    MapStatusPipe
+    MapStatusPipe,
+    CreateDateFormatPipe
   ],
   exports: [
     I18nModule,
@@ -38,7 +40,8 @@ import { MapStatusPipe } from './pipes/map-status.pipe';
     ErrorComponent,
     StatusPipe,
     DateFormatPipe,
-    MapStatusPipe
+    MapStatusPipe,
+    CreateDateFormatPipe
   ],
   entryComponents: [DialogComponent],
   providers: [
