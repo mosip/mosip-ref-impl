@@ -597,6 +597,17 @@
             "noBtnTxt": "Annuler",
             "confirmation-message": ["Voulez-vous effectuer l'action Arrêter le traitement sur RID ", " ? \n"],
             "confirmation-title": "Confirmation"
+        },
+        "deleteUser": {
+            "success-message": ["", " est supprimé"],
+            "success-title": "Succès",
+            "error-message": ["", " ne peut pas être supprimé"],
+            "error-title": "Erreur",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous supprimer l'utilisateur", " ? \n"],
+            "confirmation-title": "Confirmation"
         }
     },
     "detailView":{
