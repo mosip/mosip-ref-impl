@@ -163,6 +163,10 @@ export class DataStorageService {
     return this.http.post(this.BASE_URL + 'masterdata/packet/resume', request);
   }
 
+  deleteUser(userId: any): Observable<any> {
+    return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + 'users/'+ userId);
+  }
+
   getUsersData(request: RequestModel): Observable<any> {
     return this.http.post(this.BASE_URL + appConstants.URL.users, request);
   }

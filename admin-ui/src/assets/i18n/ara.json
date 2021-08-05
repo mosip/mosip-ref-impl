@@ -596,6 +596,17 @@
             "noBtnTxt": "يلغي",
             "confirmation-message": ["هل تريد تنفيذ إجراء إيقاف المعالجة على RID", " ? \n"],
             "confirmation-title": "تأكيد"
+        },
+        "deleteUser": {
+            "success-message": ["", " يتم حذف"],
+            "success-title": "نجاح",
+            "error-message": ["", "لا يمكن حذفه"],
+           "error-title": "خطأ",
+            "btnTxt": "منجز",
+            "yesBtnTxt": "يتأكد",
+            "noBtnTxt": "يلغي",
+            "confirmation-message": ["هل تريد حذف المستخدم ", " ? \n"],
+            "confirmation-title": "تأكيد"
         }
     },
     "detailView":{

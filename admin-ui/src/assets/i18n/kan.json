@@ -554,52 +554,64 @@
 			"noBtnTxt": "ರದ್ದುಮಾಡು",
 			"confirmation-message": ["ನೀವು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ", "? \n ನೀವು ಬಯಸಿದರೆ ನೀವು ಅದನ್ನು ನಂತರ ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು. ಅಲ್ಲಿಯವರೆಗೆ ಅದನ್ನು ನಿಷ್ಕ್ರಿಯ ಎಂದು ಹೊಂದಿಸಲಾಗುವುದು"],
 			"confirmation-title": "ದೃಢೀಕರಣ"
-		}
+		},
+		"resumeprocessingandremovehotlistedtag": {
+			"success-message": ["", " ಪ್ರಕ್ರಿಯೆಪುನರಾರಂಭಿಸಲಾಗಿದೆ ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["", " ಪ್ರಕ್ರಿಯೆಪುನರಾರಂಭ ಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ದೃಢೀಕರಣ",
+			"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+			"confirmation-message": ["ನೀವು ಕ್ರಿಯೆ ರೆಸ್ಯೂಮ್ ಪ್ರೊಸೆಸಿಂಗ್ ಮಾಡಲು ಬಯಸುವಿರಾ ಮತ್ತು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕು ", " ? \n"],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		},
+		"resumefrombeginning": {
+			"success-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭವಾಗಿದೆ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["", " ಮತ್ತೆ ಮತ್ತೆ ಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ದೃಢೀಕರಣ",
+			"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+			"confirmation-message": ["ನೀವು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಆರಂಭದಿಂದ ಕ್ರಿಯೆ ಪುನರಾರಂಭ ಮಾಡಲು ಬಯಸುವಿರಾ ", " ? \n"],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		},
+		"resumefrombeginningandremovehotlistedtag": {
+			"success-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ದೃಢೀಕರಣ",
+			"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+			"confirmation-message": ["ಆರಂಭದಿಂದ ಕ್ರಿಯೆ ರೆಸ್ಯೂಮ್ ಮಾಡಲು ನೀವು ಬಯಸುವಿರಾ ಮತ್ತು ಆರ್ ಐಡಿಯಲ್ಲಿ ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕು ", " ? \n"],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		},
+		"stopprocessing": {
+			"success-message": ["", " ನಿಲ್ಲಿಸಲಾಗಿದೆ"],
+			"success-title": "ಯಶಸ್ಸು",
+			"error-message": ["", " ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"],
+			"error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ದೃಢೀಕರಣ",
+			"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+			"confirmation-message": ["ನೀವು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಕ್ರಿಯೆ ನಿಲ್ಲಿಸು ಪ್ರಕ್ರಿಯೆ ಮಾಡಲು ಬಯಸುವಿರಾ ", " ? \n"],
+			"confirmation-title": "ದೃಢೀಕರಣ"
+		},
+	    "deleteUser": {
+	        "success-message": ["", " ಅಳಿಸಲಾಗಿದೆ"],
+	        "success-title": "ಯಶಸ್ಸು",
+	        "error-message": ["", " ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"],
+	        "error-title": "ದೋಷ",
+			"btnTxt": "ಮುಗಿದಿದೆ",
+			"yesBtnTxt": "ದೃಢೀಕರಣ",
+			"noBtnTxt": "ರದ್ದುಮಾಡಿ",
+	        "confirmation-message": ["ನೀವು ಬಳಕೆದಾರರನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ ", " ? \n"],
+	        "confirmation-title": "ದೃಢೀಕರಣ"
+	    }
 	},
-	"resumeprocessingandremovehotlistedtag": {
-		"success-message": ["", " ಪ್ರಕ್ರಿಯೆಪುನರಾರಂಭಿಸಲಾಗಿದೆ ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"],
-		"success-title": "ಯಶಸ್ಸು",
-		"error-message": ["", " ಪ್ರಕ್ರಿಯೆಪುನರಾರಂಭ ಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
-		"error-title": "ದೋಷ",
-		"btnTxt": "ಮುಗಿದಿದೆ",
-		"yesBtnTxt": "ದೃಢೀಕರಣ",
-		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
-		"confirmation-message": ["ನೀವು ಕ್ರಿಯೆ ರೆಸ್ಯೂಮ್ ಪ್ರೊಸೆಸಿಂಗ್ ಮಾಡಲು ಬಯಸುವಿರಾ ಮತ್ತು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕು ", " ? \n"],
-		"confirmation-title": "ದೃಢೀಕರಣ"
-	},
-	"resumefrombeginning": {
-		"success-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭವಾಗಿದೆ"],
-		"success-title": "ಯಶಸ್ಸು",
-		"error-message": ["", " ಮತ್ತೆ ಮತ್ತೆ ಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
-		"error-title": "ದೋಷ",
-		"btnTxt": "ಮುಗಿದಿದೆ",
-		"yesBtnTxt": "ದೃಢೀಕರಣ",
-		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
-		"confirmation-message": ["ನೀವು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಆರಂಭದಿಂದ ಕ್ರಿಯೆ ಪುನರಾರಂಭ ಮಾಡಲು ಬಯಸುವಿರಾ ", " ? \n"],
-		"confirmation-title": "ದೃಢೀಕರಣ"
-	},
-	"resumefrombeginningandremovehotlistedtag": {
-		"success-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
-		"success-title": "ಯಶಸ್ಸು",
-		"error-message": ["", " ಆರಂಭದಿಂದ ಪುನರಾರಂಭಮಾಡಲು ಮತ್ತು ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ನಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ"],
-		"error-title": "ದೋಷ",
-		"btnTxt": "ಮುಗಿದಿದೆ",
-		"yesBtnTxt": "ದೃಢೀಕರಣ",
-		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
-		"confirmation-message": ["ಆರಂಭದಿಂದ ಕ್ರಿಯೆ ರೆಸ್ಯೂಮ್ ಮಾಡಲು ನೀವು ಬಯಸುವಿರಾ ಮತ್ತು ಆರ್ ಐಡಿಯಲ್ಲಿ ಹಾಟ್ ಲಿಸ್ಟೆಡ್ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕು ", " ? \n"],
-		"confirmation-title": "ದೃಢೀಕರಣ"
-	},
-	"stopprocessing": {
-		"success-message": ["", " ನಿಲ್ಲಿಸಲಾಗಿದೆ"],
-		"success-title": "ಯಶಸ್ಸು",
-		"error-message": ["", " ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"],
-		"error-title": "ದೋಷ",
-		"btnTxt": "ಮುಗಿದಿದೆ",
-		"yesBtnTxt": "ದೃಢೀಕರಣ",
-		"noBtnTxt": "ರದ್ದುಮಾಡಿ",
-		"confirmation-message": ["ನೀವು ಆರ್.ಐ.ಡಿ.ಯಲ್ಲಿ ಕ್ರಿಯೆ ನಿಲ್ಲಿಸು ಪ್ರಕ್ರಿಯೆ ಮಾಡಲು ಬಯಸುವಿರಾ ", " ? \n"],
-		"confirmation-title": "ದೃಢೀಕರಣ"
-	},
+
 
 	"detailView": {
 		"detail": "ವಿವರ ವೀಕ್ಷಣೆ"

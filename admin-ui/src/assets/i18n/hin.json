@@ -642,7 +642,18 @@
 			"confirmation-message": ["क्या आप कार्रवाई करना चाहते हैं RID पर प्रसंस्करण रोकें ", " ? \n"],
 
 			"confirmation-title": "पुष्टिकरण"
-		}
+		},
+        "deleteUser": {
+            "success-message": ["", " हटा दिया गया है"],
+            "success-title": "सफलता",
+            "error-message": ["", " हटाया नहीं जा सकता"],
+            "error-title": "त्रुटि",
+            "btnTxt": "हो गया",
+            "yesBtnTxt": "पुष्टि करें",
+            "noBtnTxt": "रद्द करें",
+            "confirmation-message": ["क्या आप उपयोगकर्ता को हटाना चाहते हैं ", " ? \n"],
+            "confirmation-title": "पुष्टिकरण"
+        }
 	},
 	"detailView": {
 		"detail": "विस्तार देखें"
