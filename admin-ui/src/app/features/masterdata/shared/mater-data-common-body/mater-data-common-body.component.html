@@ -408,7 +408,7 @@
                         <mat-select
                           formControlName="moduleId"
                           [value]="secondaryData[field.name]"
-                          placeholder="{{ field.label[primaryLang] }}"
+                          placeholder="{{ field.label[secondaryLang] }}"
                         >
                           <mat-option
                             *ngFor="let data of dropDownValues.moduleId.secondary"

@@ -621,10 +621,11 @@
 	},
 	"bulkUpload": {
 		"operation": "ಕಾರ್ಯಾಚರಣೆ",
-		"operationCtrl": [{
-			"label ": "ಸೇರಿಸಿ ",
+		"operationCtrl": [
+			{
+			"label": "ಸೇರಿಸಿ",
 			"value": "ಸೇರಿಸಿ"
-		},
+			},
 			{
 				"label": "ನವೀಕರಿಸಿ",
 				"value": "ನವೀಕರಿಸಿ"
