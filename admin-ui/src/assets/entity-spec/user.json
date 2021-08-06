@@ -149,7 +149,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom" },
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom", "tam": "பெயர்", "hin": "नाम","kan": "ಹೆಸರು" },
       "filterType": "equals",
       "fieldType": "input",
       "autocomplete": "false",

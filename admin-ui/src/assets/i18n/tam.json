@@ -34,7 +34,7 @@
         }
     },
     "dashboard": {
-        "welcomeMessage":" मोसिप वप्यवस्थापक पोर्टल पर आपका स्वागत है !"
+        "welcomeMessage":"Mosip Admin போர்ட்டலுக்கு வரவேற்கிறோம்!"
     },
     "center": {
         "title": "மையங்கள்",
@@ -550,8 +550,8 @@
             "error-message": ["", " செயலிழக்க முடியவில்லை"],
             "error-title": "பிழை",
             "btnTxt": "முடிந்தது",
-            "yesBtnTxt": "Confirm",
-            "noBtnTxt": "Cancel",
+            "yesBtnTxt": "உறுதிப்படுத்தவும்",
+            "noBtnTxt": "ரத்துசெய்",
             "confirmation-message": ["", " ஐ செயலிழக்க விரும்புகிறீர்களா?  நீங்கள் விரும்பினால் பின்னர் அதை செயல்படுத்தலாம். அதுவரை அது செயலற்றதாக அமைக்கப்படும்"],
             "confirmation-title": "உறுதிப்படுத்தல்"
         },

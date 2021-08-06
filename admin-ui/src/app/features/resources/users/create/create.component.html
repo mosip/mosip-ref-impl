@@ -1,5 +1,5 @@
 <div id="flex-single-view" style="padding-top: 12px;">
-  <h3>Users</h3>
+  <h3>{{'menuItems.item2.subItem3' | translate}}</h3>
   <div class="flex-container">
     <div class="flex-header" style="width: 100%;">
       <app-users-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-users-header>
@@ -12,7 +12,7 @@
             <br /><br />
             
             <mat-form-field>
-              <mat-label>User Name</mat-label>
+              <mat-label>{{'menuItems.item2.subItem3' | translate}}</mat-label>
               <mat-select formControlName="userId" [value]="primaryData.userId">
                 <mat-option *ngFor="let data of dropDownValues.deviceTypeCode.primary" [value]="data.userId" (onSelectionChange)="captureDropDownValue($event, 'userId')">
                   {{ data.name }}
