@@ -59,13 +59,6 @@ mat-form-field {
 .pinkBg {
   background-color: #fe528d;
 }
-::ng-deep.mat-input-element {
-  padding-top: 5px !important;
-}
-::ng-deep.mat-select-value {
-  padding: 2px !important;
-  /* line-height: 20px !important; */
-}
 .whiteText {
   color: white;
 }
@@ -112,4 +105,11 @@ button {
 .captcha{
   padding-bottom: 10px !important;
   transform: scale(0.8);
+}
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
+  height: 20px;
+}
+::ng-deep.mat-select-value {
+  padding: 5px !important;
 }
