@@ -330,9 +330,20 @@ mat-select:focus {
   max-width: 500px;
   box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
 }
+::ng-deep .mat-form-field .mat-form-field-label {
+  padding-top: 3px;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  /* margin-bottom: 3px; */
+  color: #22a8c9;
+}
 ::ng-deep.mat-input-element {
   padding-top: 5px !important;
+  height: 20px;
 }
 ::ng-deep.mat-select-value {
-  padding-top: 5px !important;
+  padding: 5px !important;
+}
+.primary-errors {
+  margin-left: 5px;
 }

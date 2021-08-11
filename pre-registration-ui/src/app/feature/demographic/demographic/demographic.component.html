@@ -62,8 +62,9 @@
                               (click)="openKeyboard(field.id, dataCaptureLanguage)">keyboard</i>
                           </mat-form-field>
                         </div>
-                        <div *ngIf="readOnlyMode" [dir]="textDirection[i]">
+                        <div *ngIf="readOnlyMode" [dir]="textDirection[i]" style="font-size: 14px">
                           <mat-form-field appearance="legacy"
+                            class="input"
                             [ngStyle]="textDirection[i] == 'ltr'? {'text-align': 'left'} : {'text-align': 'right'}">
                             <!-- Again Label is required at each TextBox level too -->
                             <mat-label>
