@@ -103,14 +103,6 @@
 /* ::ng-deep .mat-form-field-label .mat-select-placeholder {
 
 } */
-
-::ng-deep.mat-input-element {
-  padding-top: 5px !important;
-}
-::ng-deep.mat-select-value {
-  padding-top: 5px !important;
-}
-
 ::ng-deep.mat-datepicker-content .mat-calendar {
   width: 200px !important;
   height: 250px !important;
@@ -406,3 +398,13 @@ mat-icon {
 .selectedOption {
   padding: 10px;
 }
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
+  height: 20px;
+}
+::ng-deep.mat-select-value {
+  padding: 5px !important;
+}
+/* ::ng-deep.mat-input-element {
+  height: 20px;
+} */

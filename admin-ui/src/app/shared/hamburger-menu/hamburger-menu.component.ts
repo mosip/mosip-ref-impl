@@ -17,19 +17,18 @@ export class HamburgerComponent implements OnInit {
   userName: string;
 
   dataList: any[];
-  primaryLanguage: string;
   constructor(
-    private translateService: TranslateService,
+    private translate: TranslateService,
     private headerService: HeaderService,
     private logoutService: LogoutService,
     private auditService: AuditService,
     private appConfig: AppConfigService
-  ) {    
-    this.primaryLanguage = this.headerService.getUserPreferredLanguage();
-    translateService.use(this.primaryLanguage);
+  ) { 
+    
   }
 
   ngOnInit() {
+    this.translate.use(this.headerService.getUserPreferredLanguage());
     if (this.data !== null && this.data.menuList) {
       this.dataList = this.data.menuList;
     }

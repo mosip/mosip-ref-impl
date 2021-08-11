@@ -598,6 +598,17 @@
             "noBtnTxt": "Cancel",
             "confirmation-message": ["Do you want to perform action Stop Processing on RID ", " ? \n"],
             "confirmation-title": "Confirmation"
+        },
+        "deleteUser": {
+            "success-message": ["", " is deleted"],
+            "success-title": "Success",
+            "error-message": ["", " can't be deleted"],
+            "error-title": "Error",
+            "btnTxt": "Done",
+            "yesBtnTxt": "Confirm",
+            "noBtnTxt": "Cancel",
+            "confirmation-message": ["Do you want to delete the user ", " ? \n"],
+            "confirmation-title": "Confirmation"
         }
     },
     "detailView":{

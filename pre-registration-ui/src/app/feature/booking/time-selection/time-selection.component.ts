@@ -47,7 +47,7 @@ export class TimeSelectionComponent
   selectedNames = [];
   availabilityData = [];
   days: number;
-  disableAddButton = false;
+  disableAddButton = true;
   activeTab = "morning";
   bookingDataList = [];
   temp: NameList[] = [];
@@ -298,7 +298,7 @@ export class TimeSelectionComponent
   }
 
   canAddApplicant(slot: any): boolean {
-    if (slot.availability > slot.names.length) {
+    if (slot && slot.availability > slot.names.length) {
       this.disableAddButton = false;
       return true;
     } else {

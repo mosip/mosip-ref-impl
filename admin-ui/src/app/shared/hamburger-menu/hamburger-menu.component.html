@@ -17,7 +17,8 @@
     </span>
     <mat-menu #menu="matMenu" backdropClass="profile">
       <ng-container *ngFor="let item of dataList">
-        <button (click)="onItem()" mat-menu-item>{{item?.displayName[primaryLanguage]}}</button>
+        <!-- <button (click)="onItem()" mat-menu-item>{{item?.displayName[primaryLanguage]}}</button> -->
+        <button (click)="onItem()" mat-menu-item>{{ 'headermessage.Logout' | translate }}</button>
       </ng-container>
     </mat-menu>
   </div>
@@ -27,7 +28,7 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" backdropClass="elipses">
-      <ng-container *ngFor="let item of dataList">
+      <ng-container *ngFor="let item of dataList">{{headermessage}}
         <button (click)="onItem()" mat-menu-item>{{ 'headermessage.Logout' | translate }}</button>
       </ng-container>
     </mat-menu>

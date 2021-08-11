@@ -1,6 +1,6 @@
 {
   "auditEventIds": ["ADM-027", "ADM-049"],
-  "actionButtons": [
+  "actionButtons": [    
     {
       "buttonName": {
         "eng": "Edit",
@@ -15,6 +15,21 @@
       "showIn": "Ellipsis",
       "validations": "",
       "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Delete",
+        "ara": "حذف",
+        "fra": "Supprimer",
+        "hin": "हटाएं",
+        "kan": "ಅಳಿಸು",
+        "tam": "அழி "
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deleteUser"
     },
     {
       "buttonName": {
@@ -134,7 +149,7 @@
   "filterColumns": [
     {
       "filtername": "name",
-      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom" },
+      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom", "tam": "பெயர்", "hin": "नाम","kan": "ಹೆಸರು" },
       "filterType": "equals",
       "fieldType": "input",
       "autocomplete": "false",
