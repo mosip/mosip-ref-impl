@@ -211,7 +211,7 @@ jobs:
         run: |
           cd kernel && mvn deploy  -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
           #cd ..
-          #cd pre-registration-booking-service && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+          #cd pre-registration-booking-service && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GPG_TTY: $(tty)
@@ -468,7 +468,7 @@ jobs:
 
       - name: Publish the maven package
         run: |
-          cd biosdk-client && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+          cd biosdk-client && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GPG_TTY: $(tty)
@@ -631,7 +631,7 @@ jobs:
 
       - name: Publish the maven package
         run: |
-          cd cache-provider-hazelcast && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+          cd cache-provider-hazelcast && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELLEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GPG_TTY: $(tty)
@@ -642,6 +642,7 @@ jobs:
 #        env:
 #          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
 #        if: failure() # Pick up events even if the job fails or is canceled.
+
 
 
   build-admin-ui:
@@ -909,7 +910,7 @@ jobs:
 
       - name: Publish the maven package
         run: |
-          cd demosdk && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+          cd demosdk && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GPG_TTY: $(tty)
@@ -978,7 +979,7 @@ jobs:
 
       - name: Publish the maven package
         run: |
-          cd authentication && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.OSSRH_SNAPSHOT_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
+          cd authentication && mvn deploy -DskipTests -DaltDeploymentRepository=ossrh::default::${{ secrets.RELEASE_URL }} -s $GITHUB_WORKSPACE/settings.xml -f pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GPG_TTY: $(tty)
