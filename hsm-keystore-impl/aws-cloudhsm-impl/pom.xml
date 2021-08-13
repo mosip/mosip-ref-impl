@@ -7,7 +7,7 @@
 	<groupId>io.mosip.ref-impl</groupId>
 
 	<artifactId>aws-cloudhsm-keystore-impl</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.2.0-rc1</version>
 	<name>aws-cloudhsm-impl</name>
 	<description>Mosip reference project</description>
         <url>https://github.com/mosip/mosip-ref-impl</url>
