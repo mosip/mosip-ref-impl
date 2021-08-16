@@ -47,15 +47,15 @@ export const APPEND_URL = {
   document_copy: 'document/documents/copy',
   nearby_registration_centers: 'getcoordinatespecificregistrationcenters/',
   registration_centers_by_name: 'registrationcenters/',
-  booking_appointment: 'appointment',
-  booking_availability: 'appointment/availability/',
+  booking_appointment: 'applications/appointment',
+  booking_availability: 'applications/appointment/slots/availability/',
   delete_application: 'applications/',
   qr_code: 'qrCode/generate',
   notification: 'notification',
   send_notification: 'notify',
   master_data: '/masterdata/',
   auth: 'login/',
-  cancelAppointment: 'appointment/',
+  cancelAppointment: 'applications/appointment/',
   captcha:'captcha/validatecaptcha'
 };
 

@@ -61,10 +61,8 @@ public class BookingDAO {
 	private DemographicRepository demographicRepository;
 
 	/**
-	 * @param Registration
-	 *            center id
-	 * @param Registration
-	 *            date
+	 * @param Registration center id
+	 * @param Registration date
 	 * @return List AvailibityEntity based registration id and registration date.
 	 */
 	public List<AvailibityEntity> availability(String regcntrId, LocalDate regDate) {
@@ -131,12 +129,12 @@ public class BookingDAO {
 	 * @param slotToTime
 	 * @return Availibity Entity based on FromTime, ToTime, RegDate and RegcntrId.
 	 */
-	public AvailibityEntity findByRegDateAndRegcntrIdAndFromTimeAndToTime(LocalDate regDate, String regcntrd, 
-		LocalTime slotFromTime, LocalTime slotToTime) {
+	public AvailibityEntity findByRegDateAndRegcntrIdAndFromTimeAndToTime(LocalDate regDate, String regcntrd,
+			LocalTime slotFromTime, LocalTime slotToTime) {
 		AvailibityEntity entity = null;
 		try {
-			entity = bookingAvailabilityRepository.findByRegDateAndRegcntrIdAndFromTimeAndToTime(regDate, regcntrd, 
-				slotFromTime, slotToTime);
+			entity = bookingAvailabilityRepository.findByRegDateAndRegcntrIdAndFromTimeAndToTime(regDate, regcntrd,
+					slotFromTime, slotToTime);
 			if (entity == null) {
 
 				throw new AvailablityNotFoundException(ErrorCodes.PRG_BOOK_RCI_002.getCode(),
@@ -159,11 +157,11 @@ public class BookingDAO {
 	 */
 	@Transactional(propagation = Propagation.MANDATORY)
 	public AvailibityEntity findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(LocalDate regDate, String regcntrd,
-		LocalTime slotFromTime, LocalTime slotToTime) {
+			LocalTime slotFromTime, LocalTime slotToTime) {
 		AvailibityEntity entity = null;
 		try {
-			entity = bookingAvailabilityRepository.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(regDate, regcntrd, slotFromTime,
-					slotToTime);
+			entity = bookingAvailabilityRepository.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(regDate, regcntrd,
+					slotFromTime, slotToTime);
 			if (entity == null) {
 
 				throw new AvailablityNotFoundException(ErrorCodes.PRG_BOOK_RCI_002.getCode(),
@@ -176,7 +174,6 @@ public class BookingDAO {
 		}
 		return entity;
 	}
-
 
 	/**
 	 * This method find entity for status other then CANCEL.
@@ -283,19 +280,19 @@ public class BookingDAO {
 	 * @return
 	 */
 	public List<String> findByBookingDateBetweenAndRegCenterId(LocalDate fromLocaldate, LocalDate toLocaldate,
-			String regCenterId,Map<String,Map<LocalDate,SlotTimeDto>> idsWithSlotTime) {
-		List<String> listOfPreIds = new ArrayList<>();		
+			String regCenterId, Map<String, Map<LocalDate, SlotTimeDto>> idsWithSlotTime) {
+		List<String> listOfPreIds = new ArrayList<>();
 		try {
 			if (regCenterId != null && !regCenterId.isEmpty()) {
 				List<RegistrationBookingEntity> entities = registrationBookingRepository
 						.findByRegDateBetweenAndRegistrationCenterId(fromLocaldate, toLocaldate, regCenterId);
 				if (entities != null && !entities.isEmpty()) {
-					for (RegistrationBookingEntity entity : entities) {						
-						Map<LocalDate,SlotTimeDto> appointmentDate = new HashMap<LocalDate,SlotTimeDto>();						
+					for (RegistrationBookingEntity entity : entities) {
+						Map<LocalDate, SlotTimeDto> appointmentDate = new HashMap<LocalDate, SlotTimeDto>();
 						appointmentDate.put(entity.getRegDate(),
 								new SlotTimeDto(entity.getSlotFromTime(), entity.getSlotToTime()));
-						idsWithSlotTime.put(entity.getDemographicEntity().getPreRegistrationId(), appointmentDate);
-						listOfPreIds.add(entity.getDemographicEntity().getPreRegistrationId());
+						idsWithSlotTime.put(entity.getPreregistrationId(), appointmentDate);
+						listOfPreIds.add(entity.getPreregistrationId());
 					}
 				} else {
 					throw new BookingDataNotFoundException(ErrorCodes.PRG_BOOK_RCI_032.getCode(),
