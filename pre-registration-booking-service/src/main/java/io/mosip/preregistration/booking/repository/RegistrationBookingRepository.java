@@ -30,8 +30,8 @@ import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
 @Transactional
 public interface RegistrationBookingRepository extends BaseRepository<RegistrationBookingEntity, String> {
 
-	public static final String preIdQuery = "SELECT u FROM RegistrationBookingEntity u WHERE u.demographicEntity.preRegistrationId = ?1";
-	public static final String deletePreIdQuery = "delete from RegistrationBookingEntity u where u.demographicEntity.preRegistrationId = ?1";
+	public static final String preIdQuery = "SELECT u FROM RegistrationBookingEntity u WHERE u.preregistrationId = ?1";
+	public static final String deletePreIdQuery = "delete from RegistrationBookingEntity u where u.preregistrationId = ?1";
 	public static final String getPreIdQuery = "select u from RegistrationBookingEntity u where u.registrationCenterId=?3 and u.regDate between ?1 and ?2";
 
 	@Query(preIdQuery)
@@ -69,4 +69,5 @@ public interface RegistrationBookingRepository extends BaseRepository<Registrati
 
 	@Query("SELECT e FROM RegistrationBookingEntity e  WHERE e.registrationCenterId= ?1 and e.regDate>=?2")
 	public List<RegistrationBookingEntity> findByRegId(String registrationCenterId, LocalDate regDate);
+	
 }
