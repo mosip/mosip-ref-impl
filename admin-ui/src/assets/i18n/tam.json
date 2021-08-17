@@ -26,11 +26,11 @@
         },
         "item7": {
             "title": "கீமேனேஜர்",
-            "subItem1": "GenerateCSR",
-            "subItem2": "GenerateMasterKey",
-            "subItem3": "GetCertificate",
-            "subItem4": "UploadCertificate",
-            "subItem5": "UploadOtherDomainCertificate"
+            "subItem1": "CSR ஐ உருவாக்கவும்",
+            "subItem2": "முதன்மை விசையை உருவாக்கவும்",
+            "subItem3": "சான்றிதழ் பெறவும்",
+            "subItem4": "சான்றிதழைப் பதிவேற்றவும்",
+            "subItem5": "பிற டொமைன் சான்றிதழைப் பதிவேற்றவும்"
         }
     },
     "dashboard": {
@@ -234,7 +234,8 @@
         "mapped-documents": "வரைபட ஆவணங்கள்",
         "unmapped-documents": "மாற்றப்படாத ஆவணங்கள்",
         "masterDataTypes": "மாஸ்டர்டேட்டா வகைகள்",
-        "dynamicField": "டைனமிக் புலம்"
+        "dynamicField": "டைனமிக் புலம்",
+        "createDynamicField": "புதிய டைனமிக் புலம் உருவாக்கவும்"
     },
     "masterdataupload": {
         "title": "முதன்மை தரவு பதிவேற்றம்"
@@ -858,6 +859,9 @@
         "errorLabel":"தவறு",
         "createMessage":"வெற்றிகரமாக உருவாக்கப்பட்டது",
         "updateMessage":"வெற்றிகரமாக புதுப்பிக்கப்பட்டது"
+    },
+    "genericbutton":{
+        "save":"சேமி"
     },
     "headermessage":{
         "vesion":"நிர்வாகி UI பதிப்பு",

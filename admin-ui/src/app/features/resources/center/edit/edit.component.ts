@@ -439,7 +439,7 @@ export class EditComponent {
   showErrorPopup() {
     this.dialog
       .open(DialogComponent, {
-        width: '400px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
           // tslint:disable-next-line:no-string-literal
@@ -730,7 +730,7 @@ export class EditComponent {
 
   showMessage(type: string, data?: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
@@ -801,7 +801,7 @@ export class EditComponent {
           noBtnTxt: this.popupMessages['edit'].noBtnText
         };
         const dialogRef = this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data
         });
         dialogRef.afterClosed().subscribe(response => {
@@ -850,7 +850,7 @@ export class EditComponent {
           };
         }
         const dialogRef = this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data
         });
         dialogRef.afterClosed().subscribe(response => {
@@ -894,7 +894,7 @@ export class EditComponent {
           noBtnTxt: this.popupMessages['edit'].noBtnText
         };
         const dialogRef = this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data
         });
         dialogRef.afterClosed().subscribe(response => {

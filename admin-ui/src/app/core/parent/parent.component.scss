@@ -22,7 +22,7 @@
   }
 
   .mat-sidenav {
-    width: 225px;
+    width: 250px;
     z-index: 10;
     @media (max-width: 600px) {
       width: 140px;
@@ -86,7 +86,7 @@ app-view, app-rid-status, app-list-view, app-single-view, app-create, app-docume
   margin-right: 30px !important;
 }
 
-mat-keyboard-container {
+/*mat-keyboard-container {
     min-width: 30% !important;
     margin-left: 29% !important;
     max-width:29% !important;
@@ -101,7 +101,7 @@ mat-keyboard-key > button.mat-raised-button{
 .mat-keyboard-wrapper{
   padding: 5px 4px !important;
 }
-
+*/
 button.mat-button{
   overflow: hidden !important;
   text-overflow: ellipsis !important;

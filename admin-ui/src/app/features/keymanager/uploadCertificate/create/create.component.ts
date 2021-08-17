@@ -91,7 +91,7 @@ export class CreateComponent {
       noBtnTxt: "CANCEL"
     };
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '450px',
+      width: '650px',
       data
     });
     dialogRef.afterClosed().subscribe(response => {   
