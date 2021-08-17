@@ -205,7 +205,7 @@ export class CreateComponent {
       noBtnTxt: this.popupMessages['create'].noBtnText
     };
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data
     });
     dialogRef.afterClosed().subscribe(response => {
@@ -220,7 +220,7 @@ export class CreateComponent {
 
   showMessage(type: string, data?: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,

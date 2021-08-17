@@ -85,12 +85,12 @@
     "showInListView": "true",
     "showInSingleView": "true",
     "label": {
-      "eng": " Blacklisted Words",
-      "ara": "اسم",
-      "fra": "prénom",
-      "tam": "தடுப்புப்பட்டியல் சொற்கள்",
-      "hin": "ब्लैक लिस्टेड शब्द",
-      "kan": "ಕಪ್ಪುಪಟ್ಟಿ ಮಾಡಿದ ಪದಗಳು"
+      "eng": "Blocklisted Words",
+      "ara": "الكلمات المحظورة",
+      "fra": "Mots bloqués",
+      "tam": "தடுப்புப்பட்டியலில் உள்ள வார்த்தைகள்",
+      "kan": "ನಿರ್ಬಂಧಿತ ಪದಗಳು",
+      "hin": "ब्लॉक लिस्टेड शब्द"
     },
     "sortOrder": "",
     "showAsLink": "",

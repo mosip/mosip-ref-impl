@@ -236,7 +236,8 @@
 		"mapped-documents": "मैप किए गए दस्तावेज़",
 		"unmapped-documents": "अनमैप्ड डॉक्यूमेंट्स",
 		"masterDataTypes": "मास्टरडेटा प्रकार",
-		"dynamicField": "डायनेमिक फील्ड"
+		"dynamicField": "डायनेमिक फील्ड",
+		"createDynamicField": "नया गतिशील क्षेत्र बनाएँ"
 	},
 	"masterdataupload": {
 		"title": "मास्टर डेटा अपलोड"
@@ -902,6 +903,9 @@
         "errorLabel":"गलत",
         "createMessage":"सफलतापूर्वक बनाया गया",
         "updateMessage":"सफलतापूर्वक उत्परिवर्तित"
+    },
+    "genericbutton":{
+        "save":"सहेजें"
     },
     "headermessage":{
         "vesion":"व्यवस्थापक UI संस्करण",

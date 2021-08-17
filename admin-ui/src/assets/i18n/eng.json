@@ -234,7 +234,8 @@
         "mapped-documents": "Mapped Documents",
         "unmapped-documents": "Unmapped Documents",
         "masterDataTypes": "Masterdata Types",
-        "dynamicField": "Dynamic Field"
+        "dynamicField": "Dynamic Field",
+        "createDynamicField": "Create New Dynamic Field"
     },
     "masterdataupload": {
         "title": "Master Data Upload"
@@ -690,6 +691,9 @@
     "genericerror":{
         "fieldValidation":"This field is required"
     },
+    "genericbutton":{
+        "save":"Save"
+    },
     "genericmessage":{
         "successLabel":"Success",
         "successButton":"OK",
@@ -701,5 +705,8 @@
         "vesion":"Admin UI version",
         "Zone":"Zone",
         "Logout":"Logout"
+    },
+    "paginationLabel":{
+        "showRows":"Show rows"
     }
 }

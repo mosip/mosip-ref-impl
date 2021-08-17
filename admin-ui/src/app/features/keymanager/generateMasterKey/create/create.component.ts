@@ -49,7 +49,7 @@ export class CreateComponent {
   initializeForm() {
     this.createForm = this.formBuilder.group({
       applicationId : ['', [Validators.required]],
-      referenceId: ['', [Validators.required]],
+      referenceId: [''],
       commonName: ['', [Validators.required]],
       organization: ['', [Validators.required]],
       organizationUnit: ['', [Validators.required]],

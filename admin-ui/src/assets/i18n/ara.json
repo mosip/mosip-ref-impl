@@ -437,7 +437,8 @@
         "mapped-documents": "المستندات المعينة",
         "unmapped-documents": "المستندات غير المعينة",
         "masterDataTypes": "أنواع البيانات الرئيسية",
-        "dynamicField": "مجال ديناميكي"
+        "dynamicField": "مجال ديناميكي",
+        "createDynamicField": "إنشاء حقل ديناميكي جديد"
     },
     "masterdataupload": {
         "title": "تحميل البيانات الرئيسية"
@@ -739,6 +740,9 @@
     },
     "genericerror":{
         "fieldValidation":"هذه الخانة مطلوبه"
+    },
+    "genericbutton":{
+        "save":"يحفظ"
     },
     "genericmessage":{
         "successLabel":"النجاح",

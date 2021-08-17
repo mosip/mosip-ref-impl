@@ -57,7 +57,7 @@ export class CommonService {
 
   private showMessage(data: any) {
     this.dialog.open(DialogComponent, {
-      width: '550px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         ...data
@@ -73,8 +73,13 @@ export class CommonService {
     }
 
     let textToDisplay = null;
+    console.log();
     if(data.name){
-      textToDisplay = data.name;
+      if(url === "holiday"){
+        textToDisplay = data.holidayName;
+      }else{
+        textToDisplay = data.name;
+      }      
     }else{
       if(url === "centers"){
         textToDisplay = data.name;

@@ -1,6 +1,6 @@
 .mat-card {
   border-radius: 0;
-  height: 4em;
+  height: 4.5em;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -72,7 +72,7 @@
   color: #3b4141;
 }
 :host::ng-deep.mat-paginator-range-label:before {
-  content: "Viewing   ";
+  //content: "Viewing   ";
 }
 ::ng-deep.mat-select-panel  {
   // min-width: 75px !important;

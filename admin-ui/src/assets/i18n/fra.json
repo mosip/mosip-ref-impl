@@ -439,7 +439,8 @@
         "mapped-documents": "Documents mappés",
         "unmapped-documents": "Documents non mappés",
         "masterDataTypes": "Types de données maîtres",
-        "dynamicField": "Champ dynamique"
+        "dynamicField": "Champ dynamique",
+        "createDynamicField": "Créer un nouveau champ dynamique"
     },
     "masterdataupload": {
         "title": "Téléchargement des données de base"
@@ -696,6 +697,9 @@
         "errorLabel":"Erreur",
         "createMessage":"Créé avec succès",
         "updateMessage":"Mis à jour avec succés"
+    },
+    "genericbutton":{
+        "save":"sauver"
     },
     "headermessage":{
         "vesion":"Version de l'interface utilisateur d'administration",

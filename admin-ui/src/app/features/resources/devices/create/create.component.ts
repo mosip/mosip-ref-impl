@@ -301,7 +301,7 @@ export class CreateComponent{
 
   showError() {
     this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: {
         case: 'MESSAGE'
       },
@@ -389,7 +389,7 @@ export class CreateComponent{
       };
     }
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data
     });
     dialogRef.afterClosed().subscribe(response => {
@@ -525,7 +525,7 @@ export class CreateComponent{
       message = data.errors[0].message;
     }
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
