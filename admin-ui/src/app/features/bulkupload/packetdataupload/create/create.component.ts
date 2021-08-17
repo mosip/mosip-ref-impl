@@ -7,6 +7,7 @@ import { BulkuploadService } from 'src/app/core/services/bulkupload.service';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { HeaderService } from 'src/app/core/services/header.service';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create',
@@ -33,6 +34,7 @@ export class CreateComponent {
   private router: Router,
   private dialog: MatDialog,
   private headerService: HeaderService,
+  private translateService: TranslateService,
   private dataService: DataStorageService
   ) {
     this.subscribed = router.events.subscribe(event => {
@@ -41,6 +43,7 @@ export class CreateComponent {
       }
     });
     this.primaryLangCode =  this.headerService.getUserPreferredLanguage();
+    this.translateService.use(this.headerService.getUserPreferredLanguage());
   }
 
   initializeComponent() {
@@ -90,7 +93,7 @@ export class CreateComponent {
         noBtnTxt: this.popUpMessages.popup1.cancelBtnTxt
       };
       const dialogRef = this.dialog.open(DialogComponent, {
-        width: '450px',
+        width: '650px',
         data
       });
       dialogRef.afterClosed().subscribe(response => {

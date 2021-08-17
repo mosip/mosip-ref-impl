@@ -48,7 +48,14 @@
       "validations": ""
     },
     {
-      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "buttonName": {
+        "eng": "Filter",
+        "fra": "filtre",
+        "ara": "تصفيه",
+        "tam": "வடிகட்டி",
+        "hin": "फ़िल्टर",
+        "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ"
+      },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
       "actionURL": { "case": "filter" },
@@ -61,7 +68,14 @@
     {
       "name": "name",
       "showInListView": "true",
-      "label": { "eng": "Name", "ara": "ماسم", "fra": "Nom" },
+      "label": { 
+        "eng": "Name", 
+        "ara": "ماسم", 
+        "fra": "Nom",
+        "tam": "பெயர்",
+        "hin": "नाम",
+        "kan": "ಹೆಸರು" 
+      },
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -134,7 +148,7 @@
     {
       "name": "isActive",
       "showInListView": "true",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",

@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
 
   showErrorMessage(input) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: input,
       disableClose: true
     });

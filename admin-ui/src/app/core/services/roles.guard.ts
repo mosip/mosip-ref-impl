@@ -69,7 +69,7 @@ export class RolesGuard implements CanActivate {
   private async showMessage() {
     await this.getMessage();
     this.dialog.open(DialogComponent, {
-      width: '400px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages.title,

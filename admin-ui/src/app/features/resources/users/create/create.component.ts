@@ -166,7 +166,7 @@ export class CreateComponent{
 
   showError() {
     this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: {
         case: 'MESSAGE'
       },
@@ -245,8 +245,8 @@ export class CreateComponent{
     this.dataStorageService.getUsersData(request).subscribe(
       response => {
         if (response.response.data) {
-          let data = response.response.data[0];
-          this.primaryData = {userId:data.id, zone:data.zoneCode, regCenterId:data.regCenterId, name: data.name}
+          this.data = response.response.data;
+          this.primaryData = {userId:this.data[0].id, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].name}
           this.initializeheader();
         } else {
           this.showErrorPopup("No User Details Found");
@@ -258,7 +258,7 @@ export class CreateComponent{
 
   showMessage(message: string) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: 'Success',

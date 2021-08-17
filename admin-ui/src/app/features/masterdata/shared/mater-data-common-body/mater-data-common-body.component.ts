@@ -64,6 +64,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   url:string;
   saveSecondaryForm:boolean;
   fieldsCount:number;
+  tomorrow = new Date();
 
   languageNames = {
     ara: 'عربى',
@@ -92,7 +93,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
     private appConfigService: AppConfigService, 
     private headerService: HeaderService,
     private translateService: TranslateService,
-  ) { }
+  ) { 
+    this.tomorrow.setDate(this.tomorrow.getDate() + 1);
+  }
 
   ngOnInit() {
     this.fieldsCount = 0;
@@ -840,7 +843,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
   showMessage(message: string) {    
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages.genericmessage.successLabel,
