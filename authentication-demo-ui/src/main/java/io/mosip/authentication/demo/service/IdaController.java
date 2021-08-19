@@ -278,17 +278,6 @@ public class IdaController {
 		otpValue.textProperty().addListener((observable, oldValue, newValue) -> {
 			updateSendButton();
 		});
-		
-		idValue.setText("8315306143");
-		demoInputData.setText("{\r\n"
-				+ "	\"demographics\": {\r\n"
-				+ "		\"name\": [{\r\n"
-				+ "			\"language\": \"eng\",\r\n"
-				+ "			\"value\": \"gmvhunduaihftudrkviuqnguumtvmh vhowtoucsykvrcjwmtkjmwybxvmdjp uovlyquwtrckzcjgkotdmxdifoimwd\"\r\n"
-				+ "		}]\r\n"
-				+ "	},\r\n"
-				+ "	\"timestamp\": \"\"\r\n"
-				+ "}");
 	}
 
 	private void displayDialog(String data) {
