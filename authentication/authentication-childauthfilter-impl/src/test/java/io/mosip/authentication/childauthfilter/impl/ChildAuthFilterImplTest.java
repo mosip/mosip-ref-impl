@@ -2,6 +2,7 @@ package io.mosip.authentication.childauthfilter.impl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import io.mosip.authentication.authfilter.exception.IdAuthenticationFilterException;
 import io.mosip.authentication.core.constant.IdAuthCommonConstants;
 import io.mosip.authentication.core.indauth.dto.AuthRequestDTO;
+import io.mosip.authentication.core.indauth.dto.BioIdentityInfoDTO;
+import io.mosip.authentication.core.indauth.dto.DataDTO;
+import io.mosip.authentication.core.indauth.dto.IdentityDTO;
 import io.mosip.authentication.core.indauth.dto.IdentityInfoDTO;
+import io.mosip.authentication.core.indauth.dto.RequestDTO;
 
 /**
  * @author Loganathan Sekar
@@ -52,6 +57,10 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_OTP() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
+		RequestDTO request = new RequestDTO();
+		request.setOtp("12345");
+		req.setRequest(request);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -75,6 +84,17 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_BIO() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
+		RequestDTO request = new RequestDTO();
+		List<BioIdentityInfoDTO> list = new ArrayList<>();
+		BioIdentityInfoDTO bioData = new BioIdentityInfoDTO();
+		DataDTO data = new DataDTO();
+		data.setBioType("Finger");
+		data.setBioSubType("UNKNOWN");
+		bioData.setData(data);
+		list.add(bioData);
+		request.setBiometrics(list);
+		req.setRequest(request);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -87,6 +107,17 @@ public class ChildAuthFilterImplTest {
 	public void testValidChildDateOfBirth_BIO_Allowed() throws IdAuthenticationFilterException {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"demo", "otp"});
 		AuthRequestDTO req = new AuthRequestDTO();
+		RequestDTO request = new RequestDTO();
+		List<BioIdentityInfoDTO> list = new ArrayList<>();
+		BioIdentityInfoDTO bioData = new BioIdentityInfoDTO();
+		DataDTO data = new DataDTO();
+		data.setBioType("Finger");
+		data.setBioSubType("UNKNOWN");
+		bioData.setData(data);
+		list.add(bioData);
+		request.setBiometrics(list);
+		req.setRequest(request);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -100,6 +131,12 @@ public class ChildAuthFilterImplTest {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"demo", "bio"});
 
 		AuthRequestDTO req = new AuthRequestDTO();
+		RequestDTO request = new RequestDTO();
+		IdentityDTO identityDto = new IdentityDTO();
+		identityDto.setEmailId("aaa@bbb.ccc");
+		request.setDemographics(identityDto);
+		req.setRequest(request);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -133,6 +170,17 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_Bio_BorderCase_1day_less() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
+		RequestDTO request = new RequestDTO();
+		List<BioIdentityInfoDTO> list = new ArrayList<>();
+		BioIdentityInfoDTO bioData = new BioIdentityInfoDTO();
+		DataDTO data = new DataDTO();
+		data.setBioType("Finger");
+		data.setBioSubType("UNKNOWN");
+		bioData.setData(data);
+		list.add(bioData);
+		request.setBiometrics(list);
+		req.setRequest(request);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).plusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -155,6 +203,17 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_Bio_FutureDate() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
+		RequestDTO request = new RequestDTO();
+		List<BioIdentityInfoDTO> list = new ArrayList<>();
+		BioIdentityInfoDTO bioData = new BioIdentityInfoDTO();
+		DataDTO data = new DataDTO();
+		data.setBioType("Finger");
+		data.setBioSubType("UNKNOWN");
+		bioData.setData(data);
+		list.add(bioData);
+		request.setBiometrics(list);
+		req.setRequest(request);
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().plusYears(1).plusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
