@@ -1092,7 +1092,7 @@ public class IdaController {
 	@FXML
 	private void onDemoAuth() {
 		demoInputData.setDisable(!demoAuthType.isSelected());
-		sendAuthRequest.setDisable(!demoAuthType.isSelected());
+		updateSendButton();
 	}
 
 	private boolean isDemoAuthType() {
