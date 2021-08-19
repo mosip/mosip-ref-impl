@@ -27,6 +27,8 @@ import io.mosip.kernel.core.util.DateUtils;
 public class ChildAuthFilterImpl implements IMosipAuthFilter {
 	
 	
+	private static final String ERROR_MSG_UNSUPPORTED_AUTH_TYPE = "Unsupported Authentication Type for child - %s";
+
 	/** The Constant OTP. */
 	private static final String OTP = "otp";
 
@@ -92,19 +94,19 @@ public class ChildAuthFilterImpl implements IMosipAuthFilter {
 		if(deniedFactors.contains(OTP) && AuthTypeUtil.isOtp(authRequest)) {
 			throw new IdAuthenticationFilterException(
 					IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorCode(),
-					String.format(IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorMessage(), OTP));
+					String.format(ERROR_MSG_UNSUPPORTED_AUTH_TYPE, OTP));
 		} 
 
 		if(deniedFactors.contains(DEMO) && AuthTypeUtil.isDemo(authRequest)) {
 			throw new IdAuthenticationFilterException(
 					IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorCode(),
-					String.format(IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorMessage(), DEMO));
+					String.format(ERROR_MSG_UNSUPPORTED_AUTH_TYPE, DEMO));
 		} 
 
 		if(deniedFactors.contains(BIO) && AuthTypeUtil.isBio(authRequest)) {
 			throw new IdAuthenticationFilterException(
 					IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorCode(),
-					String.format(IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorMessage(), BIO));
+					String.format(ERROR_MSG_UNSUPPORTED_AUTH_TYPE, BIO));
 		} 
 		
 	}
