@@ -64,6 +64,7 @@
 	<properties>
 		<authentication.parent.version>${project.version}</authentication.parent.version>
 		<authentication-core.version>${authentication.parent.version}</authentication-core.version>
+		<authentication-common.version>${authentication.parent.version}</authentication-common.version>
 		<authentication-filter-api.version>${authentication.parent.version}</authentication-filter-api.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 

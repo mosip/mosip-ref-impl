@@ -13,7 +13,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import io.mosip.authentication.authfilter.exception.IdAuthenticationFilterException;
 import io.mosip.authentication.core.constant.IdAuthCommonConstants;
 import io.mosip.authentication.core.indauth.dto.AuthRequestDTO;
-import io.mosip.authentication.core.indauth.dto.AuthTypeDTO;
 import io.mosip.authentication.core.indauth.dto.IdentityInfoDTO;
 
 /**
@@ -53,9 +52,6 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_OTP() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setOtp(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -68,9 +64,6 @@ public class ChildAuthFilterImplTest {
 	public void testValidChildDateOfBirth_OTP_Allowed() throws IdAuthenticationFilterException {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"bio", "demo"});
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setOtp(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -82,9 +75,6 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_BIO() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setBio(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -97,9 +87,6 @@ public class ChildAuthFilterImplTest {
 	public void testValidChildDateOfBirth_BIO_Allowed() throws IdAuthenticationFilterException {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"demo", "otp"});
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setBio(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -113,9 +100,6 @@ public class ChildAuthFilterImplTest {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"demo", "bio"});
 
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setDemo(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -127,9 +111,6 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidChildDateOfBirth_Demo_NotAlowed() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setDemo(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -141,9 +122,6 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidChildDateOfBirth_Bio_BorderCase_exact() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setBio(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -155,9 +133,6 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_Bio_BorderCase_1day_less() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setBio(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).plusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -169,9 +144,6 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidChildDateOfBirth_Bio_BorderCase_1day_more() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setBio(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).minusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
@@ -183,9 +155,6 @@ public class ChildAuthFilterImplTest {
 	@Test(expected = IdAuthenticationFilterException.class)
 	public void testValidChildDateOfBirth_Bio_FutureDate() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		AuthTypeDTO requestedAuth = new AuthTypeDTO();
-		requestedAuth.setBio(true);
-		req.setRequestedAuth(requestedAuth);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String dob = LocalDate.now().plusYears(1).plusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();

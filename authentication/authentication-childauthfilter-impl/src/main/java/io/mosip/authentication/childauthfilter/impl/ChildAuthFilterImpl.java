@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import io.mosip.authentication.authfilter.exception.IdAuthenticationFilterException;
 import io.mosip.authentication.authfilter.spi.IMosipAuthFilter;
+import io.mosip.authentication.common.service.util.AuthTypeUtil;
 import io.mosip.authentication.core.constant.IdAuthCommonConstants;
 import io.mosip.authentication.core.constant.IdAuthenticationErrorConstants;
 import io.mosip.authentication.core.indauth.dto.AuthRequestDTO;
@@ -26,6 +27,8 @@ import io.mosip.kernel.core.util.DateUtils;
 public class ChildAuthFilterImpl implements IMosipAuthFilter {
 	
 	
+	private static final String ERROR_MSG_UNSUPPORTED_AUTH_TYPE = "Unsupported Authentication Type for child - %s";
+
 	/** The Constant OTP. */
 	private static final String OTP = "otp";
 
@@ -88,22 +91,22 @@ public class ChildAuthFilterImpl implements IMosipAuthFilter {
 		List<Object> deniedFactors = Stream.of(factorsDeniedForChild)
 											.map(String::toLowerCase)
 											.collect(Collectors.toList());
-		if(deniedFactors.contains(OTP) && authRequest.getRequestedAuth().isOtp()) {
+		if(deniedFactors.contains(OTP) && AuthTypeUtil.isOtp(authRequest)) {
 			throw new IdAuthenticationFilterException(
 					IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorCode(),
-					String.format(IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorMessage(), OTP));
+					String.format(ERROR_MSG_UNSUPPORTED_AUTH_TYPE, OTP));
 		} 
 
-		if(deniedFactors.contains(DEMO) && authRequest.getRequestedAuth().isDemo()) {
+		if(deniedFactors.contains(DEMO) && AuthTypeUtil.isDemo(authRequest)) {
 			throw new IdAuthenticationFilterException(
 					IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorCode(),
-					String.format(IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorMessage(), DEMO));
+					String.format(ERROR_MSG_UNSUPPORTED_AUTH_TYPE, DEMO));
 		} 
 
-		if(deniedFactors.contains(BIO) && authRequest.getRequestedAuth().isBio()) {
+		if(deniedFactors.contains(BIO) && AuthTypeUtil.isBio(authRequest)) {
 			throw new IdAuthenticationFilterException(
 					IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorCode(),
-					String.format(IdAuthenticationErrorConstants.AUTH_TYPE_NOT_SUPPORTED.getErrorMessage(), BIO));
+					String.format(ERROR_MSG_UNSUPPORTED_AUTH_TYPE, BIO));
 		} 
 		
 	}
