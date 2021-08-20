@@ -627,8 +627,7 @@ public class BookingServiceUtil {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		try {
-			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url,
-					HttpMethod.GET, entity,
+			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
