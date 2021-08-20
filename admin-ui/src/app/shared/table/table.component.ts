@@ -96,9 +96,13 @@ export class TableComponent implements OnInit, OnChanges {
       currentRouteType = this.router.url.split('/')[2];
       id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     }
-    console.log("specData>>>"+specData);
+    
     if (specData.callBackFunction && specData.callBackFunction !== '') {
-      this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
+      if (currentRouteType.toLowerCase() === 'blacklisted-words') {
+        this.commonService[specData.callBackFunction]({...data}, specData.redirectURL +"$"+data.langCode, id.idKey);
+      }else{
+        this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
+      }
     }
   }
 

@@ -1,0 +1,915 @@
+{
+	"menuItems": {
+		"item1": {
+			"title": "घर"
+		},
+		"item2": {
+			"title": "संसाधन",
+			"subItem1": "केंद्र",
+			"subItem2": "डिवाइस",
+			"subItem3": "उपयोगकर्ता",
+			"subItem4": "मशीनें"
+		},
+		"item3": {
+			"title": "मास्टर डेटा"
+		},
+		"item4": {
+			"title": "पैकेट स्थिति"
+		},
+		"item5": {
+			"title": "रोकें / फिर से शुरू करें RID"
+		},
+		"item6": {
+			"title": "थोक अपलोड",
+			"subItem1": "मास्टर डेटा",
+			"subItem2": "पैकेट"
+		},
+		"item7": {
+			"title": "कुंजी प्रबंधक",
+			"subItem1": "CSR जेनरेट करें",
+			"subItem2": "जेनरेट मास्टरकी",
+			"subItem3": "गेट सर्टिफिकेट",
+			"subItem4": "प्रमाणपत्र अपलोड करें",
+			"subItem5": "अन्य डोमेन प्रमाणपत्र अपलोड करें"
+		}
+	},
+
+	"dashboard": {
+
+		"welcomeMessage": "मोसिप एडमिन पोर्टल में आपका स्वागत है!"
+	},
+	"center": {
+		"title": "केंद्र",
+		"center-detail-view": "केंद्र विवरण दृश्य",
+		"center-name": "केंद्र का नाम",
+		"center-id": "सेंटर आईडी",
+		"status": "स्थिति",
+		"created-on": "बनाया गया",
+		"created-by": "बनाया गया",
+		"updated-on": "अपडेटेड ऑन",
+		"updated-by": "द्वारा अद्यतन",
+		"center-details": "केंद्र विवरण",
+		"registration-center-name": "पंजीकरण केंद्र का नाम",
+		"registration-center-type": "पंजीकरण केंद्र प्रकार",
+		"contact-person": "संपर्क व्यक्ति - वैकल्पिक",
+		"contact-number": "संपर्क नंबर - वैकल्पिक",
+		"location-details": "स्थान विवरण",
+		"longitude": "देशांतर",
+		"latitude": "अक्षांश",
+		"address1": "पता पंक्ति 1",
+		"address2": "पता पंक्ति 2 - वैकल्पिक",
+		"address3": "पता पंक्ति 3 - वैकल्पिक",
+		"region": "क्षेत्र",
+		"province": "प्रांत",
+		"city": "शहर",
+		"laa": "जोन",
+		"postal-code": "डाक कोड",
+		"zone": "प्रशासनिक क्षेत्र",
+		"operational-details": "ऑपरेशनल विवरण",
+		"holiday-zone": "हॉलिडे ज़ोन",
+		"working-hrs": "काम के घंटे - वैकल्पिक",
+		"no-kiosk": "सं.कियोस्क",
+		"per-kiosk-process-time": "प्रति कियोस्क प्रक्रिया समय (मिनट)",
+		"start-time": "प्रारंभ समय",
+		"end-time": "एंड टाइम",
+		"lunch-start-time": "लंच का प्रारंभ समय - वैकल्पिक",
+		"lunch-end-time": "लंच एंड टाइम - वैकल्पिक",
+		"edit": "संपादित करें",
+		"create": "बनाएं",
+		"cancel": "रद्द करें",
+		"language": "हिंदी",
+		"keyboard-tooltip": "वर्चुअल कीबोर्ड (अंग्रेज़ी) के लिए क्लिक करें",
+		"isActive": "स्थिति",
+		"update": "अपडेट",
+		"workingDays": "कार्य दिवस",
+		"holidays": "असाधारण छुट्टियाँ",
+		"add-button": "जोड़ें",
+		"datepicker-placeholder": "एक तिथि चुनें",
+		"devices-tooltip": "डिवाइस में फ़िंगरप्रिंट स्कैनर, आइरिस स्कैनर, वेब कैमरा, प्रिंटर शामिल है",
+		"selectLanguage": "भाषा चुनें",
+		"editCommonDetails": "कृपया अन्य केंद्र विवरण यहां संपादित करें",
+		"validationMessages": {
+			"name": {
+				"required": "केंद्र का नाम आवश्यक है",
+				"max-length": "अधिकतम लंबाई से अधिक (128)"
+			},
+			"centerTypeCode": {
+				"required": "केंद्र प्रकार आवश्यक है"
+			},
+			"contactPerson": {
+				"max-length": "अधिकतम लंबाई से अधिक (128)"
+			},
+			"contactPhone": {
+				"max-length": "अधिकतम लंबाई से अधिक (16)"
+			},
+			"longitude": {
+				"required": "देशांतर आवश्यक है",
+				"max-length": "अधिकतम लंबाई (32) से अधिक हो गई",
+				"validLatLong": "दशमलव के बाद कम से कम 4 अंक अनिवार्य हैं",
+				"validNumber": "कृपया केवल अंक दर्ज करें"
+			},
+			"latitude": {
+				"required": "देशांतर आवश्यक है",
+				"max-length": "अधिकतम लंबाई (32) से अधिक हो गई",
+				"validLatLong": "दशमलव के बाद कम से कम 4 अंक अनिवार्य हैं",
+				"validNumber": "कृपया केवल अंक दर्ज करें"
+			},
+			"addressLine1": {
+				"required": "पता पंक्ति 1 आवश्यक है",
+				"max-length": "अधिकतम लंबाई (256) से अधिक हो गई"
+			},
+			"addressLine2": {
+				"max-length": "अधिकतम लंबाई (256) से अधिक हो गई"
+			},
+			"addressLine3": {
+				"max-length": "अधिकतम लंबाई (256) से अधिक हो गई"
+			},
+			"region": {
+				"required": "क्षेत्र आवश्यक है"
+			},
+			"province": {
+				"required": "प्रांत आवश्यक है"
+			},
+			"city": {
+				"required": "शहर आवश्यक है"
+			},
+			"laa": {
+				"required": "क्षेत्र आवश्यक है"
+			},
+			"postalCode": {
+				"required": "डाक कोड आवश्यक है"
+			},
+			"zone": {
+				"required": "प्रशासनिक क्षेत्र आवश्यक है"
+			},
+			"holidayZone": {
+				"required": "अवकाश क्षेत्र आवश्यक है"
+			},
+			"noKiosk": {
+				"required": "कियोस्क की संख्या आवश्यक है",
+				"min": "कियोस्क की न्यूनतम संख्या 0 है",
+				"invalidNoKiosk": "कियोस्क की अमान्य संख्या दर्ज की गई"
+			},
+			"processingTime": {
+				"required": "प्रति कियोस्क प्रसंस्करण समय आवश्यक है"
+			},
+			"startTime": {
+				"required": "केंद्र प्रारंभ समय आवश्यक है"
+			},
+			"endTime": {
+				"required": "केंद्र समाप्ति समय आवश्यक है"
+			},
+			"workingDays": {
+				"required": "कृपया कम से कम एक दिन चुनें"
+			}
+		},
+		"popupMessages": {
+			"create": {
+				"title": "पुष्टिकरण",
+				"message": ["आप ", " में एक पंजीकरण केंद्र बनाने जा रहे हैं। कृपया सुनिश्चित करें कि सभी जानकारी सही है।", "एक बार पुष्टि करने के बाद केंद्र आईडी जनरेट हो जाएगा"],
+				"yesBtnText": "पुष्टि करें",
+				"noBtnText": "रद्द करें",
+				"mandatorySecondaryFields": "आपने माध्यमिक भाषा में अनिवार्य डेटा नहीं भरा है। इसलिए पंजीकरण केंद्र केवल प्राथमिक भाषा के लिए बनाया/अपडेट किया जाएगा। क्या आप अभी भी जारी रखना चाहते हैं?"
+			},
+			"edit": {
+				"title": "पुष्टिकरण",
+				"message": "आप एक पंजीकरण केंद्र को अपडेट करने वाले हैं। कृपया सुनिश्चित करें कि सभी जानकारी सही है",
+				"yesBtnText": "पुष्टि करें",
+				"noBtnText": "रद्द करें",
+				"mandatorySecondaryFields": "आपने माध्यमिक भाषा में अनिवार्य डेटा नहीं भरा है। इसलिए पंजीकरण केंद्र केवल प्राथमिक भाषा के लिए अपडेट किया जाएगा। क्या आप अभी भी जारी रखना चाहते हैं?"
+			},
+			"update-success": {
+				"title": "सफलता",
+				"message": ["केंद्र का विवरण सफलतापूर्वक अपडेट किया गया। \n \n केंद्र आईडी: ", " \n \n केंद्र का नाम: "],
+				"btnTxt": "ओके"
+			},
+			"update-error": {
+				"title": "त्रुटि",
+				"message": "केंद्र को अपडेट करने में कुछ समस्या थी। कृपया फिर से प्रयास करें",
+				"btnTxt": "ओके"
+			},
+			"create-success": {
+				"title": "सफलता",
+				"message": ["केंद्र आईडी के साथ सफलतापूर्वक केंद्र बनाया गया: ", " और केंद्र का नाम: "],
+				"btnTxt": "ओके"
+			},
+			"create-error": {
+				"title": "त्रुटि",
+				"message": "केंद्र बनाने में कुछ समस्या थी। कृपया फिर से प्रयास करें",
+				"btnTxt": "ओके"
+			},
+			"navigation-popup": {
+				"title": "पुष्टिकरण",
+				"message": "क्या आप वाकई इस पेज से दूर नेविगेट करना चाहते हैं? कोई भी सहेजा नहीं गया डेटा खो जाएगा।",
+				"yesBtnTxt": "छोड़ो",
+				"noBtnTxt": "स्टे"
+			},
+			"noData": {
+				"title": "त्रुटि",
+				"message": "कोई डेटा नहीं मिला",
+				"btnTxt": "ओके"
+			},
+			"lunchTimeValidation": {
+				"title": "त्रुटि",
+				"message": "कृपया लंच का समय चुनने से पहले केंद्र का समय चुनें",
+				"btnTxt": "ओके"
+			}
+		}
+	},
+	"singleView": {
+		"errorMessages": [
+			"कोई रिकॉर्ड नहीं मिला",
+			"एक तकनीकी त्रुटि हुई है"
+		],
+		"buttonText": "ओके",
+		"title": "त्रुटि"
+	},
+	"masterData": {
+		"master-data": "मास्टर डेटा",
+		"total-no": "कुल नहीं",
+		"common": "आम",
+		"device-definition": "डिवाइस परिभाषा",
+		"machine-definition": "मशीन परिभाषा",
+		"document-definition": "दस्तावेज़ परिभाषा",
+		"doc-category-mapping": "दस्तावेज़ श्रेणी - प्रकार मानचित्रण",
+		"category": "श्रेणी",
+		"mapped-documents": "मैप किए गए दस्तावेज़",
+		"unmapped-documents": "अनमैप्ड डॉक्यूमेंट्स",
+		"masterDataTypes": "मास्टरडेटा प्रकार",
+		"dynamicField": "डायनेमिक फील्ड",
+		"createDynamicField": "नया गतिशील क्षेत्र बनाएँ"
+	},
+	"masterdataupload": {
+		"title": "मास्टर डेटा अपलोड"
+	},
+	"devices": {
+		"id": "कोड",
+		"title": "डिवाइस",
+		"header": "डिवाइस",
+		"name": "डिवाइस का नाम",
+		"serialNumber": "सीरियल नंबर",
+		"macAddress": "मैक एड्रेस",
+		"ipAddress": "आईपी एड्रेस",
+		"validity": "वैध दिनांक समय",
+		"isActive": "स्थिति",
+		"zone": "प्रशासनिक क्षेत्र",
+		"deviceSpecId": "डिवाइस विशिष्ट नाम",
+		"language": "हिंदी",
+		"edit": "संपादित करें",
+		"create": "बनाएं",
+		"cancel": "रद्द करें",
+		"status": "स्थिति",
+		"keyboard-tooltip": "वर्चुअल कीबोर्ड (अंग्रेज़ी) के लिए क्लिक करें",
+		"errorMessages": {
+			"title": "त्रुटि",
+			"message": "कोई डेटा नहीं मिला",
+			"btnTxt": "ओके"
+		},
+		"validationMessages": {
+			"name": {
+				"required": "डिवाइस का नाम आवश्यक है"
+			},
+			"serialNumber": {
+				"required": "सीरियल नंबर आवश्यक है"
+			},
+			"macAddress": {
+				"required": "मैक पता आवश्यक है"
+			},
+			"ipAddress": {
+				"required": "आईपी पता आवश्यक है"
+			},
+			"validity": {
+				"required": "वैधता आवश्यक है"
+			},
+			"isActive": {
+				"required": "स्थिति आवश्यक है"
+			},
+			"zone": {
+				"required": "प्रशासनिक क्षेत्र आवश्यक है"
+			},
+			"deviceSpecId": {
+				"required": "डिवाइस विशिष्ट आईडी आवश्यक है"
+			},
+			"regCenterId": {
+				"required": "केंद्र का नाम आवश्यक है"
+			}
+		},
+		"popupMessages": {
+			"create": {
+				"title": "पुष्टिकरण",
+				"message": ["आप ", " में एक पंजीकरण उपकरण बनाने जा रहे हैं। कृपया सुनिश्चित करें कि सभी जानकारी सही है। पुष्टि करने के बाद डिवाइस आईडी उत्पन्न हो जाएगी"],
+				"yesBtnText": "पुष्टि करें",
+				"noBtnText": "रद्द करें",
+				"mandatorySecondaryFields": "आपने माध्यमिक भाषा में अनिवार्य डेटा नहीं भरा है। पंजीकरण उपकरण केवल प्राथमिक भाषा में बनाया जाएगा। क्या आप अभी भी जारी रखना चाहते हैं?"
+			},
+			"edit": {
+				"title": "पुष्टिकरण",
+				"message": "आप एक रजिस्ट्रेशन डिवाइस को अपडेट करने वाले हैं। कृपया सुनिश्चित करें कि सभी जानकारी सही है",
+				"yesBtnText": "पुष्टि करें",
+				"noBtnText": "रद्द करें",
+				"mandatorySecondaryFields": "आपने माध्यमिक भाषा में अनिवार्य डेटा नहीं भरा है। पंजीकरण उपकरण केवल प्राथमिक भाषा में बनाया जाएगा। क्या आप अभी भी जारी रखना चाहते हैं?"
+			},
+			"update-success": {
+				"title": "सफलता",
+				"message": ["डिवाइस का विवरण सफलतापूर्वक अपडेट किया गया। \n डिवाइस आईडी: ", " \n डिवाइस का नाम: "],
+				"btnTxt": "ओके"
+			},
+			"update-error": {
+				"title": "त्रुटि",
+				"message": "डिवाइस को अपडेट करने में कुछ समस्या थी। कृपया पुन: प्रयास करें",
+				"btnTxt": "ओके"
+			},
+			"create-success": {
+				"title": "सफलता",
+				"message": ["डिवाइस आईडी के साथ डिवाइस सफलतापूर्वक बनाया गया: ", " और डिवाइस का नाम: "],
+				"btnTxt": "ओके"
+			},
+			"create-error": {
+				"title": "सफलता",
+				"message": "डिवाइस बनाने में कुछ समस्या थी। कृपया फिर से कोशिश करें",
+				"btnTxt": "ओके"
+			},
+			"navigation-popup": {
+				"title": "पुष्टिकरण",
+				"message": "क्या आप वाकई इस पेज से दूर नेविगेट करना चाहते हैं? कोई भी सहेजा नहीं गया डेटा खो जाएगा।",
+				"yesBtnTxt": "छोड़ो",
+				"noBtnTxt": "स्टे"
+			},
+			"noData": {
+				"title": "त्रुटि",
+				"message": "कोई डेटा नहीं मिला",
+				"btnTxt": "ओके"
+			}
+		}
+	},
+	"machines": {
+		"title": "त्रुटि",
+		"header": "मशीन",
+		"name": "मशीन का नाम",
+		"machineSpecId": "मशीन स्पेक आईडी",
+		"serialNumber": "सीरियल नंबर",
+		"macAddress": "मैक एड्रेस",
+		"ipAddress": "आईपी एड्रेस",
+		"validity": "वैध दिनांक समय",
+		"isActive": "स्थिति",
+		"zone": "प्रशासनिक क्षेत्र",
+		"publicKey": "सार्वजनिक कुंजी",
+		"signPublicKey": "सार्वजनिक कुंजी पर हस्ताक्षर करें",
+		"language": "हिंदी",
+		"edit": "संपादित करें",
+		"create": "बनाएं",
+		"cancel": "रद्द करें",
+		"update": "अपडेट",
+		"keyboard-tooltip": "वर्चुअल कीबोर्ड (अंग्रेज़ी) के लिए क्लिक करें",
+		"errorMessages": {
+			"title": "त्रुटि",
+			"message": "कोई डेटा नहीं मिला",
+			"btnTxt": "ओके"
+		},
+		"validationMessages": {
+			"name": {
+				"required": "मशीन का नाम आवश्यक है"
+			},
+			"serialNumber": {
+				"required": "सीरियल नंबर आवश्यक है"
+			},
+			"macAddress": {
+				"required": "मैक पता आवश्यक है"
+			},
+			"ipAddress": {
+				"required": "आईपी पता आवश्यक है"
+			},
+			"validity": {
+				"required": "वैधता आवश्यक है"
+			},
+			"isActive": {
+				"required": "स्थिति आवश्यक है"
+			},
+			"zone": {
+				"required": "प्रशासनिक क्षेत्र आवश्यक है"
+			},
+			"machineSpecId": {
+				"required": "मशीन विशिष्ट आईडी आवश्यक है"
+			},
+			"publicKey": {
+				"required": "सार्वजनिक कुंजी आवश्यक है"
+			},
+			"signPublicKey": {
+				"required": "सार्वजनिक कुंजी पर हस्ताक्षर करना आवश्यक है"
+			}
+		},
+		"popupMessages": {
+			"create": {
+				"title": "पुष्टिकरण",
+				"message": ["आप मशीन का विवरण बनाने वाले हैं ", "। कृपया सुनिश्चित करें कि सभी जानकारी सही है। पुष्टि करने के बाद मशीन आईडी जेनरेट हो जाएगी"],
+				"yesBtnText": "पुष्टि करें",
+				"noBtnText": "रद्द करें",
+				"mandatorySecondaryFields": "आपने माध्यमिक भाषा में अनिवार्य डेटा नहीं भरा है। मशीन विवरण केवल प्राथमिक भाषा में बनाया जाएगा। क्या आप अभी भी जारी रखना चाहते हैं?"
+			},
+			"edit": {
+				"title": "पुष्टिकरण ",
+				"message": "आप मशीन के विवरण अपडेट करने वाले हैं। कृपया सुनिश्चित करें कि सभी जानकारी सही है",
+				"yesBtnText": "पुष्टि करें",
+				"noBtnText": "रद्द करें",
+				"mandatorySecondaryFields": "आपने माध्यमिक भाषा में अनिवार्य डेटा नहीं भरा है। मशीन विवरण केवल प्राथमिक भाषा में बनाया जाएगा। क्या आप अभी भी जारी रखना चाहते हैं?"
+			},
+			"update-success": {
+				"title": "सफलता",
+				"message": ["मशीन विवरण सफलतापूर्वक अपडेट किया गया। मशीन आईडी: ", " और मशीन का नाम: "],
+				"बीटीएन टेक्स्ट": "ओके"
+			},
+			"update-error": {
+				"title": "त्रुटि",
+				"message": "मशीन विवरण अपडेट करने में कुछ समस्या थी। कृपया पुन: प्रयास करें",
+				"btnTxt": "ओके"
+			},
+			"create-success": {
+				"title": "सफलता",
+				"message": ["मशीन आईडी के साथ मशीन सफलतापूर्वक बनाई गई:और मशीन का नाम: "],
+				"btnTxt": "ओके"
+			},
+			"create-error": {
+				"title": "त्रुटि",
+				"message": "मशीन विवरण बनाने में कुछ समस्या थी। कृपया पुन: प्रयास करें",
+				"btnTxt": "ओके"
+			},
+			"navigation-popup": {
+				"title": "पुष्टिकरण",
+				"message": "क्या आप वाकई इस पेज से दूर नेविगेट करना चाहते हैं? कोई भी सहेजा नहीं गया डेटा खो जाएगा।",
+				"yesBtnTxt": "छोड़ो",
+				"noBtnTxt": "स्टे"
+			},
+			"noData": {
+				"title": "त्रुटि",
+				"message": "कोई डेटा नहीं मिला",
+				"btnTxt": "ओके"
+			}
+		}
+	},
+	"errorPopup": {
+		"noData": {
+			"title": "कोई रिकॉर्ड नहीं मिला",
+			"message": "अनुरोधित खोज के लिए कोई रिकॉर्ड मौजूद नहीं है",
+			"btnTxt": "ओके"
+		},
+		"technicalError": {
+			"title": "तकनीकी त्रुटि",
+			"message": "एक तकनीकी त्रुटि हुई है। जारी रखने के लिए कृपया अपने पेज को रीफ्रेश करें या बाद में पुनः प्रयास करें",
+			"btnTxt": "ओके"
+		},
+		"unauthorized": {
+			"title": "प्राधिकरण त्रुटि",
+			"message": "आप इस पेज पर जाने के लिए अधिकृत नहीं हैं",
+			"btnTxt": "ओके"
+		}
+	},
+	"validationMessages": {
+		"required": "कृपया दिनांक सीमा के अनुसार फ़िल्टर करने के लिए 'प्रति' और 'प्रेषक' दोनों फ़ील्ड भरें",
+		"range": "'टू' तारीख 'से' तारीख से पहले की नहीं हो सकती",
+		"invalid": "कृपया दिनांक के लिए एक मान्य मान चुनें"
+	},
+	"packet-status": {
+		"header": "पैकेट स्थिति",
+		"input-text": "आईडी दर्ज करें",
+		"text": "कृपया पैकेट स्थिति की जांच करने के लिए पंजीकरण आईडी दर्ज करें",
+		"error": "अमान्य पंजीकरण आईडी दर्ज",
+		"id": "पंजीकरण आईडी",
+		"status": "स्थिति",
+		"viewMore": "और देखें",
+		"viewLess": "कम देखें",
+		"errorMessages": {
+			"title": "त्रुटि",
+			"message": "RID नहीं मिला",
+			"btnTxt": "ओके"
+		},
+		"statuscheckFailed": "विफल",
+		"statuscheckCompleted": "पूर्ण"
+	},
+	"packet-upload": {
+		"header": "पैकेट अपलोड",
+		"singleView": {
+			"detailed-view-txt": "विस्तृत दृश्य",
+			"status-txt": "स्थिति",
+			"uploadedBy-txt": "द्वारा अपलोड किया गया",
+			"count-txt": "गिनती",
+			"dataAndTime-txt": "दिनांक और समय",
+			"failureDescription-txt": "विफलता विवरण",
+			"placeHolder1-txt": "टेबल का नाम ",
+			"placeHolder2-txt": "ऑपरेशंस"
+		},
+		"createView": {
+			"input-btn-text": "फाइल चुनें",
+			"input-text1": "फ़ाइल अपलोड करें...",
+			"input-text2": "अपनी फाइल अपलोड करें",
+			"upload-btn": "अपलोड",
+			"cancel-btn": "रद्द करें",
+			"popupMessaages": {
+				"popup1": {
+					"uploadConfirm": "पैकेट अपलोड की पुष्टि करें",
+					"message": "पैकेट संसाधित किया जाएगा।\n कृपया सुनिश्चित करें कि सभी जानकारी सही है।\n\n\n कन्फर्म पर क्लिक करते ही लेनदेन शुरू हो जाएगा।",
+					"confirmBtnTxt": "पुष्टि करें",
+					"cancelBtnTxt": "रद्द करें"
+				},
+				"popup2": {
+					"title": "विफलता!",
+					"btnTxt": "हो गया"
+				},
+				"popup3": {
+					"title": "सफलता",
+					"message": "आपकी फ़ाइल सफलतापूर्वक अपलोड कर दी गई है। \n डेटा अपलोड वर्तमान में प्रगति पर है।\n\n\n लेन-देन आईडी:",
+					"btnTxt": "हो गया"
+				}
+			}
+		}
+	},
+	"actionMessages": {
+		"decommission": {
+			"success-message": ["", "सफलतापूर्वक सेवामुक्त कर दिया गया है"],
+			"success-title": "सफलता",
+			"error-message": ["कमीशन नहीं किया जा सकता", " अभी भी कुछ अन्य संसाधनों के साथ मैप किया गया है। \n कृपया डीकमिशनिंग से पहले संसाधनों को अन-मैप करें"],
+			"error-title": "त्रुटि",
+			"btnTxt": "हो गया",
+			"yesBtnTxt": "पुष्टि करें",
+			"noBtnTxt": "रद्द करें",
+			"confirmation-message": ["क्या आप डिमोशन करना चाहते हैं", "? \n कन्फर्म पर क्लिक करने के बाद आप इस क्रिया को पूर्ववत नहीं कर सकते।"],
+			"confirmation-title": "पुष्टिकरण"
+		},
+		"activate": {
+			"success-message": ["", "सफलतापूर्वक सक्रिय है"],
+			"success-title": "सफलता",
+			"error-message": ["", "सक्रिय नहीं किया जा सका"],
+			"error-title": "त्रुटि",
+			"btnTxt": "हो गया",
+			"yesBtnTxt": "पुष्टि करें",
+			"noBtnTxt": "रद्द करें",
+			"confirmation-message": ["क्या आप सक्रिय करना चाहते हैं ", "? \n आप चाहें तो इसे बाद में निष्क्रिय कर सकते हैं। तब तक इसे सक्रिय के रूप में सेट किया जाएगा"],
+			"confirmation-title": "पुष्टिकरण"
+		},
+		"deactivate": {
+			"success-message": ["", "सफलतापूर्वक निष्क्रिय कर दिया गया है"],
+			"success-title": "सफलता",
+			"error-message": ["", "निष्क्रिय नहीं किया जा सका"],
+			"error-title": "त्रुटि",
+			"btnTxt": "हो गया",
+			"yesBtnTxt": "पुष्टि करें",
+			"noBtnTxt": "रद्द करें",
+			"confirmation-message": ["क्या आप निष्क्रिय करना चाहते हैं ", " ? \n आप चाहें तो इसे बाद में सक्रिय कर सकते हैं। तब तक इसे निष्क्रिय के रूप में सेट किया जाएगा"],
+			"confirmation-title": "पुष्टिकरण"
+
+		},
+
+		"resumeprocessingandremovehotlistedtag": {
+
+			"success-message": ["", " रिज्यूम्ड प्रोसेसिंग और हॉटलिस्टेड टैग से हटा दिया गया है"],
+
+			"success-title": "सफलता",
+
+			"error-message": ["", " प्रसंस्करण फिर से शुरू नहीं किया जा सका और हॉटलिस्टेड टैग से हटाया जा सका"],
+
+			"error-title": "त्रुटि",
+
+			"btnTxt": "हो गया",
+
+			"yesBtnTxt": "पुष्टि करें",
+
+			"noBtnTxt": "रद्द करें",
+
+			"confirmation-message": ["क्या आप एक्शन रिज्यूमे प्रोसेसिंग करना चाहते हैं और RID पर हॉटलिस्टेड टैग को हटाना चाहते हैं", "? \n"],
+
+			"confirmation-title": "पुष्टिकरण"
+
+		},
+
+		"resumefrombeginning": {
+
+			"success-message": ["", "शुरुआत से फिर से शुरू किया गया है"],
+
+			"success-title": "सफलता",
+
+			"error-message": ["", "फिर से शुरू नहीं किया जा सका और हॉटलिस्टेड टैग से हटाया जा सका"],
+
+			"error-title": "त्रुटि",
+
+			"btnTxt": "हो गया",
+
+			"yesBtnTxt": "पुष्टि करें",
+
+			"noBtnTxt": "रद्द करें",
+
+			"confirmation-message": ["क्या आप रिज्यूमे फ्रॉम बिगिनिंग ऑन आरआईडी ", " ? \n"],
+
+			"confirmation-title": "पुष्टिकरण"
+
+		},
+
+		"resumefrombeginningandremovehotlistedtag": {
+
+			"success-message": ["", " शुरुआत से फिर से शुरू किया गया है और हॉटलिस्टेड टैग से हटा दिया गया है"],
+
+			"success-title": "सफलता",
+
+			"error-message": ["", "शुरुआत से फिर से शुरू नहीं किया जा सका और हॉटलिस्टेड टैग से हटाया जा सकता है"],
+
+			"error-title": "त्रुटि",
+
+			"btnTxt": "हो गया",
+
+			"yesBtnTxt": "पुष्टि करें",
+
+			"noBtnTxt": "रद्द करें",
+
+			"confirmation-message": ["क्या आप एक्शन रिज्यूम फ्रॉम बिगिनिंग एंड रिमूव हॉटलिस्टेड टैग को RID करना चाहते हैं।", " ? \n"],
+
+			"confirmation-title": "पुष्टिकरण"
+
+		},
+
+		"stopprocessing": {
+
+			"success-message": ["", " बंद कर दिया गया"],
+
+			"success-title": "सफलता",
+
+			"error-message": ["", "रोका नहीं जा सका"],
+
+			"error-title": "त्रुटि",
+
+			"btnTxt": "हो गया",
+
+			"yesBtnTxt": "पुष्टि करें",
+
+			"noBtnTxt": "रद्द करें",
+
+			"confirmation-message": ["क्या आप कार्रवाई करना चाहते हैं RID पर प्रसंस्करण रोकें ", " ? \n"],
+
+			"confirmation-title": "पुष्टिकरण"
+		},
+        "deleteUser": {
+            "success-message": ["", " हटा दिया गया है"],
+            "success-title": "सफलता",
+            "error-message": ["", " हटाया नहीं जा सकता"],
+            "error-title": "त्रुटि",
+            "btnTxt": "हो गया",
+            "yesBtnTxt": "पुष्टि करें",
+            "noBtnTxt": "रद्द करें",
+            "confirmation-message": ["क्या आप उपयोगकर्ता को हटाना चाहते हैं ", " ? \n"],
+            "confirmation-title": "पुष्टिकरण"
+        }
+	},
+	"detailView": {
+		"detail": "विस्तार देखें"
+	},
+	"users": {
+		"redirectMessage": "कीक्लोक की उपयोगकर्ता सूची पर रीडायरेक्ट करने के लिए यहां क्लिक करें"
+	},
+	"bulkUpload": {
+		"operation": "ऑपरेशन",
+		"operationCtrl": [{
+			"label": "इन्सर्ट",
+			"value": "इन्सर्ट"
+		}, {
+			"label": "अपडेट",
+			"value": "अपडेट"
+		}, {
+			"label": "डिलीट",
+			"value": "हटाएं"
+		}],
+		"tableName": "तालिका का नाम चुनें",
+		"chooseFile": "फाइल चुनें",
+		"uploadFile": "अपनी फाइल अपलोड करें",
+		"upload": "अपलोड",
+		"cancel": "रद्द करें",
+		"tableNames": [{
+			"id": "applicant_valid_document",
+			"value": "आवेदक वैध दस्तावेज "
+		}, {
+			"id": "appl_form_type",
+			"value": "आवेदन "
+		}, {
+			"id": "biometric_attribute",
+			"value": "बायोमेट्रिक विशेषता "
+		}, {
+			"id": "biometric_type",
+			"value": "बॉयोमीट्रिक प्रकार "
+		}, {
+			"id": "blacklisted_words",
+			"value": "ब्लैक लिस्टेड शब्द "
+		}, {
+			"id": "daysofweek_list",
+			"value": "सप्ताह के दिन"
+		}, {
+			"id": "device_master",
+			"value": "युक्ति "
+		}, {
+			"id": "registered_device_master",
+			"value": "डिवाइस रजिस्टर "
+		}, {
+			"id": "device_spec",
+			"value": "डिवाइस विशिष्टता "
+		}, {
+			"id": "device_type",
+			"value": "उपकरण का प्रकार "
+		}, {
+			"id": "doc_category",
+			"value": "दस्तावेज़ श्रेणी "
+		}, {
+			"id": "doc_type",
+			"value": "दस्तावेज़ का प्रकार "
+		}, {
+			"id": "dynamic_field",
+			"value": "गतिशील फ़ील्ड "
+		}, {
+			"id": "reg_exceptional_holiday",
+			"value": "असाधारण छुट्टी "
+		}, {
+			"id": "foundational_trust_provider",
+			"value": "फाउंडेशनल ट्रस्ट प्रोवाइडर "
+		}, {
+			"id": "gender",
+			"value": "लिंग "
+		}, {
+			"id": "loc_holiday",
+			"value": "छुट्टी "
+		}, {
+			"id": "identity_schema",
+			"value": "पहचान स्कीमा "
+		}, {
+			"id": "id_type",
+			"value": "आईडी का प्रकार"
+		}, {
+			"id": "individual_type",
+			"value": "व्यक्तिगत प्रकार "
+		}, {
+			"id": "language",
+			"value": "भाषा "
+		}, {
+			"id": "location",
+			"value": "स्थान "
+		}, {
+			"id": "loc_hierarchy_list",
+			"value": "स्थान पदानुक्रम "
+		}, {
+			"id": "machine_master",
+			"value": "मशीन "
+		}, {
+			"id": "machine_spec",
+			"value": "मशीन विशिष्टता "
+		}, {
+			"id": "machine_type",
+			"value": "मशीन की तरह"
+		}, {
+			"id": "module_detail",
+			"value": "मॉड्यूल विवरण "
+		}, {
+			"id": "mosip_device_service",
+			"value": "MOSIP डिवाइस सेवा"
+		}, {
+			"id": "reason_category",
+			"value": "कारण श्रेणी "
+		}, {
+			"id": "reason_list",
+			"value": "कारण सूची "
+		}, {
+			"id": "reg_exceptional_holiday",
+			"value": "पंजीकरण असाधारणछुट्टी "
+		}, {
+			"id": "registered_device_master",
+			"value": "पंजीकृत डिवाइस "
+		}, {
+			"id": "registration_center",
+			"value": "पंजीकरण केंद्र "
+		}, {
+			"id": "reg_center_device",
+			"value": "पंजीकरण केंद्र डिवाइस "
+		}, {
+			"id": "reg_center_machine",
+			"value": "पंजीकरण केंद्र मशीन "
+		}, {
+			"id": "reg_center_machine_device",
+			"value": "पंजीकरण केंद्र मशीन डिवाइस "
+		}, {
+			"id": "reg_center_type",
+			"value": "पंजीकरण केंद्र प्रकार "
+		}, {
+			"id": "reg_center_user",
+			"value": "पंजीकरण केंद्र उपयोगकर्ता "
+		}, {
+			"id": "reg_center_user_machine",
+			"value": "पंजीकरण केंद्र उपयोगकर्ता मशीन "
+		}, {
+			"id": "reg_device_sub_type",
+			"value": "पंजीकरण उपकरण उप प्रकार "
+		}, {
+			"id": "reg_device_type",
+			"value": "पंजीकरण उपकरण प्रकार "
+		}, {
+			"id": "reg_working_nonworking",
+			"value": "पंजीकरण कार्य गैर-कामकाजी "
+		}, {
+			"id": "schema_def",
+			"value": "स्कीमा परिभाषा "
+		}, {
+			"id": "template",
+			"value": "टेम्पलेट "
+		}, {
+			"id": "template_file_format",
+			"value": "टेम्पलेट फ़ाइल स्वरूप "
+		}, {
+			"id": "template_type",
+			"value": "टेम्पलेट प्रकार "
+		}, {
+			"id": "title",
+			"value": "शीर्षक "
+		}, {
+			"id": "user_detail",
+			"value": "उपयोगकर्ता की जानकारी "
+		}, {
+			"id": "valid_document",
+			"value": "वैध दस्तावेज़ "
+		}, {
+			"id": "zone",
+			"value": "क्षेत्र"
+		}, {
+			"id": "zone_user",
+			"value": "क्षेत्र उपयोगकर्ता "
+		}]
+	},
+	"filters": {
+		"titleTxt": "फ़िल्टर जोड़ें",
+		"footerButtons": {
+			"resetTxt": "रीसेट",
+			"cancelTxt": "रद्द करें",
+			"applyTxt": "लागू करें"
+		}
+	},
+	"isActive": {
+		"Active": "सक्रिय",
+		"InActive": "निष्क्रिय"
+	},
+	"generatecsr": {
+		"title": "सीएसआर उत्पन्न करें",
+		"applicationId": "एप्लिकेशन आईडी",
+		"referenceId": "संदर्भ आईडी",
+		"commonName": "सामान्य नाम",
+		"organization": "संगठन",
+		"organizationUnit": "संगठन इकाई",
+		"location": "स्थान",
+		"state": "राज्य",
+		"country": "देश",
+		"button": "उत्पन्न"
+	},
+	"generatemasterkey": {
+		"title": "मास्टरकी उत्पन्न करें",
+		"applicationId": "एप्लिकेशन आईडी",
+		"referenceId": "संदर्भ आईडी",
+		"commonName": "सामान्य नाम",
+		"organization": "संगठन",
+		"organizationUnit": "संगठन इकाई",
+		"location": "स्थान",
+		"state": "राज्य",
+		"country": "देश",
+		"force": "बल",
+		"objectType": "ऑब्जेक्ट टाइप",
+		"button": "उत्पन्न"
+	},
+	"getcertificate": {
+		"title": "प्रमाण पत्र प्राप्त करें",
+		"applicationId": "एप्लिकेशन आईडी",
+		"referenceId": "संदर्भ आईडी",
+		"button": "प्रमाण पत्र प्राप्त क"
+	},
+	"uploadcertificate": {
+		"title": "प्रमाण पत्र अपलोड करें",
+		"applicationId": "एप्लिकेशन आईडी",
+		"referenceId": "संदर्भ आईडी",
+		"chooseFile": "फाइल चुनें",
+		"uploadYourFile": "अपनी फाइल अपलोड करें",
+		"button": "उत्पन्न करें"
+	},
+	"uploadotherdomaincertificate": {
+		"title": "अन्य डोमेन प्रमाणपत्र अपलोड करें",
+		"applicationId": "एप्लिकेशन आईडी",
+		"referenceId": "संदर्भ आईडी",
+		"chooseFile": "फाइल चुनें",
+		"uploadYourFile": "अपनी फाइल अपलोड करें",
+		"button": "उत्पन्न"
+	},
+	"genericerror": {
+		"fieldValidation": "यह फ़ील्ड आवश्यक है"
+	},
+    "genericmessage":{
+        "successLabel":"सफलता",
+        "successButton":"ठीक है",
+        "errorLabel":"गलत",
+        "createMessage":"सफलतापूर्वक बनाया गया",
+        "updateMessage":"सफलतापूर्वक उत्परिवर्तित"
+    },
+    "genericbutton":{
+        "save":"सहेजें"
+    },
+    "headermessage":{
+        "vesion":"व्यवस्थापक UI संस्करण",
+        "Zone":"क्षेत्र",
+        "Logout":"लॉग आउट"
+    }
+}

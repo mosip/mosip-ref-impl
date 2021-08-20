@@ -6,6 +6,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { KeymanagerService } from 'src/app/core/services/keymanager.service';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { RequestModel } from 'src/app/core/models/request.model';
+import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from "src/app/core/services/header.service";
 
 @Component({
   selector: 'app-create',
@@ -27,6 +29,8 @@ export class CreateComponent {
   private formBuilder: FormBuilder,
   private router: Router,
   private dialog: MatDialog,
+  private translateService: TranslateService,
+  private headerService: HeaderService
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -36,13 +40,14 @@ export class CreateComponent {
   }
 
   initializeComponent() {
+    this.translateService.use(this.headerService.getUserPreferredLanguage());
     this.initializeForm();
   }
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
       applicationId : ['', [Validators.required]],
-      referenceId: ['', [Validators.required]],
+      referenceId: [''],
       commonName: ['', [Validators.required]],
       organization: ['', [Validators.required]],
       organizationUnit: ['', [Validators.required]],

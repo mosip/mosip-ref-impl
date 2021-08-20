@@ -20,6 +20,7 @@ export class CreateComponent {
   uploadForm: FormGroup;
   labelanddatas:any;
   subscribed: any;
+  fileNameError:boolean = false;
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -51,7 +52,7 @@ export class CreateComponent {
   initializeForm() {
     this.uploadForm = this.formBuilder.group({
       category : ['masterdata'],
-      files: [''],
+      files: ['', [Validators.required]],
       fileName: ['', [Validators.required]],
       operation: ['', [Validators.required]],
       tableName: ['', [Validators.required]],
@@ -63,6 +64,8 @@ export class CreateComponent {
       const file = event.target.files[0];
       this.uploadForm.get('files').setValue(file);
       this.uploadForm.get('fileName').setValue(file.name);
+      document.getElementById("fileName").classList.remove('addredborder');
+      this.fileNameError = false;
     }
   }
 
@@ -82,7 +85,7 @@ export class CreateComponent {
         noBtnTxt: "CANCEL"
       };
       const dialogRef = this.dialog.open(DialogComponent, {
-        width: '450px',
+        width: '650px',
         data
       });
       dialogRef.afterClosed().subscribe(response => {   
@@ -93,7 +96,17 @@ export class CreateComponent {
     } else {
       for (const i in this.uploadForm.controls) {
         if (this.uploadForm.controls[i]) {
-          this.uploadForm.controls[i].markAsTouched();
+          if(i === "fileName"){
+            if(!this.uploadForm.get('fileName').value){
+              document.getElementById("fileName").classList.add('addredborder');
+              this.fileNameError = true;
+            }else{
+              console.log("this.uploadForm.get('fileName').value>>>"+this.uploadForm.get('fileName').value);
+            }
+          }else{
+            this.uploadForm.controls[i].markAsTouched();
+          }
+          
         }
       }
     }  

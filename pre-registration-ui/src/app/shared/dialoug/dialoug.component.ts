@@ -27,6 +27,7 @@ export class DialougComponent implements OnInit {
   applicantNumber;
   checkCondition;
   applicantEmail;
+  textDir = localStorage.getItem("dir");
   inputList = [];
   invalidApplicantNumber = false;
   invalidApplicantEmail = false;
@@ -150,62 +151,68 @@ export class DialougComponent implements OnInit {
     this.dataService.logAudit(auditObj).subscribe((res) => {});
   }
 
-  async userRedirection() {
+  async userRedirection(textDirection) {
     if (
       localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       localStorage.getItem(appConstants.NEW_APPLICANT_FROM_PREVIEW) === "true"
     ) {
-      await this.thirdPopUp();
+      await this.thirdPopUp(textDirection);
     } else if (
       localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       Number(localStorage.getItem("noOfApplicant")) > 0
     ) {
-      await this.secondPopUp();
+      await this.secondPopUp(textDirection);
     } else if (
       localStorage.getItem(appConstants.NEW_APPLICANT) === "true" &&
       Number(localStorage.getItem("noOfApplicant")) === 0
     ) {
-      await this.firstPopUp();
+      await this.firstPopUp(textDirection);
     }
   }
 
-  firstPopUp() {
+  firstPopUp(textDirection) {
     const data = {
       case: "MESSAGE",
+      textDir: textDirection,
       message: this.input.alertMessageFirst,
     };
     this.dialogBox
       .open(DialougComponent, {
-        width: "460px",
+        width: "400px",
         data: data,
+        disableClose: true
       })
       .afterClosed()
       .subscribe(() => this.loggingUserOut());
   }
 
-  secondPopUp() {
+  secondPopUp(textDirection) {
     const data = {
       case: "MESSAGE",
+      textDir: textDirection,
       message: this.input.alertMessageSecond,
     };
     this.dialogBox
       .open(DialougComponent, {
-        width: "460px",
+        width: "400px",
         data: data,
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() => this.redirectingUser());
   }
 
-  thirdPopUp() {
+  thirdPopUp(textDirection) {
     const data = {
       case: "MESSAGE",
+      textDir: textDirection,
       message: this.input.alertMessageThird,
     };
     this.dialogBox
       .open(DialougComponent, {
-        width: "460px",
+        width: "400px",
         data: data,
+        disableClose: true,
       })
       .afterClosed()
       .subscribe(() => this.redirectingUser());

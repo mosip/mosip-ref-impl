@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="spinner" *ngIf="!isFetched">
-    <mat-spinner [diameter]="50"></mat-spinner>
+    <mat-spinner></mat-spinner>
   </div>
   <div *ngIf="!isNewApplication && isFetched">
     <div class="card-container">
@@ -53,12 +53,12 @@
               >{{
                 "dashboard.card.text_app_id" | translate
               }}&nbsp;&nbsp;<strong> {{ user.applicationID }}</strong>
-              <mat-icon
+              <!-- <mat-icon
                 class="icon"
                 matTooltip="{{ 'helpText.applicationId' | translate }}"
                 [inline]="true"
                 >help_outline</mat-icon
-              >
+              > -->
             </span>
             <span class="spacer"></span>
             <span
@@ -144,6 +144,7 @@
           </mat-card-content>
           <mat-card-footer>
             <mat-card-actions>
+              <div class="card-content-footer">
               <button
                 mat-button
                 class="footer-btn"
@@ -157,7 +158,7 @@
                 <img
                   src="assets\Modify information_grey.png"
                   class="modifyinfo-btn-img"
-                />{{ "dashboard.card.action_modify_information" | translate }}
+                />&nbsp;{{ "dashboard.card.action_modify_information" | translate }}
               </button>
               <!-- (click)="onSelectUser(user)" -->
               <button
@@ -172,9 +173,9 @@
                 <img
                   src="assets\Modify information_grey.png"
                   class="modifyinfo-btn-img"
-                />{{ "dashboard.card.action_view_information" | translate }}
+                />&nbsp;{{ "dashboard.card.action_view_information" | translate }}
               </button>
-
+              <span class="spacer"></span>
               <button
                 mat-button
                 class="footer-btn"
@@ -185,13 +186,14 @@
                   user.status === appStatusCodes.incomplete
                 "
               >
-                <img src="assets\view.png" class="modifyapp-btn-img" />{{
+                <img src="assets\view.png" class="modifyapp-btn-img" />&nbsp;{{
                   "dashboard.card.action_view_acknowledgement" | translate
                 }}
               </button>
               <!-- <button mat-icon-button class="footer-download-btn">
                 <img src="assets\download.png" class="download-btn-img" />
               </button> -->
+              </div>
             </mat-card-actions>
           </mat-card-footer>
         </mat-card>

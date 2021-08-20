@@ -1,6 +1,6 @@
-<span class="breadcrumb"><a (click)="changePage()">{{'masterData.masterDataTypes' | translate}}</a>&nbsp;&nbsp; / &nbsp;&nbsp;{{mapping.name[primaryLang]}}</span>
+<span class="breadcrumb"><a (click)="changePage()">{{'masterData.masterDataTypes' | translate}}</a>&nbsp;&nbsp; / &nbsp;&nbsp;{{masterDataName}}<!-- <span *ngIf="activatedRoute.snapshot.params.dynamicfieldtype">&nbsp;&nbsp; / &nbsp;&nbsp;{{activatedRoute.snapshot.params.dynamicfieldtype | titlecase}}</span> --></span>
 <ng-container>
-<span><p class="header">{{mapping.name[primaryLang]}}</p></span>
+<span><p class="header">{{masterDataName}}</p></span>
 <mat-card class="mat-elevation-z3">
     <app-toolbar
       *ngIf="

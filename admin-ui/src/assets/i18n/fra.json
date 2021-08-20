@@ -439,7 +439,8 @@
         "mapped-documents": "Documents mappés",
         "unmapped-documents": "Documents non mappés",
         "masterDataTypes": "Types de données maîtres",
-        "dynamicField": "Champ dynamique"
+        "dynamicField": "Champ dynamique",
+        "createDynamicField": "Créer un nouveau champ dynamique"
     },
     "masterdataupload": {
         "title": "Téléchargement des données de base"
@@ -469,7 +470,7 @@
     "packet-status": {
         "header": "Etat du paquet",
         "input-text":"Entrez l'ID",
-        "text": "S'il vous plaît entrer l'ID d'enregistrement pour vérifier l'état du paquet",
+        "text": "Veuillez saisir l'ID d'enregistrement pour vérifier l'état du paquet",
         "error": "ID d'enregistrement non valide entré",
         "id": "ID d'enregistrement",
         "status": "Statut",
@@ -597,6 +598,17 @@
             "noBtnTxt": "Annuler",
             "confirmation-message": ["Voulez-vous effectuer l'action Arrêter le traitement sur RID ", " ? \n"],
             "confirmation-title": "Confirmation"
+        },
+        "deleteUser": {
+            "success-message": ["", " est supprimé"],
+            "success-title": "Succès",
+            "error-message": ["", " ne peut pas être supprimé"],
+            "error-title": "Erreur",
+            "btnTxt": "Fait",
+            "yesBtnTxt": "Confirmer",
+            "noBtnTxt": "Annuler",
+            "confirmation-message": ["Voulez-vous supprimer l'utilisateur", " ? \n"],
+            "confirmation-title": "Confirmation"
         }
     },
     "detailView":{
@@ -623,5 +635,75 @@
             "cancelTxt":"Annuler",
             "applyTxt":"Appliquer"
         }
+    },
+    "isActive":{
+        "Active":"ACTIVE",
+        "InActive":"INACTIVE"
+    },
+    "generatecsr": {
+        "title": "Générer la RSE",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "commonName": "Nom commun",
+        "organization": "Organisation",
+        "organizationUnit": "Unité d'organisation",
+        "location": "Emplacement",
+        "state": "État",
+        "country": "Pays",
+        "button":"produire"
+    },
+    "generatemasterkey": {
+        "title": "Générer le passe-partout",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "commonName": "Nom commun",
+        "organization": "Organisation",
+        "organizationUnit": "Unité d'organisation",
+        "location": "Emplacement",
+        "state": "État",
+        "country": "Pays",
+        "force": "Obliger",
+        "objectType": "Type d'objet",
+        "button":"produire"
+    },
+    "getcertificate": {
+        "title": "Obtenir un certificat",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "button":"Obtenir un certificat"
+    },
+    "uploadcertificate": {
+        "title": "Télécharger le certificat",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "chooseFile" : "Choisir le fichier",
+        "uploadYourFile":"Téléchargez votre fichier",
+        "button":"produire"
+    },
+    "uploadotherdomaincertificate": {
+        "title": "Télécharger un autre certificat de domaine",
+        "applicationId" :"ID d'application",
+        "referenceId": "Pièce d'identité",
+        "chooseFile" : "Choisir le fichier",
+        "uploadYourFile":"Téléchargez votre fichier",
+        "button":"produire"
+    },
+    "genericerror":{
+        "fieldValidation":"Ce champ est requis"
+    },
+    "genericmessage":{
+        "successLabel":"Succès",
+        "successButton":"D'accord",
+        "errorLabel":"Erreur",
+        "createMessage":"Créé avec succès",
+        "updateMessage":"Mis à jour avec succés"
+    },
+    "genericbutton":{
+        "save":"sauver"
+    },
+    "headermessage":{
+        "vesion":"Version de l'interface utilisateur d'administration",
+        "Zone":"Zone",
+        "Logout":"Se déconnecter"
     }
 }

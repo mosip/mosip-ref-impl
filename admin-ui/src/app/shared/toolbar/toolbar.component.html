@@ -12,9 +12,7 @@
         }"
       >
         <img [src]="button.imagePath" height="14px" width="14px"/>
-        <span *ngIf="lang === 'eng'">{{ button.buttonName['eng']}}</span>
-        <span *ngIf="lang === 'fra'">{{ button.buttonName['fra']}}</span>
-        <span *ngIf="lang === 'ara'">{{ button.buttonName['ara']}}</span>
+        <span>{{ button.buttonName[lang]}}</span>
         <span class="filter-placer" *ngIf="button.buttonName.eng === 'Filter' && filtersAppliedFlag">
           <i style="font-size: 16px;" class="material-icons">fiber_manual_record</i>
         </span>

@@ -30,6 +30,8 @@ export class PreviewComponent implements OnInit {
   residenceStatus: any;
   genders: any;
   dataCaptureLabels;
+  apiErrorCodes: any;
+  errorlabels: any;
   identityData = [];
   uiFields = [];
   locationHeirarchy = [];
@@ -65,6 +67,7 @@ export class PreviewComponent implements OnInit {
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
+    this.getLanguageLabels();
     await this.getIdentityJsonFormat();
     // await this.getResidentDetails();
     // await this.getGenderDetails();
@@ -76,7 +79,6 @@ export class PreviewComponent implements OnInit {
     this.initializeDataCaptureLanguages();
     this.calculateAge();
     this.formatDob(this.previewData.dateOfBirth);
-    this.getLanguageLabels();
     this.files = this.user.files ? this.user.files : [];
     this.documentsMapping();
     //remove blank fields
@@ -104,31 +106,43 @@ export class PreviewComponent implements OnInit {
       controlId = this.controlIds[i];
       updatedUIFields.forEach((control) => {
         if (control.id === controlId && control.fieldType === "dynamic") {
-          this.previewData[controlId].forEach((ele) => {
+          if (control.type === appConstants.FIELD_TYPE_SIMPLE_TYPE) {
+            this.previewData[controlId].forEach((ele) => {
+              this.dropDownFields[controlId].forEach((codeValue) => {
+                if (
+                  ele.language === codeValue.languageCode &&
+                  ele.value === codeValue.valueCode
+                ) {
+                  ele.value = codeValue.valueName;
+                }
+              });
+            });
+          }
+          if (control.type === appConstants.FIELD_TYPE_STRING) {
+            const ele = this.previewData[controlId];  
             this.dropDownFields[controlId].forEach((codeValue) => {
-              if (
-                ele.language === codeValue.languageCode &&
-                ele.value === codeValue.valueCode
-              ) {
-                ele.value = codeValue.valueName;
+              if (ele === codeValue.valueCode && this.dataCaptureLanguages[0] === codeValue.languageCode) {
+                this.previewData[controlId] = codeValue.valueName;
               }
             });
-          });
+          }
         }
       });
       if (locations.includes(controlId)) {
         for (let j = 0; j < this.previewData[controlId].length; j++) {
-          this.fetchLocationName(
-            this.previewData[controlId][j].value,
-            this.previewData[controlId][j].language,
-            j,
-            controlId
-          );
+          if (this.previewData[controlId][j].value && this.previewData[controlId][j].language) {
+            await this.fetchLocationName(
+              this.previewData[controlId][j].value,
+              this.previewData[controlId][j].language,
+              j,
+              controlId
+            );
+          }
         }
       }
     }
     this.dataLoaded = true;
-    console.log(this.previewData);
+    //console.log(this.previewData);
   }
 
   initializeDataCaptureLanguages = async () => {
@@ -219,6 +233,9 @@ export class PreviewComponent implements OnInit {
         );
         this.getIntialDropDownArrays();
         resolve(true);
+      },
+      (error) => {
+        this.showErrorMessage(error);
       });
     });
   }
@@ -284,6 +301,9 @@ export class PreviewComponent implements OnInit {
             this.readOnlyMode = false;
           }
           resolve(true);
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
@@ -295,6 +315,12 @@ export class PreviewComponent implements OnInit {
         .subscribe((response) => {
           this.setUserFiles(response);
           resolve(true);
+        },
+        (error) => {
+          resolve(true);
+          //user files can be uploaded or not
+          //so we dont have to show error message
+          //this.showErrorMessage(error);
         });
     });
   }
@@ -314,16 +340,23 @@ export class PreviewComponent implements OnInit {
           this.documentTypes =
             response[appConstants.RESPONSE].documentCategories;
           resolve(true);
+        },
+        (error) => {
+          this.showErrorMessage(error);
         });
     });
   }
 
   formatDob(dob: string) {
     dob = dob.replace(/\//g, "-");
+    const ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
     this.previewData.dateOfBirth = Utils.getBookingDateTime(
       dob,
       "",
-      localStorage.getItem("langCode")
+      localStorage.getItem("langCode"),
+      ltrLangs
     );
   }
 
@@ -387,6 +420,9 @@ export class PreviewComponent implements OnInit {
           } else {
             resolve(true);
           }
+        },
+        (error) => {
+          this.showErrorMessage(error);
         })
       );  
     });
@@ -397,6 +433,8 @@ export class PreviewComponent implements OnInit {
       .getI18NLanguageFiles(localStorage.getItem("langCode"))
       .subscribe((response) => {
         this.sameAs = response["sameAs"];
+        this.errorlabels = response["error"];
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
         this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
       });
   }
@@ -489,6 +527,13 @@ export class PreviewComponent implements OnInit {
             this.previewData[controlName][index]["label"] =
               response[appConstants.RESPONSE]["name"];
           }
+          resolve(true);
+        },
+        (error) => {
+          //fetching location names can be a fail safe operation
+          //in case there is some error, we can still proceed 
+          resolve(true);
+          //this.showErrorMessage(error);
         });
     });
   }
@@ -535,7 +580,7 @@ export class PreviewComponent implements OnInit {
   openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     return new Promise((resolve) => {
       const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0], this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
-      const dialogRef = this.openDialog(popupAttributes, "550px", "350px", "data-capture");
+      const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);
         if (res == undefined) {
@@ -550,13 +595,32 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  openDialog(data, width, height?, panelClass?) {
+  /**
+   * @description This is a dialoug box whenever an error comes from the server, it will appear.
+   *
+   * @private
+   * @memberof PreviewComponent
+   */
+   private showErrorMessage(error: any) {
+    const titleOnError = this.errorlabels.errorLabel;
+    const message = Utils.createErrorMessage(error, this.errorlabels, this.apiErrorCodes, this.configService); 
+    const body = {
+      case: "ERROR",
+      title: titleOnError,
+      message: message,
+      yesButtonText: this.errorlabels.button_ok,
+    };
+    this.dialog.open(DialougComponent, {
+      width: "400px",
+      data: body,
+    });
+  }
+  openDialog(data, width, height?) {
     const dialogRef = this.dialog.open(DialougComponent, {
       width: width,
       height: height,
       data: data,
-      restoreFocus: false,
-      panelClass: panelClass,
+      restoreFocus: false
     });
     return dialogRef;
   }

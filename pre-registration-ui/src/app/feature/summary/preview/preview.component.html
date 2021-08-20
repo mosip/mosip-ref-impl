@@ -16,16 +16,16 @@
     <mat-card-content>
       <div class="preview__body-content-container">
         <div class="preview__body-content-div">
-          <table class="row" *ngFor="let controlId of controlIds">
-            <tr>
-              <td>
+          <table width="100%">
+            <tr *ngFor="let controlId of controlIds" class="row">
+              <td width="20%">
                 <b>{{ControlIdLabelObjects[controlId][dataCaptureLanguages[0]]}} : </b></td>
               <span
                 *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
-                <div *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></div>
+                <span *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></span>
                 <ng-template #content>
                   <td>
-                    <div *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></div>
+                    <span *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></span>
                     <ng-template #displayLabel>{{previewData[controlId][i].label}}</ng-template>
                     <ng-template #displayValue>{{previewData[controlId][i].value}}</ng-template>
                   </td>
@@ -44,7 +44,7 @@
         matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"><img src="assets/edit.png" /> {{
         'preview.action_modify' | translate }}</span>
     </div>
-    <mat-card-footer class="preview__footer-container">
+    <mat-card-footer class="preview__footer-container" [dir]="textDirection[0]">
       <div class="preview__footer">
         <div class="preview__file-container">
           <table style="width:100%" *ngIf="documentMapObject">
@@ -64,14 +64,14 @@
   </mat-card>
 </div>
 
-<mat-card class="center-selection__button-container">
-  <button (click)="navigateBack()" class="user-back-btn">{{ 'preview.action_back' | translate }}</button>
+<mat-card class="preview__button-container" [dir]="textDirection[0]" *ngIf="previewData !== undefined && dataLoaded">
+  <button (click)="navigateBack()" class="user__btn user__btn-back">{{ 'preview.action_back' | translate }}</button>
   <span class="spacer"></span>
   <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="onNewApplication()"
-    class="user-book_later-btn">
+    class="user__btn user__btn-action">
     {{ 'preview.action_add_applicant' | translate }}
   </button>
-  <button (click)="navigateNext()" class="user-continue-btn">
+  <button (click)="navigateNext()" class="user__btn">
     {{ 'preview.action_continue' | translate }}
   </button>
 </mat-card>

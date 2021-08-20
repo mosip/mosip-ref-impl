@@ -40,10 +40,22 @@ import { HeaderService } from 'src/app/core/services/header.service';
 import { HolidayModel } from 'src/app/core/models/holiday-model';
 import defaultJson from "../../../../../assets/i18n/default.json";
 
+import moment from 'moment';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class EditComponent {
   secondaryLanguageLabels: any;
@@ -88,6 +100,7 @@ export class EditComponent {
   minDate = new Date();
   locCode = 0;
   initialLocationCode: "";
+  localeDtFormat = "";
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -100,7 +113,8 @@ export class EditComponent {
     private router: Router,
     private centerService: CenterService,
     private keyboardService: MatKeyboardService,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private dateAdapter: DateAdapter<Date>
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -131,20 +145,24 @@ export class EditComponent {
     //Set the "Select Language" dropdown options
     this.selectLanguagesArr = [];
     let otherLangsArr = this.supportedLanguages.filter(lang => lang !== this.primaryLang);
-    otherLangsArr.forEach((language) => {
-      if (defaultJson.languages && defaultJson.languages[language]) {
-        this.selectLanguagesArr.push({
-          code: language,
-          value: defaultJson.languages[language].nativeName,
-        });
-      }
-    });
-    //Set the secondary language
-    this.secondaryLang = this.selectLanguagesArr[0]["code"];
-    this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
+    if(otherLangsArr.length > 0){
+      otherLangsArr.forEach((language) => {
+        if (defaultJson.languages && defaultJson.languages[language]) {
+          this.selectLanguagesArr.push({
+            code: language,
+            value: defaultJson.languages[language].nativeName,
+          });
+        }
+      });
+      //Set the secondary language
+      this.secondaryLang = this.selectLanguagesArr[0]["code"];
+      this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
+    }else{
+      this.showSecondaryForm = false;
+    }
     //Set the keyboard mapping
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
+    this.secondaryKeyboard = defaultJson.keyboardMapping[this.secondaryLang];
     // Set the language orientation LTR or RTL
     this.isPrimaryLangRTL = false;
     this.isSecondaryLangRTL = false;
@@ -158,7 +176,7 @@ export class EditComponent {
       this.isSecondaryLangRTL = true;
     }
     //load weekdays label in primary language
-    this.days = appConstants.days[this.primaryLang];
+    //this.days = appConstants.days[this.primaryLang];
     //load secondary labels
     this.translateService
       .getTranslation(this.secondaryLang)
@@ -181,6 +199,8 @@ export class EditComponent {
     this.getTimeSlots();
     this.getZoneData();
     this.getWorkingDays();
+    let localeId = defaultJson.languages[this.primaryLang].locale;
+    this.setLocaleForDatePicker(localeId);
   }
 
   lessThanEqual(locCode, index){
@@ -198,6 +218,39 @@ export class EditComponent {
       this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers');
       this.filteredLanguages = this.supportedLanguages;
       this.getPrimaryPanelData(this.primaryLang);
+    });    
+  }
+
+  setLocaleForDatePicker = (localeId) => {    
+    this.dateAdapter.setLocale(localeId);
+    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    this.translateService.get('demographic.date_yyyy').subscribe((year: string) => {
+      const yearLabel = year;
+      this.translateService.get('demographic.date_mm').subscribe((month: string) => {
+        const monthLabel = month;
+        this.translateService.get('demographic.date_dd').subscribe((day: string) => {
+          const dayLabel = day;
+          if (localeDtFormat.indexOf("YYYY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          else if (localeDtFormat.indexOf("YY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YY/g, yearLabel);
+          }
+          if (localeDtFormat.indexOf("MM") != -1) {
+            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
+          }
+          else if (localeDtFormat.indexOf("M") != -1) {
+            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
+          }
+          if (localeDtFormat.indexOf("DD") != -1) {
+            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
+          }
+          else if (localeDtFormat.indexOf("D") != -1) {
+            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
+          }
+          this.localeDtFormat = localeDtFormat;
+        });  
+      });  
     });
   }
 
@@ -386,7 +439,7 @@ export class EditComponent {
   showErrorPopup() {
     this.dialog
       .open(DialogComponent, {
-        width: '400px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
           // tslint:disable-next-line:no-string-literal
@@ -427,7 +480,7 @@ export class EditComponent {
 
   reloadSecondaryFormWithNewLang = (selectedNewLangCode: string) => {
     this.secondaryLang = selectedNewLangCode;
-    this.secondaryKeyboard = appConstants.keyboardMapping[this.secondaryLang];
+    this.secondaryKeyboard = defaultJson.keyboardMapping[this.secondaryLang];
     this.secondaryForm.reset();
     for (const i in this.secondaryForm.controls) {
       if (this.secondaryForm.controls[i]) {
@@ -524,7 +577,8 @@ export class EditComponent {
       Utils.convertTimeTo12Hours(commonData.lunchEndTime)
     );
     this.commonForm.controls.workingDays.setValue(commonData.workingNonWorkingDays ?
-      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []);
+      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []); 
+    //console.log("commonData.workingNonWorkingDays>>>"+JSON.stringify(commonData.workingNonWorkingDays)+"<<<this.commonForm.controls.workingDays.value>>>"+this.commonForm.controls.workingDays.value);
     this.commonForm.controls.exceptionalHolidays.setValue(
       commonData.exceptionalHolidayPutPostDto ? [...commonData.exceptionalHolidayPutPostDto] : []);
     //this.commonForm.controls.isActive.setValue(commonData.isActive);
@@ -536,10 +590,10 @@ export class EditComponent {
   formatWorkingDays(selectedDays: string[]) {
     const obj = {};
     this.days.forEach(day => {
-      if (selectedDays.indexOf(day.name) >= 0) {
-        obj[day.name] = true;
+      if (selectedDays.indexOf(day.code) >= 0) {
+        obj[day.code] = true;
       } else {
-        obj[day.name] = false;
+        obj[day.code] = false;
       }
     });
     return obj;
@@ -550,7 +604,7 @@ export class EditComponent {
     const selectedDays = [];
     keys.forEach(key => {
       if (days[key]) {
-        selectedDays.push(key);
+        selectedDays.push(key.trim());
       }
     });
     return selectedDays;
@@ -618,6 +672,7 @@ export class EditComponent {
     });
   }
   updateCommonData() {
+    console.log("this.commonForm.controls.workingDays.value>>>"+this.commonForm.controls.workingDays.value);
     this.createUpdate = true;
     let locationCode = "";
     if (1 == this.locCode) {
@@ -675,7 +730,7 @@ export class EditComponent {
 
   showMessage(type: string, data?: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
@@ -746,7 +801,7 @@ export class EditComponent {
           noBtnTxt: this.popupMessages['edit'].noBtnText
         };
         const dialogRef = this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data
         });
         dialogRef.afterClosed().subscribe(response => {
@@ -795,7 +850,7 @@ export class EditComponent {
           };
         }
         const dialogRef = this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data
         });
         dialogRef.afterClosed().subscribe(response => {
@@ -839,7 +894,7 @@ export class EditComponent {
           noBtnTxt: this.popupMessages['edit'].noBtnText
         };
         const dialogRef = this.dialog.open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data
         });
         dialogRef.afterClosed().subscribe(response => {

@@ -5,7 +5,9 @@
 :ng-deep .mat-focused {
   border-bottom: 1px solid #22a8c9;
 }
-
+::ng-deep .mat-form-field .mat-form-field-label {
+  padding-top: 3px;
+}
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
   /* margin-bottom: 3px; */
   color: #22a8c9;
@@ -101,14 +103,6 @@
 /* ::ng-deep .mat-form-field-label .mat-select-placeholder {
 
 } */
-.mat-input-element {
-  padding: 2.5px !important;
-}
-::ng-deep.mat-select-value {
-  padding: 2px !important;
-  /* line-height: 20px !important; */
-}
-
 ::ng-deep.mat-datepicker-content .mat-calendar {
   width: 200px !important;
   height: 250px !important;
@@ -164,15 +158,17 @@ mat-icon {
 .user__age-or-date {
   display: flex;
   width: 100%;
+  /* flex-direction: column; */
   align-items: center;
 }
 
 .user__age-or-date > div {
-  width: 100%;
+  width: 40%;
 }
 
 .user__date {
   display: flex;
+  width: 40%;
 }
 
 .user__form .user__date mat-form-field {
@@ -187,6 +183,7 @@ mat-icon {
 .user__age {
   text-align: end;
   display: flex;
+  width: 60%;
   justify-content: flex-start;
 }
 
@@ -281,42 +278,8 @@ mat-icon {
   justify-content: flex-end;
 }
 
-.user__btn {
-  background-color: #ff4081;
-  border: none;
-  color: white;
-  padding: 0.8rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.7rem;
-  margin: 6px 2px 4px 2px;
-  margin-right: 2rem;
-  cursor: pointer;
-  border-radius: 2px;
-  text-transform: uppercase;
-}
-
-.user__btn--back {
-  border: 1px solid #ff4081;
-  background-color: white;
-  color: #ff4081;
-  margin-left: 2rem;
-  text-transform: uppercase;
-  display: none;
-}
-
-.user__btn--continue {
-  margin-right: 61px;
-  text-transform: uppercase;
-}
-
-.user__btn:disabled,
-.user__btn:active {
-  border: 1px solid lightgray;
-  background-color: lightgray;
-  color: #2f3033;
-  cursor: default;
+.user__btn_change_lang {
+  margin-bottom: 10px;
 }
 
 ::ng-deep .mat-button-toggle-button {
@@ -406,8 +369,8 @@ mat-icon {
 }
 
 .form_checkBox {
-  margin-bottom: 6px;
-  margin-top: 6px;
+  padding: 5px;
+  word-wrap: break-word;
 }
 .rowContainer {
   display: flex;
@@ -435,3 +398,13 @@ mat-icon {
 .selectedOption {
   padding: 10px;
 }
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
+  height: 20px;
+}
+::ng-deep.mat-select-value {
+  padding: 5px !important;
+}
+/* ::ng-deep.mat-input-element {
+  height: 20px;
+} */

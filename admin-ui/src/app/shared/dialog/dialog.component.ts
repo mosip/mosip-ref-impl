@@ -79,7 +79,7 @@ export class DialogComponent implements OnInit {
     if (this.input.case === 'filter') {
       this.existingFilters = Utils.convertFilter(
         this.activatedRoute.snapshot.queryParams,
-        this.config.getConfig().primaryLangCode
+        this.headerService.getUserPreferredLanguage()
       ).filters;
       await this.getFilterMappings();
     }
@@ -152,7 +152,7 @@ export class DialogComponent implements OnInit {
     this.dialog.closeAll();
     this.router.navigate([
       `${currentRoute}/single-view`,
-      data[id.idKey]
+      data["id"]
     ]);
   }
 
@@ -419,7 +419,7 @@ export class DialogComponent implements OnInit {
       this.auditService.audit(12, 'ADM-092', this.routeParts);
       const filters = Utils.convertFilter(
         this.activatedRoute.snapshot.queryParams,
-        this.config.getConfig().primaryLangCode
+        this.headerService.getUserPreferredLanguage()
       );
       filters.filters = this.existingFilters;
       const url = Utils.convertFilterToUrl(filters);
@@ -459,7 +459,7 @@ export class DialogComponent implements OnInit {
       this.filters,
       this.routeParts === 'blacklisted-words'
         ? 'all'
-        : this.config.getConfig().primaryLangCode,
+        : this.headerService.getUserPreferredLanguage(),
       [optinalFilterObject]
     );
     this.requestModel = new RequestModel('', null, this.filtersRequest);

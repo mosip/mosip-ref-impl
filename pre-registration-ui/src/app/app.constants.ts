@@ -4,6 +4,8 @@ export const METADATA = 'documentsMetaData';
 export const ERROR = 'error';
 export const NESTED_ERROR = 'errors';
 export const ERROR_CODE = 'errorCode';
+export const API_ERROR_CODES = 'API_ERROR_CODES';
+export const DIALOG = 'dialog';
 export const PRE_REGISTRATION_ID = 'pre_registration_id';
 export const APPENDER = '/';
 export const IDSchemaVersionLabel = 'IDSchemaVersion';
@@ -79,6 +81,7 @@ export const ERROR_CODES = {
   userBlocked: 'PRG_PAM_LGN_013',
   invalidPin: 'KER-IOV-004',
   tokenExpired: 'KER-ATH-401',
+  authenticationFailed: 'KER-401',
   invalidateToken: 'PRG_PAM_LGN_003',
   slotNotAvailable: 'PRG_BOOK_RCI_002',
   timeExpired: 'PRG_BOOK_RCI_026'
@@ -119,7 +122,9 @@ export const CONFIG_KEYS = {
   mosip_mandatory_languages: 'mosip.mandatory-languages',
   mosip_optional_languages: 'mosip.optional-languages',
   mosip_min_languages_count: 'mosip.min-languages.count',
-  mosip_max_languages_count: 'mosip.max-languages.count'
+  mosip_max_languages_count: 'mosip.max-languages.count',
+  preregistartion_contact_email: 'preregistartion.contact.email',
+  preregistartion_contact_phone: 'preregistartion.contact.phone',
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {
@@ -155,9 +160,9 @@ export const APPLICATION_STATUS_CODES = {
 };
 
 export const APPLICANT_TYPE_ATTRIBUTES = {
-  individualTypeCode: 'individualTypeCode',
-  dateofbirth: 'dateofbirth',
-  genderCode: 'genderCode',
+  // individualTypeCode: 'individualTypeCode',
+  // dateofbirth: 'dateofbirth',
+  // genderCode: 'genderCode',
   biometricAvailable: 'biometricAvailable'
 };
 
@@ -185,3 +190,9 @@ export const MODIFY_USER = "modifyUser";
 export const NEW_APPLICANT = "newApplicant";
 export const MODIFY_USER_FROM_PREVIEW = "modifyUserFromPreview";
 export const NEW_APPLICANT_FROM_PREVIEW = "addingUserFromPreview";
+
+export const FORCE_LOGOUT = "forceLogout";
+export const FORCE_LOGOUT_YES = "yes";
+
+export const FIELD_TYPE_STRING = "string";
+export const FIELD_TYPE_SIMPLE_TYPE = "simpleType";

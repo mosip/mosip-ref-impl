@@ -1,23 +1,28 @@
 {
   "auditEventIds": ["ADM-032", "ADM-054"],
-  "actionButtons": [
-    {
-      "buttonName": {
-        "eng": "Activate",
-        "ara": "تنشيط",
-        "fra": "déclencher"
-      },
-      "actionURL": "",
-      "redirectURL": "",
-      "showIn": "Ellipsis",
-      "validations": "",
-      "callBackFunction": "activateCenter"
+  "actionButtons": [{
+    "buttonName": {
+      "eng": "Activate",
+      "ara": "تنشيط",
+      "fra": "déclencher",
+      "tam": "செயல்படுத்த",
+      "hin": "सक्रिय",
+      "kan": "ಸಕ್ರಿಯಗೊಳಿಸಿ"
     },
+    "actionURL": "",
+    "redirectURL": "",
+    "showIn": "Ellipsis",
+    "validations": "",
+    "callBackFunction": "activateCenter"
+  },
     {
       "buttonName": {
         "eng": "Deactivate",
         "ara": "الغاء تنشيط",
-        "fra": "désactiver"
+        "fra": "désactiver",
+        "tam": "செயலிழக்க",
+        "hin": "निष्क्रिय करें",
+        "kan": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ"
       },
       "actionURL": "",
       "redirectURL": "",
@@ -29,7 +34,10 @@
       "buttonName": {
         "eng": "Edit",
         "ara": "تصحيح",
-        "fra": "modifier"
+        "fra": "modifier",
+        "tam": "தொகு",
+        "hin": "संपादित करें",
+        "kan": "ತಿದ್ದು"
       },
       "actionURL": "",
       "redirectURL": "/admin/masterdata/document-type/single-view/$id",
@@ -41,7 +49,10 @@
       "buttonName": {
         "eng": "Create",
         "ara": "إضافة مركز",
-        "fra": "Ajouter le centre"
+        "fra": "Ajouter le centre",
+        "tam": "உருவாக்கு",
+        "hin": "बनाएं",
+        "kan": "ರಚಿಸಿ"
       },
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
@@ -51,33 +62,55 @@
       "validations": ""
     },
     {
-      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "buttonName": {
+        "eng": "Filter",
+        "fra": "filtre",
+        "ara": "تصفيه",
+        "tam": "வடிகட்டி",
+        "hin": "फ़िल्टर",
+        "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ"
+      },
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
-      "actionURL": { "case": "filter" },
+      "actionURL": {
+        "case": "filter"
+      },
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
     }
   ],
-  "columnsToDisplay": [
-    {
-      "name": "code",
-      "showInListView": "true",
-      "showInSingleView": "true",
-      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code" },
-      "sortOrder": "3",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "text",
-      "ismandatory": "true"
+  "columnsToDisplay": [{
+    "name": "code",
+    "showInListView": "true",
+    "showInSingleView": "true",
+    "label": {
+      "eng": "Code",
+      "ara": "الشفرة",
+      "fra": "Code",
+      "tam": "குறியீடு",
+      "hin": "कोड",
+      "kan": "ಕೋಡ್"
     },
+    "sortOrder": "3",
+    "showAsLink": "",
+    "linkType": "",
+    "LinkURL": "",
+    "inputType": "text",
+    "ismandatory": "true"
+  },
     {
       "name": "name",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
+      "label": {
+        "eng": "Name",
+        "ara": "اسم",
+        "fra": "prénom",
+        "tam": "பெயர்",
+        "hin": "नाम",
+        "kan": "ಹೆಸರು"
+      },
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
@@ -89,7 +122,14 @@
       "name": "description",
       "showInListView": "true",
       "showInSingleView": "true",
-      "label": { "eng": "Description", "ara": "وصف", "fra": "La description" },
+      "label": {
+        "eng": "Description",
+        "ara": "وصف",
+        "fra": "description",
+        "tam": "விளக்கம்",
+        "hin": "विवरण",
+        "kan": "ವಿವರಣೆ"
+      },
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
@@ -101,7 +141,14 @@
       "name": "isActive",
       "showInListView": "true",
       "showInSingleView": "false",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut" },
+      "label": {
+        "eng": "Status",
+        "ara": "نشط",
+        "fra": "c'est actif",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
@@ -116,7 +163,10 @@
       "label": {
         "eng": "Created Time",
         "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé"
+        "fra": "Temps créé",
+        "tam": "Created Time",
+        "hin": "बनाया गया समय",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -130,7 +180,10 @@
       "label": {
         "eng": "Created By",
         "ara": "تم إنشاؤه من قبل",
-        "fra": "Créé par"
+        "fra": "Créé par",
+        "tam": "உருவாக்கப்பட்டது",
+        "hin": "के द्वारा बनाई गई",
+        "kan": "ರಚಿಸಿದವರು"
       },
       "sortOrder": "3",
       "showAsLink": "",
@@ -144,7 +197,10 @@
       "label": {
         "eng": "Updated By",
         "ara": "تم التحديث بواسطة",
-        "fra": "Mise à jour par"
+        "fra": "Mise à jour par",
+        "tam": "புதுப்பிக்கப்பட்டது",
+        "hin": "द्वारा अपडेट",
+        "kan": "ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ"
       },
       "sortOrder": "3",
       "showAsLink": "",
@@ -158,7 +214,10 @@
       "label": {
         "eng": "Updated Time",
         "ara": "وقت التحديث",
-        "fra": "Temps mis à jour"
+        "fra": "Temps mis à jour",
+        "tam": "புதுப்பிக்கப்பட்ட நேரம்",
+        "hin": "अद्यतन समय",
+        "kan": "ನವೀಕರಿಸಿದ ಸಮಯ"
       },
       "sortOrder": "3",
       "showAsLink": "",
@@ -171,21 +230,34 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": [
-    {
-      "filtername": "name",
-      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom" },
-      "filterType": "equals",
-      "autocomplete": "false",
-      "dropdown": "false",
-      "datePicker": "false",
-      "apiName": "documenttypes",
-      "fieldName": "name",
-      "methodCallName": ""
+  "filterColumns": [{
+    "filtername": "name",
+    "filterlabel": {
+      "eng": "Name",
+      "ara": "اسم",
+      "fra": "prénom",
+      "tam": "பெயர்",
+      "hin": "नाम",
+      "kan": "ಹೆಸರು"
     },
+    "filterType": "equals",
+    "autocomplete": "false",
+    "dropdown": "false",
+    "datePicker": "false",
+    "apiName": "documenttypes",
+    "fieldName": "name",
+    "methodCallName": ""
+  },
     {
       "filtername": "isActive",
-      "filterlabel": { "eng": "Status", "ara": "نشط", "fra": "Statut" },
+      "filterlabel": {
+        "eng": "Status",
+        "ara": "نشط",
+        "fra": "Statut",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "true",

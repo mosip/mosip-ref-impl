@@ -5,7 +5,10 @@
       "buttonName": {
         "eng": "Resume Processing and Remove Hotlisted Tag",
         "ara": "استئناف المعالجة وإزالة العلامة المدرجة في القائمة الساخنة",
-        "fra": "Reprendre le traitement et supprimer la balise de la liste sensible"
+        "fra": "Reprendre le traitement et supprimer la balise de la liste sensible",
+        "hin": "प्रसंस्करण फिर से शुरू करें और हॉटलिस्टेड टैग हटाएं   ",
+        "kan": "ಪ್ರಕ್ರಿಯೆಯನ್ನು ಪುನರಾರಂಭಿಸಿ ಮತ್ತು ಹಾಟ್‌ಲಿಸ್ಟ್ ಮಾಡಿದ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕಿ   ",
+        "tam": "செயலாக்கத்தை மீண்டும் தொடங்கி, பட்டியலிடப்பட்ட குறிச்சொல்லை அகற்று   "
       },
       "actionURL": "",
       "redirectURL": "",
@@ -17,7 +20,10 @@
       "buttonName": {
         "eng": "Resume from Beginning",
         "ara": "استئناف من البداية",
-        "fra": "Reprendre depuis le début"
+        "fra": "Reprendre depuis le début",
+        "hin": "शुरुआत से फिर से शुरू  ",
+        "kan": "ಆರಂಭದಿಂದ ಪುನರಾರಂಭಿಸಿ    ",
+        "tam": "ஆரம்பத்தில் இருந்து மீண்டும் தொடங்குங்கள்  "
       },
       "actionURL": "",
       "redirectURL": "",
@@ -29,7 +35,10 @@
       "buttonName": {
         "eng": "Resume from Beginning and Remove Hotlisted Tag",
         "ara": "استئناف من البداية وإزالة العلامة المدرجة في القائمة الساخنة",
-        "fra": "Reprendre depuis le début et supprimer le tag de la Hotlist"
+        "fra": "Reprendre depuis le début et supprimer le tag de la Hotlist",
+        "hin": "शुरुआत से फिर से शुरू करें और हॉटलिस्टेड टैग हटाएं   ",
+        "kan": "ಪ್ರಾರಂಭದಿಂದ ಪುನರಾರಂಭಿಸಿ ಮತ್ತು ಹಾಟ್‌ಲಿಸ್ಟ್ ಮಾಡಿದ ಟ್ಯಾಗ್ ತೆಗೆದುಹಾಕಿ  ",
+        "tam": "தொடக்கத்தில் இருந்து மீண்டும் தொடங்கி, பட்டியலிடப்பட்ட குறிச்சொல்லை அகற்று   "
       },
       "actionURL": "",
       "redirectURL": "",
@@ -41,7 +50,10 @@
       "buttonName": {
         "eng": "Stop Processing",
         "ara": "توقف عن المعالجة",
-        "fra": "Arrêter le traitement"
+        "fra": "Arrêter le traitement",
+        "hin": "प्रसंस्करण बंद करो  ",
+        "kan": "ಪ್ರಕ್ರಿಯೆಯನ್ನು ನಿಲ್ಲಿಸಿ    ",
+        "tam": "செயலாக்கத்தை நிறுத்துங்கள்  "
       },
       "actionURL": "",
       "redirectURL": "",
@@ -50,7 +62,10 @@
       "callBackFunction": "stopprocessing"
     },
     {
-      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" },
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" ,
+        "hin": "पफ़िल्टर ",
+        "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ     ",
+        "tam": "வடிகட்டி  "},
       "imagePath": "assets/images/filter.png",
       "actionListType": "action",
       "actionURL": { "case": "filter" },
@@ -63,7 +78,10 @@
     {
       "name": "workflowId",
       "showInListView": "True",
-      "label": { "eng": "RID", "ara": "ايتخلص", "fra": "DÉBARRASSER" },
+      "label": { "eng": "RID", "ara": "ايتخلص", "fra": "DÉBARRASSER" ,
+        "hin": "पंजीयन पहचान  ",
+        "kan": "ಆರ್ಐಡಿ     ",
+        "tam": "தவிர்ந்திடு  "},
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -72,7 +90,10 @@
     {
       "name": "workflowType",
       "showInListView": "True",
-      "label": { "eng": "Type", "ara": "يكتب", "fra": "Taper" },
+      "label": { "eng": "Type", "ara": "يكتب", "fra": "Taper" ,
+        "hin": "प्रकार  ",
+        "kan": "ಮಾದರಿ     ",
+        "tam": "வகை   "},
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -81,7 +102,10 @@
     {
       "name": "currentStageName",
       "showInListView": "True",
-      "label": { "eng": "Current Stage", "ara": "المرحلة الحالية", "fra": "Étape actuelle" },
+      "label": { "eng": "Current Stage", "ara": "المرحلة الحالية", "fra": "Étape actuelle",
+        "hin": "वर्तमान स्थिति ",
+        "kan": "ಪ್ರಸ್ತುತ ಹಂತ     ",
+        "tam": "தற்போதைய நிலை " },
       "sortOrder": "3",
       "showAsLink": "",
       "linkType": "",
@@ -96,7 +120,10 @@
   "filterColumns": [
     {
       "filtername": "workflowId",
-      "filterlabel": { "eng": "RID", "ara": "يتخلص", "fra": "DÉBARRASSER" },
+      "filterlabel": { "eng": "RID", "ara": "يتخلص,","fra": "DÉBARRASSER",
+      "hin": "पंजीयन पहचान  ",
+      "kan": "ಆರ್ಐಡಿ     ",
+      "tam": "தவிர்ந்திடு  "},
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",
@@ -108,7 +135,10 @@
     },
     {
       "filtername": "workflowType",
-      "filterlabel": { "eng": "Workflow Type", "ara": "نوع سير العمل", "fra": "Type de flux de travail" },
+      "filterlabel": { "eng": "Workflow Type", "ara": "نوع سير العمل", "fra": "Type de flux de travail" ,
+        "hin": "कार्यप्रवाह प्रकार ",
+        "kan": "ಕೆಲಸದ ಹರಿವಿನ ಪ್ರಕಾರ      ",
+        "tam": "பணிப்பாய்வு வகை "},
       "filterType": "contains",
       "fieldType": "input",
       "autocomplete": "false",

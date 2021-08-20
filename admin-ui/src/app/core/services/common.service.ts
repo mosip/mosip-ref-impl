@@ -57,7 +57,7 @@ export class CommonService {
 
   private showMessage(data: any) {
     this.dialog.open(DialogComponent, {
-      width: '550px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         ...data
@@ -73,8 +73,13 @@ export class CommonService {
     }
 
     let textToDisplay = null;
+    console.log();
     if(data.name){
-      textToDisplay = data.name;
+      if(url === "holiday"){
+        textToDisplay = data.holidayName;
+      }else{
+        textToDisplay = data.name;
+      }      
     }else{
       if(url === "centers"){
         textToDisplay = data.name;
@@ -114,7 +119,6 @@ export class CommonService {
         textToDisplay = data.workflowId;
       }
     }
-
     const obj = {
       case: 'CONFIRMATION',
       title: this.actionMessages[type]['confirmation-title'],
@@ -389,11 +393,30 @@ export class CommonService {
     );
   }
 
+  private deleteUserAction(callingFunction: string, data: any, actualData:any) {
+    this.dataService.deleteUser(data).subscribe(
+      response => {
+        if (!response.errors || response.errors.length === 0) {
+          this.createridMessage('success', callingFunction, actualData);     
+          this.router.navigateByUrl(this.router.url);
+        } else {
+          this.createridMessage('error', callingFunction, response);
+        }
+      },
+      error => this.createridMessage('error', callingFunction, actualData)
+    );
+  }
+
   private createridMessage(type: string, listItem: string, data?: any) {
     let obj = {};
     let url = this.router.url.split('/')[2];
-    let textToDisplay = null;    
-        textToDisplay = data.workflowId;
+    let textToDisplay = null;   
+    if(listItem === "deleteUser"){
+      textToDisplay = data.name;
+    }else{
+      textToDisplay = data.workflowId;
+    } 
+    
 
     if (type === 'success') {
       obj = {
@@ -411,8 +434,21 @@ export class CommonService {
     this.showMessage(obj);
   }
 
+  deleteUser(data: any, url: string, idKey: string) {
+    this.auditService.audit(9, 'ADM-089', {
+      buttonName: 'activate',
+      masterdataName: this.router.url.split('/')[
+        this.router.url.split('/').length - 2
+      ]
+    });
+    this.confirmationPopup('deleteUser', data).afterClosed().subscribe(res => {
+      if (res) {
+        this.deleteUserAction('deleteUser', data.id, data);
+      } 
+    });
+  }
+
   activateCenter(data: any, url: string, idKey: string) {
-    console.log("activateCenter>>>");
     if (this.router.url.indexOf('single-view') >= 0) {
       this.auditService.audit(10, 'ADM-086', {
         buttonName: 'activate',

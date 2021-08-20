@@ -1,4 +1,4 @@
-code,descr,lang_code,is_active,cr_by,cr_dtimes
+﻿code,descr,lang_code,is_active,cr_by,cr_dtimes
 auth-email-content,Template for authorization content,eng,TRUE,superadmin,now()
 auth-email-subject,Template for authorization subject,eng,TRUE,superadmin,now()
 auth-sms,Template for authorization SMS,eng,TRUE,superadmin,now()
@@ -139,3 +139,12 @@ partner-reg-content-template,"partner registration notify content template
 partner-status-content-template,partner status notify content template,eng,TRUE,superadmin,now()
 apikey-status-content-template,partner apikey status notify content template,eng,TRUE,superadmin,now()
 Registration Consent,Registration Consent Template,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL,Email template requesting for additional info,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_SMS,SMS template requesting for additional info,eng,TRUE,superadmin,now()
+RPR_DUP_UIN_EMAIL_SUB,Registration Failed because you have already Registered,eng,TRUE,superadmin,now()
+RPR_TEC_ISSUE_EMAIL_SUB,Re-Register because there was a Technical Issue,eng,TRUE,superadmin,now()
+RPR_UIN_REAC_EMAIL_SUB,Uin is activated successfully,eng,TRUE,superadmin,now()
+RPR_UIN_DEAC_EMAIL_SUB,Uin is deactivated,eng,TRUE,superadmin,now()
+RPR_UIN_GEN_EMAIL_SUB,UIN Generated,eng,TRUE,superadmin,now()
+RPR_UIN_UPD_EMAIL_SUB,UIN Details Updated,eng,TRUE,superadmin,now()
+RPR_PAUSED_FOR_ADDITIONAL_INFO_EMAIL_SUB,Requesting the additional details for progressing on the application of UIN,eng,TRUE,superadmin,now()

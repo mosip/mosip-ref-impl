@@ -9,8 +9,9 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import Utils from '../../../../app.utils';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
+import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from "src/app/core/services/header.service";
 
 @Component({
   selector: 'app-view',
@@ -40,11 +41,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     private translateService: TranslateService,
-    private auditService: AuditService
+    private auditService: AuditService,
+    private headerService: HeaderService
   ) {
     this.getCertificateCofig();
-    this.translateService.use(appService.getConfig().primaryLangCode);
-    this.translateService.getTranslation(appService.getConfig().primaryLangCode).subscribe(response => {
+    this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
       console.log(response);
       this.errorMessages = response.errorPopup;
     });

@@ -6,6 +6,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { KeymanagerService } from 'src/app/core/services/keymanager.service';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { RequestModel } from 'src/app/core/models/request.model';
+import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from "src/app/core/services/header.service";
 
 @Component({
   selector: 'app-create',
@@ -29,6 +31,8 @@ export class CreateComponent {
   private formBuilder: FormBuilder,
   private router: Router,
   private dialog: MatDialog,
+  private translateService: TranslateService,
+  private headerService: HeaderService
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -38,42 +42,35 @@ export class CreateComponent {
   }
 
   initializeComponent() {
+    this.translateService.use(this.headerService.getUserPreferredLanguage());
     this.initializeForm();
   }
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
-      applicationId : [''],
+      applicationId : ['', [Validators.required]],
       referenceId: [''],
-      commonName: [''],
-      organization: [''],
-      organizationUnit: [''],
-      location: [''],
-      state: [''],
-      country: [''],
-      force: [''],
-      objectType: [''],
+      commonName: ['', [Validators.required]],
+      organization: ['', [Validators.required]],
+      organizationUnit: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      force: ['', [Validators.required]],
+      objectType: ['', [Validators.required]],
     });
   }
 
   submit(){
-    /*let data = {};
-    data = {
-      case: 'CONFIRMATION',
-      title: "Confirm Bulk Master Data Upload",
-      message: "Bulk "+this.createForm.get('operation').value+" on "+this.createForm.get('tableName').value+" will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
-      yesBtnTxt: "CONFIRM",
-      noBtnTxt: "CANCEL"
-    };
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '450px',
-      data
-    });
-    dialogRef.afterClosed().subscribe(response => {   
-      if(response){*/
-        this.saveData();
-      /*}      
-    }); */   
+    if (this.createForm.valid) {
+      this.saveData();
+    } else {
+      for (const i in this.createForm.controls) {
+        if (this.createForm.controls[i]) {
+          this.createForm.controls[i].markAsTouched();
+        }
+      }
+    }
   }
 
   saveData(){

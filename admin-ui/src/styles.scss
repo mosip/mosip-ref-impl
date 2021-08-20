@@ -57,6 +57,7 @@ h3 {
 #flex-single-view {
   // padding-top: 10px;
   overflow: hidden;
+  padding-bottom: 250px;
   .navigation {
     .material-icons {
       cursor: pointer;
@@ -286,4 +287,14 @@ mat-keyboard-container {
   position: absolute !important;
   bottom: 0% !important;
   margin-left: 20% !important;
+}
+
+.mat-form-field {
+  font-size: 12px !important;
+  line-height: 1.9 !important;
+}
+
+.mat-option-text {
+  font-size: 15px !important;
+  line-height: 24px !important;
 }

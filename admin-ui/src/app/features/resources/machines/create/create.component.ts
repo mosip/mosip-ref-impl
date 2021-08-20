@@ -34,10 +34,23 @@ import {
   MatKeyboardService,
 } from 'ngx7-material-keyboard';
 
+import moment from 'moment';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import defaultJson from "../../../../../assets/i18n/default.json";
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class CreateComponent {
   [x: string]: any;
@@ -78,7 +91,7 @@ export class CreateComponent {
 
   holidayDate: any;
   minDate = new Date();
-
+  localeDtFormat = "";
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -91,7 +104,8 @@ export class CreateComponent {
     private dialog: MatDialog,
     private statusPipe: StatusPipe,
     private auditService: AuditService,
-    private machineService: MachineService
+    private machineService: MachineService,
+    private dateAdapter: DateAdapter<Date>
   ) {
     this.subscribed = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -100,7 +114,7 @@ export class CreateComponent {
     });
     this.primaryLang = this.headerService.getUserPreferredLanguage();
     translateService.use(this.primaryLang);
-    this.primaryKeyboard = appConstants.keyboardMapping[this.primaryLang];
+    this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
   }
 
   scrollPage(
@@ -163,6 +177,41 @@ export class CreateComponent {
       .subscribe(response => {
         this.popupMessages = response.machines.popupMessages;
       });
+    let localeId = defaultJson.languages[this.primaryLang].locale;
+    this.setLocaleForDatePicker(localeId);
+  }
+
+  setLocaleForDatePicker = (localeId) => {    
+    this.dateAdapter.setLocale(localeId);
+    let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
+    this.translateService.get('demographic.date_yyyy').subscribe((year: string) => {
+      const yearLabel = year;
+      this.translateService.get('demographic.date_mm').subscribe((month: string) => {
+        const monthLabel = month;
+        this.translateService.get('demographic.date_dd').subscribe((day: string) => {
+          const dayLabel = day;
+          if (localeDtFormat.indexOf("YYYY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YYYY/g, yearLabel);
+          }
+          else if (localeDtFormat.indexOf("YY") != -1) {
+            localeDtFormat = localeDtFormat.replace(/YY/g, yearLabel);
+          }
+          if (localeDtFormat.indexOf("MM") != -1) {
+            localeDtFormat = localeDtFormat.replace(/MM/g, monthLabel);
+          }
+          else if (localeDtFormat.indexOf("M") != -1) {
+            localeDtFormat = localeDtFormat.replace(/M/g, monthLabel);
+          }
+          if (localeDtFormat.indexOf("DD") != -1) {
+            localeDtFormat = localeDtFormat.replace(/DD/g, dayLabel);
+          }
+          else if (localeDtFormat.indexOf("D") != -1) {
+            localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
+          }
+          this.localeDtFormat = localeDtFormat;
+        });  
+      });  
+    });
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
@@ -340,7 +389,7 @@ export class CreateComponent {
         data = {
           case: 'CONFIRMATION',
           title: this.popupMessages['create'].title,
-          message: 'Are you sure about the data has been filled is correct?',
+          message: this.popupMessages['create'].message[0]+ this.primaryForm.controls.name.value + this.popupMessages['create'].message[1],
           yesBtnTxt: this.popupMessages['create'].yesBtnText,
           noBtnTxt: this.popupMessages['create'].noBtnText,
         };
@@ -354,7 +403,7 @@ export class CreateComponent {
         };
       }
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data,
     });
     dialogRef.afterClosed().subscribe((response) => {
@@ -497,7 +546,7 @@ export class CreateComponent {
       message = data.errors[0].message;
     }
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,

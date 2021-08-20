@@ -41,7 +41,7 @@
                 "arguments": []
               }
             ],
-            "required": false,
+            "required": true,
             "transliteration": true
           },
           {
@@ -308,7 +308,7 @@
             "inputRequired": true,
             "validators": [],
             "subType": "POA",
-            "required": true
+            "required": false
           },
           {
             "id": "proofOfIdentity",
@@ -336,7 +336,7 @@
             "inputRequired": true,
             "validators": [],
             "subType": "POR",
-            "required": false
+            "required": true
           },
           {
             "id": "proofOfDateOfBirth",

@@ -1,18 +1,18 @@
 <div id="flex-single-view" style="padding-top: 12px;">
-  <h3>Users</h3>
+  <h3>{{'menuItems.item2.subItem3' | translate}}</h3>
   <div class="flex-container">
     <div class="flex-header" style="width: 100%;">
       <app-users-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-users-header>
     </div>
-    <div class="flex-body">
+    <div class="flex-body" style="width:100%">
       <mat-card *ngIf="primaryData">
-        <mat-card-content class="forms-container">
+        <mat-card-content class="forms-container" style="width:100%">
           <div [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
             <strong class="title"></strong>
             <br /><br />
             
             <mat-form-field>
-              <mat-label>User Name</mat-label>
+              <mat-label>{{'menuItems.item2.subItem3' | translate}}</mat-label>
               <mat-select formControlName="userId" [value]="primaryData.userId">
                 <mat-option *ngFor="let data of dropDownValues.deviceTypeCode.primary" [value]="data.userId" (onSelectionChange)="captureDropDownValue($event, 'userId')">
                   {{ data.name }}
@@ -46,7 +46,7 @@
         </mat-card-content>
         <mat-card-actions class="action-buttons">
           <button id="createButton" mat-raised-button (click)="submit()">
-            Save
+            {{ "genericbutton.save" | translate }}
           </button>
           <button mat-raised-button (click)="cancel()">
             {{ "devices.cancel" | translate }}

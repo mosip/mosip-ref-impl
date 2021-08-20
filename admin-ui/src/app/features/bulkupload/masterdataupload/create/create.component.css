@@ -35,10 +35,14 @@
     border: 0px;
     height: 32px;
     margin-left: 1px;
-    width: 26.5rem;
+    width: 22.5rem;
 }
-.forms-container{
-	width: 30%;
+.custom-file-input input[type="text"].addredborder{
+    border-bottom: 1px solid #f44336 ! important;
+    border: 0px;
+    height: 32px;
+    margin-left: 1px;
+    width: 22.5rem;
 }
 .mat-form-field{
 	padding:10px;

@@ -37,8 +37,10 @@ export default class Utils {
   static getBookingDateTime(
     appointment_date: string,
     time_slot_from: string,
-    language: string
+    language: string,
+    ltrLangs: string[]
   ) {
+    //console.log(`language: ${language}`);
     let localeId = language.substring(0, 2);
     JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach((element) => {
       if (language === element.code && element.locale) {
@@ -66,11 +68,10 @@ export default class Utils {
         date[2] + " " + appConstants.MONTHS[Number(date[1])] + " " + date[0];
       appointmentDateTime = pipe.transform(appointmentDateTime, "MMM");
       date[1] = appointmentDateTime;
-
-      if (language === "ara") {
-        appointmentDateTime = date.join(" ");
-      } else {
+      if (ltrLangs.includes(language)) {
         appointmentDateTime = date.reverse().join(" ");
+      }  else {
+        appointmentDateTime = date.join(" ");
       }
       //console.log(appointmentDateTime);
       return appointmentDateTime;
@@ -201,5 +202,90 @@ export default class Utils {
         dataCaptureLabels.error_text[1],
     };
     return body;
+  }
+
+  static getApplicationLangs = (userRequest) => {
+    const demographicData = userRequest.demographicDetails.identity;
+    let applicationLanguages = [];
+    if (demographicData) {
+      let keyArr: any[] = Object.keys(demographicData);
+      for (let index = 0; index < keyArr.length; index++) {
+        const elementKey = keyArr[index];
+        let dataArr = demographicData[elementKey];
+        if (Array.isArray(dataArr)) {
+          dataArr.forEach((dataArrElement) => {
+            if (
+              !applicationLanguages.includes(dataArrElement.language)
+            ) {
+              applicationLanguages.push(dataArrElement.language);
+            }
+          });
+        }
+      }
+    } else if (userRequest.langCode) {
+      applicationLanguages = [userRequest.langCode];
+    }
+    //console.log(`applicationLanguages: ${applicationLanguages}`);
+    return applicationLanguages;
+  }
+
+  
+  static getErrorCode  = (error: any) => {
+    if (
+      error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR].length > 0
+    ) {
+      return error[appConstants.ERROR][appConstants.NESTED_ERROR][0][appConstants.ERROR_CODE];
+    } else {
+      return "";
+    }
+  }
+  
+  static getErrorMessage  = (error: any) => {
+    if (
+      error[appConstants.ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR] &&
+      error[appConstants.ERROR][appConstants.NESTED_ERROR].length > 0
+    ) {
+      return error[appConstants.ERROR][appConstants.NESTED_ERROR][0]["message"];
+    } else {
+      return "";
+    }
+  }
+  
+  static authenticationFailed = (error: any) => {
+    //handle 401 exception
+    const errorCode = Utils.getErrorCode(error);
+    if (
+      errorCode === appConstants.ERROR_CODES.tokenExpired ||
+      errorCode === appConstants.ERROR_CODES.invalidateToken ||
+      errorCode === appConstants.ERROR_CODES.authenticationFailed
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  static createErrorMessage = (error: any, errorlabels: any, apiErrorCodes: any, config: any) => {
+    let message = errorlabels.error;
+    let errorCode = "";
+    if (Utils.authenticationFailed(error)) {
+      message = errorlabels["sessionInvalidLogout"];
+    } else {
+      errorCode = Utils.getErrorCode(error);
+      if (apiErrorCodes[errorCode]) {
+        message = apiErrorCodes[errorCode];
+      } 
+    }
+    const email = config[appConstants.CONFIG_KEYS.preregistartion_contact_email];
+    const phone = config[appConstants.CONFIG_KEYS.preregistartion_contact_phone];
+    if (!Utils.authenticationFailed(error)) {
+      message = message + errorlabels["contactInformation"][0] + email + errorlabels["contactInformation"][1] + phone;
+      if (errorCode != "") {
+        message = message + errorlabels["contactInformation"][2] + errorCode;
+      }
+    }
+    return message;
   }
 }

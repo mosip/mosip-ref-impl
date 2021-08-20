@@ -36,6 +36,11 @@ ADD default.conf /etc/nginx/conf.d/
 
 ADD dist ${base_path}
 
+# can be passed during Docker build as build time environment for artifactory URL
+ARG artifactory_url
+# environment variable to pass artifactory url, at docker runtime
+ENV artifactory_url_env=${artifactory_url}
+
 # install the needed packages including wget and a unzip library 
 #RUN apt-get update -y && apt-get install -y wget && apt-get install -y unzip
 
@@ -49,13 +54,12 @@ USER ${container_user_uid}:${container_user_gid}
 EXPOSE 8080
 
 #get the admin i18n bundle zip from artifactory
-CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip;\
-    wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip;\
-    cd ${entity_spec_path} ;\
-    unzip admin-entity-spec-bundle.zip ;\
-    cp -vrf -vf admin-entity-spec-bundle/entity-spec/* . ;\
-    cd ${i18n_path} ;\
-    unzip admin-i18n-bundle.zip ;\
-    cp -vrf -vf admin-i18n-bundle/i18n/* .  ;\
-    nginx ;\
+CMD wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip ; \
+    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip ; \
+    cd ${entity_spec_path} ; \
+    unzip -o admin-entity-spec-bundle.zip ; \
+    cd ${i18n_path} ; \
+    unzip -o admin-i18n-bundle.zip ; \
+    nginx ; \
     sleep infinity
+	

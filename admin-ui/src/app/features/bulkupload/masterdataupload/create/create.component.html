@@ -29,7 +29,7 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="uploadForm.controls.operation.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field> 
             <mat-form-field>
@@ -43,14 +43,17 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="uploadForm.controls.tableName.touched">
-                This field is required
+                {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field> 
             <div class="custom-file-input">
               <input type="button" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
-              <input type="file" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}">                
-            </div>           
+              <input type="file" accept=".csv" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
+              <input type="text" id="fileName"  formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}"> 
+              <mat-error *ngIf="fileNameError">
+                {{'genericerror.fieldValidation' | translate}}
+              </mat-error>  
+            </div>                       
           </div> 
         </mat-card-content>
         <mat-card-actions class="action-buttons">

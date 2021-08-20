@@ -138,9 +138,9 @@ export default class Utils {
         const sortObject = new SortModel();
         const dataParts = element.split(':');
         if (dataParts[0] === 'A') {
-          sortObject.sortType = 'ASC';
+          sortObject.sortType = 'asc';
         } else if (dataParts[0] === 'D') {
-          sortObject.sortType = 'DESC';
+          sortObject.sortType = 'desc';
         } else {
           sortObject.sortType = '';
         }

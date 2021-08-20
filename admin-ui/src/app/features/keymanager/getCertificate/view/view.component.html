@@ -1,22 +1,22 @@
 <ng-container>
-<span><h3 class="header">Get Certificate</h3></span>
+<span><h3 class="header">{{'getcertificate.title' | translate}}</h3></span>
 <div id="flex-single-view" style="padding-top: 12px;">
 <div id="flex-container">
 <div id="myDiv" class="flex-body">
   <mat-card>
     <div class="example-container">
       <mat-form-field>
-        <mat-label>Application Id</mat-label>
+        <mat-label>{{'getcertificate.applicationId' | translate}}</mat-label>
         <input matInput #input placeholder="Ex. 123" [value]="applicationId" (keyup)="captureValue($event, 'applicationId')">
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>ReferenceId</mat-label>
+        <mat-label>{{'getcertificate.referenceId' | translate}}</mat-label>
         <input matInput #input placeholder="Ex. 123" [value]="referenceId" (keyup)="captureValue($event, 'referenceId')">
       </mat-form-field>
 
       <button id="createButton" mat-raised-button (click)="getCertificate()">
-        Get Certificate
+        {{'getcertificate.button' | translate}}
       </button>
     </div>
   </mat-card>

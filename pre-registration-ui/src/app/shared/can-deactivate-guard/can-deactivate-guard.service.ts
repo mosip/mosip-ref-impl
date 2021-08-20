@@ -12,7 +12,7 @@ import { DataStorageService } from "src/app/core/services/data-storage.service";
 })
 export class CanDeactivateGuardService
   implements CanDeactivate<UnloadDeactivateGuardService> {
-  langCode = localStorage.getItem("langCode");
+  //langCode = localStorage.getItem("langCode");
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
@@ -28,7 +28,7 @@ export class CanDeactivateGuardService
       let no_text;
       return new Promise((resolve) => {
        this.dataStorageService
-        .getI18NLanguageFiles(this.langCode)
+        .getI18NLanguageFiles(localStorage.getItem("langCode"))
         .subscribe((response) => {
           message = response["dialog"]["navigation_alert"];
           ok_text = response["dialog"]["action_ok"];
@@ -40,7 +40,7 @@ export class CanDeactivateGuardService
             noButtonText: no_text,
           };
           this.dialog
-            .open(DialougComponent, { width: "250px", data: body })
+            .open(DialougComponent, { width: "400px", data: body })
             .beforeClosed()
             .subscribe((res) => {
               if (res === true) resolve(true);

@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import {
   RouterEvent,
   NavigationStart,
   NavigationEnd,
   NavigationCancel,
   NavigationError,
-  Router
+  Router  
 } from '@angular/router';
 import { AppConfigService } from './app-config.service';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import {MatKeyboardService} from 'ngx7-material-keyboard';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,9 @@ export class AppComponent implements OnInit {
     private router: Router,
     private appConfigService: AppConfigService,
     private dialog: MatDialog,
+    private keyboardService: MatKeyboardService,
     private translate: TranslateService
+
   ) {
     this.primaryLangCode = this.appConfigService.getConfig()['primaryLangCode'];
     this.secondaryLangCode = this.appConfigService.getConfig()[
@@ -53,6 +56,12 @@ export class AppComponent implements OnInit {
           'The system has encountered a technical error. Administrator to setup the necessary language configuration(s)'
       };
       this.showErrorMessage(data);
+    }
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (this.keyboardService.isOpened) {
+      this.keyboardService.dismiss();
     }
   }
 
@@ -88,7 +97,7 @@ export class AppComponent implements OnInit {
 
   showErrorMessage(input) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '650px',
       data: input,
       disableClose: true
     });

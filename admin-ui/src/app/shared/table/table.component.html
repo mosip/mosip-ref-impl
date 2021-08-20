@@ -7,15 +7,9 @@
         class="mat-header-cell table-header sticky-header"
       >
         <span class="columnName-sort-span"
-          ><span *ngIf="lang === 'eng'" matTooltip="{{'center.devices-tooltip' | translate}}"  
+          ><span matTooltip="{{'center.devices-tooltip' | translate}}"  
           [matTooltipPosition]="'above'"
-          [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.eng }}</span>
-          <span *ngIf="lang === 'fra'" matTooltip="{{'center.devices-tooltip' | translate}}"
-          [matTooltipPosition]="'above'"
-          [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.fra }}</span>
-          <span *ngIf="lang === 'ara'" matTooltip="{{'center.devices-tooltip' | translate}}"
-          [matTooltipPosition]="'above'"
-          [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label.ara }}</span>
+          [matTooltipDisabled]="columnName.label.eng !== 'Devices'">{{ columnName.label[lang] }}</span>
           <span *ngIf="columnsOfTableData[i] != 'fieldVal'" (click)="sortColumn(columnName.name,i)"
             ><img *ngIf="sortIconTrackerArray[i] === 0"
               src="assets/images/icon_table_sort_both.png"
@@ -52,7 +46,7 @@
             *ngIf="item === 'name'&& imageSource"
             [ngClass]="{'image-fade': data.isActive === false}"
             style="padding-right:15px;"
-          /><span *ngIf="item === 'fieldVal' && data[item]">Code : {{data[item].code}} | Value : {{data[item].value}}</span><span *ngIf="item !== 'fieldVal'">{{  data[item] | status | mapStatus }}</span></span
+          /><span *ngIf="item === 'fieldVal' && data[item]">Code : {{data[item].code}} | Value : {{data[item].value}}</span><span *ngIf="item !== 'fieldVal'"><span *ngIf="item !== 'isActive'"><span *ngIf="item !== 'createdDateTime'">{{  data[item] | mapStatus }}</span><span *ngIf="item === 'createdDateTime'">{{ data[item] | createFormatDate}}</span></span><span *ngIf="item === 'isActive'"><span *ngIf="data[item] === true">{{'isActive.Active'|translate}}</span><span *ngIf="data[item] === false">{{'isActive.InActive'|translate}}</span></span></span></span
         >
       </td>
       <td class="mat-cell mat-header-cell" *ngIf="buttonList.length>0" >
@@ -66,9 +60,7 @@
           *ngFor="let button of ellipsisList"
           (click)="selectedRow(data, button)"
         >
-        <span *ngIf="lang === 'eng'">{{ button.buttonName.eng }}</span>
-        <span *ngIf="lang === 'fra'">{{ button.buttonName.fra }}</span>
-        <span *ngIf="lang === 'ara'">{{ button.buttonName.ara }}</span>
+        <span>{{ button.buttonName[lang] }}</span>
         </button>
       </mat-menu>
     </tr>
