@@ -16,6 +16,9 @@ ARG container_user_uid=1001
 # can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user_gid=1001
 
+# can be passed during Docker build as build time environment for github branch to pickup configuration from.
+ARG preregistration_i18n_bundle_url_env=http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip
+
 # install packages and create user
 RUN apt-get -y update \
 && apt-get install -y unzip wget \
@@ -41,7 +44,7 @@ USER ${container_user_uid}:${container_user_gid}
 
 EXPOSE 8080
 
-CMD wget -q --show-progress http://artifactory-service/artifactory/libs-release-local/i18n/pre-registration-i18n-bundle.zip -O "${i18n_path}"/pre-registration-i18n-bundle.zip; \
+CMD wget -q --show-progress "${preregistration_i18n_bundle_url_env}" -O "${i18n_path}"/pre-registration-i18n-bundle.zip; \
    cd ${i18n_path} ; \
    unzip -o pre-registration-i18n-bundle.zip ; \
    nginx ; \
