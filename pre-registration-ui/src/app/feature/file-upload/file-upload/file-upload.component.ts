@@ -19,6 +19,7 @@ import { LogService } from "src/app/shared/logger/log.service";
 import Utils from "src/app/app.util";
 import { Subscription } from "rxjs";
 import identityStubJson from "../../../../assets/identity-spec.json";
+import { isArray } from "util";
 
 @Component({
   selector: "app-file-upload",
@@ -59,13 +60,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   selectedDocuments: SelectedDocuments[] = [];
   dataCaptureLanguages = [];
   dataCaptureLanguagesLabels = [];
-  textDirection = [];
+  dataCaptureLangsDir = [];
   ltrLangs = this.config
     .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
     .split(",");
   LOD: DocumentCategory[] = [];
   fileIndex: number = -1;
-  fileUploadLanguagelabels: any;
+  documentLabels: any;
+  demographicLabels: any;
+  messagelabels: any;
+  helpText: any;
   errorlabels: any;
   apiErrorCodes: any;
   fileExtension: string = "pdf";
@@ -77,6 +81,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   flag: boolean;
   zoom: number = 0.5;
   userPrefLanguage = localStorage.getItem("userPrefLanguage");
+  userPrefLanguageDir = "";
   userForm = new FormGroup({});
   validationMessage: any;
   documentUploadRequestBody: DocumentUploadRequestDTO = {
@@ -103,7 +108,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   uiFields = [];
   preRegId: number;
   isDocUploadRequired = [];
-  name: "";
+  fullNameField: "";
   readOnlyMode = false;
   dataLoaded = false;
   constructor(
@@ -123,9 +128,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   async ngOnInit() { 
     this.getPrimaryLabels(this.userPrefLanguage);
+    if (this.ltrLangs.includes(this.userPrefLanguage)) {
+      this.userPrefLanguageDir = "ltr";
+    } else {
+      this.userPrefLanguageDir = "rtl";
+    }
     await this.initiateComponent();
+    this.fullNameField = this.config.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
     this.getFileSize();
-    this.getPrimaryLabels(this.dataCaptureLanguages[0]);
     this.allowedFiles = this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files).split(",");
     this.getAllowedFileTypes(this.allowedFiles);
     this.loginId = localStorage.getItem("loginId");
@@ -136,9 +148,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.sameAsselected = true;
     }
-    this.name = this.config.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
-    );
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
@@ -168,10 +177,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.dataStorageService
     .getI18NLanguageFiles(lang)
     .subscribe((response) => {
-      if (response["message"])
-        this.fileUploadLanguagelabels = response["message"];
+      if (response["message"]) {
+        this.documentLabels = response["documents"];
+        this.demographicLabels = response["demographic"];
+        this.helpText = response["helpText"];
+        this.messagelabels = response["message"];
         this.errorlabels = response["error"];
-        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];    
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+      }
+            
     });
   }
 
@@ -339,9 +353,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         );
         //set the language direction as well
         if (this.ltrLangs.includes(langCode)) {
-          this.textDirection.push("ltr");
+          this.dataCaptureLangsDir.push("ltr");
         } else {
-          this.textDirection.push("rtl");
+          this.dataCaptureLangsDir.push("rtl");
         }
       });
     }
@@ -452,22 +466,25 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let i = 0;
     let j = 0;
     let allApplicants: any[] = [];
-
     allApplicants = JSON.parse(JSON.stringify(applicants));
-    let name = this.config.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
-    );
-    for (let applicant of allApplicants) {
-      for (let name of applicant) {
-        if (
-          name["demographicMetadata"][name][j].language != this.dataCaptureLanguages[0]
-        ) {
-          allApplicants[i].demographicMetadata.firstName.splice(j, 1);
+    allApplicants.forEach(applicant => {
+      let nameFieldObject = applicant["demographicMetadata"][this.fullNameField];
+      if (nameFieldObject && Array.isArray(nameFieldObject)) {
+        let found = false;
+        nameFieldObject.forEach(nameField => {
+          if (nameField.language == this.userPrefLanguage) {
+            applicant["applicantName"] = nameField.value;
+            found = true; 
+          }
+        });
+        if (!found) {
+          applicant["applicantName"] = nameFieldObject[0].value;
         }
-        j++;
+      } else {
+        applicant["applicantName"] = nameFieldObject;
       }
-      i++;
-    }
+      //console.log(applicant);
+    });
     //console.log("allApplicants>>>" + JSON.stringify(allApplicants));
     return allApplicants;
   }
@@ -554,7 +571,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => {
       this.subscriptions.push(
         this.dataStorageService
-        .getDocumentCategoriesByLang(applicantcode, this.dataCaptureLanguages[0])
+        .getDocumentCategoriesByLang(applicantcode, this.userPrefLanguage)
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
@@ -855,7 +872,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.disableNavigation = false;
-            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg10);
+            this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg10);
           }
         );
         this.subscriptions.push(subs);
@@ -866,10 +883,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   confirmationDialog(fileName: string) {
     let body = {
       case: "CONFIRMATION",
-      title: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
-      message: this.fileUploadLanguagelabels.uploadDocuments.msg11 + fileName,
-      yesButtonText: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
-      noButtonText: this.fileUploadLanguagelabels.uploadDocuments.button_cancel,
+      title: this.messagelabels.uploadDocuments.title_confirm,
+      message: this.messagelabels.uploadDocuments.msg11 + fileName,
+      yesButtonText: this.messagelabels.uploadDocuments.title_confirm,
+      noButtonText: this.messagelabels.uploadDocuments.button_cancel,
     };
     const dialogRef = this.openDialog(body, "400px");
     return dialogRef;
@@ -944,14 +961,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         } else {
           this.displayMessage(
             this.errorlabels.errorLabel,
-            this.fileUploadLanguagelabels.uploadDocuments.msg1
+            this.messagelabels.uploadDocuments.msg1
           );
           this.disableNavigation = false;
         }
       } else {
         this.displayMessage(
           this.errorlabels.errorLabel,
-          this.fileUploadLanguagelabels.uploadDocuments.msg5
+          this.messagelabels.uploadDocuments.msg5
         );
         this.disableNavigation = false;
       }
@@ -962,7 +979,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.fileExtension = oldFileExtension;
       this.displayMessage(
         this.errorlabels.errorLabel,
-        this.fileUploadLanguagelabels.uploadDocuments.msg3
+        this.messagelabels.uploadDocuments.msg3
       );
       this.disableNavigation = false;
     }
@@ -1133,7 +1150,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           } 
         },
         (error) => {
-          this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg7);
+          this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg7);
           this.fileInputVariable.nativeElement.value = "";
           this.disableNavigation = false;
         },
@@ -1295,7 +1312,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.disableNavigation = false;
-            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg9);
+            this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg9);
           }
         );
       this.subscriptions.push(subs);
@@ -1333,7 +1350,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.sameAsselected = false;
               this.displayMessage(
                 this.errorlabels.errorLabel,
-                this.fileUploadLanguagelabels.uploadDocuments.msg9
+                this.messagelabels.uploadDocuments.msg9
               );
             }
             this.disableNavigation = false;
@@ -1342,7 +1359,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
             this.disableNavigation = false;
-            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg8);
+            this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg8);
           }
         );
         this.subscriptions.push(subs);

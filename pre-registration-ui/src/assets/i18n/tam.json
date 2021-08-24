@@ -345,9 +345,9 @@
 		"action_skip": "ஸ்கிப்",
 		"action_continue": "தொடருங்கள்",
 		"label_sameas": "அதே",
-		"text_or": "OR",
+		"text_or": "அல்லது",
 		"action_view": "முன்னோட்ட",
-		"OR": "OR",
+		"OR": "அல்லது",
 		"text_docrefid": "ஆவண குறிப்பு ஐடி",
 		"sameAs": "அதே",
 		"sameAsNone": "எதுவுமில்லை"
@@ -444,7 +444,8 @@
 			"text_status": "நிலை",
 			"action_modify_information": "தகவலை மாற்றவும்",
 			"action_view_acknowledgement": "ஒப்புதலைக் காண்க",
-			"action_view_information": "தகவலைக் காண்க"
+			"action_view_information": "தகவலைக் காண்க",
+      		"data_capture_langs": "தரவு பிடிப்பு மொழிகள்"
 		},
 		"discard": {
 			"title_confirm": "உறுதிப்படுத்தவும்",

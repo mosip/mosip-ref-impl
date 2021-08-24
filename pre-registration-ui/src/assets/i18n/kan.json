@@ -444,7 +444,8 @@
 			"text_status": "ಸ್ಥಿತಿ",
 			"action_modify_information": "ಮಾಹಿತಿಯನ್ನು ಮಾರ್ಪಡಿಸಿ",
 			"action_view_acknowledgement": "ಸ್ವೀಕೃತಿಯನ್ನು ವೀಕ್ಷಿಸಿ",
-			"action_view_information": "ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಿ"
+			"action_view_information": "ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಿ",
+			"data_capture_langs": "ಡೇಟಾ ಕ್ಯಾಪ್ಚರ್ ಭಾಷೆಗಳು"
 		},
 		"discard": {
 			"title_confirm": "ದೃ .ೀಕರಿಸಿ",

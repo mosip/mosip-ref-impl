@@ -72,10 +72,11 @@ import { RouterExtService } from "src/app/shared/router/router-ext.service";
 export class DemographicComponent
   extends FormDeactivateGuardService
   implements OnInit, OnDestroy {
-  langCode = localStorage.getItem("langCode");
+  userPrefLanguage = localStorage.getItem("userPrefLanguage");
+  userPrefLanguageDir = "";
   dataCaptureLanguages = [];
   dataCaptureLanguagesLabels = [];
-  textDirection = [];
+  dataCaptureLangsDir = [];
   ltrLangs = this.configService
     .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
     .split(",");
@@ -172,7 +173,7 @@ export class DemographicComponent
     private loggerService: LogService // private errorService: ErrorService
   ) {
     super(dialog);
-    this.translate.use(this.langCode);
+    this.translate.use(this.userPrefLanguage);
     this.subscriptions.push(
       this.regService
         .getMessage()
@@ -192,7 +193,7 @@ export class DemographicComponent
     this.translate.use(this.dataCaptureLanguages[0]);
     //set the locale for date picker and moment
     this.setLocaleForDatePicker();
-    //load all labels in the first data capture language
+    //load all labels in the userPrefLanguage or loginLang
     this.getPrimaryLabels();
     await this.getIdentityJsonFormat();
     this.config = this.configService.getConfig();
@@ -324,9 +325,9 @@ export class DemographicComponent
       this.dataCaptureLanguages.forEach((langCode) => {
         //set the language direction as well
         if (this.ltrLangs.includes(langCode)) {
-          this.textDirection.push("ltr");
+          this.dataCaptureLangsDir.push("ltr");
         } else {
-          this.textDirection.push("rtl");
+          this.dataCaptureLangsDir.push("rtl");
         }
       });
     } else {
@@ -335,7 +336,7 @@ export class DemographicComponent
       }
       this.dataCaptureLanguages = Utils.getApplicationLangs(this.user.request);
       //reorder the languages, by making user login lang as first one in the array
-      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.langCode);
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.userPrefLanguage);
       //populate the lang labels
       this.dataCaptureLanguages.forEach((langCode) => {
         JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
@@ -347,9 +348,9 @@ export class DemographicComponent
         );
         //set the language direction as well
         if (this.ltrLangs.includes(langCode)) {
-          this.textDirection.push("ltr");
+          this.dataCaptureLangsDir.push("ltr");
         } else {
-          this.textDirection.push("rtl");
+          this.dataCaptureLangsDir.push("rtl");
         }
       });
     }
@@ -358,7 +359,7 @@ export class DemographicComponent
 
   private getPrimaryLabels() {
     this.dataStorageService
-      .getI18NLanguageFiles(this.dataCaptureLanguages[0])
+      .getI18NLanguageFiles(this.userPrefLanguage)
       .subscribe((response) => {
         this.demographiclabels = response["demographic"];
         this.errorlabels = response["error"];
@@ -379,7 +380,7 @@ export class DemographicComponent
               "templates"
             ][0].fileText.split("\n");*/
             this.consentMessage = response[appConstants.RESPONSE]["templates"];
-            //console.log(this.consentMessage);
+            console.log(this.consentMessage);
             resolve(true);
           },
           (error) => {
@@ -402,11 +403,16 @@ export class DemographicComponent
     //load error related labels in user's login lang,
     //this is required to show errors from services
     this.dataStorageService
-    .getI18NLanguageFiles(this.langCode)
+    .getI18NLanguageFiles(this.userPrefLanguage)
     .subscribe((response) => {
       this.errorlabels = response[appConstants.ERROR];
       this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
     });
+    if (this.ltrLangs.includes(this.userPrefLanguage)) {
+      this.userPrefLanguageDir = "ltr";
+    } else {
+      this.userPrefLanguageDir = "rtl";
+    }
     if (localStorage.getItem(appConstants.NEW_APPLICANT) === "true") {
       this.isNewApplicant = true;
     }
@@ -453,11 +459,43 @@ export class DemographicComponent
     });
   }
 
+  getAllLangs = () => {
+    let allLangs = [];
+    let userLangAvailable = false;
+    this.dataCaptureLanguages.forEach((lang) => {
+      if (lang == this.userPrefLanguage) {
+        userLangAvailable = true;
+      }
+    });
+    if (!userLangAvailable) {
+      allLangs = [this.userPrefLanguage, ... this.dataCaptureLanguages];
+    }  else {
+      allLangs = [...this.dataCaptureLanguages];
+    }
+    console.log(allLangs);
+    return allLangs;
+  }
+
+  getAllLangsDir = (allLangs) => {
+    let allLangsDir = [];
+    allLangs.forEach((lang) => {
+      if (this.ltrLangs.includes(lang)) {
+        allLangsDir.push("ltr");
+      } else {
+        allLangsDir.push("rtl");
+      }
+    });  
+    console.log(allLangsDir);
+    return allLangsDir;
+  }
+
   private consentDeclaration() {
     if (this.demographiclabels) {
       let newDataStructure = [];
       let consentText = [];
-      this.dataCaptureLanguages.forEach((lang) => {
+      const allLangs = this.getAllLangs();
+      const allLangsDir = this.getAllLangsDir(allLangs);
+      allLangs.forEach((lang) => {
         this.consentMessage.forEach((obj) => {
           if (lang === obj.langCode) {
             consentText.push(obj.fileText.split("\n"));
@@ -477,13 +515,13 @@ export class DemographicComponent
       const data = {
         case: "CONSENTPOPUP",
         data: newDataStructure,
-        textDirectionArr: this.textDirection,
+        textDirectionArr: allLangsDir,
         title: this.demographiclabels.consent.title,
         cancelBtn: this.demographiclabels.consent.cancelButton,
         alertMessageFirst: this.demographiclabels.consent.alertMessageFirst,
         alertMessageSecond: this.demographiclabels.consent.alertMessageSecond,
         alertMessageThird: this.demographiclabels.consent.alertMessageThird,
-        userPrefferedlangCode: this.dataCaptureLanguages[0],
+        userPrefferedlangCode: this.userPrefLanguage,
       };
       this.dialog
         .open(DialougComponent, {
@@ -2006,14 +2044,13 @@ export class DemographicComponent
   }
 
   changeDataCaptureLanguages = () => {
-    
     if (this.userForm.dirty) {
       const message = this.demographiclabels["change_data_capture_langs_msg"];
       const ok_text = this.dialoglabels["action_ok"];
       const no_text = this.dialoglabels["title_discard"];
       const body = {
         case: "CONFIRMATION",
-        textDir: this.textDirection[0],
+        textDir: this.userPrefLanguageDir,
         message: message,
         yesButtonText: ok_text,
         noButtonText: no_text,
@@ -2048,9 +2085,9 @@ export class DemographicComponent
       localStorage.setItem(appConstants.MODIFY_USER, "false");
       localStorage.setItem(appConstants.NEW_APPLICANT, "true");
       let previousUrl = this.routerService.getPreviousUrl();
-      const newUrl = `/${this.langCode}/pre-registration/demographic/new`;
+      const newUrl = `/${this.userPrefLanguage}/pre-registration/demographic/new`;
       if (previousUrl === newUrl) {
-        previousUrl = `${this.langCode}/dashboard`;
+        previousUrl = `${this.userPrefLanguage}/dashboard`;
       }
       this.router.navigateByUrl(previousUrl, { skipLocationChange: true }).then(() => {
         this.router.navigate([newUrl])
@@ -2060,15 +2097,15 @@ export class DemographicComponent
   
   openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     return new Promise((resolve) => {
-      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0],
-        this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.userPrefLanguageDir,
+        this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage, this.userPrefLanguage);
       const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);
         if (res == undefined) {
           this.isNavigateToDemographic = false;
         } else {
-          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.langCode);
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.userPrefLanguage);
           localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
           console.log("done");
           this.isNavigateToDemographic = true;

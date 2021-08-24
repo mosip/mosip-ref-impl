@@ -41,7 +41,7 @@ img {
   margin-left: 15px !important;
   margin-top: 30px;
   font-family: 'Roboto';
-  font-size: 10px !important;
+  font-size: 11px !important;
 }
 .modify-app-btn {
   color: #fd518c;
@@ -50,7 +50,7 @@ img {
   margin-left: 12px;
   margin-top: 30px;
   font-family: 'Roboto';
-  font-size: 10px !important;
+  font-size: 11px !important;
 }
 .create-app-btn {
   color: #ffffff;
@@ -58,7 +58,7 @@ img {
   background-color: #ff4081;
   opacity: 90%;
   margin-left: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-right: 20px;
   margin-top: 30px;
   border-radius: none;
@@ -70,12 +70,12 @@ img {
   justify-content: flex-start;
 }
 .card-component {
-  margin-top: 20px;
+  margin-top: 10px;
   padding-right: 45px;
 }
 .card-header {
   font-family: 'Roboto';
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   opacity: 100%;
   display: flex;
   background-color: #d8f7ff;
@@ -83,7 +83,7 @@ img {
   min-height: 40px;
 }
 .mat-card {
-  width: 380px;
+  width: 385px;
   min-height: fit-content;
   padding: 0;
   box-shadow: 1px 1px 1px;
@@ -91,30 +91,31 @@ img {
   border-radius: 0;
 }
 .mat-card-content {
-  margin-top: 12px !important;
+  margin-top: 5px !important;
 }
 .card-content {
   font-family: 'Roboto';
   color: #838383;
   opacity: 90%;
-  font-size: 10.5px;
-  white-space: nowrap;
-  width: 380px;
+  font-size: 0.75rem;
+  /* white-space: nowrap; */
+  width: 385px;
 }
 
 .mat-card table {
-  width: 380px;
+  width: 385px;
   table-layout: fixed;
 }
 
 .mat-card table tr td {
-  padding: 8px;
-  padding-left: 18px;
+  /* padding: 8px; */
+  padding-top: 8px;
+  padding-left: 15px;
   word-wrap: break-word;
   white-space: pre-wrap;
 }
 .footer-btn {
-  font-size: 9px;
+  font-size: 0.75rem;
   margin: 2px;
   padding: 1px 10px 1px 10px;
   text-transform: none;
@@ -138,7 +139,7 @@ img {
 }
 .user__name--wordwrap {
   max-width: 20px;
-  font-size: 11px;
+  font-size: 0.75rem;
 }
 
 .modify-app-img {
@@ -186,10 +187,10 @@ mat-checkbox-inner-container:dir('rtl') {
 } */
 
 .card-content-footer {
-  width: 380px;
+  width: 385px;
   display: flex;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 30px;
+  padding-right: 20px;
   justify-content: space-evenly;
 }
 .spacer {

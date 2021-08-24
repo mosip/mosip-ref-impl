@@ -37,6 +37,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   notificationTypes: string[];
   preRegIds: any;
+  ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
   regCenterId;
   langCode;
   textDir = localStorage.getItem("dir");
@@ -77,6 +80,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.usersInfoArr.length; i++) {
       await this.getRegCenterDetails(this.usersInfoArr[i].langCode, i);
       await this.getLabelDetails(this.usersInfoArr[i].langCode, i);
+      await this.getUserLangLabelDetails(this.langCode, i);
     }
 
     let notificationTypes = this.configService
@@ -112,7 +116,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             regDto = appointmentDetails;
           });
           const demographicData = user["request"].demographicDetails.identity;
-          const applicationLanguages = Utils.getApplicationLangs(user["request"]);
+          let applicationLanguages = Utils.getApplicationLangs(user["request"]);
+          applicationLanguages = Utils.reorderLangsForUserPreferredLang(applicationLanguages, this.langCode);
           applicationLanguages.forEach(applicationLang => {
             const nameListObj: NameList = {
               preRegId: "",
@@ -124,6 +129,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               postalCode: "",
               langCode: "",
               labelDetails: [],
+              userLangLabelDetails: []
             };
             nameListObj.preRegId = user["request"].preRegistrationId;
             nameListObj.status = user["request"].statusCode;
@@ -218,6 +224,19 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       .getI18NLanguageFiles(langCode)
       .subscribe((response) => {
         this.usersInfoArr[index].labelDetails.push(response["acknowledgement"]);
+        //console.log(this.usersInfoArr[index].labelDetails);
+        resolve(true);
+      });
+    });
+  }
+
+  async getUserLangLabelDetails(langCode, index) {
+    return new Promise((resolve) => {
+      this.dataStorageService
+      .getI18NLanguageFiles(langCode)
+      .subscribe((response) => {
+        this.usersInfoArr[index].userLangLabelDetails.push(response["acknowledgement"]);
+        //console.log(this.usersInfoArr[index].labelDetails);
         resolve(true);
       });
     });
@@ -294,13 +313,18 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             if (fltr.length == 0) {
               messages.push({
                 "preRegId": userInfo.preRegId,
-                "message": userInfo.labelDetails[0].message
+                "message": userInfo.userLangLabelDetails[0].message
               });  
             }
           }
         }
       });
-
+      //console.log(appLangCode);
+      if (this.ltrLangs.includes(appLangCode[0])) {
+        this.ackDataItem["appLangCodeDir"] = "ltr";
+      } else {
+        this.ackDataItem["appLangCodeDir"] = "rtl";
+      }
       this.ackDataItem["appLangCode"] = appLangCode;
       this.ackDataItem["bookingTimePrimary"] = bookingTimePrimary;
       this.ackDataItem["bookingDataPrimary"] = bookingDataPrimary;

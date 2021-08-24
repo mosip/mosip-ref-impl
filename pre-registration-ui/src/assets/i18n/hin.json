@@ -444,7 +444,8 @@
 			"text_status": "स्थिति",
 			"action_modify_information": "सूचना संशोधित करें",
 			"action_view_acknowledgement": "पावती देखें",
-			"action_view_information": "जानकारी देखें"
+			"action_view_information": "जानकारी देखें",
+			"data_capture_langs": "डेटा कैप्चर भाषाएँ"
 		},
 		"discard": {
 			"title_confirm": "पुष्टि करें",

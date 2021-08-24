@@ -52,6 +52,9 @@ export class DialougComponent implements OnInit {
     this.input = this.data;
     if (this.input.case === "LANGUAGE_CAPTURE") {
       this.selectedLanguage = [...this.input.mandatoryLanguages];
+      if (!this.input.mandatoryLanguages.includes(this.input.userPrefLanguage)) {
+        this.selectedLanguage.push(this.input.userPrefLanguage);
+      }
       this.enableDataCaptureSubmitBtn();
     }
   }
@@ -119,6 +122,7 @@ export class DialougComponent implements OnInit {
   }
 
   enableDataCaptureSubmitBtn() {
+
     if (
       this.selectedLanguage.length >= Number(this.input.minLanguage) &&
       this.selectedLanguage.length <= Number(this.input.maxLanguage)

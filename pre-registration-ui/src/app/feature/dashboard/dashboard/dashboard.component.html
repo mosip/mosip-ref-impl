@@ -139,6 +139,12 @@
                     >
                   </td>
                 </tr>
+                <tr>
+                  <td class="column1">{{ "dashboard.card.data_capture_langs" | translate }}</td>
+                  <span *ngFor="let lang of user.dataCaptureLangs">
+                    <td class="application-value">{{lang}}</td>
+                  </span>
+                </tr>
               </table>
             </div>
           </mat-card-content>

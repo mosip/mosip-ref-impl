@@ -32,6 +32,8 @@ export class PreviewComponent implements OnInit {
   dataCaptureLabels;
   apiErrorCodes: any;
   errorlabels: any;
+  previewLabels: any;
+  helpText: any;
   identityData = [];
   uiFields = [];
   locationHeirarchy = [];
@@ -40,14 +42,15 @@ export class PreviewComponent implements OnInit {
   dropDownFields = {};
   dataCaptureLanguages = [];
   dataCaptureLanguagesLabels = [];
-  textDirection = [];
+  dataCaptureLangsDir = [];
   ltrLangs = this.configService
     .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
     .split(",");
   controlIds = [];
   ControlIdLabelObjects = {};
   readOnlyMode=false;
-  userPreferredLangCode = localStorage.getItem("userPrefLanguage");
+  userPrefLanguage = localStorage.getItem("userPrefLanguage");
+  userPrefLanguageDir = "";
   isNavigateToDemographic = false;
   dataLoaded = false;
   constructor(
@@ -59,7 +62,7 @@ export class PreviewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private configService: ConfigService
   ) {
-    this.translate.use(this.userPreferredLangCode);
+    this.translate.use(this.userPrefLanguage);
     localStorage.setItem("modifyDocument", "false");
   }
 
@@ -67,6 +70,11 @@ export class PreviewComponent implements OnInit {
     this.activatedRoute.params.subscribe((param) => {
       this.preRegId = param["appId"];
     });
+    if (this.ltrLangs.includes(this.userPrefLanguage)) {
+      this.userPrefLanguageDir = "ltr";
+    } else {
+      this.userPrefLanguageDir = "rtl";
+    }
     this.getLanguageLabels();
     await this.getIdentityJsonFormat();
     // await this.getResidentDetails();
@@ -167,7 +175,7 @@ export class PreviewComponent implements OnInit {
         this.dataCaptureLanguages = [this.user.request.langCode];
       }
       //reorder the languages, by making user login lang as first one in the array
-      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.userPreferredLangCode);
+      this.dataCaptureLanguages = Utils.reorderLangsForUserPreferredLang(this.dataCaptureLanguages, this.userPrefLanguage);
       //populate the lang labels
       this.dataCaptureLanguages.forEach((langCode) => {
         JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)).forEach(
@@ -179,9 +187,9 @@ export class PreviewComponent implements OnInit {
         );
         //set the language direction as well
         if (this.ltrLangs.includes(langCode)) {
-          this.textDirection.push("ltr");
+          this.dataCaptureLangsDir.push("ltr");
         } else {
-          this.textDirection.push("rtl");
+          this.dataCaptureLangsDir.push("rtl");
         }
       });
     }
@@ -355,7 +363,7 @@ export class PreviewComponent implements OnInit {
     this.previewData.dateOfBirth = Utils.getBookingDateTime(
       dob,
       "",
-      localStorage.getItem("langCode"),
+      this.dataCaptureLanguages[0],
       ltrLangs
     );
   }
@@ -430,9 +438,11 @@ export class PreviewComponent implements OnInit {
 
   getLanguageLabels() {
     this.dataStorageService
-      .getI18NLanguageFiles(localStorage.getItem("langCode"))
+      .getI18NLanguageFiles(this.userPrefLanguage)
       .subscribe((response) => {
         this.sameAs = response["sameAs"];
+        this.previewLabels = response["preview"];
+        this.helpText = response["helpText"];
         this.errorlabels = response["error"];
         this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
         this.dataCaptureLabels = response["dashboard"].dataCaptureLanguage;
@@ -563,7 +573,7 @@ export class PreviewComponent implements OnInit {
         if (maxLanguage == 1) {
           localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify([mandatoryLanguages[0]]));
         } else {
-          let reorderedArr = Utils.reorderLangsForUserPreferredLang(mandatoryLanguages, this.userPreferredLangCode);
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(mandatoryLanguages, this.userPrefLanguage);
           localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
         }
         this.isNavigateToDemographic = true;
@@ -579,14 +589,15 @@ export class PreviewComponent implements OnInit {
   
   openLangSelectionPopup(mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
     return new Promise((resolve) => {
-      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDirection[0], this.dataCaptureLabels, mandatoryLanguages, minLanguage, maxLanguage);
+      const popupAttributes = Utils.getLangSelectionPopupAttributes(this.dataCaptureLangsDir[0], this.dataCaptureLabels, 
+        mandatoryLanguages, minLanguage, maxLanguage, this.userPrefLanguage);
       const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         //console.log(res);
         if (res == undefined) {
           this.isNavigateToDemographic = false;
         } else {
-          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.userPreferredLangCode);
+          let reorderedArr = Utils.reorderLangsForUserPreferredLang(res, this.userPrefLanguage);
           localStorage.setItem(appConstants.DATA_CAPTURE_LANGUAGES, JSON.stringify(reorderedArr));
           this.isNavigateToDemographic = true;
         }
@@ -630,7 +641,7 @@ export class PreviewComponent implements OnInit {
     localStorage.setItem(appConstants.MODIFY_USER_FROM_PREVIEW, "false");
     localStorage.setItem(appConstants.MODIFY_USER, "false");
     localStorage.setItem(appConstants.NEW_APPLICANT_FROM_PREVIEW, "true");
-    this.router.navigate([`${this.userPreferredLangCode}/pre-registration/demographic/new`]);
+    this.router.navigate([`${this.userPrefLanguage}/pre-registration/demographic/new`]);
   }
   navigateBack() {
     const url = Utils.getURL(this.router.url, "file-upload", 3);
