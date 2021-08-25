@@ -54,9 +54,11 @@
         <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
       </div>
       <div *ngIf="enableCaptcha && showCaptcha">
-        <app-captcha [captchaSiteKey]="siteKey"></app-captcha>
+        <app-captcha [captchaSiteKey]="siteKey" [resetCaptcha]="resetCaptcha" (captchaEvent)="getCaptchaToken($event)"></app-captcha>
       </div>
-      <div *ngIf="captchaError" class="error" style="margin-left: 55px">
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="loading" *ngIf="loadingMessage != ''">{{ loadingMessage }}</p>
+      <div *ngIf="captchaError && !showOTP" class="error" style="margin-left: 55px">
         {{ "recaptcha.errorMessage" | translate }}
       </div>
       <div *ngIf="showOTP">
