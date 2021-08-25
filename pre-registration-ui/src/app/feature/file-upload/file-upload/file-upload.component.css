@@ -128,7 +128,7 @@ mat-select:focus {
 .user hr {
   border-top: 1.5px solid #fd518c;
   position: relative;
-  /* left: -31.8px; */
+  left: -31.8px;
   margin-top: 0.5rem;
   width: calc(100% + 64px);
 }
@@ -180,14 +180,17 @@ mat-select:focus {
 }
 
 .file-upload__body__document-name {
-  max-width: 30vw;
-  padding: 0.2rem 0;
+  /* max-width: 100; */
+  /* padding: 0.2rem 0; */
+  /* max-width: 500px; */
   font-size: 0.8rem;
-  position: relative;
+  flex: 1;
+  text-align: left;
+  /* position: relative; */
 }
 
 .file-upload__body__document-name span:nth-child(2) {
-  padding-left: 15px;
+  /* padding-left: 15px; */
 }
 
 .file-upload__body__document-name .cross {

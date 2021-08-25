@@ -448,7 +448,8 @@
       "text_status": "Statut",
       "action_modify_information": "Modifier les informations",
       "action_view_acknowledgement": "Voir accusé de réception",
-      "action_view_information": "Afficher les informations"
+      "action_view_information": "Afficher les informations",
+      "data_capture_langs": "Langages de capture de données"
     },
     "discard": {
       "title_confirm": "Confirmer",

@@ -446,7 +446,8 @@
       "text_status": "الحالة",
       "action_modify_information": "تعديل المعلومات",
       "action_view_acknowledgement": "عرض إقرار",
-      "action_view_information": "عرض المعلومات"
+      "action_view_information": "عرض المعلومات",
+      "data_capture_langs": "لغات التقاط البيانات"
     },
     "discard": {
       "title_confirm": "تؤكد",

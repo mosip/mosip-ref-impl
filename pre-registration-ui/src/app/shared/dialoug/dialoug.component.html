@@ -162,7 +162,7 @@
     <span *ngFor="let lang of input.languages">
       <section>
         <mat-checkbox (change)="onSelectLanguage(lang.code, $event)"
-          [checked]="input.mandatoryLanguages.includes(lang.code)"
+          [checked]="input.mandatoryLanguages.includes(lang.code) || lang.code == input.userPrefLanguage"
           [disabled]="input.mandatoryLanguages.includes(lang.code)">{{ lang.value }}</mat-checkbox>
       </section>
     </span>

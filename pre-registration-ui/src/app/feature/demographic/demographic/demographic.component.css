@@ -396,7 +396,7 @@ mat-icon {
   box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
 }
 .selectedOption {
-  padding: 10px;
+  margin: 10px;
 }
 ::ng-deep.mat-input-element {
   padding-top: 5px !important;
