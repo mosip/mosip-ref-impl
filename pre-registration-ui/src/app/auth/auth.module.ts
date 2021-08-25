@@ -13,7 +13,8 @@ import {
 } from "ng-recaptcha";
 import { ConfigService } from "../core/services/config.service";
 import * as appConstants from "../app.constants";
-import { CaptchaComponent } from './captcha/captcha.component';
+import { CaptchaComponent } from "./captcha/captcha.component";
+
 export const language = new ConfigService().getConfigByKey(
   appConstants.CONFIG_KEYS.mosip_primary_language
 );

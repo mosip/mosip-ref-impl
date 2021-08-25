@@ -54,6 +54,8 @@ export class LoginComponent implements OnInit {
   enableSendOtp: boolean;
   showCaptcha: boolean = true;
   captchaError: boolean;
+  captchaToken = null;
+  resetCaptcha: boolean;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -83,7 +85,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginIdValidator() {
-    this.errorMessage = undefined;
+    this.errorMessage = "";
     const modes = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.mosip_login_mode
     );
@@ -136,7 +138,7 @@ export class LoginComponent implements OnInit {
       this.configService.getConfigByKey("enable-captcha") === "false" ||
       this.configService.getConfigByKey("enable-captcha") === undefined
     ) {
-      this.enableCaptcha = false;
+      this.enableCaptcha = true;
     } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
       this.enableCaptcha = true;
     }
@@ -192,7 +194,7 @@ export class LoginComponent implements OnInit {
       this.languages.push(
         appConstants.languageMapping[this.primaryLangFromConfig].langName
       );
-      if(this.primaryLang !== this.secondaryLang){
+      if (this.primaryLang !== this.secondaryLang) {
         this.languages.push(
           appConstants.languageMapping[this.secondaryLangFromConfig].langName
         );
@@ -302,31 +304,11 @@ export class LoginComponent implements OnInit {
 
   submit(): void {
     this.loginIdValidator();
-    if (
-      this.enableCaptcha &&
-      this.authService.isCaptchaAuthenticated() &&
-      this.errorMessage === undefined
-    ) {
-      this.showCaptcha = false;
-      this.captchaError = false;
-    } else if (
-      this.enableCaptcha &&
-      this.authService.isCaptchaAuthenticated() &&
-      this.errorMessage! == undefined
-    ) {
-      this.showCaptcha = true;
-    } else if (
-      this.enableCaptcha &&
-      !this.authService.isCaptchaAuthenticated() &&
-      this.errorMessage === undefined
-    ) {
-      this.captchaError = true;
-    }
+    this.resetCaptcha = false;
     if (
       (this.showSendOTP || this.showResend) &&
-      this.errorMessage === undefined &&
-      ((this.enableCaptcha && this.authService.isCaptchaAuthenticated()) ||
-        this.enableSendOtp)
+      this.errorMessage == "" &&
+      this.enableSendOtp
     ) {
       console.log("test");
       this.inputOTP = "";
@@ -334,7 +316,7 @@ export class LoginComponent implements OnInit {
       this.showOTP = true;
       this.showSendOTP = false;
       this.showContactDetails = false;
-
+      this.showCaptcha = false;
       const timerFn = () => {
         let secValue = Number(document.getElementById("secondsSpan").innerText);
         const minValue = Number(
@@ -352,7 +334,7 @@ export class LoginComponent implements OnInit {
             this.showVerify = false;
             if (this.enableCaptcha) {
               this.showCaptcha = true;
-              this.authService.setCaptchaAuthenticate(false);
+              this.enableSendOtp = false;
             }
             document.getElementById("minutesSpan").innerText = this.minutes;
             document.getElementById("timer").style.visibility = "hidden";
@@ -379,13 +361,29 @@ export class LoginComponent implements OnInit {
         document.getElementById("timer").style.visibility = "visible";
         this.timer = setInterval(timerFn, 1000);
       }
-
       this.dataService
-        .sendOtp(this.inputContactDetails,this.primaryLang)
-        .subscribe((response) => {});
+      .sendOtpWithCaptcha(
+        this.inputContactDetails,
+        this.langCode,
+        this.captchaToken
+      )
+      .subscribe(
+        (response) => {
+         
+        },
+        (error) => {
+          if (this.enableCaptcha) {
+            this.resetCaptcha = true;
+            this.captchaToken = null;
+            this.enableSendOtp = false;
+            console.log("Resetting captcha:" + this.resetCaptcha);
+          }
+        }
+      );
+     
 
       // dynamic update of button text for Resend and Verify
-    } else if (this.showVerify && this.errorMessage === undefined) {
+    } else if (this.showVerify && this.errorMessage === "") {
       this.disableVerify = true;
       this.dataService
         .verifyOtp(this.inputContactDetails, this.inputOTP)
@@ -409,6 +407,17 @@ export class LoginComponent implements OnInit {
             this.showErrorMessage();
           }
         );
+    }
+  }
+
+  getCaptchaToken(event: Event) {
+    if (event !== undefined && event != null) {
+      console.log("Captcha event " + event);
+      this.captchaToken = event;
+      this.enableSendOtp = true;
+    } else {
+      console.log("Captcha has expired" + event);
+      this.enableSendOtp = false;
     }
   }
 

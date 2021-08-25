@@ -583,4 +583,21 @@ export class DataStorageService {
       `&${appConstants.PARAMS_KEYS.docRefId}=${docRefId}`;
     return this.httpClient.put(url, {});
   }
+
+  sendOtpWithCaptcha(userId: string, langCode: string, captchaToken: string) {
+    const req = {
+      langCode: langCode,
+      userId: userId,
+      captchaToken: captchaToken,
+    };
+
+    const obj = new RequestModel(appConstants.IDS.sendOtp, req);
+
+    const url =
+      this.BASE_URL +
+      this.PRE_REG_URL +
+      appConstants.APPEND_URL.auth +
+      "sendOtpWithCaptcha";
+    return this.httpClient.post(url, obj);
+  }
 }
