@@ -138,7 +138,7 @@ export class LoginComponent implements OnInit {
       this.configService.getConfigByKey("enable-captcha") === "false" ||
       this.configService.getConfigByKey("enable-captcha") === undefined
     ) {
-      this.enableCaptcha = true;
+      this.enableCaptcha = false;
     } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
       this.enableCaptcha = true;
     }
