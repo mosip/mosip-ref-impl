@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
         this.configService.setConfig(response);
         this.setTimer();
         this.loadLanguagesWithConfig();
-        this.loadRecaptchaSiteKey();
+        this.isCaptchaEnabled();
       },
       (error) => {
         this.showErrorMessage();
@@ -133,21 +133,32 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  loadRecaptchaSiteKey() {
+  isCaptchaEnabled() {
     if (
-      this.configService.getConfigByKey("enable-captcha") === "false" ||
-      this.configService.getConfigByKey("enable-captcha") === undefined
+      this.configService.getConfigByKey(
+        "mosip.preregistration.captcha.enable"
+      ) === "false" ||
+      this.configService.getConfigByKey(
+        "mosip.preregistration.captcha.enable"
+      ) === undefined
     ) {
       this.enableCaptcha = false;
-    } else if (this.configService.getConfigByKey("enable-captcha") === "true") {
+    } else if (
+      this.configService.getConfigByKey(
+        "mosip.preregistration.captcha.enable"
+      ) === "true"
+    ) {
       this.enableCaptcha = true;
+      this.loadRecaptchaSiteKey();
     }
-    console.log(this.enableCaptcha + typeof this.enableCaptcha);
     if (!this.enableCaptcha) {
       this.enableSendOtp = true;
     }
+  }
+
+  loadRecaptchaSiteKey() {
     this.siteKey = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.google_recaptcha_site_key
+      "mosip.preregistration.captcha.site.key"
     );
   }
 
@@ -364,7 +375,7 @@ export class LoginComponent implements OnInit {
       this.dataService
       .sendOtpWithCaptcha(
         this.inputContactDetails,
-        this.langCode,
+        localStorage.getItem("langCode"),
         this.captchaToken
       )
       .subscribe(
