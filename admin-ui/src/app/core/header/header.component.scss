@@ -70,6 +70,11 @@
     }
   }
 }
+
+[dir*="rtl"] .profile {
+  text-align: end !important;
+}
+
 .profile {
   flex: 2;
   text-align: right;

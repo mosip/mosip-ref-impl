@@ -82,6 +82,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   keyboardType: string;
   masterDataName:string;
   primaryLangCode:string;
+  isPrimaryLangRTL:boolean = false;
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -100,6 +101,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
   ngOnInit() {
     this.fieldsCount = 0;
     this.primaryLangCode = this.headerService.getUserPreferredLanguage();
+    if(this.primaryLang === "ara"){
+      this.isPrimaryLangRTL = true;
+    }
     this.fields.forEach(obj => {
       if(obj.inputType === "text" && obj.showInSingleView === "true"){
         this.fieldsCount++;
