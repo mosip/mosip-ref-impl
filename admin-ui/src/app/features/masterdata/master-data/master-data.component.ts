@@ -22,6 +22,7 @@ export class MasterDataComponent implements OnInit {
   masterDataMachineList: any[];
   masterDataDocumentList: any[];
   dynamicfieldDistinctValue: any[];
+  arrowDirection = 'keyboard_arrow_right'; 
 
   constructor(private dataService: DataStorageService,
               private router: Router,
@@ -35,6 +36,9 @@ export class MasterDataComponent implements OnInit {
 
   ngOnInit() {
     this.auditService.audit(4, 'ADM-043');
+    if(this.primaryLang === "ara"){
+      this.arrowDirection = 'keyboard_arrow_left';
+    }
     this.dataService.getMasterDataTypesList().subscribe(data => {
       console.log('Master Data', data);
       this.masterDataCommonList = data.masterDatatList.common;

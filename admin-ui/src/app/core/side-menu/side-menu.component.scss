@@ -7,6 +7,37 @@
   width: 100%;
 }
 
+[dir*="rtl"] .mat-nav-list {
+  .list-item-active {
+    border-left: 4px solid #ff4081 !important;
+    border-right: 0px solid #ff4081 !important;
+  }
+}
+
+[dir*="rtl"] #flex-single-view  {
+  .flex-body  {
+    .action-buttons {
+      text-align: left !important;
+    }  
+    .forms-container  {
+      .primary-form-rtl {
+        padding-right: 20px !important;
+      }    
+      .secondary-form-ltr{
+        padding-right: 7px !important;
+        padding-left: 30px !important;
+      }
+    }  
+  }
+  .elipses {
+    position: inherit !important;
+  }
+}
+
+.mat-sidenav-content > app-edit{
+  padding:12px !important;
+}
+
 .mat-nav-list {
   .list-item-active {
     background: #f1f1f3 !important;

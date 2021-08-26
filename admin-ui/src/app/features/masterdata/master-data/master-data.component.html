@@ -15,7 +15,7 @@
                             <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="onList(itemList)">
                                 <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
-                                        keyboard_arrow_right
+                                        {{arrowDirection}}
                                     </i></span>
                             </mat-card-content>
                         </ng-container>
@@ -38,7 +38,7 @@
                             <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="dynamicFeildNavigate(itemList)">
                                 <span style="margin-top: 5px; margin-left: 5px;">{{itemList | titlecase}}</span>
                                 <span style="text-align: right"><i class="material-icons">
-                                        keyboard_arrow_right
+                                        {{arrowDirection}}
                                     </i></span>
                             </mat-card-content>
                         </ng-container>
@@ -57,7 +57,7 @@
                             <mat-card-content class="content" [style.marginTop.px]="j === 0 ? 10:0" (click)="onList(itemList)">
                                 <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
-                                        keyboard_arrow_right
+                                        {{arrowDirection}}
                                     </i></span>
                             </mat-card-content>
                         </ng-container>
@@ -72,7 +72,7 @@
                             <mat-card-content class="content" [style.marginTop.px]="k === 0 ? 10:0" (click)="onList(itemList)">
                                 <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
-                                        keyboard_arrow_right
+                                        {{arrowDirection}}
                                     </i></span>
                             </mat-card-content>
                         </ng-container>
@@ -87,7 +87,7 @@
                             <mat-card-content class="content" [style.marginTop.px]="l === 0 ? 10:0" (click)="onList(itemList)">
                                 <span style="margin-top: 5px; margin-left: 5px;">{{itemList?.label[primaryLang]}}</span>
                                 <span style="text-align: right"><i class="material-icons">
-                                        keyboard_arrow_right
+                                        {{arrowDirection}}
                                     </i></span>
                             </mat-card-content>
                         </ng-container>

@@ -8,7 +8,8 @@
                   *ngIf="!disableForms"
                   matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
                   (click)="openKeyboard('primary')"
-                  style="float: right; color: grey; cursor: pointer;"
+                  style="color: grey; cursor: pointer;"
+                  [ngStyle]="isPrimaryLangRTL ? {'float':'left'} : {'float':'right'}"
                   ><i class="material-icons">keyboard</i></span
                 >
                 <hr />
@@ -250,15 +251,16 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <strong class="title">{{ secondaryLangDisplay }}</strong>
+                <strong class="title" [ngStyle]="isPrimaryLangRTL ? {'float':'right'} : {'float':'left'}">{{ secondaryLangDisplay }}</strong>
                 <span
                   *ngIf="!disableForms"
                   matTooltip="{{languageNames['keyboard-tooltip'] | translate }}"
                   (click)="openKeyboard('secondary')"
-                  style="float: right; color: grey; cursor: pointer;"
+                  style="color: grey; cursor: pointer;"
+                  [ngStyle]="isPrimaryLangRTL ? {'float':'left'} : {'float':'right'}"
                   ><i class="material-icons">keyboard</i></span
                 >
-                <hr />
+                <hr  [ngStyle]="isPrimaryLangRTL ? {'margin-top': '17px'} : {'margin-top': '0px'}"   />
                 <br /><br />
                 <div *ngFor="let field of fields; let ii = index" class="mat-form2" [ngStyle]="{'text-align': (secondaryLang==='ara') ? 'right' : 'left'}">
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name !== 'code'">
