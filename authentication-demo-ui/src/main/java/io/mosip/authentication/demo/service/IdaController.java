@@ -265,6 +265,7 @@ public class IdaController {
 		otpAnchorPane.setDisable(true);
 		bioAnchorPane.setDisable(true);
 		responsetextField.setDisable(true);
+		requestOtp.setDisable(true);
 		sendAuthRequest.setDisable(true);
 		demoInputData.setDisable(true);
 		ekycResponse.setVisible(false);
@@ -281,8 +282,9 @@ public class IdaController {
 	}
 
 	private void displayDialog(String data) {
-		TextArea ekycTextArea = new TextArea();
-		if (Objects.isNull(dialog)) {
+		if(dialog ==  null || ekycTextArea == null) {
+			ekycTextArea = new TextArea();
+			
 			dialog = new Stage();
 			dialog.initModality(Modality.NONE);
 			AnchorPane dialogVbox = new AnchorPane();
@@ -294,8 +296,12 @@ public class IdaController {
 			dialogVbox.getChildren().add(ekycTextArea);
 			Scene dialogScene = new Scene(dialogVbox);
 			dialog.setScene(dialogScene);
-		}
+			dialog.setTitle("eKYC");
+			
+		} 
+		
 		ekycTextArea.setText(data);
+		dialog.setAlwaysOnTop(true);
 		dialog.show();
 	}
 
@@ -324,8 +330,11 @@ public class IdaController {
 	private void updateSendButton() {
 		if (idValue.getText() == null || idValue.getText().trim().isEmpty()) {
 			sendAuthRequest.setDisable(true);
+			requestOtp.setDisable(true);
 			return;
 		}
+		
+		requestOtp.setDisable(!otpAuthType.isSelected());
 
 		if (otpAuthType.isSelected()) {
 			if (otpValue.getText().trim().isEmpty()) {
@@ -818,11 +827,23 @@ public class IdaController {
 
 	@SuppressWarnings("rawtypes")
 	private void decryptEkycResponse(ResponseEntity<Map> authResponse) throws Exception {
-		String identity = (String) ((Map) authResponse.getBody().get("response")).get("identity");
 		PrivateKeyEntry ekycKey = keyMgrUtil.getKeyEntry(keyMgrUtil.getKeysDirPath(), "ekyc");
+		Map ekycResponseData = (Map) authResponse.getBody().get("response");
+		String identity = (String) ekycResponseData.get("identity");
 		Map<String, String> encryptedData = this.splitEncryptedData(identity);
-		byte[] encSecKey = CryptoUtil.decodeBase64(encryptedData.get("encryptedSessionKey"));
-		byte[] encKycData = CryptoUtil.decodeBase64(encryptedData.get("encryptedData"));
+		
+		String sessionKey = (String) ekycResponseData.get("sessionKey");
+
+		byte[] encSecKey;
+		byte[] encKycData;
+		if(sessionKey == null) {
+			encSecKey = CryptoUtil.decodeBase64(encryptedData.get("encryptedSessionKey"));
+			encKycData = CryptoUtil.decodeBase64(encryptedData.get("encryptedData"));
+		} else {
+			encSecKey = CryptoUtil.decodeBase64(sessionKey);
+			encKycData = CryptoUtil.decodeBase64(identity);
+		}
+		
 		byte[] decSecKey = decryptSecretKey(ekycKey.getPrivateKey(), encSecKey);
 	    Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding"); //NoPadding
 	    byte[] nonce = Arrays.copyOfRange(encKycData, encKycData.length - cipher.getBlockSize(), encKycData.length);
@@ -1023,6 +1044,8 @@ public class IdaController {
 	@Autowired
 	private CryptoUtility cryptoUtil;
 
+	private TextArea ekycTextArea;
+
 	public static void turnOffSslChecking() throws KeyManagementException, java.security.NoSuchAlgorithmException {
 		// Install the all-trusting trust manager
 		final SSLContext sc = SSLContext.getInstance(SSL);
@@ -1075,6 +1098,7 @@ public class IdaController {
 		responsetextField.setText("");
 		demoInputData.setText(null);
 		demoInputData.setDisable(true);
+		requestOtp.setDisable(true);
 		sendAuthRequest.setDisable(false);
 		capture = null;
 		previousHash = null;
