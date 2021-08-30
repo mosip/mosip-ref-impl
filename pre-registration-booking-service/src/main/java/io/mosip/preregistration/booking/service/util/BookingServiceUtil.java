@@ -253,7 +253,7 @@ public class BookingServiceUtil {
 	}
 
 	public boolean timeSpanCheckForCancle(LocalDateTime bookedDateTime) {
-
+		boolean isTimeSpanCheckForCancel = false;
 		ZonedDateTime currentTime = ZonedDateTime.now();
 		LocalDateTime requestTimeCountrySpecific = currentTime.toInstant().atZone(ZoneId.of(specificZoneId))
 				.toLocalDateTime();
@@ -261,15 +261,20 @@ public class BookingServiceUtil {
 				"In timeSpanCheckForCancle method of Booking Service for request Date Time- "
 						+ requestTimeCountrySpecific);
 		long hours = ChronoUnit.HOURS.between(requestTimeCountrySpecific, bookedDateTime);
-		if (hours >= timeSpanCheckForCancel)
-			return true;
-		else
-			throw new TimeSpanException(ErrorCodes.PRG_BOOK_RCI_026.getCode(),
-					ErrorMessages.CANCEL_BOOKING_CANNOT_BE_DONE.getMessage() + " " + timeSpanCheckForCancel + "hours");
+		if (timeSpanCheckForCancel > 0) {
+			if (hours >= timeSpanCheckForCancel)
+				isTimeSpanCheckForCancel = true;
+			else
+				throw new TimeSpanException(ErrorCodes.PRG_BOOK_RCI_026.getCode(),
+						ErrorMessages.CANCEL_BOOKING_CANNOT_BE_DONE.getMessage() + " " + timeSpanCheckForCancel
+								+ "hours");
+		}
+		return isTimeSpanCheckForCancel;
 	}
 
 	public boolean timeSpanCheckForRebook(LocalDateTime bookedDateTime, Date requestTime) {
 
+		boolean isTimeSpanCheckForRebook = false;
 		LocalDateTime requestTimeCountrySpecific = requestTime.toInstant().atZone(ZoneId.of(specificZoneId))
 				.toLocalDateTime();
 
@@ -277,11 +282,16 @@ public class BookingServiceUtil {
 				"In timeSpanCheckForRebook method of Booking Service for request Date Time- "
 						+ requestTimeCountrySpecific);
 		long hours = ChronoUnit.HOURS.between(requestTimeCountrySpecific, bookedDateTime);
-		if (hours >= timeSpanCheckForRebook)
-			return true;
-		else
-			throw new TimeSpanException(ErrorCodes.PRG_BOOK_RCI_026.getCode(),
-					ErrorMessages.BOOKING_CANNOT_BE_DONE.getMessage() + " " + timeSpanCheckForRebook + " hours");
+
+		if (timeSpanCheckForRebook > 0) {
+			if (hours >= timeSpanCheckForRebook)
+				isTimeSpanCheckForRebook = true;
+
+			else
+				throw new TimeSpanException(ErrorCodes.PRG_BOOK_RCI_026.getCode(),
+						ErrorMessages.BOOKING_CANNOT_BE_DONE.getMessage() + " " + timeSpanCheckForRebook + " hours");
+		}
+		return isTimeSpanCheckForRebook;
 
 	}
 
@@ -627,8 +637,7 @@ public class BookingServiceUtil {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		try {
-			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url,
-					HttpMethod.GET, entity,
+			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {

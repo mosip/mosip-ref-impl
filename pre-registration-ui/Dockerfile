@@ -22,6 +22,7 @@ ARG preregistration_i18n_bundle_url_arg=http://artifactory-service/artifactory/l
 # environment variable to pass artifactory url, at docker runtime
 ENV preregistration_i18n_bundle_url_env=${preregistration_i18n_bundle_url_arg}
 
+
 # install packages and create user
 RUN apt-get -y update \
 && apt-get install -y unzip wget \
