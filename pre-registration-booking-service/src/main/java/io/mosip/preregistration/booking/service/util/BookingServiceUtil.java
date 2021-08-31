@@ -253,7 +253,7 @@ public class BookingServiceUtil {
 	}
 
 	public boolean timeSpanCheckForCancle(LocalDateTime bookedDateTime) {
-		boolean isTimeSpanCheckForCancel = false;
+		boolean isTimeSpanCheckForCancel = true;
 		ZonedDateTime currentTime = ZonedDateTime.now();
 		LocalDateTime requestTimeCountrySpecific = currentTime.toInstant().atZone(ZoneId.of(specificZoneId))
 				.toLocalDateTime();
@@ -274,7 +274,7 @@ public class BookingServiceUtil {
 
 	public boolean timeSpanCheckForRebook(LocalDateTime bookedDateTime, Date requestTime) {
 
-		boolean isTimeSpanCheckForRebook = false;
+		boolean isTimeSpanCheckForRebook = true;
 		LocalDateTime requestTimeCountrySpecific = requestTime.toInstant().atZone(ZoneId.of(specificZoneId))
 				.toLocalDateTime();
 
