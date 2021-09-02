@@ -1,6 +1,6 @@
 ### -- ---------------------------------------------------------------------------------------------------------
 ### -- Script Name		: IDA Archive Job
-### -- Deploy Module 	: IDA
+### -- Deploy Module 		: IDA
 ### -- Purpose    		: To Archive IDA tables which are marked for archive.       
 ### -- Create By   		: Sadanandegowda DM
 ### -- Created Date		: Dec-2020

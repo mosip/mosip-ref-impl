@@ -1,6 +1,6 @@
 ### -- ---------------------------------------------------------------------------------------------------------
 ### -- Script Name		: Registration Processor Archive Job
-### -- Deploy Module 	: Pre registration
+### -- Deploy Module 		: Registration Processor
 ### -- Purpose    		: To Archive Registration Processor tables which are marked for archive.       
 ### -- Create By   		: Sadanandegowda DM
 ### -- Created Date		: Dec-2020
