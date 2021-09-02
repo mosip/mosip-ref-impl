@@ -53,10 +53,9 @@ export class PacketStatusComponent implements OnInit {
   search() {
     this.data = null;
     this.errorMessage = '';
-    if (this.id.length !== 29) {
+    if (this.id.length) {
       this.error = true;
     } else {
-      console.log('this.id>>>' + this.id);
       this.dataStorageService.getPacketStatus(this.id).subscribe(response => {
         console.log(response);
         if (response['response'] != null) {
