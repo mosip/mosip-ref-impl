@@ -5,7 +5,8 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        	Modified By         	Comments / Remarks
+-- Sept-2021			Chandra Keshav Mishra	Updated as per latest 1.1.5 changes.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -17,6 +18,7 @@ CREATE TABLE archive.auth_transaction(
 	request_dtimes timestamp NOT NULL,
 	response_dtimes timestamp NOT NULL,
 	request_trn_id character varying(64),
+	auth_type_code character varying(128) NOT NULL,
 	auth_type_code character varying(36) NOT NULL,
 	status_code character varying(36) NOT NULL,
 	status_comment character varying(1024),
@@ -34,6 +36,7 @@ CREATE TABLE archive.auth_transaction(
 	cr_dtimes timestamp NOT NULL,
 	upd_by character varying(256),
 	upd_dtimes timestamp,
+	is_deleted boolean NOT NULL DEFAULT FALSE,
 	is_deleted boolean,
 	del_dtimes timestamp,
 	CONSTRAINT pk_authtrn_id PRIMARY KEY (id)

@@ -5,7 +5,8 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Sept-2021		Chandra Keshav Mishra	Updated as per latest 1.1.5 changes
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ CREATE TABLE archive.uin_biometric_h(
 	cr_dtimes timestamp NOT NULL,
 	upd_by character varying(256),
 	upd_dtimes timestamp,
-	is_deleted boolean,
+	is_deleted boolean DEFAULT FALSE,
 	del_dtimes timestamp,
 	CONSTRAINT pk_uinbh PRIMARY KEY (uin_ref_id,biometric_file_type,eff_dtimes),
 	CONSTRAINT uk_uinbh UNIQUE (uin_ref_id,bio_file_id,eff_dtimes)

@@ -5,7 +5,8 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Sept-2021		Chandra Keshav Mishra	Updayed as per latest 1.1.5 changes.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ CREATE TABLE archive.reg_demo_dedupe_list(
 	cr_dtimes timestamp NOT NULL,
 	upd_by character varying(256),
 	upd_dtimes timestamp,
+	is_deleted boolean DEFAULT FALSE,
 	is_deleted boolean,
 	del_dtimes timestamp,
 	CONSTRAINT pk_regded PRIMARY KEY (matched_reg_id,regtrn_id)

@@ -5,7 +5,8 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Sept-2021		Chandra Keshav Mishra	Updated as per latest 1.1.5 changes
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -28,7 +29,7 @@ CREATE TABLE archive.uin_h(
 	upd_by character varying(256),
 	upd_dtimes timestamp,
 	is_deleted boolean,
-	del_dtimes timestamp,
+	del_dtimes timestamp DEFAULT FALSE,
 	CONSTRAINT pk_uinh PRIMARY KEY (uin_ref_id,eff_dtimes),
 	CONSTRAINT uk_uinh UNIQUE (uin,eff_dtimes)
 

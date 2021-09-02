@@ -4,8 +4,9 @@
 -- Purpose    	: OTP Transaction: All OTP related data and validation details are maintained here for ID Authentication  
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
--- 
--- Modified Date        Modified By         Comments / Remarks
+-- 	
+-- Modified Date        	Modified By         	Comments / Remarks
+-- Sept-2021			Chandra Keshav Mishra	updated as per latest 1.1.5 changes
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ CREATE TABLE archive.otp_transaction(
 	cr_dtimes timestamp NOT NULL,
 	upd_by character varying(256),
 	upd_dtimes timestamp,
-	is_deleted boolean,
+	is_deleted boolean DEFAULT FALSE,
 	del_dtimes timestamp,
 	CONSTRAINT pk_otpt_id PRIMARY KEY (id)
 
