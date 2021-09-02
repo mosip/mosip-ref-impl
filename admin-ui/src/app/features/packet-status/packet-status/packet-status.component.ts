@@ -53,10 +53,10 @@ export class PacketStatusComponent implements OnInit {
   search() {
     this.data = null;
     this.errorMessage = '';
-    if (this.id.length !== 29) {
+    if (this.id.length == 0) {
       this.error = true;
     } else {
-      console.log('this.id>>>' + this.id);
+      this.error = false;
       this.dataStorageService.getPacketStatus(this.id).subscribe(response => {
         console.log(response);
         if (response['response'] != null) {
@@ -73,8 +73,8 @@ export class PacketStatusComponent implements OnInit {
             this.showDetails = true;
         }
        } else if (response['errors'] != null) {
-          console.log('error has occured');
-          this.errorMessage = this.messages.errorMessages.message;
+          this.error = true;
+          this.errorMessage = response['errors'][0].message;
           /*this.dialog
             .open(DialogComponent, {
                data: {
