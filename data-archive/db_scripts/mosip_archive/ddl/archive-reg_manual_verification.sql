@@ -5,7 +5,8 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        	Modified By         	Comments / Remarks
+-- Sept-2021			Chandra Keshav Mishra	Updated as per latest 1.1.5 changes.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -17,7 +18,9 @@ CREATE TABLE archive.reg_manual_verification(
 	matched_ref_id character varying(39) NOT NULL,
 	matched_ref_type character varying(36) NOT NULL,
 	mv_usr_id character varying(256),
-	matched_score numeric(6,3),
+	ref_regtrn_id character varying(36),	
+	request_id character varying(36),	
+	res_text bytea,
 	status_code character varying(36),
 	reason_code character varying(36),
 	status_comment character varying(256),
@@ -28,6 +31,7 @@ CREATE TABLE archive.reg_manual_verification(
 	cr_dtimes timestamp NOT NULL,
 	upd_by character varying(256),
 	upd_dtimes timestamp,
+	is_deleted boolean DEFAULT FALSE,
 	is_deleted boolean,
 	del_dtimes timestamp,
 	CONSTRAINT pk_rmnlver_id PRIMARY KEY (reg_id,matched_ref_id,matched_ref_type)
@@ -35,6 +39,10 @@ CREATE TABLE archive.reg_manual_verification(
 );
 -- ddl-end --
 COMMENT ON TABLE archive.reg_manual_verification IS 'Manual Verification: Stores all the registration request which goes through manual verification process, registration can be assinged to single/multiple manual verifier as part of the verification process';
+-- ddl-end --
+COMMENT ON COLUMN archive.reg_manual_verification.reg_id IS 'Registration ID: ID of the registration request';	
+-- ddl-end --	
+COMMENT ON COLUMN archive.reg_manual_verification.matched_ref_id IS 'Mached Reference ID: Reference ID of the mached registrations, This id can be RID';
 -- ddl-end --
 COMMENT ON COLUMN archive.reg_manual_verification.reg_id IS 'Registration ID: ID of the registration request';
 -- ddl-end --

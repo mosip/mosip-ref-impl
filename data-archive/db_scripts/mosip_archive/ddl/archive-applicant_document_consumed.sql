@@ -5,7 +5,8 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date       	Modified By       		Comments / Remarks 
+-- Sept-2021		Chandra Keshav Mishra	 	Updated as per latest 1.1.5 changes.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ CREATE TABLE archive.applicant_document_consumed(
 	doc_file_format character varying(36) NOT NULL,
 	doc_id character varying(128) NOT NULL,
 	doc_hash character varying(64) NOT NULL,
+	doc_ref_id character varying,
 	encrypted_dtimes timestamp NOT NULL,
 	status_code character varying(36) NOT NULL,
 	lang_code character varying(3) NOT NULL,

@@ -1,16 +1,13 @@
 ### -- ---------------------------------------------------------------------------------------------------------
-### -- Script Name		: IDA Archive Job
-### -- Deploy Module 		: IDA
-### -- Purpose    		: To Archive IDA tables which are marked for archive.       
-### -- Create By   		: Sadanandegowda DM
-### -- Created Date		: Dec-2020
+### -- Script Name		: Audit Archive Job
+### -- Deploy Module 		: Audit
+### -- Purpose    		: To Archive Audit DB tables which are marked for archive.       
+### -- Create By   		: Chandra Keshav Mishra
+### -- Created Date		: Sept-2021
 ### -- 
 ### -- Modified Date        Modified By         Comments / Remarks
 ### -- ----------------------------------------------------------------------------------------
 
-python mosip_archive_ida_table1.py &
-sleep 5m
-
-python mosip_archive_ida_table2.py &
+python mosip_archive_audit_table1.py &
 
 #===============================================================================================
