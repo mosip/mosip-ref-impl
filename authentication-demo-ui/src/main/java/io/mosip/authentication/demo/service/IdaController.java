@@ -477,7 +477,7 @@ public class IdaController {
 		String requestBody = getCaptureRequestTemplate();
 
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFinger.timeout"))
-				.replace("$count", getFingerCount())
+				.replace("$count", String.valueOf(getFingerCount()))
 				.replace("$deviceId", env.getProperty("ida.request.captureFinger.deviceId"))
 				.replace("$domainUri", env.getProperty("ida.request.captureFinger.domainUri"))
 				.replace("$deviceSubId", getFingerDeviceSubId()).replace("$captureTime", getCaptureTime())
@@ -485,7 +485,7 @@ public class IdaController {
 				.replace("$requestedScore", env.getProperty("ida.request.captureFinger.requestedScore"))
 				.replace("$type", env.getProperty("ida.request.captureFinger.type"))
 				.replace("$bioSubType",
-						getBioSubType(getFingerCount(), env.getProperty("ida.request.captureFinger.bioSubType")))
+						getBioSubTypeString(getFingerCount(), env.getProperty("ida.request.captureFinger.bioSubType")))
 				.replace("$name", env.getProperty("ida.request.captureFinger.name"))
 				.replace("$value", env.getProperty("ida.request.captureFinger.value"))
 				.replace("$env", env.getProperty("ida.request.captureFinger.env"));
@@ -521,21 +521,26 @@ public class IdaController {
 
 		String requestBody = getCaptureRequestTemplate();
 
+		String irisSubtype = getIrisSubType(getIrisCount());
+		String bioSubType = getBioSubTypeString(getIrisCount(), irisSubtype);
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureIris.timeout"))
-				.replace("$count", getIrisCount())
+				.replace("$count", String.valueOf(getIrisCount()))
 				.replace("$deviceId", env.getProperty("ida.request.captureIris.deviceId"))
 				.replace("$domainUri", env.getProperty("ida.request.captureIris.domainUri"))
 				.replace("$deviceSubId", getIrisDeviceSubId()).replace("$captureTime", getCaptureTime())
 				.replace("$previousHash", getPreviousHash())
 				.replace("$requestedScore", env.getProperty("ida.request.captureIris.requestedScore"))
 				.replace("$type", env.getProperty("ida.request.captureIris.type"))
-				.replace("$bioSubType",
-						getBioSubType(getIrisCount(), env.getProperty("ida.request.captureIris.bioSubType")))
+				.replace("$bioSubType",	bioSubType)
 				.replace("$name", env.getProperty("ida.request.captureIris.name"))
 				.replace("$value", env.getProperty("ida.request.captureIris.value"))
 				.replace("$env", env.getProperty("ida.request.captureIris.env"));
 
 		return capturebiometrics(requestBody);
+	}
+
+	private String getIrisSubType(int count) {
+		return env.getProperty("ida.request.captureIris.bioSubType");
 	}
 
 	private String captureFace() throws Exception {
@@ -545,7 +550,7 @@ public class IdaController {
 		String requestBody = getCaptureRequestTemplate();
 
 		requestBody = requestBody.replace("$timeout", env.getProperty("ida.request.captureFace.timeout"))
-				.replace("$count", getFaceCount())
+				.replace("$count", String.valueOf(getFaceCount()))
 				.replace("$deviceId", env.getProperty("ida.request.captureFace.deviceId"))
 				.replace("$domainUri", env.getProperty("ida.request.captureFace.domainUri"))
 				.replace("$deviceSubId", getFaceDeviceSubId()).replace("$captureTime", getCaptureTime())
@@ -553,7 +558,7 @@ public class IdaController {
 				.replace("$requestedScore", env.getProperty("ida.request.captureFace.requestedScore"))
 				.replace("$type", env.getProperty("ida.request.captureFace.type"))
 				.replace("$bioSubType",
-						getBioSubType(getFaceCount(), env.getProperty("ida.request.captureFace.bioSubType")))
+						getBioSubTypeString(getFaceCount(), env.getProperty("ida.request.captureFace.bioSubType")))
 				.replace("$name", env.getProperty("ida.request.captureFace.name"))
 				.replace("$value", env.getProperty("ida.request.captureFace.value"))
 				.replace("$env", env.getProperty("ida.request.captureFace.env"));
@@ -565,28 +570,28 @@ public class IdaController {
 		return previousHash == null ? "" : previousHash;
 	}
 
-	private String getFingerCount() {
-		return fingerCount.getValue() == null ? String.valueOf(1) : fingerCount.getValue();
+	private int getFingerCount() {
+		return fingerCount.getValue() == null ? 1 : Integer.parseInt(fingerCount.getValue());
 	}
 
-	private String getBioSubType(String count, String bioValue) {
-		if (count.equalsIgnoreCase("1")) {
+	private String getBioSubTypeString(int count, String bioValue) {
+		if (count == 1) {
 			return "\"" + bioValue + "\"";
 		}
 		String finalStr = "\"" + bioValue + "\"";
-		for (int i = 2; i <= Integer.parseInt(count); i++) {
+		for (int i = 2; i <= count; i++) {
 			finalStr = finalStr + "," + "\"" + bioValue + "\"";
 		}
 
 		return finalStr;
 	}
 
-	private String getIrisCount() {
-		return String.valueOf(irisCount.getSelectionModel().getSelectedIndex() + 1);
+	private int getIrisCount() {
+		return irisCount.getSelectionModel().getSelectedIndex() == 2 ? 2 : 1;
 	}
 
-	private String getFaceCount() {
-		return String.valueOf(1);
+	private int getFaceCount() {
+		return 1;
 	}
 
 	private String getCaptureTime() {
