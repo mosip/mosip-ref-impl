@@ -32,7 +32,6 @@ CREATE TABLE archive.reg_manual_verification(
 	upd_by character varying(256),
 	upd_dtimes timestamp,
 	is_deleted boolean DEFAULT FALSE,
-	is_deleted boolean,
 	del_dtimes timestamp,
 	CONSTRAINT pk_rmnlver_id PRIMARY KEY (reg_id,matched_ref_id,matched_ref_type)
 
@@ -51,8 +50,6 @@ COMMENT ON COLUMN archive.reg_manual_verification.matched_ref_id IS 'Mached Refe
 COMMENT ON COLUMN archive.reg_manual_verification.matched_ref_type IS 'Mached reference ID Type: Type of the Reference ID';
 -- ddl-end --
 COMMENT ON COLUMN archive.reg_manual_verification.mv_usr_id IS 'Manual Verifier ID: User ID of the manual verifier';
--- ddl-end --
-COMMENT ON COLUMN archive.reg_manual_verification.matched_score IS 'Mached Score: Mached score as part deduplication process, This will be the combined score of multiple ABISapplications';
 -- ddl-end --
 COMMENT ON COLUMN archive.reg_manual_verification.status_code IS 'Status Code : Status of the manual verification';
 -- ddl-end --
