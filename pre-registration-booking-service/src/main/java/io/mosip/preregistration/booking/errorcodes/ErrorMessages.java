@@ -176,8 +176,6 @@ public enum ErrorMessages {
 	REG_CENTER_ID_NOT_FOUND("Registration center id not found"),
 	
 	APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION("Appointment cannot be booked for incomplete application"),
-	
-	APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION("Appointment cannot be booked for prefetched application"),
 
 	CANCEL_BOOKING_CANNOT_BE_DONE("Appointment cancelling cannot be done within");
 	/**

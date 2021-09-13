@@ -279,16 +279,10 @@ public class BookingService implements BookingServiceIntf {
 					String preRegStatusCode = serviceUtil.getApplicationBookingStatus(preRegistrationId);
 					log.info("preRegStatusCode : {}", preRegStatusCode);
 
-					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())
-							|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
+					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
 
-						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
-							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
-						} else {
-							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION.getMessage());
-						}
+						throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+								ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
 
 					}
 
@@ -409,20 +403,12 @@ public class BookingService implements BookingServiceIntf {
 						/* Getting Status From Demographic */
 						String preRegStatusCode = serviceUtil
 								.getApplicationBookingStatus(bookingRequestDTO.getPreRegistrationId());
-						System.out.println("preRegStatusCode" + preRegStatusCode);
+						log.debug("preRegStatusCode" + preRegStatusCode);
 
-						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())
-								|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
+						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
 
-							if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
-								throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-										ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION
-												.getMessage());
-							} else {
-								throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-										ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION
-												.getMessage());
-							}
+							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
 
 						}
 
