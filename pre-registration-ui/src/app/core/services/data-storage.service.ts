@@ -663,12 +663,12 @@ export class DataStorageService {
     return this.httpClient.get(url);
   }
 
-  updateDocRefId(fileDocumentId, preId, docRefId) {
+  updateDocRefId(fileDocumentId, preId, refNumber) {
     const url =
       `${this.BASE_URL}${this.PRE_REG_URL}` +
       `${appConstants.APPEND_URL.updateDocRefId}${fileDocumentId}` +
       `?${appConstants.PARAMS_KEYS.preRegistrationId}=${preId}` +
-      `&${appConstants.PARAMS_KEYS.docRefId}=${docRefId}`;
+      `&${appConstants.PARAMS_KEYS.docRefId}=${refNumber}`;
     return this.httpClient.put(url, {});
   }
 

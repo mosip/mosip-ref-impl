@@ -7,6 +7,6 @@ export class FileModel {
     public docTypCode?: string,
     public multipartFile?: any,
     public prereg_id?: string,
-    public docRefId?: string
+    public refNumber?: string
   ) {}
 }

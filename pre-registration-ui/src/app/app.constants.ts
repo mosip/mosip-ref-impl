@@ -72,7 +72,7 @@ export const PARAMS_KEYS = {
   catCode: 'catCode',
   sourcePrId: 'sourcePrId',
   POA: 'POA',
-  docRefId: 'docRefId'
+  docRefId: 'refNumber'
 };
 
 export const ERROR_CODES = {
