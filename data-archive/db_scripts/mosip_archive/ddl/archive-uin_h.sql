@@ -28,8 +28,8 @@ CREATE TABLE archive.uin_h(
 	cr_dtimes timestamp NOT NULL,
 	upd_by character varying(256),
 	upd_dtimes timestamp,
-	is_deleted boolean,
-	del_dtimes timestamp DEFAULT FALSE,
+	is_deleted boolean DEFAULT FALSE,
+	del_dtimes timestamp,
 	CONSTRAINT pk_uinh PRIMARY KEY (uin_ref_id,eff_dtimes),
 	CONSTRAINT uk_uinh UNIQUE (uin,eff_dtimes)
 

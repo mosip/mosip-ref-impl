@@ -19,7 +19,6 @@ CREATE TABLE archive.auth_transaction(
 	response_dtimes timestamp NOT NULL,
 	request_trn_id character varying(64),
 	auth_type_code character varying(128) NOT NULL,
-	auth_type_code character varying(36) NOT NULL,
 	status_code character varying(36) NOT NULL,
 	status_comment character varying(1024),
 	lang_code character varying(3) NOT NULL,
@@ -37,7 +36,6 @@ CREATE TABLE archive.auth_transaction(
 	upd_by character varying(256),
 	upd_dtimes timestamp,
 	is_deleted boolean NOT NULL DEFAULT FALSE,
-	is_deleted boolean,
 	del_dtimes timestamp,
 	CONSTRAINT pk_authtrn_id PRIMARY KEY (id)
 
