@@ -418,11 +418,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
       .subscribe(response => {
         this.dropDownValues.locationCode.primary = response.response;
       });
-    this.dataStorageService
-      .getZoneData(this.secondaryLang)
-      .subscribe(response => {
-        this.dropDownValues.locationCode.secondary = response.response;
-      });
+    if(this.secondaryLang){
+      this.dataStorageService
+        .getZoneData(this.secondaryLang)
+        .subscribe(response => {
+          this.dropDownValues.locationCode.secondary = response.response;
+        });
+    }
   }
 
   getDeviceTypes() {
@@ -435,14 +437,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
       .subscribe(response => {
         this.dropDownValues.deviceTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('devicetypes', request)
-      .subscribe(response => {
-        this.dropDownValues.deviceTypeCode.secondary =
-          response.response.filters;
-      });
+    if(this.secondaryLang){
+      filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
+      request = new RequestModel('', null, filterRequest);
+      this.dataStorageService
+        .getFiltersForAllMaterDataTypes('devicetypes', request)
+        .subscribe(response => {
+          this.dropDownValues.deviceTypeCode.secondary =
+            response.response.filters;
+        });
+    }
   }
 
   getMachineTypes() {
@@ -455,14 +459,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
       .subscribe(response => {
         this.dropDownValues.machineTypeCode.primary = response.response.filters;
       });
-    filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
-    request = new RequestModel('', null, filterRequest);
-    this.dataStorageService
-      .getFiltersForAllMaterDataTypes('machinetypes', request)
-      .subscribe(response => {
-        this.dropDownValues.machineTypeCode.secondary =
-          response.response.filters;
-      });
+    if(this.secondaryLang){
+      filterRequest = new FilterRequest([filterObject], this.secondaryLang, []);
+      request = new RequestModel('', null, filterRequest);
+      this.dataStorageService
+        .getFiltersForAllMaterDataTypes('machinetypes', request)
+        .subscribe(response => {
+          this.dropDownValues.machineTypeCode.secondary =
+            response.response.filters;
+        });
+    }
   }
   getTemplateFileFormat() {
     this.dataStorageService
@@ -471,30 +477,32 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.dropDownValues.fileFormatCode.primary = response.response.templateFileFormats;
       });
     this.dataStorageService
-      .getDropDownValuesForMasterData('templatefileformats/'+this.secondaryLang)
-      .subscribe(response => {
-        this.dropDownValues.fileFormatCode.secondary = response.response.templateFileFormats;
-      });
-    this.dataStorageService
       .getDropDownValuesForMasterData('templatetypes/'+this.primaryLang)
       .subscribe(response => {
         this.dropDownValues.templateTypeCode.primary = response.response.templateTypes;
-      });
-    this.dataStorageService
-      .getDropDownValuesForMasterData('templatetypes/'+this.secondaryLang)
-      .subscribe(response => {
-        this.dropDownValues.templateTypeCode.secondary = response.response.templateTypes;
       });
     this.dataStorageService
       .getDropDownValuesForMasterData('modules/'+this.primaryLang)
       .subscribe(response => {
         this.dropDownValues.moduleId.primary = response.response.modules;
       });
-    this.dataStorageService
-      .getDropDownValuesForMasterData('modules/'+this.secondaryLang)
-      .subscribe(response => {
-        this.dropDownValues.moduleId.secondary = response.response.modules;
-      });
+    if(this.secondaryLang){
+      this.dataStorageService
+        .getDropDownValuesForMasterData('templatefileformats/'+this.secondaryLang)
+        .subscribe(response => {
+          this.dropDownValues.fileFormatCode.secondary = response.response.templateFileFormats;
+        });
+      this.dataStorageService
+        .getDropDownValuesForMasterData('templatetypes/'+this.secondaryLang)
+        .subscribe(response => {
+          this.dropDownValues.templateTypeCode.secondary = response.response.templateTypes;
+        });
+      this.dataStorageService
+        .getDropDownValuesForMasterData('modules/'+this.secondaryLang)
+        .subscribe(response => {
+          this.dropDownValues.moduleId.secondary = response.response.modules;
+        });
+    }    
   }
 
   getHierarchyLevel() {
@@ -523,14 +531,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
       .subscribe(response => {
         this.dropDownValues['locationCode'].primary =
           response['response']['locations'];
-      });
-
-    this.dataStorageService
+    });
+    if(this.secondaryLang){
+      this.dataStorageService
       .getImmediateChildren(locationCode, this.secondaryLang)
       .subscribe(response => {
         this.dropDownValues['locationCode'].secondary =
           response['response']['locations'];
       });
+    }    
   }
 
   changePage(location: string) {
