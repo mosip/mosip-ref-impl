@@ -279,10 +279,16 @@ public class BookingService implements BookingServiceIntf {
 					String preRegStatusCode = serviceUtil.getApplicationBookingStatus(preRegistrationId);
 					log.info("preRegStatusCode : {}", preRegStatusCode);
 
-					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())
+							|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
 
-						throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-								ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+						} else {
+							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION.getMessage());
+						}
 
 					}
 
@@ -292,8 +298,7 @@ public class BookingService implements BookingServiceIntf {
 						checkSlotAvailability(bookingRequestDTO);
 
 						if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-								|| preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())
-								|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
+								|| preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
 
 							/* Creating new booking */
 							response = book(preRegistrationId, bookingRequestDTO);
@@ -406,10 +411,18 @@ public class BookingService implements BookingServiceIntf {
 								.getApplicationBookingStatus(bookingRequestDTO.getPreRegistrationId());
 						log.debug("preRegStatusCode" + preRegStatusCode);
 
-						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())
+								|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
 
-							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+							if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+								throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+										ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION
+												.getMessage());
+							} else {
+								throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+										ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION
+												.getMessage());
+							}
 
 						}
 
@@ -427,8 +440,7 @@ public class BookingService implements BookingServiceIntf {
 							checkSlotAvailability(bookingRequest);
 
 							if (preRegStatusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-									|| preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())
-									|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
+									|| preRegStatusCode.equals(StatusCodes.CANCELLED.getCode())) {
 
 								/* Creating new booking */
 								respList.add(book(bookingRequestDTO.getPreRegistrationId(), bookingRequest));
