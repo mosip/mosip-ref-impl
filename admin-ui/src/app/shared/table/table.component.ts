@@ -88,6 +88,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   selectedRow(data: any, specData: any) {
+    console.log("specData>>>"+JSON.stringify(specData));
     let currentRouteType = this.router.url.split('/')[3];
     let id = null;
     if(!currentRouteType.includes("view")){
@@ -96,7 +97,6 @@ export class TableComponent implements OnInit, OnChanges {
       currentRouteType = this.router.url.split('/')[2];
       id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     }
-    
     if (specData.callBackFunction && specData.callBackFunction !== '') {
       if (currentRouteType.toLowerCase() === 'blacklisted-words') {
         this.commonService[specData.callBackFunction]({...data}, specData.redirectURL +"$"+data.langCode, id.idKey);
@@ -116,8 +116,6 @@ export class TableComponent implements OnInit, OnChanges {
     const currentRouteType = this.router.url.split('/')[3];
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     this.auditService.audit(7, id.auditEventId, currentRouteType);
-    console.log(id);
-    console.log(this.currentRoute);
     if (index === 0) {
       if (currentRouteType.toLowerCase() === 'blacklisted-words') {
         this.router.navigate([

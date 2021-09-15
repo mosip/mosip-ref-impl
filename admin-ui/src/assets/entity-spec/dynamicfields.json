@@ -99,8 +99,8 @@
     },
     {
       "name": "dataType",
-      "showInListView": "true",
-      "showInSingleView": "true",
+      "showInListView": "false",
+      "showInSingleView": "false",
       "label": { "eng": "Data Type", "ara": "نوع البيانات", "fra": "Type de données","hin": "डाटा प्रकार", "kan": "ಡೇಟಾ ಪ್ರಕಾರ", "tam": "தரவு வகை"},
       "sortOrder": "3",
       "showAsLink": "",
@@ -110,9 +110,33 @@
       "ismandatory": "true"
     },
     {
-      "name": "fieldVal",
+      "name": "code",
       "showInListView": "true",
       "showInSingleView": "true",
+      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code","hin": "कोड", "kan": "ಕೋಡ್", "tam": "குறியீடு"},
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "value",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Value", "ara": "قيمة", "fra": "Valeur","hin": "मूल्य", "kan": "ಮೌಲ್ಯ", "tam": "மதிப்பு" },
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
+      "name": "fieldVal",
+      "showInListView": "false",
+      "showInSingleView": "false",
       "label": { "eng": "Value", "ara": "قيمة", "fra": "Valeur","hin": "मूल्य", "kan": "ಮೌಲ್ಯ", "tam": "மதிப்பு" },
       "sortOrder": "",
       "showAsLink": "",
@@ -205,14 +229,14 @@
   },
   "filterColumns":  [
     {
-      "filtername": "name",
-      "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "prénom","hin": "नाम", "kan": "ಹೆಸರು", "tam": "பெயர்" },
+      "filtername": "description",
+      "filterlabel": { "eng": "Description", "ara": "وصف", "fra": "La description","hin": "विवरण", "kan": "ವಿವರಣೆ", "tam": "விளக்கம்"},
       "filterType": "equals",
       "autocomplete": "false",
       "dropdown": "false",
       "datePicker": "false",
       "apiName": "dynamicfields",
-      "fieldName": "name",
+      "fieldName": "description",
       "methodCallName": ""
     },
     {

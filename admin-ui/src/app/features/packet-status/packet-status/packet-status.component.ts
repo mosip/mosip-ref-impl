@@ -57,7 +57,7 @@ export class PacketStatusComponent implements OnInit {
       this.error = true;
     } else {
       this.error = false;
-      this.dataStorageService.getPacketStatus(this.id).subscribe(response => {
+      this.dataStorageService.getPacketStatus(this.id, this.headerService.getUserPreferredLanguage()).subscribe(response => {
         console.log(response);
         if (response['response'] != null) {
           this.data = response['response']['packetStatusUpdateList'];

@@ -44,6 +44,8 @@ export class CreateComponent{
   popupMessages: any;
   DeviceRequest = {} as DeviceRequest;
   data = [];
+  pageName = "";
+  disabled = true;
 
   constructor(
     private location: Location,
@@ -75,6 +77,10 @@ export class CreateComponent{
   }
 
   initializeComponent() {
+    this.pageName = this.router.url.split('/')[3];
+    if(this.pageName === "zoneuser"){
+      this.disabled = false;
+    }
     this.activatedRoute.params.subscribe(params => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
@@ -179,8 +185,9 @@ export class CreateComponent{
   }
 
   submit() {
-    let zoneData = {"isActive": true, "langCode": this.primaryLang, "userId": this.primaryData.userId, "zoneCode": this.primaryData.zone}
-    let centerData = {"isActive": true, "langCode": this.primaryLang, "id": this.primaryData.userId, "regCenterId": this.primaryData.regCenterId, "name":this.primaryData.name}
+    let zoneData = {"isActive": true, "langCode": this.primaryLang, "userId": this.primaryData.userId, "zoneCode": this.primaryData.zone};
+    let centerData = {"isActive": true, "langCode": this.primaryLang, "id": this.primaryData.userId, "regCenterId": this.primaryData.regCenterId, "name":this.primaryData.name};
+    let url = this.router.url.split('/')[3];
     let request = new RequestModel(
       "",
       null,
@@ -189,20 +196,32 @@ export class CreateComponent{
     if(this.createUpdate){
       this.dataStorageService.updateZoneUserMapping(request).subscribe(zoneResponse => { 
         if (!zoneResponse.errors) {
-          this.dataStorageService.updateCenterUserMapping(centerData).subscribe(centerResponse => {
-            if (centerResponse.errors != null) {
-                let url = centerData.name+" Mapped Successfully";
-                this.showMessage(url)
-                  .afterClosed()
-                  .subscribe(() => {
-                    this.router.navigateByUrl(
-                      `admin/resources/users/view`
-                    );
-                  });
-              } else {
-                this.showErrorPopup(centerResponse.errors[0].message);
-              }        
-          });
+          if(url !== "zoneuser"){
+            request = new RequestModel("", null, centerData);
+            this.dataStorageService.updateCenterUserMapping(request).subscribe(centerResponse => {
+              if (!centerResponse.errors) {
+                  let url = centerData.name+" Mapped Successfully";
+                  this.showMessage(url)
+                    .afterClosed()
+                    .subscribe(() => {
+                      if(url === "zoneuser"){
+                        this.router.navigateByUrl(`admin/resources/zoneuser/view`);
+                      }else{
+                        this.router.navigateByUrl(`admin/resources/users/view`);
+                      }
+                    });
+                } else {
+                  this.showErrorPopup(centerResponse.errors[0].message);
+                }        
+            });
+          } else {
+            let url = centerData.name+" Mapped Successfully";
+            this.showMessage(url)
+              .afterClosed()
+              .subscribe(() => { 
+                this.router.navigateByUrl(`admin/resources/zoneuser/view`);                                
+              });
+          } 
         } else {
           this.showErrorPopup(zoneResponse.errors[0].message);
         } 
@@ -210,20 +229,32 @@ export class CreateComponent{
     }else{
       this.dataStorageService.createZoneUserMapping(request).subscribe(zoneResponse => { 
         if (!zoneResponse.errors) {
-          this.dataStorageService.createCenterUserMapping(centerData).subscribe(centerResponse => {
-            if (centerResponse.errors != null) {
-                let url = centerData.name+" Mapped Successfully";
-                this.showMessage(url)
-                  .afterClosed()
-                  .subscribe(() => {
-                    this.router.navigateByUrl(
-                      `admin/resources/users/view`
-                    );
-                  });
-              } else {
-                this.showErrorPopup(centerResponse.errors[0].message);
-              }        
-          });
+          if(url !== "zoneuser"){
+            request = new RequestModel("", null, centerData);
+            this.dataStorageService.createCenterUserMapping(request).subscribe(centerResponse => {
+              if (!centerResponse.errors) {
+                  let url = centerData.name+" Mapped Successfully";
+                  this.showMessage(url)
+                    .afterClosed()
+                    .subscribe(() => {                  
+                      if(url === "zoneuser"){
+                        this.router.navigateByUrl(`admin/resources/zoneuser/view`);
+                      }else{
+                        this.router.navigateByUrl(`admin/resources/users/view`);
+                      }                    
+                    });
+                } else {
+                  this.showErrorPopup(centerResponse.errors[0].message);
+                }        
+            });
+          } else {
+            let url = centerData.name+" Mapped Successfully";
+            this.showMessage(url)
+              .afterClosed()
+              .subscribe(() => { 
+                this.router.navigateByUrl(`admin/resources/zoneuser/view`);                                
+              });
+          } 
         } else {
           this.showErrorPopup(zoneResponse.errors[0].message);
         } 
@@ -232,7 +263,13 @@ export class CreateComponent{
   }
 
   async getData(params: any) {
-    const filter = new FilterModel('id', 'equals', params.id);
+    let filter = null;
+    let url = this.router.url.split('/')[3];
+    if(url === "zoneuser"){
+      filter = new FilterModel('userId', 'equals', params.id);
+    }else{
+      filter = new FilterModel('id', 'equals', params.id);
+    }
     this.DeviceRequest.filters = [filter];
     this.DeviceRequest.languageCode = this.primaryLang;
     this.DeviceRequest.sort = [];
@@ -242,11 +279,16 @@ export class CreateComponent{
       null,
       this.DeviceRequest
     );
-    this.dataStorageService.getUsersData(request).subscribe(
+    let currenturl = this.router.url.split('/')[3];
+    this.dataStorageService.getUsersData(request, currenturl).subscribe(
       response => {
         if (response.response.data) {
           this.data = response.response.data;
-          this.primaryData = {userId:this.data[0].id, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].name}
+          if(url === "zoneuser"){
+            this.primaryData = {userId:this.data[0].userId, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].userName}
+          }else{
+            this.primaryData = {userId:this.data[0].id, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].name}
+          }
           this.initializeheader();
         } else {
           this.showErrorPopup("No User Details Found");

@@ -19,7 +19,7 @@ export class CreateComponent {
 
   createForm: FormGroup;
   dropDownValues = ["Insert","Update", "Delete"];
-  applicationId = [{id:"PRE_REGISTRATION", value:"PRE_REGISTRATION  3years"}, {id:"REGISTRATION_PROCESSOR", value:"REGISTRATION_PROCESSOR  3years"}, {id:"REGISTRATION", value:"REGISTRATION  3years"}, {id:"IDA", value:"IDA  3years"}, {id:"ID_REPO", value:"ID_REPO  3years"}, {id:"KERNEL", value:"KERNEL  3years"}, {id:"ROOT", value:"ROOT  5years"}, {id:"PMS", value:"PMS  3years"}];
+  applicationId = [{id:"PRE_REGISTRATION", value:"PRE_REGISTRATION  3years"}, {id:"REGISTRATION_PROCESSOR", value:"REGISTRATION_PROCESSOR  3years"}, {id:"REGISTRATION", value:"REGISTRATION  3years"}, {id:"IDA", value:"IDA  3years"}, {id:"ID_REPO", value:"ID_REPO  3years"}, {id:"KERNEL", value:"KERNEL  3years"}, {id:"ROOT", value:"ROOT  5years"}, {id:"PMS", value:"PMS  3years"}, {id:"ADMIN_SERVICES", value:"ADMIN_SERVICES  3years"}, {id:"RESIDENT", value:"RESIDENT  3years"}];
   objectType = [{id:"Certificate", value:"Certificate"}, {id:"CSR", value:"CSR"}];
   force = [{id:"true", value:"True"}, {id:"false", value:"False"}];
   subscribed: any;
@@ -56,7 +56,7 @@ export class CreateComponent {
       location: ['', [Validators.required]],
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      force: ['', [Validators.required]],
+      force: ['false', [Validators.required]],
       objectType: ['', [Validators.required]],
     });
   }

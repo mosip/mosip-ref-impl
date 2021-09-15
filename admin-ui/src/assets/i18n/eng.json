@@ -7,8 +7,9 @@
             "title": "Resources",
             "subItem1": "Center",
             "subItem2": "Devices",
-            "subItem3": "Users",
-            "subItem4": "Machines"
+            "subItem3": "Machines",
+            "subItem4": "User Zone Mapping",
+            "subItem5": "User Center Mapping"
         },
         "item3": {
             "title": "Master Data"
@@ -26,8 +27,8 @@
         },
         "item7": {
             "title": "KeyManager",
-            "subItem1": "GenerateCSR",
             "subItem2": "GenerateMasterKey",
+            "subItem1": "GenerateCSR",            
             "subItem3": "GetCertificate",
             "subItem4": "UploadCertificate",
             "subItem5": "UploadOtherDomainCertificate"
@@ -616,7 +617,10 @@
         "detail":"Detail View"
     },
     "users":{
-        "redirectMessage":"Click here to redirect to Keycloak's Users list"
+        "redirectMessage":"Click here to redirect to Keycloak's Users list",
+        "title":"User Name",
+        "users":"User Center Mapping",
+        "zoneuser":"User Zone Mapping"
     },
     "bulkUpload":{
         "operation":"Operation",

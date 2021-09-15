@@ -7,8 +7,9 @@
             "title": "Ressources",
             "subItem1": "Centre",
             "subItem2": "Dispositifs",
-            "subItem3": "Utilisateurs",
-            "subItem4": "Machines"
+            "subItem3": "Machines",
+            "subItem4": "Mappage de la zone utilisateur",
+            "subItem5": "Mappage du centre d'utilisateurs"
         },
         "item3": {
             "title": "Données de base"
@@ -26,8 +27,8 @@
         },
         "item7": {
             "title": "Gestionnaire de clés",
-            "subItem1": "GénérerCSR",
             "subItem2": "Générer la clé principale",
+            "subItem1": "GénérerCSR",            
             "subItem3": "Obtenir un certificat",
             "subItem4": "Télécharger le certificat",
             "subItem5": "Télécharger un autre certificat de domaine"
