@@ -205,7 +205,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
           name = this.router.url.split('/')[4];
         }
         //this.primaryData = {"name":name,"description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
-        this.primaryData = {"name":name,"description":"","dataType":"","value":"", "code":"","langCode":this.primaryLang};
+        this.primaryData = {"name":name,"description":"","dataType":"string","value":"", "code":"","langCode":this.primaryLang};
         this.showPanel(this.pageName);
       }
     }else{
@@ -378,7 +378,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":""};
       }else if(this.url === "dynamicfields"){
         //this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
-        this.secondaryData = {"name":"","description":"","dataType":"","value":"","code":"","langCode":this.secondaryLang};
+        this.secondaryData = {"name":"","description":"","dataType":"string","value":"","code":"","langCode":this.secondaryLang};
       }
     }
   }
