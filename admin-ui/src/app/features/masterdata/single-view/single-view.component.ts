@@ -42,7 +42,7 @@ export class SingleViewComponent implements OnDestroy {
   noRecordFound = false;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    public activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
     private appService: AppConfigService,
     private dialog: MatDialog,
