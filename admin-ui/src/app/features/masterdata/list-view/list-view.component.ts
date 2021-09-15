@@ -45,7 +45,7 @@ export class ListViewComponent implements OnDestroy {
     private router: Router,
     private dataStorageService: DataStorageService,
     private appService: AppConfigService,
-    private activatedRoute: ActivatedRoute,
+    public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private translateService: TranslateService,
     private auditService: AuditService, 
