@@ -234,12 +234,12 @@
       "showInListView": "false",
       "showInSingleView": "true",
       "label": {
-        "eng": "Module Id",
-        "ara": "معرف الوحدة النمطية",
-        "fra": "ID module",
-        "hin": "मॉड्यूल आईडी",
-        "kan": "ಮಾಡ್ಯೂಲ್ ಐಡಿ",
-        "tam": "தொகுதி ஐடி"
+        "eng": "Module Name",
+        "ara": "اسم الوحدة النمطية",
+        "fra": "Nom du module",
+        "hin": "मोड्यूल का नाम  ",
+        "kan": "ಮಾಡ್ಯೂಲ್ ಹೆಸರು  ",
+        "tam": "தொகுதி பெயர்"
       },
       "sortOrder": "",
       "showAsLink": "false",
@@ -258,7 +258,7 @@
         "fra": "Nom du module",
         "hin": "मोड्यूल का नाम  ",
         "kan": "ಮಾಡ್ಯೂಲ್ ಹೆಸರು  ",
-        "tam": "தொகுதி பெயர் "
+        "tam": "தொகுதி பெயர்"
       },
       "sortOrder": "",
       "showAsLink": "false",

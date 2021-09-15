@@ -90,8 +90,7 @@ export class ListViewComponent implements OnDestroy {
           console.log(response);
         }
       });
-      this.masterData = data;
-      console.log(this.masterData);
+      this.masterData = data;      
       this.paginatorOptions.totalEntries = this.masterData.length;
       resolve(true);
     });
@@ -104,25 +103,19 @@ export class ListViewComponent implements OnDestroy {
       this.masterDataName = defaultJson.masterdataMapping[`${routeParts}`].name[this.primaryLang];
       this.headerName =
         appConstants.masterdataMapping[`${routeParts}`].headerName;
-      console.log(this.mapping);
       this.dataStorageService
         .getSpecFileForMasterDataEntity(this.mapping.specFileName)
         .subscribe(response => {
-          console.log(response);
           this.displayedColumns = response.columnsToDisplay.filter(
             values => values.showInListView === 'true'
           );
-          console.log(this.displayedColumns.length);
           this.actionButtons = response.actionButtons.filter(
             value => value.showIn.toLowerCase() === 'ellipsis'
           );
-          console.log(this.actionButtons);
           this.actionEllipsis = response.actionButtons.filter(
             value => value.showIn.toLowerCase() === 'button'
           );
-          console.log(this.actionEllipsis);
           this.paginatorOptions = response.paginator;
-          console.log(this.paginatorOptions);
           this.auditEventId = response.auditEventIds;
           resolve(true);
         });
@@ -208,6 +201,10 @@ export class ListViewComponent implements OnDestroy {
             this.paginatorOptions.pageSize = filters.pagination.pageFetch;
             if (response.data !== null) {
               this.masterData = response.data ? [...response.data] : [];
+              this.masterData.forEach(function (value, index) {
+                value["code"] = value.fieldVal["code"];
+                value["value"] = value.fieldVal["value"];
+              }); 
             } else {
               this.noData = true;
             }

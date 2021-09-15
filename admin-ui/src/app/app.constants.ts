@@ -9,6 +9,7 @@ export const URL = {
   machines: `masterdata/machines/search`,
   'rid-status': `masterdata/packet/search`,
   users: `masterdata/users/search`,
+  zoneuser: `masterdata/zoneuser/search`,
   documentCategories: `masterdata/documentcategories`,
   mappedDocUrl: `masterdata/documenttypes/`,
   unMappedDocUrl: `masterdata/documenttypes/`
@@ -44,15 +45,22 @@ export const navItems = [
       {
         displayName: 'menuItems.item2.subItem3',
         icon: null,
-        route: '/admin/resources/users',
-        auditEventId: 'ADM-006',
+        route: '/admin/resources/machines',
+        auditEventId: 'ADM-007',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
       {
         displayName: 'menuItems.item2.subItem4',
         icon: null,
-        route: '/admin/resources/machines',
-        auditEventId: 'ADM-007',
+        route: '/admin/resources/zoneuser',
+        auditEventId: 'ADM-006',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },
+      {
+        displayName: 'menuItems.item2.subItem5',
+        icon: null,
+        route: '/admin/resources/users',
+        auditEventId: 'ADM-006',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       }
     ],
@@ -112,19 +120,19 @@ export const navItems = [
     route: 'admin/keymanager',
     children: [
       {
-        displayName: 'menuItems.item7.subItem1',
-        icon: null,
-        route: '/admin/keymanager/generatecsr',
-        auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
-      },
-      {
         displayName: 'menuItems.item7.subItem2',
         icon: null,
         route: '/admin/keymanager/generatemasterkey',
         auditEventId: 'ADM-004',
         roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
       },
+      {
+        displayName: 'menuItems.item7.subItem1',
+        icon: null,
+        route: '/admin/keymanager/generatecsr',
+        auditEventId: 'ADM-004',
+        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+      },      
       {
         displayName: 'menuItems.item7.subItem3',
         icon: null,
@@ -179,6 +187,21 @@ export const masterdataMapping = {
     nameKey: 'name',
     idKey: 'id',
     headerName: 'Users'
+  },
+  zoneuser: {
+    apiName: 'zoneuser',
+    specFileName: 'zoneuser',
+    name: {
+      eng: 'Users',
+      ara: 'قوالب',
+      fra: 'Modèles',
+      tam: 'பயனர்கள்',
+      kan: 'ಬಳಕೆದಾರರು',
+      hin: 'उपयोगकर्ताओं'
+    },
+    nameKey: 'name',
+    idKey: 'id',
+    headerName: 'Zone User'
   },
   'blacklisted-words': {
     apiName: 'blocklistedwords',
@@ -395,6 +418,7 @@ export const ListViewIdKeyMapping = {
     auditEventId: 'ADM-066'
   },
   users: { idKey: 'id', auditEventId: 'ADM-084' },
+  zoneuser: { idKey: 'userId', auditEventId: 'ADM-084' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },
@@ -493,6 +517,10 @@ export const FilterMapping = {
   users: {
     apiName: 'users',
     specFileName: 'user'
+  },
+  zoneuser: {
+    apiName: 'zoneuser',
+    specFileName: 'zoneuser'
   },
   'rid-status': {
     apiName: 'packet',

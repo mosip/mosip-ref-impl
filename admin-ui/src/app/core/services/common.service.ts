@@ -117,6 +117,8 @@ export class CommonService {
         textToDisplay = data.holidayName;
       }else if(url === "rid-status"){
         textToDisplay = data.workflowId;
+      }else if(url === "zoneuser"){
+        textToDisplay = data.userName;
       }
     }
     const obj = {
@@ -175,6 +177,8 @@ export class CommonService {
         textToDisplay = data.holidayName;
       }else if(url === "rid-status"){
         textToDisplay = data.workflowId;
+      }else if(url === "zoneuser"){
+        textToDisplay = data.userName;
       }
     }
     console.log();
@@ -394,7 +398,7 @@ export class CommonService {
   }
 
   private deleteUserAction(callingFunction: string, data: any, actualData:any) {
-    this.dataService.deleteUser(data).subscribe(
+    this.dataService.deleteUser(data, actualData).subscribe(
       response => {
         if (!response.errors || response.errors.length === 0) {
           this.createridMessage('success', callingFunction, actualData);     
@@ -412,7 +416,11 @@ export class CommonService {
     let url = this.router.url.split('/')[2];
     let textToDisplay = null;   
     if(listItem === "deleteUser"){
-      textToDisplay = data.name;
+      if(data.name){
+        textToDisplay = data.name;
+      }else{
+        textToDisplay = data.userName;
+      }      
     }else{
       textToDisplay = data.workflowId;
     } 
@@ -441,7 +449,7 @@ export class CommonService {
         this.router.url.split('/').length - 2
       ]
     });
-    this.confirmationPopup('deleteUser', data).afterClosed().subscribe(res => {
+    this.confirmationPopup('deleteUser', data).afterClosed().subscribe(res => {      
       if (res) {
         this.deleteUserAction('deleteUser', data.id, data);
       } 
@@ -536,8 +544,21 @@ export class CommonService {
           }else{
             dynamicObject = {"id":data.name} 
           }
-        }
-        
+        }else if(url === "dynamicfields"){
+          if(data.id){
+            dynamicObject = {"id":data.id} 
+          }else{
+            dynamicObject = {"id":data.name} 
+          }
+        }else if(url === "users"){
+          if(data.id){
+            dynamicObject = {"id":data.id} 
+          }
+        }else if(url === "zoneuser"){
+          if(data.userId){
+            dynamicObject = {"userId":data.userId} 
+          }
+        }        
         dynamicObject.isActive = true;
         this.updateData('activate', dynamicObject, data);
       } else {
@@ -547,6 +568,7 @@ export class CommonService {
   }
 
   deactivateCenter(data: any, url: string, idKey: string) {
+    console.log("data>>>"+JSON.stringify(data));
     if (this.router.url.indexOf('single-view') >= 0) {
       this.auditService.audit(10, 'ADM-087', {
         buttonName: 'deactivate',
@@ -633,6 +655,14 @@ export class CommonService {
           }else{
             dynamicObject = {"id":data.name} 
           }        
+        }else if(url === "users"){
+          if(data.id){
+            dynamicObject = {"id":data.id} 
+          }
+        }else if(url === "zoneuser"){
+          if(data.userId){
+            dynamicObject = {"userId":data.userId} 
+          }
         }
         dynamicObject.isActive = false;
         this.updateData('deactivate', dynamicObject, data);

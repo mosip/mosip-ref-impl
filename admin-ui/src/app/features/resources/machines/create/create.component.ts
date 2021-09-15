@@ -540,6 +540,7 @@ export class CreateComponent {
 
   showMessage(type: string, data ?: any) {
     let message = "";
+    console.log("type>>>"+type);
     if(type === 'create-success' || type === 'update-success'){
       message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
     }else{
