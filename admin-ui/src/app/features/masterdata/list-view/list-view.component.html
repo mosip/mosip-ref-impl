@@ -1,4 +1,4 @@
-<span class="breadcrumb"><a (click)="changePage()">{{'masterData.masterDataTypes' | translate}}</a>&nbsp;&nbsp; / &nbsp;&nbsp;{{masterDataName}}<!-- <span *ngIf="activatedRoute.snapshot.params.dynamicfieldtype">&nbsp;&nbsp; / &nbsp;&nbsp;{{activatedRoute.snapshot.params.dynamicfieldtype | titlecase}}</span> --></span>
+<span class="breadcrumb"><a (click)="changePage()">{{'masterData.masterDataTypes' | translate}}</a>&nbsp;&nbsp; / &nbsp;&nbsp;{{masterDataName}}<span *ngIf="activatedRoute.snapshot.params.dynamicfieldtype && activatedRoute.snapshot.params.dynamicfieldtype!=='new'"> &nbsp;&nbsp; > &nbsp;&nbsp; {{activatedRoute.snapshot.params.dynamicfieldtype}}</span></span>
 <ng-container>
 <span><p class="header">{{masterDataName}}</p></span>
 <mat-card class="mat-elevation-z3">

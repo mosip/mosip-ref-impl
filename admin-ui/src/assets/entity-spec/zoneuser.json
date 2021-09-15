@@ -11,7 +11,7 @@
         "tam": "தொகு "
       },
       "actionURL": "",
-      "redirectURL": "/admin/resources/users/single-view/$id",
+      "redirectURL": "/admin/resources/zoneuser/single-view/$id",
       "showIn": "Ellipsis",
       "validations": "",
       "callBackFunction": "centerEdit"
@@ -63,6 +63,22 @@
     },
     {
       "buttonName": {
+        "eng": "Map Zone",
+        "ara": "منطقة الخريطة",
+        "fra": "Zone de carte",
+        "hin": "मानचित्र क्षेत्र",
+        "kan": "ನಕ್ಷೆ ವಲಯ",
+        "tam": "வரைபட மண்டலம்"
+      },
+      "imagePath": "assets/images/add-icon.png",
+      "actionListType": "redirect",
+      "actionURL": "",
+      "redirectURL": "admin/resources/zoneuser/map",
+      "showIn": "Button",
+      "validations": ""
+    },
+    {
+      "buttonName": {
         "eng": "Filter",
         "fra": "filtre",
         "ara": "تصفيه",
@@ -80,7 +96,7 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "name",
+      "name": "userName",
       "showInListView": "true",
       "label": { 
         "eng": "Name", 
@@ -96,31 +112,15 @@
       "LinkURL": ""
     },
     {
-      "name": "zoneCode",
+      "name": "zoneName",
       "showInListView": "true",
       "label": {
-        "eng": "Zone Code",
+        "eng": "Zone Name",
         "ara": "نوع المركز",
         "fra": "Type de centre",
-        "hin": "जोन कोड ",
-        "kan": "ವಲಯ ಕೋಡ್  ",
-        "tam": "மண்டல குறியீடு   "
-      },
-      "sortOrder": "",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
-      "name": "regCenterId",
-      "showInListView": "",
-      "label": {
-        "eng": "Center Id",
-        "ara": "المستخدمين",
-        "fra": "Utilisateur",
-        "hin": "केंद्र आईडी  ",
-        "kan": "ಸೆಂಟರ್ ಐಡಿ ",
-        "tam": "மைய ஐடி  "
+        "hin": "जोन कोड",
+        "kan": "ವಲಯ ಕೋಡ್ ",
+        "tam": "மண்டல குறியீடு"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -176,7 +176,7 @@
   },
   "filterColumns": [
     {
-      "filtername": "name",
+      "filtername": "userName",
       "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom", "tam": "பெயர்", "hin": "नाम","kan": "ಹೆಸರು" },
       "filterType": "equals",
       "fieldType": "input",

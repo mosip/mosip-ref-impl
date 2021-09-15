@@ -1,5 +1,5 @@
 <div id="flex-single-view" style="padding-top: 12px;">
-  <h3>{{'menuItems.item2.subItem3' | translate}}</h3>
+  <h3></h3>
   <div class="flex-container">
     <div class="flex-header" style="width: 100%;">
       <app-users-header *ngIf="headerObject" [data]="data[0]" [headerData]="headerObject"></app-users-header>
@@ -12,8 +12,8 @@
             <br /><br />
             
             <mat-form-field>
-              <mat-label>{{'menuItems.item2.subItem3' | translate}}</mat-label>
-              <mat-select formControlName="userId" [value]="primaryData.userId">
+              <mat-label>{{'users.title' | translate}}</mat-label>
+              <mat-select formControlName="userId" [value]="primaryData.userId" disabled={{disabled}}>
                 <mat-option *ngFor="let data of dropDownValues.deviceTypeCode.primary" [value]="data.userId" (onSelectionChange)="captureDropDownValue($event, 'userId')">
                   {{ data.name }}
                 </mat-option>
@@ -22,15 +22,15 @@
             
             <mat-form-field>
               <mat-label>{{ "center.zone" | translate }}</mat-label>
-              <mat-select formControlName="zone" [value]="primaryData.zone">
+              <mat-select formControlName="zone" [value]="primaryData.zone"  disabled={{disabled}}>
                 <mat-option *ngFor="let data of dropDownValues.zone.primary" [value]="data.code" 
-                (onSelectionChange)="captureDropDownValue($event, 'zone')" >
+                (onSelectionChange)="captureDropDownValue($event, 'zone')">
                   {{ data.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field *ngIf="pageName !== 'zoneuser'">
               <mat-label>{{ "center.center-name" | translate }}</mat-label>
               <mat-select
                 formControlName="regCenterId" [value]="primaryData.regCenterId">
