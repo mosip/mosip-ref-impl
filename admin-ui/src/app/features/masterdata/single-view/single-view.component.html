@@ -2,6 +2,7 @@
         <a (click)="changePage('home')">{{'masterData.masterDataTypes' | translate}} &nbsp;&nbsp;</a> / 
         <a (click)="changePage('list')">&nbsp;&nbsp; {{ mapping.name[primaryLangCode] }} &nbsp;&nbsp;</a> / 
         &nbsp;&nbsp; {{ mapping.name[primaryLangCode] }}  {{'detailView.detail' | translate}}
+        <span *ngIf="activatedRoute.snapshot.params.dynamicfieldtype && activatedRoute.snapshot.params.dynamicfieldtype!=='new'"> &nbsp;&nbsp; > &nbsp;&nbsp; {{activatedRoute.snapshot.params.dynamicfieldtype}}</span>
 </span>
 <br><br>
 <app-mater-data-common-view

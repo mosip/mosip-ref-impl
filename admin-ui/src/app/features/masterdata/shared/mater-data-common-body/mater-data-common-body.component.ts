@@ -166,7 +166,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(url === "templates"){
         this.pageName = "Template";
         this.getTemplateFileFormat();
-        this.primaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.primaryLang,"isActive":true,id:"0"};
+        this.primaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.primaryLang,"isActive":true,id:""};
       }else if(url === "title"){
         this.pageName = "Title";
         this.primaryData = {"code":"","titleName":"","titleDescription":"","langCode":this.primaryLang,"isActive":true};
@@ -183,7 +183,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.pageName = "Machine Specification";
         this.getMachineTypes();
         this.showPanel(this.pageName);
-        this.primaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":"0"};
+        this.primaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.primaryLang,"isActive":true,"id":""};
       }else if(url === "machine-type"){
         this.pageName = "Machine Type";
         this.showPanel(this.pageName);
@@ -204,7 +204,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         if(this.router.url.split('/')[4] !== "new"){
           name = this.router.url.split('/')[4];
         }
-        this.primaryData = {"name":name,"description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
+        //this.primaryData = {"name":name,"description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
+        this.primaryData = {"name":name,"description":"","dataType":"","value":"", "code":"","langCode":this.primaryLang};
         this.showPanel(this.pageName);
       }
     }else{
@@ -254,6 +255,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(url === "dynamicfields"){
         this.pageName = "Dynamic Field";
+        this.primaryData["code"] = JSON.parse(this.primaryData.fieldVal)["code"];
+        this.primaryData["value"] = JSON.parse(this.primaryData.fieldVal)["value"];
         this.showPanel(this.pageName);
       }
     }
@@ -277,8 +280,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }else if(pageName ==='Machine Specification'){
       this.showSecondaryForm = false;
     }else if(pageName ==='Machine Type'){
-      this.showSecondaryForm = false;
-    }else if(pageName ==='Dynamic Field'){
       this.showSecondaryForm = false;
     }else{
       this.showSecondaryForm = true;
@@ -352,17 +353,17 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.secondaryData = {"holidayName":"","holidayDesc":"","holidayDate":"","locationCode": "","langCode":this.secondaryLang,"isActive":true};
         this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(this.url === "templates"){
-        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:"0"};
+        this.secondaryData = {"name":"","description":"","fileFormatCode":"","model":"","fileText":"","moduleId":"","moduleName":"","templateTypeCode":"","langCode":this.secondaryLang,"isActive":true,id:""};
         this.getTemplateFileFormat();
         if(type === "setValue")
           this.secondaryData.name = this.primaryData.name;
           this.secondaryData.id = this.primaryData.id;        
       }else if(this.url === "device-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":""};
       }else if(this.url === "device-types"){
         this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(this.url === "machine-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+        this.secondaryData = {"name":"","brand":"","model":"","machineTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":""};
       }else if(this.url === "machine-type"){
         this.secondaryData = {"code":"","name":"","description":"","langCode":this.secondaryLang,"isActive":true};
       }else if(this.url === "document-type"){
@@ -374,9 +375,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
         if(type === "setValue")
           this.secondaryData.code = this.primaryData.code;
       }else if(this.url === "device-specs"){
-        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":"0"};
+        this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":""};
       }else if(this.url === "dynamicfields"){
-        this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
+        //this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
+        this.secondaryData = {"name":"","description":"","dataType":"","value":"","code":"","langCode":this.secondaryLang};
       }
     }
   }
@@ -566,7 +568,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureValue(event: any, formControlName: string, type: string) {
-    console.log("type>>>"+type);
     if (type === 'primary') {
       this.primaryData[formControlName] = event.target.value;
     } else if (type === 'secondary') {
@@ -656,9 +657,11 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }else if(url === "holiday"){
       textToValidate = this.secondaryData.holidayName;
     }else if(url === "dynamicfields"){
-      this.primaryData.fieldVal = JSON.parse(this.primaryData.fieldVal);
-    }
-    
+      if(this.primaryData.code)
+        this.primaryData.fieldVal = {"code":this.primaryData.code, "value":this.primaryData.value};
+      if(this.secondaryData.code)
+        this.secondaryData.fieldVal = {"code":this.secondaryData.code, "value":this.secondaryData.value};
+    }    
     if(this.isCreateForm){
       let request = new RequestModel(
         "",

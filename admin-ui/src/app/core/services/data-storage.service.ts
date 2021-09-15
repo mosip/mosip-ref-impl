@@ -113,7 +113,7 @@ export class DataStorageService {
   updateData(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
 
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields", "users":"usercentermapping", "zoneuser":"zoneuser"};
     let queryParam = "";
     if(url === "dynamicfields"){
       queryParam = "?id="+data.request.id;
@@ -127,7 +127,7 @@ export class DataStorageService {
 
   updateDataStatus(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields", "users":"usercentermapping", "zoneuser":"zoneuser"};
 
     return this.http.patch(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url]+'?isActive='+data.request.isActive+"&"+Object.keys(data["request"])[0]+"="+data["request"][Object.keys(data["request"])[0]],
@@ -163,12 +163,19 @@ export class DataStorageService {
     return this.http.post(this.BASE_URL + 'masterdata/packet/resume', request);
   }
 
-  deleteUser(userId: any): Observable<any> {
-    return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + 'users/'+ userId);
+  deleteUser(userId: any, actualData: any): Observable<any> {
+    let url = this.router.url.split('/')[3];
+    let urlmapping = {"users":"users", "zoneuser":"zoneuser"};
+    if(url === "zoneuser"){
+      return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.userId+"/"+ actualData.zoneCode);
+    }else{
+      return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.id);
+    }
+    
   }
 
-  getUsersData(request: RequestModel): Observable<any> {
-    return this.http.post(this.BASE_URL + appConstants.URL.users, request);
+  getUsersData(request: RequestModel, userType : any): Observable<any> {
+    return this.http.post(this.BASE_URL + appConstants.URL[userType], request);
   }
 
   getMachinesData(request: RequestModel): Observable<any> {
@@ -265,8 +272,8 @@ export class DataStorageService {
     );
   }
 
-  getPacketStatus(registrationId: string) {
-    const params = new HttpParams().set('rid', registrationId);
+  getPacketStatus(registrationId: string, langCode: string) {
+    const params = new HttpParams().set('rid', registrationId).set('langCode', langCode);
     return this.http.get(this.BASE_URL + 'admin/packetstatusupdate', {params});
   }
 

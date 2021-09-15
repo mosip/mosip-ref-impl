@@ -21,7 +21,7 @@ export class SingleviewComponent {
   private bulkuploadService: BulkuploadService,
   private location: Location,
   private router: Router,
-  private activatedRoute: ActivatedRoute,
+  public activatedRoute: ActivatedRoute,
   ) {
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

@@ -3,7 +3,7 @@ import { AuditService } from 'src/app/core/services/audit.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'src/app/app-config.service';
 import * as userConfig from 'src/assets/entity-spec/user.json';
-
+import * as ZoneUserConfig from 'src/assets/entity-spec/zoneuser.json';
 
 import { RequestModel } from 'src/app/core/models/request.model';
 import { SortModel } from 'src/app/core/models/sort.model';
@@ -73,15 +73,26 @@ export class ViewComponent implements OnInit {
   }
 
   getUserConfigs() {
-    this.displayedColumns = userConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = userConfig.actionButtons.filter(
+    let url = this.router.url.split('/')[3];
+    if(url === "zoneuser"){
+      this.displayedColumns = ZoneUserConfig.columnsToDisplay;
+      this.actionButtons = ZoneUserConfig.actionButtons.filter(
+        value => value.showIn.toLowerCase() === 'ellipsis'
+      );
+      this.actionEllipsis = ZoneUserConfig.actionButtons.filter(
+        value => value.showIn.toLowerCase() === 'button'
+      );
+      this.paginatorOptions = ZoneUserConfig.paginator;
+    }else{
+      this.displayedColumns = userConfig.columnsToDisplay;
+      this.actionButtons = userConfig.actionButtons.filter(
       value => value.showIn.toLowerCase() === 'ellipsis'
     );
     this.actionEllipsis = userConfig.actionButtons.filter(
       value => value.showIn.toLowerCase() === 'button'
     );
     this.paginatorOptions = userConfig.paginator;
+    }    
   }
 
   pageEvent(event: any) {
@@ -89,7 +100,13 @@ export class ViewComponent implements OnInit {
     filters.pagination.pageFetch = event.pageSize;
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl(`admin/resources/users/view?${url}`);
+    let currenturl = this.router.url.split('/')[3];
+    if(currenturl === "zoneuser"){
+      this.router.navigateByUrl(`admin/resources/zoneusers/view?${url}`);
+    }else{
+      this.router.navigateByUrl(`admin/resources/users/view?${url}`);
+    }
+   
   }
 
   getSortColumn(event: SortModel) {
@@ -103,11 +120,15 @@ export class ViewComponent implements OnInit {
     if (event.sortType != null) {
     this.sortFilter.push(event);
   }
-    console.log(this.sortFilter);
     const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.primaryLang);
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
-    this.router.navigateByUrl('admin/resources/users/view?' + url);
+    let currenturl = this.router.url.split('/')[3];
+    if(currenturl === "zoneuser"){
+      this.router.navigateByUrl(`admin/resources/zoneuser/view?${url}`);
+    }else{
+      this.router.navigateByUrl(`admin/resources/users/view?${url}`);
+    }
   }
 
   getUsers() {
@@ -122,10 +143,11 @@ export class ViewComponent implements OnInit {
     if(this.sortFilter.length == 0){
       this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
     }
+    let currenturl = this.router.url.split('/')[3];
     this.requestModel = new RequestModel(null, null, filters);
     console.log(JSON.stringify(this.requestModel));
     this.dataStorageService
-      .getUsersData(this.requestModel)
+      .getUsersData(this.requestModel, currenturl)
       .subscribe(({ response, errors }) => {
         console.log(response);
         if (response != null) {
