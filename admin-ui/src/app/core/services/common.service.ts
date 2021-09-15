@@ -544,12 +544,6 @@ export class CommonService {
           }else{
             dynamicObject = {"id":data.name} 
           }
-        }else if(url === "dynamicfields"){
-          if(data.id){
-            dynamicObject = {"id":data.id} 
-          }else{
-            dynamicObject = {"id":data.name} 
-          }
         }else if(url === "users"){
           if(data.id){
             dynamicObject = {"id":data.id} 
