@@ -20,6 +20,7 @@ import { FilesModel } from "src/app/shared/models/demographic-model/files.model"
 import { LogService } from "src/app/shared/logger/log.service";
 import { Subscription } from "rxjs";
 import { NotificationDtoModel } from "src/app/shared/models/notification-model/notification-dto.model";
+import { utf8Encode } from "@angular/compiler/src/util";
 
 /**
  * @description This is the dashbaord component which displays all the users linked to the login id
@@ -329,33 +330,38 @@ export class DashBoardComponent implements OnInit, OnDestroy {
       applicants[appConstants.RESPONSE][
         appConstants.DASHBOARD_RESPONSE_KEYS.applicant.basicDetails
       ][index];
-    const demographicMetadata =
-      applicantResponse[
-        appConstants.DASHBOARD_RESPONSE_KEYS.applicant.demographicMetadata
-      ];
-    //console.log(demographicMetadata);
-    //console.log(
-    //   applicantResponse[
-    //     appConstants.DASHBOARD_RESPONSE_KEYS.applicant.statusCode
-    //   ]
-    // );
-    let dataAvailableLanguage = [];
-    demographicMetadata[this.name].forEach((element) => {
-      dataAvailableLanguage.push(element["language"]);
-    });
-    let languageIndex;
-    if (dataAvailableLanguage.includes(this.userPreferredLangCode)) {
-      languageIndex = dataAvailableLanguage.indexOf(this.userPreferredLangCode);
-    } else {
-      languageIndex = 0;
+    let dataAvailableLanguages = [];
+    if (Array.isArray(applicantResponse["dataCaptureLanguage"])) {
+      dataAvailableLanguages = applicantResponse["dataCaptureLanguage"];
+      dataAvailableLanguages.sort(function (a, b) {
+        return a - b;
+      });
+      dataAvailableLanguages = Utils.reorderLangsForUserPreferredLang(dataAvailableLanguages, this.userPreferredLangCode);
     }
+    let applicantName = "";
+    const nameField = applicantResponse["demographicMetadata"][this.name];
+    if (Array.isArray(nameField)) {
+      nameField.forEach(fld => {
+        if (fld.language == this.userPreferredLangCode) {
+          applicantName = fld.value;
+        }
+      });
+      if (applicantName == "" && dataAvailableLanguages.length > 0) {
+        nameField.forEach(fld => {
+          if (fld.language == dataAvailableLanguages[0]) {
+            applicantName = fld.value;
+          }
+        });  
+      }
+    } else {
+      applicantName = nameField;
+    }
+    let dataCaptureLanguagesLabels = Utils.getLanguageLabels(JSON.stringify(dataAvailableLanguages), 
+          localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES));
     const applicant: Applicant = {
       applicationID:
         applicantResponse[appConstants.DASHBOARD_RESPONSE_KEYS.applicant.preId],
-      name:
-        applicantResponse["demographicMetadata"][this.name][languageIndex][
-          "value"
-        ],
+      name: applicantName,
       appointmentDateTime: applicantResponse[
         appConstants.DASHBOARD_RESPONSE_KEYS.bookingRegistrationDTO.dto
       ]
@@ -383,6 +389,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         applicantResponse["demographicMetadata"][
           appConstants.DASHBOARD_RESPONSE_KEYS.applicant.postalCode
         ],
+      dataCaptureLangs: dataCaptureLanguagesLabels    
     };
 
     return applicant;
@@ -446,7 +453,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
   openLangSelectionPopup() {
     return new Promise((resolve) => {
       const popupAttributes = Utils.getLangSelectionPopupAttributes(this.textDir, 
-        this.dataCaptureLabels, this.mandatoryLanguages, this.minLanguage, this.maxLanguage);
+        this.dataCaptureLabels, this.mandatoryLanguages, this.minLanguage, this.maxLanguage, this.userPreferredLangCode);
       const dialogRef = this.openDialog(popupAttributes, "550px", "350px");
       dialogRef.afterClosed().subscribe((res) => {
         console.log(res);
@@ -774,11 +781,11 @@ export class DashBoardComponent implements OnInit, OnDestroy {
    * @memberof DashBoardComponent
    */
    private showErrorMessage(error: any, customTitle?: string, customMsg?: string) {
-    let titleOnError = "";
+    let titleOnError = this.errorLanguagelabels.errorLabel;
     if (customTitle) {
       titleOnError = customTitle;
     }
-    this.errorLanguagelabels.errorLabel;
+    
     let message = "";
     if (customMsg) {
       message = customMsg;

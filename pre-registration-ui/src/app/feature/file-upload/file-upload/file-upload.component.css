@@ -128,7 +128,7 @@ mat-select:focus {
 .user hr {
   border-top: 1.5px solid #fd518c;
   position: relative;
-  /* left: -31.8px; */
+  left: -31.8px;
   margin-top: 0.5rem;
   width: calc(100% + 64px);
 }
@@ -180,14 +180,17 @@ mat-select:focus {
 }
 
 .file-upload__body__document-name {
-  max-width: 30vw;
-  padding: 0.2rem 0;
+  /* max-width: 100; */
+  /* padding: 0.2rem 0; */
+  /* max-width: 500px; */
   font-size: 0.8rem;
-  position: relative;
+  flex: 1;
+  text-align: left;
+  /* position: relative; */
 }
 
 .file-upload__body__document-name span:nth-child(2) {
-  padding-left: 15px;
+  /* padding-left: 15px; */
 }
 
 .file-upload__body__document-name .cross {
@@ -297,11 +300,11 @@ mat-select:focus {
   flex: 1 1 auto;
 }
 
- .mat-form-field-hide-placeholder .mat-select-placeholder {
+.mat-form-field-hide-placeholder .mat-select-placeholder {
   padding: 5px !important;
 }
 .mat-select-value {
-   padding: 2px !important;
+   padding: 5px !important;
    line-height: 23px !important;
 }
 
@@ -314,6 +317,7 @@ mat-select:focus {
 }
 .fieldContainer {
   flex: 1;
+  min-height: 100%;
   margin-right: 10px;
   margin-bottom: 3%; /* (100-32*3)/2 */
 }
@@ -328,4 +332,21 @@ mat-select:focus {
   padding: 10px;
   max-width: 500px;
   box-shadow: 1px 1px 1px 1px #ccc;  /*Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5*/
+}
+::ng-deep .mat-form-field .mat-form-field-label {
+  padding-top: 3px;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  /* margin-bottom: 3px; */
+  color: #22a8c9;
+}
+::ng-deep.mat-input-element {
+  padding-top: 5px !important;
+  height: 20px;
+}
+::ng-deep.mat-select-value {
+  padding: 5px !important;
+}
+.primary-errors {
+  margin-left: 5px;
 }

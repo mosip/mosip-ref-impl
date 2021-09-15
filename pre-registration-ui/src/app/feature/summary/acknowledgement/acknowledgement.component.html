@@ -12,7 +12,7 @@
             {{ackMessage.message}}
           </p>
         </div>
-        <div class="ack__header-container">
+        <div class="ack__header-container" [dir]="ackData.appLangCodeDir">
           <table>
             <tr>
               <td>{{ ackData.preRegIdLabels}} : </td>
@@ -45,19 +45,21 @@
             </tr>
           </table>
         </div>
-        <div id="body-container" *ngIf="ackData.regCntrNames" class="ack__body-container">
-          <table id="table-container">
-            <tr>
-              <td>{{ ackData.labelNames }} : </td>
-              <td><b>{{ ackData.nameValues }}</b></td>
-            </tr>
-            <tr>
-              <td>{{ ackData.labelRegCntrs }} : </td>
-              <td><b>{{ ackData.regCntrNames }}</b></td>
-            </tr>
-          </table>
+        <div [dir]="ackData.appLangCodeDir">
+          <div id="body-container" *ngIf="ackData.regCntrNames" class="ack__body-container">
+            <table id="table-container">
+              <tr>
+                <td>{{ ackData.labelNames }} : </td>
+                <td><b>{{ ackData.nameValues }}</b></td>
+              </tr>
+              <tr>
+                <td>{{ ackData.labelRegCntrs }} : </td>
+                <td><b>{{ ackData.regCntrNames }}</b></td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div id="guidelines-container" class="ack__guidelines-container">
+        <div id="guidelines-container" class="ack__guidelines-container" [dir]="ackData.appLangCodeDir">
           <span *ngFor="let langCode of ackData.appLangCode">
             <div class="spacer"></div>
             <table *ngIf="guidelines.length !== 0" class="ack__guidelines">
@@ -73,15 +75,16 @@
     </div>
   </div>
 </div>
-<div  *ngIf="!showSpinner" [dir]="textDir">
+<div *ngIf="!showSpinner">
   <div class="ack__button-container">
     <!-- <button mat-button (click)="navigateBack()" class="user-back-btn">{{'preview.action_back'| translate}}</button> -->
-    <span class="spacer"></span>
+    <!-- <span class="spacer"></span> -->
     <button *ngIf=" notificationTypes && notificationTypes.length > 0 && notificationTypes[0] !== ''"
       matTooltip="{{ 'helpText.send_email/sms' | translate }}" mat-button (click)="sendAcknowledgement()"
       class="ack-book_later-btn">
       {{ 'acknowledgement.action_send' | translate }}
     </button>
+    <span class="spacer"></span>
     <button mat-button (click)="download()" class="ack-book_later-btn">
       {{ 'acknowledgement.action_download' | translate }}
     </button>

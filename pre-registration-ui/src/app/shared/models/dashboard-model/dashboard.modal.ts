@@ -14,4 +14,5 @@ export interface Applicant {
   status: string;
   regDto: any;
   postalCode: string;
+  dataCaptureLangs: string[];
 }

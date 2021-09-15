@@ -5,21 +5,27 @@
 <!-- <div class="spinner" *ngIf="!users[0] && LOD.length > 0 && !dataLoaded">
   <mat-spinner></mat-spinner>
 </div> -->
-<div [dir]="textDirection[0]" class="file-upload" *ngIf="users[0] && dataLoaded">
-  <div class="user" [ngStyle]="textDirection[0] == 'ltr'? {'float':'left'} : {'float':'right'}">
-    <header>{{ 'documents.title_document' | translate }}</header>
+<div class="file-upload" *ngIf="users[0] && dataLoaded">
+  <div class="user">
+    <header>{{ documentLabels.title_document}}
+      <span>
+        (
+        <span *ngFor="let dataCaptureLang of dataCaptureLanguagesLabels;index as labelsIndex">
+          <span [dir]="userPrefLanguageDir">&nbsp;{{dataCaptureLang}}&nbsp;</span>
+        </span>
+        )
+      </span>
+    </header>
     <p></p>
     <span class="readOnly" *ngIf="readOnlyMode">
-      ( {{ "demographic.read_only_message" | translate }} )
+      ( {{ demographicLabels.read_only_message }} )
     </span>
     <hr />
   </div>
   <div class="file-upload__message">
     <b>
-      {{ 'documents.text_filetype' | translate }} : {{ allowedFilesHtml }} &nbsp;{{
-      'documents.text_filesize' | translate
-      }}
-      : {{ allowedFileSize }}
+      {{ documentLabels.text_filetype }} : {{ allowedFilesHtml }} &nbsp;{{ documentLabels.text_filesize }} : {{
+      allowedFileSize }}
     </b>
   </div>
   <div class="file-upload__body" *ngIf="users[0] && LOD.length > 0 && dataLoaded">
@@ -28,85 +34,86 @@
         <div class="file-upload__body__document-type" *ngFor="let document of LOD; let i = index">
           <div class="fieldContainer" [ngStyle]="document.containerStyle">
             <div class="fieldHeader" [ngStyle]="document.headerStyle">
-              <!-- Create container header with labels in all chosen dataCaptureLanguages -->
-              <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages;index as di">
-                <mat-label title='{{ dataCaptureLanguagesLabels[i] | translate }}'>{{
-                  document.labelName[dataCaptureLanguage] }}</mat-label>
-                <span *ngIf="di+1 < dataCaptureLanguages.length;else showColon"> / </span>
-                <ng-template #showColon> : </ng-template>
-              </span>
+              <!-- Create container header with label in user's login lang -->
+              <mat-label>{{document.labelName[userPrefLanguage]}} : </mat-label>
               <span *ngIf="document.required" class="required-annotation">*</span>
             </div>
             <div class="fieldContent" [ngStyle]="document.containerStyle">
-              <mat-form-field *ngIf="displayHidden">
-                <input matInput [formControlName]="document.id" />
-              </mat-form-field>
-              <mat-form-field class="file-upload__input">
-                <mat-label>{{document.labelName[dataCaptureLanguages[0]]}}</mat-label>
-                <mat-select #ref (selectionChange)="changeStatus(ref, i)" [(value)]="document.selectedDocName"
-                  disableOptionCentering placeholder="{{ document.code }}" (selectionChange)="selectChange($event, i)"
-                  [disabled]="disableNavigation ||  readOnlyMode || (document.code === 'POA' && sameAsselected ? true : false)">
-                  <!-- (openedChange)="openedChange(i, $event)" -->
-                  <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
-                    {{ ValidDocument.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="file-upload__docrefid">
-                <mat-label>{{ 'documents.text_docrefid' | translate}}</mat-label>
-                <input matInput value="{{document.selectedDocRefId}}" (focusout)="changeDocRefId($event, i)"
-                  (input)="changeDocRefId($event, i)" placeholder="" (change)="handleDocRefInput($event, document.code)"
-                  [disabled]="readOnlyMode || disableNavigation" #keyboardRef #input />
-              </mat-form-field>
-              <span class="file-upload__button">
-                <input #fileUpload type="file" id="file_{{ i }}" (click)="fileUpload.value = null" value=""
-                  (change)="handleFileInput($event, document.selectedDocName, document.code, document.selectedDocRefId)"
-                  style="display: none;" />
-                <input class="browseInput" value="{{ 'documents.action_browse' | translate }}" type="button"
-                  (click)="clickOnButton(i)" [disabled]="disableNavigation || readOnlyMode || ((document.code === 'POA' && sameAsselected) ||
+              <div>
+                <mat-form-field *ngIf="displayHidden">
+                  <input matInput [formControlName]="document.id" />
+                </mat-form-field>
+                <mat-form-field class="file-upload__input">
+                  <mat-label>{{document.labelName[userPrefLanguage]}}</mat-label>
+                  <mat-select #ref (selectionChange)="changeStatus(ref, i)" [(value)]="document.selectedDocName"
+                    disableOptionCentering placeholder="{{ document.code }}" (selectionChange)="selectChange($event, i)"
+                    [disabled]="disableNavigation ||  readOnlyMode || (document.code === 'POA' && sameAsselected ? true : false)">
+                    <!-- (openedChange)="openedChange(i, $event)" -->
+                    <mat-option *ngFor="let ValidDocument of document.documentTypes" value="{{ ValidDocument.code }}">
+                      {{ ValidDocument.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="file-upload__docrefid">
+                  <mat-label>{{ documentLabels.text_docrefid }}</mat-label>
+                  <input matInput value="{{document.selectedDocRefId}}" (focusout)="changeDocRefId($event, i)"
+                    (input)="changeDocRefId($event, i)" placeholder=""
+                    (change)="handleDocRefInput($event, document.code)" [disabled]="readOnlyMode || disableNavigation"
+                    #keyboardRef #input />
+                </mat-form-field>
+                <span class="file-upload__button">
+                  <input #fileUpload type="file" id="file_{{ i }}" (click)="fileUpload.value = null" value=""
+                    (change)="handleFileInput($event, document.selectedDocName, document.code, document.selectedDocRefId)"
+                    style="display: none;" />
+                  <input class="browseInput" value="{{ documentLabels.action_browse }}" type="button"
+                    (click)="clickOnButton(i)" [disabled]="disableNavigation || readOnlyMode || ((document.code === 'POA' && sameAsselected) ||
                   !document.selectedDocName ||
                   document.selectedDocName === '')" />
-              </span>
-              <span *ngIf="document.code === 'POA' && allApplicants">
-                <span *ngIf="allApplicants.length >= 1"> {{ 'documents.OR' | translate }}</span>
-                <span *ngIf="allApplicants.length >= 1">
-                  <mat-form-field class="file-upload__or">
-                    <mat-select placeholder="{{ 'documents.sameAs' | translate }}"
-                      [disabled]="disableNavigation ||  readOnlyMode" 
-                      (selectionChange)="sameAsChange($event, users[0].files.documentsMetaData)" [(value)]="sameAs">
-                      <mat-option value="">
-                        {{ 'documents.sameAsNone' | translate }}
-                      </mat-option>
-                      <mat-option *ngFor="let applicant of allApplicants" value="{{applicant.preRegistrationId}}">
-                        <div *ngIf="applicant.demographicMetadata[name]">
-                          {{applicant.demographicMetadata[name][0].value}}
-                        </div>
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-icon class="icon" matTooltip="{{ 'helpText.same_as' | translate }}" [inline]="true">help_outline
-                  </mat-icon>
                 </span>
-              </span>
+                <span *ngIf="document.code === 'POA' && allApplicants">
+                  <span *ngIf="allApplicants.length >= 1"> {{ documentLabels.OR }}</span>
+                  <span *ngIf="allApplicants.length >= 1">
+                    <mat-form-field class="file-upload__or">
+                      <mat-select placeholder="{{ documentLabels.sameAs }}"
+                        [disabled]="disableNavigation ||  readOnlyMode"
+                        (selectionChange)="sameAsChange($event, users[0].files.documentsMetaData)" [(value)]="sameAs">
+                        <mat-option value="">
+                          {{ documentLabels.sameAsNone }}
+                        </mat-option>
+                        <mat-option *ngFor="let applicant of allApplicants" value="{{applicant.preRegistrationId}}">
+                          <div *ngIf="applicant.applicantName">
+                            {{applicant.applicantName}}
+                          </div>
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-icon class="icon" matTooltip="{{ helpText.same_as }}" [inline]="true">
+                      help_outline
+                    </mat-icon>
+                  </span>
+                </span>
+              </div>
+              <p></p>
               <div class="file-upload__body__document-name">
-                <div *ngFor="let file of users[0].files.documentsMetaData; let j = index">
-                  <div *ngIf="file.docCatCode == document.code">
-                    <span>{{ file.docName }}</span>
-                    <span *ngIf="!readOnlyMode" class="file-uplaoad__body__document-name__delete" (click)="deleteUploadedFile(file)">
+                <span *ngFor="let file of users[0].files.documentsMetaData; let j = index">
+                  <span *ngIf="file.docCatCode == document.code">
+                    <span>{{file.docName}}</span>
+                    <span class="spacer"></span>
+                    <span *ngIf="!readOnlyMode" class="file-uplaoad__body__document-name__delete"
+                      (click)="deleteUploadedFile(file)">
                       <img src="assets\delete.png" class="delete-img" />
                     </span>
                     <span class="file-uplaoad__body__document-name__view" (click)="viewFile(file)">
                       <img src="assets\view.png" class="view-img" />
                     </span>
-                  </div>
-                </div>
+                  </span>
+                </span>
               </div>
-              <p></p>
               <mat-error class="primary-errors" *ngIf="
                 !readOnlyMode && userForm.get(document.id) &&
                 userForm.get(document.id).hasError('required') && userForm.get(document.id).touched">
-                {{document.labelName[dataCaptureLanguages[0]]}}
-                {{dataCaptureLanguages[0] | validationMessage:'requiredMessage' | async }}
+                {{document.labelName[userPrefLanguage]}}
+                {{demographicLabels.validation.requiredMessage}}
               </mat-error>
             </div>
           </div>
@@ -137,16 +144,16 @@
     </div>
   </div>
 </div>
-<div class="file-upload__button-container" [dir]="textDirection[0]" *ngIf="users[0] && dataLoaded">
+<div class="file-upload__button-container" *ngIf="users[0] && dataLoaded">
   <button class="user__btn user__btn-back" type="button" (click)="onBack()" [disabled]="disableNavigation"
     *ngIf="isModify == 'false'">
-    {{ 'documents.action_back' | translate }}
+    {{ documentLabels.action_back }}
   </button>
   <span class="spacer"></span>
   <button *ngIf="isModify == 'false'" class="user__btn" type="button" (click)="onNext()" [disabled]="disableNavigation">
-    {{ 'documents.action_continue' | translate }}
+    {{ documentLabels.action_continue }}
   </button>
   <button [disabled]="disableNavigation" *ngIf="isModify == 'true'" class="user__btn" type="button" (click)="onNext()">
-    {{ 'demographic.action_preview' | translate }}
+    {{ demographicLabels.action_preview }}
   </button>
 </div>

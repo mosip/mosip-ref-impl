@@ -1,37 +1,63 @@
 <div class="spinner" *ngIf="!dataLoaded">
   <mat-spinner></mat-spinner>
 </div>
-<div *ngIf="previewData !== undefined && dataLoaded" class="preview__container" [dir]="textDirection[0]">
+<div *ngIf="previewData !== undefined && dataLoaded" class="preview__container">
   <mat-card class="preview__header-container card-padding">
-    <mat-card-header class="preview__header-container">
+    <!-- <mat-card-header class="preview__header-container"> -->
+      <!-- <div class="preview__header">
+        <header>{{ previewLabels.title_preview }}
+          (<span *ngFor="let dataCaptureLang of dataCaptureLanguagesLabels;index as labelsIndex">
+            <span [dir]="userPrefLanguageDir">&nbsp;{{dataCaptureLang}}&nbsp;</span>
+          </span>)
+        </header>
+        <div class="preview__modify-div" *ngIf="!readOnlyMode">
+          <span (click)="modifyDemographic()"
+            [ngStyle]="userPrefLanguageDir == 'rtl'? {'float': 'left'} : {'float': 'right'}"
+            matTooltip="{{ helpText.modify_at_DemoPreview }}"><img src="assets/edit.png" /> {{
+            previewLabels.action_modify }}</span>
+        </div>
+      </div> -->
       <div class="preview__header">
-        <p>{{ 'preview.title_preview' | translate }}</p>
+        <span>{{ previewLabels.title_preview }}&nbsp;(<span *ngFor="let dataCaptureLang of dataCaptureLanguagesLabels;index as labelsIndex">
+          <span [dir]="userPrefLanguageDir">&nbsp;{{dataCaptureLang}}&nbsp;</span>
+        </span>)</span>
+        <span [ngStyle]="userPrefLanguageDir == 'ltr'? {'float': 'right'} : {'float': 'left'}">
+          <span *ngIf="!readOnlyMode" (click)="modifyDemographic()" class="preview__modify-file"
+            matTooltip="{{ helpText.modify_at_DemoPreview }}"><img src="assets/edit.png" /> {{
+            previewLabels.action_modify }}</span>
+        </span>
       </div>
-      <div class="preview__modify-div" *ngIf="!readOnlyMode">
-        <span (click)="modifyDemographic()" class="preview__modify-div-span"
-          matTooltip="{{ 'helpText.modify_at_DemoPreview' | translate }}"><img src="assets/edit.png" /> {{
-          'preview.action_modify' | translate }}</span>
-      </div>
-    </mat-card-header>
-    <mat-card-content>
+    <!-- </mat-card-header> -->
+    <mat-card-content [dir]="dataCaptureLangsDir[0]">
       <div class="preview__body-content-container">
         <div class="preview__body-content-div">
           <table width="100%">
             <tr *ngFor="let controlId of controlIds" class="row">
-              <td width="15%">
-                <b>{{ControlIdLabelObjects[controlId][dataCaptureLanguages[0]]}} : </b></td>
+              <td width="30%">
+                <span *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
+                  <b>{{ControlIdLabelObjects[controlId][dataCaptureLanguages[i]]}}</b>
+                  <i *ngIf="!last"> / </i>
+                  <i *ngIf="last"> : </i>
+                </span>
+              </td>  
               <span
                 *ngFor="let dataCaptureLanguage of dataCaptureLanguages; let i = index; let first = first; let last = last;">
-                <span *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></span>
-                <ng-template #content>
-                  <td>
-                    <span *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></span>
-                    <ng-template #displayLabel>{{previewData[controlId][i].label}}</ng-template>
-                    <ng-template #displayValue>{{previewData[controlId][i].value}}</ng-template>
-                  </td>
-                  <i *ngIf="!last"> / </i>
-                </ng-template>
-                <ng-template #other_content><td *ngIf="i == 0">{{previewData[controlId]}}</td></ng-template>
+                <!-- <table width="100%">
+                  <tr> -->
+                    <span *ngIf="checkArray(previewData[controlId], controlId);then content else other_content"></span>
+                    <ng-template #content>
+                      <td>
+                        <span *ngIf="previewData[controlId][i].label;then displayLabel else displayValue"></span>
+                        <ng-template #displayLabel>{{previewData[controlId][i].label}}</ng-template>
+                        <ng-template #displayValue>{{previewData[controlId][i].value}}</ng-template>
+                      </td>
+                      <i *ngIf="!last"> / </i>
+                    </ng-template>
+                    <ng-template #other_content>
+                      <td *ngIf="i == 0">{{previewData[controlId]}}</td>
+                    </ng-template>
+                  <!-- </tr>
+                </table>                 -->
               </span>
             </tr>
           </table>
@@ -39,12 +65,14 @@
       </div>
     </mat-card-content>
     <div class="preview__footer-header">
-      <span>{{ 'preview.title_document' | translate }}</span>
-      <span  *ngIf="!readOnlyMode" (click)="modifyDocument()" class="preview__modify-file"
-        matTooltip="{{ 'helpText.modify_at_DocumentPreview' | translate }}"><img src="assets/edit.png" /> {{
-        'preview.action_modify' | translate }}</span>
+      <span>{{ previewLabels.title_document }}</span>
+      <span [ngStyle]="userPrefLanguageDir == 'ltr'? {'float': 'right'} : {'float': 'left'}">
+        <span *ngIf="!readOnlyMode" (click)="modifyDocument()" class="preview__modify-file"
+          matTooltip="{{ helpText.modify_at_DocumentPreview }}"><img src="assets/edit.png" /> {{
+          previewLabels.action_modify }}</span>
+      </span>
     </div>
-    <mat-card-footer class="preview__footer-container" [dir]="textDirection[0]">
+    <mat-card-footer class="preview__footer-container">
       <div class="preview__footer">
         <div class="preview__file-container">
           <table style="width:100%" *ngIf="documentMapObject">
@@ -54,7 +82,7 @@
             <tr class="preview__file__table__data">
               <td *ngFor="let object of documentMapObject">
                 <p *ngIf="object.fileName !== undefined">{{ object.fileName }}</p>
-                <p class="error" *ngIf="object.fileName === undefined">{{ 'preview.text_not_uploaded' | translate }}</p>
+                <p class="error" *ngIf="object.fileName === undefined">{{ previewLabels.text_not_uploaded }}</p>
               </td>
             </tr>
           </table>
@@ -64,14 +92,13 @@
   </mat-card>
 </div>
 
-<mat-card class="preview__button-container" [dir]="textDirection[0]" *ngIf="previewData !== undefined && dataLoaded">
-  <button (click)="navigateBack()" class="user__btn user__btn-back">{{ 'preview.action_back' | translate }}</button>
+<mat-card class="preview__button-container" *ngIf="previewData !== undefined && dataLoaded">
+  <button (click)="navigateBack()" class="user__btn user__btn-back">{{ previewLabels.action_back }}</button>
   <span class="spacer"></span>
-  <button matTooltip="{{ 'helpText.add_applicant' | translate }}" (click)="onNewApplication()"
-    class="user__btn user__btn-action">
-    {{ 'preview.action_add_applicant' | translate }}
+  <button matTooltip="{{ helpText.add_applicant }}" (click)="onNewApplication()" class="user__btn user__btn-action">
+    {{ previewLabels.action_add_applicant }}
   </button>
   <button (click)="navigateNext()" class="user__btn">
-    {{ 'preview.action_continue' | translate }}
+    {{ previewLabels.action_continue }}
   </button>
 </mat-card>

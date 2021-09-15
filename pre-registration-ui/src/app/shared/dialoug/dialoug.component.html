@@ -111,12 +111,10 @@
     </mat-accordion>
   </mat-dialog-content>
   <mat-dialog-actions [dir]="input.textDirectionArr[0]">
-    <mat-checkbox (change)="onSelectCheckbox()" class="checkbox-accept">
-      <div *ngFor="let item of input.data; let last = last" class="content-display-iniline-block">
-        {{ item.labels.consent.checkCondition }}
-        <span *ngIf="!last">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-      </div>
-    </mat-checkbox>
+    <mat-checkbox (change)="onSelectCheckbox()"></mat-checkbox>
+      <span class="content-display-iniline-block" *ngFor="let item of input.data; let last = last">{{ item.labels.consent.checkCondition }}
+        <span *ngIf="!last">&nbsp;/&nbsp;</span>
+      </span>
   </mat-dialog-actions>
   <p></p>
   <mat-dialog-actions align="end" [dir]="input.textDirectionArr[0]">
@@ -164,7 +162,7 @@
     <span *ngFor="let lang of input.languages">
       <section>
         <mat-checkbox (change)="onSelectLanguage(lang.code, $event)"
-          [checked]="input.mandatoryLanguages.includes(lang.code)"
+          [checked]="input.mandatoryLanguages.includes(lang.code) || lang.code == input.userPrefLanguage"
           [disabled]="input.mandatoryLanguages.includes(lang.code)">{{ lang.value }}</mat-checkbox>
       </section>
     </span>

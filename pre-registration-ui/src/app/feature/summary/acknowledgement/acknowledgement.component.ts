@@ -31,12 +31,15 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   errorlabels: any;
   apiErrorCodes: any;
   showSpinner: boolean = true;
-  notificationRequest = new FormData();
+  //notificationRequest = new FormData();
   bookingDataPrimary = "";
   bookingDataSecondary = "";
   subscriptions: Subscription[] = [];
   notificationTypes: string[];
   preRegIds: any;
+  ltrLangs = this.configService
+    .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
+    .split(",");
   regCenterId;
   langCode;
   textDir = localStorage.getItem("dir");
@@ -77,6 +80,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.usersInfoArr.length; i++) {
       await this.getRegCenterDetails(this.usersInfoArr[i].langCode, i);
       await this.getLabelDetails(this.usersInfoArr[i].langCode, i);
+      await this.getUserLangLabelDetails(this.langCode, i);
     }
 
     let notificationTypes = this.configService
@@ -96,7 +100,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     await this.apiCalls();
     if (this.bookingService.getSendNotification()) {
       this.bookingService.resetSendNotification();
-      this.automaticNotification();
+      await this.automaticNotification();
     }
     this.prepareAckDataForUI();
     this.showSpinner = false;
@@ -112,7 +116,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             regDto = appointmentDetails;
           });
           const demographicData = user["request"].demographicDetails.identity;
-          const applicationLanguages = Utils.getApplicationLangs(user["request"]);
+          let applicationLanguages = Utils.getApplicationLangs(user["request"]);
+          applicationLanguages = Utils.reorderLangsForUserPreferredLang(applicationLanguages, this.langCode);
           applicationLanguages.forEach(applicationLang => {
             const nameListObj: NameList = {
               preRegId: "",
@@ -124,6 +129,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               postalCode: "",
               langCode: "",
               labelDetails: [],
+              userLangLabelDetails: []
             };
             nameListObj.preRegId = user["request"].preRegistrationId;
             nameListObj.status = user["request"].statusCode;
@@ -143,9 +149,12 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             nameListObj.regDto = regDto;
             this.usersInfoArr.push(nameListObj);
             //console.log(this.usersInfoArr);
+            this.applicantContactDetails.push({
+              "preRegId": user["request"].preRegistrationId,
+              "phone": demographicData["phone"],
+              "email": demographicData["email"]
+            });
           });
-          this.applicantContactDetails[1] = demographicData["phone"];
-          this.applicantContactDetails[0] = demographicData["email"];
         });
         if (index === preRegIds.length - 1) {
           resolve(true);
@@ -215,6 +224,19 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       .getI18NLanguageFiles(langCode)
       .subscribe((response) => {
         this.usersInfoArr[index].labelDetails.push(response["acknowledgement"]);
+        //console.log(this.usersInfoArr[index].labelDetails);
+        resolve(true);
+      });
+    });
+  }
+
+  async getUserLangLabelDetails(langCode, index) {
+    return new Promise((resolve) => {
+      this.dataStorageService
+      .getI18NLanguageFiles(langCode)
+      .subscribe((response) => {
+        this.usersInfoArr[index].userLangLabelDetails.push(response["acknowledgement"]);
+        //console.log(this.usersInfoArr[index].labelDetails);
         resolve(true);
       });
     });
@@ -291,13 +313,18 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             if (fltr.length == 0) {
               messages.push({
                 "preRegId": userInfo.preRegId,
-                "message": userInfo.labelDetails[0].message
+                "message": userInfo.userLangLabelDetails[0].message
               });  
             }
           }
         }
       });
-
+      //console.log(appLangCode);
+      if (this.ltrLangs.includes(appLangCode[0])) {
+        this.ackDataItem["appLangCodeDir"] = "ltr";
+      } else {
+        this.ackDataItem["appLangCodeDir"] = "rtl";
+      }
       this.ackDataItem["appLangCode"] = appLangCode;
       this.ackDataItem["bookingTimePrimary"] = bookingTimePrimary;
       this.ackDataItem["bookingDataPrimary"] = bookingDataPrimary;
@@ -471,7 +498,14 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       .subscribe((applicantNumber) => {
         //console.log(applicantNumber);
         if (applicantNumber !== undefined) {
-          this.sendNotification(applicantNumber, true);
+          this.preRegIds.forEach(preRegId => {
+            this.applicantContactDetails.push({
+              "preRegId": preRegId,
+              "phone": applicantNumber[1],
+              "email": applicantNumber[0]
+            });
+          });
+          this.sendNotification(this.applicantContactDetails, true);
         }
       });
     this.subscriptions.push(subs);
@@ -488,52 +522,70 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     }
   }
 
-  async sendNotification(applicantNumber, additionalRecipient: boolean) {
+  async sendNotification(contactInfoArr, additionalRecipient: boolean) {
     this.fileBlob = await this.createBlob();
-    let notificationObject = {};
-    let preRegId;
-    this.usersInfoArr.forEach((user) => {
-      preRegId = user.preRegId;
-      notificationObject[user.langCode] = new NotificationDtoModel(
-        user.fullName,
-        user.preRegId,
-        user.bookingData
-          ? user.bookingData.split(",")[0]
-          : user.regDto.appointment_date,
-        Number(user.bookingTimePrimary.split(":")[0]) < 10
-          ? "0" + user.bookingTimePrimary
-          : user.bookingTimePrimary,
-        applicantNumber[1] === undefined ? null : applicantNumber[1],
-        applicantNumber[0] === undefined ? null : applicantNumber[0],
-        additionalRecipient,
-        false
+    this.preRegIds.forEach(async preRegId => {
+      let notificationObject = {};
+      this.usersInfoArr.forEach(async (user) => {
+        if (preRegId == user.preRegId) {
+          let contactInfo = {};
+          contactInfoArr.forEach(item => {
+            if (item["preRegId"] == preRegId) {
+              contactInfo = item;
+            }
+          });
+          notificationObject[user.langCode] = new NotificationDtoModel(
+            user.fullName,
+            user.preRegId,
+            user.bookingData
+              ? user.bookingData.split(",")[0]
+              : user.regDto.appointment_date,
+            Number(user.bookingTimePrimary.split(":")[0]) < 10
+              ? "0" + user.bookingTimePrimary
+              : user.bookingTimePrimary,
+              contactInfo["phone"] === undefined ? null : contactInfo["phone"],
+              contactInfo["email"] === undefined ? null : contactInfo["email"],
+            additionalRecipient,
+            false
+          );
+        }
+      });
+      const model = new RequestModel(
+        appConstants.IDS.notification,
+        notificationObject
+      );
+      let notificationRequest = new FormData();
+      notificationRequest.append(
+        appConstants.notificationDtoKeys.notificationDto,
+        JSON.stringify(model).trim()
+      );
+      notificationRequest.append(
+        appConstants.notificationDtoKeys.langCode,
+        Object.keys(notificationObject).join(",")
+      );
+      notificationRequest.append(
+        appConstants.notificationDtoKeys.file,
+        this.fileBlob,
+        `${preRegId}.pdf`
+      );
+      await this.sendNotificationForPreRegId(notificationRequest);
+    }); 
+  }
+
+  private sendNotificationForPreRegId(notificationRequest) {
+    return new Promise((resolve, reject) => {
+      this.subscriptions.push(
+        this.dataStorageService
+        .sendNotification(notificationRequest)
+        .subscribe((response) => {
+          resolve(true);
+        },
+        (error) => {
+          resolve(true);
+          this.showErrorMessage(error);
+        })
       );
     });
-    const model = new RequestModel(
-      appConstants.IDS.notification,
-      notificationObject
-    );
-    this.notificationRequest.append(
-      appConstants.notificationDtoKeys.notificationDto,
-      JSON.stringify(model).trim()
-    );
-    this.notificationRequest.append(
-      appConstants.notificationDtoKeys.langCode,
-      Object.keys(notificationObject).join(",")
-    );
-    this.notificationRequest.append(
-      appConstants.notificationDtoKeys.file,
-      this.fileBlob,
-      `${preRegId}.pdf`
-    );
-    const subs = this.dataStorageService
-      .sendNotification(this.notificationRequest)
-      .subscribe((response) => {},
-      (error) => {
-        this.showErrorMessage(error);
-      });
-    this.subscriptions.push(subs);
-    this.notificationRequest = new FormData();
   }
 
   /**

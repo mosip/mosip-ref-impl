@@ -139,9 +139,6 @@ public class BookingService implements BookingServiceIntf {
 	@Value("${mosip.preregistration.booking.delete.old.id}")
 	String idUrlDeleteOld;
 
-	@Value("${mosip.primary-language}")
-	String primaryLang;
-
 	@Autowired
 	private ValidationUtil validationUtil;
 
@@ -279,11 +276,20 @@ public class BookingService implements BookingServiceIntf {
 				dateMap.put(RequestCodes.PRE_REGISTRAION_ID.getCode(), preRegistrationId);
 				if (serviceUtil.validateAppointmentDate(dateMap)) {
 					/* Getting Status From Demographic */
-					String preRegStatusCode = serviceUtil.getDemographicStatus(preRegistrationId);
+					String preRegStatusCode = serviceUtil.getApplicationBookingStatus(preRegistrationId);
+					log.info("preRegStatusCode : {}", preRegStatusCode);
 
-					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
-						throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-								ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+					if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())
+							|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
+
+						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+						} else {
+							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION.getMessage());
+						}
+
 					}
 
 					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)) {
@@ -302,6 +308,8 @@ public class BookingService implements BookingServiceIntf {
 							/* Concatenating Booking date and slot from time */
 							RegistrationBookingEntity bookingEntity = bookingDAO
 									.findByPreRegistrationId(preRegistrationId);
+
+							System.out.println("Booking Entity " + bookingEntity);
 
 							BookingRequestDTO oldBooking = new BookingRequestDTO();
 							oldBooking.setRegDate(bookingEntity.getRegDate().toString());
@@ -400,12 +408,22 @@ public class BookingService implements BookingServiceIntf {
 					if (serviceUtil.validateAppointmentDate(dateMap)) {
 						/* Getting Status From Demographic */
 						String preRegStatusCode = serviceUtil
-								.getDemographicStatus(bookingRequestDTO.getPreRegistrationId());
-						
-						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
-							log.error("Appointment cannnot be booked for {} ", preRegStatusCode);
-							throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
-									ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION.getMessage());
+								.getApplicationBookingStatus(bookingRequestDTO.getPreRegistrationId());
+						log.debug("preRegStatusCode" + preRegStatusCode);
+
+						if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())
+								|| preRegStatusCode.equals(StatusCodes.PREFETCHED.getCode())) {
+
+							if (preRegStatusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
+								throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+										ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_INCOMPLETE_APPLICATION
+												.getMessage());
+							} else {
+								throw new DemographicGetStatusException(ErrorCodes.PRG_BOOK_RCI_036.getCode(),
+										ErrorMessages.APPOINTMENT_CANNOT_BE_BOOKED_FOR_PREFETCHED_APPLICATION
+												.getMessage());
+							}
+
 						}
 
 						// Taking one booking request from multiple
@@ -515,7 +533,7 @@ public class BookingService implements BookingServiceIntf {
 		RegistrationBookingEntity entity = null;
 		try {
 			/* Checking Status From Demographic */
-			serviceUtil.getDemographicStatus(preRegID);
+//			serviceUtil.getDemographicStatus(preRegID);
 			entity = bookingDAO.findByPreRegistrationId(preRegID);
 
 			bookingRegistrationDTO.setRegDate(entity.getRegDate().toString());
@@ -599,8 +617,7 @@ public class BookingService implements BookingServiceIntf {
 			AvailibityEntity availableEntity;
 
 			availableEntity = bookingDAO.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(
-					LocalDate.parse(bookingRequestDTO.getRegDate()),
-					bookingRequestDTO.getRegistrationCenterId(),
+					LocalDate.parse(bookingRequestDTO.getRegDate()), bookingRequestDTO.getRegistrationCenterId(),
 					LocalTime.parse(bookingRequestDTO.getSlotFromTime()),
 					LocalTime.parse(bookingRequestDTO.getSlotToTime()));
 			log.info("In Availablity of book method",
@@ -621,7 +638,8 @@ public class BookingService implements BookingServiceIntf {
 						" and Date and Time " + availableUpdate.getRegDate() + " " + availableUpdate.getFromTime());
 
 				/* Updating demographic */
-				serviceUtil.updateDemographicStatus(preRegistrationId, StatusCodes.BOOKED.getCode());
+				// serviceUtil.updateDemographicStatus(preRegistrationId,
+				// StatusCodes.BOOKED.getCode());
 				bookingStatusDTO.setBookingMessage("Appointment booked successfully");
 
 			}
@@ -659,11 +677,8 @@ public class BookingService implements BookingServiceIntf {
 					bookingEntity = bookingDAO.findByPreRegistrationId(preRegistrationId);
 
 					availableEntity = bookingDAO.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(
-							bookingEntity.getRegDate(),
-							bookingEntity.getRegistrationCenterId(),
+							bookingEntity.getRegDate(), bookingEntity.getRegistrationCenterId(),
 							bookingEntity.getSlotFromTime(), bookingEntity.getSlotToTime());
-					/* Getting Status From Demographic */
-					//serviceUtil.getDemographicStatus(preRegistrationId);
 
 					/* For batch condition will skip */
 					if (!isBatchUser) {
@@ -678,7 +693,8 @@ public class BookingService implements BookingServiceIntf {
 					bookingDAO.deleteByPreRegistrationId(preRegistrationId);
 
 					/* Update the status to Canceled in demographic Table */
-					serviceUtil.updateDemographicStatus(preRegistrationId, StatusCodes.CANCELLED.getCode());
+					// serviceUtil.updateDemographicStatus(preRegistrationId,
+					// StatusCodes.CANCELLED.getCode());
 
 					/* No. of Availability. update */
 					availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() + 1);
@@ -741,15 +757,14 @@ public class BookingService implements BookingServiceIntf {
 						LocalDate.parse(registrationEntityList.getRegDate().toString()),
 						registrationEntityList.getRegistrationCenterId(),
 						LocalTime.parse(registrationEntityList.getSlotFromTime().toString()),
-						LocalTime.parse(registrationEntityList.getSlotToTime().toString())
-						);
+						LocalTime.parse(registrationEntityList.getSlotToTime().toString()));
 				/* No. of Availability. update */
 				availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() + 1);
 
 				/* Updating slot in DB */
 				bookingDAO.updateAvailibityEntity(availableEntity);
 
-				deleteDto.setPreRegistrationId(registrationEntityList.getDemographicEntity().getPreRegistrationId());
+				deleteDto.setPreRegistrationId(registrationEntityList.getPreregistrationId());
 				deleteDto.setDeletedBy(registrationEntityList.getCrBy());
 				deleteDto.setDeletedDateTime(new Date(System.currentTimeMillis()));
 
@@ -801,8 +816,7 @@ public class BookingService implements BookingServiceIntf {
 
 			bookingDAO.findRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
 			AvailibityEntity entity = bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(
-					LocalDate.parse(bookingRequestDTO.getRegDate()),
-					bookingRequestDTO.getRegistrationCenterId(),
+					LocalDate.parse(bookingRequestDTO.getRegDate()), bookingRequestDTO.getRegistrationCenterId(),
 					LocalTime.parse(bookingRequestDTO.getSlotFromTime()),
 					LocalTime.parse(bookingRequestDTO.getSlotToTime()));
 			log.info("In Availablity", "available slots :" + entity.getAvailableKiosks(),

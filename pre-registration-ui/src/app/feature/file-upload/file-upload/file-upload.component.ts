@@ -19,6 +19,7 @@ import { LogService } from "src/app/shared/logger/log.service";
 import Utils from "src/app/app.util";
 import { Subscription } from "rxjs";
 import identityStubJson from "../../../../assets/identity-spec.json";
+import { isArray } from "util";
 
 @Component({
   selector: "app-file-upload",
@@ -59,13 +60,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   selectedDocuments: SelectedDocuments[] = [];
   dataCaptureLanguages = [];
   dataCaptureLanguagesLabels = [];
-  textDirection = [];
+  dataCaptureLangsDir = [];
   ltrLangs = this.config
     .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
     .split(",");
   LOD: DocumentCategory[] = [];
   fileIndex: number = -1;
-  fileUploadLanguagelabels: any;
+  documentLabels: any;
+  demographicLabels: any;
+  messagelabels: any;
+  helpText: any;
   errorlabels: any;
   apiErrorCodes: any;
   fileExtension: string = "pdf";
@@ -77,13 +81,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   flag: boolean;
   zoom: number = 0.5;
   userPrefLanguage = localStorage.getItem("userPrefLanguage");
+  userPrefLanguageDir = "";
   userForm = new FormGroup({});
   validationMessage: any;
   documentUploadRequestBody: DocumentUploadRequestDTO = {
     docCatCode: "",
     docTypCode: "",
     langCode: "",
-    docRefId: "",
+    refNumber: "",
   };
   files: FilesModel;
   documentCategoryDto: DocumentCategoryDTO = {
@@ -103,7 +108,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   uiFields = [];
   preRegId: number;
   isDocUploadRequired = [];
-  name: "";
+  fullNameField: "";
   readOnlyMode = false;
   dataLoaded = false;
   constructor(
@@ -123,9 +128,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   async ngOnInit() { 
     this.getPrimaryLabels(this.userPrefLanguage);
+    if (this.ltrLangs.includes(this.userPrefLanguage)) {
+      this.userPrefLanguageDir = "ltr";
+    } else {
+      this.userPrefLanguageDir = "rtl";
+    }
     await this.initiateComponent();
+    this.fullNameField = this.config.getConfigByKey(
+      appConstants.CONFIG_KEYS.preregistartion_identity_name
+    );
     this.getFileSize();
-    this.getPrimaryLabels(this.dataCaptureLanguages[0]);
     this.allowedFiles = this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files).split(",");
     this.getAllowedFileTypes(this.allowedFiles);
     this.loginId = localStorage.getItem("loginId");
@@ -136,9 +148,6 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     } else {
       this.sameAsselected = true;
     }
-    this.name = this.config.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
-    );
     if (this.readOnlyMode) {
       this.userForm.disable();
     }
@@ -168,10 +177,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.dataStorageService
     .getI18NLanguageFiles(lang)
     .subscribe((response) => {
-      if (response["message"])
-        this.fileUploadLanguagelabels = response["message"];
+      if (response["message"]) {
+        this.documentLabels = response["documents"];
+        this.demographicLabels = response["demographic"];
+        this.helpText = response["helpText"];
+        this.messagelabels = response["message"];
         this.errorlabels = response["error"];
-        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];    
+        this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
+      }
+            
     });
   }
 
@@ -286,8 +300,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           if (ele.code === fileMetadata[index].docCatCode) {
             indice = index;
             indexLOD = i;
-            ele.selectedDocRefId = fileMetadata[index].docRefId
-              ? fileMetadata[index].docRefId
+            ele.selectedDocRefId = fileMetadata[index].refNumber
+              ? fileMetadata[index].refNumber
               : "";
             arr.push(ele);
           }
@@ -339,9 +353,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         );
         //set the language direction as well
         if (this.ltrLangs.includes(langCode)) {
-          this.textDirection.push("ltr");
+          this.dataCaptureLangsDir.push("ltr");
         } else {
-          this.textDirection.push("rtl");
+          this.dataCaptureLangsDir.push("rtl");
         }
       });
     }
@@ -452,22 +466,25 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     let i = 0;
     let j = 0;
     let allApplicants: any[] = [];
-
     allApplicants = JSON.parse(JSON.stringify(applicants));
-    let name = this.config.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
-    );
-    for (let applicant of allApplicants) {
-      for (let name of applicant) {
-        if (
-          name["demographicMetadata"][name][j].language != this.dataCaptureLanguages[0]
-        ) {
-          allApplicants[i].demographicMetadata.firstName.splice(j, 1);
+    allApplicants.forEach(applicant => {
+      let nameFieldObject = applicant["demographicMetadata"][this.fullNameField];
+      if (nameFieldObject && Array.isArray(nameFieldObject)) {
+        let found = false;
+        nameFieldObject.forEach(nameField => {
+          if (nameField.language == this.userPrefLanguage) {
+            applicant["applicantName"] = nameField.value;
+            found = true; 
+          }
+        });
+        if (!found) {
+          applicant["applicantName"] = nameFieldObject[0].value;
         }
-        j++;
+      } else {
+        applicant["applicantName"] = nameFieldObject;
       }
-      i++;
-    }
+      //console.log(applicant);
+    });
     //console.log("allApplicants>>>" + JSON.stringify(allApplicants));
     return allApplicants;
   }
@@ -478,65 +495,41 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    */
   async getApplicantTypeID() {
     //console.log("getApplicantTypeID");
-    let requestDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let DOBDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let genderDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let biometricDTO: DocumentCategoryDTO = {
-      attribute: "",
-      value: "",
-    };
-
-    let requestArray = {
-      attributes: [],
-    };
-    let DOCUMENT_CATEGORY_DTO: RequestModel;
-    let DOB = this.users[0].request.demographicDetails.identity.dateOfBirth;
-
-    requestDTO.attribute =
-      appConstants.APPLICANT_TYPE_ATTRIBUTES.individualTypeCode;
-    
-    requestDTO.value =
-      this.users[0].request.demographicDetails.identity.residenceStatus[0].value;
-    requestArray.attributes.push(requestDTO);
-
-    DOBDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.dateofbirth;
-    DOBDTO.value = DOB.replace(/\//g, "-") + "T11:46:12.640Z";
-
-    requestArray.attributes.push(DOBDTO);
-
-    genderDTO.attribute = appConstants.APPLICANT_TYPE_ATTRIBUTES.genderCode;
-    genderDTO.value =
-      this.users[0].request.demographicDetails.identity.gender[0].value;
-
-    requestArray.attributes.push(genderDTO);
-
-    biometricDTO.attribute =
-      appConstants.APPLICANT_TYPE_ATTRIBUTES.biometricAvailable;
-    biometricDTO.value = false;
-
-    requestArray.attributes.push(biometricDTO);
-
-    DOCUMENT_CATEGORY_DTO = new RequestModel(
+    let attributesArr = [];
+    const identityObj = this.users[0].request.demographicDetails.identity;
+    if (identityObj) {
+      let keyArr: any[] = Object.keys(identityObj);
+      for (let index = 0; index < keyArr.length; index++) {
+        const element = keyArr[index];
+        if (element != appConstants.IDSchemaVersionLabel) {
+          let elemValue = identityObj[element];
+          this.identityData.forEach((obj) => {
+            if (element === obj.id && obj.controlType === "ageDate" || obj.controlType === "date") {
+              elemValue = elemValue.replace(/\//g, "-") + "T11:46:12.640Z";
+            }
+          });
+          attributesArr.push({
+            "attribute": element,
+            "value": elemValue
+          }); 
+        }
+      }
+    }
+    attributesArr.push({
+      "attribute": appConstants.APPLICANT_TYPE_ATTRIBUTES.biometricAvailable,
+      "value": false 
+    });
+    let applicantTypeReq = new RequestModel(
       appConstants.IDS.applicantTypeId,
-      requestArray,
+      {
+        "attributes": attributesArr
+      },
       {}
     );
     return new Promise((resolve) => {
       this.subscriptions.push(
         this.dataStorageService
-        .getApplicantType(DOCUMENT_CATEGORY_DTO)
+        .getApplicantType(applicantTypeReq)
         .subscribe(
           async (response) => {
             if (response[appConstants.RESPONSE]) {
@@ -578,7 +571,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => {
       this.subscriptions.push(
         this.dataStorageService
-        .getDocumentCategoriesByLang(applicantcode, this.dataCaptureLanguages[0])
+        .getDocumentCategoriesByLang(applicantcode, this.userPrefLanguage)
         .subscribe(
           (res) => {
             if (res[appConstants.RESPONSE]) {
@@ -879,7 +872,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.disableNavigation = false;
-            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg10);
+            this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg10);
           }
         );
         this.subscriptions.push(subs);
@@ -890,10 +883,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   confirmationDialog(fileName: string) {
     let body = {
       case: "CONFIRMATION",
-      title: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
-      message: this.fileUploadLanguagelabels.uploadDocuments.msg11 + fileName,
-      yesButtonText: this.fileUploadLanguagelabels.uploadDocuments.title_confirm,
-      noButtonText: this.fileUploadLanguagelabels.uploadDocuments.button_cancel,
+      title: this.messagelabels.uploadDocuments.title_confirm,
+      message: this.messagelabels.uploadDocuments.msg11 + fileName,
+      yesButtonText: this.messagelabels.uploadDocuments.title_confirm,
+      noButtonText: this.messagelabels.uploadDocuments.button_cancel,
     };
     const dialogRef = this.openDialog(body, "400px");
     return dialogRef;
@@ -929,7 +922,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     event: any,
     docName: string,
     docCode: string,
-    docRefId: string
+    refNumber: string
   ) {
     const extensionRegex = new RegExp(
       "(?:" + this.allowedFilesHtml.replace(/,/g, "|") + ")"
@@ -962,20 +955,20 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.fileByteArray = data;
           });
           if (!this.documentType && !this.documentCategory) {
-            this.setJsonString(docName, docCode, docRefId);
+            this.setJsonString(docName, docCode, refNumber);
           }
           this.sendFile(event);
         } else {
           this.displayMessage(
             this.errorlabels.errorLabel,
-            this.fileUploadLanguagelabels.uploadDocuments.msg1
+            this.messagelabels.uploadDocuments.msg1
           );
           this.disableNavigation = false;
         }
       } else {
         this.displayMessage(
           this.errorlabels.errorLabel,
-          this.fileUploadLanguagelabels.uploadDocuments.msg5
+          this.messagelabels.uploadDocuments.msg5
         );
         this.disableNavigation = false;
       }
@@ -986,26 +979,26 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       this.fileExtension = oldFileExtension;
       this.displayMessage(
         this.errorlabels.errorLabel,
-        this.fileUploadLanguagelabels.uploadDocuments.msg3
+        this.messagelabels.uploadDocuments.msg3
       );
       this.disableNavigation = false;
     }
   }
 
   /**
-   *@description method gets called when a value in "docRefId" textbox is changed.
+   *@description method gets called when a value in "refNumber" textbox is changed.
    *
    * @param {*} event
    * @memberof FileUploadComponent
    */
   handleDocRefInput(event: any, docCode: string) {
-    const docRefId = event.target.value;
+    const refNumber = event.target.value;
     for (let file of this.users[0].files.documentsMetaData) {
       if (file.docCatCode == docCode) {
         let documentId = file.documentId;
         this.disableNavigation = true;
         const subs = this.dataStorageService
-          .updateDocRefId(documentId, this.preRegId, docRefId)
+          .updateDocRefId(documentId, this.preRegId, refNumber)
           .subscribe(
             (response) => {
               //docRedId saved
@@ -1115,11 +1108,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
    * @param {*} event
    * @memberof FileUploadComponent
    */
-  setJsonString(docName: string, docCode: string, docRefId: string) {
+  setJsonString(docName: string, docCode: string, refNumber: string) {
     this.documentUploadRequestBody.docCatCode = docCode;
     this.documentUploadRequestBody.langCode = this.dataCaptureLanguages[0];
     this.documentUploadRequestBody.docTypCode = docName;
-    this.documentUploadRequestBody.docRefId = docRefId;
+    this.documentUploadRequestBody.refNumber = refNumber;
     this.documentRequest = new RequestModel(
       appConstants.IDS.documentUpload,
       this.documentUploadRequestBody,
@@ -1157,7 +1150,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           } 
         },
         (error) => {
-          this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg7);
+          this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg7);
           this.fileInputVariable.nativeElement.value = "";
           this.disableNavigation = false;
         },
@@ -1187,7 +1180,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     fileObject.docTypCode = fileResponse.response.docTypCode;
     fileObject.multipartFile = this.fileByteArray;
     fileObject.prereg_id = this.users[0].preRegId;
-    fileObject.docRefId = fileResponse.response.docRefId;
+    fileObject.refNumber = fileResponse.response.refNumber;
     this.uiFields.forEach((uiField) => {
       if (uiField.subType == fileResponse.response.docCatCode) {
         this.userForm.controls[uiField.id].setValue(
@@ -1319,7 +1312,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.disableNavigation = false;
-            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg9);
+            this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg9);
           }
         );
       this.subscriptions.push(subs);
@@ -1350,14 +1343,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
               this.documentName = docList[0].code;
               this.LOD[index].selectedDocName = this.documentName;
               this.LOD[index].selectedDocRefId =
-                response["response"]["docRefId"];
+                response["response"]["refNumber"];
               this.sameAsselected = true;  
             } else {
               this.sameAs = this.registration.getSameAs();
               this.sameAsselected = false;
               this.displayMessage(
                 this.errorlabels.errorLabel,
-                this.fileUploadLanguagelabels.uploadDocuments.msg9
+                this.messagelabels.uploadDocuments.msg9
               );
             }
             this.disableNavigation = false;
@@ -1366,7 +1359,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             this.sameAs = this.registration.getSameAs();
             this.sameAsselected = false;
             this.disableNavigation = false;
-            this.showErrorMessage(error, this.fileUploadLanguagelabels.uploadDocuments.msg8);
+            this.showErrorMessage(error, this.messagelabels.uploadDocuments.msg8);
           }
         );
         this.subscriptions.push(subs);
@@ -1573,7 +1566,7 @@ export interface DocumentUploadRequestDTO {
   docCatCode: string;
   docTypCode: string;
   langCode: string;
-  docRefId: string;
+  refNumber: string;
 }
 
 export interface DocumentCategoryDTO {
@@ -1613,7 +1606,7 @@ export interface ProofOfAddress {
   docCatCode: string;
   docTypCode: string;
   docFileFormat?: string;
-  docRefId: string;
+  refNumber: string;
 }
 
 export interface DemographicMetaData {

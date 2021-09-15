@@ -28,7 +28,7 @@ export class CanDeactivateGuardService
       let no_text;
       return new Promise((resolve) => {
        this.dataStorageService
-        .getI18NLanguageFiles(localStorage.getItem("langCode"))
+        .getI18NLanguageFiles(localStorage.getItem("userPrefLanguage"))
         .subscribe((response) => {
           message = response["dialog"]["navigation_alert"];
           ok_text = response["dialog"]["action_ok"];

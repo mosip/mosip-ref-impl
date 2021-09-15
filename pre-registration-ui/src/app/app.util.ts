@@ -144,20 +144,36 @@ export default class Utils {
   };
 
   static getLanguageLabels = (dataCaptureLanguages, languageCodeValues) => {
-    const dataAvailableLanguageArr = JSON.parse(dataCaptureLanguages);
+    let dataAvailableLanguageArr = [];
+    if (dataCaptureLanguages) {
+      dataAvailableLanguageArr = JSON.parse(dataCaptureLanguages);
+    }
     const languageCodeValuesArr = JSON.parse(languageCodeValues);
     let dataCaptureLanguagesLabels = [];
-    dataAvailableLanguageArr.forEach((langCode: string) => {
-      languageCodeValuesArr.forEach((element: any) => {
-        if (langCode === element.code) {
-          dataCaptureLanguagesLabels.push(element.value);
+    if (Array.isArray(dataAvailableLanguageArr)) {
+      dataAvailableLanguageArr.forEach((langCode: string) => {
+        if (Array.isArray(languageCodeValuesArr)) {
+          languageCodeValuesArr.forEach((element: any) => {
+            if (langCode === element.code) {
+              dataCaptureLanguagesLabels.push(element.value);
+            }
+          });
         }
       });
-    });
+    } else {
+      if (Array.isArray(languageCodeValuesArr)) {
+        languageCodeValuesArr.forEach((element: any) => {
+          if (dataAvailableLanguageArr === element.code) {
+            dataCaptureLanguagesLabels.push(element.value);
+          }
+        });
+      }
+    }  
+    
     return dataCaptureLanguagesLabels;
   };
 
-  static getLangSelectionPopupAttributes(textDir: string,dataCaptureLabels: any, mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number) {
+  static getLangSelectionPopupAttributes(textDir: string,dataCaptureLabels: any, mandatoryLanguages: string[], minLanguage: Number, maxLanguage: Number, userPrefLanguage : string) {
     //create string with mandatory Lang Names
     let mandatoryLang = "";
     mandatoryLanguages.forEach((lang) => {
@@ -189,6 +205,7 @@ export default class Utils {
       dir: textDir,
       languages: JSON.parse(localStorage.getItem(appConstants.LANGUAGE_CODE_VALUES)),
       mandatoryLanguages: mandatoryLanguages,
+      userPrefLanguage: userPrefLanguage,
       minLanguage: minLanguage,
       maxLanguage: maxLanguage,
       message: popupMainMessage,
