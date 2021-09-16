@@ -3,6 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+	
+    <scm>
+                <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
+                <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
+                <url>https://github.com/mosip/mosip-ref-impl</url>
+                <tag>HEAD</tag>
+    </scm>
 
     <artifactId>biosdk-client</artifactId>
     <groupId>io.mosip.biosdk</groupId>
@@ -12,10 +19,36 @@
     <description>Sample implementation of biometrics SDK client</description>
     <url>https://github.com/mosip/mosip-ref-impl</url>
 
+	<licenses>
+          <license>
+                <name>MPL 2.0</name>
+                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+          </license>
+        </licenses>
+
+	<developers>
+		<developer>
+			<name>Mosip</name>
+			<email>mosip.emailnotifier@gmail.com</email>
+			<organization>io.mosip</organization>
+			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
     <properties>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <kernel.biometricsdk.version>1.1.5.2</kernel.biometricsdk.version>
         <kernel.core.version>1.1.5.5-SNAPSHOT</kernel.core.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
@@ -23,7 +56,6 @@
         <maven.deploy.version>2.8.1</maven.deploy.version>
         <maven.javadoc.version>3.2.0</maven.javadoc.version>
         <maven.assembly.version>3.3.0</maven.assembly.version>
-
         <!-- Lombok -->
         <lombok.version>1.18.8</lombok.version>
 
@@ -66,9 +98,9 @@
                     <groupId>org.springframework.data</groupId>
                     <artifactId>spring-data-jpa</artifactId>
                 </exclusion>
-                <exclusion>
-                	<groupId>io.mosip.kernel</groupId>
-                	<artifactId>kernel-core</artifactId>
+                <exclusion>	
+                	<groupId>io.mosip.kernel</groupId>	
+                	<artifactId>kernel-core</artifactId>	
                 </exclusion>
             </exclusions>
         </dependency>
@@ -133,8 +165,6 @@
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
         </dependency>
-
-
 
     </dependencies>
 
@@ -250,5 +280,4 @@
 
         </plugins>
     </build>
-
 </project>
