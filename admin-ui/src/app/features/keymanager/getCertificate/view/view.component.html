@@ -1,6 +1,6 @@
 <ng-container>
 <span><h3 class="header">{{'getcertificate.title' | translate}}</h3></span>
-<div id="flex-single-view" style="padding-top: 12px;">
+<div id="flex-single-view" style="padding-top: 12px;padding-bottom: 10px;">
 <div id="flex-container">
 <div id="myDiv" class="flex-body">
   <mat-card>
@@ -24,6 +24,6 @@
 </div>
 </div>
 <mat-card class="mat-elevation-z5" *ngIf="this.datas">
-  <div>{{this.datas}}</div>
+  <div [innerHTML]="datas"></div>
 </mat-card>
 </ng-container>
