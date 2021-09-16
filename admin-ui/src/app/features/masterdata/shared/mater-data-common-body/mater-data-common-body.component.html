@@ -89,7 +89,21 @@
                         required={{field.ismandatory}}                       
                       />
                     </mat-form-field>
-
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'textarea'">
+                      <textarea
+                        #keyboardRef
+                        #{{field.name}}
+                        (blur)="captureValue($event, field.name, 'primary')"
+                        (focus)="scrollPage(field.name, 'primary', field.name, i)"
+                        matInput
+                        placeholder="{{
+                          field.label[primaryLang] | translate
+                        }}"
+                        [value]="primaryData[field.name]"
+                        required={{field.ismandatory}}
+                        rows="3" cols="40"
+                      ></textarea>
+                    </mat-form-field>
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'calendar'">
                       <input
                         matInput
@@ -331,6 +345,20 @@
                         }}"
                         [value]="secondaryData[field.name]"
                       />
+                    </mat-form-field>
+                    <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'textarea'">
+                      <textarea
+                        #keyboardRef
+                        #{{field.name}}
+                        (blur)="captureValue($event, field.name, 'secondary')"
+                        (focus)="scrollPage(field.name, 'secondary', field.name, ii + this.fieldsCount)"
+                        matInput
+                        placeholder="{{
+                          field.label[secondaryLang]
+                        }}"
+                        [value]="secondaryData[field.name]"
+                        rows="3" cols="40"
+                      ></textarea>
                     </mat-form-field>
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'calendar'">
                       <input

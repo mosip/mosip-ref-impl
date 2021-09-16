@@ -48,12 +48,12 @@ export class CreateComponent {
     this.createForm = this.formBuilder.group({
       applicationId : ['', [Validators.required]],
       referenceId: [''],
-      commonName: ['', [Validators.required]],
-      organization: ['', [Validators.required]],
-      organizationUnit: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]],
+      commonName: [''],
+      organization: [''],
+      organizationUnit: [''],
+      location: [''],
+      state: [''],
+      country: [''],
     });
   }
 
@@ -72,14 +72,14 @@ export class CreateComponent {
   saveData(){
     let self = this;
     const formData = {};
-    formData['applicationId'] = self.createForm.get('applicationId').value;
-    formData['referenceId'] = self.createForm.get('referenceId').value;
-    formData['commonName'] = self.createForm.get('commonName').value;
-    formData['organization'] = self.createForm.get('organization').value;
-    formData['organizationUnit'] = self.createForm.get('organizationUnit').value;
-    formData['location'] = self.createForm.get('location').value;
-    formData['state'] = self.createForm.get('state').value;
-    formData['country'] = self.createForm.get('country').value;
+    formData['applicationId'] = self.createForm.get('applicationId').value.trim();
+    formData['referenceId'] = self.createForm.get('referenceId').value.trim();
+    formData['commonName'] = self.createForm.get('commonName').value.trim();
+    formData['organization'] = self.createForm.get('organization').value.trim();
+    formData['organizationUnit'] = self.createForm.get('organizationUnit').value.trim();
+    formData['location'] = self.createForm.get('location').value.trim();
+    formData['state'] = self.createForm.get('state').value.trim();
+    formData['country'] = self.createForm.get('country').value.trim();
     const primaryRequest = new RequestModel(
       "",
       null,

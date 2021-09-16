@@ -31,7 +31,7 @@ export class ToolbarComponent extends MatPaginatorIntl implements OnInit {
     super();
     let self = this;     
     this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
-      self.itemsPerPageLabel = response.center.title;
+      self.itemsPerPageLabel = response.paginationLabel.showRows;
     });
   }
 

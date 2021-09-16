@@ -140,7 +140,7 @@ export class EditComponent {
   loadLanguages(primaryLangCode: string) {
     console.log(`loadLanguages: primary: ${primaryLangCode}`);
     // Set the primary language
-    this.primaryLang = primaryLangCode;
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     this.translateService.use(this.primaryLang);    
     //Set the "Select Language" dropdown options
     this.selectLanguagesArr = [];

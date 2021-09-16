@@ -27,6 +27,7 @@ export class CreateComponent {
   fileCount = 0;
   popUpMessages;
   fileNameError:boolean = false;
+  buttonalignment = 'ltr';
   constructor(
   private bulkuploadService: BulkuploadService,
   private location: Location,
@@ -48,6 +49,9 @@ export class CreateComponent {
 
   initializeComponent() {
     this.initializeForm();
+    if(this.primaryLangCode === "ara"){
+      this.buttonalignment = 'rtl';
+    }
     this.dataService
          .getI18NLanguageFiles(this.primaryLangCode)
          .subscribe((response) => {

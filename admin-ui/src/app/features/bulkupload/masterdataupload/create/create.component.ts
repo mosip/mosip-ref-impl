@@ -20,7 +20,9 @@ export class CreateComponent {
   uploadForm: FormGroup;
   labelanddatas:any;
   subscribed: any;
+  popupMessages:any;
   fileNameError:boolean = false;
+  buttonalignment = 'ltr';
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -40,11 +42,18 @@ export class CreateComponent {
 
   initializeComponent() {
     this.primaryLang = this.headerService.getUserPreferredLanguage();
-
+    if(this.primaryLang === "ara"){
+      this.buttonalignment = 'rtl';
+    }
     this.dataStorageService
     .getI18NLanguageFiles(this.primaryLang)
     .subscribe((response) => {
       this.labelanddatas = response["bulkUpload"];
+    });
+    this.translateService
+    .getTranslation(this.primaryLang)
+    .subscribe(response => {
+      this.popupMessages = response.bulkUpload.popupMessages;
     });
     this.initializeForm();
   }
@@ -78,11 +87,11 @@ export class CreateComponent {
     if (this.uploadForm.valid) {
       let data = {};
       data = {
-        case: 'CONFIRMATION',
-        title: "Confirm Bulk Master Data Upload",
-        message: "Bulk "+this.uploadForm.get('operation').value+" on "+this.uploadForm.get('tableName').value+" will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
-        yesBtnTxt: "CONFIRM",
-        noBtnTxt: "CANCEL"
+        case: 'CONFIRMATION',       
+        title: this.popupMessages['popup1'].title,
+        message: this.popupMessages['popup1'].message[0] + this.uploadForm.get('operation').value + this.popupMessages['popup1'].message[1] + this.uploadForm.get('tableName').value + this.popupMessages['popup1'].message[2],
+        yesBtnTxt: this.popupMessages['popup1'].yesBtnText,
+        noBtnTxt: this.popupMessages['popup1'].noBtnText
       };
       const dialogRef = this.dialog.open(DialogComponent, {
         width: '650px',
@@ -135,24 +144,24 @@ export class CreateComponent {
         }
         data = {
           case: 'MESSAGE',
-          title: "Failure !",
+          title: this.popupMessages['popup2'].title,
           message: uploadResponse.response.statusDescription,
-          btnTxt: "DONE"
+          btnTxt: this.popupMessages['popup2'].btnTxt
         };
       }else{
         data = {
           case: 'MESSAGE',
-          title: "Success",
-          message: "Your file has been uploaded successfully. \n Data upload is currently in progress.\n\n\n Transaction ID : "+uploadResponse.response.transcationId,
-          btnTxt: "DONE"
+          title: this.popupMessages['popup3'].title,
+          message: this.popupMessages['popup3'].title +uploadResponse.response.transcationId,
+          btnTxt: this.popupMessages['popup3'].btnTxt
         };
       }
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
+        title: this.popupMessages['popup2'].title,
         message: uploadResponse.errors[0].message,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages['popup2'].btnTxt
       };
     }
     

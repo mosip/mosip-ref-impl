@@ -105,8 +105,8 @@ export class CreateComponent {
     let self = this;
     console.log("self.fileData>>>"+self.fileData);
     const formData = {};
-    formData['applicationId'] = self.createForm.get('applicationId').value;
-    formData['referenceId'] = self.createForm.get('referenceId').value;
+    formData['applicationId'] = self.createForm.get('applicationId').value.trim();
+    formData['referenceId'] = self.createForm.get('referenceId').value.trim();
     formData['certificateData'] = self.fileData.replaceAll("\\n", "\n");
     const primaryRequest = new RequestModel(
       "",

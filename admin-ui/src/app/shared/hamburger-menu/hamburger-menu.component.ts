@@ -34,6 +34,8 @@ export class HamburgerComponent implements OnInit {
     }
     if (this.headerService.getDisplayUserName()) {
       this.userName = this.headerService.getDisplayUserName();
+    }else{
+      this.userName = this.headerService.getUsername();
     }
     if (this.headerService.getRoles()) {
       this.roleNameSubstr = this.headerService.getRoles();
