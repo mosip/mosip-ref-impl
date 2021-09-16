@@ -46,10 +46,11 @@
                 {{'genericerror.fieldValidation' | translate}}
               </mat-error>
             </mat-form-field> 
-            <div class="custom-file-input">              
+            <div class="custom-file-input">    
+              <input type="button" *ngIf="buttonalignment === 'rtl'" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">           
               <input type="file" accept=".csv" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" id="fileName"  formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}"> 
-              <input type="button" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
+              <input type="text" id="fileName"  formControlName="fileName" placeholder="{{labelanddatas.uploadFile | translate }}">
+              <input type="button" *ngIf="buttonalignment === 'ltr'" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">
               <mat-error *ngIf="fileNameError">
                 {{'genericerror.fieldValidation' | translate}}
               </mat-error>  

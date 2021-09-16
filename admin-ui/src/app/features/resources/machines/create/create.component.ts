@@ -306,7 +306,7 @@ export class CreateComponent {
   showError() {
     this.dialog
       .open(DialogComponent, {
-        width: '350px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
         },
@@ -350,7 +350,7 @@ export class CreateComponent {
     ) {
       return this.dialog
         .open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data: {
             case: 'CONFIRMATION',
             title: this.popupMessages['navigation-popup'].title,
@@ -561,7 +561,7 @@ export class CreateComponent {
   showErrorPopup() {
     this.dialog
       .open(DialogComponent, {
-        width: '350px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
           title: this.popupMessages['noData']['title'],

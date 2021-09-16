@@ -127,7 +127,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.requestModel = new RequestModel(null, null, filters);
 
     this.keymanagerService
-      .getCertificate(this.requestModel, this.applicationId, filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId)
+      .getCertificate(this.requestModel, this.applicationId.trim(), filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId.trim())
       .subscribe(({ response, errors }) => {
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalItems;

@@ -128,7 +128,7 @@
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "textarea",
       "ismandatory": "true"
     },
     {
