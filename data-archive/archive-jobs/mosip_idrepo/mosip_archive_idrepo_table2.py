@@ -6,12 +6,13 @@
 #-- Create By       : Sadanandegowda DM
 #-- Created Date    : Dec-2020
 #-- 
-#-- Modified Date        Modified By         Comments / Remarks
+#-- Modified Date       Modified By         	Comments / Remarks
+#-- Sept-2021		Chandra Keshav Mishra	corrected property file location and updated fetValue funtion
 #-- ------------------------------------------------------------------------------------------
 #-- 
 #-- ------------------------------------------------------------------------------------------
 
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import sys
 
@@ -22,7 +23,7 @@ import datetime
 from configparser import ConfigParser
 from datetime import datetime
 
-def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
+def config(filename='mosip_archive_idrepo.ini', section='MOSIP-DB-SECTION'):
     parser = ConfigParser()
     parser.read(filename)
     dbparam = {}
@@ -38,10 +39,18 @@ def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
 def getValues(row):
     finalValues =""
     for values in row:
-        finalValues = finalValues+"'"+str(values)+"',"
-
-    finalValues = finalValues[0:-1] 
+        if values is not None:
+            finalValues = finalValues+"'"+str(escape(values))+"',"
+        else:
+            finalValues = finalValues +"null,"
+    finalValues = finalValues[0:-1]
     return finalValues
+
+def escape(st):
+    if isinstance(st, str) and "'" in st:
+        return st.replace('\'', '\'\'')
+    else:
+        return st
 
 def dataArchive():
     sourseConn = None
@@ -85,7 +94,7 @@ def dataArchive():
                 insert_count = archiveCur.rowcount
                 print(insert_count, ": Record inserted successfully ")
                 if insert_count > 0:
-                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE uin_ref_id ='"+row[0]+"'AND biometric_file_type='"+row[1]+"'AND eff_dtimes='"+row[2]+"'"
+                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE uin_ref_id ='"+row[0]+"'AND biometric_file_type='"+row[1]+"'AND eff_dtimes='"+str(row[2])+"'"
                     sourceCur.execute(delete_query)
                     sourseConn.commit()
                     delete_count = sourceCur.rowcount

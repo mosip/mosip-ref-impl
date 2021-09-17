@@ -6,7 +6,8 @@
 #-- Create By       : Sadanandegowda DM
 #-- Created Date    : Dec-2020
 #-- 
-#-- Modified Date        Modified By         Comments / Remarks
+#-- Modified Date       Modified By         	Comments / Remarks
+#-- Sept-2021		Chandra Keshav Mishra	updated getValue funtion and delete query
 #-- ------------------------------------------------------------------------------------------
 #-- 
 #-- ------------------------------------------------------------------------------------------
@@ -22,7 +23,7 @@ import datetime
 from configparser import ConfigParser
 from datetime import datetime
 
-def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
+def config(filename='mosip_archive_idrepo.ini', section='MOSIP-DB-SECTION'):
     parser = ConfigParser()
     parser.read(filename)
     dbparam = {}
@@ -38,10 +39,18 @@ def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
 def getValues(row):
     finalValues =""
     for values in row:
-        finalValues = finalValues+"'"+str(values)+"',"
-
-    finalValues = finalValues[0:-1] 
+        if values is not None:
+            finalValues = finalValues+"'"+str(escape(values))+"',"
+        else:
+            finalValues = finalValues +"null,"
+    finalValues = finalValues[0:-1]
     return finalValues
+
+def escape(st):
+    if isinstance(st, str) and "'" in st:
+        return st.replace('\'', '\'\'')
+    else:
+        return st
 
 def dataArchive():
     sourseConn = None
@@ -83,9 +92,13 @@ def dataArchive():
                 archiveCur.execute(insert_query)
                 archiveConn.commit()
                 insert_count = archiveCur.rowcount
+                print("DELETE FROM ", sschemaName)
                 print(insert_count, ": Record inserted successfully ")
                 if insert_count > 0:
-                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE uin_ref_id ='"+row[0]+"'AND eff_dtimes='"+row[1]+"'"
+                    print(row[0])
+                    print(row[1])
+                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE uin_ref_id ='"+row[0]+"' AND eff_dtimes='"+str(row[1])+"'"
+                    print(delete_query)
                     sourceCur.execute(delete_query)
                     sourseConn.commit()
                     delete_count = sourceCur.rowcount
