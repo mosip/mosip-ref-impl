@@ -1,15 +1,16 @@
-#-- -------------------------------------------------------------------------------------------------
-#-- Job Name        : Pre Registration DB Tables Archive
-#-- DB Name 	    : mosip_prereg
-#-- Table Names     : applicant_demographic_consumed
-#-- Purpose    	    : Job to Archive Data in pre registration DB for above mentioned tables         
-#-- Create By       : Sadanandegowda DM
-#-- Created Date    : Dec-2020
-#-- 
-#-- Modified Date        Modified By         Comments / Remarks
-#-- ------------------------------------------------------------------------------------------
-#-- 
-#-- ------------------------------------------------------------------------------------------
+### --- -------------------------------------------------------------------------------------------------
+### --- Job Name        : Pre Registration DB Tables Archive
+### --- DB Name 	    : mosip_prereg
+### --- Table Names     : applicant_demographic_consumed
+### --- Purpose    	    : Job to Archive Data in pre registration DB for above mentioned tables         
+### --- Create By       : Sadanandegowda DM
+### --- Created Date    : Dec-2020
+### --- 
+### -- Modified Date            Modified By             Comments / Remarks
+### -- Sept-2021                Chandra Keshav Mishra   Updated to use python3
+### -- ------------------------------------------------------------------------------------------
+### --- 
+### --- ------------------------------------------------------------------------------------------
 
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
@@ -38,10 +39,18 @@ def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
 def getValues(row):
     finalValues =""
     for values in row:
-        finalValues = finalValues+"'"+str(values)+"',"
-
-    finalValues = finalValues[0:-1] 
+        if values is not None:
+            finalValues = finalValues+"'"+str(escape(values))+"',"
+        else:
+            finalValues = finalValues +"null,"
+    finalValues = finalValues[0:-1]
     return finalValues
+
+def escape(st):
+    if isinstance(st, str) and "'" in st:
+        return st.replace('\'', '\'\'')
+    else:
+        return st
 
 def dataArchive():
     sourseConn = None
@@ -65,13 +74,13 @@ def dataArchive():
         sourceCur = sourseConn.cursor()
         archiveCur = archiveConn.cursor()
 
-        tableName=dbparam["archive_table1"]
+        tableName=dbparam["archive_table4"]
         sschemaName = dbparam["source_schema_name"]
         aschemaName = dbparam["archive_schema_name"]
         oldDays = dbparam["archive_older_than_days"]
         
         print(tableName)
-        select_query = "SELECT * FROM "+sschemaName+"."+tableName+" WHERE cr_dtimes < NOW() - INTERVAL '"+oldDays+" days'"
+        select_query = "SELECT prereg_id, first_received_dtimes, status_code, status_comments, prereg_trn_id, lang_code, cr_by, cr_dtimes, upd_by, upd_dtimes, is_deleted, del_dtimes FROM "+sschemaName+"."+tableName+" WHERE cr_dtimes < NOW() - INTERVAL '"+oldDays+" days'"
         sourceCur.execute(select_query)
         rows = sourceCur.fetchall()
         select_count = sourceCur.rowcount
@@ -79,6 +88,7 @@ def dataArchive():
         if select_count > 0:
             for row in rows:
                 rowValues = getValues(row)
+                print(rowValues)
                 insert_query = "INSERT INTO "+aschemaName+"."+tableName+" VALUES ("+rowValues+")"
                 archiveCur.execute(insert_query)
                 archiveConn.commit()

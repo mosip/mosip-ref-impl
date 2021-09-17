@@ -6,7 +6,8 @@
 #-- Create By       : Sadanandegowda DM
 #-- Created Date    : Dec-2020
 #-- 
-#-- Modified Date        Modified By         Comments / Remarks
+### -- Modified Date            Modified By             Comments / Remarks
+### -- Sept-2021                Chandra Keshav Mishra   Updated to use python3
 #-- ------------------------------------------------------------------------------------------
 #-- 
 #-- ------------------------------------------------------------------------------------------
@@ -38,10 +39,18 @@ def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
 def getValues(row):
     finalValues =""
     for values in row:
-        finalValues = finalValues+"'"+str(values)+"',"
-
-    finalValues = finalValues[0:-1] 
+        if values is not None:
+            finalValues = finalValues+"'"+str(escape(values))+"',"
+        else:
+            finalValues = finalValues +"null,"
+    finalValues = finalValues[0:-1]
     return finalValues
+
+def escape(st):
+    if isinstance(st, str) and "'" in st:
+        return st.replace('\'', '\'\'')
+    else:
+        return st
 
 def dataArchive():
     sourseConn = None
@@ -85,7 +94,7 @@ def dataArchive():
                 insert_count = archiveCur.rowcount
                 print(insert_count, ": Record inserted successfully ")
                 if insert_count > 0:
-                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE id ='"+row[0]+"'"
+                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE prereg_id ='"+row[0]+"'"
                     sourceCur.execute(delete_query)
                     sourseConn.commit()
                     delete_count = sourceCur.rowcount
