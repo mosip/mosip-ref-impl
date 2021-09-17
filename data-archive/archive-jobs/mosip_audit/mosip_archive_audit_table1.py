@@ -11,7 +11,7 @@
 #-- 
 #-- ------------------------------------------------------------------------------------------
 
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import sys
 
@@ -38,10 +38,18 @@ def config(filename='mosip_archive_audit.ini', section='MOSIP-DB-SECTION'):
 def getValues(row):
     finalValues =""
     for values in row:
-        finalValues = finalValues+"'"+str(values)+"',"
-
-    finalValues = finalValues[0:-1] 
+        if values is not None:
+            finalValues = finalValues+"'"+str(escape(values))+"',"
+        else:
+            finalValues = finalValues +"null,"
+    finalValues = finalValues[0:-1]
     return finalValues
+
+def escape(st):
+    if isinstance(st, str) and "'" in st:
+        return st.replace('\'', '\'\'')
+    else:
+        return st
 
 def dataArchive():
     sourseConn = None
@@ -71,7 +79,7 @@ def dataArchive():
         oldDays = dbparam["archive_older_than_days"]
         
         print(tableName)
-        select_query = "SELECT * FROM "+sschemaName+"."+tableName+" WHERE cr_dtimes < NOW() - INTERVAL '"+oldDays+" days'"
+        select_query = "SELECT * FROM "+sschemaName+"."+tableName+" WHERE log_dtimes < NOW() - INTERVAL '"+oldDays+" days'"
         sourceCur.execute(select_query)
         rows = sourceCur.fetchall()
         select_count = sourceCur.rowcount
@@ -85,7 +93,7 @@ def dataArchive():
                 insert_count = archiveCur.rowcount
                 print(insert_count, ": Record inserted successfully ")
                 if insert_count > 0:
-                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE id ='"+row[0]+"'"
+                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE log_id ='"+row[0]+"'"
                     sourceCur.execute(delete_query)
                     sourseConn.commit()
                     delete_count = sourceCur.rowcount
