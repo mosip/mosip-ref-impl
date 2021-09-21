@@ -258,14 +258,14 @@
             <mat-card-actions class="action-buttons">
               <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] != null"
                 (click)="submitSecondaryPanel()">
-                {{ secondaryLanguageLabels["update"]}}
+                {{ "center.update" | translate }}
               </button>
               <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] == null"
                 (click)="submitSecondaryPanel()">
-                {{ secondaryLanguageLabels["create"] }}
+                {{ "center.create" | translate }}
               </button>
               <button mat-raised-button (click)="cancel()">
-                {{ secondaryLanguageLabels["cancel"] }}
+                {{ "center.cancel" | translate }}
               </button>
             </mat-card-actions>
           </div>

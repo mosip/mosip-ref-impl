@@ -18,7 +18,7 @@
           <div [formGroup]="createForm" class="primary-form" *ngIf="createForm"> 
             <mat-form-field>
               <mat-label>{{'generatemasterkey.objectType' | translate}}</mat-label>
-              <mat-select formControlName="objectType">
+              <mat-select formControlName="objectType" required>
                 <mat-option
                   *ngFor="let data of objectType"
                   [value]="data.id"
@@ -32,7 +32,7 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>{{'generatemasterkey.applicationId' | translate}}</mat-label>
-              <mat-select formControlName="applicationId">
+              <mat-select formControlName="applicationId" required>
                 <mat-option
                   *ngFor="let data of applicationId"
                   [value]="data.id"

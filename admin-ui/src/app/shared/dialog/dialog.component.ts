@@ -170,7 +170,7 @@ export class DialogComponent implements OnInit {
         if (filterOption[0].type === 'startsWith') {
           value = filterOption[0].value + '*';
         } else if (filterOption[0].type === 'contains') {
-          value = '*' + filterOption[0].value;
+          value = filterOption[0].value;
         } else {
           value = filterOption[0].value;
         }
@@ -348,7 +348,7 @@ export class DialogComponent implements OnInit {
           ) {
             filterType = 'contains';
           } else {
-            filterType = 'equals';
+            filterType = 'contains';
           }
         } else if (
           filter[0].dropdown === 'false' &&
@@ -362,13 +362,13 @@ export class DialogComponent implements OnInit {
           } else if (
             this.filterGroup.controls[key].value.toString().endsWith('*')
           ) {
-            filterType = 'startsWith';
+            filterType = 'contains';
           } else if (
             this.filterGroup.controls[key].value.toString().includes('*')
           ) {
             filterType = 'contains';
           } else {
-            filterType = 'equals';
+            filterType = 'contains';
           }
         } else if (
           filter[0].dropdown === 'true' &&
@@ -376,6 +376,7 @@ export class DialogComponent implements OnInit {
         ) {
           filterType = 'equals';
         }
+        console.log("filterType>>>"+filterType);
         if (!flag) {
           const filterObject = new FilterModel(
             key === 'Zone' && this.routeParts === 'centers'

@@ -207,12 +207,12 @@ export const masterdataMapping = {
     apiName: 'blocklistedwords',
     specFileName: 'blacklisted-words',
     name: {
-      eng: 'Blacklisted Words',
-      ara: 'كلمات في القائمة السوداء',
-      fra: 'Mots sur la liste noire',
-      tam: 'தடுப்புப்பட்டியல் சொற்கள்',
-      kan: 'ನಿರ್ಬಂಧಿಸಲಾದ ಪದಗಳು',
-      hin: 'ब्लॉक लिस्टेड शब्द'
+      "eng": "Blocklisted Words",
+      "ara": "الكلمات المحظورة",
+      "fra": "Mots bloqués",
+      "tam": "தடுப்புப்பட்டியலில் உள்ள வார்த்தைகள்",
+      "kan": "ನಿರ್ಬಂಧಿತ ಪದಗಳು",
+      "hin": "ब्लॉक लिस्टेड शब्द"
     },
     nameKey: 'word',
     idKey: 'word',

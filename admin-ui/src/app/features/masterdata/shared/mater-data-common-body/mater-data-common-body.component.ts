@@ -7,6 +7,8 @@ import {
   HostListener 
 } from '@angular/core';
 
+import { Location } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -85,6 +87,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   isPrimaryLangRTL:boolean = false;
   
   constructor(
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
     private router: Router,
@@ -548,9 +551,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let url = this.router.url.split('/');
     if(url[3] === "dynamicfields"){
       if(url[4] !== "new"){
-        this.router.navigateByUrl(
+        /*this.router.navigateByUrl(
           `admin/masterdata/${this.masterdataType}/${url[4]}/view`
-        );
+        );*/
+        this.location.back();
       }else{
         this.router.navigateByUrl(
           `admin/masterdata/home`
@@ -560,9 +564,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
       if (location === 'home') {
         this.router.navigateByUrl('admin/masterdata/home');
       } else if (location === 'list') {
-        this.router.navigateByUrl(
+        /*this.router.navigateByUrl(
           `admin/masterdata/${this.masterdataType}/view`
-        );
+        );*/
+        this.location.back();
       }
     }
   }
@@ -657,6 +662,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }else if(url === "holiday"){
       textToValidate = this.secondaryData.holidayName;
     }else if(url === "dynamicfields"){
+      textToValidate = this.secondaryData.name;
       if(this.primaryData.code)
         this.primaryData.fieldVal = {"code":this.primaryData.code, "value":this.primaryData.value};
       if(this.secondaryData.code)
@@ -765,14 +771,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
         null,
         this.primaryData
       );
-
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
+            console.log("textToValidate>>>"+textToValidate);
             if(textToValidate){
               this.secondaryData["code"] = updateResponse.response.code; 
               if(updateResponse.response.id){
                 this.secondaryData["id"] = updateResponse.response.id; 
               }
+              console.log("this.saveSecondaryForm>>>"+this.saveSecondaryForm);
               if(this.saveSecondaryForm){
                 this.secondaryData['isActive'] = true;
               }
@@ -831,6 +838,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                 });
               }
             }else{
+              console.log("textToValidate>>>"+textToValidate);
               this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
               let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
                 this.showMessage(url)
