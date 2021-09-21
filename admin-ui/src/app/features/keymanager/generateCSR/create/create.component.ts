@@ -41,6 +41,9 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
+      this.applicationId = response.keymanager.applicationIds;
+    });
     this.initializeForm();
   }
 

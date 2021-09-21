@@ -186,6 +186,18 @@
       "apiName": "users",
       "fieldName": "name",
       "methodCallName": ""
+    },
+    {
+      "filtername": "zoneName",
+      "filterlabel": { "eng": "Zone Name", "ara": "اسم المنطقة", "fra": "Nom de la zone", "tam": "மண்டல பெயர்", "hin": "क्षेत्र का नाम","kan": "ವಲಯದ ಹೆಸರು" },
+      "filterType": "equals",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "users",
+      "fieldName": "name",
+      "methodCallName": ""
     }
   ]
 }

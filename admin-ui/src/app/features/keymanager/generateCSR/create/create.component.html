@@ -15,15 +15,17 @@
     <div id="myDiv" class="flex-body">
       <mat-card>
         <mat-card-content class="forms-container">
-          <div [formGroup]="createForm" class="primary-form" *ngIf="createForm"> 
+          <div [formGroup]="createForm" class="primary-form" *ngIf="createForm">             
             <mat-form-field>
-              <input
-                #applicationId
-                matInput
-                formControlName="applicationId"
-                placeholder="{{'generatecsr.applicationId' | translate}}"
-                [value]=""
-              />
+              <mat-label>{{'generatecsr.applicationId' | translate}}</mat-label>
+              <mat-select formControlName="applicationId" required>
+                <mat-option
+                  *ngFor="let data of applicationId"
+                  [value]="data.id"
+                >
+                  {{ data.value}}
+                </mat-option>
+              </mat-select>
               <mat-error *ngIf="createForm.controls.applicationId.touched">
                 {{'genericerror.fieldValidation' | translate}}
               </mat-error>

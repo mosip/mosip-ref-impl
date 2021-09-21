@@ -23,7 +23,10 @@ export class CreateComponent {
   subscribed: any;
   fileName = "";
   fileData:any;
-
+  buttonalignment = 'ltr';
+  primaryLang = "";
+  fileNameError:boolean = false;
+  serverError:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -42,14 +45,27 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
+      this.applicationId = response.keymanager.applicationIds;
+    });
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
+    this.translateService
+    .getTranslation(this.primaryLang)
+    .subscribe(response => {
+      this.serverError = response.serverError;
+    });    
+    if(this.primaryLang === "ara"){
+      this.buttonalignment = 'rtl';
+    }
     this.initializeForm();
   }
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
-      applicationId : [''],
+      applicationId : ['', [Validators.required]],
       referenceId: [''],
-      files: [''],
+      files: ['', [Validators.required]],
+      fileName: ['', [Validators.required]],
     });
   }
 
@@ -57,27 +73,15 @@ export class CreateComponent {
     let self = this;
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      self.createForm.get('files').setValue(file);
-      self.fileName = file.name;
-
+      this.createForm.get('files').setValue(file);
+      this.createForm.get('fileName').setValue(file.name);
       const fileReader: FileReader = new FileReader();
-
       fileReader.onload = (event: Event) => {
         self.fileData = fileReader.result; // This is valid
       };
-
       fileReader.readAsText(file);
-
-      /*var reader = new FileReader();
-      reader.onload = function(evt) {
-        if(evt.target.readyState != 2) return;
-        if(evt.target.error) {
-            alert('Error while reading file');
-            return;
-        }
-        self.fileData = evt.target.result;
-      };
-      reader.readAsText(file);*/
+      document.getElementById("fileName").classList.remove('addredborder');
+      this.fileNameError = false;
     }
   }
 
@@ -102,20 +106,37 @@ export class CreateComponent {
   }
 
   saveData(){
-    let self = this;
-    console.log("self.fileData>>>"+self.fileData);
-    const formData = {};
-    formData['applicationId'] = self.createForm.get('applicationId').value.trim();
-    formData['referenceId'] = self.createForm.get('referenceId').value.trim();
-    formData['certificateData'] = self.fileData.replaceAll("\\n", "\n");
-    const primaryRequest = new RequestModel(
-      "",
-      null,
-      formData
-    );
-    self.keymanagerService.uploadCertificate(primaryRequest).subscribe(response => {
-      self.showMessage(response);
-    });
+    if (this.createForm.valid) {
+      let self = this;
+      const formData = {};
+      formData['applicationId'] = self.createForm.get('applicationId').value.trim();
+      formData['referenceId'] = self.createForm.get('referenceId').value.trim();
+      formData['certificateData'] = self.fileData.replaceAll("\\n", "\n");
+      const primaryRequest = new RequestModel(
+        "",
+        null,
+        formData
+      );
+      self.keymanagerService.uploadCertificate(primaryRequest).subscribe(response => {
+        self.showMessage(response);
+      });
+    } else {
+      for (const i in this.createForm.controls) {
+        if (this.createForm.controls[i]) {
+          if(i === "fileName"){
+            if(!this.createForm.get('fileName').value){
+              document.getElementById("fileName").classList.add('addredborder');
+              this.fileNameError = true;
+            }else{
+              console.log("this.uploadForm.get('fileName').value>>>"+this.createForm.get('fileName').value);
+            }
+          }else{
+            this.createForm.controls[i].markAsTouched();
+          }
+          
+        }
+      }
+    }
   }
 
   showMessage(response){
@@ -125,7 +146,7 @@ export class CreateComponent {
       data = {
         case: 'MESSAGE',
         title: "Failure !",
-        message: response.errors[0].message,
+        message: self.serverError[response.errors[0].errorCode],
         btnTxt: "DONE"
       };
     }else{
@@ -140,7 +161,7 @@ export class CreateComponent {
       width: '650px',
       data
     });
-    dialogRef.afterClosed().subscribe(response => {   
+    dialogRef.afterClosed().subscribe(responseNew => {   
       if(response.errors){
       }else{
         location.reload();

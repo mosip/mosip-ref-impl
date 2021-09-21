@@ -7,7 +7,7 @@
     <div class="example-container">
       <mat-form-field>
         <mat-label>{{'getcertificate.applicationId' | translate}}</mat-label>
-        <input matInput #input placeholder="Ex. 123" [value]="applicationId" (keyup)="captureValue($event, 'applicationId')">
+        <input matInput #input placeholder="Ex. 123" [value]="applicationId" (keyup)="captureValue($event, 'applicationId')" required>
       </mat-form-field>
 
       <mat-form-field>
