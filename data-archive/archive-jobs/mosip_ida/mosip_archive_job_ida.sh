@@ -5,12 +5,10 @@
 ### -- Create By   		: Sadanandegowda DM
 ### -- Created Date		: Dec-2020
 ### -- 
-### -- Modified Date        Modified By         Comments / Remarks
-### -- ----------------------------------------------------------------------------------------
+### -- Modified Date       Modified By             Comments / Remarks
+### -- Sept-2021           Chandra Keshav Mishra   updated python version
 
-python mosip_archive_ida_table1.py &
-sleep 5m
+python3 mosip_archive_ida_table1.py &
+sleep 2m
 
-python mosip_archive_ida_table2.py &
-
-#===============================================================================================
+python3 mosip_archive_ida_table2.py

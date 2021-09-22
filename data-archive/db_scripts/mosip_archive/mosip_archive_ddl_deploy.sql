@@ -13,3 +13,4 @@
 \ir ddl/archive-uin_biometric_h.sql
 \ir ddl/archive-uin_document_h.sql
 \ir ddl/archive-uin_h.sql
+\ir ddl/archive-credential_transaction.sql

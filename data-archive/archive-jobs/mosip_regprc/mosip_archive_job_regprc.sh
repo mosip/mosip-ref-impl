@@ -5,9 +5,10 @@
 ### -- Create By   		: Sadanandegowda DM
 ### -- Created Date		: Dec-2020
 ### -- 
-### -- Modified Date        Modified By         Comments / Remarks
+### -- Modified Date		Modified By		Comments / Remarks
+### -- Sept-2021		Chandra Keshav Mishra	Updated to use python3
 ### -- ----------------------------------------------------------------------------------------
 
-python mosip_archive_regprc_table1.py &
+python3 mosip_archive_regprc_table1.py &
 
 #===============================================================================================

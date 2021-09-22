@@ -1,13 +1,12 @@
 #-- -------------------------------------------------------------------------------------------------
-#-- Job Name        : Pre Registration DB Tables Archive
-#-- DB Name 	    : mosip_prereg
-#-- Table Names     : applicant_demographic_consumed
-#-- Purpose    	    : Job to Archive Data in pre registration DB for above mentioned tables         
-#-- Create By       : Sadanandegowda DM
-#-- Created Date    : Dec-2020
+#-- Job Name        : Audit DB Tables Archive
+#-- DB Name 	    : mosip_audit
+#-- Table Names     : app_audit_log
+#-- Purpose    	    : Job to Archive Data in Audit DB for above mentioned tables         
+#-- Create By       : Chandra Keshav Mishra
+#-- Created Date    : Sept-2021
 #-- 
-### -- Modified Date            Modified By             Comments / Remarks
-### -- Sept-2021                Chandra Keshav Mishra   Updated to use python3
+#-- Modified Date        Modified By         Comments / Remarks
 #-- ------------------------------------------------------------------------------------------
 #-- 
 #-- ------------------------------------------------------------------------------------------
@@ -23,7 +22,7 @@ import datetime
 from configparser import ConfigParser
 from datetime import datetime
 
-def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
+def config(filename='mosip_archive_credential.ini', section='MOSIP-DB-SECTION'):
     parser = ConfigParser()
     parser.read(filename)
     dbparam = {}
@@ -94,7 +93,7 @@ def dataArchive():
                 insert_count = archiveCur.rowcount
                 print(insert_count, ": Record inserted successfully ")
                 if insert_count > 0:
-                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE prereg_id ='"+row[0]+"'"
+                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE id ='"+row[0]+"'"
                     sourceCur.execute(delete_query)
                     sourseConn.commit()
                     delete_count = sourceCur.rowcount
