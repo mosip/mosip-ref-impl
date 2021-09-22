@@ -736,13 +736,7 @@ export class EditComponent {
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
-        message:
-          type === 'create-success' || type === 'update-success'
-            ? this.popupMessages[type].message[0] +
-              data.id +
-              this.popupMessages[type].message[1] +
-              data.name
-            : this.popupMessages[type].message,
+        message:message,
         btnTxt: this.popupMessages[type].btnTxt
       }
     });
