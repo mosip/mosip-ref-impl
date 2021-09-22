@@ -54,7 +54,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   @Input() primaryData: any;
   @Input() secondaryData: any;
   @Input() fields: any;
-
   @Input() primaryLang: string;
   @Input() secondaryLang: string;
   @Input() masterdataType: any;
@@ -67,7 +66,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   saveSecondaryForm:boolean;
   fieldsCount:number;
   tomorrow = new Date();
-
+  serverError:any;  
   languageNames = {
     ara: 'عربى',
     fra: 'French',
@@ -78,14 +77,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
   };
   showSecondaryForm: boolean;
   isCreateForm:boolean;
-
   primaryKeyboard: string;
   secondaryKeyboard: string;
   keyboardType: string;
   masterDataName:string;
   primaryLangCode:string;
   isPrimaryLangRTL:boolean = false;
-  
+
   constructor(
     private location: Location,
     private activatedRoute: ActivatedRoute,
@@ -122,6 +120,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response;
+        this.serverError = response.serverError;
       });
     let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
 
@@ -706,7 +705,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(updateResponse.errors[0].message);
+                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
               });
             }else{
@@ -730,7 +729,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
             if(this.router.url.split('/')[3] === "dynamicfields"){
               this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
             }
-            this.showErrorPopup(updateResponse.errors[0].message);
+            this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
           }
       });
     }else{
@@ -773,7 +772,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
       );
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
-            console.log("textToValidate>>>"+textToValidate);
             if(textToValidate){
               this.secondaryData["code"] = updateResponse.response.code; 
               if(updateResponse.response.id){
@@ -809,7 +807,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(updateResponse.errors[0].message);
+                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
                 });
               }else{
@@ -833,7 +831,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(updateResponse.errors[0].message);
+                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
                 });
               }
@@ -859,7 +857,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
             if(this.router.url.split('/')[3] === "dynamicfields"){
               this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
             }
-            this.showErrorPopup(updateResponse.errors[0].message);
+            this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
           }
       });
     }

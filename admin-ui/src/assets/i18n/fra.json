@@ -714,7 +714,8 @@
         "successButton":"D'accord",
         "errorLabel":"Erreur",
         "createMessage":"Créé avec succès",
-        "updateMessage":"Mis à jour avec succés"
+        "updateMessage":"Mis à jour avec succés",
+        "mappingMessage":" Mappé avec succès"
     },
     "genericbutton":{
         "save":"sauver"

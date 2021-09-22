@@ -27,6 +27,7 @@ export class CreateComponent {
   primaryLang = "";
   fileNameError:boolean = false;
   serverError:any;
+  popupMessages:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -53,6 +54,7 @@ export class CreateComponent {
     .getTranslation(this.primaryLang)
     .subscribe(response => {
       this.serverError = response.serverError;
+      this.popupMessages = response.bulkUpload.popupMessages;
     });    
     if(this.primaryLang === "ara"){
       this.buttonalignment = 'rtl';
@@ -145,16 +147,16 @@ export class CreateComponent {
     if(response.errors){
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: self.serverError[response.errors[0].errorCode],
-        btnTxt: "DONE"
+        title: this.popupMessages.popup2.title,
+        message: this.serverError[response.errors[0].errorCode],
+        btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Success",
+        title: this.popupMessages.popup3.title,
         message: response.response.status,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
     const dialogRef = self.dialog.open(DialogComponent, {

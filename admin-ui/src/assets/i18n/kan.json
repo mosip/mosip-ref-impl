@@ -882,7 +882,8 @@
         "successButton":"ಸರಿ",
         "errorLabel":"ತಪ್ಪು",
         "createMessage":"ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ",
-        "updateMessage":"ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ"
+        "updateMessage":"ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+        "mappingMessage":" ಯಶಸ್ವಿಯಾಗಿ ಮ್ಯಾಪ್ ಮಾಡಲಾಗಿದೆ"
     },
     "genericbutton":{
         "save":"ಉಳಿಸಿ"

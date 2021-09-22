@@ -66,7 +66,7 @@ export class CreateComponent{
   primaryForm: FormGroup;
   data = [];
   popupMessages: any;
-
+  serverError:any;
   selectedField: HTMLElement;
   private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren('keyboardRef', { read: ElementRef })
@@ -170,6 +170,7 @@ export class CreateComponent{
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response.devices.popupMessages;
+        this.serverError = response.serverError;
       });
     let localeId = defaultJson.languages[this.primaryLang].locale;
     this.setLocaleForDatePicker(localeId);
@@ -522,7 +523,7 @@ export class CreateComponent{
     if(type === 'create-success' || type === 'update-success'){
       message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
     }else{
-      message = data.errors[0].message;
+      message = this.serverError[data.errors[0].errorCode];
     }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '650px',
