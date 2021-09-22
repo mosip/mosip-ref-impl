@@ -767,7 +767,9 @@
         "successButton":"حسنا",
         "errorLabel":"خطأ",
         "createMessage":"تم إنشاؤه بنجاح",
-        "updateMessage":"تم التحديث بنجاح"
+        "updateMessage":"تم التحديث بنجاح",
+        "mappingMessage":" تم التعيين بنجاح"
+
     },
     "headermessage":{
         "vesion":"إصدار واجهة المستخدم الإدارية",

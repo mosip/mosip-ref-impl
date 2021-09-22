@@ -921,7 +921,8 @@
         "successButton":"ठीक है",
         "errorLabel":"गलत",
         "createMessage":"सफलतापूर्वक बनाया गया",
-        "updateMessage":"सफलतापूर्वक उत्परिवर्तित"
+        "updateMessage":"सफलतापूर्वक उत्परिवर्तित",
+        "mappingMessage":" सफलतापूर्वक मैप किया गया"
     },
     "genericbutton":{
         "save":"सहेजें"

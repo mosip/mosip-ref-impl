@@ -720,7 +720,8 @@
         "successButton":"OK",
         "errorLabel":"Error",
         "createMessage":"Created Successfully",
-        "updateMessage":"Updated Successfully"
+        "updateMessage":"Updated Successfully",
+        "mappingMessage":" Mapped Successfully"        
     },
     "headermessage":{
         "vesion":"Admin UI version",

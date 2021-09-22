@@ -28,6 +28,7 @@ export class CreateComponent {
   popUpMessages;
   fileNameError:boolean = false;
   buttonalignment = 'ltr';
+  serverError:any;
   constructor(
   private bulkuploadService: BulkuploadService,
   private location: Location,
@@ -55,8 +56,8 @@ export class CreateComponent {
     this.dataService
          .getI18NLanguageFiles(this.primaryLangCode)
          .subscribe((response) => {
-           console.log("");
            this.popUpMessages = response['packet-upload']['createView']['popupMessaages'];
+           this.serverError = response['serverError'];
          });
   }
 
@@ -162,9 +163,9 @@ export class CreateComponent {
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: uploadResponse.errors[0].message,
-        btnTxt: "DONE"
+        title: this.popUpMessages.popup2.title,
+        message: this.serverError[uploadResponse.errors[0].errorCode],
+        btnTxt: this.popUpMessages.popup2.btnTxt
       };
     }
 
