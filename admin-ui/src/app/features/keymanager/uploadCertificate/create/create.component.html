@@ -18,7 +18,7 @@
           <div [formGroup]="createForm" class="primary-form" *ngIf="createForm"> 
             <mat-form-field>
               <mat-label>{{'uploadcertificate.applicationId' | translate}}</mat-label>
-              <mat-select formControlName="applicationId">
+              <mat-select formControlName="applicationId" required>
                 <mat-option
                   *ngFor="let data of applicationId"
                   [value]="data.id"
@@ -26,6 +26,9 @@
                   {{ data.value}}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="createForm.controls.applicationId.touched">
+                {{'genericerror.fieldValidation' | translate}}
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input
@@ -35,11 +38,18 @@
                 placeholder="{{'uploadcertificate.referenceId' | translate}}"
                 [value]=""
               />
+              <mat-error *ngIf="createForm.controls.referenceId.touched">
+                {{'genericerror.fieldValidation' | translate}}
+              </mat-error>
             </mat-form-field>
             <div class="custom-file-input">
-              <input type="button" value="{{'uploadcertificate.chooseFile' | translate}}" class="browseInput">
+              <input *ngIf="buttonalignment === 'rtl'" type="button" value="{{'uploadcertificate.chooseFile' | translate}}" class="browseInput">
               <input type="file" #fileInput (change)="onFileSelect($event)" placeholder="Upload file..." />
-              <input type="text" [value]="fileName" placeholder="{{'uploadcertificate.uploadYourFile' | translate}}">                
+              <input type="text" id="fileName"  formControlName="fileName" placeholder="{{'uploadcertificate.uploadYourFile' | translate}}">
+              <input *ngIf="buttonalignment === 'ltr'" type="button" value="{{'uploadcertificate.chooseFile' | translate}}" class="browseInput">
+              <mat-error *ngIf="fileNameError">
+                {{'genericerror.fieldValidation' | translate}}
+              </mat-error>             
             </div>
           </div>
         </mat-card-content>

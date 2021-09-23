@@ -92,21 +92,23 @@
           "kan": "ರಜಾದಿನಗಳು ಇಂಗ್ಲಿಷ್ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ",
           "tam": "விடுமுறை ஆங்கிலத்தில் கிடைக்கவில்லை"
         },
-        "columnNames": [{
-          "eng": "Holiday Name",
-          "ara": "اسم العطلة",
-          "fra": "Nom des vacances",
-          "hin": "छुट्टी का नाम",
-          "kan": "ರಜಾದಿನದ ಹೆಸರು",
-          "tam": "விடுமுறை பெயர்"
-        },{
+        "columnNames": [
+          {
           "eng": "Holiday Id",
           "ara": "اسم",
           "fra": "ಹಾಲಿಡೇ ಐಡಿ",
           "hin": "हॉलिडे आईडी",
           "kan": "ರಜಾ ಐಡಿ",
           "tam": "விடுமுறை ஐடி"
-        }],
+          },
+          {
+          "eng": "Holiday Name",
+          "ara": "اسم العطلة",
+          "fra": "Nom des vacances",
+          "hin": "छुट्टी का नाम",
+          "kan": "ರಜಾದಿನದ ಹೆಸರು",
+          "tam": "விடுமுறை பெயர்"
+          }],
         "fieldName": "holidayName"
       },
       "redirectURL": "",
@@ -143,7 +145,7 @@
       "showAsLink": "",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "text",
+      "inputType": "textarea",
       "ismandatory": "true"
     },
     {

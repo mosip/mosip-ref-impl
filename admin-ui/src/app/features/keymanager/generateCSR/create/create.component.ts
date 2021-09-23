@@ -22,7 +22,8 @@ export class CreateComponent {
   applicationId = [{id:"PRE_REGISTRATION", value:"PRE_REGISTRATION  3years"}, {id:"REGISTRATION_PROCESSOR", value:"REGISTRATION_PROCESSOR  3years"}, {id:"REGISTRATION", value:"REGISTRATION  3years"}, {id:"IDA", value:"IDA  3years"}, {id:"ID_REPO", value:"ID_REPO  3years"}, {id:"KERNEL", value:"KERNEL  3years"}, {id:"ROOT", value:"ROOT  5years"}, {id:"PMS", value:"PMS  3years"}, {id:"ADMIN_SERVICES", value:"ADMIN_SERVICES  3years"}, {id:"RESIDENT", value:"RESIDENT  3years"}];
   subscribed: any;
   fileName = "";
-
+  serverError:any;
+  popupMessages:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -41,6 +42,11 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
+      this.applicationId = response.keymanager.applicationIds;
+      this.serverError = response.serverError;
+      this.popupMessages = response.bulkUpload.popupMessages;
+    });
     this.initializeForm();
   }
 
@@ -48,12 +54,12 @@ export class CreateComponent {
     this.createForm = this.formBuilder.group({
       applicationId : ['', [Validators.required]],
       referenceId: [''],
-      commonName: ['', [Validators.required]],
-      organization: ['', [Validators.required]],
-      organizationUnit: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]],
+      commonName: [''],
+      organization: [''],
+      organizationUnit: [''],
+      location: [''],
+      state: [''],
+      country: [''],
     });
   }
 
@@ -72,14 +78,14 @@ export class CreateComponent {
   saveData(){
     let self = this;
     const formData = {};
-    formData['applicationId'] = self.createForm.get('applicationId').value;
-    formData['referenceId'] = self.createForm.get('referenceId').value;
-    formData['commonName'] = self.createForm.get('commonName').value;
-    formData['organization'] = self.createForm.get('organization').value;
-    formData['organizationUnit'] = self.createForm.get('organizationUnit').value;
-    formData['location'] = self.createForm.get('location').value;
-    formData['state'] = self.createForm.get('state').value;
-    formData['country'] = self.createForm.get('country').value;
+    formData['applicationId'] = self.createForm.get('applicationId').value.trim();
+    formData['referenceId'] = self.createForm.get('referenceId').value.trim();
+    formData['commonName'] = self.createForm.get('commonName').value.trim();
+    formData['organization'] = self.createForm.get('organization').value.trim();
+    formData['organizationUnit'] = self.createForm.get('organizationUnit').value.trim();
+    formData['location'] = self.createForm.get('location').value.trim();
+    formData['state'] = self.createForm.get('state').value.trim();
+    formData['country'] = self.createForm.get('country').value.trim();
     const primaryRequest = new RequestModel(
       "",
       null,
@@ -96,16 +102,16 @@ export class CreateComponent {
     if(response.errors){
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: response.errors[0].message,
-        btnTxt: "DONE"
+        title: this.popupMessages.popup2.title,
+        message: this.serverError[response.errors[0].errorCode],
+        btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Success",
+        title: this.popupMessages.popup3.title,
         message: response.response.status,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
     const dialogRef = self.dialog.open(DialogComponent, {

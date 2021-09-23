@@ -76,7 +76,7 @@ export class CreateComponent {
 
   data = [];
   popupMessages: any;
-
+  serverError:any;
   selectedField: HTMLElement;
 
   private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
@@ -92,6 +92,7 @@ export class CreateComponent {
   holidayDate: any;
   minDate = new Date();
   localeDtFormat = "";
+  
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -157,10 +158,6 @@ export class CreateComponent {
     this.activatedRoute.params.subscribe((params) => {
       const routeParts = this.router.url.split('/');
       if (routeParts[routeParts.length - 2] === 'single-view') {
-        console.log(
-          'machineSpecFile.auditEventIds[1]>>>' +
-            machineSpecFile.auditEventIds[1]
-        );
         this.auditService.audit(8, machineSpecFile.auditEventIds[1], 'machine');
         this.disableForms = false;
         this.getData(params);
@@ -176,6 +173,7 @@ export class CreateComponent {
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response.machines.popupMessages;
+        this.serverError = response.serverError;
       });
     let localeId = defaultJson.languages[this.primaryLang].locale;
     this.setLocaleForDatePicker(localeId);
@@ -306,7 +304,7 @@ export class CreateComponent {
   showError() {
     this.dialog
       .open(DialogComponent, {
-        width: '350px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
         },
@@ -350,7 +348,7 @@ export class CreateComponent {
     ) {
       return this.dialog
         .open(DialogComponent, {
-          width: '350px',
+          width: '650px',
           data: {
             case: 'CONFIRMATION',
             title: this.popupMessages['navigation-popup'].title,
@@ -540,11 +538,10 @@ export class CreateComponent {
 
   showMessage(type: string, data ?: any) {
     let message = "";
-    console.log("type>>>"+type);
     if(type === 'create-success' || type === 'update-success'){
       message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
     }else{
-      message = data.errors[0].message;
+      message = this.serverError[data.errors[0].errorCode];
     }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '650px',
@@ -561,7 +558,7 @@ export class CreateComponent {
   showErrorPopup() {
     this.dialog
       .open(DialogComponent, {
-        width: '350px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
           title: this.popupMessages['noData']['title'],

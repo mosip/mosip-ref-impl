@@ -17,9 +17,10 @@
         <mat-card-content class="forms-container">
           <div [formGroup]="uploadForm" class="primary-form" *ngIf="uploadForm">
             <div class="custom-file-input">
-              <input type="button" value="{{'packet-upload.createView.input-btn-text' | translate}}" class="browseInput">
+              <input type="button" *ngIf="buttonalignment === 'rtl'" value="{{'packet-upload.createView.input-btn-text' | translate}}" class="browseInput">
               <input type="file" multiple="multiple" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="{{'packet-upload.createView.input-text1' | translate}}" />
-              <input type="text" id="fileName" [value]="fileName" placeholder="{{'packet-upload.createView.input-text2' | translate}}"> 
+              <input type="text" id="fileName" [value]="fileName" placeholder="{{'packet-upload.createView.input-text2' | translate}}">
+              <input type="button" *ngIf="buttonalignment === 'ltr'" value="{{'packet-upload.createView.input-btn-text' | translate}}" class="browseInput">
               <mat-error *ngIf="fileNameError">
                 {{'genericerror.fieldValidation' | translate}}
               </mat-error>               

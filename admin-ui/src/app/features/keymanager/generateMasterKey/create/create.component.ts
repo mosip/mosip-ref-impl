@@ -24,7 +24,8 @@ export class CreateComponent {
   force = [{id:"true", value:"True"}, {id:"false", value:"False"}];
   subscribed: any;
   fileName = "";
-
+  serverError:any;
+  popupMessages:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -43,6 +44,11 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
+      this.applicationId = response.keymanager.applicationIds;
+      this.serverError = response.serverError;
+      this.popupMessages = response.bulkUpload.popupMessages;
+    });
     this.initializeForm();
   }
 
@@ -50,12 +56,12 @@ export class CreateComponent {
     this.createForm = this.formBuilder.group({
       applicationId : ['', [Validators.required]],
       referenceId: [''],
-      commonName: ['', [Validators.required]],
-      organization: ['', [Validators.required]],
-      organizationUnit: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]],
+      commonName: [''],
+      organization: [''],
+      organizationUnit: [''],
+      location: [''],
+      state: [''],
+      country: [''],
       force: ['false', [Validators.required]],
       objectType: ['', [Validators.required]],
     });
@@ -76,15 +82,15 @@ export class CreateComponent {
   saveData(){
     let self = this;
     const formData = {};
-    formData['applicationId'] = self.createForm.get('applicationId').value;
-    formData['referenceId'] = self.createForm.get('referenceId').value;
-    formData['commonName'] = self.createForm.get('commonName').value;
-    formData['organization'] = self.createForm.get('organization').value;
-    formData['organizationUnit'] = self.createForm.get('organizationUnit').value;
-    formData['location'] = self.createForm.get('location').value;
-    formData['state'] = self.createForm.get('state').value;
-    formData['country'] = self.createForm.get('country').value;
-    formData['force'] = self.createForm.get('force').value;
+    formData['applicationId'] = self.createForm.get('applicationId').value.trim();
+    formData['referenceId'] = self.createForm.get('referenceId').value.trim();
+    formData['commonName'] = self.createForm.get('commonName').value.trim();
+    formData['organization'] = self.createForm.get('organization').value.trim();
+    formData['organizationUnit'] = self.createForm.get('organizationUnit').value.trim();
+    formData['location'] = self.createForm.get('location').value.trim();
+    formData['state'] = self.createForm.get('state').value.trim();
+    formData['country'] = self.createForm.get('country').value.trim();
+    formData['force'] = self.createForm.get('force').value.trim();
     const primaryRequest = new RequestModel(
       "",
       null,
@@ -102,9 +108,9 @@ export class CreateComponent {
     if(response.response.status == "FAILED"){
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: "Please retry again.",
-        btnTxt: "DONE"
+        title: this.popupMessages.popup2.title,
+        message: this.serverError[response.errors[0].errorCode],
+        btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
       if(response.response.certificate){
@@ -114,9 +120,9 @@ export class CreateComponent {
       }
       data = {
         case: 'MESSAGE',
-        title: "Success",
+        title: this.popupMessages.popup3.title,
         message: displaycert,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
     const dialogRef = self.dialog.open(DialogComponent, {

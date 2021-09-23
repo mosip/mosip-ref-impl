@@ -47,7 +47,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.getCertificateCofig();
     this.translateService.use(this.headerService.getUserPreferredLanguage());
     this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
-      console.log(response);
       this.errorMessages = response.errorPopup;
     });
     this.subscribed = router.events.subscribe(event => {
@@ -127,7 +126,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.requestModel = new RequestModel(null, null, filters);
 
     this.keymanagerService
-      .getCertificate(this.requestModel, this.applicationId, filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId)
+      .getCertificate(this.requestModel, this.applicationId.trim(), filters.pagination.pageStart, filters.pagination.pageFetch, this.referenceId.trim())
       .subscribe(({ response, errors }) => {
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalItems;

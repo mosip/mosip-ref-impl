@@ -79,6 +79,7 @@ export class CreateComponent {
   locCode = 0;
   initialLocationCode: "";
   localeDtFormat = "";
+  serverError:any;
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -132,6 +133,7 @@ export class CreateComponent {
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
+        this.serverError = response.serverError;
         this.popupMessages = response.center.popupMessages;
       });
   }
@@ -219,18 +221,18 @@ export class CreateComponent {
   }
 
   showMessage(type: string, data?: any) {
+    let message = "";
+    if(type === 'create-success' || type === 'update-success'){
+      message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
+    }else{
+      message = this.serverError[data.errors[0].errorCode];
+    }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
-        message:
-          type === 'create-success' || type === 'update-success'
-            ? this.popupMessages[type].message[0] +
-              data.id +
-              this.popupMessages[type].message[1] +
-              data.name
-            : this.popupMessages[type].message,
+        message: message,
         btnTxt: this.popupMessages[type].btnTxt
       }
     });
@@ -324,7 +326,7 @@ export class CreateComponent {
               this.router.navigateByUrl('admin/resources/centers/view');
             });
         } else {
-          this.showMessage('create-error');
+          this.showMessage('create-error', createResponse);
         }
       });
   }

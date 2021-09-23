@@ -23,7 +23,11 @@ export class CreateComponent {
   subscribed: any;
   fileName = "";
   fileData : any;
-
+  buttonalignment = 'ltr';
+  primaryLang = "";
+  fileNameError:boolean = false;
+  serverError:any;
+  popupMessages:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -42,14 +46,25 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService
+    .getTranslation(this.primaryLang)
+    .subscribe(response => {
+      this.serverError = response.serverError;
+      this.popupMessages = response.bulkUpload.popupMessages;
+    });
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
+    if(this.primaryLang === "ara"){
+      this.buttonalignment = 'rtl';
+    }
     this.initializeForm();
   }
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
-      applicationId : [''],
-      referenceId: [''],
-      files: [''],
+      applicationId : ['', [Validators.required]],
+      referenceId: ['', [Validators.required]],
+      files: ['', [Validators.required]],
+      fileName: ['', [Validators.required]],
     });
   }
 
@@ -57,64 +72,54 @@ export class CreateComponent {
     let self = this;
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      self.createForm.get('files').setValue(file);
-      self.fileName = file.name;
-
+      this.createForm.get('files').setValue(file);
       const fileReader: FileReader = new FileReader();
-
       fileReader.onload = (event: Event) => {
         self.fileData = fileReader.result; // This is valid
       };
-
-      fileReader.readAsText(file);  
-          
-      /*let reader = new FileReader();
-      reader.onload = function(evt) {
-        if(evt.target.readyState != 2) return;
-        if(evt.target.error) {
-            alert('Error while reading file');
-            return;
-        }
-        self.fileData = evt.target.result;
-      };
-      reader.readAsText(file);*/
+      fileReader.readAsText(file);
+      this.createForm.get('fileName').setValue(file.name);
+      document.getElementById("fileName").classList.remove('addredborder');
+      this.fileNameError = false;
     }
   }
 
   submit(){
-    /*let data = {};
-    data = {
-      case: 'CONFIRMATION',
-      title: "Confirm Bulk Master Data Upload",
-      message: "Bulk "+this.createForm.get('operation').value+" on "+this.createForm.get('tableName').value+" will be processed.\n Please ensure that all information is correct.\n\n\n Transaction will start once you click on confirm.",
-      yesBtnTxt: "CONFIRM",
-      noBtnTxt: "CANCEL"
-    };
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '650px',
-      data
-    });
-    dialogRef.afterClosed().subscribe(response => {   
-      if(response){*/
-        this.saveData();
-      /*}      
-    }); */   
+    this.saveData();
   }
 
   saveData(){
-    let self = this;
-    const formData = {};
-    formData['applicationId'] = self.createForm.get('applicationId').value;
-    formData['referenceId'] = self.createForm.get('referenceId').value;
-    formData['certificateData'] = self.fileData.replaceAll("\\n", "\n");
-    const primaryRequest = new RequestModel(
-      "",
-      null,
-      formData
-    );
-    self.keymanagerService.uploadOtherDomainCertificate(primaryRequest).subscribe(response => {
-      self.showMessage(response);
-    });
+    if (this.createForm.valid) {
+      let self = this;
+      const formData = {};
+      formData['applicationId'] = self.createForm.get('applicationId').value.trim();
+      formData['referenceId'] = self.createForm.get('referenceId').value.trim();
+      formData['certificateData'] = self.fileData.replaceAll("\\n", "\n");
+      const primaryRequest = new RequestModel(
+        "",
+        null,
+        formData
+      );
+      self.keymanagerService.uploadOtherDomainCertificate(primaryRequest).subscribe(response => {
+        self.showMessage(response);
+      });
+    } else {
+      for (const i in this.createForm.controls) {
+        if (this.createForm.controls[i]) {
+          if(i === "fileName"){
+            if(!this.createForm.get('fileName').value){
+              document.getElementById("fileName").classList.add('addredborder');
+              this.fileNameError = true;
+            }else{
+              console.log("this.uploadForm.get('fileName').value>>>"+this.createForm.get('fileName').value);
+            }
+          }else{
+            this.createForm.controls[i].markAsTouched();
+          }
+          
+        }
+      }
+    }
   }
 
   showMessage(response){
@@ -123,16 +128,16 @@ export class CreateComponent {
     if(response.errors){
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: response.errors[0].message,
-        btnTxt: "DONE"
+        title: this.popupMessages.popup2.title,
+        message: this.serverError[response.errors[0].errorCode],
+        btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Success",
+        title: this.popupMessages.popup3.title,
         message: response.response.status,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
     console.log();  
