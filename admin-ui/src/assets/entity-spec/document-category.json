@@ -78,6 +78,48 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Document Category not available in English",
+        "ara": "فئة الوثيقة غير متوفرة باللغة العربية",
+        "fra": "Catégorie de document non disponible en français",
+        "tam": "ஆவண வகை தமிழில் இல்லை",
+        "hin": "दस्तावेज़ श्रेणी हिंदी में उपलब्ध नहीं है",
+        "kan": "ಡಾಕ್ಯುಮೆಂಟ್ ವರ್ಗವು ಕನ್ನಡದಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": {
+        "case": "missingData",
+        "title": {
+          "eng": "Document Category not available in English",
+          "ara": "فئة الوثيقة غير متوفرة باللغة العربية",
+          "fra": "Catégorie de document non disponible en français",
+          "tam": "ஆவண வகை தமிழில் இல்லை",
+          "hin": "दस्तावेज़ श्रेणी हिंदी में उपलब्ध नहीं है",
+          "kan": "ಡಾಕ್ಯುಮೆಂಟ್ ವರ್ಗವು ಕನ್ನಡದಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
+        },
+        "columnNames": [{
+          "eng": "Code",
+          "ara": "الشفرة",
+          "fra": "Code",
+          "tam": "குறியீடு",
+          "hin": "कोड",
+          "kan": "ಕೋಡ್"
+        }, {
+          "eng": "Name",
+          "ara": "اسم",
+          "fra": "prénom",
+          "tam": "பெயர்",
+          "hin": "नाम",
+          "kan": "ಹೆಸರು"
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [{
