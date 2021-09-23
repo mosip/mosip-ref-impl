@@ -24,7 +24,8 @@ export class CreateComponent {
   force = [{id:"true", value:"True"}, {id:"false", value:"False"}];
   subscribed: any;
   fileName = "";
-
+  serverError:any;
+  popupMessages:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -43,6 +44,11 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
+      this.applicationId = response.keymanager.applicationIds;
+      this.serverError = response.serverError;
+      this.popupMessages = response.bulkUpload.popupMessages;
+    });
     this.initializeForm();
   }
 
@@ -102,9 +108,9 @@ export class CreateComponent {
     if(response.response.status == "FAILED"){
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: "Please retry again.",
-        btnTxt: "DONE"
+        title: this.popupMessages.popup2.title,
+        message: this.serverError[response.errors[0].errorCode],
+        btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
       if(response.response.certificate){
@@ -114,9 +120,9 @@ export class CreateComponent {
       }
       data = {
         case: 'MESSAGE',
-        title: "Success",
+        title: this.popupMessages.popup3.title,
         message: displaycert,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
     const dialogRef = self.dialog.open(DialogComponent, {

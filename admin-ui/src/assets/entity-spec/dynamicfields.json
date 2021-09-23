@@ -70,6 +70,48 @@
       "redirectURL": "",
       "showIn": "Button",
       "validations": ""
+    },
+    {
+      "buttonName": {
+        "eng": "Center Type not available in English",
+        "ara": "نوع المركز غير متوفر باللغة العربية",
+        "fra": "Type de centre non disponible en français",
+        "tam": "மைய வகை ஆங்கிலத்தில் கிடைக்கவில்லை",
+        "hin": "केंद्र प्रकार अंग्रेजी में उपलब्ध नहीं है",
+        "kan": "ಕೇಂದ್ರ ಪ್ರಕಾರ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
+      },
+      "imagePath": "",
+      "actionListType": "action",
+      "actionURL": {
+        "case": "missingData",
+        "title": {
+          "eng": "Center Type not available in English",
+          "ara": "نوع المركز غير متوفر باللغة العربية",
+          "fra": "Type de centre non disponible en français",
+          "tam": "மைய வகை ஆங்கிலத்தில் கிடைக்கவில்லை",
+          "hin": "केंद्र प्रकार अंग्रेजी में उपलब्ध नहीं है",
+          "kan": "ಕೇಂದ್ರ ಪ್ರಕಾರ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
+        },
+        "columnNames": [{
+          "eng": "Code",
+          "ara": "الشفرة",
+          "fra": "Code",
+          "tam": "குறியீடு",
+          "hin": "कोड",
+          "kan": "ಕೋಡ್"
+        }, {
+          "eng": "Name",
+          "ara": "اسم",
+          "fra": "prénom",
+          "tam": "பெயர்",
+          "hin": "नाम",
+          "kan": "ಹೆಸರು"
+        }],
+        "fieldName": "name"
+      },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
     }
   ],
   "columnsToDisplay": [

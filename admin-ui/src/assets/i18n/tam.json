@@ -876,7 +876,8 @@
         "successButton":"சரி",
         "errorLabel":"தவறு",
         "createMessage":"வெற்றிகரமாக உருவாக்கப்பட்டது",
-        "updateMessage":"வெற்றிகரமாக புதுப்பிக்கப்பட்டது"
+        "updateMessage":"வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+        "mappingMessage":" வெற்றிகரமாக வரைபடமாக்கப்பட்டது"
     },
     "genericbutton":{
         "save":"சேமி"

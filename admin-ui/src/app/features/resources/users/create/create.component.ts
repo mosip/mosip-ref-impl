@@ -41,12 +41,13 @@ export class CreateComponent{
   primaryData: any;
   subscribed: any;
   errorMessages: any;
+  serverError:any;
   popupMessages: any;
   DeviceRequest = {} as DeviceRequest;
   data = [];
   pageName = "";
   disabled = true;
-
+  genericmessage:any;
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -98,7 +99,9 @@ export class CreateComponent{
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
-        this.popupMessages = response.devices.popupMessages;
+        this.serverError = response.serverError;
+        this.popupMessages = response.bulkUpload.popupMessages;
+        this.genericmessage = response.genericmessage;        
       });
   }
 
@@ -200,7 +203,7 @@ export class CreateComponent{
             request = new RequestModel("", null, centerData);
             this.dataStorageService.updateCenterUserMapping(request).subscribe(centerResponse => {
               if (!centerResponse.errors) {
-                  let url = centerData.name+" Mapped Successfully";
+                  let url = centerData.name+this.genericmessage.mappingMessage;
                   this.showMessage(url)
                     .afterClosed()
                     .subscribe(() => {
@@ -211,11 +214,11 @@ export class CreateComponent{
                       }
                     });
                 } else {
-                  this.showErrorPopup(centerResponse.errors[0].message);
+                  this.showErrorPopup(this.serverError[centerResponse.errors[0].errorCode]);
                 }        
             });
           } else {
-            let url = centerData.name+" Mapped Successfully";
+            let url = centerData.name+this.genericmessage.mappingMessage;
             this.showMessage(url)
               .afterClosed()
               .subscribe(() => { 
@@ -223,7 +226,7 @@ export class CreateComponent{
               });
           } 
         } else {
-          this.showErrorPopup(zoneResponse.errors[0].message);
+          this.showErrorPopup(this.serverError[zoneResponse.errors[0].errorCode]);
         } 
       });
     }else{
@@ -233,7 +236,7 @@ export class CreateComponent{
             request = new RequestModel("", null, centerData);
             this.dataStorageService.createCenterUserMapping(request).subscribe(centerResponse => {
               if (!centerResponse.errors) {
-                  let url = centerData.name+" Mapped Successfully";
+                  let url = centerData.name+this.genericmessage.mappingMessage;
                   this.showMessage(url)
                     .afterClosed()
                     .subscribe(() => {                  
@@ -244,11 +247,11 @@ export class CreateComponent{
                       }                    
                     });
                 } else {
-                  this.showErrorPopup(centerResponse.errors[0].message);
+                  this.showErrorPopup(this.serverError[centerResponse.errors[0].errorCode]);
                 }        
             });
           } else {
-            let url = centerData.name+" Mapped Successfully";
+            let url = centerData.name+this.genericmessage.mappingMessage;
             this.showMessage(url)
               .afterClosed()
               .subscribe(() => { 
@@ -256,7 +259,7 @@ export class CreateComponent{
               });
           } 
         } else {
-          this.showErrorPopup(zoneResponse.errors[0].message);
+          this.showErrorPopup(this.serverError[zoneResponse.errors[0].errorCode]);
         } 
       });
     }
@@ -291,7 +294,7 @@ export class CreateComponent{
           }
           this.initializeheader();
         } else {
-          this.showErrorPopup("No User Details Found");
+          this.showErrorPopup(this.serverError[response.errors[0].errorCode]);
         }
       },
       error => this.showErrorPopup("No User Details Found")
@@ -303,9 +306,9 @@ export class CreateComponent{
       width: '650px',
       data: {
         case: 'MESSAGE',
-        title: 'Success',
+        title: this.popupMessages.popup3.title,
         message: message,
-        btnTxt: 'Ok'
+        btnTxt: this.popupMessages.popup3.btnTxt
       }
     });
     return dialogRef;
@@ -317,9 +320,9 @@ export class CreateComponent{
         width: '350px',
         data: {
           case: 'MESSAGE',
-          title: 'Error',
+          title: this.popupMessages.popup2.title,
           message: message,
-          btnTxt: 'Ok'
+          btnTxt: this.popupMessages.popup2.btnTxt
         },
         disableClose: true
       });

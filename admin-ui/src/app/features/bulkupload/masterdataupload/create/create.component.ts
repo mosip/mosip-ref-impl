@@ -23,6 +23,7 @@ export class CreateComponent {
   popupMessages:any;
   fileNameError:boolean = false;
   buttonalignment = 'ltr';
+  serverError:any;
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -54,6 +55,7 @@ export class CreateComponent {
     .getTranslation(this.primaryLang)
     .subscribe(response => {
       this.popupMessages = response.bulkUpload.popupMessages;
+      this.serverError = response.serverError;
     });
     this.initializeForm();
   }
@@ -160,7 +162,7 @@ export class CreateComponent {
       data = {
         case: 'MESSAGE',
         title: this.popupMessages['popup2'].title,
-        message: uploadResponse.errors[0].message,
+        message: this.serverError[uploadResponse.errors[0].errorCode],
         btnTxt: this.popupMessages['popup2'].btnTxt
       };
     }

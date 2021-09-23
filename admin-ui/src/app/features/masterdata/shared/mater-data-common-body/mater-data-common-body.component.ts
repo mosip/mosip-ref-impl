@@ -7,6 +7,8 @@ import {
   HostListener 
 } from '@angular/core';
 
+import { Location } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
@@ -52,7 +54,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
   @Input() primaryData: any;
   @Input() secondaryData: any;
   @Input() fields: any;
-
   @Input() primaryLang: string;
   @Input() secondaryLang: string;
   @Input() masterdataType: any;
@@ -65,7 +66,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   saveSecondaryForm:boolean;
   fieldsCount:number;
   tomorrow = new Date();
-
+  serverError:any;  
   languageNames = {
     ara: 'عربى',
     fra: 'French',
@@ -76,15 +77,15 @@ export class MaterDataCommonBodyComponent implements OnInit {
   };
   showSecondaryForm: boolean;
   isCreateForm:boolean;
-
   primaryKeyboard: string;
   secondaryKeyboard: string;
   keyboardType: string;
   masterDataName:string;
   primaryLangCode:string;
   isPrimaryLangRTL:boolean = false;
-  
+
   constructor(
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private dataStorageService: DataStorageService,
     private router: Router,
@@ -119,6 +120,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       .getTranslation(this.primaryLang)
       .subscribe(response => {
         this.popupMessages = response;
+        this.serverError = response.serverError;
       });
     let supportedLanguages = this.appConfigService.getConfig()['supportedLanguages'].split(',');
 
@@ -548,9 +550,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let url = this.router.url.split('/');
     if(url[3] === "dynamicfields"){
       if(url[4] !== "new"){
-        this.router.navigateByUrl(
+        /*this.router.navigateByUrl(
           `admin/masterdata/${this.masterdataType}/${url[4]}/view`
-        );
+        );*/
+        this.location.back();
       }else{
         this.router.navigateByUrl(
           `admin/masterdata/home`
@@ -560,9 +563,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
       if (location === 'home') {
         this.router.navigateByUrl('admin/masterdata/home');
       } else if (location === 'list') {
-        this.router.navigateByUrl(
+        /*this.router.navigateByUrl(
           `admin/masterdata/${this.masterdataType}/view`
-        );
+        );*/
+        this.location.back();
       }
     }
   }
@@ -657,6 +661,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
     }else if(url === "holiday"){
       textToValidate = this.secondaryData.holidayName;
     }else if(url === "dynamicfields"){
+      textToValidate = this.secondaryData.name;
       if(this.primaryData.code)
         this.primaryData.fieldVal = {"code":this.primaryData.code, "value":this.primaryData.value};
       if(this.secondaryData.code)
@@ -700,7 +705,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(updateResponse.errors[0].message);
+                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
               });
             }else{
@@ -724,7 +729,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
             if(this.router.url.split('/')[3] === "dynamicfields"){
               this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
             }
-            this.showErrorPopup(updateResponse.errors[0].message);
+            this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
           }
       });
     }else{
@@ -765,7 +770,6 @@ export class MaterDataCommonBodyComponent implements OnInit {
         null,
         this.primaryData
       );
-
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
             if(textToValidate){
@@ -773,6 +777,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               if(updateResponse.response.id){
                 this.secondaryData["id"] = updateResponse.response.id; 
               }
+              console.log("this.saveSecondaryForm>>>"+this.saveSecondaryForm);
               if(this.saveSecondaryForm){
                 this.secondaryData['isActive'] = true;
               }
@@ -802,7 +807,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(updateResponse.errors[0].message);
+                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
                 });
               }else{
@@ -826,11 +831,12 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(updateResponse.errors[0].message);
+                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
                 });
               }
             }else{
+              console.log("textToValidate>>>"+textToValidate);
               this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
               let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
                 this.showMessage(url)
@@ -851,7 +857,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
             if(this.router.url.split('/')[3] === "dynamicfields"){
               this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
             }
-            this.showErrorPopup(updateResponse.errors[0].message);
+            this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
           }
       });
     }

@@ -81,21 +81,16 @@ export class EditComponent {
   disableSecondaryForm: boolean;
   data = [];
   popupMessages: any;
-
+  serverError:any;
   selectedField: HTMLElement;
-
   private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren('keyboardRef', { read: ElementRef })
   private attachToElementMesOne: any;
-
   primaryKeyboard: string;
   secondaryKeyboard: string;
-
   keyboardType: string;
   subscribed: any;
-
-  days = [];
-  
+  days = [];  
   holidayDate: any;
   minDate = new Date();
   locCode = 0;
@@ -188,6 +183,7 @@ export class EditComponent {
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
+        this.serverError = response.serverError;
         this.popupMessages = response.center.popupMessages;
       });
     //load all the dropdowns    
@@ -636,7 +632,7 @@ export class EditComponent {
             this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
           });
       } else {
-        this.showMessage('update-error');
+        this.showMessage('update-error', updateResponse);
       }
     });
   }
@@ -667,7 +663,7 @@ export class EditComponent {
             this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
           });
       } else {
-        this.showMessage('update-error');
+        this.showMessage('update-error', updateResponse);
       }
     });
   }
@@ -723,24 +719,25 @@ export class EditComponent {
           this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
         });
       } else {
-        this.showMessage('update-error');
+        this.showMessage('update-error', updateResponse);
       }
     });
   }
 
   showMessage(type: string, data?: any) {
+    let message = "";
+    if(type === 'create-success' || type === 'update-success'){
+      message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
+    }else{
+      console.log("data.errors[0].errorCode>>>"+data.errors[0].errorCode);
+      message = this.serverError[data.errors[0].errorCode];
+    }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '650px',
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
-        message:
-          type === 'create-success' || type === 'update-success'
-            ? this.popupMessages[type].message[0] +
-              data.id +
-              this.popupMessages[type].message[1] +
-              data.name
-            : this.popupMessages[type].message,
+        message:message,
         btnTxt: this.popupMessages[type].btnTxt
       }
     });

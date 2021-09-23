@@ -22,7 +22,8 @@ export class CreateComponent {
   applicationId = [{id:"PRE_REGISTRATION", value:"PRE_REGISTRATION  3years"}, {id:"REGISTRATION_PROCESSOR", value:"REGISTRATION_PROCESSOR  3years"}, {id:"REGISTRATION", value:"REGISTRATION  3years"}, {id:"IDA", value:"IDA  3years"}, {id:"ID_REPO", value:"ID_REPO  3years"}, {id:"KERNEL", value:"KERNEL  3years"}, {id:"ROOT", value:"ROOT  5years"}, {id:"PMS", value:"PMS  3years"}, {id:"ADMIN_SERVICES", value:"ADMIN_SERVICES  3years"}, {id:"RESIDENT", value:"RESIDENT  3years"}];
   subscribed: any;
   fileName = "";
-
+  serverError:any;
+  popupMessages:any;
   constructor(
   private keymanagerService: KeymanagerService,
   private location: Location,
@@ -41,6 +42,11 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.translateService.getTranslation(this.headerService.getUserPreferredLanguage()).subscribe(response => {
+      this.applicationId = response.keymanager.applicationIds;
+      this.serverError = response.serverError;
+      this.popupMessages = response.bulkUpload.popupMessages;
+    });
     this.initializeForm();
   }
 
@@ -96,16 +102,16 @@ export class CreateComponent {
     if(response.errors){
       data = {
         case: 'MESSAGE',
-        title: "Failure !",
-        message: response.errors[0].message,
-        btnTxt: "DONE"
+        title: this.popupMessages.popup2.title,
+        message: this.serverError[response.errors[0].errorCode],
+        btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
       data = {
         case: 'MESSAGE',
-        title: "Success",
+        title: this.popupMessages.popup3.title,
         message: response.response.status,
-        btnTxt: "DONE"
+        btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
     const dialogRef = self.dialog.open(DialogComponent, {
