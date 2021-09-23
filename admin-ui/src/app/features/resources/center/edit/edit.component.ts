@@ -729,7 +729,6 @@ export class EditComponent {
     if(type === 'create-success' || type === 'update-success'){
       message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
     }else{
-      console.log("data.errors[0].errorCode>>>"+data.errors[0].errorCode);
       message = this.serverError[data.errors[0].errorCode];
     }
     const dialogRef = this.dialog.open(DialogComponent, {
