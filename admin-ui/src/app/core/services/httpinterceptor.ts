@@ -69,8 +69,25 @@ export class AuthInterceptor implements HttpInterceptor {
           if (err instanceof HttpErrorResponse) {
             console.log(err.status);
             console.log(err);
-            if (err.status === 401 || err.status === 403) {
+            if (err.status === 401) {
               this.redirectService.redirect(window.location.href);
+            }else if (err.status === 403) {
+              this.translateService
+                .getTranslation(this.appService.getConfig().primaryLangCode)
+                .subscribe(response => {
+                  this.errorMessages = response.errorPopup;
+                  this.dialog.open(DialogComponent, {
+                    width: '868px',
+                    height: '190px',
+                    data: {
+                      case: 'MESSAGE',
+                      title: this.errorMessages.unauthorized.title,
+                      message: this.errorMessages.unauthorized.message,
+                      btnTxt: this.errorMessages.unauthorized.btnTxt
+                    },
+                    disableClose: true
+                  });
+                });
             } else {
               this.translateService
                 .getTranslation(this.appService.getConfig().primaryLangCode)
