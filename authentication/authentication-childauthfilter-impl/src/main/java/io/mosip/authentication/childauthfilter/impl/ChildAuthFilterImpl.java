@@ -12,6 +12,7 @@ import io.mosip.authentication.authfilter.exception.IdAuthenticationFilterExcept
 import io.mosip.authentication.authfilter.spi.IMosipAuthFilter;
 import io.mosip.authentication.common.service.util.AuthTypeUtil;
 import io.mosip.authentication.core.constant.IdAuthCommonConstants;
+import io.mosip.authentication.core.constant.IdAuthConfigKeyConstants;
 import io.mosip.authentication.core.constant.IdAuthenticationErrorConstants;
 import io.mosip.authentication.core.indauth.dto.AuthRequestDTO;
 import io.mosip.authentication.core.indauth.dto.IdentityInfoDTO;
@@ -46,7 +47,7 @@ public class ChildAuthFilterImpl implements IMosipAuthFilter {
 	private String dateOfBirthAttributeName;
 	
 	/** The date of birth pattern. */
-	@Value("${ida.child-auth-filter.date-of-birth.pattern:" + IdAuthCommonConstants.DOB_PATTERN + "}")
+	@Value("${" + IdAuthConfigKeyConstants.MOSIP_DATE_OF_BIRTH_PATTERN + ":" + IdAuthCommonConstants.DEFAULT_DOB_PATTERN + "}")
 	private String dateOfBirthPattern;
 	
 	/** The child max age. */
