@@ -74,6 +74,18 @@
   ],
   "columnsToDisplay": [
     {
+      "name": "code",
+      "showInListView": "true",
+      "showInSingleView": "true",
+      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code","hin": "कोड", "kan": "ಕೋಡ್", "tam": "குறியீடு"},
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "text",
+      "ismandatory": "true"
+    },
+    {
       "name": "name",
       "showInListView": "true",
       "showInSingleView": "true",
@@ -109,18 +121,7 @@
       "inputType": "text",
       "ismandatory": "true"
     },
-    {
-      "name": "code",
-      "showInListView": "true",
-      "showInSingleView": "true",
-      "label": { "eng": "Code", "ara": "الشفرة", "fra": "Code","hin": "कोड", "kan": "ಕೋಡ್", "tam": "குறியீடு"},
-      "sortOrder": "3",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "text",
-      "ismandatory": "true"
-    },
+
     {
       "name": "value",
       "showInListView": "true",

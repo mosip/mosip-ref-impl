@@ -180,42 +180,6 @@
       "ismandatory": "true"
     },
     {
-      "name": "isActive",
-      "showInListView": "true",
-      "showInSingleView": "false",
-      "label": {
-        "eng": "Status",
-        "ara": "نشط",
-        "fra": "c'est actif",
-        "tam": "நிலை",
-        "hin": "स्थिति",
-        "kan": "ಸ್ಥಿತಿ"
-      },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
-    },
-    {
-      "name": "createdDateTime",
-      "showInListView": "true",
-      "showInSingleView": "false",
-      "label": {
-        "eng": "Created Time",
-        "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé",
-        "tam": "Created Time",
-        "hin": "बनाया गया समय",
-        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ"
-      },
-      "sortOrder": "",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
       "name": "createdBy",
       "showInListView": "false",
       "showInSingleView": "false",
@@ -262,6 +226,41 @@
         "kan": "ನವೀಕರಿಸಿದ ಸಮಯ"
       },
       "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "true",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé",
+        "tam": "Created Time",
+        "hin": "बनाया गया समय",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": {
+        "eng": "Status",
+        "ara": "نشط",
+        "fra": "c'est actif",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
+      "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
       "LinkURL": ""
