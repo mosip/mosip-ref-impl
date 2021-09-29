@@ -313,7 +313,6 @@ export class CreateComponent {
       null,
       primaryObject
     );
-    console.log(primaryRequest);
     this.dataStorageService
       .createCenter(primaryRequest)
       .subscribe(createResponse => {
@@ -450,7 +449,7 @@ export class CreateComponent {
 
   getLocationHierarchyLevels() {
     this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
-      console.log("response.response.locationHierarchyLevels.primary >>> " + response.response.locationHierarchyLevels);
+      console.log("response.response.locationHierarchyLevels.primary >>> " + JSON.stringify(response.response.locationHierarchyLevels));
     });
   }
 

@@ -110,19 +110,6 @@
       "ismandatory": "true"
     },
     {
-      "name": "dataType",
-      "showInListView": "false",
-      "showInSingleView": "false",
-      "label": { "eng": "Data Type", "ara": "نوع البيانات", "fra": "Type de données","hin": "डाटा प्रकार", "kan": "ಡೇಟಾ ಪ್ರಕಾರ", "tam": "தரவு வகை"},
-      "sortOrder": "3",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "text",
-      "ismandatory": "true"
-    },
-
-    {
       "name": "value",
       "showInListView": "true",
       "showInSingleView": "true",
@@ -135,6 +122,16 @@
       "ismandatory": "true"
     },
     {
+      "name": "dataType",
+      "showInListView": "false",
+      "showInSingleView": "false",
+      "label": { "eng": "Data Type", "ara": "نوع البيانات", "fra": "Type de données","hin": "डाटा प्रकार", "kan": "ಡೇಟಾ ಪ್ರಕಾರ", "tam": "தரவு வகை"},
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
       "name": "fieldVal",
       "showInListView": "false",
       "showInSingleView": "false",
@@ -142,9 +139,7 @@
       "sortOrder": "",
       "showAsLink": "",
       "linkType": "",
-      "LinkURL": "",
-      "inputType": "text",
-      "ismandatory": "true"
+      "LinkURL": ""
     },
     {
       "name": "isActive",
@@ -154,9 +149,7 @@
       "sortOrder": "",
       "showAsLink": "false",
       "linkType": "",
-      "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
+      "LinkURL": ""
     },
     {
       "name": "createdDateTime",

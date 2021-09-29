@@ -40,7 +40,7 @@
         "kan": "ತಿದ್ದು"
       },
       "actionURL": "",
-      "redirectURL": "/admin/masterdata/blacklisted-words/single-view/$id",
+      "redirectURL": "/admin/masterdata/blocklisted-words/single-view/$id",
       "showIn": "Ellipsis",
       "validations": "",
       "callBackFunction": "centerEdit"
@@ -57,7 +57,7 @@
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
       "actionURL": "",
-      "redirectURL": "admin/masterdata/blacklisted-words/create",
+      "redirectURL": "admin/masterdata/blocklisted-words/create",
       "showIn": "Button",
       "validations": ""
     },
