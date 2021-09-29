@@ -98,34 +98,6 @@
       "ismandatory": "true"
     },
     {
-      "name": "isActive",
-      "showInListView": "true",
-      "showInSingleView": "false",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
-    },
-    {
-      "name": "createdDateTime",
-      "showInListView": "true",
-      "label": {
-        "eng": "Created Time",
-        "ara": "الوقت الذي تم إنشاؤه",
-        "fra": "Temps créé",
-        "hin": "बनाया गया समय",
-        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ",
-        "tam": "நேரம் உருவாக்கப்பட்டது"
-      },
-      "sortOrder": "",
-      "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
       "name": "createdBy",
       "showInListView": "false",
       "label": {
@@ -172,6 +144,34 @@
       "showAsLink": "",
       "linkType": "",
       "LinkURL": ""
+    },
+    {
+      "name": "createdDateTime",
+      "showInListView": "true",
+      "label": {
+        "eng": "Created Time",
+        "ara": "الوقت الذي تم إنشاؤه",
+        "fra": "Temps créé",
+        "hin": "बनाया गया समय",
+        "kan": "ಸಮಯವನ್ನು ರಚಿಸಲಾಗಿದೆ",
+        "tam": "நேரம் உருவாக்கப்பட்டது"
+      },
+      "sortOrder": "",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
+      "sortOrder": "",
+      "showAsLink": "false",
+      "linkType": "",
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     }
   ],
   "paginator": {

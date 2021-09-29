@@ -170,22 +170,7 @@
       "linkType": "",
       "LinkURL": ""
     },
-    {
-      "name": "isActive",
-      "showInListView": "true",
-      "label": {
-        "eng": "Status",
-        "ara": "الحالة",
-        "fra": "Statut",
-        "tam": "நிலை",
-        "hin": "स्थिति",
-        "kan": "ಸ್ಥಿತಿ"
-      },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": ""
-    },
+
     {
       "name": "users",
       "showInListView": "",
@@ -279,6 +264,22 @@
       },
       "sortOrder": "",
       "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": {
+        "eng": "Status",
+        "ara": "الحالة",
+        "fra": "Statut",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
       "linkType": "",
       "LinkURL": ""
     }

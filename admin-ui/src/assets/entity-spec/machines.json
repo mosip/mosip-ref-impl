@@ -121,15 +121,6 @@
       "LinkURL": ""
     },
     {
-      "name": "isActive",
-      "showInListView": "true",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
-      "sortOrder": "",
-      "showAsLink": "false",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
       "name": "macAddress",
       "showInListView": "",
       "label": { "eng": "Mac Address", "ara": "عنوان", "fra": "Mac Adresse","hin": "मैक पते", "kan": "ಮ್ಯಾಕ್ ವಿಳಾಸ", "tam": "Mac முகவரி" },
@@ -183,6 +174,15 @@
       },
       "sortOrder": "",
       "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
+      "sortOrder": "",
+      "showAsLink": "false",
       "linkType": "",
       "LinkURL": ""
     }
