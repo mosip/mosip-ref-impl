@@ -26,6 +26,7 @@ import io.mosip.authentication.core.indauth.dto.RequestDTO;
  */
 public class ChildAuthFilterImplTest {
 	
+	private static final String DOB_PATTERN = IdAuthCommonConstants.DEFAULT_DOB_PATTERN;
 	private static final int CHILD_MAX_AGE_TEST = 6;
 	private static final String DATE_OF_BIRTH_ATTRIB_NAME = "dateOfBirth";
 	private ChildAuthFilterImpl childAuthFilterImpl = new ChildAuthFilterImpl();
@@ -33,7 +34,7 @@ public class ChildAuthFilterImplTest {
 	@Before
 	public void before() {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "dateOfBirthAttributeName", DATE_OF_BIRTH_ATTRIB_NAME);
-		ReflectionTestUtils.setField(childAuthFilterImpl, "dateOfBirthPattern", IdAuthCommonConstants.DOB_PATTERN);
+		ReflectionTestUtils.setField(childAuthFilterImpl, "dateOfBirthPattern", IdAuthCommonConstants.DEFAULT_DOB_PATTERN);
 		ReflectionTestUtils.setField(childAuthFilterImpl, "childMaxAge", CHILD_MAX_AGE_TEST);
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"otp", "bio"});
 	}
@@ -46,7 +47,7 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidDateOfBirth() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(8).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -61,7 +62,7 @@ public class ChildAuthFilterImplTest {
 		request.setOtp("12345");
 		req.setRequest(request);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -73,7 +74,7 @@ public class ChildAuthFilterImplTest {
 	public void testValidChildDateOfBirth_OTP_Allowed() throws IdAuthenticationFilterException {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"bio", "demo"});
 		AuthRequestDTO req = new AuthRequestDTO();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -95,7 +96,7 @@ public class ChildAuthFilterImplTest {
 		request.setBiometrics(list);
 		req.setRequest(request);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -118,7 +119,7 @@ public class ChildAuthFilterImplTest {
 		request.setBiometrics(list);
 		req.setRequest(request);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -137,7 +138,7 @@ public class ChildAuthFilterImplTest {
 		request.setDemographics(identityDto);
 		req.setRequest(request);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -148,7 +149,7 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidChildDateOfBirth_Demo_NotAlowed() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(4).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -159,7 +160,7 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidChildDateOfBirth_Bio_BorderCase_exact() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -181,7 +182,7 @@ public class ChildAuthFilterImplTest {
 		request.setBiometrics(list);
 		req.setRequest(request);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).plusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -192,7 +193,7 @@ public class ChildAuthFilterImplTest {
 	@Test
 	public void testValidChildDateOfBirth_Bio_BorderCase_1day_more() throws IdAuthenticationFilterException {
 		AuthRequestDTO req = new AuthRequestDTO();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().minusYears(CHILD_MAX_AGE_TEST).minusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);
@@ -214,7 +215,7 @@ public class ChildAuthFilterImplTest {
 		request.setBiometrics(list);
 		req.setRequest(request);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DOB_PATTERN);
 		String dob = LocalDate.now().plusYears(1).plusDays(1).format(formatter );
 		IdentityInfoDTO identityInfoDTO = new IdentityInfoDTO();
 		identityInfoDTO.setValue(dob);

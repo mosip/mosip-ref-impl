@@ -1,5 +1,8 @@
 package io.mosip.authentication.childauthfilter.impl;
 
+import static io.mosip.authentication.core.constant.IdAuthConfigKeyConstants.MOSIP_DATE_OF_BIRTH_ATTRIBUTE_NAME;
+import static io.mosip.authentication.core.constant.IdAuthConfigKeyConstants.MOSIP_DATE_OF_BIRTH_PATTERN;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +45,11 @@ public class ChildAuthFilterImpl implements IMosipAuthFilter {
 	private static final int DEFAULT_CHILD_MAX_AGE = 6;
 
 	/** The date of birth attribute name. */
-	@Value("${ida.child-auth-filter.date-of-birth.attribute.name:dateOfBirth}")
+	@Value("${" + MOSIP_DATE_OF_BIRTH_ATTRIBUTE_NAME + ":dateOfBirth}")
 	private String dateOfBirthAttributeName;
 	
 	/** The date of birth pattern. */
-	@Value("${ida.child-auth-filter.date-of-birth.pattern:" + IdAuthCommonConstants.DOB_PATTERN + "}")
+	@Value("${" + MOSIP_DATE_OF_BIRTH_PATTERN + ":" + IdAuthCommonConstants.DEFAULT_DOB_PATTERN + "}")
 	private String dateOfBirthPattern;
 	
 	/** The child max age. */
