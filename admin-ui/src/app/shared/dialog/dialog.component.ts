@@ -56,6 +56,7 @@ export class DialogComponent implements OnInit {
   filterOptions: any = {};
 
   holidayForm: FormGroup;
+  sitealignment = 'ltr';
 
   constructor(
     public dialog: MatDialog,
@@ -71,6 +72,9 @@ export class DialogComponent implements OnInit {
   ) {
     this.primaryLangCode = this.headerService.getUserPreferredLanguage();
     this.translate.use(this.primaryLangCode);
+    if(this.primaryLangCode === "ara"){
+      this.sitealignment = 'rtl';
+    }
   }
 
   async ngOnInit() {
@@ -458,7 +462,7 @@ export class DialogComponent implements OnInit {
     this.filters = [this.filterModel];
     this.filtersRequest = new FilterRequest(
       this.filters,
-      this.routeParts === 'blacklisted-words'
+      this.routeParts === 'blocklisted-words'
         ? 'all'
         : this.headerService.getUserPreferredLanguage(),
       [optinalFilterObject]

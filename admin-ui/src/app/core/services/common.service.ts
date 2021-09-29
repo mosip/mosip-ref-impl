@@ -9,7 +9,7 @@ import { RequestModel } from '../models/request.model';
 import * as appConstants from '../../app.constants';
 import { MachineModel } from '../models/machine.model';
 import { CenterTypeModel } from '../models/center-type.model';
-import { BlacklistedWordsModel } from '../models/blacklisted-words.model';
+import { BlocklistedWordsModel } from '../models/blocklisted-words.model';
 import { GenderModel } from '../models/gender.model';
 import { IndividualTypeModel } from '../models/individual-type.model';
 import { LocationModel } from '../models/location.model';
@@ -89,7 +89,7 @@ export class CommonService {
         textToDisplay = data.name;
       }else if(url === "center-type"){
         textToDisplay = data.name;
-      }else if(url === "blacklisted-words"){
+      }else if(url === "blocklisted-words"){
         textToDisplay = data.word;
       }else if(url === "gender-type"){
         textToDisplay = data.genderName;
@@ -149,7 +149,7 @@ export class CommonService {
         textToDisplay = data.name;
       }else if(url === "center-type"){
         textToDisplay = data.name;
-      }else if(url === "blacklisted-words"){
+      }else if(url === "blocklisted-words"){
         textToDisplay = data.word;
       }else if(url === "gender-type"){
         textToDisplay = data.genderName;
@@ -490,7 +490,7 @@ export class CommonService {
           }else{
             dynamicObject = {"code":data.code}
           }
-        }else if(url === "blacklisted-words"){
+        }else if(url === "blocklisted-words"){
           if(data.id){
             dynamicObject = {"word":data.id}
           }else{
@@ -601,7 +601,7 @@ export class CommonService {
           }else{
             dynamicObject = {"code":data.code}
           }
-        }else if(url === "blacklisted-words"){
+        }else if(url === "blocklisted-words"){
           if(data.id){
             dynamicObject = {"word":data.id}
           }else{

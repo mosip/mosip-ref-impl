@@ -1,23 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AppConfigService } from 'src/app/app-config.service';
+import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from 'src/app/core/services/header.service';
 @Pipe({ name: 'status' })
 export class StatusPipe implements PipeTransform {
-  constructor(private appService: AppConfigService) {}
+  constructor(private translateService: TranslateService, private headerService: HeaderService) {}
   transform(value) {
-   if (value === true || value === 'true') {
-      if (this.appService.getConfig().primaryLangCode === 'eng' || this.appService.getConfig().primaryLangCode === 'fra' ) {
-        return 'Active';
-      } else if (this.appService.getConfig().primaryLangCode === 'ara') {
-        return 'نشيط';
-      }
-    } else if (value === false || value === 'false') {
-      if (this.appService.getConfig().primaryLangCode === 'eng' || this.appService.getConfig().primaryLangCode === 'fra' ) {
-        return 'Inactive';
-      } else if (this.appService.getConfig().primaryLangCode === 'ara') {
-        return 'غير نشط';
-      }
-    } else {
+    let displayValue = null;
+    displayValue = this.translateService.use(this.headerService.getUserPreferredLanguage());
+    if(value === true || value === 'true'){
+      return displayValue.value.isActive.Active;
+    }else if (value === false || value === 'false'){
+      return displayValue.value.isActive.InActive;
+    }else{
       return value;
-    }
+    }  
   }
-  }
+}

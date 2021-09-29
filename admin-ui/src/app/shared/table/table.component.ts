@@ -98,7 +98,7 @@ export class TableComponent implements OnInit, OnChanges {
       id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     }
     if (specData.callBackFunction && specData.callBackFunction !== '') {
-      if (currentRouteType.toLowerCase() === 'blacklisted-words') {
+      if (currentRouteType.toLowerCase() === 'blocklisted-words') {
         this.commonService[specData.callBackFunction]({...data}, specData.redirectURL +"$"+data.langCode, id.idKey);
       }else{
         this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
@@ -117,7 +117,7 @@ export class TableComponent implements OnInit, OnChanges {
     const id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     this.auditService.audit(7, id.auditEventId, currentRouteType);
     if (index === 0) {
-      if (currentRouteType.toLowerCase() === 'blacklisted-words') {
+      if (currentRouteType.toLowerCase() === 'blocklisted-words') {
         this.router.navigate([
           `${this.currentRoute}/single-view`,
           data[id.idKey] + '$' + data.langCode

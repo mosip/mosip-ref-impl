@@ -161,7 +161,7 @@
       "ismandatory": "true"
     },
     {
-      "name": "description",
+      "name": "descr",
       "showInListView": "true",
       "showInSingleView": "true",
       "label": {

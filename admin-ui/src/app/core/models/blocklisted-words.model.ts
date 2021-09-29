@@ -1,5 +1,5 @@
 
-export class BlacklistedWordsModel {
+export class BlocklistedWordsModel {
     constructor(
         public word: string,
         public oldWord: string,

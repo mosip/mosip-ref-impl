@@ -203,9 +203,9 @@ export const masterdataMapping = {
     idKey: 'id',
     headerName: 'Zone User'
   },
-  'blacklisted-words': {
+  'blocklisted-words': {
     apiName: 'blocklistedwords',
-    specFileName: 'blacklisted-words',
+    specFileName: 'blocklisted-words',
     name: {
       "eng": "Blocklisted Words",
       "ara": "الكلمات المحظورة",
@@ -422,7 +422,7 @@ export const ListViewIdKeyMapping = {
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },
   title: { idKey: 'code', auditEventId: 'ADM-069' },
-  'blacklisted-words': { idKey: 'word', auditEventId: 'ADM-070'},
+  'blocklisted-words': { idKey: 'word', auditEventId: 'ADM-070'},
   'document-type': { idKey: 'code', auditEventId: 'ADM-071' },
   location: { idKey: 'postalCode', auditEventId: 'ADM-072' },
   'device-specs': { idKey: 'id', auditEventId: 'ADM-073' },
@@ -454,9 +454,9 @@ export const FilterMapping = {
     specFileName: 'machines',
     apiName: 'machines'
   },
-  'blacklisted-words': {
+  'blocklisted-words': {
     apiName: 'blocklistedwords',
-    specFileName: 'blacklisted-words'
+    specFileName: 'blocklisted-words'
   },
   holiday: {
     apiName: 'holidays',

@@ -40,7 +40,7 @@
     "kan": "kn"
   },
   "masterdataMapping" :{
-    "blacklisted-words": {
+    "blocklisted-words": {
       "name": {
         "eng": "Blocklisted Words",
         "ara": "الكلمات المحظورة",
