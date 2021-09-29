@@ -52,7 +52,7 @@ ENV artifactory_url_env=${artifactory_url}
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} ${base_path}/assets/i18n
 RUN chown -R ${container_user}:${container_user} ${base_path}/assets/entity-spec
-RUN chown -R ${container_user}:${container_user} ${base_path}/master-templates
+RUN chown -R ${container_user}:${container_user} ${master_template_path}
 
 
 # select container user for all tasks
