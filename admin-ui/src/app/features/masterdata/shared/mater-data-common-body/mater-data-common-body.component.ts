@@ -108,6 +108,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
     this.fields.forEach(obj => {
       if(obj.inputType === "text" && obj.showInSingleView === "true"){
         this.fieldsCount++;
+      }else if(obj.inputType === "textarea" && obj.showInSingleView === "true"){
+        this.fieldsCount++;
       }        
     });
     this.activatedRoute.params.subscribe(response => {
@@ -207,12 +209,61 @@ export class MaterDataCommonBodyComponent implements OnInit {
           name = this.router.url.split('/')[4];
         }
         //this.primaryData = {"name":name,"description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
-        this.primaryData = {"name":name,"description":"","dataType":"string","value":"", "code":"","langCode":this.primaryLang};
+        this.primaryData = {"name":name,"description":"","value":"", "code":"","langCode":this.primaryLang};
         this.showPanel(this.pageName);
       }
-    }else{      
-      this.setSecondaryFrom("");
+    }else{  
+      if(url === "center-type"){
+        this.pageName = "Center Type";
+      }else if(url === "blacklisted-words"){
+        this.copyPrimaryWord = this.primaryData.word;
+        if(this.secondaryData){
+          this.copySecondaryWord = this.secondaryData.word;
+        }        
+        this.pageName = "Blacklisted Word";
+        this.showPanel(this.pageName);
+        this.primaryData['oldWord'] = this.primaryData['word'];
+      }else if(url === "gender-type"){
+        this.pageName = "Gender Type";
+      }else if(url === "individual-type"){
+        this.pageName = "Individual Type";
+      }else if(url === "location"){
+        this.pageName = "Location";
+        this.getHierarchyLevel();
+      }else if(url === "templates"){
+        this.pageName = "Template";
+        this.getTemplateFileFormat();
+      }else if(url === "title"){
+        this.pageName = "Title";
+      }else if(url === "device-specs"){
+        this.pageName = "Device Specification";
+        this.showPanel(this.pageName);
+        this.getDeviceTypes();
+      }else if(url === "device-types"){
+        this.pageName = "Device Type";
+        this.showPanel(this.pageName);
+      }else if(url === "machine-specs"){
+        this.pageName = "Machine Specification";
+        this.showPanel(this.pageName);
+        this.getMachineTypes();
+      }else if(url === "machine-type"){
+        this.pageName = "Machine Type";
+        this.showPanel(this.pageName);
+      }else if(url === "document-type"){
+        this.pageName = "Document Type";
+      }else if(url === "document-categories"){
+        this.pageName = "Document Category";
+      }else if(url === "holiday"){
+        this.pageName = "Holiday";
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
+      }else if(url === "dynamicfields"){
+        this.pageName = "Dynamic Field";
+        this.primaryData["code"] = JSON.parse(this.primaryData.fieldVal)["code"];
+        this.primaryData["value"] = JSON.parse(this.primaryData.fieldVal)["value"];
+        this.showPanel(this.pageName);
+      }
     }
+    this.setSecondaryFrom("");
     
   }
 
@@ -332,7 +383,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":""};
       }else if(this.url === "dynamicfields"){
         //this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
-        this.secondaryData = {"name":"","description":"","dataType":"string","value":"","code":"","langCode":this.secondaryLang};
+        this.secondaryData = {"name":"","description":"","value":"","code":"","langCode":this.secondaryLang};
       }
     }else{
       if(this.url === "center-type"){
