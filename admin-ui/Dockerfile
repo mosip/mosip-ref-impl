@@ -63,13 +63,13 @@ EXPOSE 8080
 #get the admin i18n bundle zip from artifactory
 CMD wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip --compression=none ; \
     wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip --compression=none ; \
-    #wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip -O "${master_template_path}"/master-templates.zip --compression=none ; \
+    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip -O "${master_template_path}"/master-templates.zip --compression=none ; \
     cd ${entity_spec_path} ; \
     unzip -o admin-entity-spec-bundle.zip ; \
     cd ${i18n_path} ; \
     unzip -o admin-i18n-bundle.zip ; \
-    #cd ${master_template_path} ; \
-    #unzip -o master-templates.zip ; \
+    cd ${master_template_path} ; \
+    unzip -o master-templates.zip ; \
     nginx ; \
     sleep infinity
 	
