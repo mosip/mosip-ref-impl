@@ -209,10 +209,11 @@ export class MaterDataCommonBodyComponent implements OnInit {
           name = this.router.url.split('/')[4];
         }
         //this.primaryData = {"name":name,"description":"","dataType":"","fieldVal": '{"value":"", "code":""}',"langCode":this.primaryLang};
-        this.primaryData = {"name":name,"description":"","value":"", "code":"","langCode":this.primaryLang};
+        this.primaryData = {"name":name,"description":"","dataType":"string","value":"", "code":"","langCode":this.primaryLang};
         this.showPanel(this.pageName);
       }
     }else{  
+
       if(url === "center-type"){
         this.pageName = "Center Type";
       }else if(url === "blacklisted-words"){
@@ -383,7 +384,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.secondaryData = {"name":"","brand":"","model":"","deviceTypeCode":"","minDriverversion":"","description":"","langCode":this.secondaryLang,"isActive":true,"id":""};
       }else if(this.url === "dynamicfields"){
         //this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
-        this.secondaryData = {"name":"","description":"","value":"","code":"","langCode":this.secondaryLang};
+        this.secondaryData = {"name":"","description":"","dataType":"string","value":"","code":"","langCode":this.secondaryLang};
       }
     }else{
       if(this.url === "center-type"){
