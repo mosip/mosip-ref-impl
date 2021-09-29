@@ -72,7 +72,7 @@ export class ListViewComponent implements OnDestroy {
       this.masterDataType = this.activatedRoute.snapshot.params.type;
       this.auditService.audit(3, this.auditEventId[0], this.masterDataType);
     }
-    if (this.masterDataType.toLowerCase() === 'blacklisted-words') {
+    if (this.masterDataType.toLowerCase() === 'blocklisted-words') {
       await this.loadBlacklistedWords();
     } else {
       await this.getMasterDataTypeValues(

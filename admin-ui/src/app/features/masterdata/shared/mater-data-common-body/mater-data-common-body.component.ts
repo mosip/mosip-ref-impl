@@ -151,7 +151,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       if(url === "center-type"){
         this.pageName = "Center Type";
         this.primaryData = {"code":"","name":"","descr":"","langCode":this.primaryLang,"isActive":true};
-      }else if(url === "blacklisted-words"){
+      }else if(url === "blocklisted-words"){
         this.pageName = "Blacklisted Word";
         this.showPanel(this.pageName);
         this.primaryData = {"word":"","description":"","langCode":this.primaryLang,"isActive":true};
@@ -210,59 +210,10 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.primaryData = {"name":name,"description":"","dataType":"string","value":"", "code":"","langCode":this.primaryLang};
         this.showPanel(this.pageName);
       }
-    }else{
-      
-      if(url === "center-type"){
-        this.pageName = "Center Type";
-      }else if(url === "blacklisted-words"){
-        this.copyPrimaryWord = this.primaryData.word;
-        if(this.secondaryData){
-          this.copySecondaryWord = this.secondaryData.word;
-        }        
-        this.pageName = "Blacklisted Word";
-        this.showPanel(this.pageName);
-        this.primaryData['oldWord'] = this.primaryData['word'];
-      }else if(url === "gender-type"){
-        this.pageName = "Gender Type";
-      }else if(url === "individual-type"){
-        this.pageName = "Individual Type";
-      }else if(url === "location"){
-        this.pageName = "Location";
-        this.getHierarchyLevel();
-      }else if(url === "templates"){
-        this.pageName = "Template";
-        this.getTemplateFileFormat();
-      }else if(url === "title"){
-        this.pageName = "Title";
-      }else if(url === "device-specs"){
-        this.pageName = "Device Specification";
-        this.showPanel(this.pageName);
-        this.getDeviceTypes();
-      }else if(url === "device-types"){
-        this.pageName = "Device Type";
-        this.showPanel(this.pageName);
-      }else if(url === "machine-specs"){
-        this.pageName = "Machine Specification";
-        this.showPanel(this.pageName);
-        this.getMachineTypes();
-      }else if(url === "machine-type"){
-        this.pageName = "Machine Type";
-        this.showPanel(this.pageName);
-      }else if(url === "document-type"){
-        this.pageName = "Document Type";
-      }else if(url === "document-categories"){
-        this.pageName = "Document Category";
-      }else if(url === "holiday"){
-        this.pageName = "Holiday";
-        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
-      }else if(url === "dynamicfields"){
-        this.pageName = "Dynamic Field";
-        this.primaryData["code"] = JSON.parse(this.primaryData.fieldVal)["code"];
-        this.primaryData["value"] = JSON.parse(this.primaryData.fieldVal)["value"];
-        this.showPanel(this.pageName);
-      }
+    }else{      
+      this.setSecondaryFrom("");
     }
-    this.setSecondaryFrom("");
+    
   }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -321,6 +272,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
               if (response.response.data) {
                 this.saveSecondaryForm = false;
                 this.secondaryData = response.response.data[0];
+                this.setSecondaryFrom("");
               }else{
                 this.secondaryData = null;
                 this.saveSecondaryForm = true;
@@ -343,7 +295,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.secondaryData = {"code":"","name":"","descr":"","langCode":this.secondaryLang,"isActive":true};
         if(type === "setValue")
           this.secondaryData.code = this.primaryData.code;
-      }else if(this.url === "blacklisted-words"){
+      }else if(this.url === "blocklisted-words"){
         this.secondaryData = {"word":"","description":"","langCode":this.secondaryLang,"isActive":true};
         if(type === "setValue")
           this.secondaryData.word = this.primaryData.word;
@@ -381,6 +333,56 @@ export class MaterDataCommonBodyComponent implements OnInit {
       }else if(this.url === "dynamicfields"){
         //this.secondaryData = {"name":"","description":"","dataType":"","fieldVal": '{"value":"","code":""}',"langCode":this.primaryLang};
         this.secondaryData = {"name":"","description":"","dataType":"string","value":"","code":"","langCode":this.secondaryLang};
+      }
+    }else{
+      if(this.url === "center-type"){
+        this.pageName = "Center Type";
+      }else if(this.url === "blocklisted-words"){
+        this.copyPrimaryWord = this.primaryData.word;
+        if(this.secondaryData){
+          this.copySecondaryWord = this.secondaryData.word;
+        }        
+        this.pageName = "Blacklisted Word";
+        this.showPanel(this.pageName);
+        this.primaryData['oldWord'] = this.primaryData['word'];
+      }else if(this.url === "gender-type"){
+        this.pageName = "Gender Type";
+      }else if(this.url === "individual-type"){
+        this.pageName = "Individual Type";
+      }else if(this.url === "location"){
+        this.pageName = "Location";
+        this.getHierarchyLevel();
+      }else if(this.url === "templates"){
+        this.pageName = "Template";
+        this.getTemplateFileFormat();
+      }else if(this.url === "title"){
+        this.pageName = "Title";
+      }else if(this.url === "device-specs"){
+        this.pageName = "Device Specification";
+        this.showPanel(this.pageName);
+        this.getDeviceTypes();
+      }else if(this.url === "device-types"){
+        this.pageName = "Device Type";
+        this.showPanel(this.pageName);
+      }else if(this.url === "machine-specs"){
+        this.pageName = "Machine Specification";
+        this.showPanel(this.pageName);
+        this.getMachineTypes();
+      }else if(this.url === "machine-type"){
+        this.pageName = "Machine Type";
+        this.showPanel(this.pageName);
+      }else if(this.url === "document-type"){
+        this.pageName = "Document Type";
+      }else if(this.url === "document-categories"){
+        this.pageName = "Document Category";
+      }else if(this.url === "holiday"){
+        this.pageName = "Holiday";
+        this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
+      }else if(this.url === "dynamicfields"){
+        this.pageName = "Dynamic Field";
+        this.primaryData["code"] = JSON.parse(this.primaryData.fieldVal)["code"];
+        this.primaryData["value"] = JSON.parse(this.primaryData.fieldVal)["value"];
+        this.showPanel(this.pageName);
       }
     }
   }
@@ -634,7 +636,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
     let textToValidate = null;
     if(url === "center-type"){
       textToValidate = this.secondaryData.name;
-    }else if(url === "blacklisted-words"){
+    }else if(url === "blocklisted-words"){
       textToValidate = this.secondaryData.word;
     }else if(url === "gender-type"){
       textToValidate = this.secondaryData.genderName;
@@ -755,7 +757,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
         delete this.secondaryData['machineTypeName'];
         delete this.secondaryData['isActive'];
       }
-      if(this.router.url.split('/')[3] === "blacklisted-words"){
+      if(this.router.url.split('/')[3] === "blocklisted-words"){
         this.primaryData['oldWord'] = this.copyPrimaryWord;
         if(this.secondaryData.word){
           this.secondaryData['oldWord'] = this.copySecondaryWord;

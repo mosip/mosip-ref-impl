@@ -86,7 +86,7 @@ export class SingleViewComponent implements OnDestroy {
         this.specFileData = response.columnsToDisplay;
         this.auditService.audit(8, response.auditEventIds[1], this.masterdataType);
       });
-    if (this.masterdataType.toLowerCase() === 'blacklisted-words') {
+    if (this.masterdataType.toLowerCase() === 'blocklisted-words') {
       if(this.id){
         this.primaryLangCode = this.id.split('$')[1];
         this.id = this.id.split('$')[0];
@@ -106,7 +106,7 @@ export class SingleViewComponent implements OnDestroy {
       let dynamicId = "";
       if(this.masterdataType.toLowerCase() === "center-type"){
         dynamicId = this.primaryData.code
-      }else if(this.masterdataType.toLowerCase() === "blacklisted-words"){
+      }else if(this.masterdataType.toLowerCase() === "blocklisted-words"){
         dynamicId = this.primaryData.word
       }else if(this.masterdataType.toLowerCase() === "location"){
         dynamicId = this.primaryData.code
