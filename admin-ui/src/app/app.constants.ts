@@ -184,8 +184,8 @@ export const masterdataMapping = {
       kan: 'ಬಳಕೆದಾರರು',
       hin: 'उपयोगकर्ताओं'
     },
-    nameKey: 'name',
-    idKey: 'id',
+    nameKey: 'userName',
+    idKey: 'userId',
     headerName: 'Users'
   },
   zoneuser: {
@@ -417,7 +417,7 @@ export const ListViewIdKeyMapping = {
     imagePath: 'assets/images/Machine.png',
     auditEventId: 'ADM-066'
   },
-  users: { idKey: 'id', auditEventId: 'ADM-084' },
+  users: { idKey: 'userId', auditEventId: 'ADM-084' },
   zoneuser: { idKey: 'userId', auditEventId: 'ADM-084' },
   'machine-type': { idKey: 'code', auditEventId: 'ADM-067' },
   templates: { idKey: 'id', auditEventId: 'ADM-068' },

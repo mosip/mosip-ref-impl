@@ -193,7 +193,7 @@ export class EditComponent {
     this.getHolidayZoneData();
     this.getProcessingTime();
     this.getTimeSlots();
-    this.getZoneData();
+    this.getLeafZoneData();
     this.getWorkingDays();
     let localeId = defaultJson.languages[this.primaryLang].locale;
     this.setLocaleForDatePicker(localeId);
@@ -330,9 +330,9 @@ export class EditComponent {
     return this.commonForm.controls;
   }
 
-  getZoneData() {
+  getLeafZoneData() {
     this.dataStorageService
-    .getZoneData(this.primaryLang)
+    .getLeafZoneData(this.primaryLang)
     .subscribe(response => {
       //console.log(response);
       this.dropDownValues.zone.primary = response.response;

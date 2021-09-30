@@ -167,7 +167,7 @@ export class CreateComponent {
       }
     });
     this.getMachinespecifications();
-    this.getZoneData();
+    this.getSubZoneData();
     this.initializePrimaryForm();
     this.translateService
       .getTranslation(this.primaryLang)
@@ -243,9 +243,9 @@ export class CreateComponent {
       });
   }
 
-  getZoneData() {
+  getSubZoneData() {
     this.dataStorageService
-      .getZoneData(this.primaryLang)
+      .getSubZoneData(this.primaryLang)
       .subscribe((response) => {
         console.log(response);
         this.dropDownValues.zone.primary = response.response;

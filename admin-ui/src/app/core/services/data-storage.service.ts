@@ -165,7 +165,7 @@ export class DataStorageService {
 
   deleteUser(userId: any, actualData: any): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"users":"users", "zoneuser":"zoneuser"};
+    let urlmapping = {"users":"usercentermapping", "zoneuser":"zoneuser"};
     if(url === "zoneuser"){
       return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.userId+"/"+ actualData.zoneCode);
     }else{
@@ -175,7 +175,8 @@ export class DataStorageService {
   }
 
   getUsersData(request: RequestModel, userType : any): Observable<any> {
-    return this.http.post(this.BASE_URL + appConstants.URL[userType], request);
+    let urlmapping = {"users":"usercentermapping/search", "zoneuser":"zoneuser/search"};
+    return this.http.post(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[userType], request);
   }
 
   getMachinesData(request: RequestModel): Observable<any> {
@@ -243,6 +244,24 @@ export class DataStorageService {
       this.BASE_URL +
         appConstants.MASTERDATA_BASE_URL +
         'zones/leafs/' +
+        langCode
+    );
+  }
+
+  getLeafZoneData(langCode: string): Observable<any> {
+    return this.http.get(
+      this.BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
+        'zones/leafzones/' +
+        langCode
+    );
+  }
+
+  getSubZoneData(langCode: string): Observable<any> {
+    return this.http.get(
+      this.BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
+        'zones/subzone/' +
         langCode
     );
   }
