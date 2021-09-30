@@ -74,7 +74,7 @@ export class DataStorageService {
   createMasterData(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
 
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blocklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
 
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url],
@@ -113,7 +113,7 @@ export class DataStorageService {
   updateData(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
 
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields", "users":"usercentermapping", "zoneuser":"zoneuser"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blocklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields", "users":"usercentermapping", "zoneuser":"zoneuser"};
     let queryParam = "";
     if(url === "dynamicfields"){
       queryParam = "?id="+data.request.id;
@@ -127,7 +127,7 @@ export class DataStorageService {
 
   updateDataStatus(data: RequestModel): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields", "users":"usercentermapping", "zoneuser":"zoneuser"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blocklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields", "users":"usercentermapping", "zoneuser":"zoneuser"};
 
     return this.http.patch(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url]+'?isActive='+data.request.isActive+"&"+Object.keys(data["request"])[0]+"="+data["request"][Object.keys(data["request"])[0]],
@@ -165,7 +165,7 @@ export class DataStorageService {
 
   deleteUser(userId: any, actualData: any): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"users":"users", "zoneuser":"zoneuser"};
+    let urlmapping = {"users":"usercentermapping", "zoneuser":"zoneuser"};
     if(url === "zoneuser"){
       return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.userId+"/"+ actualData.zoneCode);
     }else{
@@ -175,7 +175,8 @@ export class DataStorageService {
   }
 
   getUsersData(request: RequestModel, userType : any): Observable<any> {
-    return this.http.post(this.BASE_URL + appConstants.URL[userType], request);
+    let urlmapping = {"users":"usercentermapping/search", "zoneuser":"zoneuser/search"};
+    return this.http.post(this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[userType], request);
   }
 
   getMachinesData(request: RequestModel): Observable<any> {
@@ -247,6 +248,24 @@ export class DataStorageService {
     );
   }
 
+  getLeafZoneData(langCode: string): Observable<any> {
+    return this.http.get(
+      this.BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
+        'zones/leafzones/' +
+        langCode
+    );
+  }
+
+  getSubZoneData(langCode: string): Observable<any> {
+    return this.http.get(
+      this.BASE_URL +
+        appConstants.MASTERDATA_BASE_URL +
+        'zones/subzone/' +
+        langCode
+    );
+  }
+
   getLoggedInUserZone(userId: string, langCode: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('userID', userId);
@@ -283,7 +302,7 @@ export class DataStorageService {
 
   getMissingData(langCode: string, fieldName: string): Observable<any> {
     let url = this.router.url.split('/')[3];
-    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blacklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
+    let urlmapping = {"centers":"registrationcenters", "machines":"machines", "devices":"devices", "center-type":"registrationcentertypes", "blocklisted-words":"blocklistedwords", "gender-type":"gendertypes", "individual-type":"individualtypes", "holiday":"holidays", "location":"locations", "templates":"templates", "title":"title", "device-specs":"devicespecifications", "device-types":"devicetypes", "machine-specs":"machinespecifications", "machine-type":"machinetypes", "document-type":"documenttypes", "document-categories":"documentcategories", "dynamicfields":"dynamicfields"};
     return this.http.get(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + urlmapping[url] + `/missingids/${langCode}?fieldName=${fieldName}`
     );

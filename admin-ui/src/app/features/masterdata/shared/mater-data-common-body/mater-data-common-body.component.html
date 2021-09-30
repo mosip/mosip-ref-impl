@@ -29,19 +29,6 @@
                         required={{field.ismandatory}}
                         *ngIf="field.name !== 'fieldVal'"
                       />
-                      <input
-                        #keyboardRef
-                        #{{field.name}}
-                        (blur)="captureValue($event, field.name, 'primary')"
-                        (focus)="scrollPage(field.name, 'primary', field.name, i)"
-                        matInput
-                        placeholder="{{
-                          field.label[primaryLang] | translate
-                        }}"
-                        [value]="primaryData[field.name]"
-                        required={{field.ismandatory}}
-                        *ngIf="field.name === 'fieldVal'"
-                      />
                     </mat-form-field>
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && isCreateForm">
                       <input

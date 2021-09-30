@@ -62,12 +62,12 @@
     },
     {
       "buttonName": {
-        "eng": "Create Center",
-        "ara": "إضافة مركز",
-        "fra": "Ajouter le centre",
-        "tam": "மையத்தை உருவாக்கவும்",
-        "hin": "केंद्र बनाएं",
-        "kan": "ಕೇಂದ್ರವನ್ನು ರಚಿಸಿ"
+        "eng": "Create Device",
+        "ara": "إإنشاء الجهاز",
+        "fra": "Créer un appareil",
+        "tam": "சாதனத்தை உருவாக்கவும்",
+        "hin": "डिवाइस बनाएं",
+        "kan": "ಸಾಧನವನ್ನು ರಚಿಸಿ"
       },
       "imagePath": "assets/images/add-icon.png",
       "actionListType": "redirect",
@@ -124,22 +124,6 @@
       },
       "sortOrder": "",
       "showAsLink": "",
-      "linkType": "",
-      "LinkURL": ""
-    },
-    {
-      "name": "isActive",
-      "showInListView": "true",
-      "label": {
-        "eng": "Status",
-        "ara": "حاله",
-        "fra": "statut",
-        "tam": "நிலை",
-        "hin": "स्थिति",
-        "kan": "ಸ್ಥಿತಿ"
-      },
-      "sortOrder": "",
-      "showAsLink": "false",
       "linkType": "",
       "LinkURL": ""
     },
@@ -204,6 +188,22 @@
       },
       "sortOrder": "",
       "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "isActive",
+      "showInListView": "true",
+      "label": {
+        "eng": "Status",
+        "ara": "حاله",
+        "fra": "statut",
+        "tam": "நிலை",
+        "hin": "स्थिति",
+        "kan": "ಸ್ಥಿತಿ"
+      },
+      "sortOrder": "",
+      "showAsLink": "false",
       "linkType": "",
       "LinkURL": ""
     }
