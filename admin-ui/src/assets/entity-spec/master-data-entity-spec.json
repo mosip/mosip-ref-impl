@@ -22,7 +22,7 @@
           "kan": "ನಿರ್ಬಂಧಿತ ಪದಗಳು",
           "hin": "ब्लॉक लिस्टेड शब्द"
         },
-        "actionURL": "admin/masterdata/blacklisted-words/view",
+        "actionURL": "admin/masterdata/blocklisted-words/view",
         "auditEventId": "ADM-011"
       },
       {

@@ -80,6 +80,7 @@ export class CreateComponent {
   initialLocationCode: "";
   localeDtFormat = "";
   serverError:any;
+  locationFieldNameList: string[] = [];
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -109,8 +110,8 @@ export class CreateComponent {
     let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
     if (filteredList.length > 0) {
       this.isPrimaryLangRTL = true;
-    }
-    this.loadLocationData(this.initialLocationCode, 'region');
+    }  
+    this.getLocationHierarchyLevels();  
   }
 
   lessThanEqual(locCode, index){
@@ -126,7 +127,7 @@ export class CreateComponent {
     this.getStubbedData();
     this.getProcessingTime();
     this.getTimeSlots();
-    this.getZoneData();
+    this.getLeafZoneData();
     this.getWorkingDays();
     let localeId = defaultJson.languages[this.primaryLang].locale;
     this.setLocaleForDatePicker(localeId);
@@ -173,9 +174,9 @@ export class CreateComponent {
     });
   }
 
-  getZoneData() {
+  getLeafZoneData() {
     this.dataStorageService
-      .getZoneData(this.primaryLang)
+      .getLeafZoneData(this.primaryLang)
       .subscribe(response => {
         console.log(response);
         this.dropDownValues.zone.primary = response.response;
@@ -313,7 +314,6 @@ export class CreateComponent {
       null,
       primaryObject
     );
-    console.log(primaryRequest);
     this.dataStorageService
       .createCenter(primaryRequest)
       .subscribe(createResponse => {
@@ -349,6 +349,7 @@ export class CreateComponent {
   }
 
   loadLocationData(locationCode: string, fieldName: string) {
+    console.log("this.locationFieldNameList>>>"+this.locationFieldNameList);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
     }
@@ -438,8 +439,7 @@ export class CreateComponent {
   }
 
   getStubbedData() {
-    this.getRegistrationCenterTypes();
-    this.getLocationHierarchyLevels();
+    this.getRegistrationCenterTypes();    
     this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
       if (response.response.locations) {
         this.dropDownValues.holidayZone.primary =
@@ -449,9 +449,13 @@ export class CreateComponent {
   }
 
   getLocationHierarchyLevels() {
+    let self = this;
     this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
-      console.log("response.response.locationHierarchyLevels.primary >>> " + response.response.locationHierarchyLevels);
-    });
+      response.response.locationHierarchyLevels.forEach(function (value) {
+        self.locationFieldNameList.push(value.hierarchyLevelName);
+      });
+      self.loadLocationData(this.initialLocationCode, 'region');
+    });   
   }
 
   getRegistrationCenterTypes() {

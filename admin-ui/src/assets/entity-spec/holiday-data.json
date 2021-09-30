@@ -173,16 +173,21 @@
       "ismandatory": "true"
     },
     {
-      "name": "isActive",
-      "showInListView": "true",
-      "showInSingleView": "false",
-      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
+      "name": "updatedBy",
+      "showInListView": "false",
+      "showInSingleView": "true",
+      "label": {
+        "eng": "Updated By",
+        "ara": "تم التحديث بواسطة",
+        "fra": "Mise à jour par",
+        "hin": "द्वारा अपडेट",
+        "kan": "ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ",
+        "tam": "புதுப்பிக்கப்பட்டது"
+      },
       "sortOrder": "",
-      "showAsLink": "false",
+      "showAsLink": "",
       "linkType": "",
-      "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
+      "LinkURL": ""
     },
     {
       "name": "createdDateTime",
@@ -201,23 +206,17 @@
       "linkType": "",
       "LinkURL": ""
     },
-
     {
-      "name": "updatedBy",
-      "showInListView": "false",
-      "showInSingleView": "true",
-      "label": {
-        "eng": "Updated By",
-        "ara": "تم التحديث بواسطة",
-        "fra": "Mise à jour par",
-        "hin": "द्वारा अपडेट",
-        "kan": "ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ",
-        "tam": "புதுப்பிக்கப்பட்டது"
-      },
+      "name": "isActive",
+      "showInListView": "true",
+      "showInSingleView": "false",
+      "label": { "eng": "Status", "ara": "حاله", "fra": "statut","hin": "स्थिति", "kan": "ಸ್ಥಿತಿ", "tam": "நிலை" },
       "sortOrder": "",
-      "showAsLink": "",
+      "showAsLink": "false",
       "linkType": "",
-      "LinkURL": ""
+      "LinkURL": "",
+      "inputType": "dropdown",
+      "ismandatory": "true"
     }
   ],
   "paginator": {
