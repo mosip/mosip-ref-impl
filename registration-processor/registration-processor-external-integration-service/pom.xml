@@ -17,6 +17,7 @@
 		<maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
+		<springdoc.version>1.5.10</springdoc.version>
 	</properties>
 
 	<dependencies>
@@ -57,7 +58,13 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.10</version>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<version>${spring.boot.version}</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -208,4 +215,5 @@
 			</build>
 		</profile>
 	</profiles>
+
 </project>
