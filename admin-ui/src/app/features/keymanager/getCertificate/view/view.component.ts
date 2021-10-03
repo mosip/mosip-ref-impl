@@ -143,6 +143,16 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
   }
 
+  copyToClipboard(){
+    const listener = (e: ClipboardEvent) => {
+    e.clipboardData.setData('text/plain', this.datas);
+    e.preventDefault();
+    document.removeEventListener('copy', listener);
+    };
+    document.addEventListener('copy', listener);
+    document.execCommand('copy');
+  }
+
   ngOnDestroy() {
     this.subscribed.unsubscribe();
   }

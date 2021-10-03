@@ -46,13 +46,13 @@ export class CreateComponent {
 
   initializeComponent() {
     this.translateService.use(this.headerService.getUserPreferredLanguage());
+    this.primaryLang = this.headerService.getUserPreferredLanguage();
     this.translateService
     .getTranslation(this.primaryLang)
     .subscribe(response => {
       this.serverError = response.serverError;
       this.popupMessages = response.bulkUpload.popupMessages;
-    });
-    this.primaryLang = this.headerService.getUserPreferredLanguage();
+    });    
     if(this.primaryLang === "ara"){
       this.buttonalignment = 'rtl';
     }

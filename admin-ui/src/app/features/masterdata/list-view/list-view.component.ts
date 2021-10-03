@@ -72,7 +72,7 @@ export class ListViewComponent implements OnDestroy {
       this.masterDataType = this.activatedRoute.snapshot.params.type;
       this.auditService.audit(3, this.auditEventId[0], this.masterDataType);
     }
-    if (this.masterDataType.toLowerCase() === 'blacklisted-words') {
+    if (this.masterDataType.toLowerCase() === 'blocklisted-words') {
       await this.loadBlacklistedWords();
     } else {
       await this.getMasterDataTypeValues(
@@ -201,10 +201,12 @@ export class ListViewComponent implements OnDestroy {
             this.paginatorOptions.pageSize = filters.pagination.pageFetch;
             if (response.data !== null) {
               this.masterData = response.data ? [...response.data] : [];
-              this.masterData.forEach(function (value, index) {
-                value["code"] = value.fieldVal["code"];
-                value["value"] = value.fieldVal["value"];
-              }); 
+              if(this.mapping.apiName === "dynamicfields"){
+                this.masterData.forEach(function (value, index) {
+                  value["code"] = value.fieldVal["code"];
+                  value["value"] = value.fieldVal["value"];
+                }); 
+              }              
             } else {
               this.noData = true;
             }

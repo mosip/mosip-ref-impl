@@ -80,7 +80,7 @@
   ],
   "columnsToDisplay": [
     {
-      "name": "name",
+      "name": "userName",
       "showInListView": "true",
       "label": { 
         "eng": "Name", 
@@ -96,15 +96,15 @@
       "LinkURL": ""
     },
     {
-      "name": "zoneCode",
+      "name": "zoneName",
       "showInListView": "true",
       "label": {
-        "eng": "Zone Code",
+        "eng": "Zone Name",
         "ara": "نوع المركز",
         "fra": "Type de centre",
-        "hin": "जोन कोड ",
-        "kan": "ವಲಯ ಕೋಡ್  ",
-        "tam": "மண்டல குறியீடு   "
+        "hin": "जोन कोड",
+        "kan": "ವಲಯ ಕೋಡ್ ",
+        "tam": "மண்டல குறியீடு"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -112,15 +112,15 @@
       "LinkURL": ""
     },
     {
-      "name": "regCenterId",
+      "name": "regCenterName",
       "showInListView": "",
       "label": {
-        "eng": "Center Id",
-        "ara": "المستخدمين",
-        "fra": "Utilisateur",
-        "hin": "केंद्र आईडी  ",
-        "kan": "ಸೆಂಟರ್ ಐಡಿ ",
-        "tam": "மைய ஐடி  "
+        "eng": "Center Name",
+        "ara": "اسم المركز",
+        "fra": "Nom du centre",
+        "hin": "केंद्र का नाम",
+        "kan": "ಕೇಂದ್ರದ ಹೆಸರು",
+        "tam": "மையப் பெயர்"
       },
       "sortOrder": "",
       "showAsLink": "",
@@ -176,8 +176,32 @@
   },
   "filterColumns": [
     {
-      "filtername": "name",
+      "filtername": "userName",
       "filterlabel": { "eng": "Name", "ara": "اسم", "fra": "Nom", "tam": "பெயர்", "hin": "नाम","kan": "ಹೆಸರು" },
+      "filterType": "equals",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "users",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "zoneName",
+      "filterlabel": { "eng": "Zone Name", "ara": "اسم المنطقة", "fra": "Nom de la zone", "tam": "மண்டல பெயர்", "hin": "क्षेत्र का नाम","kan": "ವಲಯದ ಹೆಸರು" },
+      "filterType": "equals",
+      "fieldType": "input",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "users",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "regCenterName",
+      "filterlabel": {"eng": "Center Name", "ara": "اسم المركز", "fra": "Nom du centre", "hin": "केंद्र का नाम", "kan": "ಕೇಂದ್ರದ ಹೆಸರು", "tam": "மையப் பெயர்"},
       "filterType": "equals",
       "fieldType": "input",
       "autocomplete": "false",

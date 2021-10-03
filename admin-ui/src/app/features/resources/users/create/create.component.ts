@@ -95,7 +95,7 @@ export class CreateComponent{
       }
     });
     this.getUserDetails();
-    this.getZoneData();
+    this.getSubZoneData();
     this.translateService
       .getTranslation(this.primaryLang)
       .subscribe(response => {
@@ -141,9 +141,9 @@ export class CreateComponent{
       });
   }
 
-  getZoneData() {
+  getSubZoneData() {
     this.dataStorageService
-      .getZoneData(this.primaryLang)
+      .getSubZoneData(this.primaryLang)
       .subscribe(response => {
         console.log(response);
         this.dropDownValues.zone.primary = response.response;
@@ -268,11 +268,7 @@ export class CreateComponent{
   async getData(params: any) {
     let filter = null;
     let url = this.router.url.split('/')[3];
-    if(url === "zoneuser"){
-      filter = new FilterModel('userId', 'equals', params.id);
-    }else{
-      filter = new FilterModel('id', 'equals', params.id);
-    }
+    filter = new FilterModel('userId', 'equals', params.id);
     this.DeviceRequest.filters = [filter];
     this.DeviceRequest.languageCode = this.primaryLang;
     this.DeviceRequest.sort = [];
@@ -290,7 +286,7 @@ export class CreateComponent{
           if(url === "zoneuser"){
             this.primaryData = {userId:this.data[0].userId, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].userName}
           }else{
-            this.primaryData = {userId:this.data[0].id, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].name}
+            this.primaryData = {userId:this.data[0].userId, zone:this.data[0].zoneCode, regCenterId:this.data[0].regCenterId, name: this.data[0].userName}
           }
           this.initializeheader();
         } else {
