@@ -67,6 +67,7 @@ export class EditComponent {
   supportedLanguages: Array<string>;
   filteredLanguages: Array<string>;
   dropDownValues = new CenterDropdown();
+  dynamicDropDown = {};
   allSlots: string[];
   headerObject: HeaderModel;
   centerRequest = {} as CenterRequest;
@@ -96,6 +97,8 @@ export class EditComponent {
   locCode = 0;
   initialLocationCode: "";
   localeDtFormat = "";
+  locationFieldNameList: string[] = [];
+  dynamicFieldValue = {};
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -112,7 +115,7 @@ export class EditComponent {
     private dateAdapter: DateAdapter<Date>
   ) {
     this.subscribed = router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationEnd) {        
         this.initializeComponent();
       }
     });
@@ -188,13 +191,13 @@ export class EditComponent {
       });
     //load all the dropdowns    
     this.loadLocationData(this.initialLocationCode, 'region');  
-    this.getRegistrationCenterTypes();
-    this.getLocationHierarchyLevels();
+    this.getRegistrationCenterTypes();    
     this.getHolidayZoneData();
     this.getProcessingTime();
     this.getTimeSlots();
     this.getLeafZoneData();
     this.getWorkingDays();
+    this.getLocationHierarchyLevels();
     let localeId = defaultJson.languages[this.primaryLang].locale;
     this.setLocaleForDatePicker(localeId);
   }
@@ -537,10 +540,11 @@ export class EditComponent {
   }
 
   setCommonFormValues() {
+    let self = this;
     let commonData = this.data[0];
     this.commonForm.controls.centerTypeCode.setValue(
       commonData.centerTypeCode
-    );
+    );   
     this.commonForm.controls.contactPhone.setValue(commonData.contactPhone);
     this.commonForm.controls.longitude.setValue(commonData.longitude);
     this.commonForm.controls.latitude.setValue(commonData.latitude);
@@ -668,9 +672,10 @@ export class EditComponent {
     });
   }
   updateCommonData() {
-    console.log("this.commonForm.controls.workingDays.value>>>"+this.commonForm.controls.workingDays.value);
+    console.log("this.commonForm.controls.workingDays.value>>>"+this.dynamicFieldValue[this.locationFieldNameList[this.locCode-1]]);
+    console.log("this.commonForm.controls.workingDays.value>>>"+JSON.stringify(this.dynamicFieldValue));
     this.createUpdate = true;
-    let locationCode = "";
+    /*let locationCode = "";
     if (1 == this.locCode) {
       locationCode = this.commonForm.controls.region.value;
     } else if (2 == this.locCode) {
@@ -681,7 +686,7 @@ export class EditComponent {
       locationCode = this.commonForm.controls.laa.value;
     } else if (5 == this.locCode) {
       locationCode = this.commonForm.controls.postalCode.value;
-    }
+    }*/
     const nonLangFieldsObject = new CenterNonLangModel(
       Utils.convertTime(this.commonForm.controls.endTime.value),
       Utils.convertTime(this.commonForm.controls.startTime.value),
@@ -689,7 +694,7 @@ export class EditComponent {
       this.commonForm.controls.contactPhone.value,
       this.commonForm.controls.holidayZone.value,
       this.commonForm.controls.latitude.value,
-      locationCode,
+      this.dynamicFieldValue[this.locationFieldNameList[this.locCode-1]],
       this.commonForm.controls.longitude.value,
       Utils.convertTime(this.commonForm.controls.lunchEndTime.value),
       Utils.convertTime(this.commonForm.controls.lunchStartTime.value),
@@ -783,6 +788,33 @@ export class EditComponent {
         this.dropDownValues[fieldName].primary =
           response['response']['locations'];
       });
+  }
+
+  loadLocationDropDownsDynamicallyForUpdate() {    
+    for (let i = 0; i < this.locationFieldNameList.length; i++) {
+      this.loadLocationDataDynamically({"value":this.data[0].location[i+1]}, i);
+      if(this.data[0])
+        this.dynamicFieldValue[this.locationFieldNameList[i]] = this.data[0].location[i+1];
+    }
+  }
+
+  loadLocationDataDynamically(event:any, index: any){
+    let locationCode = ""; 
+    let fieldName = "";   
+    let self = this;  
+    if(event === ""){
+      fieldName = this.locationFieldNameList[parseInt(index)];
+      locationCode = this.initialLocationCode;
+    }else{    
+      fieldName = this.locationFieldNameList[parseInt(index)+1];
+      locationCode = event.value; 
+      this.dynamicFieldValue[this.locationFieldNameList[parseInt(index)]] = event.value;
+    }    
+    this.dataStorageService
+    .getImmediateChildren(locationCode, this.primaryLang)
+    .subscribe(response => {
+      self.dynamicDropDown[fieldName] = response['response']['locations'];
+    });    
   }
 
   submitPrimaryPanel() {
@@ -926,9 +958,22 @@ export class EditComponent {
   }
 
   getLocationHierarchyLevels() {
-    this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
-      console.log("response.response.locationHierarchyLevels.primary>>>"+response.response.locationHierarchyLevels);
-    });
+    let self = this;
+    let fieldNameData = {};
+    self.locationFieldNameList = [];
+    self.dataStorageService.getLocationHierarchyLevels(self.primaryLang).subscribe(response => {
+      response.response.locationHierarchyLevels.forEach(function (value) {
+        if(value.hierarchyLevel != 0)
+          self.locationFieldNameList.push(value.hierarchyLevelName);          
+      });  
+      for(let value of self.locationFieldNameList) {
+        self.dynamicDropDown[value] = []; 
+        self.dynamicFieldValue[value] = "";
+      }
+      self.loadLocationDataDynamically("", 0);
+      self.loadLocationDropDownsDynamicallyForUpdate();
+      self.loadLocationData(self.initialLocationCode, 'region');     
+    }); 
   }
 
   getRegistrationCenterTypes() {
