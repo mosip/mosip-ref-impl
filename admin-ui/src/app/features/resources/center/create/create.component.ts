@@ -59,6 +59,7 @@ export class CreateComponent {
   primaryLang: string;
   isPrimaryLangRTL: boolean;
   dropDownValues = new CenterDropdown();
+  dynamicDropDown = {};
   allSlots: string[];
   disableForms: boolean;
   headerObject: HeaderModel;
@@ -81,6 +82,7 @@ export class CreateComponent {
   localeDtFormat = "";
   serverError:any;
   locationFieldNameList: string[] = [];
+  dynamicFieldValue = {};
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -265,7 +267,8 @@ export class CreateComponent {
 
   saveData() {
     this.createUpdate = true;
-    let locationCode = "";
+    /* let locationCode = "";
+
     if (1 == this.locCode) {
       locationCode = this.primaryForm.controls.region.value;
     } else if(2 == this.locCode) {
@@ -276,7 +279,7 @@ export class CreateComponent {
       locationCode = this.primaryForm.controls.laa.value;
     } else if(5 == this.locCode) {
       locationCode = this.primaryForm.controls.postalCode.value;
-    }
+    }*/
 
     const primaryObject = new CenterModel(
       this.primaryForm.controls.addressLine1.value,
@@ -290,7 +293,7 @@ export class CreateComponent {
       this.primaryForm.controls.holidayZone.value,
       this.primaryLang,
       this.primaryForm.controls.latitude.value,
-      locationCode,
+      this.dynamicFieldValue[this.locationFieldNameList[this.locCode-1]],
       this.primaryForm.controls.longitude.value,
       Utils.convertTime(this.primaryForm.controls.lunchEndTime.value),
       Utils.convertTime(this.primaryForm.controls.lunchStartTime.value),
@@ -349,7 +352,6 @@ export class CreateComponent {
   }
 
   loadLocationData(locationCode: string, fieldName: string) {
-    console.log("this.locationFieldNameList>>>"+this.locationFieldNameList);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
     }
@@ -358,13 +360,35 @@ export class CreateComponent {
     .subscribe(response => {
       this.dropDownValues[fieldName].primary =
         response['response']['locations'];
-      console.log(this.dropDownValues);
+    });
+  }
+
+  loadLocationDataDynamically(event:any, index: any) {
+    let locationCode = ""; 
+    let fieldName = "";   
+    let self = this;    
+    if(event === "") {
+      fieldName = this.locationFieldNameList[parseInt(index)];
+      locationCode = this.initialLocationCode;         
+    }else{    
+      fieldName = this.locationFieldNameList[parseInt(index)+1];
+      locationCode = event.value; 
+      this.dynamicFieldValue[this.locationFieldNameList[parseInt(index)]] = event.value;
+      
+      /*for (let i = parseInt(index)+1; i < this.locationFieldNameList.length; i++) {
+       this.dynamicFieldValue[this.locationFieldNameList[parseInt(index)+1]] = [];
+      }*/
+    }
+    this.dataStorageService
+    .getImmediateChildren(locationCode, this.primaryLang)
+    .subscribe(response => {
+      self.dynamicDropDown[fieldName] = response['response']['locations'];
     });
   }
 
   initializePrimaryForm() {
     let regionReq = [], provinceReq = [], cityReq = [], laaReq = [], postalCodeReq = [];
-    if (1 <= this.locCode) {
+   /* if (1 <= this.locCode) {
       regionReq = [Validators.required];
     } if(2 <= this.locCode) {
       provinceReq = [Validators.required];
@@ -374,7 +398,7 @@ export class CreateComponent {
       laaReq = [Validators.required];
     } if(5 <= this.locCode) {
       postalCodeReq = [Validators.required];
-    }
+    }*/
     this.primaryForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(128)]],
       centerTypeCode: ['', [Validators.required]],
@@ -450,12 +474,19 @@ export class CreateComponent {
 
   getLocationHierarchyLevels() {
     let self = this;
+    let fieldNameData = {};
     this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
       response.response.locationHierarchyLevels.forEach(function (value) {
-        self.locationFieldNameList.push(value.hierarchyLevelName);
-      });
-      self.loadLocationData(this.initialLocationCode, 'region');
-    });   
+        if(value.hierarchyLevel != 0)
+          self.locationFieldNameList.push(value.hierarchyLevelName);          
+      });  
+      for(let value of this.locationFieldNameList) {
+        self.dynamicDropDown[value] = []; 
+        self.dynamicFieldValue[value] = "";
+      }
+      self.loadLocationDataDynamically("", 0);
+      self.loadLocationData(this.initialLocationCode, 'region');     
+    });      
   }
 
   getRegistrationCenterTypes() {
@@ -486,7 +517,6 @@ export class CreateComponent {
   }
 
   calculateWorkingHours() {
-    console.log("calculateWorkingHours>>>>");
     if (
       this.primaryForm.controls.startTime.value &&
       this.primaryForm.controls.endTime.value

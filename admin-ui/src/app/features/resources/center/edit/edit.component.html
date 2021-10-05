@@ -387,7 +387,18 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div class="flex-display">
+            <div>
+              <mat-form-field *ngFor="let fieldName of locationFieldNameList; let i = index; let odd = odd" [ngClass]="odd ? 'right-sizing-container' : 'left-sizing-container'">
+                <mat-label>{{ fieldName }}</mat-label>
+                <mat-select [value]="dynamicFieldValue[fieldName]" id="{{fieldName}}" (selectionChange)="
+                    loadLocationDataDynamically($event, i);">
+                  <mat-option *ngFor="let data of dynamicDropDown[fieldName]" [value]="data.code">
+                    {{ data.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- <div class="flex-display">
               <mat-form-field *ngIf="lessThanEqual(locCode, 1)">
                 <mat-label>{{ "center.region" | translate }}</mat-label>
                 <mat-select formControlName="region" (selectionChange)="
@@ -454,9 +465,9 @@
                   {{ "center.validationMessages.laa.required" | translate }}
                 </mat-error>
               </mat-form-field>
-            </div>
+            </div> -->
             <div class="flex-display">
-              <mat-form-field *ngIf="lessThanEqual(locCode, 5)">
+              <!-- <mat-form-field *ngIf="lessThanEqual(locCode, 5)">
                 <mat-label>{{ "center.postal-code" | translate }}</mat-label>
                 <mat-select formControlName="postalCode">
                   <mat-option *ngFor="let data of dropDownValues.postalCode.primary" [value]="data.code">
@@ -471,7 +482,7 @@
                   "center.validationMessages.postalCode.required" | translate
                   }}
                 </mat-error>
-              </mat-form-field>
+              </mat-form-field> -->
               <mat-form-field>
                 <mat-label>{{ "center.zone" | translate }}</mat-label>
                 <mat-select formControlName="zone">
