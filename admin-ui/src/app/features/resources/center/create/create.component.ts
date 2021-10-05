@@ -352,6 +352,7 @@ export class CreateComponent {
   }
 
   loadLocationData(locationCode: string, fieldName: string) {
+    console.log("this.locationFieldNameList>>>"+this.locationFieldNameList);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
     }
