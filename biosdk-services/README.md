@@ -71,3 +71,8 @@ http://{host}:9099/biosdk-service/swagger-ui.html
 
 In case of localhost:
 http://localhost:9099/biosdk-service/swagger-ui.html
+```
+
+## Specifications
+
+### Spec 1.0
