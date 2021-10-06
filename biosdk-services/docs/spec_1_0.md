@@ -24,56 +24,36 @@ Method: POST
 Request:
 ```json
 {
-  "version": "<version of the services>",
-  "request": "base64 encoded(initParams)"
+    "version": "<version of the services>",
+    "request": "base64 encoded(initParams)"
 }
 ```
 
 initParams:
 ```json
 {
-  "parameter1": "val1",
-  "parameter2": "val2"
+    "parameter1": "val1",
+    "parameter2": "val2"
 }
 ```
 
 Response:
 ```json
 {
-  "version": "1.0",
-  "responsetime": "2021-03-30T08:43:17.707Z",
-  "response": {
-    "apiVersion": "0.9",
-    "sdkVersion": "sample",
-    "supportedModalities": [
-      "FINGER",
-      "FACE",
-      "IRIS"
-    ],
-    "supportedMethods": {
-      "EXTRACT": [
-        "FINGER",
-        "FACE",
-        "IRIS"
-      ],
-      "QUALITY_CHECK": [
-        "FINGER",
-        "FACE",
-        "IRIS"
-      ],
-      "MATCH": [
-        "FINGER",
-        "FACE",
-        "IRIS"
-      ]
+    "version": "1.0",
+    "responsetime": "2021-03-30T08:43:17.707Z",
+    "response": {
+        "apiVersion": "API version",
+        "sdkVersion": "SDK version",
+        "supportedModalities": ["${list of supported modalities}"],
+        "supportedMethods": ["${list of supported methods per modality}"],
+        "otherInfo": {},
+        "productOwner": {
+            "organization": "Organisation name",
+            "type": "organisation type"
+        }
     },
-    "otherInfo": {},
-    "productOwner": {
-      "organization": "sample",
-      "type": "sample"
-    }
-  },
-  "errors": []
+    "errors": []
 }
 ```
 
@@ -86,92 +66,41 @@ Method: POST
 Request:
 ```json
 {
-  "version": "<version of the services>",
-  "request": "base64 encoded(checkQualityBody)"
+    "version": "<version of the services>",
+    "request": "base64 encoded(checkQualityBody)"
 }
 ```
 
 checkQualityBody:
 ```json
 {
-  "sample": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "modalitiesToCheck": [
-    "FACE",
-    "FINGER",
-    "IRIS"
-  ],
-  "flags": {}
+    "sample": "${BiometricRecord}",
+    "modalitiesToCheck": ["${list of modalities to check}"],
+    "flags": {}
 }
 ```
 
 Response:
 ```json
 {
-  "version": "x.x.x",
-  "responsetime": "2021-03-30T08:43:17.707Z",
-  "response": {
-    "scores": {
-      "Finger": {
-        "score": 0.0,
-        "errors": [],
+    "version": "x.x.x",
+    "responsetime": "2021-03-30T08:43:17.707Z",
+    "response": {
+        "scores": {
+            "Finger": {
+                "score": 0.0,
+                "errors": [],
+                "analyticsInfo": {}
+            },
+            "Face": {
+                "score": 0.0,
+                "errors": [],
+                "analyticsInfo": {}
+            }
+        },
         "analyticsInfo": {}
-      },
-      "Face": {
-        "score": 0.0,
-        "errors": [],
-        "analyticsInfo": {}
-      },
-      "sample": "sample"
     },
-    "analyticsInfo": {}
-  },
-  "errors": null
+    "errors": null
 }
 ```
 
@@ -184,216 +113,28 @@ Method: POST
 Request:
 ```json
 {
-  "version": "<version of the services>",
-  "request": "base64 encoded(matchBody)"
+    "version": "<version of the services>",
+    "request": "base64 encoded(matchBody)"
 }
 ```
 
 matchBody:
 ```json
 {
-  "sample": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "gallery": [
-    {
-      "version": {
-        "major": 1,
-        "minor": 1
-      },
-      "cbeffversion": {
-        "major": 1,
-        "minor": 1
-      },
-      "birInfo": {
-        "creator": null,
-        "index": null,
-        "payload": null,
-        "integrity": null,
-        "creationDate": null,
-        "notValidBefore": null,
-        "notValidAfter": null
-      },
-      "segments": [
-        {
-          "version": {
-            "major": 1,
-            "minor": 1
-          },
-          "cbeffversion": {
-            "major": 1,
-            "minor": 1
-          },
-          "birInfo": {
-            "creator": null,
-            "index": null,
-            "payload": null,
-            "integrity": null,
-            "creationDate": null,
-            "notValidBefore": null,
-            "notValidAfter": null
-          },
-          "bdbInfo": null,
-          "bdb": null,
-          "sb": null,
-          "sbInfo": {
-            "format": null
-          },
-          "others": null
-        }
-      ]
-    },
-    {
-      "version": {
-        "major": 1,
-        "minor": 1
-      },
-      "cbeffversion": {
-        "major": 1,
-        "minor": 1
-      },
-      "birInfo": {
-        "creator": null,
-        "index": null,
-        "payload": null,
-        "integrity": null,
-        "creationDate": null,
-        "notValidBefore": null,
-        "notValidAfter": null
-      },
-      "segments": [
-        {
-          "version": {
-            "major": 1,
-            "minor": 1
-          },
-          "cbeffversion": {
-            "major": 1,
-            "minor": 1
-          },
-          "birInfo": {
-            "creator": null,
-            "index": null,
-            "payload": null,
-            "integrity": null,
-            "creationDate": null,
-            "notValidBefore": null,
-            "notValidAfter": null
-          },
-          "bdbInfo": null,
-          "bdb": null,
-          "sb": null,
-          "sbInfo": {
-            "format": null
-          },
-          "others": null
-        }
-      ]
-    }
-  ],
-  "modalitiesToMatch": [
-    "FACE",
-    "FINGER",
-    "IRIS"
-  ],
-  "flags": {}
+    "sample": "${BiometricRecord}",
+    "gallery": ["${List of BiometricRecords}"],
+    "modalitiesToMatch": ["${list of modalities to mach}"],
+    "flags": {}
 }
 ```
 
 Response:
 ```json
 {
-  "version": "x.x.x",
-  "responsetime": "2021-03-30T08:43:17.707Z",
-  "response": [
-    {
-      "galleryIndex": 0,
-      "decisions": {
-        "FACE": {
-          "match": "MATCHED",
-          "errors": [],
-          "analyticsInfo": {}
-        },
-        "FINGER": {
-          "match": "MATCHED",
-          "errors": [],
-          "analyticsInfo": {}
-        },
-        "IRIS": {
-          "match": "MATCHED",
-          "errors": [],
-          "analyticsInfo": {}
-        }
-      },
-      "analyticsInfo": {}
-    },
-    {
-      "galleryIndex": 1,
-      "decisions": {
-        "FACE": {
-          "match": "MATCHED",
-          "errors": [],
-          "analyticsInfo": {}
-        },
-        "FINGER": {
-          "match": "MATCHED",
-          "errors": [],
-          "analyticsInfo": {}
-        },
-        "IRIS": {
-          "match": "MATCHED",
-          "errors": [],
-          "analyticsInfo": {}
-        }
-      },
-      "analyticsInfo": {}
-    }
-  ],
-  "errors": null
+    "version": "x.x.x",
+    "responsetime": "2021-03-30T08:43:17.707Z",
+    "response": "${list of MatchDecisions}",
+    "errors": null
 }
 ```
 
@@ -406,123 +147,27 @@ Method: POST
 Request:
 ```json
 {
-  "version": "<version of the services>",
-  "request": "base64 encoded(extractTemplateBody)"
+    "version": "<version of the services>",
+    "request": "base64 encoded(extractTemplateBody)"
 }
 ```
 
 extractTemplateBody:
 ```json
 {
-  "sample": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "modalitiesToExtract": [
-    "FACE",
-    "FINGER",
-    "IRIS"
-  ],
-  "flags": {}
+    "sample": "${BiometricRecord}",
+    "modalitiesToExtract": ["${list of modalities to extract}"],
+    "flags": {}
 }
 ```
 
 Response:
 ```json
 {
-  "version": "x.x.x",
-  "responsetime": "2021-03-30T08:43:17.707Z",
-  "response": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "errors": null
+    "version": "x.x.x",
+    "responsetime": "2021-03-30T08:43:17.707Z",
+    "response": "${BiometricRecord}",
+    "errors": null
 }
 ```
 
@@ -535,126 +180,30 @@ Method: POST
 Request:
 ```json
 {
-  "version": "<version of the services>",
-  "request": "base64 encoded(convertFormatBody)"
+    "version": "<version of the services>",
+    "request": "base64 encoded(convertFormatBody)"
 }
 ```
 
 convertFormatBody:
 ```json
 {
-  "sample": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "sourceFormat": "sample",
-  "targetFormat": "sample",
-  "sourceParams": {},
-  "targetParams": {},
-  "modalitiesToConvert": [
-    "FACE",
-    "FINGER",
-    "IRIS"
-  ]
+    "sample": "${BiometricRecord}",
+    "sourceFormat": "sample",
+    "targetFormat": "sample",
+    "sourceParams": {},
+    "targetParams": {},
+    "modalitiesToConvert": ["${list of modalities to convert}"]
 }
 ```
 
 Response:
 ```json
 {
-  "version": "x.x.x",
-  "responsetime": "2021-03-30T08:43:17.707Z",
-  "response": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "errors": null
+    "version": "x.x.x",
+    "responsetime": "2021-03-30T08:43:17.707Z",
+    "response": "${BiometricRecord}",
+    "errors": null
 }
 ```
 
@@ -667,125 +216,110 @@ Method: POST
 Request:
 ```json
 {
-  "version": "<version of the services>",
-  "request": "base64 encoded(segmentBody)"
+    "version": "<version of the services>",
+    "request": "base64 encoded(segmentBody)"
 }
 ```
 
 segmentBody:
 ```json
 {
-  "sample": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "modalitiesToSegment": [
-    "FACE",
-    "FINGER",
-    "IRIS"
-  ],
-  "flags": {}
+    "sample": "${BiometricRecord}",
+    "modalitiesToSegment": ["${list of modalities to segment}"],
+    "flags": {}
 }
 ```
 
 Response:
 ```json
 {
-  "version": "x.x.x",
-  "responsetime": "2021-03-30T08:43:17.707Z",
-  "response": {
-    "version": {
-      "major": 1,
-      "minor": 1
-    },
-    "cbeffversion": {
-      "major": 1,
-      "minor": 1
-    },
-    "birInfo": {
-      "creator": null,
-      "index": null,
-      "payload": null,
-      "integrity": null,
-      "creationDate": null,
-      "notValidBefore": null,
-      "notValidAfter": null
-    },
-    "segments": [
-      {
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "cbeffversion": {
-          "major": 1,
-          "minor": 1
-        },
-        "birInfo": {
-          "creator": null,
-          "index": null,
-          "payload": null,
-          "integrity": null,
-          "creationDate": null,
-          "notValidBefore": null,
-          "notValidAfter": null
-        },
-        "bdbInfo": null,
-        "bdb": null,
-        "sb": null,
-        "sbInfo": {
-          "format": null
-        },
-        "others": null
-      }
-    ]
-  },
-  "errors": null
+    "version": "x.x.x",
+    "responsetime": "2021-03-30T08:43:17.707Z",
+    "response": "${BiometricRecord}",
+    "errors": null
 }
 ```
+
+## Appendix
+Below are sample JSON structure for the variables used in above APIs. For more info on possibles values of keys, refer [Java API specs](https://docs.mosip.io/platform/apis/biometric-sdk-api-specification#appendix-a-java-api-specifications).
+
+BiometricRecord (sample):
+```json
+{
+    "version": {
+        "major": 1,
+        "minor": 1
+    },
+    "cbeffversion": {
+        "major": 1,
+        "minor": 1
+    },
+    "birInfo": {
+        "integrity": false
+    },
+    "segments": [
+        {
+            "version": {
+                "major": 1,
+                "minor": 1
+            },
+            "cbeffversion": {
+                "major": 1,
+                "minor": 1
+            },
+            "birInfo": {
+                "integrity": false
+            },
+            "bdbInfo": {
+                "format": {
+                    "organization": "Mosip",
+                    "type": "7"
+                },
+                "creationDate": "2021-06-27T13:40:06.211Z",
+                "type": ["Finger"],
+                "subtype": ["Right MiddleFinger"],
+                "level": "Raw",
+                "purpose": "Enroll",
+                "quality": {
+                    "algorithm": {
+                        "organization": "HMAC",
+                        "type": "SHA-256"
+                    },
+                    "score": 100
+                }               
+            },
+            "bdb": "RklSAD..."
+        }
+    ]
+}
+```
+
+MatchDecision (sample):
+```json
+{
+    "galleryIndex": "gallery index",
+    "decisions": {
+        "FACE": {
+            "match": "MATCHED",
+            "errors": [],
+            "analyticsInfo": {}
+        },
+        "FINGER": {
+            "match": "MATCHED",
+            "errors": [],
+            "analyticsInfo": {}
+        },
+        "IRIS": {
+            "match": "NOT_MATCHED",
+            "errors": [],
+            "analyticsInfo": {}
+        }
+    },
+    "analyticsInfo": {}
+}
+```
+
+
 
 ## Security
 
