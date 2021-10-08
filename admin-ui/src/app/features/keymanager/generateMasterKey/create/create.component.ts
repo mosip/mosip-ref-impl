@@ -105,7 +105,7 @@ export class CreateComponent {
     let data = {};
     let self = this;
     let displaycert = "";
-    if(response.response.status == "FAILED"){
+    if(response.errors){
       data = {
         case: 'MESSAGE',
         title: this.popupMessages.popup2.title,
