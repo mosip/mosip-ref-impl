@@ -9,5 +9,5 @@ RUN cp -R ./theme/base /opt/jboss/keycloak/themes
 
 ADD --chown=jboss:root ./standalone/ ./standalone
 
-RUN cp -R ./standalone/deployments /opt/jboss/keycloak/standalone/deployments
+RUN cp -R ./standalone/deployments/* /opt/jboss/keycloak/standalone/deployments
 
