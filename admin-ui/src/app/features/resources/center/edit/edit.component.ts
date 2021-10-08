@@ -964,7 +964,8 @@ export class EditComponent {
     self.dataStorageService.getLocationHierarchyLevels(self.primaryLang).subscribe(response => {
       response.response.locationHierarchyLevels.forEach(function (value) {
         if(value.hierarchyLevel != 0)
-          self.locationFieldNameList.push(value.hierarchyLevelName);          
+          if(value.hierarchyLevel <= self.locCode)
+            self.locationFieldNameList.push(value.hierarchyLevelName);          
       });  
       for(let value of self.locationFieldNameList) {
         self.dynamicDropDown[value] = []; 

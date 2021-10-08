@@ -479,7 +479,8 @@ export class CreateComponent {
     this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
       response.response.locationHierarchyLevels.forEach(function (value) {
         if(value.hierarchyLevel != 0)
-          self.locationFieldNameList.push(value.hierarchyLevelName);          
+          if(value.hierarchyLevel <= self.locCode)          
+            self.locationFieldNameList.push(value.hierarchyLevelName);          
       });  
       for(let value of this.locationFieldNameList) {
         self.dynamicDropDown[value] = []; 
