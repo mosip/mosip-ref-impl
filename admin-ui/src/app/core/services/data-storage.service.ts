@@ -150,7 +150,7 @@ export class DataStorageService {
   }
 
   getDevicesData(request: RequestModel): Observable<any> {
-    delete request['request']['languageCode'];    
+    //delete request['request']['languageCode'];    
     return this.http.post(this.BASE_URL + appConstants.URL.devices, request);
   }
 
@@ -180,7 +180,7 @@ export class DataStorageService {
   }
 
   getMachinesData(request: RequestModel): Observable<any> {
-    delete request['request']['languageCode'];
+    //delete request['request']['languageCode'];
     return this.http.post(this.BASE_URL + appConstants.URL.machines, request);
   }
 

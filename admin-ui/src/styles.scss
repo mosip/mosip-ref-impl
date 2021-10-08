@@ -304,3 +304,12 @@ mat-keyboard-container {
 }
 
 .mat-form-field-required-marker { color: red }
+
+#flex-single-view .flex-body .forms-container .primary-form .left-sizing-container{
+  width: 45% !important;
+}
+
+#flex-single-view .flex-body .forms-container .primary-form .right-sizing-container{
+  padding-left:10rem !important;
+  width: 55% !important;
+}
