@@ -44,7 +44,7 @@
 						name="user.attributes.partnerType"
 						value="${(register.formData['user.attributes.partnerType']!'')}">
 							<option value="DEVICE_PROVIDER" selected>Device Provider</option>
-							<option value="FTM">FTM</option>
+							<option value="FTM_PROVIDER">FTM Provider</option>
 							<option value="AUTH_PARTNER">Authentication Partner</option>
 							<option value="CREDENTIAL_PARTNER">Credential Partner or ISP</option>
 					</select>
