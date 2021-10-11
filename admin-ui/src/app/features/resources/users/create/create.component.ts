@@ -70,10 +70,12 @@ export class CreateComponent{
     this.primaryLang = this.headerService.getUserPreferredLanguage();
     translateService.use(this.primaryLang);
     this.isPrimaryLangRTL = false;
-    let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
-    let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
-    if (filteredList.length > 0) {
-      this.isPrimaryLangRTL = true;
+    if(this.appConfigService.getConfig()['rightToLeftOrientation']){
+      let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
+      let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
+      if (filteredList.length > 0) {
+        this.isPrimaryLangRTL = true;
+      }  
     }
   }
 
