@@ -99,6 +99,7 @@ export class CreateComponent {
   showMessage(response){
     let data = {};
     let self = this;
+    let displaycert = "";
     if(response.errors){
       data = {
         case: 'MESSAGE',
@@ -106,11 +107,16 @@ export class CreateComponent {
         message: this.serverError[response.errors[0].errorCode],
         btnTxt: this.popupMessages.popup2.btnTxt
       };
-    }else{
+    }else{      
+      if(response.response.certificate){
+        displaycert = response.response.certificate;
+      }else if(response.response.certSignRequest){
+        displaycert = response.response.certSignRequest;
+      }
       data = {
         case: 'MESSAGE',
         title: this.popupMessages.popup3.title,
-        message: response.response.status,
+        message: displaycert,
         btnTxt: this.popupMessages.popup3.btnTxt
       };
     }
