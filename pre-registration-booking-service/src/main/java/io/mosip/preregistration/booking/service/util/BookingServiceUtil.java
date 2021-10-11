@@ -489,7 +489,8 @@ public class BookingServiceUtil {
 			BookingRequestDTO bookingRequestDTO) {// should set preid
 		log.info("sessionId", "idType", "id", "In bookingEntitySetter method of Booking Service Util");
 		RegistrationBookingEntity entity = new RegistrationBookingEntity();
-		entity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
+		//entity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
+		entity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
 		entity.setRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
 		entity.setId(UUIDGeneratorUtil.generateId());
 		entity.setLangCode("12L");
