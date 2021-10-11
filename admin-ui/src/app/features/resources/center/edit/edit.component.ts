@@ -164,14 +164,16 @@ export class EditComponent {
     // Set the language orientation LTR or RTL
     this.isPrimaryLangRTL = false;
     this.isSecondaryLangRTL = false;
-    let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
-    let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
-    if (filteredList.length > 0) {
-      this.isPrimaryLangRTL = true;
-    }
-    filteredList = allRTLLangs.filter(langCode => langCode == this.secondaryLang);
-    if (filteredList.length > 0) {
-      this.isSecondaryLangRTL = true;
+    if(this.appConfigService.getConfig()['rightToLeftOrientation']){      
+      let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
+      let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
+      if (filteredList.length > 0) {
+        this.isPrimaryLangRTL = true;
+      }
+      filteredList = allRTLLangs.filter(langCode => langCode == this.secondaryLang);
+      if (filteredList.length > 0) {
+        this.isSecondaryLangRTL = true;
+      }
     }
     //load weekdays label in primary language
     //this.days = appConstants.days[this.primaryLang];
