@@ -646,7 +646,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
+    
     if (event.source.selected) {
+      if(formControlName === "moduleId" && type === "primary")
+        this.primaryData["moduleName"] = event.source.viewValue;
+      if(formControlName === "moduleId" && type === "secondary")
+        this.secondaryData["moduleName"] = event.source.viewValue; 
+
       this.primaryData[formControlName] = event.source.value;
       this.secondaryData[formControlName] = event.source.value; 
     }
