@@ -353,7 +353,7 @@ export class CreateComponent {
     }
   }
 
-  loadLocationData(locationCode: string, fieldName: string) {
+  /*loadLocationData(locationCode: string, fieldName: string) {
     console.log("this.locationFieldNameList>>>"+this.locationFieldNameList);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
@@ -364,7 +364,7 @@ export class CreateComponent {
       this.dropDownValues[fieldName].primary =
         response['response']['locations'];
     });
-  }
+  }*/
 
   loadLocationDataDynamically(event:any, index: any) {
     let locationCode = ""; 
@@ -490,7 +490,7 @@ export class CreateComponent {
         self.dynamicFieldValue[value] = "";
       }
       self.loadLocationDataDynamically("", 0);
-      self.loadLocationData(this.initialLocationCode, 'region');     
+      //self.loadLocationData(this.initialLocationCode, 'region');     
     });      
   }
 
