@@ -2,7 +2,6 @@ package io.mosip.authentication.demo.service;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,6 +52,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -90,7 +90,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.mosip.authentication.demo.dto.AuthRequestDTO;
-import io.mosip.authentication.demo.dto.AuthTypeDTO;
 import io.mosip.authentication.demo.dto.CryptomanagerRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionResponseDto;
@@ -229,7 +228,7 @@ public class IdaController {
 			KeyStoreException, CertificateException, IOException, OperatorCreationException {
 		String partnerId = env.getProperty("partnerId");
 		String organization = env.getProperty("partnerOrg", env.getProperty("partnerId"));
-		String dirPath = getKeysDirPath();
+		String dirPath = keyMgrUtil.getKeysDirPath();
 		// Check if partner private (<partnerId>.p12) key is present in keys dir
 		PrivateKeyEntry keyEntry = keyMgrUtil.getKeyEntry(dirPath, partnerId);
 		if (keyEntry == null) {
@@ -239,10 +238,6 @@ public class IdaController {
 		} else {
 			System.out.println("Parnter keys and certificates already available.");
 		}
-	}
-
-	private String getKeysDirPath() {
-		return new File("." + File.separator + "keys").getAbsolutePath();
 	}
 
 	@FXML
@@ -648,7 +643,7 @@ public class IdaController {
 				for (int i = 0; i < dataList.size(); i++) {
 					Map b = (Map) dataList.get(i);
 					String dataJws = (String) b.get("data");
-					Map dataMap = objectMapper.readValue(CryptoUtil.decodeBase64(dataJws.split("\\.")[1]), Map.class);
+					Map dataMap = objectMapper.readValue(CryptoUtil.decodeURLSafeBase64(dataJws.split("\\.")[1]), Map.class);
 					System.out.println((i + 1) + " Bio-type: " + dataMap.get("bioType") + " Bio-sub-type: "
 							+ dataMap.get("bioSubType"));
 					previousHash = (String) b.get("hash");
@@ -720,7 +715,7 @@ public class IdaController {
 	public String sign(String data, boolean isPayloadRequired)
 			throws KeyManagementException, NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException,
 			CertificateException, OperatorCreationException, JoseException, IOException {
-		return signatureUtil.sign(data, false, true, false, null, getKeysDirPath(), env.getProperty("partnerId"));
+		return signatureUtil.sign(data, false, true, false, null, keyMgrUtil.getKeysDirPath(), env.getProperty("partnerId"));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -730,16 +725,16 @@ public class IdaController {
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 		responsetextField.setText("Preparing Auth Request...");
 		AuthRequestDTO authRequestDTO = new AuthRequestDTO();
-		// Set Auth Type
-		AuthTypeDTO authTypeDTO = new AuthTypeDTO();
-		authTypeDTO.setBio(isBioAuthType());
-		authTypeDTO.setOtp(isOtpAuthType());
-		authTypeDTO.setDemo(isDemoAuthType());
-		authRequestDTO.setRequestedAuth(authTypeDTO);
+//		// Set Auth Type
+//		AuthTypeDTO authTypeDTO = new AuthTypeDTO();
+//		authTypeDTO.setBio(isBioAuthType());
+//		authTypeDTO.setOtp(isOtpAuthType());
+//		authTypeDTO.setDemo(isDemoAuthType());
+//		authRequestDTO.setRequestedAuth(authTypeDTO);
 		// set Individual Id
 		authRequestDTO.setIndividualId(idValue.getText());
 		// Set Individual Id type
-		authRequestDTO.setIndividualIdType(idTypebox.getValue());
+		//authRequestDTO.setIndividualIdType(idTypebox.getValue());
 		authRequestDTO.setEnv(env.getProperty("ida.request.captureFinger.env"));
 		authRequestDTO.setDomainUri(env.getProperty("ida.request.captureFinger.domainUri"));
 		RequestDTO requestDTO = new RequestDTO();
@@ -832,21 +827,22 @@ public class IdaController {
 
 	@SuppressWarnings("rawtypes")
 	private void decryptEkycResponse(ResponseEntity<Map> authResponse) throws Exception {
-		PrivateKeyEntry ekycKey = keyMgrUtil.getKeyEntry(keyMgrUtil.getKeysDirPath(), "ekyc");
+		String partnerId = env.getProperty("partnerId");
+		PrivateKeyEntry ekycKey = keyMgrUtil.getKeyEntry(keyMgrUtil.getKeysDirPath(), partnerId);
 		Map ekycResponseData = (Map) authResponse.getBody().get("response");
 		String identity = (String) ekycResponseData.get("identity");
-		Map<String, String> encryptedData = this.splitEncryptedData(identity);
 		
 		String sessionKey = (String) ekycResponseData.get("sessionKey");
 
 		byte[] encSecKey;
 		byte[] encKycData;
 		if(sessionKey == null) {
-			encSecKey = CryptoUtil.decodeBase64(encryptedData.get("encryptedSessionKey"));
-			encKycData = CryptoUtil.decodeBase64(encryptedData.get("encryptedData"));
+			Map<String, String> encryptedData = this.splitEncryptedData(identity);
+			encSecKey = CryptoUtil.decodeURLSafeBase64(encryptedData.get("encryptedSessionKey"));
+			encKycData = CryptoUtil.decodeURLSafeBase64(encryptedData.get("encryptedData"));
 		} else {
-			encSecKey = CryptoUtil.decodeBase64(sessionKey);
-			encKycData = CryptoUtil.decodeBase64(identity);
+			encSecKey = CryptoUtil.decodeURLSafeBase64(sessionKey);
+			encKycData = CryptoUtil.decodeURLSafeBase64(identity);
 		}
 		
 		byte[] decSecKey = decryptSecretKey(ekycKey.getPrivateKey(), encSecKey);
@@ -863,9 +859,9 @@ public class IdaController {
 	}
 	
 	public Map<String, String> splitEncryptedData(@RequestBody String data) {
-		byte[] dataBytes = CryptoUtil.decodeBase64(data);
+		byte[] dataBytes = CryptoUtil.decodeURLSafeBase64(data);
 		byte[][] splits = splitAtFirstOccurance(dataBytes, env.getRequiredProperty("mosip.kernel.data-key-splitter").getBytes());
-		return Map.of("encryptedSessionKey", CryptoUtil.encodeBase64(splits[0]), "encryptedData", CryptoUtil.encodeBase64(splits[1]));
+		return Map.of("encryptedSessionKey", CryptoUtil.encodeToURLSafeBase64(splits[0]), "encryptedData", CryptoUtil.encodeToURLSafeBase64(splits[1]));
 	}
 	
 	private static byte[][] splitAtFirstOccurance(byte[] strBytes, byte[] sepBytes) {
@@ -945,7 +941,7 @@ public class IdaController {
 				secretKey);
 		encryptionResponseDto.setRequestHMAC(Base64.encodeBase64URLSafeString(byteArr));
 
-		String thumbprint = CryptoUtil.encodeBase64(getCertificateThumbprint(certificate));
+		String thumbprint = Hex.encodeHexString(getCertificateThumbprint(certificate));
 		encryptionResponseDto.setThumbprint(thumbprint);
 		return encryptionResponseDto;
 	}

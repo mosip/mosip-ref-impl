@@ -12,9 +12,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class AuthRequestDTO extends BaseAuthRequestDTO {
 
-	/** The value for requestedAuth*/
-	private AuthTypeDTO requestedAuth;
-
 	/** The value for transactionID*/
 	private String transactionID;
 
@@ -32,9 +29,6 @@ public class AuthRequestDTO extends BaseAuthRequestDTO {
 	private String individualId;
 	
 
-	/** The value for individualIdType*/
-	private String individualIdType;
-	
 	/** The value for requestHMAC*/
 	private String requestHMAC;
 	
