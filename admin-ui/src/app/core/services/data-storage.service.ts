@@ -169,7 +169,7 @@ export class DataStorageService {
     if(url === "zoneuser"){
       return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.userId+"/"+ actualData.zoneCode);
     }else{
-      return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.id);
+      return this.http.delete(this.BASE_URL  + appConstants.MASTERDATA_BASE_URL + urlmapping[url] +"/"+ actualData.userId);
     }
     
   }
