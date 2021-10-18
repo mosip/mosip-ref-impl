@@ -192,7 +192,7 @@ export class EditComponent {
         this.popupMessages = response.center.popupMessages;
       });
     //load all the dropdowns    
-    this.loadLocationData(this.initialLocationCode, 'region');  
+    //this.loadLocationData(this.initialLocationCode, 'region');  
     this.getRegistrationCenterTypes();    
     this.getHolidayZoneData();
     this.getProcessingTime();
@@ -584,7 +584,7 @@ export class EditComponent {
     this.commonForm.controls.exceptionalHolidays.setValue(
       commonData.exceptionalHolidayPutPostDto ? [...commonData.exceptionalHolidayPutPostDto] : []);
     //this.commonForm.controls.isActive.setValue(commonData.isActive);
-    this.loadLocationDropDownsForUpdate(commonData);
+    //this.loadLocationDropDownsForUpdate(commonData);
     this.validateAndLoadLunchStartTime();
     this.validateAndLoadLunchEndTime();
   }
@@ -780,7 +780,7 @@ export class EditComponent {
     }
   }
 
-  loadLocationData(locationCode: string, fieldName: string) {
+  /*loadLocationData(locationCode: string, fieldName: string) {
     if (fieldName !== 'region' && !this.disablePrimaryForm) {
       this.resetLocationFields(fieldName);
     }
@@ -790,14 +790,15 @@ export class EditComponent {
         this.dropDownValues[fieldName].primary =
           response['response']['locations'];
       });
-  }
+  }*/
 
-  loadLocationDropDownsDynamicallyForUpdate() {    
-    for (let i = 0; i < this.locationFieldNameList.length; i++) {
-      this.loadLocationDataDynamically({"value":this.data[0].location[i+1]}, i);
-      if(this.data[0])
-        this.dynamicFieldValue[this.locationFieldNameList[i]] = this.data[0].location[i+1];
-    }
+  loadLocationDropDownsDynamicallyForUpdate() {  
+    if(this.locationFieldNameList && this.data[0]) 
+      for (let i = 0; i < this.locationFieldNameList.length; i++) {
+        this.loadLocationDataDynamically({"value":this.data[0].location[i+1]}, i);
+        if(this.data[0])
+          this.dynamicFieldValue[this.locationFieldNameList[i]] = this.data[0].location[i+1];
+      }
   }
 
   loadLocationDataDynamically(event:any, index: any){
@@ -815,7 +816,8 @@ export class EditComponent {
     this.dataStorageService
     .getImmediateChildren(locationCode, this.primaryLang)
     .subscribe(response => {
-      self.dynamicDropDown[fieldName] = response['response']['locations'];
+      if(response['response'])
+        self.dynamicDropDown[fieldName] = response['response']['locations'];
     });    
   }
 
@@ -975,7 +977,7 @@ export class EditComponent {
       }
       self.loadLocationDataDynamically("", 0);
       self.loadLocationDropDownsDynamicallyForUpdate();
-      self.loadLocationData(self.initialLocationCode, 'region');     
+      //self.loadLocationData(self.initialLocationCode, 'region');     
     }); 
   }
 
@@ -1090,7 +1092,7 @@ export class EditComponent {
     this.location.back();
   }
 
-  loadLocationDropDownsForUpdate(data: any) {
+  /*loadLocationDropDownsForUpdate(data: any) {
     if (1 <= this.locCode) {
       this.loadLocationData(this.initialLocationCode, 'region');
     } if(2 <= this.locCode) {
@@ -1102,7 +1104,7 @@ export class EditComponent {
     } if(5 <= this.locCode) {
       this.loadLocationData(data.administrativeZoneCode, 'postalCode');
     }
-  }
+  }*/
 
   scrollPage(
     element: HTMLElement,
