@@ -12,7 +12,7 @@
 -- ------------------------------------------------------------------------------------------
 -- object: archive.otp_transaction | type: TABLE --
 -- DROP TABLE IF EXISTS archive.otp_transaction CASCADE;
-CREATE TABLE archive.otp_transaction(
+CREATE TABLE IF NOT EXISTS archive.otp_transaction(
 	id character varying(36) NOT NULL,
 	ref_id character varying(64) NOT NULL,
 	otp_hash character varying(512) NOT NULL,

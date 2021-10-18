@@ -7,13 +7,14 @@
 -- 
 -- Modified Date        Modified By         	Comments / Remarks
 -- Sept-2021		Chandra Keshav Mishra	Updated as per latest 1.1.5 changes
+-- Oct-2021		Chandra Keshav Moshra	Added IF NOT EXISTS clause.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 
 -- object: archive.uin_biometric_h | type: TABLE --
 -- DROP TABLE IF EXISTS archive.uin_biometric_h CASCADE;
-CREATE TABLE archive.uin_biometric_h(
+CREATE TABLE IF NOT EXISTS archive.uin_biometric_h(
 	uin_ref_id character varying(36) NOT NULL,
 	biometric_file_type character varying(36) NOT NULL,
 	eff_dtimes timestamp NOT NULL,

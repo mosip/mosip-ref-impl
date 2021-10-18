@@ -5,13 +5,14 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Oct-2021		Chandra Keshav Mishra	Added IF NOT EXISTS clause.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 -- object: archive.processed_prereg_list | type: TABLE --
 -- DROP TABLE IF EXISTS archive.processed_prereg_list CASCADE;
-CREATE TABLE archive.processed_prereg_list(
+CREATE TABLE IF NOT EXISTS archive.processed_prereg_list(
 	prereg_id character varying(36) NOT NULL,
 	first_received_dtimes timestamp NOT NULL,
 	status_code character varying(36) NOT NULL,

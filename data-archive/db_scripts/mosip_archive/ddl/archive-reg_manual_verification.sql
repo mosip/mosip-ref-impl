@@ -7,13 +7,14 @@
 -- 
 -- Modified Date        	Modified By         	Comments / Remarks
 -- Sept-2021			Chandra Keshav Mishra	Updated as per latest 1.1.5 changes.
+-- Oct-2021			Chandra Keshav Mishra	added IF NOT EXISTS clause.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 
 -- object: archive.reg_manual_verification | type: TABLE --
 -- DROP TABLE IF EXISTS archive.reg_manual_verification CASCADE;
-CREATE TABLE archive.reg_manual_verification(
+CREATE TABLE IF NOT EXISTS archive.reg_manual_verification(
 	reg_id character varying(39) NOT NULL,
 	matched_ref_id character varying(39) NOT NULL,
 	matched_ref_type character varying(36) NOT NULL,

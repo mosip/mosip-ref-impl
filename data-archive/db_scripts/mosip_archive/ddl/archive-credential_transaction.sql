@@ -6,12 +6,13 @@
 -- Create By   	: Chandra Keshav Mishra
 -- Created Date	: Sept-2021
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Oct-2021		Chandra Keshav Mishra	added IF NOT EXISTS clause
 -- ------------------------------------------------------------------------------------------
 
 -- object: archive.credential_transaction | type: TABLE --
 -- DROP TABLE IF EXISTS archive.credential_transaction CASCADE;
-CREATE TABLE archive.credential_transaction(
+CREATE TABLE IF NOT EXISTS archive.credential_transaction(
 	id character varying(36) NOT NULL,
 	credential_id character varying(36),
 	request character varying,

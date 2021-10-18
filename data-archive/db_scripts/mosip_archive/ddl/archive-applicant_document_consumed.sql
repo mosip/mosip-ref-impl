@@ -7,12 +7,13 @@
 -- 
 -- Modified Date       	Modified By       		Comments / Remarks 
 -- Sept-2021		Chandra Keshav Mishra	 	Updated as per latest 1.1.5 changes.
+-- Oct-2021		Chandra Keshav Mishra		Added IF NOT EXISTS clause
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 -- object: archive.applicant_document_consumed | type: TABLE --
 -- DROP TABLE IF EXISTS archive.applicant_document_consumed CASCADE;
-CREATE TABLE archive.applicant_document_consumed(
+CREATE TABLE IF NOT EXISTS archive.applicant_document_consumed(
 	id character varying(36) NOT NULL,
 	prereg_id character varying(36) NOT NULL,
 	doc_name character varying(128) NOT NULL,
