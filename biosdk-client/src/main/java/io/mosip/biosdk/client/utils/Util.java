@@ -27,14 +27,16 @@ import static io.mosip.biosdk.client.constant.AppConstants.LOGGER_SESSIONID;
 
 public class Util {
 
-    private static final String debugRequestResponse = System.getenv("mosip_biosdk_request_response_debug");
+    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
+
+	private static final String debugRequestResponse = System.getenv("mosip_biosdk_request_response_debug");
 
     private static Logger utilLogger = LoggerConfig.logConfig(Util.class);
 
     public static ResponseEntity<?> restRequest(String url, HttpMethod httpMethodType, MediaType mediaType, Object body,
                                              Map<String, String> headersMap, Class<?> responseClass) {
         ResponseEntity<?> response = null;
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = REST_TEMPLATE;
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
         try {
             HttpHeaders headers = new HttpHeaders();
