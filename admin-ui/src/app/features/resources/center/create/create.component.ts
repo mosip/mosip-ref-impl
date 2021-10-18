@@ -385,7 +385,8 @@ export class CreateComponent {
     this.dataStorageService
     .getImmediateChildren(locationCode, this.primaryLang)
     .subscribe(response => {
-      self.dynamicDropDown[fieldName] = response['response']['locations'];
+      if(response['response'])
+        self.dynamicDropDown[fieldName] = response['response']['locations'];
     });
   }
 
