@@ -16,6 +16,7 @@
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
+		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
 	</properties>
 
 	<dependencies>
