@@ -9,6 +9,7 @@ import * as appConstants from "../../../app.constants";
 import LanguageFactory from "src/assets/i18n";
 import { ConfigService } from "src/app/core/services/config.service";
 import { CodeValueModal } from "src/app/shared/models/demographic-model/code.value.modal";
+import { LocDetailModal } from "src/app/shared/models/loc.detail.modal";
 
 @Component({
   selector: "app-preview",
@@ -40,6 +41,9 @@ export class PreviewComponent implements OnInit {
   identityData = [];
   uiFields = [];
   locationHeirarchy = [];
+  locationHeirarchies = [];
+  primaryLangLocInfo = [];
+  secondaryLangLocInfo = [];
   dynamicFields = [];
   primarydropDownFields = {};
   secondaryDropDownFields = {};
@@ -62,13 +66,15 @@ export class PreviewComponent implements OnInit {
       this.preRegId = param["appId"];
     });
     await this.getIdentityJsonFormat();
-    await this.getResidentDetails();
-    await this.getGenderDetails();
+    // await this.getResidentDetails();
+    // await this.getGenderDetails();
     await this.getUserInfo();
 //     await this.convertLocationCodeToLocationName();
     await this.getUserFiles();
     await this.getDocumentCategories();
     this.previewData = this.user.request.demographicDetails.identity;
+    //console.log("previewData");
+    //console.log(this.previewData);
     this.calculateAge();
     //this.previewData.primaryAddress = this.combineAddress(0);
     //this.previewData.secondaryAddress = this.combineAddress(1);
@@ -84,6 +90,10 @@ export class PreviewComponent implements OnInit {
       }
     });
     this.uiFields = updatedUIFields;
+    //console.log("populateLocationInfoArray");
+    await this.populateLocationInfoArray();
+    //console.log(this.primaryLangLocInfo);
+    //console.log(this.secondaryLangLocInfo);
   }
 
   async getIdentityJsonFormat() {
@@ -94,6 +104,17 @@ export class PreviewComponent implements OnInit {
         this.locationHeirarchy = [
           ...response["response"]["idSchema"]["locationHierarchy"],
         ];
+        let locationHeirarchiesFromJson = [
+          ...response["response"]["idSchema"]["locationHierarchy"],
+        ];
+        if (Array.isArray(locationHeirarchiesFromJson[0])) {
+          this.locationHeirarchies = locationHeirarchiesFromJson;  
+        } else {
+          let hierarchiesArray = [];
+          hierarchiesArray.push(locationHeirarchiesFromJson);
+          this.locationHeirarchies = hierarchiesArray;
+        }
+
         this.identityData.forEach((obj) => {
           if (
             obj.inputRequired === true &&
@@ -101,11 +122,12 @@ export class PreviewComponent implements OnInit {
             !(obj.controlType === "fileupload")
           ) {
             this.uiFields.push(obj);
+            
           }
         });
         this.dynamicFields = this.uiFields.filter(
           (fields) =>
-            fields.controlType === "dropdown" && fields.fieldType === "dynamic"
+             fields.fieldType === "dynamic"
         );
         this.getIntialDropDownArrays();
         this.setDynamicFieldValues();
@@ -116,7 +138,7 @@ export class PreviewComponent implements OnInit {
 
   getIntialDropDownArrays() {
     this.uiFields.forEach((control) => {
-      if (control.controlType === "dropdown") {
+      if (control.controlType === "dropdown" || control.controlType === "button") {
         this.primarydropDownFields[control.id] = [];
         if (this.primaryLanguage != this.secondaryLanguage) {
           this.secondaryDropDownFields[control.id] = [];
@@ -126,45 +148,55 @@ export class PreviewComponent implements OnInit {
   }
 
   private async setDynamicFieldValues() {
-    await this.getDynamicFieldValues(this.primaryLanguage);
-    if (this.primaryLanguage !== this.secondaryLanguage) {
-      await this.getDynamicFieldValues(this.secondaryLanguage);
-    }
+    await this.getDynamicFieldValues();
   }
 
-  getDynamicFieldValues(lang) {
+  getDynamicFieldValues(pageNo = 0) {
+    let pageNumber;
+    if (pageNo > 0) {
+      pageNumber = 0;
+    } else {
+      pageNumber = pageNo;
+    }
     return new Promise((resolve) => {
       this.dataStorageService
-        .getDynamicFieldsandValues(lang)
+        .getDynamicFieldsandValuesForAllLang(pageNumber)
         .subscribe((response) => {
-          console.log(response);
+          //console.log(response);
           let dynamicField = response[appConstants.RESPONSE]["data"];
           this.dynamicFields.forEach((field) => {
+            //console.log(field);
             dynamicField.forEach((res) => {
-              if (
-                field.id === res.name &&
-                res.langCode === this.primaryLanguage
-              ) {
+              // console.log(res);
+              if (field.id === res.name && res.langCode === this.primaryLanguage) {
+                // console.log(res["fieldVal"]);
                 this.filterOnLangCode(
                   this.primaryLanguage,
                   res.name,
                   res["fieldVal"]
                 );
+                //console.log(this.primarydropDownFields);
               }
-              if (this.primaryLanguage !== this.secondaryLanguage) {
-                if (
-                  field.id === res.name &&
-                  res.langCode === this.secondaryLanguage
-                ) {
-                  this.filterOnLangCode(
-                    this.secondaryLanguage,
-                    res.name,
-                    res["fieldVal"]
-                  );
-                }
+              if (
+                field.id === res.name &&
+                res.langCode === this.secondaryLanguage
+              ) {
+                this.filterOnLangCode(
+                  this.secondaryLanguage,
+                  res.name,
+                  res["fieldVal"]
+                );
               }
             });
           });
+          let totalPages = response[appConstants.RESPONSE]["totalPages"];
+          if (totalPages) {
+            totalPages = Number(totalPages);
+          }
+          pageNumber = pageNumber + 1;
+          if (totalPages > pageNumber) {
+            this.getDynamicFieldValues(pageNumber);
+          }
         });
       resolve(true);
     });
@@ -436,6 +468,76 @@ export class PreviewComponent implements OnInit {
       }
     });
     return flag;
+  }
+
+  isThisFieldInLocationHeirarchies = (fieldId) => {
+    let items = this.getLocationHierarchy(fieldId);
+    return items.length > 0 ? true: false;
+  }
+
+  getLocationHierarchy = (fieldId) => {
+    let items = [];
+    this.locationHeirarchies.forEach(locationHeirarchy => {
+      let filteredItems = locationHeirarchy.filter(item => item == fieldId);
+      if (filteredItems.length > 0) {
+        items = locationHeirarchy;
+      }
+    });
+    return items;
+  }
+
+  populateLocationInfoArray = async () => {
+    for await (const control of this.uiFields) {
+      if (control.controlType === "dropdown" && this.isThisFieldInLocationHeirarchies(control.id) 
+      && control.type === 'simpleType') {
+        const locCode = this.previewData[control.id][0].value;
+        if (locCode) {
+          let langCode = this.primaryLanguage;
+          await this.fetchLocationName(locCode, langCode );
+          if (this.primaryLanguage != this.secondaryLanguage) {
+            langCode = this.secondaryLanguage;
+            await this.fetchLocationName(locCode, langCode );
+          }  
+        }    
+      }
+    }    
+  }
+  
+  getLocationName = (locCode: string, langCode: string) => {
+    if (langCode == this.primaryLanguage && this.primaryLangLocInfo) {
+      let filteredArr = this.primaryLangLocInfo.filter(locInfo => locInfo.locCode == locCode && locInfo.langCode == langCode);
+      if (filteredArr.length > 0) {
+        return filteredArr[0].locName;
+      }   
+    }
+    else if (langCode == this.secondaryLanguage && this.secondaryLangLocInfo && this.primaryLanguage != this.secondaryLanguage) {
+      let filteredArr = this.secondaryLangLocInfo.filter(locInfo => locInfo.locCode == locCode && locInfo.langCode == langCode);
+      if (filteredArr.length > 0) {
+        return filteredArr[0].locName;
+      }   
+    }
+  }
+
+  fetchLocationName = async (locCode: string, langCode: string) => {
+    await this.dataStorageService.getLocationInfoForLocCode(locCode, langCode).subscribe((response) => {
+      if (response[appConstants.RESPONSE]) {
+        let locName =
+          response[appConstants.RESPONSE][
+            "name"
+          ];
+          let obj : LocDetailModal = {
+            locCode: locCode,
+            langCode: langCode,
+            locName: locName
+          }
+          if (langCode == this.primaryLanguage) {
+            this.primaryLangLocInfo.push(obj);
+          }
+          else if (langCode == this.secondaryLanguage) {
+            this.secondaryLangLocInfo.push(obj);
+          }  
+      }
+    });
   }
 
   navigateDashboard() {

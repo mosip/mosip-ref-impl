@@ -6,7 +6,7 @@
 
     <artifactId>biosdk-services</artifactId>
     <groupId>io.mosip.biosdk</groupId>
-    <version>1.1.4</version>
+    <version>1.1.5.2</version>
     <name>biosdk-services</name>
 
     <description>Sample implementation of biometrics SDK services</description>
@@ -24,9 +24,9 @@
         <swagger.version>2.9.2</swagger.version>
 
         <!-- Mosip kernel -->
-        <kernel.biometricsdk.version>1.1.4</kernel.biometricsdk.version>
-        <kernel.logger.logback.version>1.1.4</kernel.logger.logback.version>
-        <kernel.core.version>1.1.4</kernel.core.version>
+        <kernel.biometricsdk.version>1.1.5.2</kernel.biometricsdk.version>
+        <kernel.logger.logback.version>1.1.5.2</kernel.logger.logback.version>
+        <kernel.core.version>1.1.5.2</kernel.core.version>
     </properties>
 
     <dependencyManagement>
