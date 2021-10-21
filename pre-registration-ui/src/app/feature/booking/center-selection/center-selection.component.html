@@ -83,7 +83,7 @@
               >
                 <img src="assets\search_grey.png" />
               </button>
-              <button mat-icon-button class="search-cancel-btn" type="button" (click)="setSearchClick(true)">
+              <button mat-icon-button class="search-cancel-btn" type="button" (click)="setSearchClick(true);resetPagination();">
                 <img src="assets\close.png" />
               </button>
             </mat-card>
@@ -99,7 +99,7 @@
           class="center_selection-center-available-text"
         >
           {{ 'centerSelection.text_found' | translate }}
-          {{ REGISTRATION_CENTRES.length }}
+          {{ REGISTRATION_CENTRES.length > this.totalItems ? REGISTRATION_CENTRES.length: this.totalItems }}
           {{ 'centerSelection.text_centers' | translate }}
         </span>
         <span
@@ -171,6 +171,15 @@
           </li>
         </ul>
       </div>
+      <span  *ngIf="this.totalItems !== 0">
+        <mat-paginator 
+          [length]="this.totalItems"
+          [pageSize]="this.pageSize"
+          [pageSizeOptions]="this.pageSizeOptions"
+          (page)="showResults(pageEvent = $event)"
+          >
+        </mat-paginator>
+      </span>
     </div>
 
     <div class="map" *ngIf="showMap">

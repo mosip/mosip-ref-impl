@@ -42,8 +42,7 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationProvider.class);
 
-	@Autowired
-	private RestTemplate restTemplate;
+	private RestTemplate restTemplate = new RestTemplate();
 
 	@Value("${auth.server.admin.validate.url:http://localhost:8091/v1/authmanager/authorize/admin/validateToken}")
 	private String adminValidateUrl;

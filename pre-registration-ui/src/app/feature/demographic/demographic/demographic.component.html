@@ -37,6 +37,37 @@
                 />
               </mat-form-field>
             </ng-container>
+            <ng-container *ngIf="field.controlType === 'checkbox' && field.isVisible == true">
+                <mat-checkbox
+                  class="form_checkBox" 
+                  formControlName="{{ field.id }}"
+                  (change)="showHideFormFields();copyToSecondaryFormNonDropDown(field.id, $event)"
+                  >
+                  <mat-label class="form_checkBox" >{{ field.labelName[primaryLang] }}
+                    <span *ngIf="field.required" class="required-annotation">*</span>
+                  </mat-label>
+                </mat-checkbox>
+            </ng-container>
+            <ng-container *ngIf="field.controlType === 'button' && field.isVisible == true">
+              <mat-label>
+                {{ field.labelName[primaryLang]}}
+                <span *ngIf="field.required" class="required-annotation">*</span>
+              </mat-label>
+              <mat-button-toggle-group 
+                class="btn_grp" 
+                formControlName="{{field.id}}"
+                (change)="
+                    showHideFormFields();
+                    copyDataToSecondaryForm(
+                    field.id,
+                    userForm.get(field.id).value)">
+                <span *ngFor="let dropdown of primarydropDownFields[field.id]">
+                  <mat-button-toggle 
+                    class="btn_grp mat-button-toggle" 
+                    value="{{dropdown.valueCode}}">{{dropdown.valueName}}</mat-button-toggle>
+                </span>
+              </mat-button-toggle-group>          
+            </ng-container>
             <ng-container *ngIf="field.controlType === 'dropdown' && field.isVisible == true">
               <mat-form-field [ngClass]="'dropdown-field'">
                 <mat-label
@@ -117,7 +148,7 @@
                       #dd
                       [value]="date"
                       (change)="showHideFormFields()"
-                      (focusout)="onDOBChange()"
+                      (focusout)="onDOBChange();showHideFormFields();"
                     />
                   </mat-form-field>
                   <mat-form-field>
@@ -126,7 +157,7 @@
                       placeholder="{{ 'demographic.date_mm' | translate }}"
                       [value]="month"
                       #mm
-                      (focusout)="onDOBChange()"
+                      (focusout)="onDOBChange();showHideFormFields();"
                       (change)="showHideFormFields()"
                     />
                   </mat-form-field>
@@ -136,7 +167,7 @@
                       placeholder="{{ 'demographic.date_yyyy' | translate }}"
                       [value]="year"
                       #yyyy
-                      (focusout)="onDOBChange()"
+                      (focusout)="onDOBChange();showHideFormFields();"
                       (change)="showHideFormFields()"
                     />
                   </mat-form-field>
@@ -153,7 +184,7 @@
                       [value]="currentAge"
                       #age
                       (change)="showHideFormFields()"
-                      (focusout)="onAgeChange()"
+                      (focusout)="onAgeChange();showHideFormFields();"
                     />
                   </mat-form-field>
                   <div class="user__age--years">
@@ -222,6 +253,33 @@
                   [readonly]="getReadOnlyfields(field.id)"
                 />
               </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="field.controlType === 'checkbox' && field.isVisible == true">
+              <mat-checkbox
+                class="form_checkBox" 
+                formControlName="{{ field.id }}"
+                [disabled]="true"
+                >
+                <mat-label class="form_checkBox" >{{ field.labelName[secondaryLang] }}
+                  <span *ngIf="field.required" class="required-annotation">*</span>
+                </mat-label>
+              </mat-checkbox>
+            </ng-container>
+            <ng-container *ngIf="field.controlType === 'button' && field.isVisible == true">
+              <mat-label>
+                {{ field.labelName[secondaryLang]}}
+                <span *ngIf="field.required" class="required-annotation">*</span>
+              </mat-label>
+              <mat-button-toggle-group class="btn_grp" formControlName="{{field.id}}">
+                <span *ngFor="let dropdown of secondaryDropDownLables[field.id]">
+                  <mat-button-toggle 
+                    class="btn_grp mat-button-toggle" 
+                    [disabled]="true"
+                    value="{{dropdown.valueCode}}">
+                    {{dropdown.valueName}}
+                  </mat-button-toggle>
+                </span>
+              </mat-button-toggle-group>          
             </ng-container>
             <ng-container *ngIf="field.controlType === 'dropdown' && field.isVisible == true">
               <mat-form-field [ngClass]="'dropdown-field'">

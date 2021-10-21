@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   };
 
   zone: string;
-  appVersion = version;
+  appVersion : "";
   constructor(
     public sideMenuService: SideMenuService,
     private translateService: TranslateService,
@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
   ) {
     // tslint:disable-next-line:no-string-literal
     translateService.use(appConfigService.getConfig()['primaryLangCode']);
+    this.appVersion = appConfigService.getConfig()['version'];
   }
 
   ngOnInit() {

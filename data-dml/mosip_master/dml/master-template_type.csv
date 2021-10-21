@@ -395,3 +395,6 @@ reg-ack-template-part,Modèle d'accusé de réception d'inscription,fra,TRUE,sup
 reg-preview-template-part,Registration Preview Template,eng,TRUE,superadmin,now()
 reg-preview-template-part,نموذج معاينة التسجيل,ara,TRUE,superadmin,now()
 reg-preview-template-part,Modèle d'aperçu d'inscription,fra,TRUE,superadmin,now()
+reg-dashboard-template,Dashboard Template,eng,TRUE,superadmin,now()
+reg-dashboard-template,قالب لوحة القيادة,ara,TRUE,superadmin,now()
+reg-dashboard-template,Modèle de tableau de bord,fra,TRUE,superadmin,now()

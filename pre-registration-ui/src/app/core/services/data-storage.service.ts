@@ -45,7 +45,7 @@ export class DataStorageService {
    * @description This method returns the user details for the given pre-registration id.
    *
    * @param {string} preRegId - pre-registartion-id
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   getUser(preRegId: string) {
@@ -59,11 +59,11 @@ export class DataStorageService {
   }
 
   /**
-   * @description This methos returns the list of available genders
+   * @description This methos returns the list of available genders
    *
    *
-   * @returns an `Observable` of the body as an `Object`
-   * @memberof DataStorageService
+   * @returns an `Observable` of the body as an `Object`
+   * @memberof DataStorageService
    */
   getGenderDetails() {
     const url = this.BASE_URL + this.PRE_REG_URL + '/proxy' + appConstants.APPEND_URL.gender;
@@ -71,11 +71,11 @@ export class DataStorageService {
   }
 
   /**
-   * @description This methos returns the list of available genders
+   * @description This methos returns the list of available genders
    *
    *
-   * @returns an `Observable` of the body as an `Object`
-   * @memberof DataStorageService
+   * @returns an `Observable` of the body as an `Object`
+   * @memberof DataStorageService
    */
   getResidentDetails() {
     const url = this.BASE_URL + this.PRE_REG_URL + '/proxy' + appConstants.APPEND_URL.resident;
@@ -86,7 +86,7 @@ export class DataStorageService {
    * @description This method is responsible for doing the transliteration for a given word.
    *
    * @param {*} request
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   getTransliteration(request: any) {
@@ -111,7 +111,7 @@ export class DataStorageService {
    * @description This method adds the user
    *
    * @param {*} identity `Object`
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   addUser(identity: any) {
@@ -193,6 +193,24 @@ export class DataStorageService {
     );
   }
 
+  getRegistrationCentersByNamePageWise(locType: string, text: string, pageNumber: number, pageSize: number) {
+    let url = this.BASE_URL +
+    this.PRE_REG_URL + '/proxy' +
+    appConstants.APPEND_URL.master_data +
+    appConstants.APPEND_URL.registration_centers_by_name +
+    "page/" +
+    localStorage.getItem("langCode") +
+    "/" +
+    locType +
+    "/" +
+    encodeURIComponent(text) + "/?" +
+    "pageNumber=" + pageNumber + 
+    "&pageSize=" + pageSize +
+    "&orderBy=desc&sortBy=createdDateTime";
+    console.log(url);
+    return this.httpClient.get(url);
+  }
+
   getLocationTypeData() {
     return this.httpClient.get(
       this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
@@ -200,6 +218,16 @@ export class DataStorageService {
         "locations/" +
         localStorage.getItem("langCode")
     );
+  }
+
+  getLocationInfoForLocCode(locCode: string, langCode: string) {
+    let url = this.BASE_URL +  this.PRE_REG_URL + '/proxy' +
+    appConstants.APPEND_URL.master_data +
+    "locations/info/" +
+    locCode + "/" + 
+    langCode;
+    console.log(url);
+    return this.httpClient.get(url);
   }
 
   getLocationsHierarchyByLangCode(langCode: string, locCode: string) {
@@ -367,6 +395,7 @@ export class DataStorageService {
     if (url.charAt(url.length - 1) === "&") {
       url = url.substring(0, url.length - 1);
     }
+    console.log(url);
     return this.httpClient.get(url);
   }
 
@@ -480,7 +509,7 @@ export class DataStorageService {
   /**
    * @description This method is responsible to logout the user and invalidate the token.
    *
-   * @returns an `Observable` of the body as an `Object`
+   * @returns an `Observable` of the body as an `Object`
    * @memberof DataStorageService
    */
   onLogout() {
@@ -534,6 +563,16 @@ export class DataStorageService {
       appConstants.APPEND_URL.master_data +
       `dynamicfields?langCode=${langCode}`;
     console.log(url);
+    return this.httpClient.get(url);
+  }
+
+  getDynamicFieldsandValuesForAllLang(pageNumber: string) {
+    // const url =this.BASE_URL + this.PRE_REG_URL+ 'applications/config';
+    const url =
+      this.BASE_URL + this.PRE_REG_URL + '/proxy' +
+      appConstants.APPEND_URL.master_data +
+      `dynamicfields?pageNumber=${pageNumber}&pageSize=10`;
+    //console.log(url);
     return this.httpClient.get(url);
   }
 
