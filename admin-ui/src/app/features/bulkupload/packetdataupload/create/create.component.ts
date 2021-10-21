@@ -161,10 +161,19 @@ export class CreateComponent {
         };
       }
     }else{
+      let message = "";
+      if(uploadResponse.errors[0].errorCode === "KER-MSD-999"){
+        uploadResponse.errors.forEach((element) => {
+          message = message + element.message.toString() +"\n\n";
+        });
+        message = this.serverError[uploadResponse.errors[0].errorCode] +"\n\n"+ message;
+      }else{
+        message = this.serverError[uploadResponse.errors[0].errorCode];
+      }
       data = {
         case: 'MESSAGE',
         title: this.popUpMessages.popup2.title,
-        message: this.serverError[uploadResponse.errors[0].errorCode],
+        message: message,
         btnTxt: this.popUpMessages.popup2.btnTxt
       };
     }

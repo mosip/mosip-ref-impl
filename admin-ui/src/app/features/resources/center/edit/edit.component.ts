@@ -736,7 +736,14 @@ export class EditComponent {
     if(type === 'create-success' || type === 'update-success'){
       message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
     }else{
-      message = this.serverError[data.errors[0].errorCode];
+      if(data.errors[0].errorCode === "KER-MSD-999"){
+        data.errors.forEach((element) => {
+          message = message + element.message.toString() +"\n\n";
+        });
+        message = this.serverError[data.errors[0].errorCode] +"\n\n"+ message;
+      }else{
+        message = this.serverError[data.errors[0].errorCode];
+      }
     }
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '650px',

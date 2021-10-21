@@ -766,7 +766,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
                       if(this.router.url.split('/')[3] === "dynamicfields"){
                         this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                       }
-                      this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+                      let message = "";
+                      if(updateResponse.errors[0].errorCode === "KER-MSD-999"){
+                        updateResponse.errors.forEach((element) => {
+                          message = message + element.message.toString() +"\n\n";
+                        });
+                        message = this.serverError[updateResponse.errors[0].errorCode] +"\n\n"+ message;
+                      }else{
+                        message = this.serverError[updateResponse.errors[0].errorCode];
+                      }
+                      this.showErrorPopup(message);
                     }
                 });
               }else{
@@ -804,7 +813,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+                    let message = "";
+                    if(updateResponse.errors[0].errorCode === "KER-MSD-999"){
+                      updateResponse.errors.forEach((element) => {
+                        message = message + element.message.toString() +"\n\n";
+                      });
+                      message = this.serverError[updateResponse.errors[0].errorCode] +"\n\n"+ message;
+                    }else{
+                      message = this.serverError[updateResponse.errors[0].errorCode];
+                    }
+                    this.showErrorPopup(message);
                   }
                 });
               }           
@@ -829,7 +847,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
             if(this.router.url.split('/')[3] === "dynamicfields"){
               this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
             }
-            this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+            let message = "";
+            if(updateResponse.errors[0].errorCode === "KER-MSD-999"){
+              updateResponse.errors.forEach((element) => {
+                message = message + element.message.toString() +"\n\n";
+              });
+              message = this.serverError[updateResponse.errors[0].errorCode] +"\n\n"+ message;
+            }else{
+              message = this.serverError[updateResponse.errors[0].errorCode];
+            }
+            this.showErrorPopup(message);
           }
       });
     }else{
@@ -907,7 +934,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+                    let message = "";
+                    if(updateResponse.errors[0].errorCode === "KER-MSD-999"){
+                      updateResponse.errors.forEach((element) => {
+                        message = message + element.message.toString() +"\n\n";
+                      });
+                      message = this.serverError[updateResponse.errors[0].errorCode] +"\n\n"+ message;
+                    }else{
+                      message = this.serverError[updateResponse.errors[0].errorCode];
+                    }
+                    this.showErrorPopup(message);
                   }
                 });
               }else{
@@ -931,12 +967,20 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
                       this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
                     }
-                    this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+                    let message = "";
+                    if(updateResponse.errors[0].errorCode === "KER-MSD-999"){
+                      updateResponse.errors.forEach((element) => {
+                        message = message + element.message.toString() +"\n\n";
+                      });
+                      message = this.serverError[updateResponse.errors[0].errorCode] +"\n\n"+ message;
+                    }else{
+                      message = this.serverError[updateResponse.errors[0].errorCode];
+                    }
+                    this.showErrorPopup(message);
                   }
                 });
               }
             }else{
-              console.log("textToValidate>>>"+textToValidate);
               this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
               let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
                 this.showMessage(url)
@@ -957,7 +1001,16 @@ export class MaterDataCommonBodyComponent implements OnInit {
             if(this.router.url.split('/')[3] === "dynamicfields"){
               this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
             }
-            this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+            let message = "";
+            if(updateResponse.errors[0].errorCode === "KER-MSD-999"){
+              updateResponse.errors.forEach((element) => {
+                message = message + element.message.toString() +"\n\n";
+              });
+              message = this.serverError[updateResponse.errors[0].errorCode] +"\n\n"+ message;
+            }else{
+              message = this.serverError[updateResponse.errors[0].errorCode];
+            }
+            this.showErrorPopup(message);
           }
       });
     }
@@ -979,7 +1032,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
   showErrorPopup(message: string) {
     this.dialog
       .open(DialogComponent, {
-        width: '350px',
+        width: '650px',
         data: {
           case: 'MESSAGE',
           title: this.popupMessages.genericmessage.errorLabel,

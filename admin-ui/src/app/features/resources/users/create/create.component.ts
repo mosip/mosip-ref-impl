@@ -216,7 +216,16 @@ export class CreateComponent{
                       }
                     });
                 } else {
-                  this.showErrorPopup(this.serverError[centerResponse.errors[0].errorCode]);
+                  let message = "";
+                  if(centerResponse.errors[0].errorCode === "KER-MSD-999"){
+                    centerResponse.errors.forEach((element) => {
+                      message = message + element.message.toString() +"\n\n";
+                    });
+                    message = this.serverError[centerResponse.errors[0].errorCode] +"\n\n"+ message;
+                  }else{
+                    message = this.serverError[centerResponse.errors[0].errorCode];
+                  }
+                  this.showErrorPopup(message);
                 }        
             });
           } else {
@@ -228,7 +237,16 @@ export class CreateComponent{
               });
           } 
         } else {
-          this.showErrorPopup(this.serverError[zoneResponse.errors[0].errorCode]);
+          let message = "";
+          if(zoneResponse.errors[0].errorCode === "KER-MSD-999"){
+            zoneResponse.errors.forEach((element) => {
+              message = message + element.message.toString() +"\n\n";
+            });
+            message = this.serverError[zoneResponse.errors[0].errorCode] +"\n\n"+ message;
+          }else{
+            message = this.serverError[zoneResponse.errors[0].errorCode];
+          }
+          this.showErrorPopup(message);
         } 
       });
     }else{
@@ -249,7 +267,16 @@ export class CreateComponent{
                       }                    
                     });
                 } else {
-                  this.showErrorPopup(this.serverError[centerResponse.errors[0].errorCode]);
+                  let message = "";
+                  if(centerResponse.errors[0].errorCode === "KER-MSD-999"){
+                    centerResponse.errors.forEach((element) => {
+                      message = message + element.message.toString() +"\n\n";
+                    });
+                    message = this.serverError[centerResponse.errors[0].errorCode] +"\n\n"+ message;
+                  }else{
+                    message = this.serverError[centerResponse.errors[0].errorCode];
+                  }
+                  this.showErrorPopup(message);
                 }        
             });
           } else {
@@ -261,7 +288,16 @@ export class CreateComponent{
               });
           } 
         } else {
-          this.showErrorPopup(this.serverError[zoneResponse.errors[0].errorCode]);
+          let message = "";
+          if(zoneResponse.errors[0].errorCode === "KER-MSD-999"){
+            zoneResponse.errors.forEach((element) => {
+              message = message + element.message.toString() +"\n\n";
+            });
+            message = this.serverError[zoneResponse.errors[0].errorCode] +"\n\n"+ message;
+          }else{
+            message = this.serverError[zoneResponse.errors[0].errorCode];
+          }
+          this.showErrorPopup(message);
         } 
       });
     }
@@ -292,7 +328,16 @@ export class CreateComponent{
           }
           this.initializeheader();
         } else {
-          this.showErrorPopup(this.serverError[response.errors[0].errorCode]);
+          let message = "";
+          if(response.errors[0].errorCode === "KER-MSD-999"){
+            response.errors.forEach((element) => {
+              message = message + element.message.toString() +"\n\n";
+            });
+            message = this.serverError[response.errors[0].errorCode] +"\n\n"+ message;
+          }else{
+            message = this.serverError[response.errors[0].errorCode];
+          }
+          this.showErrorPopup(message);
         }
       },
       error => this.showErrorPopup("No User Details Found")
