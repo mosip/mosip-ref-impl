@@ -119,6 +119,8 @@ export class CommonService {
         textToDisplay = data.workflowId;
       }else if(url === "zoneuser"){
         textToDisplay = data.userName;
+      }else if(url === "users"){
+        textToDisplay = data.userName;
       }
     }
     const obj = {
@@ -178,6 +180,8 @@ export class CommonService {
       }else if(url === "rid-status"){
         textToDisplay = data.workflowId;
       }else if(url === "zoneuser"){
+        textToDisplay = data.userName;
+      }else if(url === "users"){
         textToDisplay = data.userName;
       }
     }
@@ -551,8 +555,8 @@ export class CommonService {
             dynamicObject = {"id":data.name} 
           }
         }else if(url === "users"){
-          if(data.id){
-            dynamicObject = {"id":data.id} 
+          if(data.userId){
+            dynamicObject = {"id":data.userId} 
           }
         }else if(url === "zoneuser"){
           if(data.userId){
@@ -656,8 +660,8 @@ export class CommonService {
             dynamicObject = {"id":data.name} 
           }        
         }else if(url === "users"){
-          if(data.id){
-            dynamicObject = {"id":data.id} 
+          if(data.userId){
+            dynamicObject = {"id":data.userId} 
           }
         }else if(url === "zoneuser"){
           if(data.userId){

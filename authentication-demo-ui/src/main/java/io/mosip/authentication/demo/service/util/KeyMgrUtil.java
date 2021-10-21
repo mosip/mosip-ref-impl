@@ -70,9 +70,6 @@ import io.mosip.authentication.demo.dto.CertificateChainResponseDto;
 @Component
 public class KeyMgrUtil {
     
-    /** The Constant DOMAIN_URL. */
-    private static final String DOMAIN_URL = "mosip.base.url";
-
 	/** The Constant CERTIFICATE_TYPE. */
 	private static final String CERTIFICATE_TYPE = "X.509";
 
@@ -424,10 +421,9 @@ public class KeyMgrUtil {
      *
      * @return the keys dir path
      */
-    public String getKeysDirPath() {
-    	String domain = environment.getProperty(DOMAIN_URL, "localhost").replace("https://", "").replace("http://", "").replace("/", "");
-		return System.getProperty("java.io.tmpdir") + File.separator + "IDA-" + domain;
-    }
+	public String getKeysDirPath() {
+		return new File("." + File.separator + "keys").getAbsolutePath();
+	}
 
 	/**
 	 * Gets the certificate entry.

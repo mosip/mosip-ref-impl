@@ -646,7 +646,13 @@ export class MaterDataCommonBodyComponent implements OnInit {
   }
 
   captureDropDownValue(event: any, formControlName: string, type: string) {
+    
     if (event.source.selected) {
+      if(formControlName === "moduleId" && type === "primary")
+        this.primaryData["moduleName"] = event.source.viewValue;
+      if(formControlName === "moduleId" && type === "secondary")
+        this.secondaryData["moduleName"] = event.source.viewValue; 
+
       this.primaryData[formControlName] = event.source.value;
       this.secondaryData[formControlName] = event.source.value; 
     }
@@ -733,15 +739,54 @@ export class MaterDataCommonBodyComponent implements OnInit {
               this.secondaryData["code"] = updateResponse.response.code; 
               if(updateResponse.response.id){
                 this.secondaryData["id"] = updateResponse.response.id; 
-              }              
-              let request = new RequestModel(
-                updateResponse.response.code,
-                null,
-                this.secondaryData
-              );
-              this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
+              }  
+              if(!this.secondaryData.createdBy){
+                let request = new RequestModel(
+                  updateResponse.response.code,
+                  null,
+                  this.secondaryData
+                );
+                this.dataStorageService.createMasterData(request).subscribe(updateResponse => {
+                    if (!updateResponse.errors) {
+                      let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
+                      this.showMessage(url)
+                        .afterClosed()
+                        .subscribe(() => {
+                          if(this.router.url.split('/')[3] === "dynamicfields"){
+                            this.router.navigateByUrl(
+                              `admin/masterdata/${this.masterdataType}/`+request.request["name"]+`/view`
+                            );
+                          }else{
+                            this.router.navigateByUrl(
+                              `admin/masterdata/${this.masterdataType}/view`
+                            );
+                          }                        
+                        });
+                    } else {
+                      if(this.router.url.split('/')[3] === "dynamicfields"){
+                        this.primaryData.fieldVal = JSON.stringify(this.primaryData.fieldVal);
+                      }
+                      this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
+                    }
+                });
+              }else{
+                delete this.secondaryData['createdBy'];
+                delete this.secondaryData['createdDateTime'];
+                delete this.secondaryData['updatedBy'];
+                delete this.secondaryData['updatedDateTime'];
+                delete this.secondaryData['isDeleted'];
+                delete this.secondaryData['deletedDateTime'];
+                delete this.secondaryData['deviceTypeName'];
+                delete this.secondaryData['machineTypeName'];
+                delete this.secondaryData['isActive'];
+                let request = new RequestModel(
+                  "",
+                  null,
+                  this.secondaryData
+                );
+                this.dataStorageService.updateData(request).subscribe(updateResponse => {
                   if (!updateResponse.errors) {
-                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;
+                    let url = this.masterDataName+" "+this.popupMessages.genericmessage.updateMessage;
                     this.showMessage(url)
                       .afterClosed()
                       .subscribe(() => {
@@ -753,7 +798,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
                           this.router.navigateByUrl(
                             `admin/masterdata/${this.masterdataType}/view`
                           );
-                        }                        
+                        }
                       });
                   } else {
                     if(this.router.url.split('/')[3] === "dynamicfields"){
@@ -761,7 +806,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
                     }
                     this.showErrorPopup(this.serverError[updateResponse.errors[0].errorCode]);
                   }
-              });
+                });
+              }           
             }else{
               this.primaryData.fieldVal = JSON.stringify(updateResponse.response.fieldVal);
               let url = this.masterDataName+" "+this.popupMessages.genericmessage.createMessage;

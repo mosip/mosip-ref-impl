@@ -43,10 +43,10 @@
 						class="${properties.kcInputClass!}"
 						name="user.attributes.partnerType"
 						value="${(register.formData['user.attributes.partnerType']!'')}">
-							<option value="Device_Provider" selected>Device Provider</option>
-							<option value="FTM">FTM</option>
-							<option value="Auth_Partner">Authentication Partner</option>
-							<option value="Credential_Partner">Credential Partner or ISP</option>
+							<option value="DEVICE_PROVIDER" selected>Device Provider</option>
+							<option value="FTM_PROVIDER">FTM Provider</option>
+							<option value="AUTH_PARTNER">Authentication Partner</option>
+							<option value="CREDENTIAL_PARTNER">Credential Partner or ISP</option>
 					</select>
 				</div>
 			</div>

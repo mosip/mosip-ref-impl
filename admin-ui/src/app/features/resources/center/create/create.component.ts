@@ -108,11 +108,13 @@ export class CreateComponent {
     this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
     this.isPrimaryLangRTL = false;
-    let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
-    let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
-    if (filteredList.length > 0) {
-      this.isPrimaryLangRTL = true;
-    }  
+    if(this.appConfigService.getConfig()['rightToLeftOrientation']){
+      let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
+      let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
+      if (filteredList.length > 0) {
+        this.isPrimaryLangRTL = true;
+      }  
+    }
     this.getLocationHierarchyLevels();  
   }
 
@@ -351,7 +353,7 @@ export class CreateComponent {
     }
   }
 
-  loadLocationData(locationCode: string, fieldName: string) {
+  /*loadLocationData(locationCode: string, fieldName: string) {
     console.log("this.locationFieldNameList>>>"+this.locationFieldNameList);
     if (fieldName !== 'region' && !this.disableForms) {
       this.resetLocationFields(fieldName);
@@ -362,7 +364,7 @@ export class CreateComponent {
       this.dropDownValues[fieldName].primary =
         response['response']['locations'];
     });
-  }
+  }*/
 
   loadLocationDataDynamically(event:any, index: any) {
     let locationCode = ""; 
@@ -383,7 +385,8 @@ export class CreateComponent {
     this.dataStorageService
     .getImmediateChildren(locationCode, this.primaryLang)
     .subscribe(response => {
-      self.dynamicDropDown[fieldName] = response['response']['locations'];
+      if(response['response'])
+        self.dynamicDropDown[fieldName] = response['response']['locations'];
     });
   }
 
@@ -479,14 +482,15 @@ export class CreateComponent {
     this.dataStorageService.getLocationHierarchyLevels(this.primaryLang).subscribe(response => {
       response.response.locationHierarchyLevels.forEach(function (value) {
         if(value.hierarchyLevel != 0)
-          self.locationFieldNameList.push(value.hierarchyLevelName);          
+          if(value.hierarchyLevel <= self.locCode)          
+            self.locationFieldNameList.push(value.hierarchyLevelName);          
       });  
       for(let value of this.locationFieldNameList) {
         self.dynamicDropDown[value] = []; 
         self.dynamicFieldValue[value] = "";
       }
       self.loadLocationDataDynamically("", 0);
-      self.loadLocationData(this.initialLocationCode, 'region');     
+      //self.loadLocationData(this.initialLocationCode, 'region');     
     });      
   }
 
