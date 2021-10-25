@@ -126,10 +126,19 @@ export class CreateComponent {
     let data = {};
     let self = this;
     if(response.errors){
+      let message = "";
+      if(response.errors[0].errorCode === "KER-MSD-999"){
+        response.errors.forEach((element) => {
+          message = message + element.message.toString() +"\n\n";
+        });
+        message = this.serverError[response.errors[0].errorCode] +"\n\n"+ message;
+      }else{
+        message = this.serverError[response.errors[0].errorCode];
+      }
       data = {
         case: 'MESSAGE',
         title: this.popupMessages.popup2.title,
-        message: this.serverError[response.errors[0].errorCode],
+        message: message,
         btnTxt: this.popupMessages.popup2.btnTxt
       };
     }else{
