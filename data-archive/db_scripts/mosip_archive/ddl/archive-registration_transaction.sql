@@ -6,14 +6,15 @@
 -- Created Date	: Dec-2020
 -- 
 -- Modified Date        Modified By         	Comments / Remarks
--- Sept-2021		ChandraKeshav Mishra	updated as per 1.1.5 changes
+-- Sept-2021		Chandra Keshav Mishra	updated as per 1.1.5 changes
+-- Oct-2021		Chandra Keshav Mishra	added IF NOT EXISTS clause for table.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 
 -- object: archive.registration_transaction | type: TABLE --
 -- DROP TABLE IF EXISTS archive.registration_transaction CASCADE;
-CREATE TABLE archive.registration_transaction(
+CREATE TABLE IF NOT EXISTS archive.registration_transaction(
 	id character varying(36) NOT NULL,
 	reg_id character varying(39) NOT NULL,
 	trn_type_code character varying(64) NOT NULL,

@@ -5,13 +5,14 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         		Comments / Remarks
+-- Oct-2021		Chandra Keshav  Mishra		Added IF NOT EXISTS clause
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 -- object: archive.reg_appointment_consumed | type: TABLE --
 -- DROP TABLE IF EXISTS archive.reg_appointment_consumed CASCADE;
-CREATE TABLE archive.reg_appointment_consumed(
+CREATE TABLE IF NOT EXISTS archive.reg_appointment_consumed(
 	id character varying(36) NOT NULL,
 	regcntr_id character varying(10) NOT NULL,
 	prereg_id character varying(36) NOT NULL,

@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS mosip_archive;
+-- DROP DATABASE IF EXISTS mosip_archive;
 CREATE DATABASE mosip_archive
 	ENCODING = 'UTF8'
 	LC_COLLATE = 'en_US.UTF-8'
@@ -13,7 +13,7 @@ COMMENT ON DATABASE mosip_archive IS 'Database to store all archive data, Data i
 \c mosip_archive sysadmin
 
 -- object: archive | type: SCHEMA --
-DROP SCHEMA IF EXISTS archive CASCADE;
+-- DROP SCHEMA IF EXISTS archive CASCADE;
 CREATE SCHEMA archive;
 -- ddl-end --
 ALTER SCHEMA archive OWNER TO sysadmin;

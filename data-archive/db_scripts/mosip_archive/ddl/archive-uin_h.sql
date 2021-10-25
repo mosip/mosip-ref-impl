@@ -7,13 +7,14 @@
 -- 
 -- Modified Date        Modified By         	Comments / Remarks
 -- Sept-2021		Chandra Keshav Mishra	Updated as per latest 1.1.5 changes
+-- Oct-2021		Chandra Keshav Mishra	added IF NOT EXISTS clause.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 
 -- object: archive.uin_h | type: TABLE --
 -- DROP TABLE IF EXISTS archive.uin_h CASCADE;
-CREATE TABLE archive.uin_h(
+CREATE TABLE IF NOT EXISTS archive.uin_h(
 	uin_ref_id character varying(36) NOT NULL,
 	eff_dtimes timestamp NOT NULL,
 	uin character varying(500) NOT NULL,

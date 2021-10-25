@@ -1,17 +1,18 @@
 -- -------------------------------------------------------------------------------------------------
 -- Database Name: mosip_archive
 -- Table Name 	: archive.
--- Purpose    	:   
+-- Purpose    	: Create archival table for applicant demographic.
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Oct-2021		Chandra Keshav Mishra	Added IF NOT EXISTS clause.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 -- object: archive.applicant_demographic_consumed | type: TABLE --
 -- DROP TABLE IF EXISTS archive.applicant_demographic_consumed CASCADE;
-CREATE TABLE archive.applicant_demographic_consumed(
+CREATE TABLE IF NOT EXISTS archive.applicant_demographic_consumed(
 	prereg_id character varying(36) NOT NULL,
 	demog_detail bytea NOT NULL,
 	demog_detail_hash character varying(64) NOT NULL,

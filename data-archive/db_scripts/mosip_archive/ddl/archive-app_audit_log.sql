@@ -5,14 +5,15 @@
 -- Create By   	: Sadanandegowda
 -- Created Date	: Dec-2020
 -- 
--- Modified Date        Modified By         Comments / Remarks
+-- Modified Date        Modified By         	Comments / Remarks
+-- Oct-2021		Chandra Keshav Mishra	Added IF NOT EXISTS clause.
 -- ------------------------------------------------------------------------------------------
 -- 
 -- ------------------------------------------------------------------------------------------
 
 -- object: archive.app_audit_log | type: TABLE --
 -- DROP TABLE IF EXISTS archive.app_audit_log CASCADE;
-CREATE TABLE archive.app_audit_log(
+CREATE TABLE IF NOT EXISTS archive.app_audit_log(
 	log_id character varying(64) NOT NULL,
 	log_dtimes timestamp NOT NULL,
 	log_desc character varying(2048),
