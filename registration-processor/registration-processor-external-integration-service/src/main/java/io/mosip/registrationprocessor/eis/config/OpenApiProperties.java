@@ -12,7 +12,8 @@ import lombok.Data;
 @Data
 public class OpenApiProperties {
     private InfoProperty info;
-    private RegistrationProcessorExternalIntegrationService registrationProcessorExternalIntegrationService;
+    private Service service;
+    private Group group;
 }
 
 @Data
@@ -30,7 +31,7 @@ class LicenseProperty {
 }
 
 @Data
-class RegistrationProcessorExternalIntegrationService {
+class Service {
     private List<Server> servers;
 }
 
@@ -38,4 +39,10 @@ class RegistrationProcessorExternalIntegrationService {
 class Server {
     private String description;
     private String url;
+}
+
+@Data
+class Group {
+    private String name;
+    private List<String> paths;
 }
