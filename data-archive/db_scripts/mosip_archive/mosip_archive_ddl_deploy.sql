@@ -17,3 +17,6 @@
 \ir ddl/archive-uin_h.sql
 \ir ddl/archive-vid.sql
 
+
+\ir ddl/archive-credential_event_store.sql
+
