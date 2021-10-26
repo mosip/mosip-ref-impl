@@ -24,7 +24,7 @@ ARG container_user_gid=1001
 
 # install packages and create user
 RUN apt-get -y update \
-&& apt-get install -y unzip wget \
+&& apt-get install -y unzip wget zip \
 && groupadd -g ${container_user_gid} ${container_user_group} \
 && useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/sh -m ${container_user} \
 && mkdir -p /var/run/nginx /var/tmp/nginx \
@@ -65,11 +65,14 @@ CMD wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-lo
     wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip --compression=none ; \
     wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip -O "${master_template_path}"/master-templates.zip --compression=none ; \
     cd ${entity_spec_path} ; \
-    unzip -o admin-entity-spec-bundle.zip ; \
+    zip -ff admin-entity-spec-bundle.zip --out admin-entity-spec-bundle_fixed.zip ; \
+    unzip -o admin-entity-spec-bundle_fixed.zip ; \
     cd ${i18n_path} ; \
-    unzip -o admin-i18n-bundle.zip ; \
+    zip -ff admin-i18n-bundle.zip --out admin-i18n-bundle_fixed.zip ; \
+    unzip -o admin-i18n-bundle_fixed.zip ; \
     cd ${master_template_path} ; \
-    unzip -o master-templates.zip ; \
+    zip -ff master-templates.zip --out master-templates_fixed.zip ; \
+    unzip -o master-templates_fixed.zip ; \
     nginx ; \
     sleep infinity
 	
