@@ -61,18 +61,18 @@ USER ${container_user_uid}:${container_user_gid}
 EXPOSE 8080
 
 #get the admin i18n bundle zip from artifactory
-CMD wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip --compression=none ; \
-    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip --compression=none ; \
-    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip -O "${master_template_path}"/master-templates.zip --compression=none ; \
+CMD wget -q --show-progress -P "${i18n_path}"/ "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip ; \
+    wget -q --show-progress -P "${entity_spec_path}"/ "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip ; \
+    wget -q --show-progress -P "${master_template_path}"/ "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip ; \
     cd ${entity_spec_path} ; \
-    zip -ff admin-entity-spec-bundle.zip --out admin-entity-spec-bundle_fixed.zip ; \
-    unzip -o admin-entity-spec-bundle_fixed.zip ; \
+    #zip -FF admin-entity-spec-bundle.zip --out admin-entity-spec-bundle_fixed.zip ; \
+    unzip -o admin-entity-spec-bundle.zip ; \
     cd ${i18n_path} ; \
-    zip -ff admin-i18n-bundle.zip --out admin-i18n-bundle_fixed.zip ; \
-    unzip -o admin-i18n-bundle_fixed.zip ; \
+    #zip -FF admin-i18n-bundle.zip --out admin-i18n-bundle_fixed.zip ; \
+    unzip -o admin-i18n-bundle.zip ; \
     cd ${master_template_path} ; \
-    zip -ff master-templates.zip --out master-templates_fixed.zip ; \
-    unzip -o master-templates_fixed.zip ; \
+    #zip -FF master-templates.zip --out master-templates_fixed.zip ; \
+    unzip -o master-templates.zip ; \
     nginx ; \
     sleep infinity
 	
