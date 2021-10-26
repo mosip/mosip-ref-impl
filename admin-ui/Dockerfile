@@ -55,27 +55,36 @@ RUN chown -R ${container_user}:${container_user} ${base_path}/assets/entity-spec
 RUN mkdir -p ${master_template_path} && chown -R ${container_user}:${container_user} ${master_template_path}
 
 
+ADD configure_start.sh configure_start.sh
+
+RUN chmod +x configure_start.sh
+
+RUN chown -R ${container_user}:${container_user} /home/${container_user}
+
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
 
 EXPOSE 8080
 
+ENTRYPOINT [ "./configure_start.sh" ]
+
 #get the admin i18n bundle zip from artifactory
-CMD echo "Downloading i18 bundle" ; \
-    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip ; \
-    echo "Downloading entity spec bundle" ; \
-    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip ; \
-    echo "Downloading templates bundle" ; \
-    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip -O "${master_template_path}"/master-templates.zip ; \
-    cd ${entity_spec_path} ; \
-    #zip -FF admin-entity-spec-bundle.zip --out admin-entity-spec-bundle_fixed.zip ; \
-    unzip -o admin-entity-spec-bundle.zip ; \
-    cd ${i18n_path} ; \
-    #zip -FF admin-i18n-bundle.zip --out admin-i18n-bundle_fixed.zip ; \
-    unzip -o admin-i18n-bundle.zip ; \
-    cd ${master_template_path} ; \
-    #zip -FF master-templates.zip --out master-templates_fixed.zip ; \
-    unzip -o master-templates.zip ; \
+CMD
+#echo "Downloading i18 bundle" ; \
+#    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip ; \
+#    echo "Downloading entity spec bundle" ; \
+#    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip ; \
+#    echo "Downloading templates bundle" ; \
+#    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/master-templates/master-templates.zip -O "${master_template_path}"/master-templates.zip ; \
+#    cd ${entity_spec_path} ; \
+#    #zip -FF admin-entity-spec-bundle.zip --out admin-entity-spec-bundle_fixed.zip ; \
+#    unzip -o admin-entity-spec-bundle.zip ; \
+#    cd ${i18n_path} ; \
+#    #zip -FF admin-i18n-bundle.zip --out admin-i18n-bundle_fixed.zip ; \
+#    unzip -o admin-i18n-bundle.zip ; \
+#    cd ${master_template_path} ; \
+#    #zip -FF master-templates.zip --out master-templates_fixed.zip ; \
+#    unzip -o master-templates.zip ; \
     nginx ; \
     sleep infinity
 	
