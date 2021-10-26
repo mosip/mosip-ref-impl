@@ -10,7 +10,7 @@ wget --no-check-certificate --no-cache --no-cookies $artifactory_url_env/artifac
 
 echo "unzip pre-requisites.."
 chmod 775 $i18n_path/*
-chmod 775 $master-templates/*
+chmod 775 $master_template_path/*
 
 cd $entity_spec_path
 unzip -o admin-entity-spec-bundle.zip
