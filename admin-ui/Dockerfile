@@ -69,8 +69,9 @@ EXPOSE 8080
 ENTRYPOINT [ "./configure_start.sh" ]
 
 #get the admin i18n bundle zip from artifactory
-CMD
-#echo "Downloading i18 bundle" ; \
+CMD echo "starting nginx" ; \
+    nginx ; \
+    sleep infinity
 #    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip ; \
 #    echo "Downloading entity spec bundle" ; \
 #    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip ; \
@@ -85,6 +86,5 @@ CMD
 #    cd ${master_template_path} ; \
 #    #zip -FF master-templates.zip --out master-templates_fixed.zip ; \
 #    unzip -o master-templates.zip ; \
-    nginx ; \
-    sleep infinity
+
 	
