@@ -22,6 +22,12 @@ ARG container_user_uid=1001
 # can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user_gid=1001
 
+# can be passed during Docker build as build time environment for artifactory URL
+ARG artifactory_url
+
+# environment variable to pass artifactory url, at docker runtime
+ENV artifactory_url_env=${artifactory_url}
+
 # install packages and create user
 RUN apt-get -y update \
 && apt-get install -y unzip wget zip \
@@ -40,11 +46,6 @@ ADD ./default.conf /etc/nginx/conf.d/
 ADD ./download.conf /etc/nginx/include/download.conf
 
 ADD dist ${base_path}
-
-# can be passed during Docker build as build time environment for artifactory URL
-ARG artifactory_url
-# environment variable to pass artifactory url, at docker runtime
-ENV artifactory_url_env=${artifactory_url}
 
 # install the needed packages including wget and a unzip library 
 #RUN apt-get update -y && apt-get install -y wget && apt-get install -y unzip
