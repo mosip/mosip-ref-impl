@@ -102,7 +102,7 @@ export class ViewComponent implements OnInit {
     const url = Utils.convertFilterToUrl(filters);
     let currenturl = this.router.url.split('/')[3];
     if(currenturl === "zoneuser"){
-      this.router.navigateByUrl(`admin/resources/zoneusers/view?${url}`);
+      this.router.navigateByUrl(`admin/resources/zoneuser/view?${url}`);
     }else{
       this.router.navigateByUrl(`admin/resources/users/view?${url}`);
     }
