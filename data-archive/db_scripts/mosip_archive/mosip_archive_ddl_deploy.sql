@@ -20,4 +20,5 @@
 
 \ir ddl/archive-credential_event_store.sql
 \ir ddl/archive-applications.sql
+\ir ddl/archive-otp_transaction.sql
 
