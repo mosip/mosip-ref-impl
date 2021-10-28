@@ -130,7 +130,7 @@ public class BookingServiceUtil {
 	@Value("${notification.url}")
 	private String notificationResourseurl;
 
-	@Value("${preregistration.country.specific.zoneId}")
+	@Value("${mosip.notification.timezone}")
 	private String specificZoneId;
 
 	private Logger log = LoggerConfiguration.logConfig(BookingServiceUtil.class);
