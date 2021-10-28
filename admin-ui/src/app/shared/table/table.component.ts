@@ -53,13 +53,10 @@ export class TableComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.tableData = [...this.data];
-    console.log(this.tableData);
-    console.log(this.displayedColumns);
     this.sortStatusArray = [];
     this.lang = this.headerService.getUserPreferredLanguage();
     const route = this.router.url.split('/')[3];
     this.imageSource = appConstants.ListViewIdKeyMapping[`${route}`]['imagePath'];
-    console.log(this.imageSource);
   }
 
   ngOnChanges(): void {
@@ -88,7 +85,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   selectedRow(data: any, specData: any) {
-    console.log("specData>>>"+JSON.stringify(specData));
     let currentRouteType = this.router.url.split('/')[3];
     let id = null;
     if(!currentRouteType.includes("view")){
@@ -121,6 +117,11 @@ export class TableComponent implements OnInit, OnChanges {
         this.router.navigate([
           `${this.currentRoute}/single-view`,
           data[id.idKey] + '$' + data.langCode
+        ]);
+      }else if (currentRouteType.toLowerCase() === 'dynamicfields') {
+        this.router.navigate([
+          `${this.currentRoute}/single-view`,
+          data.fieldVal.code
         ]);
       } else {
         this.router.navigate([

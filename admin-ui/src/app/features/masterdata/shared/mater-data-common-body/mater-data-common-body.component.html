@@ -290,6 +290,7 @@
                           field.label[secondaryLang]
                         }}"
                         [value]="secondaryData[field.name]"
+                        *ngIf="field.name !== 'fieldVal'"
                       />
                     </mat-form-field>
                     <mat-form-field *ngIf="field.showInSingleView === 'true' && field.inputType === 'text' && field.name === 'code' && isCreateForm">
