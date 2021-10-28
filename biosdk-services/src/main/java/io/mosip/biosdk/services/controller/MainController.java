@@ -61,7 +61,8 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.OK).body("Service is running... "+d.toString());
     }
 
-    @PreAuthorize("hasAnyRole('REGISTRATION_PROCESSOR')")
+    //@PreAuthorize("hasAnyRole('REGISTRATION_PROCESSOR')")
+    @PreAuthorize("hasAnyRole(@authorizedRoles.getGetservicestatus())")
     @GetMapping(path = "/s")
     @ApiOperation(value = "Service status 1")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Service is running...") })
