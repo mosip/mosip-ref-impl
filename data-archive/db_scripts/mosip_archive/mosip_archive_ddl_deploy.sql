@@ -19,4 +19,5 @@
 
 
 \ir ddl/archive-credential_event_store.sql
+\ir ddl/archive-applications.sql
 
