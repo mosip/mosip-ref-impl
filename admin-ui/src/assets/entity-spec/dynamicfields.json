@@ -107,7 +107,7 @@
           "hin": "नाम",
           "kan": "ಹೆಸರು"
         }],
-        "fieldName": "name"
+        "fieldName": "code"
       },
       "redirectURL": "",
       "showIn": "Button",
