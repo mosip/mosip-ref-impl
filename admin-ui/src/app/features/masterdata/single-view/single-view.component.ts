@@ -146,15 +146,25 @@ export class SingleViewComponent implements OnDestroy {
 
   getData(language: string, isPrimary: boolean) {
     return new Promise((resolve, reject) => {
-      const filterModel = new FilterModel(
-        this.mapping.idKey,
-        'equals',
-        this.id
-      );
-      this.fetchRequest.filters = [filterModel];
+      let filterModel = null;      
       this.fetchRequest.languageCode = language;
       this.fetchRequest.sort = [];
       this.fetchRequest.pagination = { pageStart: 0, pageFetch: 10 };
+      if(this.mapping.apiName !== "dynamicfields"){
+        filterModel = new FilterModel(
+          this.mapping.idKey,
+          'equals',
+          this.id
+        ); 
+        this.fetchRequest.filters = [filterModel];
+      }else{
+        filterModel = new FilterModel(
+          "valueJson",
+          'contains',
+          this.id
+        );
+        this.fetchRequest.filters = [filterModel];
+      }
       const request = new RequestModel(
         appConstants.registrationCenterCreateId,
         null,

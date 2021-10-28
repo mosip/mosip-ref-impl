@@ -228,9 +228,13 @@ export class CommonService {
         this.router.url.split('/').length - 2
       ]
     });
-    url = url.replace('$id', data[idKey]);
-    if(url.split("/")[3] === "dynamicfields")
+   
+    if(url.split("/")[3] === "dynamicfields"){
+      url = url.replace('$id', data.fieldVal.code);
       url = url.replace('single-view', data["name"]+"/single-view");
+    }else{
+       url = url.replace('$id', data[idKey]);
+     }      
     this.router.navigateByUrl(url + '?editable=true');
   }
 
