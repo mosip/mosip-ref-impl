@@ -229,6 +229,8 @@ export class CommonService {
       ]
     });
     url = url.replace('$id', data[idKey]);
+    if(url.split("/")[3] === "dynamicfields")
+      url = url.replace('single-view', data["name"]+"/single-view");
     this.router.navigateByUrl(url + '?editable=true');
   }
 
