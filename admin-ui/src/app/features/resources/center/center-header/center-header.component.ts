@@ -14,6 +14,7 @@ import { CenterModel } from 'src/app/core/models/center.model';
 import { HeaderService } from 'src/app/core/services/header.service';
 
 import * as appConstants from '../../../../app.constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-center-header',
@@ -22,7 +23,7 @@ import * as appConstants from '../../../../app.constants';
 })
 export class CenterHeaderComponent implements OnInit, OnChanges {
   actionButtonElipses = new Array();
-
+  router;
   lang: string;
 
   @Input() headerData: HeaderModel;
@@ -32,9 +33,12 @@ export class CenterHeaderComponent implements OnInit, OnChanges {
     private dataSerice: DataStorageService,
     private appService: AppConfigService,
     private headerService: HeaderService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private _router: Router
+
   ) {
     this.lang = headerService.getUserPreferredLanguage();
+    this.router = _router.url; 
   }
 
   ngOnInit() {}

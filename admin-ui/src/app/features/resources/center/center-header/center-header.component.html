@@ -7,6 +7,7 @@
       </div>
     </div>
     <div class="item2">
+      <div *ngIf="router.indexOf('create') === -1">
       <h3>{{'center.center-name'|translate}}:&nbsp;<span>{{headerData.name}}</span></h3>
       <p>{{'center.center-id'|translate}}:&nbsp; <span>{{headerData.id}}</span></p>
       <p class="small-text">{{'center.status'|translate}}:&nbsp; <span>{{headerData.isActive | status}}</span></p>
