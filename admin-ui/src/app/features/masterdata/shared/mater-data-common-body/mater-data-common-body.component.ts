@@ -302,15 +302,25 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
   getData(language: string) {
     return new Promise((resolve, reject) => {
-      const filterModel = new FilterModel(
-        this.mapping.idKey,
-        'equals',
-        this.id
-      );
-      this.fetchRequest.filters = [filterModel];
+      let filterModel = null;      
       this.fetchRequest.languageCode = language;
       this.fetchRequest.sort = [];
       this.fetchRequest.pagination = { pageStart: 0, pageFetch: 10 };
+      if(this.mapping.apiName !== "dynamicfields"){
+        filterModel = new FilterModel(
+          this.mapping.idKey,
+          'equals',
+          this.id
+        ); 
+        this.fetchRequest.filters = [filterModel];
+      }else{
+        filterModel = new FilterModel(
+          "valueJson",
+          'contains',
+          this.id
+        );
+        this.fetchRequest.filters = [filterModel];
+      }
       const request = new RequestModel(
         appConstants.registrationCenterCreateId,
         null,
@@ -432,8 +442,8 @@ export class MaterDataCommonBodyComponent implements OnInit {
         this.loadLocationData(this.appConfigService.getConfig()['countryCode']);
       }else if(this.url === "dynamicfields"){
         this.pageName = "Dynamic Field";
-        this.primaryData["code"] = JSON.parse(this.primaryData.fieldVal)["code"];
-        this.primaryData["value"] = JSON.parse(this.primaryData.fieldVal)["value"];
+        this.secondaryData["code"] = this.secondaryData.fieldVal["code"];
+        this.secondaryData["value"] = this.secondaryData.fieldVal["value"];
         this.showPanel(this.pageName);
       }
     }
@@ -737,7 +747,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
           if (!updateResponse.errors) {
             if(textToValidate){
               this.secondaryData["code"] = updateResponse.response.code; 
-              if(updateResponse.response.id){
+              if(updateResponse.response.id && url !== "dynamicfields"){
                 this.secondaryData["id"] = updateResponse.response.id; 
               }  
               if(!this.secondaryData.createdBy){
@@ -901,10 +911,9 @@ export class MaterDataCommonBodyComponent implements OnInit {
           if (!updateResponse.errors) {
             if(textToValidate){
               this.secondaryData["code"] = updateResponse.response.code; 
-              if(updateResponse.response.id){
+              if(updateResponse.response.id && url !== "dynamicfields"){
                 this.secondaryData["id"] = updateResponse.response.id; 
               }
-              console.log("this.saveSecondaryForm>>>"+this.saveSecondaryForm);
               if(this.saveSecondaryForm){
                 this.secondaryData['isActive'] = true;
               }

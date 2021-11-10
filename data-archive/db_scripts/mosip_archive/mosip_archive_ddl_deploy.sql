@@ -17,3 +17,8 @@
 \ir ddl/archive-uin_h.sql
 \ir ddl/archive-vid.sql
 
+
+\ir ddl/archive-credential_event_store.sql
+\ir ddl/archive-applications.sql
+\ir ddl/archive-otp_transaction.sql
+
