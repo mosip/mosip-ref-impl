@@ -7,7 +7,7 @@ ENV i18n_path=${base_path}/assets/i18n
 
 ENV entity_spec_path=${base_path}/assets/entity-spec
 
-ENV master_template_path=${base_path}/master-templates
+ENV master_template_path=${base_path}/templates
 
 
 # can be passed during Docker build as build time environment for github branch to pickup configuration from.
@@ -71,8 +71,6 @@ ENTRYPOINT [ "./configure_start.sh" ]
 
 #get the admin i18n bundle zip from artifactory
 CMD echo "starting nginx" ; \
-    nginx ; \
-    sleep infinity
 #    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-i18n-bundle.zip -O "${i18n_path}"/admin-i18n-bundle.zip ; \
 #    echo "Downloading entity spec bundle" ; \
 #    wget -q --show-progress "${artifactory_url_env}"/artifactory/libs-release-local/i18n/admin-entity-spec-bundle.zip -O "${entity_spec_path}"/admin-entity-spec-bundle.zip ; \
@@ -87,5 +85,7 @@ CMD echo "starting nginx" ; \
 #    cd ${master_template_path} ; \
 #    #zip -FF master-templates.zip --out master-templates_fixed.zip ; \
 #    unzip -o master-templates.zip ; \
+    nginx ; \
+    sleep infinity
 
 	
