@@ -10,10 +10,11 @@
           <div [ngClass]="isPrimaryLangRTL ? 'primary-form-rtl' : 'primary-form'">
             <strong class="title"></strong>
             <br /><br />
-            
+
             <mat-form-field>
               <mat-label>{{'users.title' | translate}}</mat-label>
               <mat-select formControlName="userId" [value]="primaryData.userId" disabled={{disabled}}>
+                <!-- <input [value]="searchTxt" matInput placeholder="search"> -->
                 <mat-option *ngFor="let data of dropDownValues.deviceTypeCode.primary" [value]="data.userId" (onSelectionChange)="captureDropDownValue($event, 'userId')">
                   {{ data.name }}
                 </mat-option>

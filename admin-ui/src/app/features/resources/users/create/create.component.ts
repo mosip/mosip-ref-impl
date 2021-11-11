@@ -25,7 +25,6 @@ import { DeviceModel } from 'src/app/core/models/device.model';
 import { HeaderService } from 'src/app/core/services/header.service';
 import { DeviceService } from 'src/app/core/services/devices.service';
 
-
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -48,6 +47,7 @@ export class CreateComponent{
   pageName = "";
   disabled = true;
   genericmessage:any;
+  searchTxt:any;
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,

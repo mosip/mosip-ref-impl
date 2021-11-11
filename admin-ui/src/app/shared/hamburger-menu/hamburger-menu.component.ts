@@ -51,7 +51,7 @@ export class HamburgerComponent implements OnInit {
   }
 
   onItem() {
-    this.auditService.audit(1, 'ADM-001', 'Logout');
+    //this.auditService.audit(1, 'ADM-001', 'Logout');
     this.logoutService.logout();
   }
 }
