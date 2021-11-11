@@ -101,7 +101,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getGetappointmentavailability())")
-	@GetMapping(path = "/appointment/availability/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/availability/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Fetch availability Data", description = "Fetch availability Data", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Availability details fetched successfully"),
 			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
@@ -125,7 +125,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getPostappointmentpreregistrationid())")
-	@PostMapping(path = "/appointment/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Booking Appointment", description = "Booking Appointment", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Appointment Booked Successfully"),
 			@ApiResponse(responseCode = "201", description = "Created", content = @Content(schema = @Schema(hidden = true))),
@@ -152,7 +152,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getPostappointment())")
-	@PostMapping(path = "/appointment", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Booking Appointment", description = "Booking Appointment", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Appointment Booked Successfully"),
 			@ApiResponse(responseCode = "201", description = "Created", content = @Content(schema = @Schema(hidden = true))),
@@ -179,7 +179,7 @@ public class BookingController {
 
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL','REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN','PRE_REGISTRATION_ADMIN')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getGetappointmentpreregistrationid())")
-	@GetMapping(path = "/appointment/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Fetch Appointment details", description = "Fetch Appointment details", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Appointment details fetched Successfully"),
 			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
@@ -204,7 +204,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getPutappointmentpreregistrationid())")
-	@PutMapping(path = "/appointment/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Cancel an booked appointment", description = "Cancel an booked appointment", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Appointment canceled successfully"),
 			@ApiResponse(responseCode = "201", description = "Created", content = @Content(schema = @Schema(hidden = true))),
@@ -229,7 +229,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('PRE_REGISTRATION_ADMIN','REGISTRATION_SUPERVISOR')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getPutbatchappointmentpreregistrationid())")
-	@PutMapping(path = "/batch/appointment/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/batch/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Cancel an booked appointment", description = "Cancel an booked appointment", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Appointment canceled successfully"),
 			@ApiResponse(responseCode = "201", description = "Created", content = @Content(schema = @Schema(hidden = true))),
@@ -253,7 +253,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getDeleteappointment())")
-	@DeleteMapping(path = "/appointment", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Discard Booking", description = "Discard Booking", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deletion of Booking is successfully"),
 			@ApiResponse(responseCode = "201", description = "Created", content = @Content(schema = @Schema(hidden = true))),
@@ -279,7 +279,7 @@ public class BookingController {
 	 */	
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL','REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getGetappointmentpreregistrationidregistrationcenterid())")
-	@GetMapping(path = "/appointment/preRegistrationId/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/preRegistrationId/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get Pre-Registartion ids By Booked Date Time And Registration center id",
 			description = "Get Pre-Registartion ids By Booked Date Time And Registration center id", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Booked data successfully retrieved"),
@@ -308,7 +308,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL','REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getGetappointmentregistrationcenterid())")
-	@GetMapping(path = "/appointment/registrationCenterId/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/registrationCenterId/{registrationCenterId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get Pre-Registartion ids By Booked Date Time And Registration center id",
 			description = "Get Pre-Registartion ids By Booked Date Time And Registration center id", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Booked data successfully retrieved"),
