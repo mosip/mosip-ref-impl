@@ -15,8 +15,6 @@ import lombok.Setter;
 @Setter
 public class AuthorizedRolesDTO {
 
-    ##Booking controller
     private List<String> getservicestatus;
     
-}
 }

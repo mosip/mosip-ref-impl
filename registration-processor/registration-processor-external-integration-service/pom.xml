@@ -18,6 +18,7 @@
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
 		<springdoc.version>1.5.10</springdoc.version>
+		<sonar.skip>true</sonar.skip>
 	</properties>
 
 	<dependencies>
