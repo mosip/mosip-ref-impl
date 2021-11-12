@@ -204,7 +204,7 @@ public class BookingController {
 	 */
 	//@PreAuthorize("hasAnyRole('INDIVIDUAL')")
 	@PreAuthorize("hasAnyRole(@authorizedRoles.getPutappointmentpreregistrationid())")
-	@PutMapping(path = "/appointment/appointment{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/appointment/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Cancel an booked appointment", description = "Cancel an booked appointment", tags = "booking-controller")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Appointment canceled successfully"),
 			@ApiResponse(responseCode = "201", description = "Created", content = @Content(schema = @Schema(hidden = true))),
