@@ -17,6 +17,7 @@
   ></app-toolbar>
   <app-table
     *ngIf="users && displayedColumns && actionButtons"
+    [isUser]="isUserMatMenu"
     [data]="users"
     [displayedColumns]="displayedColumns"
     [buttonList]="actionButtons"

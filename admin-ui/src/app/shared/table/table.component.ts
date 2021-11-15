@@ -29,7 +29,8 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() showRadioButton: boolean = false;
   @Output() sort = new EventEmitter();
   @Output() selectedCenterDetail = new EventEmitter();
-  
+  @Input() isUser = true;
+
   tableData = [];
   columnsOfTableData = [];
   sortStatusArray: string[] = [];
@@ -49,7 +50,8 @@ export class TableComponent implements OnInit, OnChanges {
     private auditService: AuditService
   ) {
     let lang = headerService.getUserPreferredLanguage();
-   translate.use(lang);
+    translate.use(lang);
+
   }
   ngOnInit(): void {
     this.tableData = [...this.data];
@@ -87,17 +89,17 @@ export class TableComponent implements OnInit, OnChanges {
   selectedRow(data: any, specData: any) {
     let currentRouteType = this.router.url.split('/')[3];
     let id = null;
-    if(!currentRouteType.includes("view")){
+    if (!currentRouteType.includes("view")) {
       id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
-    }else{
+    } else {
       currentRouteType = this.router.url.split('/')[2];
       id = appConstants.ListViewIdKeyMapping[`${currentRouteType}`];
     }
     if (specData.callBackFunction && specData.callBackFunction !== '') {
       if (currentRouteType.toLowerCase() === 'blocklisted-words') {
-        this.commonService[specData.callBackFunction]({...data}, specData.redirectURL +"$"+data.langCode, id.idKey);
-      }else{
-        this.commonService[specData.callBackFunction]({...data}, specData.redirectURL, id.idKey);
+        this.commonService[specData.callBackFunction]({ ...data }, specData.redirectURL + "$" + data.langCode, id.idKey);
+      } else {
+        this.commonService[specData.callBackFunction]({ ...data }, specData.redirectURL, id.idKey);
       }
     }
   }
@@ -118,7 +120,7 @@ export class TableComponent implements OnInit, OnChanges {
           `${this.currentRoute}/single-view`,
           data[id.idKey] + '$' + data.langCode
         ]);
-      }else if (currentRouteType.toLowerCase() === 'dynamicfields') {
+      } else if (currentRouteType.toLowerCase() === 'dynamicfields') {
         this.router.navigate([
           `${this.currentRoute}/single-view`,
           data.fieldVal.code
@@ -162,22 +164,48 @@ export class TableComponent implements OnInit, OnChanges {
 
   ellipsisAction(data) {
     if (data.isActive === true) {
-      this.ellipsisList = [...this.buttonList];
-      this.ellipsisList.filter(values => {
-        if (values.buttonName.eng === 'Activate') {
-          const index = this.ellipsisList.indexOf(values);
-          this.ellipsisList.splice(index, 1);
-        }
-      });
+      // this.ellipsisList = [...this.buttonList];
+      this.ellipsisList = JSON.parse(JSON.stringify(this.buttonList));
+      if (!this.isUser) {
+        // user mapping center menu options
+        this.ellipsisList.filter((values, i) => {
+          values.filter(value => {
+            if (value.buttonName.eng === 'Activate') {
+              const index = this.ellipsisList[i].indexOf(value);
+              this.ellipsisList[i].splice(index, 1);
+            }
+          })
+        });
+      } else {
+        this.ellipsisList.filter(values => {
+          if (values.buttonName.eng === 'Activate') {
+            const index = this.ellipsisList.indexOf(values);
+            this.ellipsisList.splice(index, 1);
+          }
+        });
+      }
     } else if (data.isActive === false) {
-      this.ellipsisList = [...this.buttonList];
-      this.ellipsisList.filter(values => {
-        if (values.buttonName.eng === 'Deactivate') {
-          const index = this.ellipsisList.indexOf(values);
-          this.ellipsisList.splice(index, 1);
-        }
-      });
-    }else{
+      // this.ellipsisList = [...this.buttonList];
+      this.ellipsisList = JSON.parse(JSON.stringify(this.buttonList));
+      if (!this.isUser) {
+        // user mapping center menu options
+        this.ellipsisList.filter((values, i) => {
+          values.filter(value => {
+            if (value.buttonName.eng === 'Deactivate') {
+              const index = this.ellipsisList[i].indexOf(value);
+              this.ellipsisList[i].splice(index, 1);
+            }
+          })
+        });
+      } else {
+        this.ellipsisList.filter(values => {
+          if (values.buttonName.eng === 'Deactivate') {
+            const index = this.ellipsisList.indexOf(values);
+            this.ellipsisList.splice(index, 1);
+          }
+        });
+      }
+    } else {
       this.ellipsisList = [...this.buttonList];
     }
   }

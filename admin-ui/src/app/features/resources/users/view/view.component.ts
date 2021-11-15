@@ -29,7 +29,7 @@ export class ViewComponent implements OnInit {
   actionEllipsis = [];
   paginatorOptions: any;
   sortFilter = [];
-  primaryLang: string;  
+  primaryLang: string;
   pagination = new PaginationModel();
   centerRequest = {} as CenterRequest;
   requestModel: RequestModel;
@@ -38,9 +38,10 @@ export class ViewComponent implements OnInit {
   errorMessages: any;
   noData = false;
   filtersApplied = false;
+  isUserMatMenu = false;
 
   keycloakUrl =
-    location.origin+'/keycloak/auth/admin/master/console/#/realms/mosip/users';
+    location.origin + '/keycloak/auth/admin/master/console/#/realms/mosip/users';
 
   constructor(
     private translate: TranslateService,
@@ -55,7 +56,7 @@ export class ViewComponent implements OnInit {
   ) {
     this.getUserConfigs();
     this.primaryLang = this.headerService.getUserPreferredLanguage();
-    
+
     this.translateService.use(this.primaryLang);
     translateService.getTranslation(this.primaryLang).subscribe(response => {
       console.log(response);
@@ -74,7 +75,8 @@ export class ViewComponent implements OnInit {
 
   getUserConfigs() {
     let url = this.router.url.split('/')[3];
-    if(url === "zoneuser"){
+    if (url === "zoneuser") {
+      this.isUserMatMenu = true;
       this.displayedColumns = ZoneUserConfig.columnsToDisplay;
       this.actionButtons = ZoneUserConfig.actionButtons.filter(
         value => value.showIn.toLowerCase() === 'ellipsis'
@@ -83,16 +85,17 @@ export class ViewComponent implements OnInit {
         value => value.showIn.toLowerCase() === 'button'
       );
       this.paginatorOptions = ZoneUserConfig.paginator;
-    }else{
+    } else {
+      this.isUserMatMenu = false;
       this.displayedColumns = userConfig.columnsToDisplay;
-      this.actionButtons = userConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = userConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = userConfig.paginator;
-    }    
+      // this.actionButtons = userConfig.actionButtons.filter(
+      //   value => value.showIn.toLowerCase() === 'ellipsis'
+      // );
+      this.actionEllipsis = userConfig.actionButtons.filter(
+        value => value.showIn.toLowerCase() === 'button'
+      );
+      this.paginatorOptions = userConfig.paginator;
+    }
   }
 
   pageEvent(event: any) {
@@ -101,12 +104,12 @@ export class ViewComponent implements OnInit {
     filters.pagination.pageStart = event.pageIndex;
     const url = Utils.convertFilterToUrl(filters);
     let currenturl = this.router.url.split('/')[3];
-    if(currenturl === "zoneuser"){
+    if (currenturl === "zoneuser") {
       this.router.navigateByUrl(`admin/resources/zoneuser/view?${url}`);
-    }else{
+    } else {
       this.router.navigateByUrl(`admin/resources/users/view?${url}`);
     }
-   
+
   }
 
   getSortColumn(event: SortModel) {
@@ -118,15 +121,15 @@ export class ViewComponent implements OnInit {
       }
     });
     if (event.sortType != null) {
-    this.sortFilter.push(event);
-  }
+      this.sortFilter.push(event);
+    }
     const filters = Utils.convertFilter(this.activatedRoute.snapshot.queryParams, this.primaryLang);
     filters.sort = this.sortFilter;
     const url = Utils.convertFilterToUrl(filters);
     let currenturl = this.router.url.split('/')[3];
-    if(currenturl === "zoneuser"){
+    if (currenturl === "zoneuser") {
       this.router.navigateByUrl(`admin/resources/zoneuser/view?${url}`);
-    }else{
+    } else {
       this.router.navigateByUrl(`admin/resources/users/view?${url}`);
     }
   }
@@ -140,8 +143,8 @@ export class ViewComponent implements OnInit {
       this.filtersApplied = true;
     }
     this.sortFilter = filters.sort;
-    if(this.sortFilter.length == 0){
-      this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
+    if (this.sortFilter.length == 0) {
+      this.sortFilter.push({ "sortType": "desc", "sortField": "createdDateTime" });
     }
     let currenturl = this.router.url.split('/')[3];
     this.requestModel = new RequestModel(null, null, filters);
@@ -150,6 +153,7 @@ export class ViewComponent implements OnInit {
       .getUsersData(this.requestModel, currenturl)
       .subscribe(({ response, errors }) => {
         console.log(response);
+
         if (response != null) {
           this.paginatorOptions.totalEntries = response.totalRecord;
           this.paginatorOptions.pageIndex = filters.pagination.pageStart;
@@ -157,25 +161,42 @@ export class ViewComponent implements OnInit {
           console.log(this.paginatorOptions);
           if (response.data != null) {
             this.users = [...response.data];
+            let url = this.router.url.split('/')[3];
+            if (url !== "zoneuser") {
+              this.users.forEach((item) => {
+                if (item.regCenterId === null) {
+                  //map to center
+                  this.actionButtons.push(userConfig.actionButtons1.filter(
+                    value => value.showIn.toLowerCase() === 'ellipsis'
+                  ));
+                }
+                else {
+                  //remap
+                  this.actionButtons.push(userConfig.actionButtons.filter(
+                    value => value.showIn.toLowerCase() === 'ellipsis'
+                  ));
+                }
+              })
+            }
           } else {
             this.noData = true;
-         }
-      } else {
-        this.dialog
-          .open(DialogComponent, {
-             data: {
-              case: 'MESSAGE',
-              title: this.errorMessages.technicalError.title,
-              message: this.errorMessages.technicalError.message,
-              btnTxt: this.errorMessages.technicalError.btnTxt
-             } ,
-            width: '700px'
-          })
-          .afterClosed()
-          .subscribe(result => {
-            console.log('dialog is closed from view component');
-          });
-      }
+          }
+        } else {
+          this.dialog
+            .open(DialogComponent, {
+              data: {
+                case: 'MESSAGE',
+                title: this.errorMessages.technicalError.title,
+                message: this.errorMessages.technicalError.message,
+                btnTxt: this.errorMessages.technicalError.btnTxt
+              },
+              width: '700px'
+            })
+            .afterClosed()
+            .subscribe(result => {
+              console.log('dialog is closed from view component');
+            });
+        }
 
       });
   }
