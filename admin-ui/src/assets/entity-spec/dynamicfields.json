@@ -73,24 +73,24 @@
     },
     {
       "buttonName": {
-        "eng": "Dynamic Field not available in English",
-        "ara": "المجال الديناميكي متوفر باللغة العربية",
-        "fra": "Champ dynamique non disponible en français",
-        "tam": "டைனமிக் ஃபீல்ட் தமிழில் இல்லை",
-        "hin": "डायनामिक फील्ड हिंदी में उपलब्ध नहीं है",
-        "kan": "ಡೈನಾಮಿಕ್ ಫೀಲ್ಡ್ ಕನ್ನಡದಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
+        "eng": "Code & Value not present in English",
+        "ara": "الرمز والقيمة غير موجودين باللغة العربية",
+        "fra": "Code & Valeur non présents en Français",
+        "tam": "குறியீடு & மதிப்பு தமிழில் இல்லை",
+        "hin": "कोड और मूल्य हिंदी में मौजूद नहीं है",
+        "kan": "ಕೋಡ್ ಮತ್ತು ಮೌಲ್ಯ ಕನ್ನಡದಲ್ಲಿ ಇರುವುದಿಲ್ಲ"
       },
       "imagePath": "",
       "actionListType": "action",
       "actionURL": {
         "case": "missingData",
         "title": {
-          "eng": "Dynamic Field not available in English",
-          "ara": "المجال الديناميكي متوفر باللغة العربية",
-          "fra": "Champ dynamique non disponible en français",
-          "tam": "டைனமிக் ஃபீல்ட் தமிழில் இல்லை",
-          "hin": "डायनामिक फील्ड हिंदी में उपलब्ध नहीं है",
-          "kan": "ಡೈನಾಮಿಕ್ ಫೀಲ್ಡ್ ಕನ್ನಡದಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ"
+          "eng": "Code & Value not present in English",
+          "ara": "الرمز والقيمة غير موجودين باللغة العربية",
+          "fra": "Code & Valeur non présents en Français",
+          "tam": "குறியீடு & மதிப்பு தமிழில் இல்லை",
+          "hin": "कोड और मूल्य हिंदी में मौजूद नहीं है",
+          "kan": "ಕೋಡ್ ಮತ್ತು ಮೌಲ್ಯ ಕನ್ನಡದಲ್ಲಿ ಇರುವುದಿಲ್ಲ"
         },
         "columnNames": [{
           "eng": "Code",

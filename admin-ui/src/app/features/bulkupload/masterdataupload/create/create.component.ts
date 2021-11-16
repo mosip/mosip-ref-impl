@@ -24,6 +24,7 @@ export class CreateComponent {
   fileNameError:boolean = false;
   buttonalignment = 'ltr';
   serverError:any;
+  tableName: string;
   showDownloadBtn:boolean = false;
   constructor(
   private translateService: TranslateService,
@@ -74,8 +75,17 @@ export class CreateComponent {
   captureDropDownValue(event: any) {    
     if (event.source.selected) {
       this.showDownloadBtn = true;
-      console.log("event.source.value>>>"+event.source.value);
+      this.tableName = event.source.value;
     }
+  }
+
+  downloadExcel(){
+    console.log("this.tableName>>>"+this.tableName);
+    let buildURL = "https://dev.mosip.net"+"/admin-ui/templates/"+this.tableName+".csv"
+    this.dataStorageService
+    .getsampletemplate(buildURL)
+    .subscribe(() => {      
+    });
   }
 
   onFileSelect(event) {

@@ -31,9 +31,9 @@
               <mat-error *ngIf="uploadForm.controls.operation.touched">
                 {{'genericerror.fieldValidation' | translate}}
               </mat-error>
-            </mat-form-field> 
-            <mat-form-field>
-              <!-- <div style="width: 70%;"> -->
+            </mat-form-field>
+            <div style="width:100%;display:inline">
+              <mat-form-field style="width:98% !important;">              
                 <mat-label>{{labelanddatas.tableName | translate }}</mat-label>
                 <mat-select formControlName="tableName" (selectionChange)="captureDropDownValue($event)" >
                   <mat-option
@@ -43,12 +43,12 @@
                     {{data.value | translate }}
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="uploadForm.controls.tableName.touched">
+                <mat-error *ngIf="uploadForm.controls.tableName.touched && !showDownloadBtn">
                   {{'genericerror.fieldValidation' | translate}}
-                </mat-error>
-              <!-- </div> -->
-              <!-- <div  style="width: 30%;" *ngIf="showDownloadBtn">download</div> -->
-            </mat-form-field> 
+                </mat-error>              
+              </mat-form-field>                
+              <mat-label style="width:2%" *ngIf="showDownloadBtn" (click)="downloadExcel()"><img src="assets/images/download.png" height="18px" width="18px" style="cursor:pointer;" /></mat-label>
+            </div>
             <div class="custom-file-input">    
               <input type="button" *ngIf="buttonalignment === 'rtl'" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">           
               <input type="file" accept=".csv" #fileInput (click)="onFileClick($event)" (change)="onFileSelect($event)" placeholder="Upload file..." />
