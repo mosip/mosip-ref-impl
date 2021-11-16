@@ -707,7 +707,8 @@
         "button":"produire"
     },
     "genericerror":{
-        "fieldValidation":"Ce champ est requis"
+        "fieldValidation":"Ce champ est requis",
+        "fieldNameValidation":" est requis"
     },
     "genericmessage":{
         "successLabel":"Succès",

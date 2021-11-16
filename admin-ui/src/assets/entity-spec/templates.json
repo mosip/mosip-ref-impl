@@ -151,7 +151,7 @@
       "linkType": "",
       "LinkURL": "",
       "inputType": "textarea",
-      "ismandatory": "true"
+      "ismandatory": "false"
     },
     {
       "name": "model",
@@ -170,7 +170,7 @@
       "linkType": "",
       "LinkURL": "",
       "inputType": "text",
-      "ismandatory": "true"
+      "ismandatory": "false"
     },
     {
       "name": "fileText",
