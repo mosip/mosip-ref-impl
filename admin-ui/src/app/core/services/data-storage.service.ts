@@ -28,6 +28,10 @@ export class DataStorageService {
     return this.http.get('./assets/entity-spec/'+fileName+'.json');
   }
 
+  getsampletemplate(path:string): Observable<any> {
+    return this.http.get(path);
+  }
+
   getImmediateChildren(
     locationCode: string,
     langCode: string
