@@ -28,6 +28,7 @@ import { DeviceService } from 'src/app/core/services/devices.service';
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
+  styleUrls: ['./create.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class CreateComponent{
@@ -47,7 +48,7 @@ export class CreateComponent{
   pageName = "";
   disabled = true;
   genericmessage:any;
-  searchTxt:any;
+  searchResult:any;
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -107,6 +108,15 @@ export class CreateComponent{
       });
   }
 
+  onKey(value) {     
+    this.searchResult = this.search(value);
+  }
+
+  search(value: string) { 
+    let filter = value.toLowerCase();
+    return this.dropDownValues.deviceTypeCode.primary.filter(option => option.name.toLowerCase().startsWith(filter));
+  }
+
   captureDropDownValue(event: any, formControlName: string) {
     if (event.source.selected) {
       this.primaryData[formControlName] = event.source.value;
@@ -138,7 +148,8 @@ export class CreateComponent{
     this.dataStorageService
       .getFiltersUserDetails()
       .subscribe(response => {
-        if(response.response.mosipUserDtoList)        
+        if(response.response.mosipUserDtoList)   
+          this.searchResult = response.response.mosipUserDtoList.sort((a, b) => a.name.localeCompare(b.name));     
           this.dropDownValues.deviceTypeCode.primary = response.response.mosipUserDtoList.sort((a, b) => a.name.localeCompare(b.name));
       });
   }

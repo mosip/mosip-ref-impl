@@ -13,9 +13,9 @@
 
             <mat-form-field>
               <mat-label>{{'users.title' | translate}}</mat-label>
-              <mat-select formControlName="userId" [value]="primaryData.userId" disabled={{disabled}}>
-                <!-- <input [value]="searchTxt" matInput placeholder="search"> -->
-                <mat-option *ngFor="let data of dropDownValues.deviceTypeCode.primary" [value]="data.userId" (onSelectionChange)="captureDropDownValue($event, 'userId')">
+              <mat-select formControlName="userId" [value]="primaryData.userId" disabled={{disabled}}>                
+                <input placeholder="Search..." matInput type="text" (keyup)="onKey($event.target.value)" class="example-input">            
+                <mat-option *ngFor="let data of searchResult" [value]="data.userId" (onSelectionChange)="captureDropDownValue($event, 'userId')">
                   {{ data.name }}
                 </mat-option>
               </mat-select>

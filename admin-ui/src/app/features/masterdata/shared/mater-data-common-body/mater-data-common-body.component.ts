@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { RequestModel } from 'src/app/core/models/request.model';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {
   MatKeyboardRef,
@@ -684,19 +684,25 @@ export class MaterDataCommonBodyComponent implements OnInit {
 
   submit() {
     let self = this;
-    self.executeAPI();
-/*    for (var i = 0, len = self.fields.length; i < len; i++) {
+    let mandatoryFieldName = [];
+    let mandatoryFieldLabel = [];
+    for (let i = 0; i < self.fields.length; i++) {
       if (self.fields[i].showInSingleView) {
-        if(self.fields[i].ismandatory){
-          if(!self.primaryData[self.fields[i].name]){
-            this.showErrorPopup(self.fields[i].label[this.primaryLang]+" is required");
-            break;
-          }else if(len = i+1){
-            self.executeAPI();
-          }
+        if(self.fields[i].ismandatory === "true"){
+          mandatoryFieldName.push(self.fields[i].name);  
+          mandatoryFieldLabel.push(self.fields[i].label[this.primaryLang]);          
         }
       }
-    }*/
+    }
+    let len = mandatoryFieldName.length;
+    for (let i = 0; i < len; i++) {
+      if(!self.primaryData[mandatoryFieldName[i]]){
+        this.showErrorPopup(mandatoryFieldLabel[i]+this.popupMessages.genericerror.fieldNameValidation);
+        break;
+      }else if(len === (i+1)){
+        self.executeAPI();
+      }
+    }
   }
 
   executeAPI(){
