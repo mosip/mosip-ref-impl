@@ -7,7 +7,7 @@ import { RolesGuard } from 'src/app/core/services/roles.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
-  { path: 'list', component: ViewComponent, canDeactivate: [CanDeactivateGuardService] },
+  { path: 'list', component: ViewComponent, canDeactivate: [CanDeactivateGuardService], canActivate: [RolesGuard] },
 ];
 
 @NgModule({
