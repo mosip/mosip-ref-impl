@@ -46,7 +46,7 @@ export class MasterDataComponent implements OnInit {
       this.masterDataMachineList = data.masterDatatList.machineDefinition;
       this.masterDataDocumentList = data.masterDatatList.documentDefinition;
     });
-    this.dataService.getDynamicfieldDistinctValue().subscribe(
+    this.dataService.getDynamicfieldDistinctValue(this.primaryLang).subscribe(
       response => {
       if (response.response) {
         this.dynamicfieldDistinctValue = response.response;

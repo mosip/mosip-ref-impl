@@ -33,18 +33,21 @@
               </mat-error>
             </mat-form-field> 
             <mat-form-field>
-              <mat-label>{{labelanddatas.tableName | translate }}</mat-label>
-              <mat-select formControlName="tableName">
-                <mat-option
-                  *ngFor="let data of labelanddatas.tableNames"
-                  [value]="data.id"
-                >
-                  {{data.value | translate }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="uploadForm.controls.tableName.touched">
-                {{'genericerror.fieldValidation' | translate}}
-              </mat-error>
+              <!-- <div style="width: 70%;"> -->
+                <mat-label>{{labelanddatas.tableName | translate }}</mat-label>
+                <mat-select formControlName="tableName" (selectionChange)="captureDropDownValue($event)" >
+                  <mat-option
+                    *ngFor="let data of labelanddatas.tableNames"
+                    [value]="data.id"
+                  >
+                    {{data.value | translate }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="uploadForm.controls.tableName.touched">
+                  {{'genericerror.fieldValidation' | translate}}
+                </mat-error>
+              <!-- </div> -->
+              <!-- <div  style="width: 30%;" *ngIf="showDownloadBtn">download</div> -->
             </mat-form-field> 
             <div class="custom-file-input">    
               <input type="button" *ngIf="buttonalignment === 'rtl'" value="{{labelanddatas.chooseFile | translate }}" class="browseInput">           

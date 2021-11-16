@@ -114,7 +114,8 @@
                         <mat-select 
                           formControlName="locationCode"
                           [value]="primaryData[field.name]"
-                          placeholder="{{ field.label[primaryLang] }}">
+                          placeholder="{{ field.label[primaryLang] }}"
+                          required={{field.ismandatory}}>
                           <mat-option *ngFor="let data of dropDownValues['locationCode']['primary']" 
                           (onSelectionChange)="captureDropDownValue($event, field.name, 'primary')" 
                           [value]="data.code">
@@ -130,6 +131,7 @@
                         formControlName="deviceTypeCode"
                         [value]="primaryData[field.name]"
                         placeholder="{{ field.label[primaryLang] }}"
+                        required={{field.ismandatory}}
                       >
                         <mat-option
                           *ngFor="let data of dropDownValues.deviceTypeCode.primary"
@@ -147,6 +149,7 @@
                         formControlName="machineTypeCode"
                         [value]="primaryData[field.name]"
                         placeholder="{{ field.label[primaryLang] }}"
+                        required={{field.ismandatory}}
                       >
                         <mat-option
                           *ngFor="let data of dropDownValues.machineTypeCode.primary"
@@ -164,6 +167,7 @@
                           formControlName="fileFormatCode"
                           [value]="primaryData[field.name]"
                           placeholder="{{ field.label[primaryLang] }}"
+                          required={{field.ismandatory}}
                         >
                           <mat-option
                             *ngFor="let data of dropDownValues.fileFormatCode.primary"
@@ -181,6 +185,7 @@
                           formControlName="templateTypeCode"
                           [value]="primaryData[field.name]"
                           placeholder="{{ field.label[primaryLang] }}"
+                          required={{field.ismandatory}}
                         >
                           <mat-option
                             *ngFor="let data of dropDownValues.templateTypeCode.primary"
@@ -198,6 +203,7 @@
                           formControlName="moduleId"
                           [value]="primaryData[field.name]"
                           placeholder="{{ field.label[primaryLang] }}"
+                          required={{field.ismandatory}}
                         >
                           <mat-option
                             *ngFor="let data of dropDownValues.moduleId.primary"
@@ -214,7 +220,8 @@
                       <mat-select
                         formControlName="hierarchyLevel"
                         [value]="primaryData[field.name]" 
-                        placeholder="{{ field.label[primaryLang] }}"               
+                        placeholder="{{ field.label[primaryLang] }}"  
+                        required={{field.ismandatory}}             
                       >
                         <mat-option
                           *ngFor="let data of dropDownValues.hierarchyLevelCode.primary"
@@ -370,7 +377,7 @@
                       <mat-form-field>
                         <mat-select 
                           formControlName="locationCode"
-                          [value]="primaryData[field.name]"
+                          [value]="secondaryData[field.name]"
                           placeholder="{{ field.label[secondaryLang] }}">
                           <mat-option *ngFor="let data of dropDownValues['locationCode']['secondary']" 
                           (onSelectionChange)="captureDropDownValue($event, field.name, 'secondary')" 

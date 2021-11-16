@@ -9,7 +9,7 @@ import { I18nModule } from 'src/app/i18n.module';
     CommonModule,
     ResourcesRoutingModule,
     MaterialModule,
-    I18nModule,
+    I18nModule
   ],
   declarations: []
 })

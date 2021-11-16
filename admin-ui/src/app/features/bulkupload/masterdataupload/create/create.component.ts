@@ -24,6 +24,7 @@ export class CreateComponent {
   fileNameError:boolean = false;
   buttonalignment = 'ltr';
   serverError:any;
+  showDownloadBtn:boolean = false;
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -68,6 +69,13 @@ export class CreateComponent {
       operation: ['', [Validators.required]],
       tableName: ['', [Validators.required]],
     });
+  }
+
+  captureDropDownValue(event: any) {    
+    if (event.source.selected) {
+      this.showDownloadBtn = true;
+      console.log("event.source.value>>>"+event.source.value);
+    }
   }
 
   onFileSelect(event) {
