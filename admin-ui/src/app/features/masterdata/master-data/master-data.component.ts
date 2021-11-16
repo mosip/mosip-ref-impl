@@ -61,7 +61,7 @@ export class MasterDataComponent implements OnInit {
   }
 
   dynamicFeildNavigate(item: any) {
-    this.router.navigateByUrl('admin/masterdata/dynamicfields/'+item+'/view');
+    this.router.navigateByUrl('admin/masterdata/dynamicfields/'+item.name+'/view');
   }
 
   dynamicFeildAdd() {
