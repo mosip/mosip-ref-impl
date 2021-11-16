@@ -14,17 +14,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.util.matcher.*;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
-			new AntPathRequestMatcher("/appointment/**"));
+	private static final RequestMatcher PROTECTED_URLS = new AndRequestMatcher(
+			new AntPathRequestMatcher("/appointment/**"),
+			new NegatedRequestMatcher(new AntPathRequestMatcher("/appointment/booking-service/swagger-ui.html")),
+			new NegatedRequestMatcher(new AntPathRequestMatcher("/**/v3/api-docs/**")),
+			new NegatedRequestMatcher(new AntPathRequestMatcher("/**/v3/api-docs.yaml")),
+			new NegatedRequestMatcher(new AntPathRequestMatcher("/**/swagger-ui/**")));
 
 	AuthenticationProvider provider;
 
