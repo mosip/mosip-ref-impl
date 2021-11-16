@@ -36,7 +36,10 @@
                         </ng-container>
                         <ng-container *ngFor="let itemList of dynamicfieldDistinctValue; let i = index">
                             <mat-card-content class="content" [style.marginTop.px]="i === 0 ? 10:0" (click)="dynamicFeildNavigate(itemList)">
-                                <span style="margin-top: 5px; margin-left: 5px;">{{itemList | titlecase}}</span>
+                                <span style="margin-top: 5px; margin-left: 5px;">                                    
+                                    <span *ngIf="itemList.description">{{itemList.description}}</span>
+                                    <span *ngIf="!itemList.description">{{itemList.name}}</span>
+                                </span>
                                 <span style="text-align: right"><i class="material-icons">
                                         {{arrowDirection}}
                                     </i></span>

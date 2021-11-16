@@ -129,7 +129,7 @@
       "linkType": "",
       "LinkURL": "",
       "inputType": "textarea",
-      "ismandatory": "true"
+      "ismandatory": "false"
     },
     {
       "name": "createdBy",

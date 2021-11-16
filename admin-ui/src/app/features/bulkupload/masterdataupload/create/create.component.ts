@@ -24,6 +24,8 @@ export class CreateComponent {
   fileNameError:boolean = false;
   buttonalignment = 'ltr';
   serverError:any;
+  tableName: string;
+  showDownloadBtn:boolean = false;
   constructor(
   private translateService: TranslateService,
   private headerService: HeaderService,
@@ -67,6 +69,21 @@ export class CreateComponent {
       fileName: ['', [Validators.required]],
       operation: ['', [Validators.required]],
       tableName: ['', [Validators.required]],
+    });
+  }
+
+  captureDropDownValue(event: any) {    
+    if (event.source.selected) {
+      this.showDownloadBtn = true;
+      this.tableName = event.source.value;
+    }
+  }
+
+  downloadExcel(){
+    let buildURL = window.location.origin+"/admin-ui/templates/"+this.tableName+".csv"
+    this.dataStorageService
+    .getsampletemplate(buildURL)
+    .subscribe(() => {      
     });
   }
 

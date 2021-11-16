@@ -28,6 +28,10 @@ export class DataStorageService {
     return this.http.get('./assets/entity-spec/'+fileName+'.json');
   }
 
+  getsampletemplate(path:string): Observable<any> {
+    return this.http.get(path);
+  }
+
   getImmediateChildren(
     locationCode: string,
     langCode: string
@@ -188,9 +192,9 @@ export class DataStorageService {
     return this.http.get('./assets/entity-spec/master-data-entity-spec.json');
   }
 
-  getDynamicfieldDistinctValue(): Observable<any> {
+  getDynamicfieldDistinctValue(langCode:any): Observable<any> {
     return this.http.get(
-      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'dynamicfields/distinct'
+      this.BASE_URL + appConstants.MASTERDATA_BASE_URL + 'dynamicfields/distinct/'+langCode
     );
   }
 

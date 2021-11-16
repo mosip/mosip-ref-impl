@@ -13,6 +13,7 @@ import { SingleViewComponent } from './single-view/single-view.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DocumentCategoryMappingComponent } from './document-category-mapping/document-category-mapping.component';
 import { MatKeyboardModule } from 'ngx7-material-keyboard';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,9 @@ import { MatKeyboardModule } from 'ngx7-material-keyboard';
     MaterialModule,
     I18nModule,
     SharedModule,
-    MatKeyboardModule
+    MatKeyboardModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class MasterdataModule { }
