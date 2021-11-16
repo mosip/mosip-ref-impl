@@ -80,8 +80,7 @@ export class CreateComponent {
   }
 
   downloadExcel(){
-    console.log("this.tableName>>>"+this.tableName);
-    let buildURL = "https://dev.mosip.net"+"/admin-ui/templates/"+this.tableName+".csv"
+    let buildURL = window.location.origin+"/admin-ui/templates/"+this.tableName+".csv"
     this.dataStorageService
     .getsampletemplate(buildURL)
     .subscribe(() => {      
