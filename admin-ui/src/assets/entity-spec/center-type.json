@@ -161,7 +161,7 @@
       "ismandatory": "true"
     },
     {
-      "name": "description",
+      "name": "descr",
       "showInListView": "true",
       "showInSingleView": "true",
       "label": {
@@ -273,7 +273,7 @@
     "filterlabel": {
       "eng": "Status",
       "ara": "حاله",
-      "fra": "status",
+      "fra": "statut",
       "tam": "நிலை",
       "hin": "स्थिति",
       "kan": "ಸ್ಥಿತಿ"
