@@ -89,7 +89,27 @@ export class AuthInterceptor implements HttpInterceptor {
                   });
                 });
             } else {
-              this.translateService
+              if (err.url.includes('validateToken')) {
+
+                this.translateService
+                .getTranslation(this.appService.getConfig().primaryLangCode)
+                .subscribe(response => {
+                  this.errorMessages = response.errorPopup;
+                  this.dialog.open(DialogComponent, {
+                    width: '868px',
+                    height: '190px',
+                    data: {
+                      case: 'MESSAGE',
+                      title: this.errorMessages.unknown.title,
+                      message: this.errorMessages.unknown.message,
+                      btnTxt: this.errorMessages.unknown.btnTxt
+                    },
+                    disableClose: true
+                  });
+                });
+
+              }else{
+                this.translateService
                 .getTranslation(this.appService.getConfig().primaryLangCode)
                 .subscribe(response => {
                   this.errorMessages = response.errorPopup;
@@ -105,6 +125,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     disableClose: true
                   });
                 });
+              }              
             }
           }
         }
