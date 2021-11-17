@@ -460,6 +460,11 @@
             "title": "Authorization Error",
             "message": "You are not authorised to visit this page",
             "btnTxt": "Ok"
+        },
+        "unknown": {
+            "title": "Unknown Error",
+            "message": "Failed to validate the current session",
+            "btnTxt": "Ok"
         }
     },
     "validationMessages": {
