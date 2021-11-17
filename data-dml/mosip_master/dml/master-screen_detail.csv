@@ -15,3 +15,4 @@ syncClientServerRoot,10003,syncClientServerRoot,syncClientServerRoot,eng,TRUE,su
 eodRoot,10003,eodroot,eodroot,eng,TRUE,superadmin,now()
 reRegisterRoot,10003,reRegisterRoot,reRegisterRoot,eng,TRUE,superadmin,now()
 uploadPacketRoot,10003,uploadPacketRoot,uploadPacketRoot,eng,TRUE,superadmin,now()
+correctionRoot,10003,correctionRoot,correctionRoot,eng,TRUE,superadmin,now()
