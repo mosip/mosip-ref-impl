@@ -461,6 +461,11 @@
             "title": "Erreur d'autorisation",
             "message": "Vous n'êtes pas autorisé à visiter cette page",
             "btnTxt": "D'accord"
+        },
+        "unknown": {
+            "title": "Erreur inconnue",
+            "message": "Échec de la validation de la session en cours",
+            "btnTxt": "D'accord"
         }
     },
     "validationMessages": {
