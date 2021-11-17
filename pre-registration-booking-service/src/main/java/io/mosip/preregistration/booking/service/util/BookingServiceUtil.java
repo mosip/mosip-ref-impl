@@ -633,7 +633,7 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> getApplicationStatus(String preRegId) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/info/" + preRegId;
+		String url = preRegResourceUrl + "/applications/prereg/status/info/" + preRegId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
