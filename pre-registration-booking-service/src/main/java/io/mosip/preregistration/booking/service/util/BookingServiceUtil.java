@@ -207,15 +207,13 @@ public class BookingServiceUtil {
 	public String getApplicationBookingStatus(String preId) {
 		log.info("sessionId", "idType", "id", "In callGetStatusRestService method of Booking Service Util");
 
-		String userId = authUserDetails().getUserId();
+		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
 
-		MainResponseDTO<ApplicationEntity> applicationEntity = getApplicationStatus(preId);
-		String getApplicationStatus = applicationEntity.getResponse().getBookingStatusCode();
-		if (applicationEntity.getErrors() != null) {
-			throw new DemographicGetStatusException(applicationEntity.getErrors().get(0).getErrorCode(),
-					applicationEntity.getErrors().get(0).getMessage());
+		if (getApplicationStatus.getErrors() != null) {
+			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
+					getApplicationStatus.getErrors().get(0).getMessage());
 		}
-		return getApplicationStatus;
+		return getApplicationStatus.getResponse();
 
 	}
 
@@ -227,15 +225,15 @@ public class BookingServiceUtil {
 	 */
 	public boolean getDemographicStatusForCancel(String preId) {
 		log.info("sessionId", "idType", "id", "In callGetStatusForCancelRestService method of Booking Service Util");
+		
 		String userId = authUserDetails().getUserId();
-
-		MainResponseDTO<ApplicationEntity> applicationEntity = getApplicationStatus(preId);
-		if (applicationEntity.getErrors() != null) {
-			throw new DemographicGetStatusException(applicationEntity.getErrors().get(0).getErrorCode(),
-					applicationEntity.getErrors().get(0).getMessage());
+		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
+		if (getApplicationStatus.getErrors() != null) {
+			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
+					getApplicationStatus.getErrors().get(0).getMessage());
 		}
-		String statusCode = applicationEntity.getResponse().getBookingStatusCode();
-
+		String statusCode = getApplicationStatus.getResponse();
+		
 		if (!statusCode.equals(StatusCodes.BOOKED.getCode())) {
 			if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
 					|| statusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
@@ -631,8 +629,8 @@ public class BookingServiceUtil {
 
 	}
 
-	public MainResponseDTO<ApplicationEntity> getApplicationStatus(String applicationId) {
-		MainResponseDTO<ApplicationEntity> response = new MainResponseDTO<>();
+	public MainResponseDTO<String> getApplicationStatus(String applicationId) {
+		MainResponseDTO<String> response = new MainResponseDTO<>();
 		String url = preRegResourceUrl + "/applications/" + applicationId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -644,9 +642,9 @@ public class BookingServiceUtil {
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
 				response.setErrors(responseEntity.getBody().getErrors());
 			} else {
-				response.setResponse(responseEntity.getBody().getResponse());
+				ApplicationEntity applicationEntity = responseEntity.getBody().getResponse();
+				response.setResponse(applicationEntity.getBookingStatusCode());
 			}
-
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
 			log.debug("Rest call exception " + ExceptionUtils.getStackTrace(ex));
