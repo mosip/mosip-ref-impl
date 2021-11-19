@@ -653,7 +653,7 @@ jobs:
       SERVICE_LOCATION: admin-ui
 #
 #    # Steps represent a sequence of tasks that will be executed as part of the job
-#    steps:
+    steps:
 #      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #      - uses: actions/checkout@v2
 #      - uses: actions/setup-node@v1
