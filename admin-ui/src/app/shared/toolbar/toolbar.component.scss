@@ -44,7 +44,7 @@
 :host::ng-deep.mat-form-field-appearance-legacy .mat-form-field-infix {
   padding: 0.4375em 0;
   border: 0.9px solid #b5b7b7;
-  height: 20px;
+  height: 25px;
 }
 :host::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
   background-color: transparent;
@@ -52,6 +52,9 @@
 ::ng-deep .mat-paginator-page-size-select {
   width: 50px !important;
   padding: 10px;
+}
+:host::ng-deep .mat-form-field{
+  text-align: left !important;
 }
 ::ng-deep .mat-select-arrow {
   height: 3px !important;
@@ -61,8 +64,7 @@
 :host::ng-deep .mat-select-value {
   font-size: 9.5px !important;
   color: #3b4141;;
-  padding-top: 2px;
-  padding-left: 8px;
+  padding-left: 10px;
 }
 
 :host::ng-deep.mat-paginator-range-label {

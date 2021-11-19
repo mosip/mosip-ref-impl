@@ -3,12 +3,12 @@
   "actionButtons": [    
     {
       "buttonName": {
-        "eng": "Edit",
-        "ara": "تصحيح",
-        "fra": "modifier",
-        "hin": "संपादित करें ",
-        "kan": "ತಿದ್ದು",
-        "tam": "தொகு "
+        "eng": "Remap",
+        "ara": "إعادة رسم خريطة",
+        "fra": "remapper",
+        "hin": "सरीमैप",
+        "kan": "ರೀಮ್ಯಾಪ್",
+        "tam": "மறுவடிவமைப்பு "
       },
       "actionURL": "",
       "redirectURL": "/admin/resources/users/single-view/$id",
@@ -78,6 +78,86 @@
       "validations": ""
     }
   ],
+
+  "actionButtons1": [    
+    {
+      "buttonName": {
+        "eng": "Map to Center",
+        "ara":"تعيين إلى المركز",
+        "fra": "Carte vers le centre",
+        "hin": "नक्शा से केंद्र",
+        "kan": "ನಕ್ಷೆಯಿಂದ ಕೇಂದ್ರಕ್ಕೆ",
+        "tam": "வரைபடத்திலிருந்து மையத்திற்கு"
+      },
+      "actionURL": "",
+      "redirectURL": "/admin/resources/users/single-view/$id",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "centerEdit"
+    },
+    {
+      "buttonName": {
+        "eng": "Delete",
+        "ara": "حذف",
+        "fra": "Supprimer",
+        "hin": "हटाएं",
+        "kan": "ಅಳಿಸು",
+        "tam": "அழி "
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deleteUser"
+    },
+    {
+      "buttonName": {
+        "eng": "Activate",
+        "ara": "تنشيط",
+        "fra": "déclencher",
+        "hin": "सक्रिय",
+        "kan": "ಸಕ್ರಿಯಗೊಳಿಸಿ",
+        "tam": "செயல்படுத்த"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "activateCenter"
+    },
+    {
+      "buttonName": {
+        "eng": "Deactivate",
+        "ara": "الغاء تنشيط",
+        "fra": "désactiver",
+        "hin": "निष्क्रिय करें",
+        "kan": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ",
+        "tam": "செயலிழக்க"
+      },
+      "actionURL": "",
+      "redirectURL": "",
+      "showIn": "Ellipsis",
+      "validations": "",
+      "callBackFunction": "deactivateCenter"
+    },
+    {
+      "buttonName": {
+        "eng": "Filter",
+        "fra": "filtre",
+        "ara": "تصفيه",
+        "tam": "வடிகட்டி",
+        "hin": "फ़िल्टर",
+        "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ"
+      },
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+
   "columnsToDisplay": [
     {
       "name": "userName",

@@ -42,19 +42,19 @@ import defaultJson from "../../../../../assets/i18n/default.json";
 
 import moment from 'moment';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
 })
 export class EditComponent {
@@ -82,7 +82,7 @@ export class EditComponent {
   disableSecondaryForm: boolean;
   data = [];
   popupMessages: any;
-  serverError:any;
+  serverError: any;
   selectedField: HTMLElement;
   private keyboardRef: MatKeyboardRef<MatKeyboardComponent>;
   @ViewChildren('keyboardRef', { read: ElementRef })
@@ -91,7 +91,7 @@ export class EditComponent {
   secondaryKeyboard: string;
   keyboardType: string;
   subscribed: any;
-  days = [];  
+  days = [];
   holidayDate: any;
   minDate = new Date();
   locCode = 0;
@@ -99,6 +99,8 @@ export class EditComponent {
   localeDtFormat = "";
   locationFieldNameList: string[] = [];
   dynamicFieldValue = {};
+  showSpinner = false;
+  showUpdateButton = null;
   constructor(
     private location: Location,
     private translateService: TranslateService,
@@ -115,16 +117,16 @@ export class EditComponent {
     private dateAdapter: DateAdapter<Date>
   ) {
     this.subscribed = router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {        
+      if (event instanceof NavigationEnd) {
         this.initializeComponent();
       }
     });
     this.initialLocationCode = this.appConfigService.getConfig()['countryCode'];
     this.locCode = this.appConfigService.getConfig()['locationHierarchyLevel'];
-    
+
     this.disablePrimaryForm = true;
     this.disableSecondaryForm = true;
-    
+
     //load all supported languages
     this.supportedLanguages = [];
     let supportedLanguagesArr = this.appConfigService.getConfig()['supportedLanguages'].split(',');
@@ -139,11 +141,11 @@ export class EditComponent {
     console.log(`loadLanguages: primary: ${primaryLangCode}`);
     // Set the primary language
     this.primaryLang = this.headerService.getUserPreferredLanguage();
-    this.translateService.use(this.primaryLang);    
+    this.translateService.use(this.primaryLang);
     //Set the "Select Language" dropdown options
     this.selectLanguagesArr = [];
     let otherLangsArr = this.supportedLanguages.filter(lang => lang !== this.primaryLang);
-    if(otherLangsArr.length > 0){
+    if (otherLangsArr.length > 0) {
       otherLangsArr.forEach((language) => {
         if (defaultJson.languages && defaultJson.languages[language]) {
           this.selectLanguagesArr.push({
@@ -155,8 +157,9 @@ export class EditComponent {
       //Set the secondary language
       this.secondaryLang = this.selectLanguagesArr[0]["code"];
       this.primaryLang === this.secondaryLang ? this.showSecondaryForm = false : this.showSecondaryForm = true;
-    }else{
+    } else {
       this.showSecondaryForm = false;
+      this.showSpinner = false;
     }
     //Set the keyboard mapping
     this.primaryKeyboard = defaultJson.keyboardMapping[this.primaryLang];
@@ -164,7 +167,7 @@ export class EditComponent {
     // Set the language orientation LTR or RTL
     this.isPrimaryLangRTL = false;
     this.isSecondaryLangRTL = false;
-    if(this.appConfigService.getConfig()['rightToLeftOrientation']){      
+    if (this.appConfigService.getConfig()['rightToLeftOrientation']) {
       let allRTLLangs = this.appConfigService.getConfig()['rightToLeftOrientation'].split(',');
       let filteredList = allRTLLangs.filter(langCode => langCode == this.primaryLang);
       if (filteredList.length > 0) {
@@ -193,7 +196,7 @@ export class EditComponent {
       });
     //load all the dropdowns    
     //this.loadLocationData(this.initialLocationCode, 'region');  
-    this.getRegistrationCenterTypes();    
+    this.getRegistrationCenterTypes();
     this.getHolidayZoneData();
     this.getProcessingTime();
     this.getTimeSlots();
@@ -204,7 +207,7 @@ export class EditComponent {
     this.setLocaleForDatePicker(localeId);
   }
 
-  lessThanEqual(locCode, index){
+  lessThanEqual(locCode, index) {
     return index <= locCode;
   }
 
@@ -219,10 +222,10 @@ export class EditComponent {
       this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers');
       this.filteredLanguages = this.supportedLanguages;
       this.getPrimaryPanelData(this.primaryLang);
-    });    
+    });
   }
 
-  setLocaleForDatePicker = (localeId) => {    
+  setLocaleForDatePicker = (localeId) => {
     this.dateAdapter.setLocale(localeId);
     let localeDtFormat = moment.localeData(localeId).longDateFormat('L');
     this.translateService.get('demographic.date_yyyy').subscribe((year: string) => {
@@ -250,8 +253,8 @@ export class EditComponent {
             localeDtFormat = localeDtFormat.replace(/D/g, dayLabel);
           }
           this.localeDtFormat = localeDtFormat;
-        });  
-      });  
+        });
+      });
     });
   }
 
@@ -280,13 +283,13 @@ export class EditComponent {
     let regionReq = [], provinceReq = [], cityReq = [], laaReq = [], postalCodeReq = [];
     if (1 <= this.locCode) {
       regionReq = [Validators.required];
-    } if(2 <= this.locCode) {
+    } if (2 <= this.locCode) {
       provinceReq = [Validators.required];
-    } if(3 <= this.locCode) {
+    } if (3 <= this.locCode) {
       cityReq = [Validators.required];
-    } if(4 <= this.locCode) {
+    } if (4 <= this.locCode) {
       laaReq = [Validators.required];
-    } if(5 <= this.locCode) {
+    } if (5 <= this.locCode) {
       postalCodeReq = [Validators.required];
     }
     this.commonForm = this.formBuilder.group({
@@ -309,7 +312,7 @@ export class EditComponent {
       holidayZone: ['', [Validators.required]],
       workingHours: [{ value: '', disabled: true }],
       noKiosk: [
-        { value: 0},
+        { value: 0 },
         [Validators.required, Validators.min(0), ValidateKiosk]
       ],
       processingTime: ['', [Validators.required]],
@@ -337,24 +340,24 @@ export class EditComponent {
 
   getLeafZoneData() {
     this.dataStorageService
-    .getLeafZoneData(this.primaryLang)
-    .subscribe(response => {
-      //console.log(response);
-      this.dropDownValues.zone.primary = response.response;
-      if (this.dropDownValues.zone.primary.length === 1) {
-        this.commonForm.controls.zone.setValue(
-          this.dropDownValues.zone.primary[0].code
-        );
-        this.commonForm.controls.zone.disable();
-      }
-    });
+      .getLeafZoneData(this.primaryLang)
+      .subscribe(response => {
+        //console.log(response);
+        this.dropDownValues.zone.primary = response.response;
+        if (this.dropDownValues.zone.primary.length === 1) {
+          this.commonForm.controls.zone.setValue(
+            this.dropDownValues.zone.primary[0].code
+          );
+          this.commonForm.controls.zone.disable();
+        }
+      });
   }
 
-  getWorkingDays(){
+  getWorkingDays() {
     this.dataStorageService
       .getWorkingDays(this.primaryLang)
-      .subscribe(response => { 
-        this.days = response["response"]["workingdays"]   
+      .subscribe(response => {
+        this.days = response["response"]["workingdays"]
       });
   }
 
@@ -372,7 +375,7 @@ export class EditComponent {
       this.centerRequest
     );
     this.data[0] = null;
-    
+    this.showSpinner = true;
     this.centerService.getRegistrationCentersDetails(request).subscribe(
       response => {
         if (response.response.data) {
@@ -399,7 +402,8 @@ export class EditComponent {
             let newLanguageCode = filter[0];
             if (this.data[0] == null) {
               this.getPrimaryPanelData(newLanguageCode);
-            }  
+
+            }
           }
         }
       },
@@ -407,7 +411,7 @@ export class EditComponent {
     );
   }
 
-  async getSecondaryPanelData (language: string) {
+  async getSecondaryPanelData(language: string) {
     const filter = new FilterModel('id', 'equals', this.centerId);
     this.centerRequest.filters = [filter];
     this.centerRequest.languageCode = language;
@@ -423,20 +427,24 @@ export class EditComponent {
       .getRegistrationCentersDetails(request)
       .subscribe(secondaryResponse => {
         if (secondaryResponse.response.data) {
+          this.showUpdateButton = true;
           this.data[1] = secondaryResponse.response.data
             ? secondaryResponse.response.data[0]
             : null;
           this.setSecondaryFormValues();
           this.disableSecondaryForm = false;
+          this.showSpinner = false;
         } else {
-          this.disableSecondaryForm = false;        
+          this.showUpdateButton = false;
+          this.disableSecondaryForm = false;
+          this.showSpinner = false;
           //this.showErrorPopup();
         }
       },
-      //error => this.showErrorPopup()
-      );     
+        //error => this.showErrorPopup()
+      );
   }
-  
+
   showErrorPopup() {
     this.dialog
       .open(DialogComponent, {
@@ -464,7 +472,7 @@ export class EditComponent {
         this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
         //this.submitSecondaryPanel(selectedNewLangCode);
         this.submitSecondaryPanel();
-      } 
+      }
       if (!this.secondaryForm.valid) {
         this.secondaryForm.controls["selectLanguage"].setValue(this.secondaryLang);
         for (const i in this.secondaryForm.controls) {
@@ -473,10 +481,10 @@ export class EditComponent {
           }
         }
       }
-    }  
+    }
     else {
       this.reloadSecondaryFormWithNewLang(selectedNewLangCode);
-    } 
+    }
   }
 
   reloadSecondaryFormWithNewLang = (selectedNewLangCode: string) => {
@@ -492,10 +500,10 @@ export class EditComponent {
       this.data[1] = null;
     }
     this.translateService
-    .getTranslation(this.secondaryLang)
-    .subscribe(response => {
-      this.secondaryLanguageLabels = response.center;
-    });
+      .getTranslation(this.secondaryLang)
+      .subscribe(response => {
+        this.secondaryLanguageLabels = response.center;
+      });
     this.initializeSecondaryForm();
     this.auditService.audit(8, centerSpecFile.auditEventIds[1], 'centers')
     this.secondaryForm.controls.selectLanguage.setValue(
@@ -546,7 +554,7 @@ export class EditComponent {
     let commonData = this.data[0];
     this.commonForm.controls.centerTypeCode.setValue(
       commonData.centerTypeCode
-    );   
+    );
     this.commonForm.controls.contactPhone.setValue(commonData.contactPhone);
     this.commonForm.controls.longitude.setValue(commonData.longitude);
     this.commonForm.controls.latitude.setValue(commonData.latitude);
@@ -579,7 +587,7 @@ export class EditComponent {
       Utils.convertTimeTo12Hours(commonData.lunchEndTime)
     );
     this.commonForm.controls.workingDays.setValue(commonData.workingNonWorkingDays ?
-      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []); 
+      this.reverseFormatWorkingDays(commonData.workingNonWorkingDays) : []);
     //console.log("commonData.workingNonWorkingDays>>>"+JSON.stringify(commonData.workingNonWorkingDays)+"<<<this.commonForm.controls.workingDays.value>>>"+this.commonForm.controls.workingDays.value);
     this.commonForm.controls.exceptionalHolidays.setValue(
       commonData.exceptionalHolidayPutPostDto ? [...commonData.exceptionalHolidayPutPostDto] : []);
@@ -588,7 +596,7 @@ export class EditComponent {
     this.validateAndLoadLunchStartTime();
     this.validateAndLoadLunchEndTime();
   }
-  
+
   formatWorkingDays(selectedDays: string[]) {
     const obj = {};
     this.days.forEach(day => {
@@ -629,18 +637,18 @@ export class EditComponent {
       primaryObject
     );
     this.dataStorageService
-    .updateCenterLangData(primaryRequest)
-    .subscribe(updateResponse => {
+      .updateCenterLangData(primaryRequest)
+      .subscribe(updateResponse => {
         if (!updateResponse.errors) {
           this.showMessage('update-success', primaryObject)
-          .afterClosed()
-          .subscribe(() => {
-            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
-          });
-      } else {
-        this.showMessage('update-error', updateResponse);
-      }
-    });
+            .afterClosed()
+            .subscribe(() => {
+              this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
+            });
+        } else {
+          this.showMessage('update-error', updateResponse);
+        }
+      });
   }
 
   updateSecondaryPanelData() {
@@ -660,22 +668,22 @@ export class EditComponent {
       secondaryObject
     );
     this.dataStorageService
-    .updateCenterLangData(secondaryRequest)
-    .subscribe(updateResponse => {
+      .updateCenterLangData(secondaryRequest)
+      .subscribe(updateResponse => {
         if (!updateResponse.errors) {
           this.showMessage('update-success', secondaryObject)
-          .afterClosed()
-          .subscribe(() => {
-            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
-          });
-      } else {
-        this.showMessage('update-error', updateResponse);
-      }
-    });
+            .afterClosed()
+            .subscribe(() => {
+              this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
+            });
+        } else {
+          this.showMessage('update-error', updateResponse);
+        }
+      });
   }
   updateCommonData() {
-    console.log("this.commonForm.controls.workingDays.value>>>"+this.dynamicFieldValue[this.locationFieldNameList[this.locCode-1]]);
-    console.log("this.commonForm.controls.workingDays.value>>>"+JSON.stringify(this.dynamicFieldValue));
+    console.log("this.commonForm.controls.workingDays.value>>>" + this.dynamicFieldValue[this.locationFieldNameList[this.locCode - 1]]);
+    console.log("this.commonForm.controls.workingDays.value>>>" + JSON.stringify(this.dynamicFieldValue));
     this.createUpdate = true;
     /*let locationCode = "";
     if (1 == this.locCode) {
@@ -696,7 +704,7 @@ export class EditComponent {
       this.commonForm.controls.contactPhone.value,
       this.commonForm.controls.holidayZone.value,
       this.commonForm.controls.latitude.value,
-      this.dynamicFieldValue[this.locationFieldNameList[this.locCode-1]],
+      this.dynamicFieldValue[this.locationFieldNameList[this.locCode - 1]],
       this.commonForm.controls.longitude.value,
       Utils.convertTime(this.commonForm.controls.lunchEndTime.value),
       Utils.convertTime(this.commonForm.controls.lunchStartTime.value),
@@ -721,10 +729,10 @@ export class EditComponent {
           nonLangFieldsObject["name"] = this.data[0].name;
         }
         this.showMessage('update-success', nonLangFieldsObject)
-        .afterClosed()
-        .subscribe(() => {
-          this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
-        });
+          .afterClosed()
+          .subscribe(() => {
+            this.router.navigateByUrl(`/admin/resources/centers/single-view/${this.centerId}`);
+          });
       } else {
         this.showMessage('update-error', updateResponse);
       }
@@ -733,15 +741,15 @@ export class EditComponent {
 
   showMessage(type: string, data?: any) {
     let message = "";
-    if(type === 'create-success' || type === 'update-success'){
+    if (type === 'create-success' || type === 'update-success') {
       message = this.popupMessages[type].message[0] + data.id + this.popupMessages[type].message[1] + data.name;
-    }else{
-      if(data.errors[0].errorCode === "KER-MSD-999"){
+    } else {
+      if (data.errors[0].errorCode === "KER-MSD-999") {
         data.errors.forEach((element) => {
-          message = message + element.message.toString() +"\n\n";
+          message = message + element.message.toString() + "\n\n";
         });
-        message = this.serverError[data.errors[0].errorCode] +"\n\n"+ message;
-      }else{
+        message = this.serverError[data.errors[0].errorCode] + "\n\n" + message;
+      } else {
         message = this.serverError[data.errors[0].errorCode];
       }
     }
@@ -750,7 +758,7 @@ export class EditComponent {
       data: {
         case: 'MESSAGE',
         title: this.popupMessages[type].title,
-        message:message,
+        message: message,
         btnTxt: this.popupMessages[type].btnTxt
       }
     });
@@ -799,33 +807,33 @@ export class EditComponent {
       });
   }*/
 
-  loadLocationDropDownsDynamicallyForUpdate() {  
-    if(this.locationFieldNameList && this.data[0]) 
+  loadLocationDropDownsDynamicallyForUpdate() {
+    if (this.locationFieldNameList && this.data[0])
       for (let i = 0; i < this.locationFieldNameList.length; i++) {
-        this.loadLocationDataDynamically({"value":this.data[0].location[i+1]}, i);
-        if(this.data[0])
-          this.dynamicFieldValue[this.locationFieldNameList[i]] = this.data[0].location[i+1];
+        this.loadLocationDataDynamically({ "value": this.data[0].location[i + 1] }, i);
+        if (this.data[0])
+          this.dynamicFieldValue[this.locationFieldNameList[i]] = this.data[0].location[i + 1];
       }
   }
 
-  loadLocationDataDynamically(event:any, index: any){
-    let locationCode = ""; 
-    let fieldName = "";   
-    let self = this;  
-    if(event === ""){
+  loadLocationDataDynamically(event: any, index: any) {
+    let locationCode = "";
+    let fieldName = "";
+    let self = this;
+    if (event === "") {
       fieldName = this.locationFieldNameList[parseInt(index)];
       locationCode = this.initialLocationCode;
-    }else{    
-      fieldName = this.locationFieldNameList[parseInt(index)+1];
-      locationCode = event.value; 
+    } else {
+      fieldName = this.locationFieldNameList[parseInt(index) + 1];
+      locationCode = event.value;
       this.dynamicFieldValue[this.locationFieldNameList[parseInt(index)]] = event.value;
-    }    
+    }
     this.dataStorageService
-    .getImmediateChildren(locationCode, this.primaryLang)
-    .subscribe(response => {
-      if(response['response'])
-        self.dynamicDropDown[fieldName] = response['response']['locations'];
-    });    
+      .getImmediateChildren(locationCode, this.primaryLang)
+      .subscribe(response => {
+        if (response['response'])
+          self.dynamicDropDown[fieldName] = response['response']['locations'];
+      });
   }
 
   submitPrimaryPanel() {
@@ -963,7 +971,7 @@ export class EditComponent {
     this.dataStorageService.getStubbedDataForDropdowns(this.primaryLang).subscribe(response => {
       if (response.response.locations) {
         this.dropDownValues.holidayZone.primary =
-        response.response.locations;
+          response.response.locations;
       }
     });
   }
@@ -974,18 +982,18 @@ export class EditComponent {
     self.locationFieldNameList = [];
     self.dataStorageService.getLocationHierarchyLevels(self.primaryLang).subscribe(response => {
       response.response.locationHierarchyLevels.forEach(function (value) {
-        if(value.hierarchyLevel != 0)
-          if(value.hierarchyLevel <= self.locCode)
-            self.locationFieldNameList.push(value.hierarchyLevelName);          
-      });  
-      for(let value of self.locationFieldNameList) {
-        self.dynamicDropDown[value] = []; 
+        if (value.hierarchyLevel != 0)
+          if (value.hierarchyLevel <= self.locCode)
+            self.locationFieldNameList.push(value.hierarchyLevelName);
+      });
+      for (let value of self.locationFieldNameList) {
+        self.dynamicDropDown[value] = [];
         self.dynamicFieldValue[value] = "";
       }
       self.loadLocationDataDynamically("", 0);
       self.loadLocationDropDownsDynamicallyForUpdate();
       //self.loadLocationData(self.initialLocationCode, 'region');     
-    }); 
+    });
   }
 
   getRegistrationCenterTypes() {
@@ -1049,7 +1057,7 @@ export class EditComponent {
     if (this.commonForm.controls.startTime.value !== "" && this.commonForm.controls.startTime.valid) {
       const x = [...this.allSlots];
       let startIndex = x.indexOf(this.commonForm.controls.startTime.value) + 1;
-      if (this.commonForm.controls.lunchStartTime.value != this.commonForm.controls.lunchEndTime.value 
+      if (this.commonForm.controls.lunchStartTime.value != this.commonForm.controls.lunchEndTime.value
         && this.commonForm.controls.lunchEndTime.value !== '' && this.commonForm.controls.lunchEndTime.valid) {
         const endIndex = x.indexOf(this.commonForm.controls.lunchEndTime.value);
         this.dropDownValues.lunchStartTime = x.slice(startIndex, endIndex);
@@ -1074,14 +1082,14 @@ export class EditComponent {
     if (this.commonForm.controls.endTime.value !== "" && this.commonForm.controls.endTime.valid) {
       const x = [...this.allSlots];
       const endIndex = x.indexOf(this.commonForm.controls.endTime.value);
-      if (this.commonForm.controls.lunchStartTime.value != this.commonForm.controls.lunchEndTime.value 
+      if (this.commonForm.controls.lunchStartTime.value != this.commonForm.controls.lunchEndTime.value
         && this.commonForm.controls.lunchStartTime.value !== '' && this.commonForm.controls.lunchStartTime.valid) {
         const startIndex = x.indexOf(this.commonForm.controls.lunchStartTime.value) + 1;
-        this.dropDownValues.lunchEndTime = x.slice(startIndex, endIndex);  
+        this.dropDownValues.lunchEndTime = x.slice(startIndex, endIndex);
       } else {
         const startIndex = x.indexOf(this.commonForm.controls.startTime.value) + 1;
         this.dropDownValues.lunchEndTime = x.slice(startIndex, endIndex);
-      } 
+      }
     }
     // else {
     //   this.dialog.open(DialogComponent, {

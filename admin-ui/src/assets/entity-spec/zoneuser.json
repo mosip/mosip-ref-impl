@@ -3,12 +3,12 @@
   "actionButtons": [    
     {
       "buttonName": {
-        "eng": "Edit",
-        "ara": "تصحيح",
-        "fra": "modifier",
-        "hin": "संपादित करें ",
-        "kan": "ತಿದ್ದು",
-        "tam": "தொகு "
+        "eng": "Remap",
+        "ara": "إعادة رسم خريطة",
+        "fra": "remapper",
+        "hin": "सरीमैप ",
+        "kan": "ರೀಮ್ಯಾಪ್",
+        "tam": "மறுவடிவமைப்பு "
       },
       "actionURL": "",
       "redirectURL": "/admin/resources/zoneuser/single-view/$id",

@@ -1,4 +1,5 @@
-<div id="flex-single-view" style="padding-top: 12px;">
+<mat-spinner class="spinner-placer" *ngIf="showSpinner"></mat-spinner>
+<div id="flex-single-view" style="padding-top: 12px;" *ngIf="!showSpinner">
   <!-- <div class="navigation">
       <span><i class="material-icons" (click) = "naviagteBack()" >keyboard_arrow_left</i></span>&nbsp;<span class="title">{{'center.center-detail-view'|translate}}</span>
     </div> -->
@@ -13,8 +14,7 @@
             <div style="padding-bottom: 50px;"></div>
             <span><strong>{{ "center.language" | translate }}</strong></span>
             <span *ngIf="!disablePrimaryForm" matTooltip="{{ 'center.keyboard-tooltip' | translate }}"
-              (click)="openKeyboard('primary')" 
-              style="color: grey; cursor: pointer;"
+              (click)="openKeyboard('primary')" style="color: grey; cursor: pointer;"
               [ngStyle]="isPrimaryLangRTL ? {'float':'left'} : {'float':'right'}">
               <i class="material-icons">keyboard</i></span>
             <hr />
@@ -109,7 +109,7 @@
               <button id="createButton" mat-raised-button *ngIf="data.length == 0" (click)="submitPrimaryPanel()">
                 {{ "center.create" | translate }}
               </button>
-              <button mat-raised-button (click)="cancel()">
+              <button mat-raised-button (click)="cancel()" *ngIf="secondaryLang">
                 {{ "center.cancel" | translate }}
               </button>
             </mat-card-actions>
@@ -129,8 +129,7 @@
 
             <span><strong>{{ secondaryLanguageLabels["language"] }}</strong></span>
             <span *ngIf="!disableSecondaryForm" matTooltip="{{ secondaryLanguageLabels['keyboard-tooltip'] }}"
-              (click)="openKeyboard('secondary')"
-              style="color: grey; cursor: pointer;"
+              (click)="openKeyboard('secondary')" style="color: grey; cursor: pointer;"
               [ngStyle]="isSecondaryLangRTL ? {'float':'left'} : {'float':'right'}">
               <i class="material-icons">keyboard</i></span>
             <hr />
@@ -256,12 +255,10 @@
               </mat-form-field>
             </div>
             <mat-card-actions class="action-buttons">
-              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] != null"
-                (click)="submitSecondaryPanel()">
+              <button id="createButton" mat-raised-button *ngIf="showUpdateButton" (click)="submitSecondaryPanel()">
                 {{ "center.update" | translate }}
               </button>
-              <button id="createButton" mat-raised-button *ngIf="data.length > 1 && data[1] == null"
-                (click)="submitSecondaryPanel()">
+              <button id="createButton" mat-raised-button *ngIf="!showUpdateButton" (click)="submitSecondaryPanel()">
                 {{ "center.create" | translate }}
               </button>
               <button mat-raised-button (click)="cancel()">
@@ -388,7 +385,8 @@
               </mat-form-field>
             </div>
             <div>
-              <mat-form-field *ngFor="let fieldName of locationFieldNameList; let i = index; let odd = odd" [ngClass]="odd ? 'right-sizing-container' : 'left-sizing-container'">
+              <mat-form-field *ngFor="let fieldName of locationFieldNameList; let i = index; let odd = odd"
+                [ngClass]="odd ? 'right-sizing-container' : 'left-sizing-container'">
                 <mat-label>{{ fieldName }}</mat-label>
                 <mat-select [value]="dynamicFieldValue[fieldName]" id="{{fieldName}}" (selectionChange)="
                     loadLocationDataDynamically($event, i);">
@@ -641,7 +639,7 @@
             </div>
             <br />
             <mat-label>{{ "center.workingDays" | translate }} </mat-label>
-            <mat-selection-list formControlName="workingDays">              
+            <mat-selection-list formControlName="workingDays">
               <div style="display: flex; flex-wrap: wrap; margin-left: -15px;">
                 <mat-list-option style="background-color: white" [checkboxPosition]="before" *ngFor="let day of days"
                   [value]="day.code">
@@ -673,7 +671,7 @@
                 <div
                   style="height: 30px;width: 100px;border: 1px solid #FF4081;border-radius: 30px;padding: 7px;margin: 15px;cursor: pointer;font-size: 11px;"
                   *ngIf="common.exceptionalHolidays.value.length>=0 && data.exceptionHolidayDate!==null">
-                  <span>{{ data.exceptionHolidayDate }}</span>
+                  <span style="margin-right: 25px;">{{ data.exceptionHolidayDate }}</span>
                   <div style="position: absolute;
                   margin-left: 65px;
                 margin-top: -18px;

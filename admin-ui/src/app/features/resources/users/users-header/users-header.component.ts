@@ -10,6 +10,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { MachineModel } from 'src/app/core/models/machine.model';
 import * as appConstants from '../../../../app.constants';
+import { HeaderService } from 'src/app/core/services/header.service';
 
 @Component({
   selector: 'app-users-header',
@@ -25,9 +26,11 @@ export class UsersHeaderComponent implements OnInit {
   	constructor(
 	  	private dataSerice: DataStorageService,
 	    private appService: AppConfigService,
-	    private commonService: CommonService
+	    private commonService: CommonService,
+      private headerService: HeaderService,
+
   	) {
-    	this.lang = appService.getConfig()['primaryLangCode'];
+      this.lang = this.headerService.getUserPreferredLanguage();;
   	}
   	
 	ngOnInit() {
