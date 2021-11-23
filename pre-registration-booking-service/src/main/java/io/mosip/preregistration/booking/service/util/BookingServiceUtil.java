@@ -631,19 +631,23 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> getApplicationStatus(String applicationId) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/" + applicationId;
+		String url = preRegResourceUrl + "/applications/status/" + applicationId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
+		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + url);
 		try {
-			ResponseEntity<MainResponseDTO<ApplicationEntity>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
-					new ParameterizedTypeReference<MainResponseDTO<ApplicationEntity>>() {
+			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
+					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
 				response.setErrors(responseEntity.getBody().getErrors());
 			} else {
-				ApplicationEntity applicationEntity = responseEntity.getBody().getResponse();
-				response.setResponse(applicationEntity.getBookingStatusCode());
+				String applicationStatus = responseEntity.getBody().getResponse();
+				if (applicationStatus != null) {
+					response.setResponse(applicationStatus);	
+				} else {
+					response.setResponse("");
+				}
 			}
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
