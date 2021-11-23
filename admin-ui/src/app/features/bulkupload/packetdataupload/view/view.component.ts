@@ -4,7 +4,6 @@ import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
-import * as packetuploadConfig from 'src/assets/entity-spec/packetupload.json';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import Utils from '../../../../app.utils';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
@@ -12,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { HeaderService } from 'src/app/core/services/header.service';
+import { DataStorageService } from 'src/app/core/services/data-storage.service';
 
 @Component({
   selector: 'app-view',
@@ -33,6 +33,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   filtersApplied = false;
 
   constructor(
+    private dataStorageService: DataStorageService,
     private bulkuploadService: BulkuploadService,
     private appService: AppConfigService,
     private activatedRoute: ActivatedRoute,
@@ -50,25 +51,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getPacketUpload();
+        
       }
     });
   }
 
   ngOnInit() {
-    this.auditService.audit(3, packetuploadConfig.auditEventIds[0], 'packetupload');
+    
   }
 
   getpacketuploadConfigs() {
-    this.displayedColumns = packetuploadConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = packetuploadConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = packetuploadConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = packetuploadConfig.paginator;
+    this.dataStorageService
+      .getSpecFileForMasterDataEntity("packetupload")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'packetupload');
+        this.getPacketUpload();
+      });
   }
 
   pageEvent(event: any) {

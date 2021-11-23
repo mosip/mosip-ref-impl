@@ -4,7 +4,6 @@ import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
-import * as getCertificateConfig from 'src/assets/entity-spec/getcertificate.json';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import Utils from '../../../../app.utils';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
@@ -12,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from "src/app/core/services/header.service";
+import { DataStorageService } from 'src/app/core/services/data-storage.service';
 
 @Component({
   selector: 'app-view',
@@ -35,6 +35,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   referenceId = "";
 
   constructor(
+    private dataStorageService: DataStorageService,
     private keymanagerService: KeymanagerService,
     private appService: AppConfigService,
     private activatedRoute: ActivatedRoute,
@@ -57,19 +58,23 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auditService.audit(3, getCertificateConfig.auditEventIds[0], 'getCertificate');
+    //this.auditService.audit(3, getCertificateConfig.auditEventIds[0], 'getCertificate');
   }
 
   getCertificateCofig() {
-    this.displayedColumns = getCertificateConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = getCertificateConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = getCertificateConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = getCertificateConfig.paginator;
+    this.dataStorageService
+      .getSpecFileForMasterDataEntity("getcertificate")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'getCertificate');
+      });
   }
 
   captureValue(event: any, formControlName: string) {

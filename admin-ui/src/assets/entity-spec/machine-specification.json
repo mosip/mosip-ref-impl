@@ -158,7 +158,7 @@
       "linkType": "",
       "LinkURL": "",
       "inputType": "text",
-      "ismandatory": "true"
+      "ismandatory": "false"
     },
     {
       "name": "machineTypeCode",

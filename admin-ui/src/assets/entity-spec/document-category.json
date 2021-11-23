@@ -247,8 +247,7 @@
       "showAsLink": "false",
       "linkType": "",
       "LinkURL": "",
-      "inputType": "dropdown",
-      "ismandatory": "true"
+      "inputType": "dropdown"
     },
     {
       "name": "isActive",

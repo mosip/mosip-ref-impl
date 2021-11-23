@@ -4,7 +4,6 @@ import { AppConfigService } from 'src/app/app-config.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { RequestModel } from 'src/app/core/models/request.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
-import * as machinesConfig from 'src/assets/entity-spec/machines.json';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import Utils from 'src/app/app.utils';
@@ -53,25 +52,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getMachines();
+        //this.getMachines();
       }
     });
   }
 
   ngOnInit() {
-    this.auditService.audit(3, machinesConfig.auditEventIds[0], 'machines');
+    //this.auditService.audit(3, machinesConfig.auditEventIds[0], 'machines');
   }
 
   getMachinesConfigs() {
-    this.displayedColumns = machinesConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = machinesConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = machinesConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = machinesConfig.paginator;
+    this.dataStroageService
+      .getSpecFileForMasterDataEntity("machines")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'machines');
+        this.getMachines();
+      });
   }
 
   pageEvent(event: any) {

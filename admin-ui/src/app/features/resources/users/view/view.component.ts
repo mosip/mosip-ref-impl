@@ -2,15 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuditService } from 'src/app/core/services/audit.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'src/app/app-config.service';
-import * as userConfig from 'src/assets/entity-spec/user.json';
-import * as ZoneUserConfig from 'src/assets/entity-spec/zoneuser.json';
 
 import { RequestModel } from 'src/app/core/models/request.model';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
-import * as deviceConfig from 'src/assets/entity-spec/devices.json';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import Utils from 'src/app/app.utils';
 import { MatDialog } from '@angular/material';
@@ -63,35 +60,47 @@ export class ViewComponent implements OnInit {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getUsers();
+        //this.getUsers();
       }
     });
   }
 
   ngOnInit() {
-    this.auditService.audit(3, 'ADM-042', 'users');
+    //this.auditService.audit(3, 'ADM-042', 'users');
   }
 
   getUserConfigs() {
     let url = this.router.url.split('/')[3];
     if(url === "zoneuser"){
-      this.displayedColumns = ZoneUserConfig.columnsToDisplay;
-      this.actionButtons = ZoneUserConfig.actionButtons.filter(
-        value => value.showIn.toLowerCase() === 'ellipsis'
-      );
-      this.actionEllipsis = ZoneUserConfig.actionButtons.filter(
-        value => value.showIn.toLowerCase() === 'button'
-      );
-      this.paginatorOptions = ZoneUserConfig.paginator;
+      this.dataStorageService
+      .getSpecFileForMasterDataEntity("zoneuser")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'zoneuser');
+        this.getUsers();
+      });
     }else{
-      this.displayedColumns = userConfig.columnsToDisplay;
-      this.actionButtons = userConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = userConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = userConfig.paginator;
+      this.dataStorageService
+      .getSpecFileForMasterDataEntity("user")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'user');
+        this.getUsers();
+      });
     }    
   }
 
