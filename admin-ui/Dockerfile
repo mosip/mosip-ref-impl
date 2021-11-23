@@ -30,7 +30,7 @@ ENV artifactory_url_env=${artifactory_url}
 
 # install packages and create user
 RUN apt-get -y update \
-&& apt-get install -y unzip wget zip \
+&& apt-get install -y unzip wget zip npm \
 && groupadd -g ${container_user_gid} ${container_user_group} \
 && useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/sh -m ${container_user} \
 && mkdir -p /var/run/nginx /var/tmp/nginx \
@@ -44,6 +44,14 @@ ADD ./nginx.conf /etc/nginx/nginx.conf
 ADD ./default.conf /etc/nginx/conf.d/
 
 ADD ./download.conf /etc/nginx/include/download.conf
+
+RUN mkdir application && cd application
+
+COPY ["angular.json", "karma.conf.js", "package.json", "proxy.conf.json", "tsconfig.app.json","tsconfig.json","tsconfig.spec.json","tslint.json"] ./
+
+ADD ./src/ ./src
+
+RUN cd /home/${container_user}
 
 ADD dist ${base_path}
 

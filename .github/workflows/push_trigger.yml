@@ -9,6 +9,7 @@ on:
       - develop
       - 1.1.*
       - MOSIP-11719
+      - 1.2.*
   
 jobs:
   build-kernel-ref-idobjectvalidator:
@@ -912,6 +913,5 @@ jobs:
 #        env:
 #          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
 #        if: failure() # Pick up events even if the job fails or is canceled.
-
 
 
