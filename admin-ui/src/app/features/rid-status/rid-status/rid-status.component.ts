@@ -5,7 +5,6 @@ import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
-import * as ridConfig from 'src/assets/entity-spec/rid-status.json';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import Utils from 'src/app/app.utils';
 import { MatDialog } from '@angular/material';
@@ -55,7 +54,7 @@ export class RidStatusComponent implements OnInit {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getridDetails();
+        //this.getridDetails();
       }
     });
   }
@@ -65,15 +64,20 @@ export class RidStatusComponent implements OnInit {
   }
 
   getridConfigs() {
-    this.displayedColumns = ridConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = ridConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = ridConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = ridConfig.paginator;
+    this.dataStroageService
+      .getSpecFileForMasterDataEntity("rid-status")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'rid-status');
+        this.getridDetails();
+      });
   }
 
   pageEvent(event: any) {
