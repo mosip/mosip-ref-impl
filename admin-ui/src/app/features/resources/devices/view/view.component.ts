@@ -5,7 +5,6 @@ import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { AppConfigService } from 'src/app/app-config.service';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
 import { CenterRequest } from 'src/app/core/models/centerRequest.model';
-import * as deviceConfig from 'src/assets/entity-spec/devices.json';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import Utils from 'src/app/app.utils';
 import { MatDialog } from '@angular/material';
@@ -57,25 +56,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getDevices();
+        //this.getDevices();
       }
     });
   }
 
   ngOnInit() {
-    this.auditService.audit(3, deviceConfig.auditEventIds[0], 'devices');
+    //this.auditService.audit(3, deviceConfig.auditEventIds[0], 'devices');
   }
 
   getDevicesConfigs() {
-    this.displayedColumns = deviceConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = deviceConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = deviceConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = deviceConfig.paginator;
+    this.dataStroageService
+      .getSpecFileForMasterDataEntity("devices")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'devices');
+        this.getDevices();
+      });
   }
 
   pageEvent(event: any) {
