@@ -135,7 +135,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     }
     await this.initiateComponent();
     this.fullNameField = this.config.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
+      appConstants.CONFIG_KEYS.preregistration_identity_name
     );
     this.getFileSize();
     this.allowedFiles = this.config.getConfigByKey(appConstants.CONFIG_KEYS.preregistration_document_alllowe_files).split(",");

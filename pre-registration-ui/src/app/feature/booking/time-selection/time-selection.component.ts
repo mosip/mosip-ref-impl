@@ -98,7 +98,7 @@ export class TimeSelectionComponent
       this.registrationCenter = param["regCenter"];
     });
     this.name = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
+      appConstants.CONFIG_KEYS.preregistration_identity_name
     );
     this.dataService
       .getI18NLanguageFiles(this.userPreferredLangCode)

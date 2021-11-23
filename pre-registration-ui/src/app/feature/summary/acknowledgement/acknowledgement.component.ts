@@ -73,7 +73,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.apiErrorCodes = response[appConstants.API_ERROR_CODES];
     });
     this.name = this.configService.getConfigByKey(
-      appConstants.CONFIG_KEYS.preregistartion_identity_name
+      appConstants.CONFIG_KEYS.preregistration_identity_name
     );
     await this.getUserInfo(this.preRegIds);
     //console.log(this.usersInfoArr);

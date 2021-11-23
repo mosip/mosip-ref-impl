@@ -10,7 +10,7 @@
   "mosip.kernel.otp.validation-attempt-threshold": "10",
   "mosip.country.code": "MOR",
   "preregistration.timespan.cancel": "24",
-  "preregistartion.identity.name": "fullName",
+  "preregistration.identity.name": "fullName",
   "mosip.default.dob.month": "01",
   "mosip.preregistration.auto.logout.timeout": "60",
   "preregistration.availability.noOfDays": "140",
