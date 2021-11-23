@@ -1049,7 +1049,7 @@
         "KER-MSD-260": "L'heure de fin du déjeuner ne peut pas être supérieure à l'heure de fin centrale",
         "KER-MSD-309": "L'heure de début du centre doit être inférieure à l'heure de fin du centre",
         "KER-MSD-308": "L'heure de début du déjeuner au centre doit être inférieure à l'heure de fin du déjeuner au centre",
-        "KER-MSD-307": "La latitude ou la longitude doit avoir au moins 4 chiffres après la virgule",
+        "KER-MSD-307": "La latitude ou la longitude doit avoir un maximum de 2 chiffres avant et un minimum de 4 chiffres après la virgule",
         "KER-MSD-703": "heure de début/fin Données non configurées dans la base de données",
         "KER-MSD-320": "Aucun emplacement trouvé pour la valeur %s",
         "KER-MSD-321": "Aucun type de centre d'enregistrement trouvé pour la valeur %s",
