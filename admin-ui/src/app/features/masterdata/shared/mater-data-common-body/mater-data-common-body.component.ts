@@ -910,7 +910,7 @@ export class MaterDataCommonBodyComponent implements OnInit {
       this.dataStorageService.updateData(request).subscribe(updateResponse => {
           if (!updateResponse.errors) {
             if(textToValidate){
-              this.secondaryData["code"] = updateResponse.response.code; 
+              // this.secondaryData["code"] = updateResponse.response.code;
               if(updateResponse.response.id && url !== "dynamicfields"){
                 this.secondaryData["id"] = updateResponse.response.id; 
               }
