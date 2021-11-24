@@ -94,7 +94,7 @@ export const CONFIG_KEYS = {
   preregistration_nearby_centers: 'preregistration.nearby.centers',
   preregistration_timespan_rebook: 'preregistration.timespan.rebook',
   mosip_login_mode: 'mosip.login.mode',
-  preregistration_identity_name : 'preregistration.identity.name',
+  preregistartion_identity_name : 'preregistartion.identity.name',
   mosip_regex_email: 'mosip.id.validation.identity.email',
   mosip_regex_phone: 'mosip.id.validation.identity.phone',
   mosip_left_to_right_orientation: 'mosip.left_to_right_orientation',
@@ -123,8 +123,8 @@ export const CONFIG_KEYS = {
   mosip_optional_languages: 'mosip.optional-languages',
   mosip_min_languages_count: 'mosip.min-languages.count',
   mosip_max_languages_count: 'mosip.max-languages.count',
-  preregistration_contact_email: 'preregistration.contact.email',
-  preregistration_contact_phone: 'preregistration.contact.phone',
+  preregistartion_contact_email: 'preregistartion.contact.email',
+  preregistartion_contact_phone: 'preregistartion.contact.phone',
 };
 
 export const DASHBOARD_RESPONSE_KEYS = {

@@ -295,8 +295,8 @@ export default class Utils {
         message = apiErrorCodes[errorCode];
       } 
     }
-    const email = config[appConstants.CONFIG_KEYS.preregistration_contact_email];
-    const phone = config[appConstants.CONFIG_KEYS.preregistration_contact_phone];
+    const email = config[appConstants.CONFIG_KEYS.preregistartion_contact_email];
+    const phone = config[appConstants.CONFIG_KEYS.preregistartion_contact_phone];
     if (!Utils.authenticationFailed(error)) {
       message = message + errorlabels["contactInformation"][0] + email + errorlabels["contactInformation"][1] + phone;
       if (errorCode != "") {
