@@ -11,10 +11,14 @@ export class RolesService {
   public checkRole(item: any): boolean {
     const userRoles = this.headerService.getRoleCodes().split(',');
     let flag = false;
-    for (let i in item.roles) {
-      if (userRoles.indexOf(item.roles[i]) >= 0) {
-        flag = true;
-        break;
+    if(item.roles.length == 0){
+      flag = true;
+    }else{
+      for (let i in item.roles) {
+        if (userRoles.indexOf(item.roles[i]) >= 0) {
+          flag = true;
+          break;
+        }
       }
     }
     return flag;
