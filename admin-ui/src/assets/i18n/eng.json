@@ -1052,7 +1052,7 @@
         "KER-MSD-260": "Lunch end Time cannot be Greater Than Center End Time",
         "KER-MSD-309": "Center Start Time must be smaller than Center End Time",
         "KER-MSD-308": "Center Lunch Start Time must be smaller than Center Lunch End Time",
-        "KER-MSD-307": "Latitude or Longitude must have minimum 4 digits after decimal",
+        "KER-MSD-307": "Latitude or Longitude must have maximum 2 digits before and minimum 4 digits after decimal",
         "KER-MSD-703": "start/end time Data not configured in database",
         "KER-MSD-320": "No Location found for value %s",
         "KER-MSD-321": "No Registration Center type found for value %s",

@@ -500,12 +500,8 @@
                   style="height: 30px;width: 100px;border: 1px solid #FF4081;border-radius: 30px;padding: 7px;margin: 15px;cursor: pointer;font-size: 11px;"
                   *ngIf="primary.exceptionalHolidays.value.length>=0 && data.exceptionHolidayDate!==null">
                   <span>{{ data.exceptionHolidayDate }}</span>
-                  <div style="position: absolute;
-                  margin-left: 65px;
-                margin-top: -18px;
-                  cursor: pointer;
-                  color: #FF4081;" (click)="deleteHoliday(i)">
-                    <i class="material-icons">cancel</i>
+                  <div style="position: absolute; margin-left: 65px;margin-top: -18px;cursor: pointer;color: #FF4081;" (click)="deleteHoliday(i)">
+                    <i class="material-icons" [ngClass]="isPrimaryLangRTL ? 'icon-padding-right' : 'icon-padding-left'">cancel</i>
                   </div>
                 </div>
               </ng-container>
