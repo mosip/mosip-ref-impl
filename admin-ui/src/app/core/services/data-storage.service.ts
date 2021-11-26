@@ -199,6 +199,9 @@ export class DataStorageService {
   }
 
   getMasterDataByTypeAndId(type: string, data: RequestModel): Observable<any> {
+    let url = this.router.url.split('/')[3];
+    if(url === "dynamicfields")
+      data.request.filters.push({columnName: "name", type: "contains", value: this.router.url.split('/')[4]});
     return this.http.post(
       this.BASE_URL + appConstants.MASTERDATA_BASE_URL + type + '/search?addMissingData=true',
       data

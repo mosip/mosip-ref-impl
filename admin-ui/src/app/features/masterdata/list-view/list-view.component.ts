@@ -188,9 +188,9 @@ export class ListViewComponent implements OnDestroy {
         this.sortFilter.push({"sortType":"desc","sortField":"createdDateTime"});      
       }     
       this.requestModel = new RequestModel(null, null, filters);
-      if(this.activatedRoute.snapshot.params.dynamicfieldtype){        
+      /*if(this.activatedRoute.snapshot.params.dynamicfieldtype){        
         this.requestModel.request.filters.push({columnName: "name", type: "contains", value: this.activatedRoute.snapshot.params.dynamicfieldtype});
-      }
+      }*/
       this.dataStorageService
         .getMasterDataByTypeAndId(this.mapping.apiName, this.requestModel)
         .subscribe(({ response }) => {
