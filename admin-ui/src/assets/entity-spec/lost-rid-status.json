@@ -1,0 +1,158 @@
+{
+  "auditEventIds": ["ADM-030", "ADM-052"],
+  "actionButtons": [
+    {
+      "buttonName": { "eng": "Filter", "ara": "تصفيه", "fra": "filtre" ,
+        "hin": "पफ़िल्टर ",
+        "kan": "ಫಿಲ್ಟರ್ ಮಾಡಿ     ",
+        "tam": "வடிகட்டி  "},
+      "imagePath": "assets/images/filter.png",
+      "actionListType": "action",
+      "actionURL": { "case": "filter" },
+      "redirectURL": "",
+      "showIn": "Button",
+      "validations": ""
+    }
+  ],
+  "columnsToDisplay": [
+    {
+      "name": "registrationId",
+      "showInListView": "True",
+      "label": { "eng": "registrationId", "ara": "ايتخلص", "fra": "DÉBARRASSER" ,
+        "hin": "पंजीयन पहचान  ",
+        "kan": "ಆರ್ಐಡಿ     ",
+        "tam": "தவிர்ந்திடு  "},
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    },
+    {
+      "name": "registartionDate",
+      "showInListView": "True",
+      "label": { "eng": "registartionDate", "ara": "يكتب", "fra": "Taper" ,
+        "hin": "प्रकार  ",
+        "kan": "ಮಾದರಿ     ",
+        "tam": "வகை   "},
+      "sortOrder": "3",
+      "showAsLink": "",
+      "linkType": "",
+      "LinkURL": ""
+    }
+  ],
+  "paginator": {},
+  "filterColumns": [
+    {
+      "filtername": "registrationDateFrom",
+      "filterlabel": { "eng": "Registration Date From", "ara": "تاريخ عطلة من", "fra": "Date de vacances de","hin": "छुट्टी की तारीख", "kan": "ರಜಾದಿನದ ದಿನಾಂಕದಿಂದ", "tam": "விடுமுறை தேதி" },
+      "filterType": "between",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "true",
+      "apiName": "lostRid",
+      "fieldName": "registrationDate",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "registrationDateTo",
+      "filterlabel": { "eng": "Registration Date To", "ara": "تاريخ عطلة ل", "fra": "Date de vacances à","hin": "छुट्टी की तारीख", "kan": "ರಜಾದಿನದ ದಿನಾಂಕ", "tam": "விடுமுறை தேதி" },
+      "filterType": "between",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "true",
+      "apiName": "lostRid",
+      "fieldName": "registrationDate",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "name",
+      "filterlabel": {
+        "eng": "Name",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances",
+        "hin": "छुट्टी का नाम",
+        "kan": "ರಜಾದಿನದ ಹೆಸರು",
+        "tam": "விடுமுறை பெயர்"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "lostRid",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "email",
+      "filterlabel": {
+        "eng": "Email",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances",
+        "hin": "छुट्टी का नाम",
+        "kan": "ರಜಾದಿನದ ಹೆಸರು",
+        "tam": "விடுமுறை பெயர்"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "lostRid",
+      "fieldName": "email",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "phone",
+      "filterlabel": {
+        "eng": "Phone",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances",
+        "hin": "छुट्टी का नाम",
+        "kan": "ರಜಾದಿನದ ಹೆಸರು",
+        "tam": "விடுமுறை பெயர்"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "lostRid",
+      "fieldName": "phone",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "postalCode",
+      "filterlabel": {
+        "eng": "PostalCode",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances",
+        "hin": "छुट्टी का नाम",
+        "kan": "ರಜಾದಿನದ ಹೆಸರು",
+        "tam": "விடுமுறை பெயர்"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "lostRid",
+      "fieldName": "postalCode",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "centerId",
+      "filterlabel": {
+        "eng": "CenterId",
+        "ara": "اسم العطلة",
+        "fra": "Nom des vacances",
+        "hin": "छुट्टी का नाम",
+        "kan": "ರಜಾದಿನದ ಹೆಸರು",
+        "tam": "விடுமுறை பெயர்"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "lostRid",
+      "fieldName": "centerId",
+      "methodCallName": ""
+    }
+  ]
+}
