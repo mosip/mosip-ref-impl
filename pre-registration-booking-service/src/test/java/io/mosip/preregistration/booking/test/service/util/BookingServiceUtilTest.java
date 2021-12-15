@@ -88,7 +88,7 @@ public class BookingServiceUtilTest {
 	@MockBean
 	private RegistrationBookingRepository registrationBookingRepository;
 
-	@MockBean(name = "restTemplate")
+	@MockBean(name = "selfTokenRestTemplate")
 	RestTemplate restTemplate;
 
 	@MockBean

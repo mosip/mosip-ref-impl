@@ -126,7 +126,7 @@ public class BookingServiceTest {
 	 * Mocking the RestTemplateBuilder bean
 	 */
 
-	@MockBean(name = "restTemplate")
+	@MockBean(name = "selfTokenRestTemplate")
 	RestTemplate restTemplate;
 
 	@MockBean
