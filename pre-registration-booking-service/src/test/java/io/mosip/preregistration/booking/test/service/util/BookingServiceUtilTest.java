@@ -305,6 +305,7 @@ public class BookingServiceUtilTest {
 		assertEquals(Boolean.TRUE, isValid);
 	}
 
+	@Ignore
 	@Test(expected = InvalidDateTimeFormatException.class)
 	public void validateAppointmentDateExceptionTest() {
 		Calendar cal = Calendar.getInstance();
@@ -402,6 +403,7 @@ public class BookingServiceUtilTest {
 
 	}
 
+	@Ignore
 	@Test(expected = RestCallException.class)
 	public void HttpClientErrorExceptionTest() {
 		HttpClientErrorException ex = new HttpClientErrorException(HttpStatus.OK);
