@@ -19,8 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -134,6 +139,17 @@ public class BookingServiceUtil {
 	@Value("${mosip.notification.timezone}")
 	private String specificZoneId;
 
+	/**
+	 * ObjectMapper global object creation
+	 */
+	private ObjectMapper mapper;
+
+	@PostConstruct
+    public void init() {
+		mapper = JsonMapper.builder().addModule(new AfterburnerModule()).build();
+		mapper.registerModule(new JavaTimeModule());
+	}
+	
 	private Logger log = LoggerConfiguration.logConfig(BookingServiceUtil.class);
 
 	public AuthUserDetails authUserDetails() {
@@ -495,7 +511,6 @@ public class BookingServiceUtil {
 		ResponseEntity<String> resp = null;
 		HttpHeaders headers = new HttpHeaders();
 		MainRequestDTO<NotificationDTO> request = new MainRequestDTO<>();
-		ObjectMapper mapper = new ObjectMapper();
 		mapper.setTimeZone(TimeZone.getDefault());
 		try {
 			request.setRequest(notificationDTO);
