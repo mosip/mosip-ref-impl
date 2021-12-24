@@ -805,7 +805,8 @@ public class BookingService implements BookingServiceIntf {
 		response.setId(idUrlCheckSlotAvailability);
 		response.setVersion(versionUrl);
 		try {
-			List<RegistrationCenterDto> regCenter = serviceUtil.getRegCenterMasterData();
+			List<RegistrationCenterDto> regCenter = serviceUtil.getRegCenterMasterData(
+					bookingRequestDTO.getRegistrationCenterId());
 			Boolean isValidRegCenter = regCenter.stream()
 					.anyMatch(iterate -> iterate.getId().contains(bookingRequestDTO.getRegistrationCenterId()));
 

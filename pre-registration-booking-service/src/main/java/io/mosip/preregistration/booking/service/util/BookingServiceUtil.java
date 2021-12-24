@@ -161,11 +161,14 @@ public class BookingServiceUtil {
 	 * 
 	 * @return List of RegistrationCenterDto
 	 */
-	public List<RegistrationCenterDto> getRegCenterMasterData() {
+	public List<RegistrationCenterDto> getRegCenterMasterData(String regCenterId) {
 		log.info("sessionId", "idType", "id", "In callRegCenterDateRestService method of Booking Service Util");
 		List<RegistrationCenterDto> regCenter = null;
 		try {
-			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(regCenterUrl);
+			String regCentersDetailsPageNo = new StringBuilder(regCenterUrl).append("/").append(regCenterId)
+					.append("/all").toString();
+
+			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(regCentersDetailsPageNo);
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 			HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
@@ -615,7 +618,7 @@ public class BookingServiceUtil {
 	}
 
 	public boolean isValidRegCenter(String regId) {
-		List<RegistrationCenterDto> regCenter = getRegCenterMasterData();
+		List<RegistrationCenterDto> regCenter = getRegCenterMasterData(regId);
 		Boolean isValidRegCenter = regCenter.stream().anyMatch(iterate -> iterate.getId().contains(regId));
 
 		if (!isValidRegCenter) {
