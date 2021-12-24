@@ -399,7 +399,7 @@ public class BookingServiceUtilTest {
 				Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
 				}))).thenReturn(res);
 
-		serviceUtil.getRegCenterMasterData();
+		serviceUtil.getRegCenterMasterData("10001");
 
 	}
 
@@ -411,7 +411,7 @@ public class BookingServiceUtilTest {
 				Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
 				}))).thenThrow(ex);
 
-		serviceUtil.getRegCenterMasterData();
+		serviceUtil.getRegCenterMasterData("10001");
 
 	}
 
