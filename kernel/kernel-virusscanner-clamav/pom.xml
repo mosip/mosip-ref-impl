@@ -26,13 +26,14 @@
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
 			<version>${kernel.core.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.datatype</groupId>
+					<artifactId>jackson-datatype-jsr310</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<exclusions>
-			<exclusion>
-				<groupId>com.fasterxml.jackson.datatype</groupId>
-				<artifactId>jackson-datatype-jsr310</artifactId>
-			</exclusion>
-		</exclusions>
+
 		<dependency>
 			<groupId>xyz.capybara</groupId>
 			<artifactId>clamav-client</artifactId>
