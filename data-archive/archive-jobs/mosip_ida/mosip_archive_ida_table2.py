@@ -1,7 +1,7 @@
 #-- -------------------------------------------------------------------------------------------------
 #-- Job Name        : ID Authentication DB Tables Archive
 #-- DB Name 	    : mosip_ida
-#-- Table Names     : applicant_document_consumed
+#-- Table Names     : otp_transaction
 #-- Purpose    	    : Job to Archive Data in ID Authentication DB for above mentioned tables         
 #-- Create By       : Sadanandegowda DM
 #-- Created Date    : Dec-2020
@@ -22,7 +22,7 @@ import datetime
 from configparser import ConfigParser
 from datetime import datetime
 
-def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
+def config(filename='mosip_archive_ida.ini', section='MOSIP-DB-SECTION'):
     parser = ConfigParser()
     parser.read(filename)
     dbparam = {}
