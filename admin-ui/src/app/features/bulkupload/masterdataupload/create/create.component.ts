@@ -24,6 +24,7 @@ export class CreateComponent {
   fileNameError:boolean = false;
   buttonalignment = 'ltr';
   serverError:any;
+  tableName: string;
   showDownloadBtn:boolean = false;
   constructor(
   private translateService: TranslateService,
@@ -74,8 +75,16 @@ export class CreateComponent {
   captureDropDownValue(event: any) {    
     if (event.source.selected) {
       this.showDownloadBtn = true;
-      console.log("event.source.value>>>"+event.source.value);
+      this.tableName = event.source.value;
     }
+  }
+
+  downloadExcel(){
+    let buildURL = window.location.origin+"/admin-ui/templates/"+this.tableName+".csv"
+    this.dataStorageService
+    .getsampletemplate(buildURL)
+    .subscribe(() => {      
+    });
   }
 
   onFileSelect(event) {
@@ -150,7 +159,7 @@ export class CreateComponent {
       let statusDescription : any = JSON.parse(JSON.stringify(uploadResponse.response.statusDescription));
       if(uploadResponse.response.status == "FAILED"){
         for( let prop in statusDescription ){
-          console.log( statusDescription[prop] );
+          //console.log( statusDescription[prop] );
         }
         data = {
           case: 'MESSAGE',
@@ -191,6 +200,8 @@ export class CreateComponent {
     });
     dialogRef.afterClosed().subscribe(response => {   
       if(uploadResponse.response.status == "FAILED"){
+        self.uploadForm.get('fileName').setValue('');
+        document.getElementById("fileName").focus();
       }else{
         self.location.back();
       }     

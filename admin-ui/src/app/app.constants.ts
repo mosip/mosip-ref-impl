@@ -21,7 +21,7 @@ export const navItems = [
     route: '/admin/home',
     children: null,
     auditEventId: 'ADM-002',
-    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+    roles: []
   },
   {
     displayName: 'menuItems.item2.title',
@@ -40,14 +40,14 @@ export const navItems = [
         icon: null,
         route: '/admin/resources/devices',
         auditEventId: 'ADM-005',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['ZONAL_ADMIN']
       },
       {
         displayName: 'menuItems.item2.subItem3',
         icon: null,
         route: '/admin/resources/machines',
         auditEventId: 'ADM-007',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['ZONAL_ADMIN']
       },
       {
         displayName: 'menuItems.item2.subItem4',
@@ -61,7 +61,7 @@ export const navItems = [
         icon: null,
         route: '/admin/resources/users',
         auditEventId: 'ADM-006',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['ZONAL_ADMIN']
       }
     ],
     auditEventId: 'ADM-003',
@@ -73,7 +73,7 @@ export const navItems = [
     route: '/admin/packet-status',
     children: null,
     auditEventId: 'ADM-008',
-    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+    roles: ['REGISTRATION_ADMIN']
   },
   {
     displayName: 'menuItems.item5.title',
@@ -81,7 +81,7 @@ export const navItems = [
     route: '/admin/rid-status',
     children: null,
     auditEventId: 'ADM-009',
-    roles: ['GLOBAL_ADMIN']
+    roles: ['REGISTRATION_ADMIN']
   },
   {
     displayName: 'menuItems.item3.title',
@@ -89,7 +89,7 @@ export const navItems = [
     route: '/admin/masterdata',
     children: null,
     auditEventId: 'ADM-009',
-    roles: ['GLOBAL_ADMIN']
+    roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN']
   },
   {
     displayName: 'menuItems.item6.title',
@@ -101,18 +101,18 @@ export const navItems = [
         icon: null,
         route: '/admin/bulkupload/masterdataupload',
         auditEventId: 'ADM-004',
-        roles: ['GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN']
       },
       {
         displayName: 'menuItems.item6.subItem2',
         icon: null,
         route: '/admin/bulkupload/packetupload',
         auditEventId: 'ADM-005',
-        roles: ['GLOBAL_ADMIN']
+        roles: ['REGISTRATION_ADMIN']
       }
     ],
     auditEventId: 'ADM-003',
-    roles: ['GLOBAL_ADMIN']
+    roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN', 'REGISTRATION_ADMIN']
   },
   {
     displayName: 'menuItems.item7.title',
@@ -124,39 +124,39 @@ export const navItems = [
         icon: null,
         route: '/admin/keymanager/generatemasterkey',
         auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['KEY_MAKER']
       },
       {
         displayName: 'menuItems.item7.subItem1',
         icon: null,
         route: '/admin/keymanager/generatecsr',
         auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN']
       },      
       {
         displayName: 'menuItems.item7.subItem3',
         icon: null,
         route: '/admin/keymanager/getcertificate',
         auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN']
       },
       {
         displayName: 'menuItems.item7.subItem4',
         icon: null,
         route: '/admin/keymanager/uploadcertificate',
         auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN']
       },
       {
         displayName: 'menuItems.item7.subItem5',
         icon: null,
         route: '/admin/keymanager/uploadotherdomaincertificate',
         auditEventId: 'ADM-004',
-        roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+        roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN']
       }
     ],
     auditEventId: 'ADM-003',
-    roles: ['ZONAL_ADMIN', 'GLOBAL_ADMIN']
+    roles: ['GLOBAL_ADMIN', 'ZONAL_ADMIN', 'MASTERDATA_ADMIN', 'KEY_MAKER']
   }
 ];
 

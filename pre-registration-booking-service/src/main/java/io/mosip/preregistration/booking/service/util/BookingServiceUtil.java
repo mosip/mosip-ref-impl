@@ -19,7 +19,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -35,9 +44,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.mosip.kernel.core.authmanager.authadapter.model.AuthUserDetails;
 import io.mosip.kernel.core.exception.ExceptionUtils;
@@ -63,7 +69,6 @@ import io.mosip.preregistration.booking.exception.BookingPreIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingRegistrationCenterIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingTimeSlotNotSeletectedException;
 import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
-import io.mosip.preregistration.booking.exception.DemographicStatusUpdationException;
 import io.mosip.preregistration.booking.exception.InvalidDateTimeFormatException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.TimeSpanException;
@@ -72,12 +77,9 @@ import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
-import io.mosip.preregistration.core.common.dto.PreRegistartionStatusDTO;
 import io.mosip.preregistration.core.common.dto.RequestWrapper;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
-import io.mosip.preregistration.core.common.entity.ApplicationEntity;
 import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
-import io.mosip.preregistration.core.common.entity.RegistrationBookingPK;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.NotificationException;
@@ -96,6 +98,10 @@ import io.mosip.preregistration.core.util.ValidationUtil;
  */
 @Component
 public class BookingServiceUtil {
+
+	@Qualifier("selfTokenRestTemplate")
+	@Autowired
+	private RestTemplate selfTokenRestTemplate;
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -133,6 +139,17 @@ public class BookingServiceUtil {
 	@Value("${mosip.notification.timezone}")
 	private String specificZoneId;
 
+	/**
+	 * ObjectMapper global object creation
+	 */
+	private ObjectMapper mapper;
+
+	@PostConstruct
+    public void init() {
+		mapper = JsonMapper.builder().addModule(new AfterburnerModule()).build();
+		mapper.registerModule(new JavaTimeModule());
+	}
+	
 	private Logger log = LoggerConfiguration.logConfig(BookingServiceUtil.class);
 
 	public AuthUserDetails authUserDetails() {
@@ -144,18 +161,21 @@ public class BookingServiceUtil {
 	 * 
 	 * @return List of RegistrationCenterDto
 	 */
-	public List<RegistrationCenterDto> getRegCenterMasterData() {
+	public List<RegistrationCenterDto> getRegCenterMasterData(String regCenterId) {
 		log.info("sessionId", "idType", "id", "In callRegCenterDateRestService method of Booking Service Util");
 		List<RegistrationCenterDto> regCenter = null;
 		try {
-			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(regCenterUrl);
+			String regCentersDetailsPageNo = new StringBuilder(regCenterUrl).append("/").append(regCenterId)
+					.append("/all").toString();
+
+			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(regCentersDetailsPageNo);
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 			HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
 			String uriBuilder = regbuilder.build().encode().toUriString();
 			log.info("sessionId", "idType", "id",
 					"In callRegCenterDateRestService method of Booking Service URL- " + uriBuilder);
-			ResponseEntity<ResponseWrapper<RegistrationCenterResponseDto>> responseEntity = restTemplate.exchange(
+			ResponseEntity<ResponseWrapper<RegistrationCenterResponseDto>> responseEntity = selfTokenRestTemplate.exchange(
 					uriBuilder, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
 					});
@@ -181,24 +201,6 @@ public class BookingServiceUtil {
 	}
 
 	/**
-	 * This method will call demographic service for update status.
-	 * 
-	 * @param preId
-	 * @param status
-	 * @return response entity
-	 */
-//	public boolean updateDemographicStatus(String preId, String status) {
-//		log.info("sessionId", "idType", "id", "In callUpdateStatusRestService method of Booking Service Util");
-//		String userId = authUserDetails().getUserId();
-//		MainResponseDTO<String> updatePreRegistrationStatus = updatePreRegistrationStatus(preId, status);
-//		if (updatePreRegistrationStatus.getErrors() != null) {
-//			throw new DemographicStatusUpdationException(updatePreRegistrationStatus.getErrors().get(0).getErrorCode(),
-//					updatePreRegistrationStatus.getErrors().get(0).getMessage());
-//		}
-//		return true;
-//	}
-
-	/**
 	 * This method will call demographic service for status.
 	 * 
 	 * @param preId
@@ -206,8 +208,6 @@ public class BookingServiceUtil {
 	 */
 	public String getApplicationBookingStatus(String preId) {
 		log.info("sessionId", "idType", "id", "In callGetStatusRestService method of Booking Service Util");
-
-		String userId = authUserDetails().getUserId();
 
 		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
 
@@ -227,15 +227,14 @@ public class BookingServiceUtil {
 	 */
 	public boolean getDemographicStatusForCancel(String preId) {
 		log.info("sessionId", "idType", "id", "In callGetStatusForCancelRestService method of Booking Service Util");
-		String userId = authUserDetails().getUserId();
-
+		
 		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
 		if (getApplicationStatus.getErrors() != null) {
 			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
 					getApplicationStatus.getErrors().get(0).getMessage());
 		}
 		String statusCode = getApplicationStatus.getResponse();
-
+		
 		if (!statusCode.equals(StatusCodes.BOOKED.getCode())) {
 			if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
 					|| statusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
@@ -515,7 +514,6 @@ public class BookingServiceUtil {
 		ResponseEntity<String> resp = null;
 		HttpHeaders headers = new HttpHeaders();
 		MainRequestDTO<NotificationDTO> request = new MainRequestDTO<>();
-		ObjectMapper mapper = new ObjectMapper();
 		mapper.setTimeZone(TimeZone.getDefault());
 		try {
 			request.setRequest(notificationDTO);
@@ -529,7 +527,7 @@ public class BookingServiceUtil {
 			HttpEntity<MultiValueMap<Object, Object>> httpEntity = new HttpEntity<>(emailMap, headers);
 			log.info("sessionId", "idType", "id",
 					"In emailNotification method of NotificationUtil service emailResourseUrl: " + emailResourseUrl);
-			resp = restTemplate.exchange(emailResourseUrl, HttpMethod.POST, httpEntity, String.class);
+			resp = selfTokenRestTemplate.exchange(emailResourseUrl, HttpMethod.POST, httpEntity, String.class);
 			List<ServiceError> validationErrorList = ExceptionUtils.getServiceErrorList(resp.getBody());
 			if (validationErrorList != null && !validationErrorList.isEmpty()) {
 				throw new NotificationException(validationErrorList, null);
@@ -620,7 +618,7 @@ public class BookingServiceUtil {
 	}
 
 	public boolean isValidRegCenter(String regId) {
-		List<RegistrationCenterDto> regCenter = getRegCenterMasterData();
+		List<RegistrationCenterDto> regCenter = getRegCenterMasterData(regId);
 		Boolean isValidRegCenter = regCenter.stream().anyMatch(iterate -> iterate.getId().contains(regId));
 
 		if (!isValidRegCenter) {
@@ -631,12 +629,12 @@ public class BookingServiceUtil {
 
 	}
 
-	public MainResponseDTO<String> getApplicationStatus(String preRegId) {
+	public MainResponseDTO<String> getApplicationStatus(String applicationId) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/info/" + preRegId;
+		String url = preRegResourceUrl + "/applications/status/" + applicationId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
+		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + url);
 		try {
 			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
@@ -644,9 +642,13 @@ public class BookingServiceUtil {
 			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
 				response.setErrors(responseEntity.getBody().getErrors());
 			} else {
-				response.setResponse(responseEntity.getBody().getResponse());
+				String applicationStatus = responseEntity.getBody().getResponse();
+				if (applicationStatus != null) {
+					response.setResponse(applicationStatus);	
+				} else {
+					response.setResponse("");
+				}
 			}
-
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
 		} catch (Exception ex) {
 			log.debug("Rest call exception " + ExceptionUtils.getStackTrace(ex));

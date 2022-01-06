@@ -4,20 +4,20 @@
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
-		<version>1.2.0-rc2-SNAPSHOT</version>
+		<version>1.2.0-SNAPSHOT</version>
 	</parent>
 
 	<name>kernel-ref-idobjectvalidator</name>
 	<artifactId>kernel-ref-idobjectvalidator</artifactId>
-	<version>1.2.0-rc2-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 
 	<properties>
-		<kernel-core.version>1.2.0-rc2-SNAPSHOT</kernel-core.version>
+		<kernel-core.version>1.2.0-SNAPSHOT</kernel-core.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.version>3.8.0</maven.compiler.version>	
 		<spring-boot.version>2.0.8.RELEASE</spring-boot.version>
-		<kernel-logger-logback.version>1.2.0-rc2-SNAPSHOT</kernel-logger-logback.version>
+		<kernel-logger-logback.version>1.2.0-SNAPSHOT</kernel-logger-logback.version>
 	</properties>
 	<dependencies>		
 		<dependency>
@@ -51,11 +51,11 @@
 			<artifactId>jackson-datatype-jdk8</artifactId>
 			<version>${jackson.datatype.version}</version>
 		</dependency>
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>${jackson.datatype.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -65,6 +65,26 @@
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-logger-logback</artifactId>
 			<version>${kernel-logger-logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.12.0</version>
 		</dependency>
 	</dependencies>
 

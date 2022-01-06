@@ -218,7 +218,7 @@
       "linkType": "",
       "LinkURL": "",
       "inputType": "dropdown",
-      "ismandatory": "true"
+      "ismandatory": "false"
     }
   ],
   "paginator": {

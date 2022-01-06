@@ -5,15 +5,15 @@ import { RequestModel } from 'src/app/core/models/request.model';
 import { AppConfigService } from 'src/app/app-config.service';
 import { SortModel } from 'src/app/core/models/sort.model';
 import { PaginationModel } from 'src/app/core/models/pagination.model';
-import * as centerConfig from 'src/assets/entity-spec/center.json';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import Utils from '../../../../app.utils';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { AuditService } from 'src/app/core/services/audit.service';
-
+import { DataStorageService } from 'src/app/core/services/data-storage.service';
 import { HeaderService } from 'src/app/core/services/header.service';
+
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -36,6 +36,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   filtersApplied = false;
 
   constructor(
+    private dataStorageService: DataStorageService,
     private centerService: CenterService,
     private appService: AppConfigService,
     private headerService: HeaderService,
@@ -54,25 +55,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
     this.subscribed = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.getRegistrationCenters();
+        //this.getRegistrationCenters();
       }
     });
   }
 
   ngOnInit() {
-    this.auditService.audit(3, centerConfig.auditEventIds[0], 'centers');
+    //this.auditService.audit(3, centerConfig.auditEventIds[0], 'centers');
   }
 
   getCenterConfigs() {
-    this.displayedColumns = centerConfig.columnsToDisplay;
-    console.log(this.displayedColumns);
-    this.actionButtons = centerConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'ellipsis'
-    );
-    this.actionEllipsis = centerConfig.actionButtons.filter(
-      value => value.showIn.toLowerCase() === 'button'
-    );
-    this.paginatorOptions = centerConfig.paginator;
+    this.dataStorageService
+      .getSpecFileForMasterDataEntity("center")
+      .subscribe(response => {
+        this.displayedColumns = response.columnsToDisplay;
+        this.actionButtons = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'ellipsis'
+        );
+        this.actionEllipsis = response.actionButtons.filter(
+          value => value.showIn.toLowerCase() === 'button'
+        );
+        this.paginatorOptions = response.paginator;
+        this.auditService.audit(3, response.auditEventIds[0], 'center');
+        this.getRegistrationCenters();
+      });
   }
 
   pageEvent(event: any) {

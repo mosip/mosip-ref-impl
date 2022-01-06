@@ -268,7 +268,44 @@
     "pageSize": "10",
     "pageSizeList": [10, 20, 30, 40, 50]
   },
-  "filterColumns": [{
+  "filterColumns": [
+    {
+      "filtername": "code",
+      "filterlabel": { 
+        "eng": "Code",
+        "ara": "الشفرة",
+        "fra": "Code",
+        "tam": "குறியீடு",
+        "hin": "कोड",
+        "kan": "ಕೋಡ್"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "registrationcentertypes",
+      "fieldName": "code",
+      "methodCallName": ""
+    },
+    {
+      "filtername": "name",
+      "filterlabel": { 
+        "eng": "Name", 
+        "ara": "اسم", 
+        "fra": "prénom",
+        "tam": "பெயர்",
+        "hin": "नाम",
+        "kan": "ಹೆಸರು"
+      },
+      "filterType": "equals",
+      "autocomplete": "false",
+      "dropdown": "false",
+      "datePicker": "false",
+      "apiName": "registrationcentertypes",
+      "fieldName": "name",
+      "methodCallName": ""
+    },
+    {
     "filtername": "isActive",
     "filterlabel": {
       "eng": "Status",
