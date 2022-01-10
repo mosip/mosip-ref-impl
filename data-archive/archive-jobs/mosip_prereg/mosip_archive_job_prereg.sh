@@ -8,15 +8,15 @@
 ### -- Modified Date        Modified By         Comments / Remarks
 ### -- ----------------------------------------------------------------------------------------
 
-python mosip_archive_prereg_table1.py &
-sleep 5m
+python3 mosip_archive_prereg_table1.py &&
+#sleep 5m
 
-python mosip_archive_prereg_table2.py &
-sleep 5m
+python3 mosip_archive_prereg_table2.py &&
+#sleep 5m
 
-python mosip_archive_prereg_table3.py &
-sleep 5m
+python3 mosip_archive_prereg_table3.py &&
+#sleep 5m
 
-python mosip_archive_prereg_table4.py &
+python3 mosip_archive_prereg_table4.py
 
 #===============================================================================================
