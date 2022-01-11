@@ -77,7 +77,24 @@
                     <input type="text" id="phoneNumber" class="${properties.kcInputClass!}" name="user.attributes.phoneNumber" value="${(register.formData['user.attributes.phoneNumber']!'')}" autocomplete="phoneNumber" />
                 </div>
             </div>
-
+			
+			<div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('langCode',properties.kcFormGroupErrorClass!)}">
+				<div class="${properties.kcLabelWrapperClass!}">
+					<label for="langCode" class="${properties.kcLabelClass!}">${msg("langCode")}</label>
+				</div>
+				<div class="${properties.kcInputWrapperClass!}">
+					<select
+						id="user.attributes.langCode"
+						class="${properties.kcInputClass!}"
+						name="user.attributes.langCode"
+						value="${(register.formData['user.attributes.langCode']!'')}">
+							<option value="eng" selected>English</option>
+							<option value="ara">Arabic</option>
+							<option value="fra">French</option>
+					</select>
+				</div>
+			</div>
+			
           <#if !realm.registrationEmailAsUsername>
             <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('username',properties.kcFormGroupErrorClass!)}">
                 <div class="${properties.kcLabelWrapperClass!}">
