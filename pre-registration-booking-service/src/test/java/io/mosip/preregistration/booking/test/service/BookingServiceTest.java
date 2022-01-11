@@ -126,7 +126,7 @@ public class BookingServiceTest {
 	 * Mocking the RestTemplateBuilder bean
 	 */
 
-	@MockBean(name = "restTemplate")
+	@MockBean(name = "selfTokenRestTemplate")
 	RestTemplate restTemplate;
 
 	@MockBean
@@ -425,7 +425,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.mandatoryParameterCheck(Mockito.anyString(), Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isValidRegCenter(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		Mockito.when(bookingDAO.findAvailability(Mockito.anyString(), Mockito.any(), Mockito.any()))
 				.thenReturn(entityList);
 		MainResponseDTO<AvailabilityDto> responseDto = service.getAvailability("10001");
@@ -487,7 +487,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus(Mockito.anyString())).thenReturn("Booked");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("1")).thenReturn(centerList);
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
 		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
@@ -552,7 +552,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		// Mockito.when(serviceUtil.getDemographicStatus(Mockito.anyString())).thenReturn("Pending_Appointment");
 		Mockito.when(serviceUtil.getApplicationBookingStatus(Mockito.anyString())).thenReturn("Pending_Appointment");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
 		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
@@ -719,7 +719,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus(Mockito.anyString())).thenReturn("Booked");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -813,7 +813,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus(Mockito.anyString())).thenReturn("Booked");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 
 		MainResponseDTO mainResponseDTO = new MainResponseDTO<>();
 		mainResponseDTO.setErrors(null);
@@ -923,7 +923,7 @@ public class BookingServiceTest {
 		Mockito.when(bookingDAO.findByPreRegistrationId("23587986034785")).thenReturn(bookingEntity2);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 //		MainResponseDTO<BookingStatus> response = service.bookMultiAppointment(bookingRequestDTOs);
 //		assertNotNull(response.getResponse().getBookingStatusResponse().get(0).getBookingMessage());
 	}
@@ -1213,7 +1213,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.mandatoryParameterCheckforCancel(Mockito.anyString())).thenReturn(true);
 		Mockito.when(serviceUtil.getDemographicStatusForCancel(Mockito.anyString())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus("23587986034785")).thenReturn("Expired");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntity);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
@@ -1277,7 +1277,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus("23587986034785")).thenReturn("Booked");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		Mockito.when(serviceUtil.timeSpanCheckForCancle(Mockito.any())).thenThrow(ex);
 
 		Mockito.when(bookingDAO.findByPreRegistrationId("23587986034785")).thenReturn(bookingEntity);
@@ -1447,7 +1447,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus("23587986034785")).thenReturn("Booked");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		Mockito.when(bookingDAO.findRegCenter(Mockito.any())).thenReturn(regCenterList);
 		Mockito.when(bookingDAO.findByRegDateAndRegcntrIdAndFromTimeAndToTime(Mockito.any(), Mockito.anyString(),
 				Mockito.any(), Mockito.any())).thenReturn(availableEntityNull);
@@ -1581,7 +1581,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus("23587986034785")).thenReturn("Expired");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
 		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
@@ -1694,7 +1694,7 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.validateAppointmentDate(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.isKiosksAvailable(Mockito.any())).thenReturn(true);
 		Mockito.when(serviceUtil.getApplicationBookingStatus("23587986034785")).thenReturn("Expired");
-		Mockito.when(serviceUtil.getRegCenterMasterData()).thenReturn(centerList);
+		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 
 		MainResponseDTO mainResponseDTO = new MainResponseDTO<>();
 		mainResponseDTO.setErrors(null);

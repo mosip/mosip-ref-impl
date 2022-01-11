@@ -22,7 +22,7 @@ import datetime
 from configparser import ConfigParser
 from datetime import datetime
 
-def config(filename='mosip_archive_prereg.ini', section='MOSIP-DB-SECTION'):
+def config(filename='mosip_archive_ida.ini', section='MOSIP-DB-SECTION'):
     parser = ConfigParser()
     parser.read(filename)
     dbparam = {}
@@ -85,7 +85,7 @@ def dataArchive():
                 insert_count = archiveCur.rowcount
                 print(insert_count, ": Record inserted successfully ")
                 if insert_count > 0:
-                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE id ='"+row[0]+"'"
+                    delete_query = "DELETE FROM "+sschemaName+"."+tableName+" WHERE event_id ='"+row[0]+"'"
                     sourceCur.execute(delete_query)
                     sourseConn.commit()
                     delete_count = sourceCur.rowcount
