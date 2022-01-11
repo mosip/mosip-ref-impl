@@ -41,5 +41,11 @@ public class AuthRequestDTO extends BaseAuthRequestDTO {
 	private String env;
 	
 	private String  domainUri;
+	
+	@Deprecated(since="1.2.0")
+	private AuthTypeDTO requestedAuth;
+	
+	@Deprecated(since="1.2.0")
+	private String individualIdType;
 
 }
