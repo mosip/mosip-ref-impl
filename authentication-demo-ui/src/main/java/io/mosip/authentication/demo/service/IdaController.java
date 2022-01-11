@@ -90,6 +90,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.mosip.authentication.demo.dto.AuthRequestDTO;
+import io.mosip.authentication.demo.dto.AuthTypeDTO;
 import io.mosip.authentication.demo.dto.CryptomanagerRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionRequestDto;
 import io.mosip.authentication.demo.dto.EncryptionResponseDto;
@@ -390,6 +391,12 @@ public class IdaController {
 				return;
 			}
 			bioCaptures.add(faceCapture);
+			
+			Integer delay = env.getProperty("delay.after.face.capture.millisecs", Integer.class, 0);
+			if(delay > 0) {
+				System.out.println("waiting for millisecs: " + delay);
+				Thread.sleep(delay);
+			}
 		}
 
 		String fingerCapture;
@@ -400,6 +407,12 @@ public class IdaController {
 				return;
 			}
 			bioCaptures.add(fingerCapture);
+			
+			Integer delay = env.getProperty("delay.after.finger.capture.millisecs", Integer.class, 0);
+			if(delay > 0) {
+				System.out.println("waiting for millisecs: " + delay);
+				Thread.sleep(delay);
+			}
 		}
 
 		String irisCapture;
@@ -410,6 +423,12 @@ public class IdaController {
 				return;
 			}
 			bioCaptures.add(irisCapture);
+			
+			Integer delay = env.getProperty("delay.after.iris.capture.millisecs", Integer.class, 0);
+			if(delay > 0) {
+				System.out.println("waiting for millisecs: " + delay);
+				Thread.sleep(delay);
+			}
 		}
 
 		capture = combineCaptures(bioCaptures);
@@ -725,16 +744,20 @@ public class IdaController {
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 		responsetextField.setText("Preparing Auth Request...");
 		AuthRequestDTO authRequestDTO = new AuthRequestDTO();
-//		// Set Auth Type
-//		AuthTypeDTO authTypeDTO = new AuthTypeDTO();
-//		authTypeDTO.setBio(isBioAuthType());
-//		authTypeDTO.setOtp(isOtpAuthType());
-//		authTypeDTO.setDemo(isDemoAuthType());
-//		authRequestDTO.setRequestedAuth(authTypeDTO);
+		
+		if (isPreLTS()) {
+			// Set Auth Type
+			AuthTypeDTO authTypeDTO = new AuthTypeDTO();
+			authTypeDTO.setBio(isBioAuthType());
+			authTypeDTO.setOtp(isOtpAuthType());
+			authTypeDTO.setDemo(isDemoAuthType());
+			authRequestDTO.setRequestedAuth(authTypeDTO);
+			// Set Individual Id type
+			authRequestDTO.setIndividualIdType(idTypebox.getValue());
+		}
 		// set Individual Id
 		authRequestDTO.setIndividualId(idValue.getText());
-		// Set Individual Id type
-		//authRequestDTO.setIndividualIdType(idTypebox.getValue());
+		
 		authRequestDTO.setEnv(env.getProperty("ida.request.captureFinger.env"));
 		authRequestDTO.setDomainUri(env.getProperty("ida.request.captureFinger.domainUri"));
 		RequestDTO requestDTO = new RequestDTO();
@@ -823,6 +846,10 @@ public class IdaController {
 			responsetextField.setText("Authentication Failed with Error");
 			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 		}
+	}
+
+	private boolean isPreLTS() {
+		return env.getProperty("isPreLTS", Boolean.class, false);
 	}
 
 	@SuppressWarnings("rawtypes")
