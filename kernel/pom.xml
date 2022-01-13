@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
-	<version>1.2.0-rc2-SNAPSHOT</version>
+	<version>1.2.0-rc2</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>Parent project of MOSIP Kernel for Philippines</description>
@@ -122,7 +122,7 @@
 		<json.version>20180813</json.version>
 
 		<!-- kernel -->
-		<kernel-core.version>1.2.0-rc2-SNAPSHOT</kernel-core.version>
+		<kernel-core.version>1.2.0-rc2</kernel-core.version>
 
 		<!-- utilities -->
 		<commons-math3>3.6.1</commons-math3>
