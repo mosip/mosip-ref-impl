@@ -92,7 +92,7 @@ public class BookingService implements BookingServiceIntf {
 	 * Reference for ${preregistration.availability.noOfDays} from property file
 	 */
 	@Value("${preregistration.availability.noOfDays}")
-	int displayDays;
+	long displayDays;
 
 	/**
 	 * Reference for ${preregistration.booking.offset} from property file

@@ -179,16 +179,18 @@ public class BookingServiceUtil {
 					uriBuilder, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
 					});
-			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-				throw new MasterDataNotAvailableException(responseEntity.getBody().getErrors().get(0).getErrorCode(),
-						responseEntity.getBody().getErrors().get(0).getMessage());
+			ResponseWrapper<RegistrationCenterResponseDto> body = responseEntity.getBody();
+			if (body != null) {
+				if (body.getErrors() != null && !body.getErrors().isEmpty()) {
+					throw new MasterDataNotAvailableException(body.getErrors().get(0).getErrorCode(),
+							body.getErrors().get(0).getMessage());
+				}
+				regCenter = body.getResponse().getRegistrationCenters();	
 			}
-			regCenter = responseEntity.getBody().getResponse().getRegistrationCenters();
 			if (regCenter == null || regCenter.isEmpty()) {
 				throw new MasterDataNotAvailableException(ErrorCodes.PRG_BOOK_RCI_020.getCode(),
 						ErrorMessages.MASTER_DATA_NOT_FOUND.getMessage());
 			}
-
 		} catch (HttpClientErrorException ex) {
 			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
 			log.error("sessionId", "idType", "id",
@@ -631,25 +633,31 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> getApplicationStatus(String applicationId) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/" + applicationId;
+		//String url = preRegResourceUrl + "/applications/status/" + applicationId;
+		UriComponentsBuilder builder = UriComponentsBuilder
+				.fromHttpUrl(preRegResourceUrl + "/applications/status/" + applicationId);
+		String uriBuilder = builder.build().encode().toUriString();
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + url);
+		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + uriBuilder);
 		try {
-			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
+			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(uriBuilder, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
-			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-				response.setErrors(responseEntity.getBody().getErrors());
-			} else {
-				String applicationStatus = responseEntity.getBody().getResponse();
-				if (applicationStatus != null) {
-					response.setResponse(applicationStatus);	
+			MainResponseDTO<String> body = responseEntity.getBody();
+			if (body != null) {
+				if (body.getErrors() != null && !body.getErrors().isEmpty()) {
+					response.setErrors(body.getErrors());
 				} else {
-					response.setResponse("");
-				}
+					String applicationStatus = body.getResponse();
+					if (applicationStatus != null) {
+						response.setResponse(applicationStatus);	
+					} else {
+						response.setResponse("");
+					}	
+				}	
 			}
-			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
+			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + uriBuilder);
 		} catch (Exception ex) {
 			log.debug("Rest call exception " + ExceptionUtils.getStackTrace(ex));
 			throw new RestClientException("rest call failed");
