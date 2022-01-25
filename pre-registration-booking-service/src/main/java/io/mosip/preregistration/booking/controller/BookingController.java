@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -43,7 +42,6 @@ import io.mosip.preregistration.core.common.dto.PreRegIdsByRegCenterIdResponseDT
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.util.DataValidationUtil;
 import io.mosip.preregistration.core.util.RequestValidator;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,7 +63,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/")
 @Tag(name = "booking-controller", description = "Booking Controller")
-@CrossOrigin("*")
 public class BookingController {
 
 	/** Autowired reference for {@link #bookingService}. */
