@@ -606,7 +606,7 @@ public class BookingService implements BookingServiceIntf {
 	 * io.mosip.preregistration.booking.serviceimpl.dto.BookingRequestDTO)
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public BookingStatusDTO book(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
 		log.info("sessionId", "idType", "id", "In book method of Booking Service");
 		BookingStatusDTO bookingStatusDTO = new BookingStatusDTO();
@@ -660,7 +660,7 @@ public class BookingService implements BookingServiceIntf {
 	 * cancelBooking(java.lang.String, boolean)
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public CancelBookingResponseDTO cancelBooking(String preRegistrationId, boolean isBatchUser) {
 		log.info("sessionId", "idType", "id", "In cancelBooking method of Booking Service");
 		CancelBookingResponseDTO cancelBookingResponseDTO = new CancelBookingResponseDTO();
