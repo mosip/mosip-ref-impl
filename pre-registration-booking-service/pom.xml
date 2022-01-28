@@ -12,7 +12,7 @@
 
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.2.0-rc2-SNAPSHOT</version>
+	<version>1.2.0-prerel</version>
 	<name>pre-registration-booking-service</name>
 	<description>Booking service of  MOSIP Pre-registration</description>	
 	<url>https://github.com/mosip/mosip-ref-impl</url>	
@@ -47,8 +47,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.2.0-rc2-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.2.0-rc2-SNAPSHOT</kernel.core.version>
+		<pre.registration.core.version>1.2.0-prerel</pre.registration.core.version>
+		<kernel.core.version>1.2.0-prerel</kernel.core.version>
 		<!-- Core -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
 		<spring.data.version>2.0.9.RELEASE</spring.data.version>
