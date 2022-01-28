@@ -48,4 +48,5 @@ public class AuthRequestDTO extends BaseAuthRequestDTO {
 	
 	private String  domainUri;
 
+	private String secondaryLangCode;
 }
