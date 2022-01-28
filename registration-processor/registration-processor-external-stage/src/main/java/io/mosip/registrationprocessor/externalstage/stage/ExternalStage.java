@@ -137,8 +137,8 @@ public class ExternalStage extends MosipVerticleAPIManager {
 		object.setMessageBusAddress(MessageBusAddress.EXTERNAL_STAGE_BUS_IN);
 		regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REGISTRATIONID.toString(),
 				registrationId, "ExternalStage::process()::entry");
-		InternalRegistrationStatusDto registrationStatusDto = registrationStatusService
-				.getRegistrationStatus(registrationId);
+		InternalRegistrationStatusDto registrationStatusDto=registrationStatusService
+				.getRegistrationStatus(registrationId, object.getReg_type(), object.getIteration(), object.getWorkflowInstanceId());
 		MessageRequestDTO requestdto = new MessageRequestDTO();
 		requestdto.setId(ID);
 		List<String> list = new ArrayList<String>();
