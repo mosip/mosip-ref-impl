@@ -1,5 +1,0 @@
-﻿code,descr,lang_code,is_active,cr_by,cr_dtimes
-txt,Text File,eng,TRUE,superadmin,now()
-xml,XML File,eng,TRUE,superadmin,now()
-json,Json File,eng,TRUE,superadmin,now()
-html,html file,eng,TRUE,superadmin,now()

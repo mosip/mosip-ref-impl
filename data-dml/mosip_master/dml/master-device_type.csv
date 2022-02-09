@@ -1,6 +1,0 @@
-﻿code,name,descr,lang_code,is_active,cr_by,cr_dtimes
-FRS,Finger Print Scanner,For scanning fingerprints,eng,TRUE,superadmin,now()
-IRS,Iris Scanner,For scanning Iris,eng,TRUE,superadmin,now()
-CMR,Camera,For capturing photo,eng,TRUE,superadmin,now()
-SCN,Document Scanner,For scanning documents,eng,TRUE,superadmin,now()
-PRT,Printer,For printing Documents,eng,TRUE,superadmin,now()
