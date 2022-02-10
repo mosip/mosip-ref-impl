@@ -63,12 +63,12 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
-			<version>${io.micrometer.prometheus.version}</version>
+			<version>1.4.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
-			<version>${io.micrometer.prometheus.version}</version>
+			<version>1.4.2</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
