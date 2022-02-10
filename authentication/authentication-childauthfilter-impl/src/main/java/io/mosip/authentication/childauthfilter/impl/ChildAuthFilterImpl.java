@@ -46,7 +46,7 @@ public class ChildAuthFilterImpl implements IMosipAuthFilter {
 	private String dateOfBirthAttributeName;
 	
 	/** The date of birth pattern. */
-	@Value("${ida.child-auth-filter.date-of-birth.pattern:" + IdAuthCommonConstants.DOB_PATTERN + "}")
+	@Value("${ida.child-auth-filter.date-of-birth.pattern:" + IdAuthCommonConstants.DEFAULT_DOB_PATTERN + "}")
 	private String dateOfBirthPattern;
 	
 	/** The child max age. */

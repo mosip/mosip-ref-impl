@@ -33,7 +33,7 @@ public class ChildAuthFilterImplTest {
 	@Before
 	public void before() {
 		ReflectionTestUtils.setField(childAuthFilterImpl, "dateOfBirthAttributeName", DATE_OF_BIRTH_ATTRIB_NAME);
-		ReflectionTestUtils.setField(childAuthFilterImpl, "dateOfBirthPattern", IdAuthCommonConstants.DOB_PATTERN);
+		ReflectionTestUtils.setField(childAuthFilterImpl, "dateOfBirthPattern", IdAuthCommonConstants.DEFAULT_DOB_PATTERN);
 		ReflectionTestUtils.setField(childAuthFilterImpl, "childMaxAge", CHILD_MAX_AGE_TEST);
 		ReflectionTestUtils.setField(childAuthFilterImpl, "factorsDeniedForChild", new String[] {"otp", "bio"});
 	}
