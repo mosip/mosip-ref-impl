@@ -1,4 +1,0 @@
-﻿code,name,descr,lang_code,is_active,cr_by,cr_dtimes
-FNR,Fingerprint,Finger prints of the applicant,eng,TRUE,superadmin,now()
-IRS,Iris,Iris of the applicant,eng,TRUE,superadmin,now()
-PHT,Photo,Photo of the face of the applicant,eng,TRUE,superadmin,now()
