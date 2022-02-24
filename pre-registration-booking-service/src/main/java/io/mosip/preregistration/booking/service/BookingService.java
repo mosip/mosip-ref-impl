@@ -711,7 +711,7 @@ public class BookingService implements BookingServiceIntf {
 		boolean isSaveSuccess = false;
 		try {
 			requestParamMap.put(RequestCodes.PRE_REGISTRAION_ID.getCode(), preregId);
-			if (validationUtil.requstParamValidator(requestParamMap)) {
+			if (validationUtil.requstParamValidator(requestParamMap) && serviceUtil.getDemographicStatusForDelete(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
 				String str = registrationEntityList.getRegDate() + " " + registrationEntityList.getSlotFromTime();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -728,6 +728,8 @@ public class BookingService implements BookingServiceIntf {
 
 				/* Updating slot in DB */
 				bookingDAO.updateAvailibityEntity(availableEntity);
+				/* Update the status to Canceled in demographic Table */
+				serviceUtil.updateDemographicStatus(preregId, StatusCodes.PENDING_APPOINTMENT.getCode());
 
 				deleteDto.setPreRegistrationId(registrationEntityList.getDemographicEntity().getPreRegistrationId());
 				deleteDto.setDeletedBy(registrationEntityList.getCrBy());
