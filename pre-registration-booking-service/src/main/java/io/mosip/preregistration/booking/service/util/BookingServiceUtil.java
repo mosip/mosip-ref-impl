@@ -252,6 +252,24 @@ public class BookingServiceUtil {
 		}
 		return true;
 	}
+	
+	/**
+	 * This method will call demographic service to get 
+	 * application status for delete flow.
+	 * 
+	 * @param preId
+	 * @return status code
+	 */
+	public boolean getDemographicStatusForDelete(String preId) {
+		log.info("sessionId", "idType", "id", "In callgetDemographicStatusForDelete method of Booking Service Util");
+		//This method also checks if the PRID belongs to the logged in user or not
+		MainResponseDTO<PreRegistartionStatusDTO> getApplicationStatus = getApplicationStatus(preId);
+		if (getApplicationStatus.getErrors() != null) {
+			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
+					getApplicationStatus.getErrors().get(0).getMessage());
+		}
+		return true;
+	}
 
 	public boolean timeSpanCheckForCancle(LocalDateTime bookedDateTime) {
 
