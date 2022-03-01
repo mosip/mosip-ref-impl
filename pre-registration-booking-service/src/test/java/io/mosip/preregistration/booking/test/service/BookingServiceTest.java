@@ -1193,7 +1193,8 @@ public class BookingServiceTest {
 		preRegistrationEntity.setPreRegistrationId("23587986034785");
 		bookingEntity.setDemographicEntity(preRegistrationEntity);
 		registrationEntityList.add(bookingEntity);
-
+		Mockito.when(serviceUtil.getDemographicStatusForDelete("23587986034785")).thenReturn(true);
+		
 		Mockito.when(bookingDAO.findByPreRegistrationId(Mockito.anyString())).thenReturn(bookingEntity);
 		deleteDto.setDeletedBy("John Doe");
 		deleteDto.setDeletedDateTime(new Date(System.currentTimeMillis()));
@@ -1208,7 +1209,10 @@ public class BookingServiceTest {
 		Mockito.when(bookingDAO.findByFromTimeAndToTimeAndRegDateAndRegcntrId(Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.anyString())).thenReturn(availableEntity);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
-
+		
+		MainResponseDTO<String> mainResponseDTO = new MainResponseDTO<String>();
+		Mockito.when(serviceUtil.updatePreRegistrationStatus("23587986034785", "Pending_Appointment"))
+		.thenReturn(mainResponseDTO);
 		assertEquals(response.getResponse().getPreRegistrationId(),
 				service.deleteBooking("23587986034785").getResponse().getPreRegistrationId());
 
