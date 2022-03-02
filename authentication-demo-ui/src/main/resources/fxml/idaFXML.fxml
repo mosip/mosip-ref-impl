@@ -27,7 +27,7 @@
          <children>
             <AnchorPane prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                           <Label layoutX="230.0" layoutY="15.0" style="-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold" text="ID-Authentication Demo Application" />
+                           <Label layoutX="230.0" layoutY="15.0" style="-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold" text="%applicationName" />
                </children>
             </AnchorPane>
                    <GridPane vgap="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -55,11 +55,11 @@
                                   <RowConstraints minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label text="Authentication Type:" />
-                                    <CheckBox fx:id="fingerAuthType" mnemonicParsing="false" onAction="#onFingerPrintAuth" text="Finger Print" GridPane.columnIndex="1" />
-                                    <CheckBox fx:id="irisAuthType" mnemonicParsing="false" onAction="#onIrisAuth" text="Iris" GridPane.columnIndex="2" />
-                                    <CheckBox fx:id="faceAuthType" mnemonicParsing="false" onAction="#onFaceAuth" text="Face" GridPane.columnIndex="3" />
-                                    <CheckBox fx:id="otpAuthType" mnemonicParsing="false" onAction="#onOTPAuth" text="OTP" GridPane.columnIndex="4" />
+                                    <Label text="%authenticationType" />
+                                    <CheckBox fx:id="fingerAuthType" mnemonicParsing="false" onAction="#onFingerPrintAuth" text="%fingerPrint" GridPane.columnIndex="1" />
+                                    <CheckBox fx:id="irisAuthType" mnemonicParsing="false" onAction="#onIrisAuth" text="%iris" GridPane.columnIndex="2" />
+                                    <CheckBox fx:id="faceAuthType" mnemonicParsing="false" onAction="#onFaceAuth" text="%face" GridPane.columnIndex="3" />
+                                    <CheckBox fx:id="otpAuthType" mnemonicParsing="false" onAction="#onOTPAuth" text="%otp" GridPane.columnIndex="4" />
                                  </children>
                               </GridPane>
                            <AnchorPane prefHeight="440.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="3">
@@ -93,19 +93,19 @@
                                <children>
                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="80.0">
                                        <children>
-                                           <Label text="KYC Required :" />
+                                           <Label text="%kycRequiredLabel" />
                                            <CheckBox fx:id="isKycRequired" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="80.0">
                            <children>
-                              <Label text="Individual-ID:" />
+                              <Label text="%individualId" />
                               <TextField fx:id="idValue" prefWidth="200.0" />
                            </children>
                         </HBox>
                                    <HBox prefHeight="100.0" prefWidth="421.0" spacing="50.0">
                            <children>
-                                    <Label text="Individual-ID-Type:" />
+                                    <Label text="%individualIdType" />
                                            <ComboBox fx:id="idTypebox" onAction="#onIdTypeChange" prefWidth="200.0" />
                            </children>
                         </HBox>
@@ -122,12 +122,12 @@
                                    <StackPane fx:id="bioAnchorPane" prefHeight="229.0" prefWidth="395.0">
                                        <AnchorPane prefHeight="229.0" minWidth="395.0" prefWidth="395.0" style="-fx-border-color: black;">
                            <children>
-                              <Label layoutX="5.0" layoutY="1.0" text="Biometric Authentication" />
-                                               <Label ellipsisString="" layoutX="24.0" layoutY="15.0" prefHeight="37.0" prefWidth="131.0" text="Fingers Count:" />
+                              <Label layoutX="5.0" layoutY="1.0" text="%biometricAuthenticationLabel" />
+                                               <Label ellipsisString="" layoutX="24.0" layoutY="15.0" prefHeight="37.0" prefWidth="131.0" text="%fingerCount" />
                                                <ComboBox fx:id="fingerCount" layoutX="120.0" layoutY="24.0" onAction="#onSubTypeSelection" prefWidth="150.0" />
-                                               <Label ellipsisString="" layoutX="24.0" layoutY="55.0" prefHeight="37.0" prefWidth="131.0" text="Iris Type:" />
+                                               <Label ellipsisString="" layoutX="24.0" layoutY="55.0" prefHeight="37.0" prefWidth="131.0" text="%irisType" />
                                                <ComboBox fx:id="irisCount" layoutX="120.0" layoutY="65.0" onAction="#onSubTypeSelection" prefWidth="150.0" />
-                                               <Button layoutX="120.0" layoutY="120.0" mnemonicParsing="false" onAction="#onCapture" prefWidth="131.0" text="Capture" />
+                                               <Button layoutX="120.0" layoutY="120.0" mnemonicParsing="false" onAction="#onCapture" prefWidth="131.0" text="%capture" />
                            </children>
                         </AnchorPane>
                                    </StackPane>
@@ -135,9 +135,9 @@
                                    <StackPane fx:id="otpAnchorPane" prefHeight="200.0" prefWidth="395.0">
                                        <AnchorPane prefHeight="216.0" minWidth="395.0" prefWidth="324.0" style="-fx-border-color: black;" GridPane.columnIndex="2">
                            <children>
-                              <Label layoutX="5.0" layoutY="1.0" text="OTP Authentication" />
-                                               <Button fx:id="requestOtp" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#onRequestOtp" prefWidth="200.0" text="Request OTP" />
-                                               <Label layoutX="24.0" layoutY="70.0" text="Enter OTP:" />
+                              <Label layoutX="5.0" layoutY="1.0" text="%otpAuthenticationLabel" />
+                                               <Button fx:id="requestOtp" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#onRequestOtp" prefWidth="200.0" text="%requestOtp" />
+                                               <Label layoutX="24.0" layoutY="70.0" text="%enterOtp" />
                                                <TextField fx:id="otpValue" layoutX="101.0" layoutY="70.0" prefWidth="120.0" />
                            </children>
                            <GridPane.margin>
@@ -150,13 +150,13 @@
                   </GridPane>
                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
                      <children>
-                        <Button fx:id="sendAuthRequest" layoutX="0.0" layoutY="0.0" mnemonicParsing="false" onAction="#onSendAuthRequest" text="Send Auth Request" />
-                                   <Button layoutX="303.0" layoutY="2.0" mnemonicParsing="false" onAction="#onReset" text="Reset" />
+                        <Button fx:id="sendAuthRequest" layoutX="0.0" layoutY="0.0" mnemonicParsing="false" onAction="#onSendAuthRequest" text="%sendAuthRequest" />
+                                   <Button layoutX="303.0" layoutY="2.0" mnemonicParsing="false" onAction="#onReset" text="%reset" />
                      </children>
                   </AnchorPane>
                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                      <children>
-                        <Label layoutX="0.0" layoutY="0.0" text="Response:" />
+                        <Label layoutX="0.0" layoutY="0.0" text="%responseLabel" />
                                    <TextField fx:id="responsetextField" layoutX="0.0" layoutY="20.0" prefHeight="39.0" prefWidth="893.0" />
                      </children>
                   </AnchorPane>

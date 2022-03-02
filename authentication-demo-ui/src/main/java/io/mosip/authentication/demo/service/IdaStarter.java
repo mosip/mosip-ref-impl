@@ -2,6 +2,8 @@ package io.mosip.authentication.demo.service;
 
 import java.io.IOException;
 
+import io.mosip.authentication.demo.util.ApplicationResourceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.springframework.core.env.Environment;
 
 /**
  * The Class IdaStarter.
@@ -38,7 +41,10 @@ public class IdaStarter extends Application {
 		context = builder.run(getParameters().getRaw().toArray(new String[0]));
 
 		loader.setControllerFactory(context::getBean);
+		ApplicationResourceContext.getInstance().setApplicatioLanguage(context.getEnvironment().getProperty("mosip.primary-language"));
+		loader.setResources(ApplicationResourceContext.getInstance().getLabelBundle());
 		root = loader.load(this.getClass().getClassLoader().getResourceAsStream("fxml/idaFXML.fxml"));
+
 		context.close();
 	}
 
