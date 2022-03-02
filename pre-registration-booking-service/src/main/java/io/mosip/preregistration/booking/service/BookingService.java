@@ -532,8 +532,8 @@ public class BookingService implements BookingServiceIntf {
 		responseDto.setVersion(versionUrl);
 		RegistrationBookingEntity entity = null;
 		try {
-			/* Checking Status From Demographic */
-//			serviceUtil.getDemographicStatus(preRegID);
+			// This call will check if the PRID belongs to the logged in user or not
+			serviceUtil.checkApplicationStatus(preRegID);
 			entity = bookingDAO.findByPreRegistrationId(preRegID);
 
 			bookingRegistrationDTO.setRegDate(entity.getRegDate().toString());
@@ -748,7 +748,8 @@ public class BookingService implements BookingServiceIntf {
 		boolean isSaveSuccess = false;
 		try {
 			requestParamMap.put(RequestCodes.PRE_REGISTRAION_ID.getCode(), preregId);
-			if (validationUtil.requstParamValidator(requestParamMap)) {
+			if (validationUtil.requstParamValidator(requestParamMap)
+					&& serviceUtil.checkApplicationStatus(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
 				String str = registrationEntityList.getRegDate() + " " + registrationEntityList.getSlotFromTime();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
