@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -317,6 +316,26 @@ public class BookingServiceUtil {
 	}
 
 	/**
+	 * This method will check if Slot Time is Valid or not.
+	 * 
+	 * @param preRegistrationId
+	 * @param bookingDto
+	 * @return true or false
+	 */
+	public boolean slotTimeValidCheck(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
+		log.info("sessionId", "idType", "id", "In slotTimeValidCheck method of Booking Service Util");
+		boolean flag = true;
+		try {
+			LocalTime.parse(bookingRequestDTO.getSlotFromTime());
+			LocalTime.parse(bookingRequestDTO.getSlotToTime());
+		} catch (Exception e) {
+			throw new BookingTimeSlotNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_003.getCode(),
+					ErrorMessages.USER_HAS_NOT_SELECTED_TIME_SLOT.getMessage());
+		}
+		return flag;
+	}
+
+	/**
 	 * This method will check mandatory parameter check.
 	 * 
 	 * @param bookingDto
@@ -336,9 +355,7 @@ public class BookingServiceUtil {
 			} else if (isNull(bookingRequestDTO.getRegDate())) {
 				throw new BookingDateNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_008.getCode(),
 						ErrorMessages.BOOKING_DATE_TIME_NOT_SELECTED.getMessage());
-			} else if (isNull(bookingRequestDTO.getSlotFromTime()) || isNull(bookingRequestDTO.getSlotToTime())
-					|| Pattern.matches(".*[a-zA-Z]+.*", (bookingRequestDTO.getSlotFromTime()))
-					|| Pattern.matches(".*[a-zA-Z]+.*", (bookingRequestDTO.getSlotToTime()))) {
+			} else if (isNull(bookingRequestDTO.getSlotFromTime()) || isNull(bookingRequestDTO.getSlotToTime())) {
 				throw new BookingTimeSlotNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_003.getCode(),
 						ErrorMessages.USER_HAS_NOT_SELECTED_TIME_SLOT.getMessage());
 			}

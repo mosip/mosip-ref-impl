@@ -292,7 +292,8 @@ public class BookingService implements BookingServiceIntf {
 
 					}
 
-					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)) {
+					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)
+							&& serviceUtil.slotTimeValidCheck(preRegistrationId, bookingRequestDTO)) {
 
 						/* Checking the availability of slots */
 						checkSlotAvailability(bookingRequestDTO);
@@ -434,7 +435,9 @@ public class BookingService implements BookingServiceIntf {
 						bookingRequest.setSlotToTime(bookingRequestDTO.getSlotToTime());
 
 						if (serviceUtil.mandatoryParameterCheck(bookingRequestDTO.getPreRegistrationId(),
-								bookingRequest)) {
+								bookingRequest)
+								&& serviceUtil.slotTimeValidCheck(bookingRequestDTO.getPreRegistrationId(),
+										bookingRequest)) {
 
 							/* Checking the availability of slots */
 							checkSlotAvailability(bookingRequest);
@@ -606,8 +609,9 @@ public class BookingService implements BookingServiceIntf {
 	 * io.mosip.preregistration.booking.serviceimpl.dto.BookingRequestDTO)
 	 */
 	@Override
-	//Please note that this method is NOT creating a new transaction.
-	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	// Please note that this method is NOT creating a new transaction.
+	// @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor =
+	// Exception.class)
 	public BookingStatusDTO book(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
 		log.info("sessionId", "idType", "id", "In book method of Booking Service");
 		BookingStatusDTO bookingStatusDTO = new BookingStatusDTO();
@@ -661,8 +665,9 @@ public class BookingService implements BookingServiceIntf {
 	 * cancelBooking(java.lang.String, boolean)
 	 */
 	@Override
-	//Please note that this method is NOT creating a new transaction.
-	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	// Please note that this method is NOT creating a new transaction.
+	// @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor =
+	// Exception.class)
 	public CancelBookingResponseDTO cancelBooking(String preRegistrationId, boolean isBatchUser) {
 		log.info("sessionId", "idType", "id", "In cancelBooking method of Booking Service");
 		CancelBookingResponseDTO cancelBookingResponseDTO = new CancelBookingResponseDTO();
@@ -808,8 +813,8 @@ public class BookingService implements BookingServiceIntf {
 		response.setId(idUrlCheckSlotAvailability);
 		response.setVersion(versionUrl);
 		try {
-			List<RegistrationCenterDto> regCenter = serviceUtil.getRegCenterMasterData(
-					bookingRequestDTO.getRegistrationCenterId());
+			List<RegistrationCenterDto> regCenter = serviceUtil
+					.getRegCenterMasterData(bookingRequestDTO.getRegistrationCenterId());
 			Boolean isValidRegCenter = regCenter.stream()
 					.anyMatch(iterate -> iterate.getId().contains(bookingRequestDTO.getRegistrationCenterId()));
 
