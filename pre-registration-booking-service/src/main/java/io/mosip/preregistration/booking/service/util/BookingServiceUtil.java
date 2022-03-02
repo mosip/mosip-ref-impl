@@ -253,6 +253,25 @@ public class BookingServiceUtil {
 		return true;
 	}
 
+	/**
+	 * This method will call demographic service to get application status for
+	 * delete flow and it will also check if the PRID belongs to the logged in user
+	 * or not.
+	 * 
+	 * @param preId
+	 * @return status code
+	 */
+	public boolean checkApplicationStatus(String preId) {
+		log.info("sessionId", "idType", "id", "In callgetDemographicStatusForDelete method of Booking Service Util");
+		// This call will check if the PRID belongs to the logged in user or not
+		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
+		if (getApplicationStatus.getErrors() != null) {
+			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
+					getApplicationStatus.getErrors().get(0).getMessage());
+		}
+		return true;
+	}
+	
 	public boolean timeSpanCheckForCancle(LocalDateTime bookedDateTime) {
 		boolean isTimeSpanCheckForCancel = true;
 		ZonedDateTime currentTime = ZonedDateTime.now();
@@ -635,7 +654,7 @@ public class BookingServiceUtil {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
 		//String url = preRegResourceUrl + "/applications/status/" + applicationId;
 		UriComponentsBuilder builder = UriComponentsBuilder
-				.fromHttpUrl(preRegResourceUrl + "/applications/status/" + applicationId);
+				.fromHttpUrl(preRegResourceUrl + "/applications/prereg/status/" + applicationId);
 		String uriBuilder = builder.build().encode().toUriString();
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
