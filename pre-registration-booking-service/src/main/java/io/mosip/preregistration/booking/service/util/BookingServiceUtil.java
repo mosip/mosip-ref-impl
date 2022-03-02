@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -145,11 +146,11 @@ public class BookingServiceUtil {
 	private ObjectMapper mapper;
 
 	@PostConstruct
-    public void init() {
+	public void init() {
 		mapper = JsonMapper.builder().addModule(new AfterburnerModule()).build();
 		mapper.registerModule(new JavaTimeModule());
 	}
-	
+
 	private Logger log = LoggerConfiguration.logConfig(BookingServiceUtil.class);
 
 	public AuthUserDetails authUserDetails() {
@@ -175,17 +176,17 @@ public class BookingServiceUtil {
 			String uriBuilder = regbuilder.build().encode().toUriString();
 			log.info("sessionId", "idType", "id",
 					"In callRegCenterDateRestService method of Booking Service URL- " + uriBuilder);
-			ResponseEntity<ResponseWrapper<RegistrationCenterResponseDto>> responseEntity = selfTokenRestTemplate.exchange(
-					uriBuilder, HttpMethod.GET, entity,
-					new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
-					});
+			ResponseEntity<ResponseWrapper<RegistrationCenterResponseDto>> responseEntity = selfTokenRestTemplate
+					.exchange(uriBuilder, HttpMethod.GET, entity,
+							new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
+							});
 			ResponseWrapper<RegistrationCenterResponseDto> body = responseEntity.getBody();
 			if (body != null) {
 				if (body.getErrors() != null && !body.getErrors().isEmpty()) {
 					throw new MasterDataNotAvailableException(body.getErrors().get(0).getErrorCode(),
 							body.getErrors().get(0).getMessage());
 				}
-				regCenter = body.getResponse().getRegistrationCenters();	
+				regCenter = body.getResponse().getRegistrationCenters();
 			}
 			if (regCenter == null || regCenter.isEmpty()) {
 				throw new MasterDataNotAvailableException(ErrorCodes.PRG_BOOK_RCI_020.getCode(),
@@ -229,14 +230,14 @@ public class BookingServiceUtil {
 	 */
 	public boolean getDemographicStatusForCancel(String preId) {
 		log.info("sessionId", "idType", "id", "In callGetStatusForCancelRestService method of Booking Service Util");
-		
+
 		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
 		if (getApplicationStatus.getErrors() != null) {
 			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
 					getApplicationStatus.getErrors().get(0).getMessage());
 		}
 		String statusCode = getApplicationStatus.getResponse();
-		
+
 		if (!statusCode.equals(StatusCodes.BOOKED.getCode())) {
 			if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
 					|| statusCode.equals(StatusCodes.APPLICATION_INCOMPLETE.getCode())) {
@@ -335,7 +336,9 @@ public class BookingServiceUtil {
 			} else if (isNull(bookingRequestDTO.getRegDate())) {
 				throw new BookingDateNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_008.getCode(),
 						ErrorMessages.BOOKING_DATE_TIME_NOT_SELECTED.getMessage());
-			} else if (isNull(bookingRequestDTO.getSlotFromTime()) || isNull(bookingRequestDTO.getSlotToTime())) {
+			} else if (isNull(bookingRequestDTO.getSlotFromTime()) || isNull(bookingRequestDTO.getSlotToTime())
+					|| Pattern.matches(".*[a-zA-Z]+.*", (bookingRequestDTO.getSlotFromTime()))
+					|| Pattern.matches(".*[a-zA-Z]+.*", (bookingRequestDTO.getSlotToTime()))) {
 				throw new BookingTimeSlotNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_003.getCode(),
 						ErrorMessages.USER_HAS_NOT_SELECTED_TIME_SLOT.getMessage());
 			}
@@ -509,7 +512,8 @@ public class BookingServiceUtil {
 			BookingRequestDTO bookingRequestDTO) {// should set preid
 		log.info("sessionId", "idType", "id", "In bookingEntitySetter method of Booking Service Util");
 		RegistrationBookingEntity entity = new RegistrationBookingEntity();
-		//entity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
+		// entity.setBookingPK(new
+		// RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
 		entity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
 		entity.setRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
 		entity.setId(UUIDGeneratorUtil.generateId());
@@ -652,7 +656,7 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> getApplicationStatus(String applicationId) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		//String url = preRegResourceUrl + "/applications/status/" + applicationId;
+		// String url = preRegResourceUrl + "/applications/status/" + applicationId;
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromHttpUrl(preRegResourceUrl + "/applications/prereg/status/" + applicationId);
 		String uriBuilder = builder.build().encode().toUriString();
@@ -660,8 +664,8 @@ public class BookingServiceUtil {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + uriBuilder);
 		try {
-			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(uriBuilder, HttpMethod.GET, entity,
-					new ParameterizedTypeReference<MainResponseDTO<String>>() {
+			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(uriBuilder, HttpMethod.GET,
+					entity, new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
 			MainResponseDTO<String> body = responseEntity.getBody();
 			if (body != null) {
@@ -670,11 +674,11 @@ public class BookingServiceUtil {
 				} else {
 					String applicationStatus = body.getResponse();
 					if (applicationStatus != null) {
-						response.setResponse(applicationStatus);	
+						response.setResponse(applicationStatus);
 					} else {
 						response.setResponse("");
-					}	
-				}	
+					}
+				}
 			}
 			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + uriBuilder);
 		} catch (Exception ex) {
