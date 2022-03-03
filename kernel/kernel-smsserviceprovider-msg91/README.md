@@ -19,12 +19,27 @@ Its expected that the adopters do not change the controller and the REST api.
  mvn javadoc:javadoc
 
  ```
- 
+
+**Properties to be added in Kernel component kernel-default.properties**
+[kernel-default.properties](../../config/kernel-default.properties)
+
+ ```
+
+mosip.kernel.sms.enabled=true
+mosip.kernel.sms.country.code=91
+mosip.kernel.sms.number.length=10
+mosip.kernel.sms.language=english
+mosip.kernel.sms.gateway=gateway
+
+ ```
+
 **Properties to be added in Spring application environment using this component**
+
 
 [application-dev.properties](../../config/application-dev.properties)
 
- ```
+
+```
  #-----------------------------VID Properties--------------------------------------
 mosip.kernel.sms.enabled=true
 mosip.kernel.sms.country.code=91
@@ -36,6 +51,14 @@ mosip.kernel.sms.api=http://api.msg91.com/api/v2/sendsms
 mosip.kernel.sms.authkey=<authkey>
 mosip.kernel.sms.route=4
 mosip.kernel.sms.sender=MOSMSG
+mosip.kernel.sms.unicode=unicode
+
+#-----fast2sms gateway----------
+mosip.kernel.sms.api=https://www.fast2sms.com/dev/bulkV2
+mosip.kernel.sms.authkey=<authkey>
+mosip.kernel.sms.route=p
+mosip.kernel.sms.sender=FSTSMS
+mosip.kernel.sms.unicode=unicode
 
 auth.server.admin.validate.url=<auth server validate url>
 
