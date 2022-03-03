@@ -2,16 +2,19 @@
 
  [Background & Design]()
 
+MOSIP has the capability of talking to any SMS Gateway provider as long as the provider supports REST APIs for communication.
+
  **Implementation**
-This service is provided as a reference implementation so the adopters could change this code to support their respective service provider.
+
+This service is provided as a reference implementation so that MOSIP implementors can customize the SMS implementation to support support their respective service providers.
 
 ```
 io.mosip.kernel.core.notification.spi.SMSServiceProvider
 
 ```
-The above interface is implemented in this service. Adopters are expected to be compliant to the interface  and add their implementation in the SMSServiceProviderImpl.java or create equivalent impl.
+This is a sample implementation of the SMSServiceProvider interface.  Depending upon the SMS Provider, the implementation code might change however the interface
+remains as it is.  MOSIP implementors are expected to be compliant to this interface  and add their implementation in the SMSServiceProviderImpl.java.
 
-Its expected that the adopters do not change the controller and the REST api.
 
  [API Documentation ]
  
