@@ -21,7 +21,6 @@ Its expected that the adopters do not change the controller and the REST api.
  ```
 
 **Properties to be added in Kernel component kernel-default.properties**
-[kernel-default.properties](../../config/kernel-default.properties)
 
  ```
 
@@ -33,13 +32,8 @@ mosip.kernel.sms.gateway=gateway
 
  ```
 
-**Properties to be added in Spring application environment using this component**
+ ```
 
-
-[application-dev.properties](../../config/application-dev.properties)
-
-
-```
  #-----------------------------VID Properties--------------------------------------
 mosip.kernel.sms.enabled=true
 mosip.kernel.sms.country.code=91
