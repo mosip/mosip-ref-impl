@@ -654,7 +654,7 @@ public class BookingServiceUtil {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
 		//String url = preRegResourceUrl + "/applications/status/" + applicationId;
 		UriComponentsBuilder builder = UriComponentsBuilder
-				.fromHttpUrl(preRegResourceUrl + "/applications/prereg/status/" + applicationId);
+				.fromHttpUrl(preRegResourceUrl + "/applications/status/" + applicationId);
 		String uriBuilder = builder.build().encode().toUriString();
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
