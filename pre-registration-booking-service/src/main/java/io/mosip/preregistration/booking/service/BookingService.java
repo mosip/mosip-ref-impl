@@ -292,7 +292,8 @@ public class BookingService implements BookingServiceIntf {
 
 					}
 
-					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)) {
+					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)
+							&& serviceUtil.slotTimeValidCheck(preRegistrationId, bookingRequestDTO)) {
 
 						/* Checking the availability of slots */
 						checkSlotAvailability(bookingRequestDTO);
@@ -434,7 +435,9 @@ public class BookingService implements BookingServiceIntf {
 						bookingRequest.setSlotToTime(bookingRequestDTO.getSlotToTime());
 
 						if (serviceUtil.mandatoryParameterCheck(bookingRequestDTO.getPreRegistrationId(),
-								bookingRequest)) {
+								bookingRequest)
+								&& serviceUtil.slotTimeValidCheck(bookingRequestDTO.getPreRegistrationId(),
+										bookingRequest)) {
 
 							/* Checking the availability of slots */
 							checkSlotAvailability(bookingRequest);
