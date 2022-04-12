@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -344,6 +345,26 @@ public class BookingServiceUtil {
 		}
 		return flag;
 
+	}
+	
+	/**
+	 * This method will check if Slot Time is Valid or not.
+	 * 
+	 * @param preRegistrationId
+	 * @param bookingDto
+	 * @return true or false
+	 */
+	public boolean slotTimeValidCheck(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
+		log.info("sessionId", "idType", "id", "In slotTimeValidCheck method of Booking Service Util");
+		boolean flag = true;
+		try {
+			LocalTime.parse(bookingRequestDTO.getSlotFromTime());
+			LocalTime.parse(bookingRequestDTO.getSlotToTime());
+		} catch (DateTimeParseException e) {
+			throw new BookingTimeSlotNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_003.getCode(),
+					ErrorMessages.USER_HAS_NOT_SELECTED_TIME_SLOT.getMessage());
+		}
+		return flag;
 	}
 
 	/**
