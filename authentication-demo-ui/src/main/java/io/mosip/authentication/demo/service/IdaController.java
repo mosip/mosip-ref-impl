@@ -30,6 +30,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import io.mosip.authentication.demo.util.ApplicationResourceContext;
 import io.mosip.biometrics.util.ConvertRequestDto;
 import io.mosip.biometrics.util.face.FaceDecoder;
 import javafx.fxml.FXMLLoader;
@@ -180,6 +181,8 @@ public class IdaController {
 	@FXML
 	private GridPane previewGrid;
 
+	private ResourceBundle labelBundle;
+
 	@FXML
 	private void initialize() {
 		responsetextField.setText(null);
@@ -209,6 +212,7 @@ public class IdaController {
 		otpValue.textProperty().addListener((observable, oldValue, newValue) -> {
 			updateSendButton();
 		});
+		labelBundle = ApplicationResourceContext.getInstance().getLabelBundle();
 	}
 
 	@FXML
@@ -406,7 +410,7 @@ public class IdaController {
 	}
 
 	private String captureFingerprint() throws Exception {
-		responsetextField.setText("Capturing Fingerprint...");
+		responsetextField.setText(labelBundle.getString("capturingBiometric"));
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");	
 		
 		String requestBody = getCaptureRequestTemplate();
@@ -452,7 +456,7 @@ public class IdaController {
 	}
 	
 	private String captureIris() throws Exception {
-		responsetextField.setText("Capturing Iris...");
+		responsetextField.setText(labelBundle.getString("capturingIris"));
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
 	String requestBody = getCaptureRequestTemplate();
@@ -475,7 +479,7 @@ public class IdaController {
 	}
 	
 	private String captureFace() throws Exception {
-		responsetextField.setText("Capturing Face...");
+		responsetextField.setText(labelBundle.getString("capturingFace"));
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
 
 		String requestBody = getCaptureRequestTemplate();
@@ -553,7 +557,7 @@ public class IdaController {
 			}
 			bR.close();
 		} catch (IOException e) {
-			responsetextField.setText("Device connectivity failed....");
+			responsetextField.setText(labelBundle.getString("deviceConnectivityFailed"));
 			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			e.printStackTrace();
 		}
@@ -571,7 +575,7 @@ public class IdaController {
 			Map errorMap = (Map) e.get("error");
 			error = errorMap.get("errorCode").toString();		
 			if (error.equals(DEFAULT_SUBID) || error.equals("100")) {
-				responsetextField.setText("Capture Success");
+				responsetextField.setText(labelBundle.getString("captureSuccess"));
 				responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
 				ObjectMapper objectMapper = new ObjectMapper();
 				List dataList = (List) objectMapper.readValue(result.getBytes(), Map.class).get("biometrics");
@@ -583,7 +587,7 @@ public class IdaController {
 					previousHash = (String) b.get("hash");
 				}
 			} else {
-				responsetextField.setText("Capture Failed");
+				responsetextField.setText(labelBundle.getString("captureFailed"));
 				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 				break;
 			}
@@ -621,7 +625,7 @@ public class IdaController {
 			if (response.getStatusCode().is2xxSuccessful()) {
 				List errors = ((List) response.getBody().get("errors"));
 				boolean status = errors == null || errors.isEmpty();
-				String responseText = status ? "OTP Request Success" : "OTP Request Failed";
+				String responseText = status ? labelBundle.getString("otpRequestSuccess") : labelBundle.getString("otpRequestFail");
 				if (status) {
 					responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold");
 				} else {
@@ -629,7 +633,7 @@ public class IdaController {
 				}
 				responsetextField.setText(responseText);
 			} else {
-				responsetextField.setText("OTP Request Failed with Error");
+				responsetextField.setText(labelBundle.getString("otpRequestFailedwithError"));
 				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			}
 
@@ -684,7 +688,7 @@ public class IdaController {
 	private void onSendAuthRequest() throws Exception {
 		responsetextField.setText(null);
 		responsetextField.setStyle("-fx-text-fill: black; -fx-font-size: 20px; -fx-font-weight: bold");
-		responsetextField.setText("Preparing Auth Request...");
+		responsetextField.setText(labelBundle.getString("prepareAuthRequest"));
 		AuthRequestDTO authRequestDTO = new AuthRequestDTO();
 		// Set Auth Type
 		AuthTypeDTO authTypeDTO = new AuthTypeDTO();
@@ -709,7 +713,7 @@ public class IdaController {
 		if (isBioAuthType()) {
 			identityBlock.put("biometrics", mapper.readValue(capture, Map.class).get("biometrics"));
 		}
-		responsetextField.setText("Encrypting Auth Request...");
+		responsetextField.setText(labelBundle.getString("encryptAuthRequest"));
 		System.out.println("******* Request before encryption ************ \n\n");
 		System.out.println(mapper.writeValueAsString(identityBlock));
 		EncryptionRequestDto encryptionRequestDto = new EncryptionRequestDto();
@@ -719,11 +723,11 @@ public class IdaController {
 			kernelEncrypt = kernelEncrypt(encryptionRequestDto, false);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responsetextField.setText("Encryption of Auth Request Failed");
+			responsetextField.setText(labelBundle.getString("encryptAuthRequestFailed"));
 			return;
 		}
 
-		responsetextField.setText("Authenticating...");
+		responsetextField.setText(labelBundle.getString("authenticate"));
 		// Set request block
 		authRequestDTO.setRequest(requestDTO);
 
@@ -757,17 +761,17 @@ public class IdaController {
 				String response;
 
 				if(isKycRequired.isSelected()) {
-					status = (boolean) ((Map<String, Object>) authResponse.getBody().get("response")).get("kycStatus");
-					response = status ? objectMapper.writeValueAsString(authResponse.getBody().get("response")) : "KYC Request Failed";
+					status = authResponse.getBody().get("response") != null ? (boolean) ((Map<String, Object>) authResponse.getBody().get("response")).get("kycStatus") : false;
+					response = status ? objectMapper.writeValueAsString(authResponse.getBody().get("response")) : labelBundle.getString("kycRequestFailed");
 					if(status) {
 						loadKYCPreviewPage(response, status);
-						response = status ? "Authentication Success" : "Authentication Failed";
+						response = status ? labelBundle.getString("authenticationSuccess") : labelBundle.getString("authenticationFail");
 					} else {
-						response = status ? "Authentication Success" : "Authentication Failed";
+						response = status ? labelBundle.getString("authenticationSuccess") : labelBundle.getString("authenticationFail");
 					}
 				} else {
 					status = (boolean) ((Map<String, Object>) authResponse.getBody().get("response")).get("authStatus");
-					response = status ? "Authentication Success" : "Authentication Failed";
+					response = status ? labelBundle.getString("authenticationSuccess") : labelBundle.getString("authenticationFail");
 				}
 				if (status) {
 					responsetextField.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold; scroll-bar:horizontal:enabled");
@@ -776,7 +780,7 @@ public class IdaController {
 				}
 				responsetextField.setText(response);
 			} else {
-				responsetextField.setText("Authentication Failed with Error");
+				responsetextField.setText(labelBundle.getString("authenticationFailWithError"));
 				responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 			}
 
@@ -784,7 +788,7 @@ public class IdaController {
 			System.out.println(authResponse.getBody());
 		} catch (Exception e) {
 			e.printStackTrace();
-			responsetextField.setText("Authentication Failed with Error");
+			responsetextField.setText(labelBundle.getString("authenticationFailWithError"));
 			responsetextField.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold");
 		}
 	}
@@ -960,10 +964,10 @@ public class IdaController {
 	@FXML
 	private void onReset() {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Confirm Reset");
-		alert.setContentText("Are you sure to reset?");
-		ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-		ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+		alert.setTitle(labelBundle.getString("confirmreset"));
+		alert.setContentText(labelBundle.getString("resetComfirmMessage"));
+		ButtonType okButton = new ButtonType(labelBundle.getString("yes"), ButtonBar.ButtonData.YES);
+		ButtonType noButton = new ButtonType(labelBundle.getString("no"), ButtonBar.ButtonData.NO);
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
 		        if (type.getButtonData().equals(ButtonType.YES.getButtonData())) {
@@ -1293,7 +1297,7 @@ public class IdaController {
 		statusLabel.setMaxHeight(100);
 		statusLabel.setPrefWidth(400);
 		statusLabel.setAlignment(Pos.CENTER);
-		statusLabel.setText("EKYC Preview");
+		statusLabel.setText(labelBundle.getString("ekycPreviewLabel"));
 		statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 20px; -fx-font-weight: bold; scroll-bar:horizontal:enabled");
 
 		HBox statusHBox1 = new HBox();
