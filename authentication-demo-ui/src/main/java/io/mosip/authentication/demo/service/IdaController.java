@@ -761,7 +761,7 @@ public class IdaController {
 				String response;
 
 				if(isKycRequired.isSelected()) {
-					status = (boolean) ((Map<String, Object>) authResponse.getBody().get("response")).get("kycStatus");
+					status = authResponse.getBody().get("response") != null ? (boolean) ((Map<String, Object>) authResponse.getBody().get("response")).get("kycStatus") : false;
 					response = status ? objectMapper.writeValueAsString(authResponse.getBody().get("response")) : labelBundle.getString("kycRequestFailed");
 					if(status) {
 						loadKYCPreviewPage(response, status);
