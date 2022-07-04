@@ -1,4 +1,4 @@
-[![Maven Package upon a push](https://github.com/mosip/mosip-ref-impl/actions/workflows/push_trigger.yml/badge.svg?branch=release-1.2.0)](https://github.com/mosip/mosip-ref-impl/actions/workflows/push_trigger.yml)
+[![Maven Package upon a push](https://github.com/mosip/mosip-ref-impl/actions/workflows/push_trigger.yml/badge.svg?branch=release-1.2.0.1)](https://github.com/mosip/mosip-ref-impl/actions/workflows/push_trigger.yml)
 
 # Mosip Ref Impl
 
