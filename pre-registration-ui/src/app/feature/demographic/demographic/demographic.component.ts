@@ -876,7 +876,7 @@ export class DemographicComponent
 
   getDynamicFieldValues(pageNo = 0) {
     let pageNumber;
-    if (pageNo > 0) {
+    if (pageNo == 0) {
       pageNumber = 0;
     } else {
       pageNumber = pageNo;
@@ -902,7 +902,7 @@ export class DemographicComponent
               }
               if (
                 field.id === res.name &&
-                res.langCode === this.secondaryLang
+                res.langCode === this.secondaryLang && this.primaryLang !== this.secondaryLang
               ) {
                 this.filterOnLangCode(
                   this.secondaryLang,
