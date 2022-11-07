@@ -1,15 +1,18 @@
 FROM openjdk:11
 
-ARG biosdk_jar_path
+ENV biosdk_zip_url=$biosdk_zip_url
+ENV biosdk_bioapi_impl=$biosdk_bioapi_impl
 
-ARG biosdk_class
+copy ./target/biosdk-services-*.jar /biosdk-services.jar
+copy ./configure_sdk.sh /configure_sdk.sh
 
-ENV biosdk_class=$biosdk_class
+RUN chmod 777 /biosdk-services.jar
 
-copy ./target/biosdk-services-*.jar biosdk-services.jar
-
-RUN wget $biosdk_jar_path -O biosdk.jar
+RUN chmod +x /configure_sdk.sh
+RUN apt-get update
 
 EXPOSE 9099
 
-CMD ["java", "-Dloader.path=biosdk.jar", "-jar","biosdk-services.jar"]
+ENTRYPOINT [ "/configure_sdk.sh" ]
+
+CMD java -Dloader.path="/biosdk/" -jar /biosdk-services.jar
