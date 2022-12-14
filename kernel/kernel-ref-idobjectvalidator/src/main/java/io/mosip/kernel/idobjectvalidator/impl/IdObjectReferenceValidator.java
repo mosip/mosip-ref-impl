@@ -53,7 +53,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
@@ -356,22 +358,30 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		HashSetValuedHashMap<String, String> masterDataMap = new HashSetValuedHashMap<>();
 		URI requestUri = UriComponentsBuilder.fromUriString(masterDataUri)
 				.queryParam("langCode", languageList.stream().collect(Collectors.joining(","))).build(field);
-		ResponseWrapper<Object> responseObject = restTemplate
-				.exchange(requestUri, HttpMethod.GET, null, new ParameterizedTypeReference<ResponseWrapper<Object>>() {
-				}).getBody();
-		logger.debug("IdObjectReferenceValidator masterdata field : {} response : {}", field, responseObject);
-		Map<String, List<ObjectNode>> response = mapper.convertValue(responseObject.getResponse(),
-				new TypeReference<Map<String, List<ObjectNode>>>() {
-				});
-		response.entrySet()
-				.forEach(entry -> masterDataMap.putAll(entry.getKey(),
-						entry.getValue().stream()
-								.flatMap(responseValue -> List.of(env.getProperty(VALUE_NA, ""),
-										responseValue.get(CODE).isNull() ? "" : responseValue.get(CODE).asText(),
-										responseValue.get(VALUE).isNull() ? "" : responseValue.get(VALUE).asText())
-										.stream())
-								.filter(StringUtils::isNotBlank).map(StringUtils::trim).collect(Collectors.toList())));
-		return masterDataMap;
+
+			ResponseEntity<ResponseWrapper<Object>> result = restTemplate.exchange(requestUri, HttpMethod.GET, null,
+					new ParameterizedTypeReference<ResponseWrapper<Object>>() {
+					});
+
+			if (result != null) {
+				ResponseWrapper<Object> responseObject = result.getBody();
+				logger.debug("IdObjectReferenceValidator masterdata field : {} response : {}", field, responseObject);
+				if (responseObject != null && responseObject.getResponse() != null) {
+					Map<String, List<ObjectNode>> response = mapper.convertValue(responseObject.getResponse(),
+							new TypeReference<Map<String, List<ObjectNode>>>() {
+							});
+					response.entrySet()
+							.forEach(entry -> masterDataMap.putAll(entry.getKey(), entry.getValue().stream()
+									.flatMap(responseValue -> List.of(env.getProperty(VALUE_NA, ""),
+											responseValue.get(CODE).isNull() ? "" : responseValue.get(CODE).asText(),
+											responseValue.get(VALUE).isNull() ? "" : responseValue.get(VALUE).asText())
+											.stream())
+									.filter(StringUtils::isNotBlank).map(StringUtils::trim)
+									.collect(Collectors.toList())));
+					return masterDataMap;
+				}
+			}
+		return null;
 	}
 
 	private String convertToPath(String jsonPath) {
