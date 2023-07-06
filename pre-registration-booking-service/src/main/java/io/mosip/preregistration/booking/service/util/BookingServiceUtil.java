@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -179,16 +180,18 @@ public class BookingServiceUtil {
 					uriBuilder, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<ResponseWrapper<RegistrationCenterResponseDto>>() {
 					});
-			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-				throw new MasterDataNotAvailableException(responseEntity.getBody().getErrors().get(0).getErrorCode(),
-						responseEntity.getBody().getErrors().get(0).getMessage());
+			ResponseWrapper<RegistrationCenterResponseDto> body = responseEntity.getBody();
+			if (body != null) {
+				if (body.getErrors() != null && !body.getErrors().isEmpty()) {
+					throw new MasterDataNotAvailableException(body.getErrors().get(0).getErrorCode(),
+							body.getErrors().get(0).getMessage());
+				}
+				regCenter = body.getResponse().getRegistrationCenters();	
 			}
-			regCenter = responseEntity.getBody().getResponse().getRegistrationCenters();
 			if (regCenter == null || regCenter.isEmpty()) {
 				throw new MasterDataNotAvailableException(ErrorCodes.PRG_BOOK_RCI_020.getCode(),
 						ErrorMessages.MASTER_DATA_NOT_FOUND.getMessage());
 			}
-
 		} catch (HttpClientErrorException ex) {
 			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
 			log.error("sessionId", "idType", "id",
@@ -251,6 +254,25 @@ public class BookingServiceUtil {
 		return true;
 	}
 
+	/**
+	 * This method will call demographic service to get application status for
+	 * delete flow and it will also check if the PRID belongs to the logged in user
+	 * or not.
+	 * 
+	 * @param preId
+	 * @return status code
+	 */
+	public boolean checkApplicationStatus(String preId) {
+		log.info("sessionId", "idType", "id", "In callgetDemographicStatusForDelete method of Booking Service Util");
+		// This call will check if the PRID belongs to the logged in user or not
+		MainResponseDTO<String> getApplicationStatus = getApplicationStatus(preId);
+		if (getApplicationStatus.getErrors() != null) {
+			throw new DemographicGetStatusException(getApplicationStatus.getErrors().get(0).getErrorCode(),
+					getApplicationStatus.getErrors().get(0).getMessage());
+		}
+		return true;
+	}
+	
 	public boolean timeSpanCheckForCancle(LocalDateTime bookedDateTime) {
 		boolean isTimeSpanCheckForCancel = true;
 		ZonedDateTime currentTime = ZonedDateTime.now();
@@ -323,6 +345,26 @@ public class BookingServiceUtil {
 		}
 		return flag;
 
+	}
+	
+	/**
+	 * This method will check if Slot Time is Valid or not.
+	 * 
+	 * @param preRegistrationId
+	 * @param bookingDto
+	 * @return true or false
+	 */
+	public boolean slotTimeValidCheck(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
+		log.info("sessionId", "idType", "id", "In slotTimeValidCheck method of Booking Service Util");
+		boolean flag = true;
+		try {
+			LocalTime.parse(bookingRequestDTO.getSlotFromTime());
+			LocalTime.parse(bookingRequestDTO.getSlotToTime());
+		} catch (DateTimeParseException e) {
+			throw new BookingTimeSlotNotSeletectedException(ErrorCodes.PRG_BOOK_RCI_003.getCode(),
+					ErrorMessages.USER_HAS_NOT_SELECTED_TIME_SLOT.getMessage());
+		}
+		return flag;
 	}
 
 	/**
@@ -631,25 +673,31 @@ public class BookingServiceUtil {
 
 	public MainResponseDTO<String> getApplicationStatus(String applicationId) {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
-		String url = preRegResourceUrl + "/applications/status/" + applicationId;
+		//String url = preRegResourceUrl + "/applications/status/" + applicationId;
+		UriComponentsBuilder builder = UriComponentsBuilder
+				.fromHttpUrl(preRegResourceUrl + "/applications/status/" + applicationId);
+		String uriBuilder = builder.build().encode().toUriString();
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + url);
+		log.info("sessionId", "idType", "id", "In call to prereg rest service :" + uriBuilder);
 		try {
-			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
+			ResponseEntity<MainResponseDTO<String>> responseEntity = restTemplate.exchange(uriBuilder, HttpMethod.GET, entity,
 					new ParameterizedTypeReference<MainResponseDTO<String>>() {
 					});
-			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-				response.setErrors(responseEntity.getBody().getErrors());
-			} else {
-				String applicationStatus = responseEntity.getBody().getResponse();
-				if (applicationStatus != null) {
-					response.setResponse(applicationStatus);	
+			MainResponseDTO<String> body = responseEntity.getBody();
+			if (body != null) {
+				if (body.getErrors() != null && !body.getErrors().isEmpty()) {
+					response.setErrors(body.getErrors());
 				} else {
-					response.setResponse("");
-				}
+					String applicationStatus = body.getResponse();
+					if (applicationStatus != null) {
+						response.setResponse(applicationStatus);	
+					} else {
+						response.setResponse("");
+					}	
+				}	
 			}
-			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + url);
+			log.info("sessionId", "idType", "id", "In call to demographic rest service :" + uriBuilder);
 		} catch (Exception ex) {
 			log.debug("Rest call exception " + ExceptionUtils.getStackTrace(ex));
 			throw new RestClientException("rest call failed");

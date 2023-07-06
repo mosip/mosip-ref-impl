@@ -92,7 +92,7 @@ public class BookingService implements BookingServiceIntf {
 	 * Reference for ${preregistration.availability.noOfDays} from property file
 	 */
 	@Value("${preregistration.availability.noOfDays}")
-	int displayDays;
+	long displayDays;
 
 	/**
 	 * Reference for ${preregistration.booking.offset} from property file
@@ -292,7 +292,8 @@ public class BookingService implements BookingServiceIntf {
 
 					}
 
-					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)) {
+					if (serviceUtil.mandatoryParameterCheck(preRegistrationId, bookingRequestDTO)
+							&& serviceUtil.slotTimeValidCheck(preRegistrationId, bookingRequestDTO)) {
 
 						/* Checking the availability of slots */
 						checkSlotAvailability(bookingRequestDTO);
@@ -434,7 +435,9 @@ public class BookingService implements BookingServiceIntf {
 						bookingRequest.setSlotToTime(bookingRequestDTO.getSlotToTime());
 
 						if (serviceUtil.mandatoryParameterCheck(bookingRequestDTO.getPreRegistrationId(),
-								bookingRequest)) {
+								bookingRequest)
+								&& serviceUtil.slotTimeValidCheck(bookingRequestDTO.getPreRegistrationId(),
+										bookingRequest)) {
 
 							/* Checking the availability of slots */
 							checkSlotAvailability(bookingRequest);
@@ -532,8 +535,8 @@ public class BookingService implements BookingServiceIntf {
 		responseDto.setVersion(versionUrl);
 		RegistrationBookingEntity entity = null;
 		try {
-			/* Checking Status From Demographic */
-//			serviceUtil.getDemographicStatus(preRegID);
+			// This call will check if the PRID belongs to the logged in user or not
+			serviceUtil.checkApplicationStatus(preRegID);
 			entity = bookingDAO.findByPreRegistrationId(preRegID);
 
 			bookingRegistrationDTO.setRegDate(entity.getRegDate().toString());
@@ -606,7 +609,8 @@ public class BookingService implements BookingServiceIntf {
 	 * io.mosip.preregistration.booking.serviceimpl.dto.BookingRequestDTO)
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	//Please note that this method is NOT creating a new transaction.
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public BookingStatusDTO book(String preRegistrationId, BookingRequestDTO bookingRequestDTO) {
 		log.info("sessionId", "idType", "id", "In book method of Booking Service");
 		BookingStatusDTO bookingStatusDTO = new BookingStatusDTO();
@@ -660,7 +664,8 @@ public class BookingService implements BookingServiceIntf {
 	 * cancelBooking(java.lang.String, boolean)
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	//Please note that this method is NOT creating a new transaction.
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public CancelBookingResponseDTO cancelBooking(String preRegistrationId, boolean isBatchUser) {
 		log.info("sessionId", "idType", "id", "In cancelBooking method of Booking Service");
 		CancelBookingResponseDTO cancelBookingResponseDTO = new CancelBookingResponseDTO();
@@ -746,7 +751,8 @@ public class BookingService implements BookingServiceIntf {
 		boolean isSaveSuccess = false;
 		try {
 			requestParamMap.put(RequestCodes.PRE_REGISTRAION_ID.getCode(), preregId);
-			if (validationUtil.requstParamValidator(requestParamMap)) {
+			if (validationUtil.requstParamValidator(requestParamMap)
+					&& serviceUtil.checkApplicationStatus(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
 				String str = registrationEntityList.getRegDate() + " " + registrationEntityList.getSlotFromTime();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

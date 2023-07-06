@@ -12,7 +12,7 @@
 
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
 	<description>Booking service of  MOSIP Pre-registration</description>	
 	<url>https://github.com/mosip/mosip-ref-impl</url>	
@@ -23,7 +23,6 @@
                 <url>https://www.mozilla.org/en-US/MPL/2.0/</url>	
           </license>	
         </licenses>
-
 	<developers>
 		<developer>
 			<name>Mosip</name>
@@ -47,8 +46,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.2.0-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.2.0-SNAPSHOT</kernel.core.version>
+		<pre.registration.core.version>1.2.1-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.2.1-SNAPSHOT</kernel.core.version>
 		<!-- Core -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
 		<spring.data.version>2.0.9.RELEASE</spring.data.version>
@@ -455,7 +454,7 @@
 						</executions>
 						<configuration>
 							<apiDocsUrl>http://localhost:9095/preregistration/v1/v3/api-docs/Pre-Registration-Booking</apiDocsUrl>
-							<outputFileName>${name}-openapi.json</outputFileName>
+							<outputFileName>${artifactId}-openapi.json</outputFileName>
 							<outputDir>${project.build.directory}</outputDir>
 							<skip>false</skip>
 						</configuration>
