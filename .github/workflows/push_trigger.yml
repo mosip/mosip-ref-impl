@@ -228,7 +228,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_DEVOPS_WEBHOOK }} # required
         if: failure() # Pick up events even if the job fails or is canceled.
 
-  publish_to_nexus_kernel_prereg:
+  publish_to_nexus_prereg:
     needs: build-pre-registration-booking-service
     if: "!contains(github.ref, 'master')"
     runs-on: ubuntu-latest
