@@ -341,7 +341,7 @@ jobs:
         if: failure() # Pick up events even if the job fails or is canceled.
 
   publish_to_nexus_kernel:
-    needs: build-kernel-ref-idobjectvalidator
+    needs: build-kernel
     if: "!contains(github.ref, 'master')"
     runs-on: ubuntu-latest
     steps:
