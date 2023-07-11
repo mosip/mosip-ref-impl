@@ -12,7 +12,7 @@ on:
       - MOSIP-11719
 
 jobs:
-  build-kernel-ref-idobjectvalidator:
+  build-kernel:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -67,8 +67,8 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
         if: failure() # Pick up events even if the job fails or is canceled.
 
-  sonar-kernel-ref-idobjectvalidator:
-    needs: build-kernel-ref-idobjectvalidator
+  sonar-kernel:
+    needs: build-kernel
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
