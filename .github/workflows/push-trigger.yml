@@ -64,7 +64,7 @@ jobs:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master
     with:
       SERVICE_LOCATION: pre-registration-booking-service
-      BUILD_ARTIFACT:
+      BUILD_ARTIFACT: pre-registration-booking-service
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
@@ -167,6 +167,7 @@ jobs:
         include:
           - SERVICE_LOCATION: 'registration-processor/registration-processor-external-integration-service'
             SERVICE_NAME: 'registration-processor-external-integration-service'
+            BUILD_ARTIFACT: 'registration-processor-external-integration-service'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master
