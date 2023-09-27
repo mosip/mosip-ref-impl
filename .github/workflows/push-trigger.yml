@@ -131,12 +131,12 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   build-dockers-registration-processor-external-stage:
-    needs: build-maven-registration-processor-external-stage
     strategy:
       matrix:
         include:
           - SERVICE_LOCATION: 'registration-processor/registration-processor-external-stage'
             SERVICE_NAME: 'registration-processor-external-stage'
+            BUILD_ARTIFACT: 'registration-processor-external-stage'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master
