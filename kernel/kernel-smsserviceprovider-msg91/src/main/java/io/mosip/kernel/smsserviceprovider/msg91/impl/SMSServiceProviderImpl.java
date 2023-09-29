@@ -64,17 +64,16 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 		validateInput(contactNumber);
 		UriComponentsBuilder sms = UriComponentsBuilder.fromHttpUrl(api)
 				.queryParam(SmsPropertyConstant.AUTH_KEY.getProperty(), authkey)
-				.queryParam(SmsPropertyConstant.SMS_MESSAGE.getProperty(), message)
+				.queryParam(SmsPropertyConstant.SMS_MESSAGE.getProperty(), message.replaceAll("\\#", "%23"))
 				.queryParam(SmsPropertyConstant.ROUTE.getProperty(), route)
 				.queryParam(SmsPropertyConstant.SENDER_ID.getProperty(), sender)
 				.queryParam(SmsPropertyConstant.RECIPIENT_NUMBER.getProperty(), contactNumber)
 				.queryParam(SmsPropertyConstant.UNICODE.getProperty(), unicode)
 				.queryParam(SmsPropertyConstant.COUNTRY_CODE.getProperty(), countryCode);
 		try {
-			//restTemplate.getForObject(URLDecoder.decode(sms.toUriString(), StandardCharsets.UTF_8), String.class);
 			//restTemplate.getForEntity(sms.toUriString(), String.class);
 			/*Added the url decoder to avoid double encoding*/
-			restTemplate.getForEntity(URLDecoder.decode(sms.toUriString().replaceAll("\\#", "%23"), StandardCharsets.UTF_8), String.class);
+			restTemplate.getForEntity(URLDecoder.decode(sms.toUriString(), StandardCharsets.UTF_8), String.class);
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			throw new RuntimeException(e.getResponseBodyAsString());
 		}
