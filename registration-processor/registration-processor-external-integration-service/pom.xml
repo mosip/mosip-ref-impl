@@ -38,6 +38,7 @@
 		<maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
+		<springdoc.version>1.5.10</springdoc.version>
 		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/verticle/**,**/spi/**,"**/proxy/**","**/entities/**","**/filter/**","**/util/**","**/verifier/**"</sonar.coverage.exclusions>
 	</properties>
 
