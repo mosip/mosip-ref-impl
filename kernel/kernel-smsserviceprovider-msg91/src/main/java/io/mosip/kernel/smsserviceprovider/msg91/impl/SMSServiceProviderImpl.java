@@ -6,6 +6,7 @@ package io.mosip.kernel.smsserviceprovider.msg91.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,8 @@ import io.mosip.kernel.core.notification.spi.SMSServiceProvider;
 import io.mosip.kernel.core.util.StringUtils;
 import io.mosip.kernel.smsserviceprovider.msg91.constant.SmsExceptionConstant;
 import io.mosip.kernel.smsserviceprovider.msg91.constant.SmsPropertyConstant;
+
+import java.util.regex.Pattern;
 
 /**
  * @author Ritesh Sinha
@@ -34,8 +37,11 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	@Value("${mosip.kernel.sms.country.code}")
 	String countryCode;
 
-	@Value("${mosip.kernel.sms.number.length}")
-	int numberLength;
+	@Value("${mosip.kernel.sms.number.min.length}")
+	int numberMinLength;
+
+	@Value("${mosip.kernel.sms.number.max.length}")
+	int numberMaxLength;
 
 	@Value("${mosip.kernel.sms.api}")
 	String api;
@@ -78,12 +84,16 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	}
 
 	private void validateInput(String contactNumber) {
-		if (!StringUtils.isNumeric(contactNumber) || contactNumber.length() < numberLength
-				|| contactNumber.length() > numberLength) {
+		if (!StringUtils.isNumeric(contactNumber) || (!inRange(contactNumber.length(), numberMinLength,
+				numberMaxLength))) {
 			throw new InvalidNumberException(SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorCode(),
-					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage() + numberLength
-							+ SmsPropertyConstant.SUFFIX_MESSAGE.getProperty());
+					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage() + numberMinLength + "-"
+							+ numberMaxLength + SmsPropertyConstant.SUFFIX_MESSAGE.getProperty());
 		}
+	}
+
+	private boolean inRange(int value, int min, int max) {
+		return (value >= min) && (value <= max);
 	}
 
 }
