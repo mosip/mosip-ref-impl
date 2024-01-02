@@ -6,7 +6,6 @@ package io.mosip.kernel.smsserviceprovider.msg91.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -18,8 +17,6 @@ import io.mosip.kernel.core.notification.spi.SMSServiceProvider;
 import io.mosip.kernel.core.util.StringUtils;
 import io.mosip.kernel.smsserviceprovider.msg91.constant.SmsExceptionConstant;
 import io.mosip.kernel.smsserviceprovider.msg91.constant.SmsPropertyConstant;
-
-import java.util.regex.Pattern;
 
 /**
  * @author Ritesh Sinha

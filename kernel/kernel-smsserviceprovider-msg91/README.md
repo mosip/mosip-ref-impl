@@ -28,7 +28,9 @@ Its expected that the adopters do not change the controller and the REST api.
  #-----------------------------VID Properties--------------------------------------
 mosip.kernel.sms.enabled=true
 mosip.kernel.sms.country.code=91
-mosip.kernel.sms.number.length=10
+mosip.kernel.sms.number.min.length=10
+mosip.kernel.sms.number.max.length=10
+
 
 
 #----------msg91 gateway---------------
