@@ -63,9 +63,6 @@ public class SmsServiceProviderTest {
 	@Value("${mosip.kernel.sms.route}")
 	String route;
 
-	@Value("${mosip.kernel.sms.number.length}")
-	String length;
-
 	@Test
 	public void sendSmsTest() {
 
