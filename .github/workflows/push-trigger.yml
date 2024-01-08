@@ -1,0 +1,251 @@
+name: Maven Package upon a push
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message for manually triggering'
+        required: false
+        default: 'Triggered for Updates'
+        type: string
+  push:
+    branches:
+      - '!release-branch'
+      - release*
+      - master
+      - 1.*
+      - develop
+      - MOSIP*
+
+jobs:
+  build-maven-kernel:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    with:
+      SERVICE_LOCATION: kernel
+      BUILD_ARTIFACT: kernel
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  publish_to_nexus_kernel:
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' && github.event_name != 'release' && github.event_name != 'prerelease' && github.event_name != 'publish' }}"
+    needs: build-maven-kernel
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master
+    with:
+      SERVICE_LOCATION: kernel
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_URL: ${{ secrets.OSSRH_SNAPSHOT_URL }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  sonar_analysis_kernel:
+    needs: build-maven-kernel
+    if: "${{  github.event_name != 'pull_request' }}"
+    uses: mosip/kattu/.github/workflows/maven-sonar-analysis.yml@master
+    with:
+      SERVICE_LOCATION: kernel
+      PROJECT_KEY: mosip_kernel-ref-idobjectvalidator
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      ORG_KEY: ${{ secrets.ORG_KEY }}
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  build-maven-pre-registration-booking-service:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    with:
+      SERVICE_LOCATION: pre-registration-booking-service
+      BUILD_ARTIFACT: pre-registration-booking-service
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  build-dockers-pre-registration-booking-service:
+    needs: build-maven-pre-registration-booking-service
+    strategy:
+      matrix:
+        include:
+          - SERVICE_LOCATION: 'pre-registration-booking-service'
+            SERVICE_NAME: 'pre-registration-booking-service'
+            BUILD_ARTIFACT: 'pre-registration-booking-service'
+      fail-fast: false
+    name: ${{ matrix.SERVICE_NAME }}
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    with:
+      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
+      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+      BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+    secrets:
+      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
+      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
+      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  publish_to_nexus_pre-registration-booking-service:
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
+    needs: build-maven-pre-registration-booking-service
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master
+    with:
+      SERVICE_LOCATION: pre-registration-booking-service
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_URL: ${{ secrets.OSSRH_SNAPSHOT_URL }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  sonar_analysis:
+    needs: build-maven-pre-registration-booking-service
+    if: "${{  github.event_name != 'pull_request' }}"
+    uses: mosip/kattu/.github/workflows/maven-sonar-analysis.yml@master
+    with:
+      SERVICE_LOCATION: pre-registration-booking-service
+      PROJECT_KEY: mosip_pre-registration-booking-service
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      ORG_KEY: ${{ secrets.ORG_KEY }}
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  build-maven-registration-processor-external-stage:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    with:
+      SERVICE_LOCATION: registration-processor/registration-processor-external-stage
+      BUILD_ARTIFACT: registration-processor-external-stage
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  build-dockers-registration-processor-external-stage:
+    needs: build-maven-registration-processor-external-stage
+    strategy:
+      matrix:
+        include:
+          - SERVICE_LOCATION: 'registration-processor/registration-processor-external-stage'
+            SERVICE_NAME: 'registration-processor-external-stage'
+            BUILD_ARTIFACT: 'registration-processor-external-stage'
+      fail-fast: false
+    name: ${{ matrix.SERVICE_NAME }}
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    with:
+      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
+      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+      BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+    secrets:
+      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
+      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
+      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  build-maven-registration-processor-external-integration-service:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    with:
+      SERVICE_LOCATION: registration-processor/registration-processor-external-integration-service
+      BUILD_ARTIFACT: registration-processor-external-integration-service
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  build-dockers-registration-processor-external-integration-service:
+    needs: build-maven-registration-processor-external-integration-service
+    strategy:
+      matrix:
+        include:
+          - SERVICE_LOCATION: 'registration-processor/registration-processor-external-integration-service'
+            SERVICE_NAME: 'registration-processor-external-integration-service'
+            BUILD_ARTIFACT: 'registration-processor-external-integration-service'
+      fail-fast: false
+    name: ${{ matrix.SERVICE_NAME }}
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    with:
+      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
+      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+      BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+    secrets:
+      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
+      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
+      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  build-maven-cache-provider-hazelcast:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    with:
+      SERVICE_LOCATION: cache-provider-hazelcast
+      BUILD_ARTIFACT: cache-provider-hazelcast
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  publish_to_nexus_cache-provider-hazelcast:
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
+    needs: build-maven-cache-provider-hazelcast
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master
+    with:
+      SERVICE_LOCATION: cache-provider-hazelcast
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_URL: ${{ secrets.OSSRH_SNAPSHOT_URL }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  build-maven-authentication-ref-impl:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    with:
+      SERVICE_LOCATION: authentication
+      BUILD_ARTIFACT: authentication
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  publish_to_nexus_authentication-ref-impl:
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
+    needs: build-maven-authentication-ref-impl
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master
+    with:
+      SERVICE_LOCATION: authentication
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_URL: ${{ secrets.OSSRH_SNAPSHOT_URL }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  sonar_analysis_authentication-ref-impl:
+    needs: build-maven-authentication-ref-impl
+    if: "${{  github.event_name != 'pull_request' }}"
+    uses: mosip/kattu/.github/workflows/maven-sonar-analysis.yml@master
+    with:
+      SERVICE_LOCATION: authentication
+      PROJECT_KEY: mosip_biosdk-client
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      ORG_KEY: ${{ secrets.ORG_KEY }}
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

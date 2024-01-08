@@ -1,0 +1,224 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.mosip.authentication</groupId>
+		<artifactId>authentication-ref-impl-parent</artifactId>
+		<version>1.2.1-SNAPSHOT</version>
+	</parent>
+	<version>1.2.1-SNAPSHOT</version>
+	<artifactId>authentication-childauthfilter-impl</artifactId>
+	<name>authentication-childauthfilter-impl</name>
+	<description>ID Authentication Filter reference Implementation to check allowed auth types for child</description>
+	<url>https://github.com/mosip/commons</url>
+	<packaging>jar</packaging>
+
+<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- maven -->
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.version>3.8.0</maven.compiler.version>
+		<!-- <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version> -->
+
+		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
+		<!-- <maven.jacoco.plugin.version>0.8.1</maven.jacoco.plugin.version> -->
+		<!-- <maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version> -->
+		<maven.javadoc.version>3.2.0</maven.javadoc.version>
+		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
+
+		
+		<!-- test -->
+		<junit.version>4.12</junit.version>
+		<mockito.version>2.23.4</mockito.version>
+		<powermock.version>1.7.4</powermock.version>
+		<powermock.beta.version>2.0.7</powermock.beta.version>
+
+		
+	</properties>
+
+		
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.mosip.kernel</groupId>
+			<artifactId>kernel-core</artifactId>
+			<version>${kernel-core.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>
+						spring-boot-starter-security
+					</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.mosip.authentication</groupId>
+			<artifactId>authentication-core</artifactId>
+			<version>${authentication-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.mosip.authentication</groupId>
+			<artifactId>authentication-common</artifactId>
+			<version>${authentication-common.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.mosip.authentication</groupId>
+			<artifactId>authentication-filter-api</artifactId>
+			<version>${authentication-filter-api.version}</version>
+		</dependency>
+	</dependencies>
+<distributionManagement>
+		<snapshotRepository>
+                        <id>ossrh</id>
+                        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository> 
+                 <repository>
+                        <id>ossrh</id>
+                        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository> 
+        </distributionManagement> 
+        <build>
+          <plugins>
+            <plugin>
+              <artifactId>maven-deploy-plugin</artifactId>
+              <version>2.8.1</version>
+              <executions>
+                 <execution>
+                    <id>default-deploy</id>
+                    <phase>deploy</phase>
+                    <goals>
+                       <goal>deploy</goal>
+                    </goals>
+                 </execution>
+              </executions>
+           </plugin>
+               <plugin>
+                  <groupId>org.sonatype.plugins</groupId>
+                  <artifactId>nexus-staging-maven-plugin</artifactId>
+                  <version>1.6.7</version>
+                  <extensions>true</extensions>
+                  <executions>
+                    <execution>
+                      <id>default-deploy</id>
+                      <phase>deploy</phase>
+                      <goals>
+                        <goal>deploy</goal>
+                      </goals>
+                    </execution>
+                  </executions>
+                  <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                  </configuration>
+                </plugin> 
+
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-source-plugin</artifactId>
+                  <inherited>true</inherited>
+                  <version>2.2.1</version>
+                  <executions>
+                        <execution>
+                          <id>attach-sources</id>
+                          <goals>
+                                <goal>jar-no-fork</goal>
+                          </goals>
+                        </execution>
+                  </executions>
+                </plugin>
+
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>3.2.0</version>
+                  <executions>
+                        <execution>
+                          <id>attach-javadocs</id>
+                          <goals>
+                                <goal>jar</goal>
+                          </goals>
+                        </execution>
+                  </executions>
+                  <configuration>
+                          <doclint>none</doclint>
+                  </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.5</version>
+                  <executions>
+                        <execution>
+                          <id>sign-artifacts</id>
+                          <phase>verify</phase>
+                          <goals>
+                                <goal>sign</goal>
+                          </goals>
+		          <configuration>
+                		<gpgArguments>
+                    			<arg>--pinentry-mode</arg>
+                    			<arg>loopback</arg>
+                		</gpgArguments>
+            		 </configuration>
+                        </execution>
+                  </executions>
+                </plugin>
+		<plugin>
+    			<groupId>pl.project13.maven</groupId>
+			<artifactId>git-commit-id-plugin</artifactId>
+			<version>3.0.1</version>
+			<executions>
+        			<execution>
+			        	<id>get-the-git-infos</id>
+					<goals>
+						<goal>revision</goal>
+            				</goals>
+            				<phase>validate</phase>
+ 				</execution>
+ 			</executions>
+ 			<configuration>
+				<generateGitPropertiesFile>true</generateGitPropertiesFile>
+				<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    		<includeOnlyProperties>
+                        		<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+                        		<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+                    		</includeOnlyProperties>
+                    		<commitIdGenerationMode>full</commitIdGenerationMode>
+ 				<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+				<!-- <format>json</format> -->
+			</configuration>
+		</plugin>
+          </plugins>
+        </build>
+		<scm>
+                <connection>scm:git:git://github.com/mosip/commons.git</connection>
+                <developerConnection>scm:git:ssh://github.com:mosip/commons.git</developerConnection>
+                <url>https://github.com/mosip/commons</url>
+                <tag>HEAD</tag>
+        </scm>
+		<licenses>
+          <license>
+                <name>MPL 2.0</name>
+                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+          </license>
+        </licenses>
+		<developers>
+                <developer>
+                  <name>Mosip</name>
+                  <email>mosip.emailnotifier@gmail.com</email>
+                  <organization>io.mosip</organization>
+                  <organizationUrl>https://github.com/mosip/commons</organizationUrl>
+                </developer>
+        </developers>
+		
+	</project>

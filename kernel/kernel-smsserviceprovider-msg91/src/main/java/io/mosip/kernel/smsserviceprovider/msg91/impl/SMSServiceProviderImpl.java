@@ -3,6 +3,9 @@
  */
 package io.mosip.kernel.smsserviceprovider.msg91.impl;
 
+	
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,8 +37,11 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	@Value("${mosip.kernel.sms.country.code}")
 	String countryCode;
 
-	@Value("${mosip.kernel.sms.number.length}")
-	int numberLength;
+	@Value("${mosip.kernel.sms.number.min.length}")
+	int numberMinLength;
+
+	@Value("${mosip.kernel.sms.number.max.length}")
+	int numberMaxLength;
 
 	@Value("${mosip.kernel.sms.api}")
 	String api;
@@ -61,14 +67,16 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 		validateInput(contactNumber);
 		UriComponentsBuilder sms = UriComponentsBuilder.fromHttpUrl(api)
 				.queryParam(SmsPropertyConstant.AUTH_KEY.getProperty(), authkey)
-				.queryParam(SmsPropertyConstant.SMS_MESSAGE.getProperty(), message)
+				.queryParam(SmsPropertyConstant.SMS_MESSAGE.getProperty(), message.replaceAll("\\#", "%23"))
 				.queryParam(SmsPropertyConstant.ROUTE.getProperty(), route)
 				.queryParam(SmsPropertyConstant.SENDER_ID.getProperty(), sender)
 				.queryParam(SmsPropertyConstant.RECIPIENT_NUMBER.getProperty(), contactNumber)
 				.queryParam(SmsPropertyConstant.UNICODE.getProperty(), unicode)
 				.queryParam(SmsPropertyConstant.COUNTRY_CODE.getProperty(), countryCode);
 		try {
-			restTemplate.getForEntity(sms.toUriString(), String.class);
+			//restTemplate.getForEntity(sms.toUriString(), String.class);
+			/*Added the url decoder to avoid double encoding*/
+			restTemplate.getForEntity(URLDecoder.decode(sms.toUriString(), StandardCharsets.UTF_8), String.class);
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			throw new RuntimeException(e.getResponseBodyAsString());
 		}
@@ -78,12 +86,16 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	}
 
 	private void validateInput(String contactNumber) {
-		if (!StringUtils.isNumeric(contactNumber) || contactNumber.length() < numberLength
-				|| contactNumber.length() > numberLength) {
+		if (!StringUtils.isNumeric(contactNumber) || (!inRange(contactNumber.length(), numberMinLength,
+				numberMaxLength))) {
 			throw new InvalidNumberException(SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorCode(),
-					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage() + numberLength
-							+ SmsPropertyConstant.SUFFIX_MESSAGE.getProperty());
+					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage() + numberMinLength + "-"
+							+ numberMaxLength + SmsPropertyConstant.SUFFIX_MESSAGE.getProperty());
 		}
+	}
+
+	private boolean inRange(int value, int min, int max) {
+		return (value >= min) && (value <= max);
 	}
 
 }

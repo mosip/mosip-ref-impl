@@ -7,25 +7,40 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import io.mosip.kernel.core.notification.exception.InvalidNumberException;
 import io.mosip.kernel.core.notification.model.SMSResponseDto;
-import io.mosip.kernel.smsserviceprovider.msg91.SMSServiceProviderBootApplication;
 import io.mosip.kernel.smsserviceprovider.msg91.constant.SmsPropertyConstant;
 import io.mosip.kernel.smsserviceprovider.msg91.dto.SmsServerResponseDto;
 import io.mosip.kernel.smsserviceprovider.msg91.impl.SMSServiceProviderImpl;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { SMSServiceProviderBootApplication.class })
+@ContextConfiguration(classes = { ConfigFileApplicationContextInitializer.class, SmsServiceProviderTest.config.class,
+		SMSServiceProviderImpl.class })
 public class SmsServiceProviderTest {
+
+	@Configuration
+	static class config {
+
+		@Bean
+		public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+			PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+			propertySourcesPlaceholderConfigurer.setLocations(new ClassPathResource("application.properties"));
+			return propertySourcesPlaceholderConfigurer;
+		}
+	}
 
 	@Autowired
 	SMSServiceProviderImpl service;
@@ -47,9 +62,6 @@ public class SmsServiceProviderTest {
 
 	@Value("${mosip.kernel.sms.route}")
 	String route;
-
-	@Value("${mosip.kernel.sms.number.length}")
-	String length;
 
 	@Test
 	public void sendSmsTest() {

@@ -2,20 +2,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<licenses>
+		<license>
+			<name>MPL 2.0</name>
+			<url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
+		<developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
+		<url>https://github.com/mosip/mosip-ref-impl</url>
+		<tag>HEAD</tag>
+	</scm>
+	<developers>
+		<developer>
+			<name>Mosip</name>
+			<email>mosip.emailnotifier@gmail.com</email>
+			<organization>io.mosip</organization>
+			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
+		</developer>
+	</developers>
 	<parent>
 		<groupId>io.mosip.registrationprocessor</groupId>
 		<artifactId>pre-processor</artifactId>
-		<version>1.2.0-SNAPSHOT</version>
+		<version>1.2.1-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>registration-processor-external-stage</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.1-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
+		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
 	</properties>
 
 	<dependencies>
@@ -63,12 +85,12 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
-			<version>${io.micrometer.prometheus.version}</version>
+			<version>1.4.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
-			<version>${io.micrometer.prometheus.version}</version>
+			<version>1.4.2</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -112,6 +134,51 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+					</includeOnlyProperties>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<!-- <format>json</format> -->
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
