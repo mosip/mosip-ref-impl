@@ -8,7 +8,7 @@
 	<version>1.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
-	<description>Parent project of MOSIP Kernel for Philippines</description>
+	<description>Parent project of MOSIP Kernel  Referernce Implementation components</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 	
 	<licenses>
