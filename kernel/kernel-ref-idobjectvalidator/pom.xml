@@ -9,7 +9,7 @@
 
 	<name>kernel-ref-idobjectvalidator</name>
 	<artifactId>kernel-ref-idobjectvalidator</artifactId>
-	<version>1.2.0.1-B2</version>
+	<version>1.2.0.1-SNAPSHOT</version>
 
 	<properties>
 		<kernel-core.version>1.2.0.1-B2</kernel-core.version>
