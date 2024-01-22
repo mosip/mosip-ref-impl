@@ -4,9 +4,9 @@
 	<parent>
 		<groupId>io.mosip.authentication</groupId>
 		<artifactId>authentication-ref-impl-parent</artifactId>
-		<version>1.2.0.1-SNAPSHOT</version>
+		<version>1.2.0.1-B2</version>
 	</parent>
-	<version>1.2.0.1-SNAPSHOT</version>
+	<version>1.2.0.1-B2</version>
 	<artifactId>authentication-childauthfilter-impl</artifactId>
 	<name>authentication-childauthfilter-impl</name>
 	<description>ID Authentication Filter reference Implementation to check allowed auth types for child</description>
