@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <groupId>io.mosip.registrationprocessor</groupId>
-    <artifactId>pre-processor</artifactId>
-    <version>1.2.0.1-B3</version>
+		<groupId>io.mosip.registrationprocessor</groupId>
+		<artifactId>registrationprocessor-ref-impl-parent</artifactId>
+    <version>1.2.0.1-SNAPSHOT</version>
  	 </parent>
 	<artifactId>registration-processor-external-integration-service</artifactId>
-	 <version>1.2.0.1-B3</version>
+	 <version>1.2.0.1-SNAPSHOT</version>
 	<licenses>
 		<license>
 			<name>MPL 2.0</name>
