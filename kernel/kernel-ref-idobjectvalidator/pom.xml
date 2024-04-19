@@ -12,9 +12,6 @@
 	<version>1.2.1-java21-SNAPSHOT</version>
 
 	<properties>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
-		<maven.compiler.version>3.8.0</maven.compiler.version>
 		<kernel-logger-logback.version>1.2.1-java21-SNAPSHOT</kernel-logger-logback.version>
 	</properties>
 	<dependencyManagement>
