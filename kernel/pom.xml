@@ -80,6 +80,8 @@
 		<!-- kernel -->
 		<kernel-core.version>1.2.1-java21-SNAPSHOT</kernel-core.version>
 		
+		<junit.vintage.version>5.10.2</junit.vintage.version>
+		
 		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/dto/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/security/**,**/*Config.java,**/*BootApplication.java,**/*VertxApplication.java,**/cbeffutil/**</sonar.coverage.exclusions>
 		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>
 	</properties>
