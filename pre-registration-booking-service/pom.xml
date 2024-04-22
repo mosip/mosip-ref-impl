@@ -213,11 +213,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>io.mosip.preregistration</groupId>-->
-<!--			<artifactId>pre-registration-core</artifactId>-->
-<!--			<version>${pre.registration.core.version}</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>io.mosip.preregistration</groupId>
+			<artifactId>pre-registration-core</artifactId>
+			<version>${pre.registration.core.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
