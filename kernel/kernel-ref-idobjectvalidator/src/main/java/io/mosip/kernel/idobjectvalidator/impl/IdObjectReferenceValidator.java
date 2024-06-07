@@ -188,10 +188,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void loadLanguages() {
 		languageList = Arrays.asList(mandatoryLanguages.split(",")).stream().filter(lang -> !lang.isBlank())
 				.map(StringUtils::trim).collect(Collectors.toSet());
-        logger.info("languagelist after mandetory : ",languageList.toString());
 		languageList.addAll(Arrays.asList(optionalLanguages.split(",")).stream().filter(lang -> !lang.isBlank())
 				.map(StringUtils::trim).collect(Collectors.toSet()));
-        logger.info("languagelist after optional : ",languageList.toString());
 	}
 
 	private void processSchemaData(String identitySchema, Object identityObject) {
