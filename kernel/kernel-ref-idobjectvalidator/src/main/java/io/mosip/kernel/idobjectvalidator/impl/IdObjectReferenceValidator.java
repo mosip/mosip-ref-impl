@@ -140,10 +140,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 */
 	@PostConstruct
 	public void loadData() {
-        logger.info("@value mandetory language",mandatoryLanguages);
-        logger.info("@value optional language",optionalLanguages);
-        logger.info("properties mandetory language = ", env.getProperty("mosip.mandatory-languages"));
-        logger.info("properties optional language = ", env.getProperty("mosip.optional-languages"));
 		resetCache();
 		if (env.containsProperty(CACHE_RESET_CRON_PATTERN)) {
 			ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
