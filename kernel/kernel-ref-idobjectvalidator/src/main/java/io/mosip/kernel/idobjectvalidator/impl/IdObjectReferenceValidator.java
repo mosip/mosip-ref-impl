@@ -140,6 +140,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 */
 	@PostConstruct
 	public void loadData() {
+		resetCache();
 		if (env.containsProperty(CACHE_RESET_CRON_PATTERN)) {
 			ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
 			TaskScheduler scheduler = new ConcurrentTaskScheduler(localExecutor);
