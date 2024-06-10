@@ -140,11 +140,6 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	 */
 	@PostConstruct
 	public void loadData() {
-        logger.info("@value mandetory language",mandatoryLanguages);
-        logger.info("@value optional language",optionalLanguages);
-        logger.info("properties mandetory language = ", env.getProperty("mosip.mandatory-languages"));
-        logger.info("properties optional language = ", env.getProperty("mosip.optional-languages"));
-		resetCache();
 		if (env.containsProperty(CACHE_RESET_CRON_PATTERN)) {
 			ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
 			TaskScheduler scheduler = new ConcurrentTaskScheduler(localExecutor);
@@ -192,10 +187,8 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private void loadLanguages() {
 		languageList = Arrays.asList(mandatoryLanguages.split(",")).stream().filter(lang -> !lang.isBlank())
 				.map(StringUtils::trim).collect(Collectors.toSet());
-        logger.info("languagelist after mandetory : ",languageList.toString());
 		languageList.addAll(Arrays.asList(optionalLanguages.split(",")).stream().filter(lang -> !lang.isBlank())
 				.map(StringUtils::trim).collect(Collectors.toSet()));
-        logger.info("languagelist after optional : ",languageList.toString());
 	}
 
 	private void processSchemaData(String identitySchema, Object identityObject) {
