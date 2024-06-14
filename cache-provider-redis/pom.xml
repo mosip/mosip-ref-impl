@@ -6,7 +6,7 @@
 
     <groupId>io.mosip.cacheprovider</groupId>
     <artifactId>cache-provider-redis</artifactId>
-    <version>1.2.0.1</version>
+    <version>1.2.0.2-SNAPSHOT</version>
 
     <properties>
         <!-- maven -->
