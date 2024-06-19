@@ -5,7 +5,7 @@
 
 	<groupId>io.mosip.authentication</groupId>
 	<artifactId>authentication-ref-impl-parent</artifactId>
-	<version>1.2.0.2-SNAPSHOT</version>
+	<version>1.2.0.2</version>
 	<packaging>pom</packaging>
 
 	<name>id-authentication Reference Impl Parent</name>

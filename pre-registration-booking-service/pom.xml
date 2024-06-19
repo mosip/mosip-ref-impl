@@ -12,7 +12,7 @@
 
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.2.0.2-SNAPSHOT</version>
+	<version>1.2.0.2</version>
 	<name>pre-registration-booking-service</name>
 	<description>Booking service of  MOSIP Pre-registration</description>	
 	<url>https://github.com/mosip/mosip-ref-impl</url>	
