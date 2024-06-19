@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   pull_request:
-    types: [opened]
+    types: [opened, reopened, synchronize]
   workflow_dispatch:
     inputs:
       message:
@@ -18,12 +18,12 @@ on:
       - release*
       - master
       - 1.*
-      - develop
+      - develop*
       - MOSIP*
 
 jobs:
   build-maven-kernel:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
       SERVICE_LOCATION: kernel
       BUILD_ARTIFACT: kernel
@@ -34,9 +34,9 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   publish_to_nexus_kernel:
-    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' && github.event_name != 'release' && github.event_name != 'prerelease' && github.event_name != 'publish' }}"
     needs: build-maven-kernel
-    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
     with:
       SERVICE_LOCATION: kernel
     secrets:
@@ -49,7 +49,7 @@ jobs:
   sonar_analysis_kernel:
     needs: build-maven-kernel
     if: "${{  github.event_name != 'pull_request' }}"
-    uses: mosip/kattu/.github/workflows/maven-sonar-analysis.yml@master
+    uses: mosip/kattu/.github/workflows/maven-sonar-analysis.yml@master-java21
     with:
       SERVICE_LOCATION: kernel
       PROJECT_KEY: mosip_kernel-ref-idobjectvalidator
@@ -123,7 +123,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   build-maven-registration-processor-external-stage:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
       SERVICE_LOCATION: registration-processor/registration-processor-external-stage
       BUILD_ARTIFACT: registration-processor-external-stage
@@ -144,7 +144,7 @@ jobs:
             BUILD_ARTIFACT: 'registration-processor-external-stage'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
-    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
     with:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
@@ -155,7 +155,7 @@ jobs:
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   build-maven-registration-processor-external-integration-service:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
       SERVICE_LOCATION: registration-processor/registration-processor-external-integration-service
       BUILD_ARTIFACT: registration-processor-external-integration-service
@@ -176,7 +176,7 @@ jobs:
             BUILD_ARTIFACT: 'registration-processor-external-integration-service'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
-    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
     with:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
@@ -187,7 +187,7 @@ jobs:
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   build-maven-cache-provider-hazelcast:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
       SERVICE_LOCATION: cache-provider-hazelcast
       BUILD_ARTIFACT: cache-provider-hazelcast
@@ -200,7 +200,7 @@ jobs:
   publish_to_nexus_cache-provider-hazelcast:
     if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
     needs: build-maven-cache-provider-hazelcast
-    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
     with:
       SERVICE_LOCATION: cache-provider-hazelcast
     secrets:
