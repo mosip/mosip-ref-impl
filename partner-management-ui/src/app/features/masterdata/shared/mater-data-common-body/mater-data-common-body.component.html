@@ -1,0 +1,32 @@
+<div class="flex-body">
+    <mat-card>
+        <mat-card-content class="forms-container">
+            <div class="primary-form">
+                <strong class="title">{{'center.language' | translate }}</strong>
+                <hr />
+                <br /><br />
+                <div *ngFor="let field of fields" class="mat-form1">
+                    <mat-form-field *ngIf="field.showInSingleView === 'true'">
+                        <input matInput disabled placeholder="{{ field.label[primaryLang] }}" [value]="primaryData[field.name] | status">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+
+            <div *ngIf="secondaryData" class="secondary-form">
+                <strong class="title">{{ languageNames[secondaryLang] }}</strong>
+                <hr />
+                <br /><br />
+                <div *ngFor="let field of fields" class="mat-form2">
+                        <mat-form-field *ngIf="field.showInSingleView === 'true'">
+                            <input matInput disabled placeholder="{{ field.label[secondaryLang] }}" [value]="secondaryData[field.name] | status">
+                        </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="action-buttons">
+            <!-- <button mat-raised-button>{{ 'center.create' | translate }}</button> -->
+        </mat-card-actions>
+    </mat-card>
+</div>

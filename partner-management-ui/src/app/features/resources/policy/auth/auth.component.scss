@@ -1,0 +1,46 @@
+.auth-flex-body {
+  .auth-mat-card {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    padding: 16px 0px 0px 0px;
+  }
+  .auth-forms-container {
+    display: flex;
+    flex-wrap: wrap;
+    .auth-primary-form {
+      padding-left: 25px;
+      padding-top: 30px;
+      flex: 1;
+      .mat-form-field {
+        width: 100% !important;
+      }
+    }
+    .secondary-form {
+      padding-right: 25px;
+      padding-top: 30px;
+      text-align: right;
+      flex: 1;
+      .mat-form-field {
+        width: 100% !important;
+        text-align: right;
+      }
+    }
+    .flex-display {
+      display: flex;
+      justify-content: space-between;
+      .mat-form-field {
+        width: 48% !important;
+      }
+    }
+  }
+  .action-buttons {
+    direction: rtl;
+    padding: 16px;
+    background: #e6e7e7;
+  }
+
+  .action-buttons > #createButton {
+    background-color: black !important;
+    color: white !important;
+  }
+}
