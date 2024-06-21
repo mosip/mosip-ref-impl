@@ -46,8 +46,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.2.1-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.2.1-SNAPSHOT</kernel.core.version>
+		<pre.registration.core.version>1.2.0.1</pre.registration.core.version>
+		<kernel.core.version>1.2.0.1</kernel.core.version>
 		<!-- Core -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
 		<spring.data.version>2.0.9.RELEASE</spring.data.version>
@@ -79,7 +79,7 @@
 		<commons-collections4.version>4.3</commons-collections4.version>
 
 		<!-- Lombok -->
-		<lombok.version>1.18.8</lombok.version>
+		<lombok.version>1.18.30</lombok.version>
 		<mockito.version>2.23.4</mockito.version>
 		<!-- Json Simple -->
 		<jsonsimple.version>1.1</jsonsimple.version>
