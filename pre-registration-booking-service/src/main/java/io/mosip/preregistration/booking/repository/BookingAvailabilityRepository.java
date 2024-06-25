@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import javax.persistence.LockModeType;
+import jakarta.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Lock;
