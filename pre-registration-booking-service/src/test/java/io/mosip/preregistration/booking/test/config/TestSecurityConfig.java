@@ -4,7 +4,7 @@
 // import java.util.Arrays;
 // import java.util.List;
 
-// import javax.servlet.http.HttpServletResponse;
+// import jakarta.servlet.http.HttpServletResponse;
 
 // import org.springframework.context.annotation.Bean;
 // import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,8 @@
 // @EnableWebSecurity
 // @EnableGlobalMethodSecurity(prePostEnabled = true)
 // @Order(2)
-// public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
+// @EnableMethodSecurity
+// public class TestSecurityConfig @EnableGlobalMethodSecurity(prePostEnabled = true){
 	
 	
 	
@@ -61,6 +62,11 @@
 // 	@Bean
 // 	public AuthenticationEntryPoint unauthorizedEntryPoint() {
 // 		return (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+// 	}
+
+// @Bean
+// 	protected SecurityFilterChain configureSecurityFilterChain(final HttpSecurity httpSecurity) throws Exception {
+// 		return httpSecurity.build();
 // 	}
 
 // 	@Bean
