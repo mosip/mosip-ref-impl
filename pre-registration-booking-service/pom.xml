@@ -49,6 +49,7 @@
 		<pre.registration.core.version>1.2.1-java21-SNAPSHOT</pre.registration.core.version>
 		<kernel.core.version>1.2.1-java21-SNAPSHOT</kernel.core.version>
 		<kernel.bom.version>1.2.1-java21-SNAPSHOT</kernel.bom.version>
+		<java.version>21</java.version>
 		<!-- Core -->
 		<spring.boot.version>3.2.3</spring.boot.version>
 		<spring.data.version>2.0.9.RELEASE</spring.data.version>
@@ -101,6 +102,11 @@
 		<maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<maven.javadoc.version>3.2.0</maven.javadoc.version>
+
+		<!-- Test & Logging -->
+		<junit.version>4.12</junit.version>
+		<logback.version>1.1.6</logback.version>
+		<slf4j.version>1.7.19</slf4j.version>
 
 	</properties>
 
@@ -187,17 +193,14 @@
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
-			<version>4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.2.3</version>
 		</dependency>
 			<dependency>
 			<groupId>net.minidev</groupId>
@@ -207,12 +210,10 @@
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
-			<version>2.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>

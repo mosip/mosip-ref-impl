@@ -6,8 +6,11 @@ package io.mosip.preregistration.booking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+
+import io.mosip.preregistration.booking.config.BookingConfig;
 
 /**
  * This class is used to define the start of the Booking application.
@@ -33,6 +36,7 @@ import org.springframework.context.annotation.FilterType;
 						"io\\.mosip\\.kernel\\.crypto\\..*",
 						"io\\.mosip\\.kernel\\.clientcrypto\\..*",
 				}) })
+@EnableConfigurationProperties(BookingConfig.class)
 public class BookingApplication {
 	/**
 	 * Method to start the Booking API service

@@ -457,7 +457,7 @@ public class BookingExceptionHandler {
 		List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
 		e.getValidationErrorList().stream().forEach(serviceError -> errorList
 				.add(new ExceptionJSONInfoDTO(serviceError.getErrorCode(), serviceError.getMessage())));
-		MainResponseDTO<?> errorRes = e.getMainResposneDTO();
+		MainResponseDTO<?> errorRes = e.getMainResponseDTO();
 		errorRes.setErrors(errorList);
 		errorRes.setResponsetime(GenericUtil.getCurrentResponseTime());
 		return new ResponseEntity<>(errorRes, HttpStatus.OK);
