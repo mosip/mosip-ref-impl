@@ -2,6 +2,7 @@ package io.mosip.registrationprocessor.externalstage;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import io.mosip.registration.processor.core.config.reader.ConfigPropertyReader;
 import io.mosip.registrationprocessor.externalstage.stage.ExternalStage;
 
 /**
@@ -18,6 +19,7 @@ public class ExternalStageApplication {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext();
 		configApplicationContext.scan("io.mosip.registration.processor.core.config",
+				ConfigPropertyReader.getConfig("mosip.auth.adapter.impl.basepackage"),
 				"io.mosip.registrationprocessor.externalstage.config", "io.mosip.registration.processor.core.config",
 				"io.mosip.registration.processor.status.config", "io.mosip.registration.processor.core.kernel.beans",
 				"io.mosip.registration.processor.rest.client.config");
