@@ -69,7 +69,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Kernel components -->
-		<kernel.parent.version>1.2.0.1</kernel.parent.version>
+		<kernel.parent.version>1.2.1-SNAPSHOT</kernel.parent.version>
 		<kernel-core.version>${kernel.parent.version}</kernel-core.version>
 		<kernel-logger-logback.version>${kernel.parent.version}</kernel-logger-logback.version>
 		
