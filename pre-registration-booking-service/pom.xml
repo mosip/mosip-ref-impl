@@ -3,45 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<scm>	
-                <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>	
-                <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>	
-                <url>https://github.com/mosip/mosip-ref-impl</url>	
-                <tag>HEAD</tag>	
-        </scm>
-
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
 	<version>1.2.1-java21-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
 	<description>Booking service of  MOSIP Pre-registration</description>	
 	<url>https://github.com/mosip/mosip-ref-impl</url>	
-		
-	<licenses>	
-          <license>	
-                <name>MPL 2.0</name>	
-                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>	
-          </license>	
-        </licenses>
-	<developers>
-		<developer>
-			<name>Mosip</name>
-			<email>mosip.emailnotifier@gmail.com</email>
-			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
-		</developer>
-	</developers>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,7 +28,6 @@
 
 		<!-- Swagger -->
 		<swagger.version>2.5.0</swagger.version>
-
 
 		<!-- Data Access -->
 		<eclipselink.version>2.5.0</eclipselink.version>
@@ -329,11 +295,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<version>${maven.javadoc.version}</version> <executions> <execution> <id>attach-javadocs</id> 
-				<goals> <goal>jar</goal> </goals> </execution> </executions> <configuration> 
-				<doclint>none</doclint> <failOnError>false</failOnError> </configuration> 
-				</plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -492,4 +453,37 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<scm>	
+        <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>	
+        <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>	
+        <url>https://github.com/mosip/mosip-ref-impl</url>	
+        <tag>HEAD</tag>	
+    </scm>
+
+	<licenses>	
+        <license>	
+            <name>MPL 2.0</name>	
+            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>	
+        </license>	
+	 </licenses>
+	<developers>
+		<developer>
+			<name>Mosip</name>
+			<email>mosip.emailnotifier@gmail.com</email>
+			<organization>io.mosip</organization>
+			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>
