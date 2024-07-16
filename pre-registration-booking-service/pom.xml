@@ -5,7 +5,7 @@
 
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.2.1-java21-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
 	<description>Booking service of  MOSIP Pre-registration</description>	
 	<url>https://github.com/mosip/mosip-ref-impl</url>	
@@ -13,9 +13,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.2.1-java21-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.2.1-java21-SNAPSHOT</kernel.core.version>
-		<kernel.bom.version>1.2.1-java21-SNAPSHOT</kernel.bom.version>
+		<pre.registration.core.version>1.2.1-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.2.1-SNAPSHOT</kernel.core.version>
+		<kernel.bom.version>1.2.1-SNAPSHOT</kernel.bom.version>
 		<java.version>21</java.version>
 		<!-- Core -->
 		<spring.boot.version>3.2.3</spring.boot.version>
@@ -447,6 +447,31 @@
 							<outputFileName>${artifactId}-openapi.json</outputFileName>
 							<outputDir>${project.build.directory}</outputDir>
 							<skip>false</skip>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>pl.project13.maven</groupId>
+						<artifactId>git-commit-id-plugin</artifactId>
+						<version>${git.commit.id.plugin.version}</version>
+						<executions>
+							<execution>
+								<id>get-the-git-infos</id>
+								<goals>
+									<goal>revision</goal>
+								</goals>
+								<phase>validate</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<generateGitPropertiesFile>true</generateGitPropertiesFile>
+							<generateGitPropertiesFilename>
+							${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
+							<includeOnlyProperties>
+								<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+								<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+							</includeOnlyProperties>
+							<commitIdGenerationMode>full</commitIdGenerationMode>
+							<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
 						</configuration>
 					</plugin>
 				</plugins>
