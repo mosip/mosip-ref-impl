@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -457,7 +457,7 @@ public class BookingExceptionHandler {
 		List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
 		e.getValidationErrorList().stream().forEach(serviceError -> errorList
 				.add(new ExceptionJSONInfoDTO(serviceError.getErrorCode(), serviceError.getMessage())));
-		MainResponseDTO<?> errorRes = e.getMainResposneDTO();
+		MainResponseDTO<?> errorRes = e.getMainResponseDTO();
 		errorRes.setErrors(errorList);
 		errorRes.setResponsetime(GenericUtil.getCurrentResponseTime());
 		return new ResponseEntity<>(errorRes, HttpStatus.OK);

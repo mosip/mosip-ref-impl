@@ -43,12 +43,12 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.util.DataValidationUtil;
 import io.mosip.preregistration.core.util.RequestValidator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * This class provides different API's to perform operations on Booking
@@ -131,7 +131,7 @@ public class BookingController {
 			@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(hidden = true))) })
 	public ResponseEntity<MainResponseDTO<BookingStatusDTO>> bookAppoinment(
 			@PathVariable("preRegistrationId") String preRegistrationId,
-			@Validated @RequestBody(required = true) MainRequestDTO<BookingRequestDTO> bookingDTO, @ApiIgnore Errors errors ) {
+			@Validated @RequestBody(required = true) MainRequestDTO<BookingRequestDTO> bookingDTO,  @Parameter(hidden = true) Errors errors ) {
 		log.info("sessionId", "idType", "id",
 				"In bookAppoinment method of Booking controller to book an appointment for object: " + bookingDTO);
 		requestValidator.validateId(BOOKING, bookingDTO.getId(), errors);
@@ -157,7 +157,7 @@ public class BookingController {
 			@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema(hidden = true))),
 			@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(hidden = true))) })
 	public ResponseEntity<MainResponseDTO<BookingStatus>> bookMultiAppoinment(
-			@Validated @RequestBody(required = true) MainRequestDTO<MultiBookingRequest> bookingRequest, @ApiIgnore Errors errors) {
+			@Validated @RequestBody(required = true) MainRequestDTO<MultiBookingRequest> bookingRequest, @Parameter(hidden = true) Errors errors) {
 		log.info("sessionId", "idType", "id",
 				"In bookAppoinment method of Booking controller to book an appointment for object: " + bookingRequest);
 		requestValidator.validateId(BOOKING, bookingRequest.getId(), errors);

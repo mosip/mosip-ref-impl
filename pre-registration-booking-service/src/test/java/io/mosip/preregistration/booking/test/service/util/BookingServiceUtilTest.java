@@ -51,15 +51,12 @@ import io.mosip.preregistration.booking.dto.RegistrationCenterDto;
 import io.mosip.preregistration.booking.dto.RegistrationCenterResponseDto;
 import io.mosip.preregistration.booking.dto.SlotDto;
 import io.mosip.preregistration.booking.entity.AvailibityEntity;
-import io.mosip.preregistration.booking.errorcodes.ErrorCodes;
-import io.mosip.preregistration.booking.errorcodes.ErrorMessages;
 import io.mosip.preregistration.booking.exception.AppointmentReBookingFailedException;
 import io.mosip.preregistration.booking.exception.AvailablityNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingDateNotSeletectedException;
 import io.mosip.preregistration.booking.exception.BookingPreIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingRegistrationCenterIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingTimeSlotNotSeletectedException;
-import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.InvalidDateTimeFormatException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.TimeSpanException;
@@ -68,18 +65,15 @@ import io.mosip.preregistration.booking.repository.RegistrationBookingRepository
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
 import io.mosip.preregistration.booking.service.util.BookingServiceUtil;
 import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
-import io.mosip.preregistration.core.common.dto.ExceptionJSONInfoDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
-import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
-import io.mosip.preregistration.core.common.dto.PreRegistartionStatusDTO;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.RequestValidator;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = { BookingServiceUtil.class })
 public class BookingServiceUtilTest {
 
 	@MockBean
