@@ -210,6 +210,33 @@ jobs:
       OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  build-maven-cache-provider-redis:
+    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    with:
+      SERVICE_LOCATION: cache-provider-redis
+      BUILD_ARTIFACT: cache-provider-redis
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  publish_to_nexus_cache-provider-redis:
+    if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
+    needs: build-maven-cache-provider-redis
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
+    with:
+      SERVICE_LOCATION: cache-provider-redis
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
+      OSSRH_URL: ${{ secrets.OSSRH_SNAPSHOT_URL }}
+      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+      GPG_SECRET: ${{ secrets.GPG_SECRET }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
   build-maven-authentication-ref-impl:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
