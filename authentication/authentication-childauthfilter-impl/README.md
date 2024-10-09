@@ -1,1 +1,1 @@
-# This repo is moved to [Id-authentication](https://github.com/mosip/id-authentication/tree/develop) as part of https://mosip.atlassian.net/browse/MOSIP-36413
+This file is moved to id-authentication repo and placed under the authentication-internal-service.
