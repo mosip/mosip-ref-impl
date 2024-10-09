@@ -1,0 +1,1 @@
+This code is moved to id-authentication repo and placed under the authentication-internal-service.
