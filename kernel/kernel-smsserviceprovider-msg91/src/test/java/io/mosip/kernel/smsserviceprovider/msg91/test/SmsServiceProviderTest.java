@@ -63,6 +63,9 @@ public class SmsServiceProviderTest {
 	@Value("${mosip.kernel.sms.route}")
 	String route;
 
+	@Value("${mosip.id.validation.identity.phone}")
+	private String phoneRegex;
+
 	@Test
 	public void sendSmsTest() {
 
