@@ -111,7 +111,7 @@ public class SmsServiceProviderTest {
 
 	@Test
 	public void validGateWayTest() {
-		service.sendSms("1234567890", "hello your otp is 45373");
+		service.sendSms("+2987654321", "hello your otp is 45373");
 	}
 
 }
