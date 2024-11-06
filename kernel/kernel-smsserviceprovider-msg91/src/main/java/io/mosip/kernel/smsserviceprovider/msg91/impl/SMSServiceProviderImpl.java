@@ -89,7 +89,7 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	}
 
 	private void validateInput(String contactNumber) {
-		if (!StringUtils.isNumeric(contactNumber) || (!phoneValidator(contactNumber))) {
+		if (!phoneValidator(contactNumber)) {
 			throw new InvalidNumberException(SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorCode(),
 					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage());
 		}
