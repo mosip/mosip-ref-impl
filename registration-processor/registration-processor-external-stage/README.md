@@ -1,5 +1,6 @@
 # registration-processor-external-stage
 
+## Overview
 This stage integrates with external system for required external operations
 
 ## Design
@@ -40,7 +41,11 @@ and mvn version - 3.9.6
     $ cd registration-processor\registration-processor-external-stage
     $ mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
     ```
-
+2. Build Docker for a service:
+    ```
+    $ cd <service folder>
+    $ docker build -f Dockerfile
+    ```
 ### Remove the version-specific suffix (PostgreSQL95Dialect) from the Hibernate dialect configuration
    ```
    hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
@@ -66,10 +71,38 @@ This is to maintain compatibility with existing ANT-style path patterns.
 Pre-registration Service uses the following configuration files:
 ```
 application-default.properties
-pre-registration-default.properties
+registration-default.properties
 ```
 Need to run the config-server along with the files mentioned above in order to run the master-data service.
 
 ## Configuration
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/develop/application-default.properties) and
 [Configuration-Registration](https://github.com/mosip/mosip-config/blob/develop/registration-default.properties) defined here.
+
+## Deployment in K8 cluster with other MOSIP services:
+### Pre-requisites
+* Set KUBECONFIG variable to point to existing K8 cluster kubeconfig file:
+    ```
+    export KUBECONFIG=~/.kube/<k8s-cluster.config>
+    ```
+### Install
+  ```
+    $ cd deploy
+    $ ./install.sh
+   ```
+### Delete
+  ```
+    $ cd deploy
+    $ ./delete.sh
+   ```
+### Restart
+  ```
+    $ cd deploy
+    $ ./restart.sh
+   ```
+
+## APIs
+API documentation is available [here](https://mosip.github.io/documentation/).
+
+## License
+This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).

@@ -14,6 +14,9 @@ server.servlet.path=/registrationprocessor/v1/eis
 ## Operations done by the Service
 1. It returns boolean value true for every non null requests
 
+## Overview
+This service details used by Registration service for external integration service.
+
 ## Build & run (for developers)
 The project requires JDK 21.0.3
 and mvn version - 3.9.6
@@ -23,7 +26,12 @@ and mvn version - 3.9.6
     $ cd registration-processor\registration-processor-external-integration-service
     $ mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
     ```
-
+2. Build Docker for a service:
+    ```
+    $ cd <service folder>
+    $ docker build -f Dockerfile
+    ```
+   
 ### Remove the version-specific suffix (PostgreSQL95Dialect) from the Hibernate dialect configuration
    ```
    hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
@@ -56,3 +64,31 @@ Need to run the config-server along with the files mentioned above in order to r
 ## Configuration
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/develop/application-default.properties) and
 [Configuration-Registration](https://github.com/mosip/mosip-config/blob/develop/registration-default.properties) defined here.
+
+## Deployment in K8 cluster with other MOSIP services:
+### Pre-requisites
+* Set KUBECONFIG variable to point to existing K8 cluster kubeconfig file:
+    ```
+    export KUBECONFIG=~/.kube/<k8s-cluster.config>
+    ```
+### Install
+  ```
+    $ cd deploy
+    $ ./install.sh
+   ```
+### Delete
+  ```
+    $ cd deploy
+    $ ./delete.sh
+   ```
+### Restart
+  ```
+    $ cd deploy
+    $ ./restart.sh
+   ```
+
+## APIs
+API documentation is available [here](https://mosip.github.io/documentation/).
+
+## License
+This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).

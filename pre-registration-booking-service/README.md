@@ -3,8 +3,8 @@
 ## Overview
 This service details used by Pre-Registration portal to book an appointment by providing his/her basic appointment details
 
-## Default context, path, port
-Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
+## Databases
+Refer to [SQL scripts](https://github.com/mosip/pre-registration/tree/develop/db_scripts).
 
 ## Build & run (for developers)
 The project requires JDK 21.0.3
@@ -14,6 +14,11 @@ and mvn version - 3.9.6
     ```
     $ cd pre-registration-booking-service
     $ mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+    ```
+2. Build Docker for a service:
+    ```
+    $ cd <service folder>
+    $ docker build -f Dockerfile
     ```
 
 ### Remove the version-specific suffix (PostgreSQL95Dialect) from the Hibernate dialect configuration
@@ -50,3 +55,34 @@ Need to run the config-server along with the files mentioned above in order to r
 [Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/develop/pre-registration-default.properties) defined here.
 
 Refer [Module Configuration](https://docs.mosip.io/1.2.0/modules/module-configuration) for location of these files.
+
+## Default context, path, port
+Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
+
+## Deployment in K8 cluster with other MOSIP services:
+### Pre-requisites
+* Set KUBECONFIG variable to point to existing K8 cluster kubeconfig file:
+    ```
+    export KUBECONFIG=~/.kube/<k8s-cluster.config>
+    ```
+### Install
+  ```
+    $ cd deploy
+    $ ./install.sh
+   ```
+### Delete
+  ```
+    $ cd deploy
+    $ ./delete.sh
+   ```
+### Restart
+  ```
+    $ cd deploy
+    $ ./restart.sh
+   ```
+
+## APIs
+API documentation is available [here](https://mosip.github.io/documentation/).
+
+## License
+This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).
