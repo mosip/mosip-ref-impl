@@ -32,7 +32,7 @@ mosip.regproc.external.server.servlet.path=/registrationprocessor/v1/external
 External validation by sending requests to external integration system
 
 ## Build & run (for developers)
-The project requires JDK 1.21.
+The project requires JDK 21.0.3
 and mvn version - 3.9.6
 
 1. Build and install:

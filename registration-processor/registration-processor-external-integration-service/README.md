@@ -15,7 +15,7 @@ server.servlet.path=/registrationprocessor/v1/eis
 1. It returns boolean value true for every non null requests
 
 ## Build & run (for developers)
-The project requires JDK 1.21.
+The project requires JDK 21.0.3
 and mvn version - 3.9.6
 
 1. Build and install:

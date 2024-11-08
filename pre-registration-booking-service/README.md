@@ -7,7 +7,7 @@ This service details used by Pre-Registration portal to book an appointment by p
 Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
 
 ## Build & run (for developers)
-The project requires JDK 1.21.
+The project requires JDK 21.0.3
 and mvn version - 3.9.6
 
 1. Build and install:
