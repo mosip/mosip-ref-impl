@@ -4,7 +4,7 @@
 This service details used by Pre-Registration portal to book an appointment by providing his/her basic appointment details
 
 ## Databases
-Refer to [SQL scripts](https://github.com/mosip/pre-registration/tree/develop/db_scripts).
+Refer to the required released tagged version [SQL scripts](https://github.com/mosip/pre-registration/tree/master/db_scripts).
 
 ## Build & run (for developers)
 The project requires JDK 21.0.3
@@ -21,18 +21,6 @@ and mvn version - 3.9.6
     $ docker build -f Dockerfile
     ```
 
-### Remove the version-specific suffix (PostgreSQL95Dialect) from the Hibernate dialect configuration
-   ```
-   hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-   ```
-This is for better compatibility with future PostgreSQL versions.
-
-### Configure ANT Path Matcher for Spring Boot 3.x compatibility.
-   ```
-   spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER
-   ```
-This is to maintain compatibility with existing ANT-style path patterns.
-
 ### Add auth-adapter in a class-path to run a master-data service
    ```
    <dependency>
@@ -44,17 +32,11 @@ This is to maintain compatibility with existing ANT-style path patterns.
 
 ## Configuration files
 Pre-registration Service uses the following configuration files:
-```
-application-default.properties
-pre-registration-default.properties
-```
+[Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
+[Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) defined here.
 Need to run the config-server along with the files mentioned above in order to run the master-data service.
 
-## Configuration
-[Configuration-Application](https://github.com/mosip/mosip-config/blob/develop/application-default.properties) and
-[Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/develop/pre-registration-default.properties) defined here.
-
-Refer [Module Configuration](https://docs.mosip.io/1.2.0/modules/module-configuration) for location of these files.
+Refer to the required released tagged version [Module Configuration](https://docs.mosip.io/1.2.0/modules/module-configuration) for location of these files.
 
 ## Default context, path, port
 Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
@@ -82,7 +64,7 @@ Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
    ```
 
 ## APIs
-API documentation is available [here](https://mosip.github.io/documentation/).
+API documentation is available [here](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html).
 
 ## License
 This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).

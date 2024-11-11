@@ -46,17 +46,6 @@ and mvn version - 3.9.6
     $ cd <service folder>
     $ docker build -f Dockerfile
     ```
-### Remove the version-specific suffix (PostgreSQL95Dialect) from the Hibernate dialect configuration
-   ```
-   hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-   ```
-This is for better compatibility with future PostgreSQL versions.
-
-### Configure ANT Path Matcher for Spring Boot 3.x compatibility.
-   ```
-   spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER
-   ```
-This is to maintain compatibility with existing ANT-style path patterns.
 
 ### Add auth-adapter in a class-path to run a master-data service
    ```
@@ -68,16 +57,10 @@ This is to maintain compatibility with existing ANT-style path patterns.
    ```
 
 ## Configuration files
-Pre-registration Service uses the following configuration files:
-```
-application-default.properties
-registration-default.properties
-```
-Need to run the config-server along with the files mentioned above in order to run the master-data service.
-
-## Configuration
+Registration processor external stage uses the following configuration files:
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/develop/application-default.properties) and
 [Configuration-Registration](https://github.com/mosip/mosip-config/blob/develop/registration-default.properties) defined here.
+Need to run the config-server along with the files mentioned above in order to run the master-data service.
 
 ## Deployment in K8 cluster with other MOSIP services:
 ### Pre-requisites
@@ -100,9 +83,6 @@ Need to run the config-server along with the files mentioned above in order to r
     $ cd deploy
     $ ./restart.sh
    ```
-
-## APIs
-API documentation is available [here](https://mosip.github.io/documentation/).
 
 ## License
 This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).

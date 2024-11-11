@@ -1,5 +1,8 @@
 # registration-processor-external-integration-service
 
+## Overview
+This service details used by Registration service for external integration service.
+
 ## Design
 [Design - Approach for External System Integration](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_external_system_integration.md)
 
@@ -12,10 +15,7 @@ server.servlet.path=/registrationprocessor/v1/eis
 ```
 
 ## Operations done by the Service
-1. It returns boolean value true for every non null requests
-
-## Overview
-This service details used by Registration service for external integration service.
+1. It returns boolean value true for every non-null requests
 
 ## Build & run (for developers)
 The project requires JDK 21.0.3
@@ -31,39 +31,12 @@ and mvn version - 3.9.6
     $ cd <service folder>
     $ docker build -f Dockerfile
     ```
-   
-### Remove the version-specific suffix (PostgreSQL95Dialect) from the Hibernate dialect configuration
-   ```
-   hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-   ```
-This is for better compatibility with future PostgreSQL versions.
-
-### Configure ANT Path Matcher for Spring Boot 3.x compatibility.
-   ```
-   spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER
-   ```
-This is to maintain compatibility with existing ANT-style path patterns.
-
-### Add auth-adapter in a class-path to run a master-data service
-   ```
-   <dependency>
-       <groupId>io.mosip.kernel</groupId>
-       <artifactId>kernel-auth-adapter</artifactId>
-       <version>${kernel.auth.adapter.version}</version>
-   </dependency>
-   ```
 
 ## Configuration files
-Pre-registration Service uses the following configuration files:
-```
-application-default.properties
-pre-registration-default.properties
-```
-Need to run the config-server along with the files mentioned above in order to run the master-data service.
-
-## Configuration
+Registration processor external integration Service uses the following configuration files:
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/develop/application-default.properties) and
 [Configuration-Registration](https://github.com/mosip/mosip-config/blob/develop/registration-default.properties) defined here.
+Need to run the config-server along with the files mentioned above in order to run the master-data service.
 
 ## Deployment in K8 cluster with other MOSIP services:
 ### Pre-requisites
@@ -88,7 +61,7 @@ Need to run the config-server along with the files mentioned above in order to r
    ```
 
 ## APIs
-API documentation is available [here](https://mosip.github.io/documentation/).
+API documentation is available [here](https://mosip.github.io/documentation/1.2.0/registration-processor-external-integration-service.html).
 
 ## License
 This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).
