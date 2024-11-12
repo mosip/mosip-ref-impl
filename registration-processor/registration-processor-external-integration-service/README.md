@@ -37,6 +37,8 @@ Registration processor external integration Service uses the following configura
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
 [Configuration-Registration-processor](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties) defined here.
 
+Refer to the required released tagged version
+
 Need to run the config-server along with the files mentioned above in order to run the registration processor external integration service.
 
 ## Deployment in K8 cluster with other MOSIP services:

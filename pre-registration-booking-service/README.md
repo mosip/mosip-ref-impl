@@ -40,9 +40,9 @@ Pre-registration Service uses the following configuration files:
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
 [Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) defined here.
 
-Need to run the config-server along with the files mentioned above in order to run the pre-registration booking service.
+Refer to the required released tagged version
 
-Refer to the required released tagged version [Module Configuration](https://docs.mosip.io/1.2.0/modules/module-configuration) for location of these files.
+Need to run the config-server along with the files mentioned above in order to run the pre-registration booking service.
 
 ## Default context, path, port
 Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
