@@ -39,8 +39,7 @@ and mvn version - 3.9.6
 Pre-registration Service uses the following configuration files:
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
 [Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) defined here.
-
-Refer to the required released tagged version
+Refer to the required released tagged version.
 
 Need to run the config-server along with the files mentioned above in order to run the pre-registration booking service.
 
