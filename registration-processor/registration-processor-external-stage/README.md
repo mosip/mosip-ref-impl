@@ -58,9 +58,10 @@ and mvn version - 3.9.6
 
 ## Configuration files
 Registration processor external stage uses the following configuration files:
-[Configuration-Application](https://github.com/mosip/mosip-config/blob/develop/application-default.properties) and
-[Configuration-Registration](https://github.com/mosip/mosip-config/blob/develop/registration-default.properties) defined here.
-Need to run the config-server along with the files mentioned above in order to run the master-data service.
+[Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
+[Configuration-Registration-processor](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties) defined here.
+
+Need to run the config-server along with the files mentioned above in order to run the registration processor external stage service.
 
 ## Deployment in K8 cluster with other MOSIP services:
 ### Pre-requisites
@@ -85,4 +86,4 @@ Need to run the config-server along with the files mentioned above in order to r
    ```
 
 ## License
-This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).
+This project is licensed under the terms of [Mozilla Public License 2.0](https://github.com/mosip/mosip-ref-impl/blob/master/LICENSE).

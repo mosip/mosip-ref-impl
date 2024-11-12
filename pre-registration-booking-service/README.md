@@ -28,13 +28,19 @@ and mvn version - 3.9.6
        <artifactId>kernel-auth-adapter</artifactId>
        <version>${kernel.auth.adapter.version}</version>
    </dependency>
+   <dependency>
+       <groupId>io.mosip.kernel</groupId>
+       <artifactId>kernel-ref-idobjectvalidator</artifactId>
+       <version>${kernel.ref.idobjectvalidator.version}</version>
+   </dependency>
    ```
 
 ## Configuration files
 Pre-registration Service uses the following configuration files:
 [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
 [Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) defined here.
-Need to run the config-server along with the files mentioned above in order to run the master-data service.
+
+Need to run the config-server along with the files mentioned above in order to run the pre-registration booking service.
 
 Refer to the required released tagged version [Module Configuration](https://docs.mosip.io/1.2.0/modules/module-configuration) for location of these files.
 
@@ -64,7 +70,7 @@ Refer to [bootstrap properties](src/main/resources/bootstrap.properties)
    ```
 
 ## APIs
-API documentation is available [here](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html).
+API documentation is available [here](https://mosip.github.io/documentation/).
 
 ## License
-This project is licensed under the terms of [Mozilla Public License 2.0](LICENSE).
+This project is licensed under the terms of [Mozilla Public License 2.0](https://github.com/mosip/mosip-ref-impl/blob/master/LICENSE).
