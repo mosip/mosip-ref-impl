@@ -36,8 +36,7 @@ and mvn version - 3.9.6
    ```
 
 ## Configuration files
-Pre-registration Service uses the following configuration files:
-[Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
+Pre-registration Service uses the following configuration file:
 [Configuration-Pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) defined here.
 Refer to the required released tagged version.
 
