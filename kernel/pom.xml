@@ -72,7 +72,7 @@
 		<maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
 		<maven.source.plugin.version>2.2.1</maven.source.plugin.version>
 		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
-		<nexus.staging.plugin.version>1.6.7</nexus.staging.plugin.version>
+		<nexus.staging.plugin.version>1.6.14</nexus.staging.plugin.version>
 		<git.commit.plugin.version>3.0.1</git.commit.plugin.version>
 
 		<!-- logger -->
