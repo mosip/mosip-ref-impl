@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
-		<version>1.3.0-SNAPSHOT</version>
+		<version>1.3.0-beta.1</version>
 	</parent>
 
 	<name>kernel-ref-idobjectvalidator</name>
 	<artifactId>kernel-ref-idobjectvalidator</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.0-beta.1</version>
 
 	<properties>
 		<kernel-logger-logback.version>1.3.0-beta.1</kernel-logger-logback.version>
