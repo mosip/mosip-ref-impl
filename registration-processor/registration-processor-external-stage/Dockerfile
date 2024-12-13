@@ -81,7 +81,7 @@ VOLUME ${work_dir}/logs
 # copying shaded jar into docker image
 ADD ./target/*.jar ./target/
 
-RUN find target/ -regextype posix-extended -regex '.*registration-processor-external-stage-[0-9\.]+[-A-Za-z0-9]*\.jar'  "-print0" | xargs "-0" cp -t ./ \
+RUN find target/ -regextype posix-extended -regex '.*registration-processor-external-stage-[0-9\.]+[-A-Za-z0-9\.]*\.jar'  "-print0" | xargs "-0" cp -t ./ \
   && rm -rf ./target \
   && rm -rf original*.jar \
   && rm -rf *-sources.jar \
