@@ -61,6 +61,9 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	@Value("${mosip.kernel.sms.unicode:1}")
 	String unicode;
 
+	@Value("${mosip.id.validation.identity.phone}")
+	private String phoneRegex;
+
 	@Override
 	public SMSResponseDto sendSms(String contactNumber, String message) {
 		SMSResponseDto smsResponseDTO = new SMSResponseDto();
@@ -86,16 +89,14 @@ public class SMSServiceProviderImpl implements SMSServiceProvider {
 	}
 
 	private void validateInput(String contactNumber) {
-		if (!StringUtils.isNumeric(contactNumber) || (!inRange(contactNumber.length(), numberMinLength,
-				numberMaxLength))) {
+		if (!phoneValidator(contactNumber)) {
 			throw new InvalidNumberException(SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorCode(),
-					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage() + numberMinLength + "-"
-							+ numberMaxLength + SmsPropertyConstant.SUFFIX_MESSAGE.getProperty());
+					SmsExceptionConstant.SMS_INVALID_CONTACT_NUMBER.getErrorMessage());
 		}
 	}
 
-	private boolean inRange(int value, int min, int max) {
-		return (value >= min) && (value <= max);
+	public boolean phoneValidator(String phone) {
+		return phone.matches(phoneRegex);
 	}
 
 }

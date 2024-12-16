@@ -63,6 +63,12 @@ public class SmsServiceProviderTest {
 	@Value("${mosip.kernel.sms.route}")
 	String route;
 
+	@Value("${mosip.id.validation.identity.phone}")
+	private String phoneRegex;
+
+	@Value("${phone}")
+	private String phone;
+
 	@Test
 	public void sendSmsTest() {
 
@@ -108,7 +114,7 @@ public class SmsServiceProviderTest {
 
 	@Test
 	public void validGateWayTest() {
-		service.sendSms("1234567890", "hello your otp is 45373");
+		service.sendSms(phone, "hello your otp is 45373");
 	}
 
 }
