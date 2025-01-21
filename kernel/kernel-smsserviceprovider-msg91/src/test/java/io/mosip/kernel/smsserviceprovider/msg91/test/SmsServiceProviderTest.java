@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ import io.mosip.kernel.smsserviceprovider.msg91.dto.SmsServerResponseDto;
 import io.mosip.kernel.smsserviceprovider.msg91.impl.SMSServiceProviderImpl;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { ConfigFileApplicationContextInitializer.class, SmsServiceProviderTest.config.class,
+@ContextConfiguration(classes = { ConfigDataApplicationContextInitializer.class, SmsServiceProviderTest.config.class,
 		SMSServiceProviderImpl.class })
 public class SmsServiceProviderTest {
 
@@ -62,6 +62,12 @@ public class SmsServiceProviderTest {
 
 	@Value("${mosip.kernel.sms.route}")
 	String route;
+
+	@Value("${mosip.id.validation.identity.phone}")
+	private String phoneRegex;
+
+	@Value("${phone}")
+	private String phone;
 
 	@Test
 	public void sendSmsTest() {
@@ -108,7 +114,7 @@ public class SmsServiceProviderTest {
 
 	@Test
 	public void validGateWayTest() {
-		service.sendSms("1234567890", "hello your otp is 45373");
+		service.sendSms(phone, "hello your otp is 45373");
 	}
 
 }
