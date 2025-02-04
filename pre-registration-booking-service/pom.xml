@@ -389,7 +389,7 @@
 				<dependency>
 					<groupId>io.mosip.kernel</groupId>
 					<artifactId>kernel-auth-adapter</artifactId>
-					<version>${project.version}</version>
+					<version>1.3.0-beta.1</version>
 				</dependency>
 			</dependencies>
 			<build>
