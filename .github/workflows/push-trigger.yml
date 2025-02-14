@@ -80,6 +80,7 @@ jobs:
           - SERVICE_LOCATION: 'pre-registration-booking-service'
             SERVICE_NAME: 'pre-registration-booking-service'
             BUILD_ARTIFACT: 'pre-registration-booking-service'
+            SQUASH_LAYERS: '10'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
@@ -87,6 +88,7 @@ jobs:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
       BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+      SQUASH_LAYERS: ${{ matrix.SQUASH_LAYERS }}
     secrets:
       DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
@@ -142,6 +144,7 @@ jobs:
           - SERVICE_LOCATION: 'registration-processor/registration-processor-external-stage'
             SERVICE_NAME: 'registration-processor-external-stage'
             BUILD_ARTIFACT: 'registration-processor-external-stage'
+            SQUASH_LAYERS: '11'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
@@ -149,6 +152,7 @@ jobs:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
       BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+      SQUASH_LAYERS: ${{ matrix.SQUASH_LAYERS }}
     secrets:
       DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
@@ -174,6 +178,7 @@ jobs:
           - SERVICE_LOCATION: 'registration-processor/registration-processor-external-integration-service'
             SERVICE_NAME: 'registration-processor-external-integration-service'
             BUILD_ARTIFACT: 'registration-processor-external-integration-service'
+            SQUASH_LAYERS: '12'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
@@ -181,6 +186,7 @@ jobs:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
       BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+      SQUASH_LAYERS: ${{ matrix.SQUASH_LAYERS }}
     secrets:
       DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
