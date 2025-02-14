@@ -9,6 +9,9 @@
  	 </parent>
 	<artifactId>registration-processor-external-integration-service</artifactId>
 	 <version>1.2.1-SNAPSHOT</version>
+	<name>registration-processor-external-integration-service</name>
+	<description>registration-processor-external-integration-service</description>
+	<url>https://github.com/mosip/mosip-ref-impl</url>
 	<licenses>
 		<license>
 			<name>MPL 2.0</name>

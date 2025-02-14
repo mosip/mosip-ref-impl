@@ -7,6 +7,9 @@
     <groupId>io.mosip.cacheprovider</groupId>
     <artifactId>cache-provider-hazelcast</artifactId>
     <version>1.2.1-SNAPSHOT</version>
+    <name>cache-provider-hazelcast</name>
+    <description>cache-provider-hazelcast</description>
+    <url>https://github.com/mosip/mosip-ref-impl</url>
     <licenses>
         <license>
             <name>MPL 2.0</name>
