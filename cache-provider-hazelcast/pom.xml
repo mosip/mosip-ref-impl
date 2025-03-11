@@ -6,7 +6,7 @@
 
     <groupId>io.mosip.cacheprovider</groupId>
     <artifactId>cache-provider-hazelcast</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0-beta.1</version>
     <name>cache-provider-hazelcast</name>
     <description>Cache provider hazelcast of MOSIP</description>
     <url>https://github.com/mosip/mosip-ref-impl</url>
@@ -71,7 +71,7 @@
             <dependency>
                 <groupId>io.mosip.kernel</groupId>
                 <artifactId>kernel-bom</artifactId>
-                <version>1.3.0-SNAPSHOT</version>
+                <version>1.3.0-beta.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
