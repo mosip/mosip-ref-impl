@@ -22,7 +22,7 @@
 		<nexus.staging.plugin.version>1.6.14</nexus.staging.plugin.version>
 		<git.commit.plugin.version>3.0.1</git.commit.plugin.version>
 		<kernel.core.version>1.3.0-beta.2</kernel.core.version>
-        <kernel.auth.adaptor.version>1.3.0-beta.2</kernel.auth.adaptor.version>
+        <kernel.auth.adaptor.version>1.3.0-beta.1</kernel.auth.adaptor.version>
         <junit.vintage.version>5.10.2</junit.vintage.version>
     </properties>
 	<dependencies>
