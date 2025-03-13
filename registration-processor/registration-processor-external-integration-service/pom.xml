@@ -12,7 +12,6 @@
 	<name>registration-processor-external-integration-service</name>
 	<description>Registration processor external integration service</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
-
 	<licenses>
 		<license>
 			<name>MPL 2.0</name>
