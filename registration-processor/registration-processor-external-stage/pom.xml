@@ -26,11 +26,11 @@
 	<parent>
 		<groupId>io.mosip.registrationprocessor</groupId>
 		<artifactId>pre-processor</artifactId>
-		<version>1.3.0-beta.1</version>
+		<version>1.3.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>registration-processor-external-stage</artifactId>
-    <version>1.3.0-beta.2</version>
+    <version>1.3.0-SNAPSHOT</version>
 	<name>registration-processor-external-stage</name>
 	<description>Registration processor external stage</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
@@ -40,6 +40,7 @@
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
+		<spring.boot.version>3.2.3</spring.boot.version>
 	</properties>
 
 	<dependencies>
