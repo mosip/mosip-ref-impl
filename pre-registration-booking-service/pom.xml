@@ -67,8 +67,8 @@
 		<maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
-<!--		<maven.javadoc.version>3.2.0</maven.javadoc.version>-->
-<!--		<maven.source.plugin.version>3.3.0</maven.source.plugin.version>-->
+		<maven.javadoc.version>3.2.0</maven.javadoc.version>
+		<maven.source.plugin.version>3.3.0</maven.source.plugin.version>
 		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
 
 		<!-- Test & Logging -->
@@ -300,37 +300,37 @@
 					</execution>
 				</executions>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-source-plugin</artifactId>-->
-<!--				<inherited>true</inherited>-->
-<!--				<version>${maven.source.plugin.version}</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>attach-sources</id>-->
-<!--						<goals>-->
-<!--							<goal>jar-no-fork</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-javadoc-plugin</artifactId>-->
-<!--				<version>${maven.javadoc.plugin.version}</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>attach-javadocs</id>-->
-<!--						<goals>-->
-<!--							<goal>jar</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--				<configuration>-->
-<!--					<doclint>none</doclint>-->
-<!--					<sourcepath>src/main/java</sourcepath>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<inherited>true</inherited>
+				<version>${maven.source.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doclint>none</doclint>
+					<sourcepath>src/main/java</sourcepath>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
