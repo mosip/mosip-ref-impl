@@ -4,16 +4,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.kernel</groupId>
 	<parent>
-                <groupId>io.mosip.kernel</groupId>
-                <artifactId>kernel-ref-parent</artifactId>
-                <version>1.2.1-SNAPSHOT</version>
-        </parent>
+		<groupId>io.mosip.kernel</groupId>
+		<artifactId>kernel-ref-parent</artifactId>
+		<version>1.2.1-rc1</version>
+	</parent>
 
 	<artifactId>kernel-virusscanner-clamav</artifactId>
-    	<version>1.2.1-SNAPSHOT</version>
+    	<version>1.2.1-rc1</version>
 	<properties>	
 		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 		<clamav.client.version>1.0.4</clamav.client.version>
+		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -40,6 +41,16 @@
 			<version>${junit.vintage.version}</version>
 		</dependency>
 	</dependencies>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://central.sonatype.com/api/v1/publisher</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -65,26 +76,15 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>${nexus.staging.plugin.version}</version>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>${central.publishing.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				<executions>
-					<execution>
-						<id>default-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<publishingServerId>ossrh</publishingServerId>
+					<autoPublish>false</autoPublish>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
