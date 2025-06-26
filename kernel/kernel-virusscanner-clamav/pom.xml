@@ -11,6 +11,7 @@
 
 	<artifactId>kernel-virusscanner-clamav</artifactId>
     	<version>1.2.1-rc1</version>
+		<name>kernel-virusscanner-clamav</name>
 	<properties>	
 		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 		<clamav.client.version>1.0.4</clamav.client.version>
