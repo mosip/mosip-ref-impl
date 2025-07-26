@@ -235,19 +235,9 @@
 			<version>${kernel.auth.adaptor.version}</version>
 		</dependency>
 	</dependencies>
-	
-<distributionManagement>
-		<snapshotRepository>
-                        <id>ossrh</id>
-                        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository> 
-                 <repository>
-                        <id>ossrh</id>
-                        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository> 
-        </distributionManagement> 
+
         <build>
-<resources>
+		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
@@ -268,27 +258,18 @@
                     </goals>
                  </execution>
               </executions>
-           </plugin>
-               <plugin>
-                  <groupId>org.sonatype.plugins</groupId>
-                  <artifactId>nexus-staging-maven-plugin</artifactId>
-                  <version>1.6.7</version>
-                  <extensions>true</extensions>
-                  <executions>
-                    <execution>
-                      <id>default-deploy</id>
-                      <phase>deploy</phase>
-                      <goals>
-                        <goal>deploy</goal>
-                      </goals>
-                    </execution>
-                  </executions>
-                  <configuration>
-                        <serverId>ossrh</serverId>
-                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                        <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                  </configuration>
-                </plugin> 
+           	</plugin>
+
+			  <plugin>
+				  <groupId>org.sonatype.central</groupId>
+				  <artifactId>central-publishing-maven-plugin</artifactId>
+				  <version>0.7.0</version>
+				  <extensions>true</extensions>
+				  <configuration>
+					  <publishingServerId>ossrh</publishingServerId>
+					  <autoPublish>false</autoPublish>
+				  </configuration>
+			  </plugin>
 
                <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
