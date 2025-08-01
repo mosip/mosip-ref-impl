@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import io.mosip.kernel.core.idvalidator.exception.InvalidIDException;
 import jakarta.annotation.PostConstruct;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -535,6 +536,7 @@ public class BookingService implements BookingServiceIntf {
 		responseDto.setVersion(versionUrl);
 		RegistrationBookingEntity entity = null;
 		try {
+			this.applicationIdValidation(preRegID);
 			// This call will check if the PRID belongs to the logged in user or not
 			serviceUtil.checkApplicationStatus(preRegID);
 			entity = bookingDAO.findByPreRegistrationId(preRegID);
@@ -556,6 +558,15 @@ public class BookingService implements BookingServiceIntf {
 		}
 
 		return responseDto;
+	}
+
+	private void applicationIdValidation(String applicationId) {
+		if (applicationId == null || applicationId.trim().isEmpty()) {
+			throw new InvalidIDException(
+					ErrorCodes.PRG_BOOK_RCI_022.getCode(),
+					"preRegistrationId cannot be empty."
+			);
+		}
 	}
 
 	/*
