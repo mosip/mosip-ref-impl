@@ -40,6 +40,7 @@
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
+		<spring.boot.version>3.2.3</spring.boot.version>
 		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
 		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/verticle/**,**/spi/**,"**/proxy/**","**/entities/**","**/filter/**","**/util/**","**/verifier/**"</sonar.coverage.exclusions>
 	</properties>
@@ -212,7 +213,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>build-info</goal>
+						/home/techno-467/IdeaProjects/websub	<goal>build-info</goal>
 							<goal>repackage</goal>
 						</goals>
 						<configuration>
