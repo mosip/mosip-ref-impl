@@ -213,7 +213,7 @@
 				<executions>
 					<execution>
 						<goals>
-						/home/techno-467/IdeaProjects/websub	<goal>build-info</goal>
+							<goal>build-info</goal>
 							<goal>repackage</goal>
 						</goals>
 						<configuration>
