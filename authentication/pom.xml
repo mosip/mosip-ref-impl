@@ -73,13 +73,13 @@
 
 	<properties>
 		<authentication.parent.version>${project.version}</authentication.parent.version>
-		<authentication-core.version>1.2.0.1</authentication-core.version>
-		<authentication-common.version>1.2.0.1</authentication-common.version>
-		<authentication-filter-api.version>1.2.0.1</authentication-filter-api.version>
+		<authentication-core.version>1.2.2.0-SNAPSHOT</authentication-core.version>
+		<authentication-common.version>1.2.2.0-SNAPSHOT</authentication-common.version>
+		<authentication-filter-api.version>1.2.2.0-SNAPSHOT</authentication-filter-api.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Kernel components -->
-		<kernel.parent.version>1.2.0.1</kernel.parent.version>
+		<kernel.parent.version>1.2.1.0-SNAPSHOT</kernel.parent.version>
 		<kernel-core.version>${kernel.parent.version}</kernel-core.version>
 		<kernel-logger-logback.version>${kernel.parent.version}</kernel-logger-logback.version>
 		
