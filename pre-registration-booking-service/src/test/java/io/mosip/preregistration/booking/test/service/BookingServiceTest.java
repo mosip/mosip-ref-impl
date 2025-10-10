@@ -363,7 +363,7 @@ public class BookingServiceTest {
 		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
 		SecurityContextHolder.setContext(securityContext);
 		Mockito.when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(applicationUser);
-		auditRequestDto.setActionTimeStamp(LocalDateTime.now(ZoneId.of("UTC")));
+		auditRequestDto.setActionTimeStamp(DateUtils.getUTCCurrentDateTime());
 		auditRequestDto.setApplicationId(AuditLogVariables.MOSIP_1.toString());
 		auditRequestDto.setApplicationName(AuditLogVariables.PREREGISTRATION.toString());
 		auditRequestDto.setCreatedBy(AuditLogVariables.SYSTEM.toString());
