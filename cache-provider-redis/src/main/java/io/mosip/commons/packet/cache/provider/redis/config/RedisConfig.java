@@ -38,23 +38,36 @@ public class RedisConfig {
     @Value("${redis.cache.read.timeout:3500}")
     private int readTimeout;
 
-    /**
-     * Creates a JedisConnectionFactory bean for Redis connection.
-     *
-     * @return JedisConnectionFactory
-     */
+    @Value("${redis.cache.test.while.idle:true}")
+    private boolean testWhileIdle;
+
+    @Value("${redis.cache.eviction.run.interval:60000}")
+    private long evictionRunIntervalMs;
+
+    @Value("${redis.cache.min.evictable.idle.time:300000}")
+    private long minEvictableIdleTimeMs;
+
+    @Value("${redis.cache.num.tests.per.eviction.run:20}")
+    private int numTestsPerEvictionRun;
+
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
         redisConfig.setHostName(hostname);
         redisConfig.setPort(port);
         redisConfig.setPassword(password);
-        JedisPoolConfig jedisPoolConfig=new JedisPoolConfig();
+
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(maxTotal);
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMinIdle(minIdle);
         jedisPoolConfig.setTestOnBorrow(true);
+        jedisPoolConfig.setTestWhileIdle(testWhileIdle);
+        jedisPoolConfig.setNumTestsPerEvictionRun(numTestsPerEvictionRun);
 
+        // ✅ Modern Jedis API uses Duration
+        jedisPoolConfig.setTimeBetweenEvictionRuns(Duration.ofMillis(evictionRunIntervalMs));
+        jedisPoolConfig.setMinEvictableIdleDuration(Duration.ofMillis(minEvictableIdleTimeMs));
 
         JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
                 .usePooling()
@@ -63,9 +76,9 @@ public class RedisConfig {
                 .connectTimeout(Duration.ofMillis(connectTimeout))
                 .readTimeout(Duration.ofMillis(readTimeout))
                 .build();
+
         return new JedisConnectionFactory(redisConfig, clientConfig);
     }
-
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
@@ -73,5 +86,4 @@ public class RedisConfig {
         template.setConnectionFactory(jedisConnectionFactory());
         return template;
     }
-
 }
