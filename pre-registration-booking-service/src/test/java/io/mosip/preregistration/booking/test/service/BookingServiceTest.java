@@ -52,7 +52,7 @@ import io.mosip.kernel.core.dataaccess.exception.DataAccessLayerException;
 import io.mosip.kernel.core.exception.FileNotFoundException;
 import io.mosip.kernel.core.exception.ParseException;
 import io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator;
-import io.mosip.kernel.core.util.DateUtils;
+import io.mosip.kernel.core.util.DateUtils2;
 import io.mosip.preregistration.booking.codes.RequestCodes;
 import io.mosip.preregistration.booking.dto.AvailabilityDto;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
@@ -322,7 +322,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(localTime2);
 		availableEntity.setFromTime(localTime1);
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		preRegistrationEntity = new DemographicEntity();
 		preRegistrationEntity.setCreateDateTime(LocalDateTime.now());
@@ -331,7 +331,7 @@ public class BookingServiceTest {
 		preRegistrationEntity.setUpdateDateTime(LocalDateTime.now());
 		preRegistrationEntity.setPreRegistrationId("48690172097499");
 
-//	bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));bookingEntity.setRegistrationCenterId(oldBooking.getRegistrationCenterId());bookingEntity.setLangCode("12L");bookingEntity.setCrBy("John Doe");bookingEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));bookingEntity.setRegDate(LocalDate.parse(oldBooking.getRegDate()));bookingEntity.setSlotFromTime(LocalTime.parse(oldBooking.getSlotFromTime()));bookingEntity.setSlotToTime(LocalTime.parse(oldBooking.getSlotToTime()));bookingEntity.setDemographicEntity(preRegistrationEntity);
+//	bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));bookingEntity.setRegistrationCenterId(oldBooking.getRegistrationCenterId());bookingEntity.setLangCode("12L");bookingEntity.setCrBy("John Doe");bookingEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));bookingEntity.setRegDate(LocalDate.parse(oldBooking.getRegDate()));bookingEntity.setSlotFromTime(LocalTime.parse(oldBooking.getSlotFromTime()));bookingEntity.setSlotToTime(LocalTime.parse(oldBooking.getSlotToTime()));bookingEntity.setDemographicEntity(preRegistrationEntity);
 
 		preRegistartionStatusDTO.setStatusCode(StatusCodes.PENDING_APPOINTMENT.getCode());
 		preRegistartionStatusDTO.setPreRegistartionId("23587986034785");
@@ -398,7 +398,7 @@ public class BookingServiceTest {
 		availableEntity1.setToTime(localTime2);
 		availableEntity1.setFromTime(localTime1);
 		availableEntity1.setCrBy("John Doe");
-		availableEntity1.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity1.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity1.setDeleted(false);
 		List<LocalDate> date = new ArrayList<>();
 		List<AvailibityEntity> entityList = new ArrayList<>();
@@ -466,7 +466,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -490,13 +490,13 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.getRegCenterMasterData("1")).thenReturn(centerList);
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("eng");
 		bookingEntity2.setCrBy("John Doe");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -532,7 +532,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -555,13 +555,13 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("eng");
 		bookingEntity2.setCrBy("John Doe");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -605,7 +605,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -624,13 +624,13 @@ public class BookingServiceTest {
 
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("eng");
 		bookingEntity2.setCrBy("John Doe");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -667,7 +667,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -698,13 +698,13 @@ public class BookingServiceTest {
 
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("12L");
 		bookingEntity2.setCrBy("John Doe");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -765,7 +765,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -784,13 +784,13 @@ public class BookingServiceTest {
 
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("12L");
 		bookingEntity2.setCrBy("John Doe");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -878,7 +878,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -901,13 +901,13 @@ public class BookingServiceTest {
 
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("12L");
 		bookingEntity2.setCrBy("987654321");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -971,7 +971,7 @@ public class BookingServiceTest {
 	 * availableEntity.setToTime(LocalTime.of(9, 0));
 	 * availableEntity.setFromTime(LocalTime.of(9, 15));
 	 * availableEntity.setCrBy("JOhn Doe");
-	 * availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+	 * availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 	 * availableEntity.setDeleted(false); List<PreRegistartionStatusDTO>
 	 * statusListrebook = new ArrayList<>();
 	 * 
@@ -1001,10 +1001,10 @@ public class BookingServiceTest {
 	 * 
 	 * // Update status RegistrationBookingEntity bookingEntity2 = new
 	 * RegistrationBookingEntity(); bookingEntity2.setBookingPK(new
-	 * RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
+	 * RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
 	 * bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 	 * bookingEntity2.setLangCode("12L"); bookingEntity2.setCrBy("987654321");
-	 * bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+	 * bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 	 * bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 	 * bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 	 * bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -1105,13 +1105,13 @@ public class BookingServiceTest {
 		preRegResponseRebook.setErrors(null);
 		preRegResponseRebook.setResponse(preRegistartionStatus);
 		RegistrationBookingEntity bookingEntityRebook = new RegistrationBookingEntity();
-		//bookingEntityRebook.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntityRebook.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntityRebook.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntityRebook.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntityRebook.setPreregistrationId(bookingPreId);
 		bookingEntityRebook.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntityRebook.setLangCode("eng");
 		bookingEntityRebook.setCrBy("John Doe");
-		bookingEntityRebook.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntityRebook.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntityRebook.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntityRebook.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntityRebook.setSlotToTime(LocalTime.of(9, 15));
@@ -1198,13 +1198,13 @@ public class BookingServiceTest {
 		centerDto.setNumberOfKiosks((short) 4);
 		centerList.add(centerDto);
 		RegistrationBookingEntity bookingEntity = new RegistrationBookingEntity();
-		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setPreregistrationId(bookingPreId);
 		bookingEntity.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity.setLangCode("eng");
 		bookingEntity.setCrBy("John Doe");
-		bookingEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		Mockito.when(bookingDAO.findByPreRegistrationId("23587986034785")).thenReturn(bookingEntity);
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
 		Mockito.when(serviceUtil.mandatoryParameterCheck(Mockito.anyString(), Mockito.any())).thenReturn(true);
@@ -1231,13 +1231,13 @@ public class BookingServiceTest {
 
 		List<RegistrationBookingEntity> registrationEntityList = new ArrayList<>();
 		RegistrationBookingEntity bookingEntity = new RegistrationBookingEntity();
-		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setPreregistrationId(bookingPreId);
 		bookingEntity.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity.setLangCode("eng");
 		bookingEntity.setCrBy("John Doe");
-		bookingEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setRegDate(LocalDate.now());
 		bookingEntity.setSlotFromTime(LocalTime.parse(oldBooking.getSlotFromTime()));
 		bookingEntity.setSlotToTime(LocalTime.parse(oldBooking.getSlotToTime()));
@@ -1294,13 +1294,13 @@ public class BookingServiceTest {
 		DeleteBookingDTO deleteDto = new DeleteBookingDTO();
 		List<RegistrationBookingEntity> registrationEntityList = new ArrayList<>();
 		RegistrationBookingEntity bookingEntity = new RegistrationBookingEntity();
-		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setPreregistrationId(bookingPreId);
 		bookingEntity.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity.setLangCode("eng");
 		bookingEntity.setCrBy("John Doe");
-		bookingEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setRegDate(LocalDate.parse(oldBooking.getRegDate()));
 		bookingEntity.setSlotFromTime(LocalTime.parse(oldBooking.getSlotFromTime()));
 		bookingEntity.setSlotToTime(LocalTime.parse(oldBooking.getSlotToTime()));
@@ -1330,13 +1330,13 @@ public class BookingServiceTest {
 		DeleteBookingDTO deleteDto = new DeleteBookingDTO();
 		List<RegistrationBookingEntity> registrationEntityList = new ArrayList<>();
 		RegistrationBookingEntity bookingEntity = new RegistrationBookingEntity();
-		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setPreregistrationId(bookingPreId);
 		bookingEntity.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity.setLangCode("eng");
 		bookingEntity.setCrBy("John Doe");
-		bookingEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity.setRegDate(LocalDate.parse(oldBooking.getRegDate()));
 		bookingEntity.setSlotFromTime(LocalTime.parse(oldBooking.getSlotFromTime()));
 		bookingEntity.setSlotToTime(LocalTime.parse(oldBooking.getSlotToTime()));
@@ -1439,7 +1439,7 @@ public class BookingServiceTest {
 		availableEntityNull.setRegcntrId("1");
 		availableEntityNull.setRegDate(LocalDate.now().plusDays(20));
 		availableEntityNull.setCrBy("John Doe");
-		availableEntityNull.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntityNull.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntityNull.setDeleted(false);
 
 		Mockito.when(bookingDAO.updateAvailibityEntity(availableEntity)).thenReturn(availableEntity);
@@ -1549,7 +1549,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 0));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -1584,13 +1584,13 @@ public class BookingServiceTest {
 		Mockito.when(serviceUtil.getRegCenterMasterData("10001")).thenReturn(centerList);
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("12L");
 		bookingEntity2.setCrBy("987654321");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 0));
@@ -1646,7 +1646,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		List<PreRegistartionStatusDTO> statusListrebook = new ArrayList<>();
 
@@ -1665,13 +1665,13 @@ public class BookingServiceTest {
 
 		// Update status
 		RegistrationBookingEntity bookingEntity2 = new RegistrationBookingEntity();
-		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		bookingEntity2.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//bookingEntity2.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		bookingEntity2.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setPreregistrationId(bookingPreId);
 		bookingEntity2.setRegistrationCenterId(oldBooking.getRegistrationCenterId());
 		bookingEntity2.setLangCode("eng");
 		bookingEntity2.setCrBy("John Doe");
-		bookingEntity2.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		bookingEntity2.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		bookingEntity2.setRegDate(LocalDate.now().plusDays(30));
 		bookingEntity2.setSlotFromTime(LocalTime.of(9, 0));
 		bookingEntity2.setSlotToTime(LocalTime.of(9, 15));
@@ -1752,7 +1752,7 @@ public class BookingServiceTest {
 		availableEntity.setToTime(LocalTime.of(9, 0));
 		availableEntity.setFromTime(LocalTime.of(9, 15));
 		availableEntity.setCrBy("John Doe");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		requestValidatorFlag = validationUtil.requestValidator(bookingRequestDTOs);
 
