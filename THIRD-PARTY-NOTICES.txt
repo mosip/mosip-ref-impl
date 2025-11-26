@@ -1,0 +1,216 @@
+THIRD-PARTY-NOTICES
+
+This project includes third-party packages that are distributed under various open-source licenses. Below is a list of packages and their associated licenses.
+
+================================================================================
+Package: Spring Boot & Spring Framework
+Includes: spring-boot-starter-web, starter-security, starter-actuator,
+          starter-test, starter-data-redis, spring-context,
+          spring-boot-devtools, spring-boot-configuration-processor,
+          spring-boot-starter-tomcat
+Version: Not specified in SBOM
+License: Apache License 2.0 (Inferred from project’s official repository)
+Homepage: https://spring.io/projects/spring-boot
+================================================================================
+
+================================================================================
+Package: Spring Cloud
+Includes: spring-cloud-starter-config, spring-cloud-starter-bootstrap
+Version: Not specified in SBOM
+License: Apache License 2.0 (Inferred from project’s official repository)
+Homepage: https://spring.io/projects/spring-cloud
+================================================================================
+
+================================================================================
+Package: SpringDoc OpenAPI
+Includes: springdoc-openapi-starter-webmvc-ui, springdoc-openapi-ui,
+          springdoc-openapi-maven-plugin
+Version: 2.6.0 / 0.2 (as applicable)
+License: Apache License 2.0
+Homepage: https://springdoc.org/
+================================================================================
+
+================================================================================
+Package: Jackson JSON Processor
+Includes: jackson-core, jackson-databind, jackson-annotations,
+          jackson-datatype-jsr310, jackson-datatype-jdk8
+Version: Not specified in SBOM
+License: Apache License 2.0 (Inferred from FasterXML official repository)
+Homepage: https://github.com/FasterXML/jackson
+================================================================================
+
+================================================================================
+Package: JAXB (Jakarta XML Binding)
+Includes: jaxb-api, jaxb-runtime
+Version: Not specified in SBOM
+License: Eclipse Public License 2.0 (Inferred from project’s official repository)
+Homepage: https://github.com/eclipse-ee4j/jaxb-ri
+================================================================================
+
+================================================================================
+Package: Micrometer
+Includes: micrometer-core, micrometer-registry-prometheus
+Version: Not specified in SBOM
+License: Apache License 2.0 (Inferred)
+Homepage: https://micrometer.io/
+================================================================================
+
+================================================================================
+Package: Logback & Logstash Encoder
+Includes: logback-core, logback-classic, logstash-logback-encoder
+Version: Not specified in SBOM
+License: EPL 1.0 & Apache License 2.0 (Inferred from project’s official repository)
+Homepage: https://logback.qos.ch/
+================================================================================
+
+================================================================================
+Package: Hazelcast (hazelcast-all)
+Version: 3.12.12
+License: Apache License 2.0
+Homepage: https://hazelcast.com/
+================================================================================
+
+================================================================================
+Package: Redis Client (Jedis)
+Version: Not specified in SBOM
+License: MIT License (Inferred)
+Homepage: https://github.com/redis/jedis
+================================================================================
+
+================================================================================
+Package: JSON Libraries
+Includes: json-smart, asm, json-path
+Version: Not specified in SBOM
+License: Apache License 2.0 (Inferred from official repositories)
+Homepage: https://github.com/netplex/json-smart-v2
+================================================================================
+
+================================================================================
+Package: Apache Commons
+Includes: commons-collections4
+Version: Not specified in SBOM
+License: Apache License 2.0
+Homepage: https://commons.apache.org/
+================================================================================
+
+================================================================================
+Package: H2 Database
+Package Name: com.h2database:h2
+Version: Not specified in SBOM
+License: MPL 2.0 / EPL 1.0
+Homepage: https://www.h2database.com/
+================================================================================
+
+================================================================================
+Package: Hibernate Validator
+Version: Not specified in SBOM
+License: Apache License 2.0
+Homepage: https://hibernate.org/validator/
+================================================================================
+
+================================================================================
+Package: Mockito
+Package Name: mockito-core
+Version: Not specified in SBOM
+License: MIT License (Inferred)
+Homepage: https://github.com/mockito/mockito
+================================================================================
+
+================================================================================
+Package: ByteBuddy
+Package Name: byte-buddy
+Version: Not specified in SBOM
+License: Apache License 2.0
+Homepage: https://bytebuddy.net
+================================================================================
+
+================================================================================
+Package: Vert.x Unit
+Package Name: vertx-unit
+Version: Not specified in SBOM
+License: Apache License 2.0
+Homepage: https://vertx.io/
+================================================================================
+
+================================================================================
+Package: SLF4J
+Includes: jul-to-slf4j, jcl-over-slf4j
+Version: 1.7.25
+License: MIT License
+Homepage: http://www.slf4j.org/
+================================================================================
+
+================================================================================
+Package: javax.inject
+Version: 1
+License: Apache License 2.0
+Homepage: https://github.com/javax-inject/javax-inject
+================================================================================
+
+================================================================================
+Package: JUnit
+Includes: junit (4.x), junit-vintage-engine
+Version: Not specified in SBOM
+License: EPL 1.0 / EPL 2.0 (Inferred)
+Homepage: https://junit.org/
+================================================================================
+
+================================================================================
+Package: JWT (io.jsonwebtoken)
+Package Name: jjwt
+Version: Not specified in SBOM
+License: Apache License 2.0
+Homepage: https://github.com/jwtk/jjwt
+================================================================================
+
+================================================================================
+Package: ClamAV Client
+Package Name: xyz.capybara:clamav-client
+Version: 1.0.4
+License: MIT License
+Homepage: https://github.com/kd8bny/clamav-client
+================================================================================
+
+================================================================================
+Package: MOSIP Kernel
+Includes: kernel-core, kernel-auth-adapter, kernel-bom,
+          kernel-logger-logback
+Version: 1.3.0-SNAPSHOT
+License: MPL 2.0 (Inferred from MOSIP official repository)
+Homepage: https://github.com/mosip
+================================================================================
+
+================================================================================
+Package: MOSIP Registration Processor
+Includes: registration-processor-core, registration-processor-rest-client,
+          registration-status-service-impl
+Version: Not specified in SBOM
+License: MPL 2.0 (Inferred)
+Homepage: https://github.com/mosip
+================================================================================
+
+================================================================================
+Package: MOSIP Pre-Registration
+Package Name: pre-registration-core
+Version: 1.3.0-SNAPSHOT
+License: MPL 2.0 (Inferred)
+Homepage: https://github.com/mosip
+================================================================================
+
+================================================================================
+Package: Apache Maven Plugins
+Includes: maven-compiler-plugin, maven-source-plugin, maven-javadoc-plugin,
+          maven-surefire-plugin, maven-assembly-plugin, maven-gpg-plugin
+Version: Various (2.x–3.x)
+License: Apache License 2.0
+Homepage: https://maven.apache.org/plugins/
+================================================================================
+
+================================================================================
+Package: Project Lombok
+Version: 1.18.30
+License: MIT License
+Homepage: https://projectlombok.org/
+================================================================================
+
+Full license texts and additional details for each of the above packages are available in the license/ directory of this repository. Please refer to those files or the original source of each package for complete legal terms and conditions.
