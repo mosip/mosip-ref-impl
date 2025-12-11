@@ -1,9 +1,7 @@
 package io.mosip.kernel.idobjectvalidator.test;
 
 import static io.mosip.kernel.core.idobjectvalidator.constant.IdObjectValidatorErrorConstant.INVALID_INPUT_PARAMETER;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -232,7 +230,8 @@ public class IdObjectReferenceValidatorTest {
 					new ObjectMapper().readValue(identityString.getBytes(StandardCharsets.UTF_8), Object.class));
 			assertTrue(true);
 		} catch (Exception e) {
-			assertTrue(true);
+            assertTrue("Exception message should mention dateOfBirth. Actual: " + e.getMessage(),
+                    e.getMessage() != null && e.getMessage().toLowerCase().contains("dateofbirth"));
 		}
 	}
 
