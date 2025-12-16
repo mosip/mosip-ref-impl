@@ -70,8 +70,8 @@ The following properties must be configured with your environment-specific value
 - `mosip.api.internal.url` - Internal API base URL
 
 **Note**:
-- **If using config-server**: Properties marked as environment variables (e.g., `db.dbuser.password`, `keycloak.internal.url`, `keycloak.external.url`, `mosip.admin.client.secret`, `mosip.regproc.client.secret`) must be passed through the config-server's 'overrides' environment variables and should NOT be defined in property files. Refer to the config-server helm chart for more details.
-- **If using application properties directly**: Update these properties directly in your `application.properties` or `admin-default.properties` file with your environment-specific values.
+- **If using config-server**: Properties marked as environment variables (e.g., `db.dbuser.password`, `keycloak.internal.url`, `keycloak.external.url`, `mosip.regproc.client.secret`) must be passed through the config-server's 'overrides' environment variables and should NOT be defined in property files. Refer to the config-server helm chart for more details.
+- **If using application properties directly**: Update these properties directly in your `application.properties` file with your environment-specific values.
 
 ## Installation
 
@@ -98,7 +98,7 @@ mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
     - Click the Run button in your IDE, or
     - Run via command: `java -jar target/specific-service:<$version>.jar`
 
-5. Verify Swagger is accessible at: `http://localhost:8080/v1/admin/swagger-ui/index.html`
+5. Verify Swagger is accessible at: `http://localhost:9095/preregistration/v1/swagger-ui/index.html`
 
 ### Local Setup with Docker (Easy Setup for Demos)
 
@@ -159,7 +159,7 @@ To deploy mosip ref impl services on a Kubernetes cluster, refer to the [Sandbox
 
 ### Pre-reg UI
 
-For the complete Admin UI implementation and usage instructions, refer to the [Prereg UI GitHub repository](https://github.com/mosip/pre-registration-ui).
+For the complete Pre-reg UI implementation and usage instructions, refer to the [Prereg UI GitHub repository](https://github.com/mosip/pre-registration-ui).
 
 ## Documentation
 
@@ -167,11 +167,11 @@ For more detailed documents for repositories, you can [check here](https://githu
 
 ### API Documentation
 
-API endpoints, base URL, and mock server details are available via Stoplight and Swagger documentation: [MOSIP Admin Service API Documentation](https://mosip.github.io/documentation/1.2.0/admin-service.html).
+API endpoints, base URL, and mock server details are available via Stoplight and Swagger documentation: [MOSIP Pre-Registration Service API Documentation](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html).
 
 ### Product Documentation
 
-To learn more about admin services from a functional perspective and use case scenarios, refer to our main documentation: [Click here](https://docs.mosip.io/1.2.0/id-lifecycle-management/support-systems/administration).
+To learn more about pre-reg services from a functional perspective and use case scenarios, refer to our main documentation: [Click here](https://docs.mosip.io/1.2.0/id-lifecycle-management/support-systems/administration).
 
 ## Contribution & Community
 
