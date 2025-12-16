@@ -40,12 +40,10 @@ Before you begin, ensure you have the following installed:
 
 ### Configuration
 
-- This module uses the following configuration files that are accessible in this [repository](https://github.com/mosip/mosip-config/tree/master).
+- This module uses the following configuration files that are accessible in this [mosip-config repository](https://github.com/mosip/mosip-config/tree/master).
   Please refer to the required released tagged version for configuration.
   [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties) and
   [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) are defined here. You need to run the config-server along with the files mentioned above.
-- For generating clients, refer to MOSIP’s documentation here: [Client Generation Guide](https://docs.mosip.io/1.2.0/interoperability/integrations/mosip-crvs/approach/technical-details#id-1.-create-client-id-role-for-the-crvs)
-- To authenticate a client, use the Auth Manager API as described here: [Auth API Documentation](https://docs.mosip.io/1.2.0/interoperability/integrations/mosip-crvs/approach/technical-details#id-2.-fetch-access-token-to-call-the-apis)
 
 #### Required Configuration Properties
 
