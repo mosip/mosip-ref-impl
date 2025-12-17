@@ -36,8 +36,8 @@ Before you begin, ensure you have the following installed:
 - **JDK**: 21.0.3
 - **Maven**: 3.9.6
 - **Docker**: Latest stable version
-- **PostgreSQL**: 10.2
-- **Keycloak**: [Check here](https://github.com/mosip/keycloak)
+- **PostgreSQL**: 16.0
+- **Keycloak**: [Check here](https://github.com/mosip/keycloak/tree/master)
 
 ### Runtime Dependencies
 
