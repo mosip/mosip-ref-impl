@@ -47,10 +47,10 @@ Add the below dependencies to the classpath, or include it as a Maven dependency
 ### Configuration
 
 - This module uses the following configuration files that are accessible in this [mosip-config repository](https://github.com/mosip/mosip-config/tree/master).
-  Please refer to the required released tagged version for configuration.
-  [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties),
-  [Configuration-pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) and
-  [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) are defined here. You need to run the config-server along with the files mentioned above.
+  Please refer to the required released tagged version for configuration:
+  - [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties),
+    [Configuration-pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) and
+    [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) are defined here. You need to run the config-server along with the files mentioned above.
 
 #### Required Configuration Properties
 
