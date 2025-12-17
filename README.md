@@ -1,8 +1,7 @@
 # MOSIP Reference Implementation
 
 [![Maven Package upon a push](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml/badge.svg?branch=master)](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml)
-[![Quality Gate Status](https://sonarcloud.io/summary/new_code?id=mosip_kernel-ref-idobjectvalidator&branch=release-1.3.x&metric=alert_status)](https://sonarcloud.io/dashboard?id=mosip_kernel-ref-idobjectvalidator)
-[![Quality Gate Status](https://sonarcloud.io/summary/new_code?id=mosip_pre-registration-booking-service&branch=release-1.3.x&metric=alert_status)](https://sonarcloud.io/dashboard?id=mosip_pre-registration-booking-service)
+
 ## Overview
 The MOSIP Reference Implementation (Ref Impl) repository contains country-specific customizations and implementations that extend the core MOSIP platform. It serves as a reference for how different countries can adapt and implement MOSIP according to their unique requirements and regulations.
 
@@ -10,17 +9,17 @@ The MOSIP Reference Implementation (Ref Impl) repository contains country-specif
 
 The mosip-ref-impl contains the following services:
 
-1. **[cache-provider-hazelcast](cache-provider-hazelcast)** - Hazelcast based cache provider Reference implementation
-2. **[cache-provider-redis](cache-provider-redis)** - Redis based cache provider Reference implementation
-3. **[kernel](kernel)** - MOSIP Kernel implementation for Reference Impl
-   a. **[kernel-ref-idobjectvalidator](kernel/kernel-ref-idobjectvalidator)** - ID Object Validator module for Reference Impl
-   b. **[kernel-smsserviceprovider-msg91](kernel/kernel-smsserviceprovider-msg91)** - MSG91 SMS Service Provider module for Reference Impl
-   c. **[kernel-virusscanner-clamav](kernel/kernel-virusscanner-clamav)** - ClamAV Virus Scanner module for Reference Impl
-4. **[keycloak](keycloak)** - Keycloak customizations for Reference Impl
-5. **[pre-registration-booking-service](pre-registration-booking-service)** - Pre-registration booking service Reference implementation
-6. **[registration-processor](registration-processor)** - Registration processor Reference implementation
-   a. **[registration-processor-external-integration-service](registration-processor/registration-processor-external-integration-service)** - External Integration Service module for Reference Impl
-   b. **[registration-processor-external-stage](registration-processor/registration-processor-external-stage)** - External Stage module for Reference Impl
+1. **[cache-provider-hazelcast](cache-provider-hazelcast)** : Hazelcast based cache provider Reference implementation
+2. **[cache-provider-redis](cache-provider-redis)** : Redis based cache provider Reference implementation
+3. **[kernel](kernel)** : Reference implementation for core libraries
+   - **[kernel-ref-idobjectvalidator](kernel/kernel-ref-idobjectvalidator)** : Reference implementation for ID Object Validator
+   - **[kernel-smsserviceprovider-msg91](kernel/kernel-smsserviceprovider-msg91)** : Reference implementation for msg91 SMS Service Provider
+   - **[kernel-virusscanner-clamav](kernel/kernel-virusscanner-clamav)** : Reference implementation for clamv Virus Scanner
+4. **[keycloak](keycloak)** : Reference implementation for keycloak
+5. **[pre-registration-booking-service](pre-registration-booking-service)** : Reference implementation for pre-registration booking service.
+6. **[registration-processor](registration-processor)** : Reference implementation for registration processor external integration.
+   - **[registration-processor-external-integration-service](registration-processor/registration-processor-external-integration-service)** : Reference implementation for external integration service.
+   - **[registration-processor-external-stage](registration-processor/registration-processor-external-stage)** : Reference implementation for external stage.
 
 ## Local Setup
 
@@ -41,14 +40,16 @@ Before you begin, ensure you have the following installed:
 
 ### Runtime Dependencies
 
-- Add `kernel-auth-adapter.jar` to the classpath, or include it as a Maven dependency in your `pom.xml`.
+Add the below dependencies to the classpath, or include it as a Maven dependency in your `pom.xml`.
+- `kernel-auth-adapter.jar`
+- `kernel-ref-idobjectvalidator.jar`
 
 ### Configuration
 
 - This module uses the following configuration files that are accessible in this [mosip-config repository](https://github.com/mosip/mosip-config/tree/master).
   Please refer to the required released tagged version for configuration.
-  [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties) and
-- [Configuration-pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) and
+  [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties),
+  [Configuration-pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) and
   [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) are defined here. You need to run the config-server along with the files mentioned above.
 
 #### Required Configuration Properties
@@ -98,7 +99,7 @@ mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
     - Click the Run button in your IDE, or
     - Run via command: `java -jar target/specific-service:<$version>.jar`
 
-5. Verify Swagger is accessible at: `http://localhost:${server.port}/${server.servlet.path}/swagger-ui/index.html`
+5. Verify Swagger is accessible.
 
 ### Local Setup with Docker (Easy Setup for Demos)
 
