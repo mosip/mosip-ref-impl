@@ -41,13 +41,14 @@ Before you begin, ensure you have the following installed:
 
 ### Runtime Dependencies
 
-- Add `kernel-auth-adapter.jar` to the classpath, or include it as a Maven dependency — [Download](https://oss.sonatype.org/#nexus-search;gav~~kernel-auth-adapter~1.3.0-SNAPSHOT~~)
+- Add `kernel-auth-adapter.jar` to the classpath, or include it as a Maven dependency in your `pom.xml`.
 
 ### Configuration
 
 - This module uses the following configuration files that are accessible in this [mosip-config repository](https://github.com/mosip/mosip-config/tree/master).
   Please refer to the required released tagged version for configuration.
   [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties) and
+- [Configuration-pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) and
   [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) are defined here. You need to run the config-server along with the files mentioned above.
 
 #### Required Configuration Properties
@@ -72,10 +73,6 @@ The following properties must be configured with your environment-specific value
 - `mosip.idrepo.identity.url` - ID repository identity service URL
 - `mosip.api.internal.url` - Internal API base URL
 
-**Note**:
-- **If using config-server**: Properties marked as environment variables (e.g., `db.dbuser.password`, `keycloak.internal.url`, `keycloak.external.url`, `mosip.regproc.client.secret`) must be passed through the config-server's 'overrides' environment variables and should NOT be defined in property files. Refer to the config-server helm chart for more details.
-- **If using application properties directly**: Update these properties directly in your `application.properties` file with your environment-specific values.
-
 ## Installation
 
 ### Local Setup (for Development or Contribution)
@@ -88,7 +85,7 @@ The following properties must be configured with your environment-specific value
 
 ```text
 git clone <repo-url>
-cd service-name
+cd <service-name>
 ```
 
 3. Build the project:
@@ -101,7 +98,7 @@ mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
     - Click the Run button in your IDE, or
     - Run via command: `java -jar target/specific-service:<$version>.jar`
 
-5. Verify Swagger is accessible at: `http://localhost:9095/preregistration/v1/swagger-ui/index.html`
+5. Verify Swagger is accessible at: `http://localhost:${server.port}/${server.servlet.path}/swagger-ui/index.html`
 
 ### Local Setup with Docker (Easy Setup for Demos)
 
@@ -112,7 +109,7 @@ Recommended for users who want a quick, ready-to-use setup — testers, students
 Pull the latest pre-built images from Docker Hub using the following commands:
 
 ```text
-docker pull mosipid/pre-registration-booking-service:1.2.0.2
+docker pull mosipid/pre-registration-booking-service:1.3.0
 ```
 
 #### Option 2: Build Docker Images Locally
@@ -123,14 +120,14 @@ Recommended for contributors or developers who want to modify or build the servi
 
 ```text
 git clone <repo-url>
-cd service name
+cd <service-name>
 mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
 2. Navigate to each service directory and build the Docker image:
 
 ```text
-cd service-name/<service-directory>
+cd <service-name>/<service-directory>
 docker build -t <service-name> .
 ```
 
@@ -174,7 +171,7 @@ API endpoints, base URL, and mock server details are available via Stoplight and
 
 ### Product Documentation
 
-To learn more about pre-reg services from a functional perspective and use case scenarios, refer to our main documentation: [Click here](https://docs.mosip.io/1.2.0/id-lifecycle-management/support-systems/administration).
+To learn more about pre-reg services from a functional perspective and use case scenarios, refer to our main documentation: [Click here](https://docs.mosip.io/1.2.0/modules/pre-registration).
 
 ## Contribution & Community
 
