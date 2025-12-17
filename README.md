@@ -164,7 +164,10 @@ For the complete Pre-reg UI implementation and usage instructions, refer to the 
 
 ## Documentation
 
-For more detailed documents for repositories, you can [check here](https://github.com/mosip/documentation/tree/1.2.0/docs).
+For more detailed documents check below links:
+- [Registration Processor](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#registration-processor)
+- [Pre-Registration Booking Service](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#pre-registration)
+- [Common components](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#common-components)
 
 ### API Documentation
 
