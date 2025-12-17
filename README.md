@@ -165,8 +165,9 @@ For the complete Pre-reg UI implementation and usage instructions, refer to the 
 ## Documentation
 
 For more detailed documents check below links:
-- [Registration Processor](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#registration-processor)
-- [Pre-Registration Booking Service](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#pre-registration)
+- [Registration Processor](https://docs.mosip.io/1.2.0/id-lifecycle-management/identity-issuance/registration-processor/overview)
+- [Pre-Registration](https://docs.mosip.io/1.2.0/id-lifecycle-management/identity-issuance/pre-registration)
+- [keycloak](https://docs.mosip.io/1.2.0/id-lifecycle-management/supporting-components/keycloak)
 - [Common components](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#common-components)
 
 ### API Documentation
