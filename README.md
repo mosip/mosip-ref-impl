@@ -1,8 +1,8 @@
 # MOSIP Ref Impl
 
 [![Maven Package upon a push](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml/badge.svg?branch=master)](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mosip-ref-impl&id=mosip-ref-impl&metric=alert_status)](https://sonarcloud.io/dashboard?id=mosip-ref-impl)
-
+[![Quality Gate Status](https://sonarcloud.io/summary/new_code?id=mosip_kernel-ref-idobjectvalidator&branch=release-1.3.x&metric=alert_status)](https://sonarcloud.io/dashboard?id=mosip_kernel-ref-idobjectvalidator)
+[![Quality Gate Status](https://sonarcloud.io/summary/new_code?id=mosip_pre-registration-booking-service&branch=release-1.3.x&metric=alert_status)](https://sonarcloud.io/dashboard?id=mosip_pre-registration-booking-service)
 ## Overview
 The MOSIP Reference Implementation (Ref Impl) repository contains country-specific customizations and implementations that extend the core MOSIP platform. It serves as a reference for how different countries can adapt and implement MOSIP according to their unique requirements and regulations.
 
