@@ -1,4 +1,4 @@
-# MOSIP Ref Impl
+# MOSIP Reference Implementation
 
 [![Maven Package upon a push](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml/badge.svg?branch=master)](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml)
 [![Quality Gate Status](https://sonarcloud.io/summary/new_code?id=mosip_kernel-ref-idobjectvalidator&branch=release-1.3.x&metric=alert_status)](https://sonarcloud.io/dashboard?id=mosip_kernel-ref-idobjectvalidator)
@@ -10,12 +10,17 @@ The MOSIP Reference Implementation (Ref Impl) repository contains country-specif
 
 The mosip-ref-impl contains the following services:
 
-1. **[cache-provider-hazelcast](https://github.com/mosip/mosip-ref-impl/tree/master/cache-provider-hazelcast)** - Hazelcast based cache provider implementation
-2. **[cache-provider-redis](https://github.com/mosip/mosip-ref-impl/tree/master/cache-provider-redis)** - Redis based cache provider implementation
-3. **[kernel](https://github.com/mosip/mosip-ref-impl/tree/master/kernel)** - MOSIP Kernel implementation for Ref Impl
-4. **[keycloak](https://github.com/mosip/mosip-ref-impl/tree/master/keycloak)** - Keycloak customizations for Ref Impl
-5. **[pre-registration-booking-service](https://github.com/mosip/mosip-ref-impl/tree/master/pre-registration-booking-service)** - Pre-registration booking service implementation
-6. **[registration-processor](https://github.com/mosip/mosip-ref-impl/tree/master/registration-processor)** - Registration processor implementation
+1. **[cache-provider-hazelcast](cache-provider-hazelcast)** - Hazelcast based cache provider Reference implementation
+2. **[cache-provider-redis](cache-provider-redis)** - Redis based cache provider Reference implementation
+3. **[kernel](kernel)** - MOSIP Kernel implementation for Reference Impl
+   a. **[kernel-ref-idobjectvalidator](kernel/kernel-ref-idobjectvalidator)** - ID Object Validator module for Reference Impl
+   b. **[kernel-smsserviceprovider-msg91](kernel/kernel-smsserviceprovider-msg91)** - MSG91 SMS Service Provider module for Reference Impl
+   c. **[kernel-virusscanner-clamav](kernel/kernel-virusscanner-clamav)** - ClamAV Virus Scanner module for Reference Impl
+4. **[keycloak](keycloak)** - Keycloak customizations for Reference Impl
+5. **[pre-registration-booking-service](pre-registration-booking-service)** - Pre-registration booking service Reference implementation
+6. **[registration-processor](registration-processor)** - Registration processor Reference implementation
+   a. **[registration-processor-external-integration-service](registration-processor/registration-processor-external-integration-service)** - External Integration Service module for Reference Impl
+   b. **[registration-processor-external-stage](registration-processor/registration-processor-external-stage)** - External Stage module for Reference Impl
 
 ## Local Setup
 
