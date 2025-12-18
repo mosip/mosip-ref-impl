@@ -156,27 +156,20 @@ Access the services at `http://localhost:<port>` using the port mappings listed 
 
 To deploy mosip ref impl services on a Kubernetes cluster, refer to the [Sandbox Deployment Guide](https://docs.mosip.io/1.2.0/deploymentnew/v3-installation).
 
-## Usage
-
-### Pre-reg UI
-
-For the complete Pre-reg UI implementation and usage instructions, refer to the [Prereg UI GitHub repository](https://github.com/mosip/pre-registration-ui).
-
 ## Documentation
 
+### API Documentation
+
+API endpoints, base URL, and mock server details are available via Stoplight and Swagger documentation for below services:
+- **[Registration Processor External Integration Service API Documentation](https://mosip.github.io/documentation/1.2.0/registration-processor-external-integration-service.html)**.
+- **[Pre-Registration Booking Service API Documentation](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html)**.
+
+### Product Documentation
 For more detailed documents check below links:
 - [Registration Processor](https://docs.mosip.io/1.2.0/id-lifecycle-management/identity-issuance/registration-processor/overview)
 - [Pre-Registration](https://docs.mosip.io/1.2.0/id-lifecycle-management/identity-issuance/pre-registration)
 - [keycloak](https://docs.mosip.io/1.2.0/id-lifecycle-management/supporting-components/keycloak)
 - [Common components](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#common-components)
-
-### API Documentation
-
-API endpoints, base URL, and mock server details are available via Stoplight and Swagger documentation: [MOSIP Pre-Registration Service API Documentation](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html).
-
-### Product Documentation
-
-To learn more about pre-reg services from a functional perspective and use case scenarios, refer to our main documentation: [Click here](https://docs.mosip.io/1.2.0/modules/pre-registration).
 
 ## Contribution & Community
 
