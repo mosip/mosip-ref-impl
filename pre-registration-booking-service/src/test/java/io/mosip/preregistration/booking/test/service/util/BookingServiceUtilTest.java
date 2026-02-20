@@ -68,6 +68,8 @@ import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
+import io.mosip.preregistration.core.common.entity.UserDetails;
+import io.mosip.preregistration.core.common.service.UserDetailsService;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.RequestValidator;
@@ -96,6 +98,9 @@ public class BookingServiceUtilTest {
 
 	@MockBean
 	private BookingDAO bookingDAO;
+
+	@MockBean
+	private UserDetailsService userDetailsService;
 
 	@Mock
 	private AuthUserDetails authUserDetails;
@@ -139,6 +144,10 @@ public class BookingServiceUtilTest {
 		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
 		SecurityContextHolder.setContext(securityContext);
 		Mockito.when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(applicationUser);
+		Mockito.when(applicationUser.getUserId()).thenReturn("test-user");
+		UserDetails mappedUser = new UserDetails();
+		mappedUser.setUserId(java.util.UUID.fromString("00000000-0000-0000-0000-000000000001"));
+		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString())).thenReturn(mappedUser);
 		centerDto.setId("10001");
 		centerDto.setLangCode("eng");
 		centerDto.setCenterStartTime(startTime);
@@ -646,3 +655,5 @@ public class BookingServiceUtilTest {
 	}
 
 }
+
+
