@@ -32,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -68,6 +69,7 @@ import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
+import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
 import io.mosip.preregistration.core.common.entity.UserDetails;
 import io.mosip.preregistration.core.common.service.UserDetailsService;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
@@ -577,12 +579,39 @@ public class BookingServiceUtilTest {
 
 	@Test
 	public void bookingEntitySetterTest() {
+		ReflectionTestUtils.setField(serviceUtil, "useCanonicalUserId", true);
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
 		bookingRequestDTO.setSlotToTime("09:13");
 		bookingRequestDTO.setRegDate("2018-12-06");
 		serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+	}
+
+	@Test
+	public void bookingEntitySetterLegacyCrByTest() {
+		ReflectionTestUtils.setField(serviceUtil, "useCanonicalUserId", false);
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+		assertEquals("test-user", entity.getCrBy());
+	}
+
+	@Test
+	public void bookingEntitySetterCanonicalFallbackToRawTest() {
+		ReflectionTestUtils.setField(serviceUtil, "useCanonicalUserId", true);
+		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString()))
+				.thenThrow(new RuntimeException("mapping failed"));
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+		assertEquals("test-user", entity.getCrBy());
 	}
 
 	@Test
