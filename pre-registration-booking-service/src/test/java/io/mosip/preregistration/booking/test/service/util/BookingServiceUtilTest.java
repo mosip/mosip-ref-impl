@@ -579,7 +579,7 @@ public class BookingServiceUtilTest {
 
 	@Test
 	public void bookingEntitySetterTest() {
-		ReflectionTestUtils.setField(serviceUtil, "useCanonicalUserId", true);
+		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
@@ -590,7 +590,21 @@ public class BookingServiceUtilTest {
 
 	@Test
 	public void bookingEntitySetterLegacyCrByTest() {
-		ReflectionTestUtils.setField(serviceUtil, "useCanonicalUserId", false);
+		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+		assertEquals("00000000-0000-0000-0000-000000000001", entity.getCrBy());
+	}
+
+	@Test
+	public void bookingEntitySetterCanonicalFallbackToRawTest() {
+		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", true);
+		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString()))
+				.thenThrow(new RuntimeException("mapping failed"));
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
@@ -601,8 +615,8 @@ public class BookingServiceUtilTest {
 	}
 
 	@Test
-	public void bookingEntitySetterCanonicalFallbackToRawTest() {
-		ReflectionTestUtils.setField(serviceUtil, "useCanonicalUserId", true);
+	public void bookingEntitySetterStrictModeNoRawFallbackTest() {
+		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
 		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString()))
 				.thenThrow(new RuntimeException("mapping failed"));
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
@@ -611,7 +625,7 @@ public class BookingServiceUtilTest {
 		bookingRequestDTO.setSlotToTime("09:13");
 		bookingRequestDTO.setRegDate("2018-12-06");
 		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
-		assertEquals("test-user", entity.getCrBy());
+		assertEquals("", entity.getCrBy());
 	}
 
 	@Test
