@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.UUID;
 
 import io.mosip.kernel.core.exception.ParseException;
 import io.mosip.kernel.core.logger.spi.Logger;
@@ -134,8 +133,7 @@ public class BookingController {
 			@PathVariable("preRegistrationId") String preRegistrationId,
 			@Validated @RequestBody(required = true) MainRequestDTO<BookingRequestDTO> bookingDTO,  @Parameter(hidden = true) Errors errors ) {
 		log.info("sessionId", "idType", "id",
-				"In bookAppoinment method of Booking controller for preRegistrationId: "
-						+ maskIdentifier(preRegistrationId));
+				"In bookAppoinment method of Booking controller to book an appointment for object: " + bookingDTO);
 		requestValidator.validateId(BOOKING, bookingDTO.getId(), errors);
 		DataValidationUtil.validate(errors,BOOKING);
 		return ResponseEntity.status(HttpStatus.OK).body(bookingService.bookAppointment(bookingDTO, preRegistrationId));
@@ -213,8 +211,7 @@ public class BookingController {
 	public ResponseEntity<MainResponseDTO<CancelBookingResponseDTO>> cancelBook(
 			@PathVariable("preRegistrationId") String preRegistrationId) {
 		log.info("sessionId", "idType", "id",
-				"In cancelBook method of Booking controller to cancel the appointment for preRegistrationId: "
-						+ maskIdentifier(preRegistrationId));
+				"In cancelBook method of Booking controller to cancel the appointment for object: " + preRegistrationId);
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(bookingService.cancelAppointment(preRegistrationId));
 	}
@@ -239,8 +236,7 @@ public class BookingController {
 	public ResponseEntity<MainResponseDTO<CancelBookingResponseDTO>> cancelAppointmentBatch(
 			@PathVariable("preRegistrationId") String preRegistrationId) {
 		log.info("sessionId", "idType", "id",
-				"In cancelAppointmentBatch method of Booking controller to cancel the appointment for preRegistrationId: "
-						+ maskIdentifier(preRegistrationId) + " triggered by batch job");
+				"In cancelAppointmentBatch method of Booking controller to cancel the appointment for object: " + preRegistrationId+" triggered by batch job");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(bookingService.cancelAppointmentBatch(preRegistrationId));
 	}
@@ -264,40 +260,9 @@ public class BookingController {
 	})
 	public ResponseEntity<MainResponseDTO<DeleteBookingDTO>> discardIndividual(
 			@RequestParam(value = "preRegistrationId") String preId) {
-		log.info("sessionId", "idType", "id",
-				"In Booking controller for deletion of booking with preRegistrationId " + maskIdentifier(preId));
+		log.info("sessionId", "idType", "id", "In Booking controller for deletion of booking with preId " + preId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(bookingService.deleteBooking(preId));
-	}
-
-	private String maskIdentifier(String value) {
-		if (value == null || value.isBlank()) {
-			return "<empty>";
-		}
-		String trimmed = value.trim();
-		int atIndex = trimmed.indexOf('@');
-		if (atIndex > 0 && atIndex < trimmed.length() - 1) {
-			String local = trimmed.substring(0, atIndex);
-			String domain = trimmed.substring(atIndex);
-			String visibleLocal = local.substring(0, 1);
-			return visibleLocal + "***" + domain;
-		}
-		if (trimmed.matches("\\+?\\d{10,12}")) {
-			boolean hasPlus = trimmed.startsWith("+");
-			String digits = hasPlus ? trimmed.substring(1) : trimmed;
-			if (digits.length() <= 4) {
-				return (hasPlus ? "+" : "") + "****";
-			}
-			String masked = "*".repeat(digits.length() - 4) + digits.substring(digits.length() - 4);
-			return (hasPlus ? "+" : "") + masked;
-		}
-		try {
-			UUID.fromString(trimmed);
-			return "***" + trimmed.substring(trimmed.length() - 6);
-		} catch (Exception ignored) {
-		}
-		int visible = Math.min(4, trimmed.length());
-		return "***" + trimmed.substring(trimmed.length() - visible);
 	}
 
 	/**
