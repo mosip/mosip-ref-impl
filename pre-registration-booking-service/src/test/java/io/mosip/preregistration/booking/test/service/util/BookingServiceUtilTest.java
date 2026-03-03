@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.mosip.preregistration.booking.exception.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -52,15 +53,6 @@ import io.mosip.preregistration.booking.dto.RegistrationCenterDto;
 import io.mosip.preregistration.booking.dto.RegistrationCenterResponseDto;
 import io.mosip.preregistration.booking.dto.SlotDto;
 import io.mosip.preregistration.booking.entity.AvailibityEntity;
-import io.mosip.preregistration.booking.exception.AppointmentReBookingFailedException;
-import io.mosip.preregistration.booking.exception.AvailablityNotFoundException;
-import io.mosip.preregistration.booking.exception.BookingDateNotSeletectedException;
-import io.mosip.preregistration.booking.exception.BookingPreIdNotFoundException;
-import io.mosip.preregistration.booking.exception.BookingRegistrationCenterIdNotFoundException;
-import io.mosip.preregistration.booking.exception.BookingTimeSlotNotSeletectedException;
-import io.mosip.preregistration.booking.exception.InvalidDateTimeFormatException;
-import io.mosip.preregistration.booking.exception.RecordNotFoundException;
-import io.mosip.preregistration.booking.exception.TimeSpanException;
 import io.mosip.preregistration.booking.repository.BookingAvailabilityRepository;
 import io.mosip.preregistration.booking.repository.RegistrationBookingRepository;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
@@ -614,7 +606,7 @@ public class BookingServiceUtilTest {
 		assertEquals("test-user", entity.getCrBy());
 	}
 
-	@Test
+	@Test(expected = AppointmentBookingFailedException.class)
 	public void bookingEntitySetterStrictModeNoRawFallbackTest() {
 		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
 		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString()))
@@ -624,8 +616,7 @@ public class BookingServiceUtilTest {
 		bookingRequestDTO.setSlotFromTime("09:00");
 		bookingRequestDTO.setSlotToTime("09:13");
 		bookingRequestDTO.setRegDate("2018-12-06");
-		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
-		assertEquals("", entity.getCrBy());
+		serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
 	}
 
 	@Test
