@@ -40,12 +40,10 @@
         <maven.compiler.version>3.8.0</maven.compiler.version>
         <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <spring-boot-starter-data-redis.version>3.2.3</spring-boot-starter-data-redis.version>
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
         <git-commit-id-plugin.version>3.0.1</git-commit-id-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-        <jedis.version>2.9.0</jedis.version>
         <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
         <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
         <kerne.bom.version>1.2.1-SNAPSHOT</kerne.bom.version>
@@ -88,12 +86,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>${spring-boot-starter-data-redis.version}</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version>
         </dependency>
     </dependencies>
     <build>

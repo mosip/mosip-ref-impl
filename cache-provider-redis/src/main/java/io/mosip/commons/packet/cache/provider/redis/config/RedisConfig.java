@@ -12,6 +12,9 @@ public class RedisConfig {
     @Value("${redis.cache.hostname}")
     private String hostname;
 
+    @Value("${redis.cache.password}")
+    private String password;
+
     @Value("${redis.cache.port}")
     private int port;
 
@@ -21,6 +24,7 @@ public class RedisConfig {
                 = new JedisConnectionFactory();
         jedisConFactory.setHostName(hostname);
         jedisConFactory.setPort(port);
+        jedisConFactory.setPassword(password);
         return jedisConFactory;
     }
 
