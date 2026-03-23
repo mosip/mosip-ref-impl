@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import io.mosip.preregistration.booking.exception.*;
 import org.junit.Before;
@@ -62,7 +63,6 @@ import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
 import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
-import io.mosip.preregistration.core.common.entity.UserDetails;
 import io.mosip.preregistration.core.common.service.UserDetailsService;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.RestCallException;
@@ -139,9 +139,12 @@ public class BookingServiceUtilTest {
 		SecurityContextHolder.setContext(securityContext);
 		Mockito.when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(applicationUser);
 		Mockito.when(applicationUser.getUserId()).thenReturn("test-user");
-		UserDetails mappedUser = new UserDetails();
-		mappedUser.setUserId(java.util.UUID.fromString("00000000-0000-0000-0000-000000000001"));
-		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString())).thenReturn(mappedUser);
+		Mockito.when(userDetailsService.resolveCanonicalUserId("test-user"))
+				.thenReturn(Optional.of("00000000-0000-0000-0000-000000000001"));
+		Mockito.when(userDetailsService.resolveCanonicalUserIdOrIdentifier("test-user"))
+				.thenReturn("00000000-0000-0000-0000-000000000001");
+		Mockito.when(userDetailsService.maskIdentifier(Mockito.anyString()))
+				.thenAnswer(invocation -> invocation.getArgument(0));
 		centerDto.setId("10001");
 		centerDto.setLangCode("eng");
 		centerDto.setCenterStartTime(startTime);
@@ -595,8 +598,8 @@ public class BookingServiceUtilTest {
 	@Test
 	public void bookingEntitySetterCanonicalFallbackToRawTest() {
 		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", true);
-		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString()))
-				.thenThrow(new RuntimeException("mapping failed"));
+		Mockito.when(userDetailsService.resolveCanonicalUserIdOrIdentifier("test-user"))
+				.thenReturn("test-user");
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
@@ -609,8 +612,8 @@ public class BookingServiceUtilTest {
 	@Test(expected = AppointmentBookingFailedException.class)
 	public void bookingEntitySetterStrictModeNoRawFallbackTest() {
 		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
-		Mockito.when(userDetailsService.findOrCreateByIdentifier(Mockito.anyString()))
-				.thenThrow(new RuntimeException("mapping failed"));
+		Mockito.when(userDetailsService.resolveCanonicalUserId("test-user"))
+				.thenReturn(Optional.empty());
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
