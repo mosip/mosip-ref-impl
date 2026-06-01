@@ -13,9 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 import io.mosip.preregistration.booking.exception.*;
+import io.mosip.preregistration.core.exception.UserLookupException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -139,12 +138,8 @@ public class BookingServiceUtilTest {
 		SecurityContextHolder.setContext(securityContext);
 		Mockito.when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(applicationUser);
 		Mockito.when(applicationUser.getUserId()).thenReturn("test-user");
-		Mockito.when(userDetailsService.resolveCanonicalUserId("test-user"))
-				.thenReturn(Optional.of("00000000-0000-0000-0000-000000000001"));
-		Mockito.when(userDetailsService.resolveCanonicalUserIdOrIdentifier("test-user"))
+		Mockito.when(userDetailsService.getOrCreateInternalUserId("test-user"))
 				.thenReturn("00000000-0000-0000-0000-000000000001");
-		Mockito.when(userDetailsService.maskIdentifier(Mockito.anyString()))
-				.thenAnswer(invocation -> invocation.getArgument(0));
 		centerDto.setId("10001");
 		centerDto.setLangCode("eng");
 		centerDto.setCenterStartTime(startTime);
@@ -596,24 +591,22 @@ public class BookingServiceUtilTest {
 	}
 
 	@Test
-	public void bookingEntitySetterCanonicalFallbackToRawTest() {
+	public void bookingEntitySetterWithCompatibilityModeWritesUuidTest() {
 		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", true);
-		Mockito.when(userDetailsService.resolveCanonicalUserIdOrIdentifier("test-user"))
-				.thenReturn("test-user");
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
 		bookingRequestDTO.setSlotToTime("09:13");
 		bookingRequestDTO.setRegDate("2018-12-06");
 		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
-		assertEquals("test-user", entity.getCrBy());
+		assertEquals("00000000-0000-0000-0000-000000000001", entity.getCrBy());
 	}
 
 	@Test(expected = AppointmentBookingFailedException.class)
-	public void bookingEntitySetterStrictModeNoRawFallbackTest() {
+	public void bookingEntitySetterThrowsOnUuidResolutionFailureTest() {
 		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
-		Mockito.when(userDetailsService.resolveCanonicalUserId("test-user"))
-				.thenReturn(Optional.empty());
+		Mockito.when(userDetailsService.getOrCreateInternalUserId("test-user"))
+				.thenThrow(new UserLookupException("PRG_CORE_REQ_024", "Failed to resolve internal user ID"));
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");

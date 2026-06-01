@@ -45,6 +45,7 @@ import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.util.BookingExceptionCatcher;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
+import io.mosip.preregistration.application.service.ApplicationIdentityMigrationService;
 import io.mosip.preregistration.booking.service.util.BookingLock;
 import io.mosip.preregistration.booking.service.util.BookingServiceUtil;
 import io.mosip.preregistration.core.code.AuditLogVariables;
@@ -82,6 +83,9 @@ public class BookingService implements BookingServiceIntf {
 	 */
 	@Autowired
 	BookingServiceUtil serviceUtil;
+
+	@Autowired
+	private ApplicationIdentityMigrationService applicationIdentityMigrationService;
 
 	/**
 	 * Reference for ${preregistration.availability.sync} from property file
@@ -641,8 +645,9 @@ public class BookingService implements BookingServiceIntf {
 					" and Date and Time " + availableEntity.getRegDate() + " " + availableEntity.getFromTime());
 			if (serviceUtil.isKiosksAvailable(availableEntity)) {
 				/* Updating booking */
-				bookingDAO.saveRegistrationEntityForBooking(
+				RegistrationBookingEntity bookingEntity = bookingDAO.saveRegistrationEntityForBooking(
 						serviceUtil.bookingEntitySetter(preRegistrationId, bookingRequestDTO));
+				applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId, bookingEntity.getCrBy());
 				/* Reduce Availability */
 				availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() - 1);
 				AvailibityEntity availableUpdate = bookingDAO.updateAvailibityEntity(availableEntity);
@@ -704,6 +709,10 @@ public class BookingService implements BookingServiceIntf {
 
 						serviceUtil.timeSpanCheckForCancle(bookedDateTime);
 					}
+					String effectiveUserId = applicationIdentityMigrationService
+						.resolveEffectiveUserId(bookingEntity.getCrBy());
+					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId,
+							effectiveUserId);
 					/* Deleting the canceled booking */
 					// bookingDAO.deleteRegistrationEntity(bookingEntity);
 					bookingDAO.deleteByPreRegistrationId(preRegistrationId);
@@ -765,6 +774,9 @@ public class BookingService implements BookingServiceIntf {
 			if (validationUtil.requstParamValidator(requestParamMap)
 					&& serviceUtil.checkApplicationStatus(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
+				String effectiveUserId = applicationIdentityMigrationService
+						.resolveEffectiveUserId(registrationEntityList.getCrBy());
+				applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preregId, effectiveUserId);
 				String str = registrationEntityList.getRegDate() + " " + registrationEntityList.getSlotFromTime();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 				LocalDateTime bookedDateTime = LocalDateTime.parse(str, formatter);
@@ -782,7 +794,7 @@ public class BookingService implements BookingServiceIntf {
 				bookingDAO.updateAvailibityEntity(availableEntity);
 
 				deleteDto.setPreRegistrationId(registrationEntityList.getPreregistrationId());
-				deleteDto.setDeletedBy(registrationEntityList.getCrBy());
+				deleteDto.setDeletedBy(effectiveUserId);
 				deleteDto.setDeletedDateTime(new Date(System.currentTimeMillis()));
 
 			}
