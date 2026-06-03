@@ -35,7 +35,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.mosip.kernel.core.exception.ParseException;
 import io.mosip.kernel.core.exception.ServiceError;
-import io.mosip.kernel.core.util.DateUtils;
+import io.mosip.kernel.core.util.DateUtils2;
 import io.mosip.kernel.core.util.EmptyCheckUtils;
 import io.mosip.preregistration.booking.exception.AppointmentAlreadyCanceledException;
 import io.mosip.preregistration.booking.exception.AppointmentBookingFailedException;
@@ -381,7 +381,7 @@ public class BookingExceptionHandler {
 		errorRes.setErrors(errorList);
 		errorRes.setId(idUrl);
 		errorRes.setVersion(versionUrl);
-		errorRes.setResponsetime(DateUtils.formatDate(new Date(), utcDateTimePattern));
+		errorRes.setResponsetime(DateUtils2.formatDate(new Date(), utcDateTimePattern));
 
 		return new ResponseEntity<>(errorRes, HttpStatus.OK);
 
@@ -428,7 +428,7 @@ public class BookingExceptionHandler {
 		ExceptionJSONInfoDTO errorDetails = new ExceptionJSONInfoDTO("KER-401", "Authentication Failed");
 		errorList.add(errorDetails);
 		errorRes.setErrors(errorList);
-		errorRes.setResponsetime(DateUtils.formatDate(new Date(), utcDateTimePattern));
+		errorRes.setResponsetime(DateUtils2.formatDate(new Date(), utcDateTimePattern));
 		return new ResponseEntity<>(errorRes, HttpStatus.UNAUTHORIZED);
 	}
 

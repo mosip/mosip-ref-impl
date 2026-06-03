@@ -42,7 +42,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.mosip.kernel.core.authmanager.authadapter.model.AuthUserDetails;
-import io.mosip.kernel.core.util.DateUtils;
+import io.mosip.kernel.core.util.DateUtils2;
 import io.mosip.preregistration.booking.codes.RequestCodes;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
 import io.mosip.preregistration.booking.dto.CancelBookingDTO;
@@ -331,7 +331,7 @@ public class BookingServiceUtilTest {
 		availableEntity.setRegcntrId("1");
 		availableEntity.setRegDate(LocalDate.parse("2018-12-04"));
 		availableEntity.setCrBy("987654321");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		serviceUtil.isKiosksAvailable(availableEntity);
 	}
@@ -615,7 +615,7 @@ public class BookingServiceUtilTest {
 		availableEntity.setToTime(localTime2);
 		availableEntity.setFromTime(localTime1);
 		availableEntity.setCrBy("987654321");
-		availableEntity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		availableEntity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		availableEntity.setDeleted(false);
 		availabilityList.add(availableEntity);
 		serviceUtil.slotSetter(availableEntity.getRegDate(), dateList, dateDto, availabilityList);

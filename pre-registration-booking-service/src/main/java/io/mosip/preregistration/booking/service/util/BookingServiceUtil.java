@@ -50,7 +50,7 @@ import io.mosip.kernel.core.authmanager.authadapter.model.AuthUserDetails;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.exception.ServiceError;
 import io.mosip.kernel.core.logger.spi.Logger;
-import io.mosip.kernel.core.util.DateUtils;
+import io.mosip.kernel.core.util.DateUtils2;
 import io.mosip.preregistration.booking.codes.RequestCodes;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
 import io.mosip.preregistration.booking.dto.CancelBookingDTO;
@@ -499,7 +499,7 @@ public class BookingServiceUtil {
 
 	public String getCurrentResponseTime() {
 		log.info("sessionId", "idType", "id", "In getCurrentResponseTime method of Booking Service Util");
-		return DateUtils.formatDate(new Date(System.currentTimeMillis()), utcDateTimePattern);
+		return DateUtils2.formatDate(new Date(System.currentTimeMillis()), utcDateTimePattern);
 	}
 
 	/**
@@ -530,13 +530,13 @@ public class BookingServiceUtil {
 			BookingRequestDTO bookingRequestDTO) {// should set preid
 		log.info("sessionId", "idType", "id", "In bookingEntitySetter method of Booking Service Util");
 		RegistrationBookingEntity entity = new RegistrationBookingEntity();
-		//entity.setBookingPK(new RegistrationBookingPK(DateUtils.parseDateToLocalDateTime(new Date())));
-		entity.setBookingDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+		//entity.setBookingPK(new RegistrationBookingPK(DateUtils2.parseDateToLocalDateTime(new Date())));
+		entity.setBookingDateTime(DateUtils2.parseDateToLocalDateTime(new Date()));
 		entity.setRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
 		entity.setId(UUIDGeneratorUtil.generateId());
 		entity.setLangCode("12L");
 		entity.setCrBy(authUserDetails().getUserId());
-		entity.setCrDate(DateUtils.parseDateToLocalDateTime(new Date()));
+		entity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		entity.setRegDate(LocalDate.parse(bookingRequestDTO.getRegDate()));
 		entity.setSlotFromTime(LocalTime.parse(bookingRequestDTO.getSlotFromTime()));
 		entity.setSlotToTime(LocalTime.parse(bookingRequestDTO.getSlotToTime()));

@@ -76,7 +76,7 @@ import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectIOException;
 import io.mosip.kernel.core.idobjectvalidator.exception.IdObjectValidationFailedException;
 import io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator;
 import io.mosip.kernel.core.logger.spi.Logger;
-import io.mosip.kernel.core.util.DateUtils;
+import io.mosip.kernel.core.util.DateUtils2;
 import io.mosip.kernel.logger.logback.factory.Logfactory;
 import net.minidev.json.JSONArray;
 
@@ -244,7 +244,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 						.parse(data,
 								DateTimeFormatter.ofPattern(env.getProperty(DOB_FORMAT))
 										.withResolverStyle(ResolverStyle.STRICT))
-						.isAfter(DateUtils.getUTCCurrentDateTime().toLocalDate())) {
+						.isAfter(DateUtils2.getUTCCurrentDateTime().toLocalDate())) {
 					String errorMessage = String.format(INVALID_INPUT_PARAMETER.getMessage(),
 							convertToPath(String.valueOf(pathList.get(0))));
 					errorList.removeIf(serviceError -> serviceError.getMessage().equals(errorMessage));
