@@ -5,7 +5,7 @@
 
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.2.1-SNAPSHOT</version>
+	<version>1.4.0-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
 	<description>Booking service of  MOSIP Pre-registration</description>	
 	<url>https://github.com/mosip/mosip-ref-impl</url>	
@@ -13,9 +13,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.2.1-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.2.1-SNAPSHOT</kernel.core.version>
-		<kernel.bom.version>1.2.1-SNAPSHOT</kernel.bom.version>
+		<pre.registration.core.version>1.4.0-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.4.0-SNAPSHOT</kernel.core.version>
+		<kernel.bom.version>1.4.0-SNAPSHOT</kernel.bom.version>
 		<java.version>21</java.version>
 		<!-- Core -->
 		<spring.boot.version>3.2.3</spring.boot.version>
@@ -70,7 +70,6 @@
 		<maven.javadoc.version>3.2.0</maven.javadoc.version>
 		<maven.source.plugin.version>3.3.0</maven.source.plugin.version>
 		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
-
 		<!-- Test & Logging -->
 		<junit.version>4.12</junit.version>
 		<logback.version>1.1.6</logback.version>
@@ -284,7 +283,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-                                <version>${spring.boot.version}</version>
+				<version>${spring.boot.version}</version>
 				<configuration>
 					<executable>true</executable>
 					<layout>ZIP</layout>
@@ -425,7 +424,7 @@
 				<dependency>
 					<groupId>io.mosip.kernel</groupId>
 					<artifactId>kernel-auth-adapter</artifactId>
-					<version>${project.version}</version>
+					<version>1.4.0-SNAPSHOT</version>
 				</dependency>
 			</dependencies>
 			<build>
