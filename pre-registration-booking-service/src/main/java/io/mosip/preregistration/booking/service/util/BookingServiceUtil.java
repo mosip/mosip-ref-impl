@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import jakarta.annotation.PostConstruct;
 
@@ -69,6 +70,7 @@ import io.mosip.preregistration.booking.exception.BookingDateNotSeletectedExcept
 import io.mosip.preregistration.booking.exception.BookingPreIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingRegistrationCenterIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingTimeSlotNotSeletectedException;
+import io.mosip.preregistration.booking.exception.AppointmentBookingFailedException;
 import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.InvalidDateTimeFormatException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
@@ -81,12 +83,16 @@ import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.dto.RequestWrapper;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
 import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
+import io.mosip.preregistration.core.common.entity.UserDetails;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.NotificationException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.UUIDGeneratorUtil;
 import io.mosip.preregistration.core.util.ValidationUtil;
+import io.mosip.preregistration.core.common.service.UserDetailsService;
+import io.mosip.preregistration.core.exception.UserLookupException;
+import io.mosip.preregistration.core.util.GenericUtil;
 
 /**
  * This class provides the utility methods for Booking application.
@@ -106,6 +112,9 @@ public class BookingServiceUtil {
 
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	/**
 	 * Reference for ${regCenter.url} from property file
@@ -139,6 +148,9 @@ public class BookingServiceUtil {
 
 	@Value("${mosip.notification.timezone}")
 	private String specificZoneId;
+
+	@Value("${mosip.prereg.pii.backward.compatibility}")
+	private boolean piiBackwardCompatibility;
 
 	/**
 	 * ObjectMapper global object creation
@@ -535,13 +547,32 @@ public class BookingServiceUtil {
 		entity.setRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
 		entity.setId(UUIDGeneratorUtil.generateId());
 		entity.setLangCode("12L");
-		entity.setCrBy(authUserDetails().getUserId());
+		String userId = authUserDetails().getUserId();
+		entity.setCrBy(resolveEffectiveCrBy(userId));
 		entity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		entity.setRegDate(LocalDate.parse(bookingRequestDTO.getRegDate()));
 		entity.setSlotFromTime(LocalTime.parse(bookingRequestDTO.getSlotFromTime()));
 		entity.setSlotToTime(LocalTime.parse(bookingRequestDTO.getSlotToTime()));
 		entity.setPreregistrationId(preRegistrationId);
 		return entity;
+	}
+
+	private String resolveEffectiveCrBy(String userId) {
+		String maskedUserId = GenericUtil.maskIdentifier(userId);
+		try {
+			String effectiveCrBy = userDetailsService.getOrCreateInternalUserId(userId);
+			boolean canonicalApplied = effectiveCrBy != null && !effectiveCrBy.isBlank()
+					&& !effectiveCrBy.trim().equals(userId == null ? "" : userId.trim());
+			log.info("sessionId", "idType", "id",
+					"Resolved effective user id for booking write. maskedUserId=" + maskedUserId
+							+ ", canonicalApplied=" + canonicalApplied);
+			return effectiveCrBy;
+		} catch (UserLookupException ex) {
+			log.warn("sessionId", "idType", "id",
+					"Failed to resolve effective booking user id for " + maskedUserId);
+			throw new AppointmentBookingFailedException(ErrorCodes.PRG_BOOK_RCI_005.getCode(),
+					ErrorMessages.APPOINTMENT_BOOKING_FAILED.getMessage());
+		}
 	}
 
 	/**
@@ -734,3 +765,4 @@ public class BookingServiceUtil {
 //	}
 
 }
+

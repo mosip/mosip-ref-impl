@@ -647,7 +647,21 @@ public class BookingService implements BookingServiceIntf {
 				/* Updating booking */
 				RegistrationBookingEntity bookingEntity = bookingDAO.saveRegistrationEntityForBooking(
 						serviceUtil.bookingEntitySetter(preRegistrationId, bookingRequestDTO));
-				applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId, bookingEntity.getCrBy());
+				/*
+				 * Best-effort backfill: a failure here must never fail the booking. The
+				 * booking's own crBy is already canonical at this point, so ownership and
+				 * auth are unaffected; missed rows self-heal on the user's next activity and
+				 * are swept by the nightly identity reconciliation job.
+				 */
+				try {
+					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId,
+							bookingEntity.getCrBy());
+				} catch (Exception migrationEx) {
+					log.error("sessionId", "idType", "id",
+							"Identity migration failed for preRegistrationId " + preRegistrationId
+									+ ", booking continues - " + migrationEx.getMessage());
+					log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(migrationEx));
+				}
 				/* Reduce Availability */
 				availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() - 1);
 				AvailibityEntity availableUpdate = bookingDAO.updateAvailibityEntity(availableEntity);
@@ -709,10 +723,21 @@ public class BookingService implements BookingServiceIntf {
 
 						serviceUtil.timeSpanCheckForCancle(bookedDateTime);
 					}
-					String effectiveUserId = applicationIdentityMigrationService
-						.resolveEffectiveUserId(bookingEntity.getCrBy());
-					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId,
-							effectiveUserId);
+					/*
+					 * Best-effort backfill. The resolved id is not used beyond this call, so
+					 * an unresolvable legacy crBy must not block a cancellation.
+					 */
+					try {
+						String effectiveUserId = applicationIdentityMigrationService
+								.resolveEffectiveUserId(bookingEntity.getCrBy());
+						applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId,
+								effectiveUserId);
+					} catch (Exception migrationEx) {
+						log.error("sessionId", "idType", "id",
+								"Identity migration failed for preRegistrationId " + preRegistrationId
+										+ ", cancellation continues - " + migrationEx.getMessage());
+						log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(migrationEx));
+					}
 					/* Deleting the canceled booking */
 					// bookingDAO.deleteRegistrationEntity(bookingEntity);
 					bookingDAO.deleteByPreRegistrationId(preRegistrationId);
@@ -774,9 +799,21 @@ public class BookingService implements BookingServiceIntf {
 			if (validationUtil.requstParamValidator(requestParamMap)
 					&& serviceUtil.checkApplicationStatus(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
+				/*
+				 * The resolve stays outside the guard on purpose: effectiveUserId is
+				 * persisted as deletedBy below, and falling back to a raw identifier there
+				 * would write back the plaintext PII this refactor removes. Only the
+				 * best-effort backfill is guarded.
+				 */
 				String effectiveUserId = applicationIdentityMigrationService
 						.resolveEffectiveUserId(registrationEntityList.getCrBy());
-				applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preregId, effectiveUserId);
+				try {
+					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preregId, effectiveUserId);
+				} catch (Exception migrationEx) {
+					log.error("sessionId", "idType", "id", "Identity migration failed for preRegistrationId "
+							+ preregId + ", deletion continues - " + migrationEx.getMessage());
+					log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(migrationEx));
+				}
 				String str = registrationEntityList.getRegDate() + " " + registrationEntityList.getSlotFromTime();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 				LocalDateTime bookedDateTime = LocalDateTime.parse(str, formatter);
