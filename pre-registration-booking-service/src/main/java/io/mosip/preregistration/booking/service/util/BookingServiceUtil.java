@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import jakarta.annotation.PostConstruct;
 
@@ -83,7 +82,6 @@ import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.dto.RequestWrapper;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
 import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
-import io.mosip.preregistration.core.common.entity.UserDetails;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.NotificationException;
@@ -148,9 +146,6 @@ public class BookingServiceUtil {
 
 	@Value("${mosip.notification.timezone}")
 	private String specificZoneId;
-
-	@Value("${mosip.prereg.pii.backward.compatibility}")
-	private boolean piiBackwardCompatibility;
 
 	/**
 	 * ObjectMapper global object creation
@@ -559,6 +554,18 @@ public class BookingServiceUtil {
 
 	private String resolveEffectiveCrBy(String userId) {
 		String maskedUserId = GenericUtil.maskIdentifier(userId);
+		/*
+		 * getOrCreateInternalUserId returns null for a null or blank id rather than
+		 * throwing, so without this guard a missing authenticated user would flow
+		 * through as a null crBy and fail only at the NOT NULL constraint - surfacing
+		 * as an opaque "table not accessible" error instead of an identity one.
+		 */
+		if (userId == null || userId.isBlank()) {
+			log.warn("sessionId", "idType", "id",
+					"Cannot resolve effective booking user id: authenticated user id is absent");
+			throw new AppointmentBookingFailedException(ErrorCodes.PRG_BOOK_RCI_005.getCode(),
+					ErrorMessages.APPOINTMENT_BOOKING_FAILED.getMessage());
+		}
 		try {
 			String effectiveCrBy = userDetailsService.getOrCreateInternalUserId(userId);
 			boolean canonicalApplied = effectiveCrBy != null && !effectiveCrBy.isBlank()

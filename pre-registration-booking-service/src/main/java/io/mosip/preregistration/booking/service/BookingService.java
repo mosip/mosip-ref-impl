@@ -84,6 +84,23 @@ public class BookingService implements BookingServiceIntf {
 	@Autowired
 	BookingServiceUtil serviceUtil;
 
+	/**
+	 * Best-effort canonical-identity backfill.
+	 *
+	 * <p><b>Propagation differs by call site, deliberately.</b> The backfill is
+	 * annotated {@code REQUIRED}, so in {@link #deleteBooking(String)} - which is
+	 * {@code REQUIRES_NEW} - it joins that transaction and rolls back with it,
+	 * while {@link #book(String, BookingRequestDTO)} and
+	 * {@link #cancelBooking(String, boolean)} are intentionally non-transactional
+	 * (see the note on their declarations, which predates this change), so there it
+	 * runs in its own short transaction that commits independently of the booking.
+	 *
+	 * <p>Both are acceptable: the backfill is idempotent, converts only
+	 * still-raw values, re-runs on the user's next activity, and is backstopped by
+	 * the nightly identity reconciliation job. An independent commit is in fact the
+	 * better outcome - the conversion survives even if the surrounding booking
+	 * later fails. This class alters no transactional annotation.
+	 */
 	@Autowired
 	private ApplicationIdentityMigrationService applicationIdentityMigrationService;
 
@@ -800,15 +817,13 @@ public class BookingService implements BookingServiceIntf {
 					&& serviceUtil.checkApplicationStatus(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
 				/*
-				 * The resolve stays outside the guard on purpose: effectiveUserId is
-				 * persisted as deletedBy below, and falling back to a raw identifier there
-				 * would write back the plaintext PII this refactor removes. Only the
-				 * best-effort backfill is guarded.
+				 * Best-effort backfill: a failure here must never fail the deletion. The
+				 * backfill resolves each column from its own stored value, so the booking's
+				 * own crBy is all it needs.
 				 */
-				String effectiveUserId = applicationIdentityMigrationService
-						.resolveEffectiveUserId(registrationEntityList.getCrBy());
 				try {
-					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preregId, effectiveUserId);
+					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preregId,
+							registrationEntityList.getCrBy());
 				} catch (Exception migrationEx) {
 					log.error("sessionId", "idType", "id", "Identity migration failed for preRegistrationId "
 							+ preregId + ", deletion continues - " + migrationEx.getMessage());
@@ -831,8 +846,22 @@ public class BookingService implements BookingServiceIntf {
 				bookingDAO.updateAvailibityEntity(availableEntity);
 
 				deleteDto.setPreRegistrationId(registrationEntityList.getPreregistrationId());
-				deleteDto.setDeletedBy(effectiveUserId);
 				deleteDto.setDeletedDateTime(new Date(System.currentTimeMillis()));
+				/*
+				 * Response-only attribution, resolved after the deletion so it can never
+				 * block it. An unresolvable legacy identifier leaves the field unset - it
+				 * must never fall back to the raw value, which would put the plaintext
+				 * identifier back on the wire. The audit trail is unaffected: it records the
+				 * authenticated caller, not this value.
+				 */
+				try {
+					deleteDto.setDeletedBy(applicationIdentityMigrationService
+							.resolveEffectiveUserId(registrationEntityList.getCrBy()));
+				} catch (Exception resolveEx) {
+					log.error("sessionId", "idType", "id", "Could not resolve deletedBy for preRegistrationId "
+							+ preregId + ", field omitted - " + resolveEx.getMessage());
+					log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(resolveEx));
+				}
 
 			}
 			isSaveSuccess = true;

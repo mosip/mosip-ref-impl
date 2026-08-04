@@ -33,7 +33,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -569,7 +568,6 @@ public class BookingServiceUtilTest {
 
 	@Test
 	public void bookingEntitySetterTest() {
-		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
@@ -580,19 +578,6 @@ public class BookingServiceUtilTest {
 
 	@Test
 	public void bookingEntitySetterLegacyCrByTest() {
-		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
-		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
-		bookingRequestDTO.setRegistrationCenterId("1");
-		bookingRequestDTO.setSlotFromTime("09:00");
-		bookingRequestDTO.setSlotToTime("09:13");
-		bookingRequestDTO.setRegDate("2018-12-06");
-		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
-		assertEquals("00000000-0000-0000-0000-000000000001", entity.getCrBy());
-	}
-
-	@Test
-	public void bookingEntitySetterWithCompatibilityModeWritesUuidTest() {
-		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", true);
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");
@@ -604,9 +589,26 @@ public class BookingServiceUtilTest {
 
 	@Test(expected = AppointmentBookingFailedException.class)
 	public void bookingEntitySetterThrowsOnUuidResolutionFailureTest() {
-		ReflectionTestUtils.setField(serviceUtil, "piiBackwardCompatibility", false);
 		Mockito.when(userDetailsService.getOrCreateInternalUserId("test-user"))
 				.thenThrow(new UserLookupException("PRG_CORE_REQ_024", "Failed to resolve internal user ID"));
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+	}
+
+	/**
+	 * An absent authenticated user id must fail as an identity error rather than
+	 * flowing through as a null crBy and tripping the NOT NULL constraint, which
+	 * would surface to the caller as an opaque "table not accessible" error.
+	 */
+	@Test(expected = AppointmentBookingFailedException.class)
+	public void bookingEntitySetter_authenticatedUserIdAbsent_throwsAppointmentBookingFailed() {
+		AuthUserDetails principal = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		Mockito.when(principal.getUserId()).thenReturn(null);
 		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
 		bookingRequestDTO.setRegistrationCenterId("1");
 		bookingRequestDTO.setSlotFromTime("09:00");

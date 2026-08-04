@@ -2,12 +2,15 @@ package io.mosip.preregistration.booking.test.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import io.mosip.kernel.core.authmanager.authadapter.model.AuthUserDetails;
 import io.mosip.preregistration.application.service.ApplicationIdentityMigrationService;
 import io.mosip.preregistration.booking.dto.BookingRequestDTO;
 import io.mosip.preregistration.booking.dto.BookingStatusDTO;
@@ -23,7 +29,12 @@ import io.mosip.preregistration.booking.entity.AvailibityEntity;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
 import io.mosip.preregistration.booking.service.BookingService;
 import io.mosip.preregistration.booking.service.util.BookingServiceUtil;
+import io.mosip.preregistration.core.common.dto.CancelBookingResponseDTO;
+import io.mosip.preregistration.core.common.dto.DeleteBookingDTO;
+import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
+import io.mosip.preregistration.core.util.AuditLogUtil;
+import io.mosip.preregistration.core.util.ValidationUtil;
 
 /**
  * Covers the best-effort contract of the canonical-identity backfill invoked
@@ -55,6 +66,12 @@ public class BookingServiceIdentityMigrationTest {
 	@Mock
 	private ApplicationIdentityMigrationService applicationIdentityMigrationService;
 
+	@Mock
+	private ValidationUtil validationUtil;
+
+	@Mock
+	private AuditLogUtil auditLogUtil;
+
 	@InjectMocks
 	private BookingService bookingService;
 
@@ -81,6 +98,11 @@ public class BookingServiceIdentityMigrationTest {
 
 		bookingEntity = new RegistrationBookingEntity();
 		bookingEntity.setCrBy(CANONICAL_CR_BY);
+		bookingEntity.setPreregistrationId(PRE_REG_ID);
+		bookingEntity.setRegistrationCenterId("10001");
+		bookingEntity.setRegDate(LocalDate.parse("2026-12-10"));
+		bookingEntity.setSlotFromTime(LocalTime.parse("09:00"));
+		bookingEntity.setSlotToTime(LocalTime.parse("09:15"));
 
 		Mockito.when(bookingDAO.findFirstByRegDateAndRegcntrIdAndFromTimeAndToTime(any(), anyString(), any(), any()))
 				.thenReturn(availabilityEntity);
@@ -132,6 +154,159 @@ public class BookingServiceIdentityMigrationTest {
 		BookingStatusDTO result = bookingService.book(PRE_REG_ID, bookingRequestDTO);
 
 		assertEquals(BOOKING_SUCCESS_MESSAGE, result.getBookingMessage());
+		Mockito.verify(applicationIdentityMigrationService).migrateRawUserToEffectiveUser(PRE_REG_ID,
+				CANONICAL_CR_BY);
+	}
+
+	// ---------------------------------------------------------------------
+	// deleteBooking
+	//
+	// resolveEffectiveUserId throws a plain IllegalStateException, which
+	// BookingExceptionCatcher.handle() does not map - its final else rethrows
+	// only BaseUncheckedException / BaseCheckedException. An unguarded failure
+	// is therefore swallowed and the method returns a success-shaped response
+	// having never deleted anything. These tests pin the guard that prevents it.
+	// ---------------------------------------------------------------------
+
+	private void givenDeleteBookingIsReachable() {
+		AuthUserDetails principal = Mockito.mock(AuthUserDetails.class);
+		Mockito.when(principal.getUserId()).thenReturn("test-user");
+		Mockito.when(principal.getUsername()).thenReturn("test-user");
+		SecurityContextHolder.getContext()
+				.setAuthentication(new UsernamePasswordAuthenticationToken(principal, null));
+
+		Mockito.when(validationUtil.requstParamValidator(anyMap())).thenReturn(true);
+		Mockito.when(serviceUtil.checkApplicationStatus(PRE_REG_ID)).thenReturn(true);
+		Mockito.when(bookingDAO.findByPreRegistrationId(PRE_REG_ID)).thenReturn(bookingEntity);
+	}
+
+	private void givenIdentityResolutionFails() {
+		Mockito.when(applicationIdentityMigrationService.resolveEffectiveUserId(anyString()))
+				.thenThrow(new IllegalStateException("Failed to resolve UUID for user during migration"));
+	}
+
+	@After
+	public void clearSecurityContext() {
+		SecurityContextHolder.clearContext();
+	}
+
+	/**
+	 * The deletion is the caller's actual intent and must not be blocked by an
+	 * unresolvable legacy identifier.
+	 */
+	@Test
+	public void deleteBooking_identityResolutionFails_bookingStillDeleted() {
+		givenDeleteBookingIsReachable();
+		givenIdentityResolutionFails();
+
+		MainResponseDTO<DeleteBookingDTO> response = bookingService.deleteBooking(PRE_REG_ID);
+
+		Mockito.verify(bookingDAO).deleteByPreRegistrationId(PRE_REG_ID);
+		assertNotNull(response.getResponse());
+		assertEquals(PRE_REG_ID, response.getResponse().getPreRegistrationId());
+	}
+
+	/**
+	 * Attribution degrades to absent. It must never fall back to the raw
+	 * identifier, which would put plaintext PII back on the wire.
+	 *
+	 * <p>The sibling assertions matter: asserting only that {@code deletedBy} is
+	 * null would also hold when the method aborts before setting anything, so the
+	 * test would pass against the very defect it exists to catch. Requiring the
+	 * rest of the DTO to be populated proves the flow ran to completion with just
+	 * this one field omitted.
+	 */
+	@Test
+	public void deleteBooking_identityResolutionFails_deletedByOmitted() {
+		givenDeleteBookingIsReachable();
+		givenIdentityResolutionFails();
+
+		MainResponseDTO<DeleteBookingDTO> response = bookingService.deleteBooking(PRE_REG_ID);
+
+		assertNull(response.getResponse().getDeletedBy());
+		assertEquals(PRE_REG_ID, response.getResponse().getPreRegistrationId());
+		assertNotNull(response.getResponse().getDeletedDateTime());
+	}
+
+	/**
+	 * Guard must not change the resolvable path.
+	 */
+	@Test
+	public void deleteBooking_identityResolutionSucceeds_deletedByPopulated() {
+		givenDeleteBookingIsReachable();
+		Mockito.when(applicationIdentityMigrationService.resolveEffectiveUserId(CANONICAL_CR_BY))
+				.thenReturn(CANONICAL_CR_BY);
+
+		MainResponseDTO<DeleteBookingDTO> response = bookingService.deleteBooking(PRE_REG_ID);
+
+		Mockito.verify(bookingDAO).deleteByPreRegistrationId(PRE_REG_ID);
+		assertEquals(CANONICAL_CR_BY, response.getResponse().getDeletedBy());
+	}
+
+	// ---------------------------------------------------------------------
+	// cancelBooking
+	//
+	// Here the resolve and the backfill are both inside the guard, because the
+	// resolved id is not used beyond the backfill call. A failure must leave the
+	// cancellation itself untouched.
+	// ---------------------------------------------------------------------
+
+	private static final String CANCEL_SUCCESS_MESSAGE =
+			"Appointment for the selected application has been successfully cancelled";
+
+	private void givenCancelBookingIsReachable() {
+		AuthUserDetails principal = Mockito.mock(AuthUserDetails.class);
+		Mockito.when(principal.getUserId()).thenReturn("test-user");
+		Mockito.when(principal.getUsername()).thenReturn("test-user");
+		SecurityContextHolder.getContext()
+				.setAuthentication(new UsernamePasswordAuthenticationToken(principal, null));
+
+		Mockito.when(serviceUtil.mandatoryParameterCheckforCancel(PRE_REG_ID)).thenReturn(true);
+		Mockito.when(serviceUtil.getDemographicStatusForCancel(PRE_REG_ID)).thenReturn(true);
+		Mockito.when(bookingDAO.findByPreRegistrationId(PRE_REG_ID)).thenReturn(bookingEntity);
+	}
+
+	/**
+	 * The cancellation is the caller's intent; a failing backfill must not stop it.
+	 */
+	@Test
+	public void cancelBooking_identityMigrationFails_cancellationSucceeds() {
+		givenCancelBookingIsReachable();
+		givenIdentityResolutionFails();
+
+		CancelBookingResponseDTO result = bookingService.cancelBooking(PRE_REG_ID, false);
+
+		Mockito.verify(bookingDAO).deleteByPreRegistrationId(PRE_REG_ID);
+		assertEquals(CANCEL_SUCCESS_MESSAGE, result.getMessage());
+	}
+
+	/**
+	 * Cancelling frees the slot again. Asserting the side effect catches a guard
+	 * that swallows the exception but lets the flow skip the steps after it.
+	 */
+	@Test
+	public void cancelBooking_identityMigrationFails_availabilityStillRestored() {
+		givenCancelBookingIsReachable();
+		givenIdentityResolutionFails();
+
+		bookingService.cancelBooking(PRE_REG_ID, false);
+
+		assertEquals(6, availabilityEntity.getAvailableKiosks());
+		Mockito.verify(bookingDAO).updateAvailibityEntity(availabilityEntity);
+	}
+
+	/**
+	 * Guard must not change the resolvable path.
+	 */
+	@Test
+	public void cancelBooking_identityResolutionSucceeds_migratesWithResolvedId() {
+		givenCancelBookingIsReachable();
+		Mockito.when(applicationIdentityMigrationService.resolveEffectiveUserId(CANONICAL_CR_BY))
+				.thenReturn(CANONICAL_CR_BY);
+
+		CancelBookingResponseDTO result = bookingService.cancelBooking(PRE_REG_ID, false);
+
+		assertEquals(CANCEL_SUCCESS_MESSAGE, result.getMessage());
 		Mockito.verify(applicationIdentityMigrationService).migrateRawUserToEffectiveUser(PRE_REG_ID,
 				CANONICAL_CR_BY);
 	}
