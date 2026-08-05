@@ -45,7 +45,7 @@ import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.util.BookingExceptionCatcher;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
-import io.mosip.preregistration.application.service.ApplicationIdentityMigrationService;
+import io.mosip.preregistration.core.common.service.ApplicationIdentityMigrationService;
 import io.mosip.preregistration.booking.service.util.BookingLock;
 import io.mosip.preregistration.booking.service.util.BookingServiceUtil;
 import io.mosip.preregistration.core.code.AuditLogVariables;
