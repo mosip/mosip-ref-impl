@@ -69,6 +69,7 @@ import io.mosip.preregistration.booking.exception.BookingDateNotSeletectedExcept
 import io.mosip.preregistration.booking.exception.BookingPreIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingRegistrationCenterIdNotFoundException;
 import io.mosip.preregistration.booking.exception.BookingTimeSlotNotSeletectedException;
+import io.mosip.preregistration.booking.exception.AppointmentBookingFailedException;
 import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.InvalidDateTimeFormatException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
@@ -87,6 +88,9 @@ import io.mosip.preregistration.core.exception.NotificationException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.UUIDGeneratorUtil;
 import io.mosip.preregistration.core.util.ValidationUtil;
+import io.mosip.preregistration.core.common.service.UserDetailsService;
+import io.mosip.preregistration.core.exception.UserLookupException;
+import io.mosip.preregistration.core.util.GenericUtil;
 
 /**
  * This class provides the utility methods for Booking application.
@@ -106,6 +110,9 @@ public class BookingServiceUtil {
 
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	/**
 	 * Reference for ${regCenter.url} from property file
@@ -535,13 +542,44 @@ public class BookingServiceUtil {
 		entity.setRegistrationCenterId(bookingRequestDTO.getRegistrationCenterId());
 		entity.setId(UUIDGeneratorUtil.generateId());
 		entity.setLangCode("12L");
-		entity.setCrBy(authUserDetails().getUserId());
+		String userId = authUserDetails().getUserId();
+		entity.setCrBy(resolveEffectiveCrBy(userId));
 		entity.setCrDate(DateUtils2.parseDateToLocalDateTime(new Date()));
 		entity.setRegDate(LocalDate.parse(bookingRequestDTO.getRegDate()));
 		entity.setSlotFromTime(LocalTime.parse(bookingRequestDTO.getSlotFromTime()));
 		entity.setSlotToTime(LocalTime.parse(bookingRequestDTO.getSlotToTime()));
 		entity.setPreregistrationId(preRegistrationId);
 		return entity;
+	}
+
+	private String resolveEffectiveCrBy(String userId) {
+		String maskedUserId = GenericUtil.maskIdentifier(userId);
+		/*
+		 * getOrCreateInternalUserId returns null for a null or blank id rather than
+		 * throwing, so without this guard a missing authenticated user would flow
+		 * through as a null crBy and fail only at the NOT NULL constraint - surfacing
+		 * as an opaque "table not accessible" error instead of an identity one.
+		 */
+		if (userId == null || userId.isBlank()) {
+			log.warn("sessionId", "idType", "id",
+					"Cannot resolve effective booking user id: authenticated user id is absent");
+			throw new AppointmentBookingFailedException(ErrorCodes.PRG_BOOK_RCI_005.getCode(),
+					ErrorMessages.APPOINTMENT_BOOKING_FAILED.getMessage());
+		}
+		try {
+			String effectiveCrBy = userDetailsService.getOrCreateInternalUserId(userId);
+			boolean canonicalApplied = effectiveCrBy != null && !effectiveCrBy.isBlank()
+					&& !effectiveCrBy.trim().equals(userId == null ? "" : userId.trim());
+			log.info("sessionId", "idType", "id",
+					"Resolved effective user id for booking write. maskedUserId=" + maskedUserId
+							+ ", canonicalApplied=" + canonicalApplied);
+			return effectiveCrBy;
+		} catch (UserLookupException ex) {
+			log.warn("sessionId", "idType", "id",
+					"Failed to resolve effective booking user id for " + maskedUserId);
+			throw new AppointmentBookingFailedException(ErrorCodes.PRG_BOOK_RCI_005.getCode(),
+					ErrorMessages.APPOINTMENT_BOOKING_FAILED.getMessage());
+		}
 	}
 
 	/**
@@ -734,3 +772,4 @@ public class BookingServiceUtil {
 //	}
 
 }
+
