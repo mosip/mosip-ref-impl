@@ -44,6 +44,7 @@ import io.mosip.preregistration.booking.exception.DemographicGetStatusException;
 import io.mosip.preregistration.booking.exception.RecordNotFoundException;
 import io.mosip.preregistration.booking.exception.util.BookingExceptionCatcher;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
+import io.mosip.preregistration.core.common.service.ApplicationIdentityMigrationService;
 import io.mosip.preregistration.booking.service.util.BookingLock;
 import io.mosip.preregistration.booking.service.util.BookingServiceUtil;
 import io.mosip.preregistration.core.code.AuditLogVariables;
@@ -81,6 +82,26 @@ public class BookingService implements BookingServiceIntf {
 	 */
 	@Autowired
 	BookingServiceUtil serviceUtil;
+
+	/**
+	 * Best-effort canonical-identity backfill.
+	 *
+	 * <p><b>Propagation differs by call site, deliberately.</b> The backfill is
+	 * annotated {@code REQUIRED}, so in {@link #deleteBooking(String)} - which is
+	 * {@code REQUIRES_NEW} - it joins that transaction and rolls back with it,
+	 * while {@link #book(String, BookingRequestDTO)} and
+	 * {@link #cancelBooking(String, boolean)} are intentionally non-transactional
+	 * (see the note on their declarations, which predates this change), so there it
+	 * runs in its own short transaction that commits independently of the booking.
+	 *
+	 * <p>Both are acceptable: the backfill is idempotent, converts only
+	 * still-raw values, re-runs on the user's next activity, and is backstopped by
+	 * the nightly identity reconciliation job. An independent commit is in fact the
+	 * better outcome - the conversion survives even if the surrounding booking
+	 * later fails. This class alters no transactional annotation.
+	 */
+	@Autowired
+	private ApplicationIdentityMigrationService applicationIdentityMigrationService;
 
 	/**
 	 * Reference for ${preregistration.availability.sync} from property file
@@ -630,8 +651,23 @@ public class BookingService implements BookingServiceIntf {
 					" and Date and Time " + availableEntity.getRegDate() + " " + availableEntity.getFromTime());
 			if (serviceUtil.isKiosksAvailable(availableEntity)) {
 				/* Updating booking */
-				bookingDAO.saveRegistrationEntityForBooking(
+				RegistrationBookingEntity bookingEntity = bookingDAO.saveRegistrationEntityForBooking(
 						serviceUtil.bookingEntitySetter(preRegistrationId, bookingRequestDTO));
+				/*
+				 * Best-effort backfill: a failure here must never fail the booking. The
+				 * booking's own crBy is already canonical at this point, so ownership and
+				 * auth are unaffected; missed rows self-heal on the user's next activity and
+				 * are swept by the nightly identity reconciliation job.
+				 */
+				try {
+					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId,
+							bookingEntity.getCrBy());
+				} catch (Exception migrationEx) {
+					log.error("sessionId", "idType", "id",
+							"Identity migration failed for preRegistrationId " + preRegistrationId
+									+ ", booking continues - " + migrationEx.getMessage());
+					log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(migrationEx));
+				}
 				/* Reduce Availability */
 				availableEntity.setAvailableKiosks(availableEntity.getAvailableKiosks() - 1);
 				AvailibityEntity availableUpdate = bookingDAO.updateAvailibityEntity(availableEntity);
@@ -692,6 +728,21 @@ public class BookingService implements BookingServiceIntf {
 						LocalDateTime bookedDateTime = LocalDateTime.parse(str, formatter);
 
 						serviceUtil.timeSpanCheckForCancle(bookedDateTime);
+					}
+					/*
+					 * Best-effort backfill. The resolved id is not used beyond this call, so
+					 * an unresolvable legacy crBy must not block a cancellation.
+					 */
+					try {
+						String effectiveUserId = applicationIdentityMigrationService
+								.resolveEffectiveUserId(bookingEntity.getCrBy());
+						applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preRegistrationId,
+								effectiveUserId);
+					} catch (Exception migrationEx) {
+						log.error("sessionId", "idType", "id",
+								"Identity migration failed for preRegistrationId " + preRegistrationId
+										+ ", cancellation continues - " + migrationEx.getMessage());
+						log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(migrationEx));
 					}
 					/* Deleting the canceled booking */
 					// bookingDAO.deleteRegistrationEntity(bookingEntity);
@@ -754,6 +805,19 @@ public class BookingService implements BookingServiceIntf {
 			if (validationUtil.requstParamValidator(requestParamMap)
 					&& serviceUtil.checkApplicationStatus(preregId)) {
 				RegistrationBookingEntity registrationEntityList = bookingDAO.findByPreRegistrationId(preregId);
+				/*
+				 * Best-effort backfill: a failure here must never fail the deletion. The
+				 * backfill resolves each column from its own stored value, so the booking's
+				 * own crBy is all it needs.
+				 */
+				try {
+					applicationIdentityMigrationService.migrateRawUserToEffectiveUser(preregId,
+							registrationEntityList.getCrBy());
+				} catch (Exception migrationEx) {
+					log.error("sessionId", "idType", "id", "Identity migration failed for preRegistrationId "
+							+ preregId + ", deletion continues - " + migrationEx.getMessage());
+					log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(migrationEx));
+				}
 				String str = registrationEntityList.getRegDate() + " " + registrationEntityList.getSlotFromTime();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 				LocalDateTime bookedDateTime = LocalDateTime.parse(str, formatter);
@@ -771,8 +835,22 @@ public class BookingService implements BookingServiceIntf {
 				bookingDAO.updateAvailibityEntity(availableEntity);
 
 				deleteDto.setPreRegistrationId(registrationEntityList.getPreregistrationId());
-				deleteDto.setDeletedBy(registrationEntityList.getCrBy());
 				deleteDto.setDeletedDateTime(new Date(System.currentTimeMillis()));
+				/*
+				 * Response-only attribution, resolved after the deletion so it can never
+				 * block it. An unresolvable legacy identifier leaves the field unset - it
+				 * must never fall back to the raw value, which would put the plaintext
+				 * identifier back on the wire. The audit trail is unaffected: it records the
+				 * authenticated caller, not this value.
+				 */
+				try {
+					deleteDto.setDeletedBy(applicationIdentityMigrationService
+							.resolveEffectiveUserId(registrationEntityList.getCrBy()));
+				} catch (Exception resolveEx) {
+					log.error("sessionId", "idType", "id", "Could not resolve deletedBy for preRegistrationId "
+							+ preregId + ", field omitted - " + resolveEx.getMessage());
+					log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(resolveEx));
+				}
 
 			}
 			isSaveSuccess = true;
