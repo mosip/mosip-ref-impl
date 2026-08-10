@@ -13,7 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import io.mosip.preregistration.booking.exception.*;
+import io.mosip.preregistration.core.exception.UserLookupException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -51,15 +52,6 @@ import io.mosip.preregistration.booking.dto.RegistrationCenterDto;
 import io.mosip.preregistration.booking.dto.RegistrationCenterResponseDto;
 import io.mosip.preregistration.booking.dto.SlotDto;
 import io.mosip.preregistration.booking.entity.AvailibityEntity;
-import io.mosip.preregistration.booking.exception.AppointmentReBookingFailedException;
-import io.mosip.preregistration.booking.exception.AvailablityNotFoundException;
-import io.mosip.preregistration.booking.exception.BookingDateNotSeletectedException;
-import io.mosip.preregistration.booking.exception.BookingPreIdNotFoundException;
-import io.mosip.preregistration.booking.exception.BookingRegistrationCenterIdNotFoundException;
-import io.mosip.preregistration.booking.exception.BookingTimeSlotNotSeletectedException;
-import io.mosip.preregistration.booking.exception.InvalidDateTimeFormatException;
-import io.mosip.preregistration.booking.exception.RecordNotFoundException;
-import io.mosip.preregistration.booking.exception.TimeSpanException;
 import io.mosip.preregistration.booking.repository.BookingAvailabilityRepository;
 import io.mosip.preregistration.booking.repository.RegistrationBookingRepository;
 import io.mosip.preregistration.booking.repository.impl.BookingDAO;
@@ -68,6 +60,8 @@ import io.mosip.preregistration.core.common.dto.BookingRegistrationDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.dto.ResponseWrapper;
+import io.mosip.preregistration.core.common.entity.RegistrationBookingEntity;
+import io.mosip.preregistration.core.common.service.UserDetailsService;
 import io.mosip.preregistration.core.exception.MasterDataNotAvailableException;
 import io.mosip.preregistration.core.exception.RestCallException;
 import io.mosip.preregistration.core.util.RequestValidator;
@@ -96,6 +90,9 @@ public class BookingServiceUtilTest {
 
 	@MockBean
 	private BookingDAO bookingDAO;
+
+	@MockBean
+	private UserDetailsService userDetailsService;
 
 	@Mock
 	private AuthUserDetails authUserDetails;
@@ -139,6 +136,9 @@ public class BookingServiceUtilTest {
 		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
 		SecurityContextHolder.setContext(securityContext);
 		Mockito.when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(applicationUser);
+		Mockito.when(applicationUser.getUserId()).thenReturn("test-user");
+		Mockito.when(userDetailsService.getOrCreateInternalUserId("test-user"))
+				.thenReturn("00000000-0000-0000-0000-000000000001");
 		centerDto.setId("10001");
 		centerDto.setLangCode("eng");
 		centerDto.setCenterStartTime(startTime);
@@ -577,6 +577,47 @@ public class BookingServiceUtilTest {
 	}
 
 	@Test
+	public void bookingEntitySetterLegacyCrByTest() {
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		RegistrationBookingEntity entity = serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+		assertEquals("00000000-0000-0000-0000-000000000001", entity.getCrBy());
+	}
+
+	@Test(expected = AppointmentBookingFailedException.class)
+	public void bookingEntitySetterThrowsOnUuidResolutionFailureTest() {
+		Mockito.when(userDetailsService.getOrCreateInternalUserId("test-user"))
+				.thenThrow(new UserLookupException("PRG_CORE_REQ_024", "Failed to resolve internal user ID"));
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+	}
+
+	/**
+	 * An absent authenticated user id must fail as an identity error rather than
+	 * flowing through as a null crBy and tripping the NOT NULL constraint, which
+	 * would surface to the caller as an opaque "table not accessible" error.
+	 */
+	@Test(expected = AppointmentBookingFailedException.class)
+	public void bookingEntitySetter_authenticatedUserIdAbsent_throwsAppointmentBookingFailed() {
+		AuthUserDetails principal = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		Mockito.when(principal.getUserId()).thenReturn(null);
+		BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+		bookingRequestDTO.setRegistrationCenterId("1");
+		bookingRequestDTO.setSlotFromTime("09:00");
+		bookingRequestDTO.setSlotToTime("09:13");
+		bookingRequestDTO.setRegDate("2018-12-06");
+		serviceUtil.bookingEntitySetter("1234568687844744", bookingRequestDTO);
+	}
+
+	@Test
 	public void prepareRequestMapTest() {
 		MainRequestDTO<String> requestDto = new MainRequestDTO<>();
 		requestDto.setId("mosip.io.booking");
@@ -646,3 +687,5 @@ public class BookingServiceUtilTest {
 	}
 
 }
+
+
