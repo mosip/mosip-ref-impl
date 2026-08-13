@@ -24,7 +24,7 @@ on:
 
 jobs:
   build-maven-kernel:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-build.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: kernel
       BUILD_ARTIFACT: kernel
@@ -38,7 +38,7 @@ jobs:
   publish_to_nexus_kernel:
     if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' && github.event_name != 'release' && github.event_name != 'prerelease' && github.event_name != 'publish' }}"
     needs: build-maven-kernel
-    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: kernel
     secrets:
@@ -65,7 +65,7 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   build-maven-pre-registration-booking-service:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-build.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: pre-registration-booking-service
       BUILD_ARTIFACT: pre-registration-booking-service
@@ -100,7 +100,7 @@ jobs:
   publish_to_nexus_pre-registration-booking-service:
     if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
     needs: build-maven-pre-registration-booking-service
-    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: pre-registration-booking-service
     secrets:
@@ -128,7 +128,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   build-maven-registration-processor-external-stage:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-build.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: registration-processor/registration-processor-external-stage
       BUILD_ARTIFACT: registration-processor-external-stage
@@ -161,7 +161,7 @@ jobs:
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   build-maven-registration-processor-external-integration-service:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-build.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: registration-processor/registration-processor-external-integration-service
       BUILD_ARTIFACT: registration-processor-external-integration-service
@@ -194,7 +194,7 @@ jobs:
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
   build-maven-cache-provider-hazelcast:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-build.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: cache-provider-hazelcast
       BUILD_ARTIFACT: cache-provider-hazelcast
@@ -208,7 +208,7 @@ jobs:
   publish_to_nexus_cache-provider-hazelcast:
     if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
     needs: build-maven-cache-provider-hazelcast
-    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: cache-provider-hazelcast
     secrets:
@@ -221,7 +221,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   build-maven-cache-provider-redis:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-build.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: cache-provider-redis
       BUILD_ARTIFACT: cache-provider-redis
@@ -236,7 +236,7 @@ jobs:
   publish_to_nexus_cache-provider-redis:
     if: "${{ !contains(github.ref, 'master') && github.event_name != 'pull_request' }}"
     needs: build-maven-cache-provider-redis
-    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@master-java21
+    uses: mosip/kattu/.github/workflows/maven-publish-to-nexus.yml@gpgupdate-masterj21
     with:
       SERVICE_LOCATION: cache-provider-redis
     secrets:
