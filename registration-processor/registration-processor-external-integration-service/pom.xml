@@ -42,7 +42,7 @@
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/verticle/**,**/spi/**,"**/proxy/**","**/entities/**","**/filter/**","**/util/**","**/verifier/**"</sonar.coverage.exclusions>
 		<spring.boot.version>3.2.3</spring.boot.version>
-		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
+		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
 	</properties>
 
 	<dependencies>
