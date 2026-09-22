@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.mosip.kernel</groupId>
 	<artifactId>kernel-ref-parent</artifactId>
-	<version>1.3.1-rc.1</version>
+	<version>1.3.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>Parent project of MOSIP Kernel  Referernce Implementation components</description>
@@ -81,13 +81,13 @@
 		<maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
 		<maven.source.plugin.version>2.2.1</maven.source.plugin.version>
 		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
-		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
+		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
 		<git.commit.plugin.version>3.0.1</git.commit.plugin.version>
 
 		<!-- logger -->
 		<jcl.to.slf4j.version>1.7.25</jcl.to.slf4j.version>
 		<!-- kernel -->
-		<kernel-core.version>1.3.1-rc.1</kernel-core.version>
+		<kernel-core.version>1.3.1-SNAPSHOT</kernel-core.version>
 		
 		<junit.vintage.version>5.10.2</junit.vintage.version>
 		
