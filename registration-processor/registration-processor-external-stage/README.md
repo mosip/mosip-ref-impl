@@ -1,90 +1,95 @@
 # registration-processor-external-stage
 
+Vert.x stage that reads `EXTERNAL_STAGE_BUS_IN`, POSTs to the External Integration Service, then emits `EXTERNAL_STAGE_BUS_OUT`.
+
+- **Artifact**: `io.mosip.registrationprocessor:registration-processor-external-stage:1.4.1-SNAPSHOT`
+- **Parent**: `registration-processor-ref-parent` (Boot **4.1.1**)
+- **Logging**: `kernel-core` (commons)
+- **Git info**: `service-git.properties`
+
 ## Overview
-This stage integrates with external system for required external operations
+
+Integrates the packet SEDA pipeline with an external HTTP system (EIS).
 
 ## Design
-[Design - Approach for External System Integration](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_external_system_integration.md)
 
-[Design - Approach for Adding HTTP Stage](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_http_integration.md)
+- [Approach for External System Integration](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_external_system_integration.md)
+- [Approach for Adding HTTP Stage](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_http_integration.md)
+- [Guideline for adding an External Stage](https://github.com/mosip/registration/blob/master/design/registration-processor/External_System_Integration_Guide.md)
 
-[Guideline for adding an External Stage](https://github.com/mosip/registration/blob/master/design/registration-processor/External_System_Integration_Guide.md)
+## Default ports and path
 
-## Default Context Path and Port
-```
+```text
 eventbus.port=5736
 server.port=8095
-server.servlet.path=/registrationprocessor/v1/externaleventbus.port=5736
+server.servlet.path=/registrationprocessor/v1/external
 ```
-## Configurable Properties from Config Server
-```
+
+## Configurable properties (config server)
+
+```text
 EISERVICE=${mosip.base.url}/registrationprocessor/v1/eis/registration-processor/external-integration-service/v1.0
 mosip.regproc.external.eventbus.kafka.commit.type=single
 mosip.regproc.external.eventbus.kafka.max.poll.records=100
 mosip.regproc.external.eventbus.kafka.poll.frequency=100
 mosip.regproc.external.eventbus.kafka.group.id=external-stage
 mosip.regproc.external.message.expiry-time-limit=${mosip.regproc.common.stage.message.expiry-time-limit}
-
 mosip.regproc.external.eventbus.port=5736
 mosip.regproc.external.server.port=8095
 mosip.regproc.external.server.servlet.path=/registrationprocessor/v1/external
 ```
-## Operations in External stage
-External validation by sending requests to external integration system
 
-## Build & run (for developers)
-The project requires JDK 21.0.3
-and mvn version - 3.9.6
+Prefix: `mosip.regproc.external.`
 
-1. Build and install:
-    ```
-    $ cd registration-processor\registration-processor-external-stage
-    $ mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
-    ```
-2. Build Docker for a service:
-    ```
-    $ cd <service folder>
-    $ docker build -f Dockerfile
-    ```
+## Operations
 
-### Add auth-adapter in a class-path to run a master-data service
-   ```
-   <dependency>
-       <groupId>io.mosip.kernel</groupId>
-       <artifactId>kernel-auth-adapter</artifactId>
-       <version>${kernel.auth.adapter.version}</version>
-   </dependency>
-   ```
+External validation by sending the packet id list to EIS (`ApiName.EISERVICE`). Status is updated true/false from the HTTP response.
 
-## Configuration files
-Registration processor external stage uses the following configuration files:
-[Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
-[Configuration-Registration-processor](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties) defined here.
- Refer to the required released tagged version.
+## Prerequisites
 
-Need to run the config-server along with the files mentioned above in order to run the registration processor external stage service.
+- JDK **21.0.3**
+- Maven **3.9.6**
+- Config server + Kafka/Vert.x cluster as in MOSIP registration-processor
 
-## Deployment in K8 cluster with other MOSIP services:
-### Pre-requisites
-* Set KUBECONFIG variable to point to existing K8 cluster kubeconfig file:
-    ```
-    export KUBECONFIG=~/.kube/<k8s-cluster.config>
-    ```
-### Install
-  ```
-    $ cd deploy
-    $ ./install.sh
-   ```
-### Delete
-  ```
-    $ cd deploy
-    $ ./delete.sh
-   ```
-### Restart
-  ```
-    $ cd deploy
-    $ ./restart.sh
-   ```
+## Build & run
+
+```text
+cd registration-processor
+mvn -pl registration-processor-external-stage clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
+mvn -pl registration-processor-external-stage clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
+```
+
+### Docker
+
+```text
+docker build -t registration-processor-external-stage .
+```
+
+### Runtime auth adapter (typical MOSIP stage)
+
+```xml
+<dependency>
+    <groupId>io.mosip.kernel</groupId>
+    <artifactId>kernel-auth-adapter</artifactId>
+    <version>${kernel.auth.adapter.version}</version>
+</dependency>
+```
+
+JaCoCo LINE covered ratio **0.90**. Needs MOSIP `registration-processor-core` / status-service-impl / rest-client SNAPSHOTs on the classpath.
+
+## Configuration
+
+- [application-default.properties](https://github.com/mosip/mosip-config/blob/master/application-default.properties)
+- [registration-processor-default.properties](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties)
+
+## Deployment (Kubernetes)
+
+```text
+export KUBECONFIG=~/.kube/<k8s-cluster.config>
+cd deploy
+./install.sh
+```
 
 ## License
-This project is licensed under the terms of [Mozilla Public License 2.0](https://github.com/mosip/mosip-ref-impl/blob/master/LICENSE).
+
+[Mozilla Public License 2.0](../../LICENSE) — [NOTICE](../../NOTICE)

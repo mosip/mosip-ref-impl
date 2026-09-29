@@ -11,21 +11,29 @@ import java.util.stream.Collectors;
  */
 public enum IdObjectReferenceValidatorLocationMapping {
 	
+	/** Country hierarchy level. */
 	COUNTRY("Country", "0"),
-	
-	REGION("Region", "1"),
-	
-	PROVINCE("Province", "2"),
-	
-	CITY("City", "3"),
-	
-	ZONE("Zone", "4"),
-	
-	POSTAL_CODE("Postal Code", "5");
-	
 
+	/** Region hierarchy level. */
+	REGION("Region", "1"),
+
+	/** Province hierarchy level. */
+	PROVINCE("Province", "2"),
+
+	/** City hierarchy level. */
+	CITY("City", "3"),
+
+	/** Zone hierarchy level. */
+	ZONE("Zone", "4"),
+
+	/** Postal-code hierarchy level. */
+	POSTAL_CODE("Postal Code", "5");
+
+
+	/** Location hierarchy display name. */
 	private final String hierarchyName;
-	
+
+	/** Numeric hierarchy level as used in masterdata. */
 	private final String level;
 	
 	/**

@@ -1,188 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.1</version>
+		<relativePath />
+	</parent>
+
 	<groupId>io.mosip.preregistration</groupId>
 	<artifactId>pre-registration-booking-service</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
-	<description>Booking service of  MOSIP Pre-registration</description>	
-	<url>https://github.com/mosip/mosip-ref-impl</url>	
+	<description>
+		MOSIP Pre-registration appointment booking REST service (Spring Boot 4.1.1, Java 21).
+		No kernel-bom. MOSIP versions are pinned here — not in README.md.
+	</description>
+	<url>https://github.com/mosip/mosip-ref-impl</url>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<io.micrometer.prometheus.version>1.4.2</io.micrometer.prometheus.version>
-		<pre.registration.core.version>1.4.0-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.3.1-rc.1</kernel.core.version>
-		<kernel.bom.version>1.3.1-rc.1</kernel.bom.version>
 		<java.version>21</java.version>
-		<!-- Core -->
-		<spring.boot.version>3.2.3</spring.boot.version>
-		<spring.data.version>2.0.9.RELEASE</spring.data.version>
-		<spring-cloud-config.version>2.0.0.RELEASE</spring-cloud-config.version>
-
-		<!-- Miscellaneous -->
-		<javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
-		<jackson.version>2.9.5</jackson.version>
-
-		<!-- Swagger -->
-		<swagger.version>2.5.0</swagger.version>
-
-		<!-- Data Access -->
-		<eclipselink.version>2.5.0</eclipselink.version>
-		<mysql.connector.version>5.1.46</mysql.connector.version>
-		<h2.version>1.4.197</h2.version>
-		<postgresql.version>42.2.2</postgresql.version>
-
-		<!-- For Cache -->
-		<ignite.version>2.3.0</ignite.version>
-		<apache.httpclient.version>4.5.6</apache.httpclient.version>
-
-		<!-- Support tools & utilities -->
-		<commons-math3>3.6.1</commons-math3>
-		<commons-lang3>3.7</commons-lang3>
-		<commons.beanutils.version>1.9.2</commons.beanutils.version>
-		<commons.configuration2.version>2.2</commons.configuration2.version>
-		<commons-collections4.version>4.3</commons-collections4.version>
-
-		<!-- Lombok -->
-		<lombok.version>1.18.30</lombok.version>
-		<mockito.version>3.4.3</mockito.version>
-		<!-- Json Simple -->
-		<jsonsimple.version>1.1.1</jsonsimple.version>
-		<uuid.fasterxml.version>3.1.4</uuid.fasterxml.version>
-		<org.json.version>20080701</org.json.version>
-		<modelmapper.version>0.7.4</modelmapper.version>
-		<java.interceptor.version>1.2</java.interceptor.version>
-		<icu.version>63.1</icu.version>
-		<sonar.coverage.exclusions>**/code/**,**/config/**,**/dao/**,**/dto/**,**/entity/**,**/errorcodes/**,**/exception/**,**/exception/system/**,**/exception/util/**,**/repository/**,**/*Config.java,**/*Application.java,**/batchjob/**,**/util/**,**/stateUtil/**</sonar.coverage.exclusions>
-		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>
-
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<maven.compiler.version>3.11.0</maven.compiler.version>
-		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
-		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
-		<maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
-		<maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
-		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
-		<maven.javadoc.version>3.2.0</maven.javadoc.version>
-		<maven.source.plugin.version>3.3.0</maven.source.plugin.version>
+		<argLine />
+		<skipTests>false</skipTests>
+		<!-- ── MOSIP (external — no kernel-bom) ─────────────────────────────── -->
+		<!-- commons/kernel must be installed locally for these SNAPSHOTs. -->
+		<!-- Logging lives in kernel-core (commons); do not depend on kernel-logger-logback. -->
+		<pre.registration.core.version>1.4.0-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.4.1-SNAPSHOT</kernel.core.version>
+		<kernel.auth.adapter.version>1.4.1-SNAPSHOT</kernel.auth.adapter.version>
+		<kernel.ref.idobjectvalidator.version>1.4.1-SNAPSHOT</kernel.ref.idobjectvalidator.version>
+		<spring-cloud.version>2025.1.3</spring-cloud.version>
+		<!-- springdoc-openapi: Swagger UI + Authorize (Authorization apiKey). Not Boot-managed. -->
+		<springdoc.version>3.1.1</springdoc.version>
+		<!-- jjwt: JWT parse/sign for booking tokens. License: Apache-2.0. -->
+		<jjwt.version>0.13.0</jjwt.version>
+		<!-- logstash-logback-encoder: JSON logs for ELK. License: Apache-2.0. -->
+		<logstash-logback-encoder.version>9.0</logstash-logback-encoder.version>
+		<!-- json-path / json-smart: JSON queries over identity/booking payloads. -->
+		<json-path.version>3.0.0</json-path.version>
+		<json-smart.version>2.6.0</json-smart.version>
+		<!-- javassist: Hibernate/proxy bytecode. License: Apache-2.0 elected (MPL/LGPL dual). -->
+		<javassist.version>3.33.0-GA</javassist.version>
+		<!-- jaxb (javax 2.3): JDK 21 has no JAXB; do not switch to Jakarta 4.x. -->
+		<jaxb.runtime.version>2.3.9</jaxb.runtime.version>
+		<jaxb-api-version>2.3.1</jaxb-api-version>
+		<maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
+		<maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
+		<maven.jacoco.version>0.8.15</maven.jacoco.version>
+		<maven.sonar.plugin.version>5.8.0.7211</maven.sonar.plugin.version>
+		<maven.javadoc.version>3.12.0</maven.javadoc.version>
+		<maven.source.plugin.version>3.4.0</maven.source.plugin.version>
+		<maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+		<git.commit.id.plugin.version>4.9.10</git.commit.id.plugin.version>
 		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
-
-		<!-- Test & Logging -->
-		<junit.version>4.12</junit.version>
-		<logback.version>1.1.6</logback.version>
-		<slf4j.version>1.7.19</slf4j.version>
-
+		<sonar.coverage.exclusions>**/code/**,**/codes/**,**/config/**,**/dao/**,**/dto/**,**/entity/**,**/errorcodes/**,**/exception/**,**/exception/system/**,**/exception/util/**,**/repository/**,**/*Config.java,**/*Application.java,**/batchjob/**,**/util/**,**/stateUtil/**</sonar.coverage.exclusions>
+		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!--
+				spring-cloud-dependencies: Boot 4.1.x compatible Oakwood train.
+				Manages spring-cloud-starter-config / bootstrap. Do not import kernel-bom.
+			-->
 			<dependency>
-				<groupId>io.mosip.kernel</groupId>
-				<artifactId>kernel-bom</artifactId>
-				<version>${kernel.bom.version}</version>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
+		<!--
+			spring-boot-starter-web: Servlet REST (BookingController /appointment/**). Version from Boot 4.1.1 parent.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!--
+			spring-boot-jackson2: Boot 4 defaults to Jackson 3; MOSIP kernel-core still uses Jackson 2.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-jackson2</artifactId>
+		</dependency>
+		<!--
+			spring-boot-starter-tomcat: embedded container; provided when deployed as WAR. Version from Boot parent.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mockito</groupId>
-					<artifactId>mockito-core</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.mosip.preregistration</groupId>
-			<artifactId>pre-registration-core</artifactId>
-			<version>${pre.registration.core.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.mosip.kernel</groupId>
-			<artifactId>kernel-core</artifactId>
-			<version>${kernel.core.version}</version>
-		</dependency>
+		<!--
+			spring-boot-starter-security: @PreAuthorize on booking APIs (authorizedRoles bean).
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!--
+			spring-boot-starter-test: JUnit 5, Mockito, Spring Test. Scope: test.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--
+			spring-security-test: @WithMockUser / security mock MVC. Scope: test.
+		-->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--
+			junit-vintage-engine: Runs legacy org.junit.Test (JUnit 4) booking tests. License: EPL-2.0.
+		-->
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--
+			lombok: Compile-time codegen. Scope: provided. Version from Boot parent. License: MIT.
+		-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!--
+			spring-cloud-starter-config: Pulls pre-registration-default.properties from config server.
+		-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<!--
+			spring-boot-devtools: Local restart. Scope: runtime. Do not ship in production images.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!--
+			pre-registration-core: DTOs and utilities for booking. Pinned via ${pre.registration.core.version}.
+			License: MPL-2.0.
+		-->
+		<dependency>
+			<groupId>io.mosip.preregistration</groupId>
+			<artifactId>pre-registration-core</artifactId>
+			<version>${pre.registration.core.version}</version>
+		</dependency>
+		<!--
+			kernel-core: Shared MOSIP kernel APIs (exceptions, logging facades, utilities).
+			Logging (formerly kernel-logger-logback) is bundled here in commons.
+			Version property: ${kernel.core.version}. License: MPL-2.0.
+		-->
+		<dependency>
+			<groupId>io.mosip.kernel</groupId>
+			<artifactId>kernel-core</artifactId>
+			<version>${kernel.core.version}</version>
+		</dependency>
+		<!--
+			kernel-auth-adapter / kernel-ref-idobjectvalidator: packaged in the
+			service JAR. Do not wget iam_adapter_url / artifactory copies at container start.
+		-->
+		<dependency>
+			<groupId>io.mosip.kernel</groupId>
+			<artifactId>kernel-auth-adapter</artifactId>
+			<version>${kernel.auth.adapter.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.mosip.kernel</groupId>
+			<artifactId>kernel-ref-idobjectvalidator</artifactId>
+			<version>${kernel.ref.idobjectvalidator.version}</version>
+		</dependency>
+		<!--
+			jjwt-api / impl / jackson: JWT parse for booking. Version ${jjwt.version}. License: Apache-2.0.
+		-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!--
+			h2: In-memory DB for tests. Version from Boot parent.
+		-->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<!--
+			logstash-logback-encoder: JSON encoder for log shipping. Version ${logstash-logback-encoder.version}.
+		-->
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-encoder.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-		</dependency>
-			<dependency>
-			<groupId>net.minidev</groupId>
-			<artifactId>asm</artifactId>
-			<version>1.0.2</version>
-		</dependency>
+		<!--
+			json-path: Query JSON identity/booking documents. Version ${json-path.version}. License: Apache-2.0.
+		-->
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
+			<version>${json-path.version}</version>
 		</dependency>
+		<!--
+			json-smart: json-path runtime. Version ${json-smart.version}. License: Apache-2.0.
+		-->
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
+			<version>${json-smart.version}</version>
 		</dependency>
+		<!--
+			micrometer-core / prometheus: Actuator metrics. Versions from Boot parent.
+		-->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
@@ -191,81 +250,104 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
+		<!--
+			jaxb-api (javax): JAXB 2.3. JDK 21 has no JAXB; stay off Jakarta 4.x. MOSIP elects CDDL-1.1.
+		-->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.activation</groupId>
-			<artifactId>activation</artifactId>
-		</dependency>
+		<!--
+			jaxb-runtime (Glassfish): JAXB 2.3 RI. License: EDL-1.0 / BSD-2-Clause.
+		-->
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
+			<version>${jaxb.runtime.version}</version>
 		</dependency>
+		<!--
+			javassist: Bytecode for proxies. Version ${javassist.version}. Apache-2.0 elected.
+		-->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
+			<version>${javassist.version}</version>
 		</dependency>
+		<!--
+			springdoc-openapi-starter-webmvc-ui: Swagger UI + Authorize button. Version ${springdoc.version}.
+		-->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
+		<!--
+			hibernate-validator: Bean Validation on booking DTOs. Version from Boot parent.
+		-->
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
 		</dependency>
+		<!--
+			mockito-core: Unit tests. Scope: test. Version from Boot parent. License: MIT.
+		-->
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency>
-		<dependency>
-    		<groupId>org.junit.vintage</groupId>
-   		    <artifactId>junit-vintage-engine</artifactId> 
-	    </dependency>
-		<dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.6.0</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.hibernate.validator</groupId>
-		    <artifactId>hibernate-validator</artifactId>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
-
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<release>${java.version}</release>
+					<parameters>true</parameters>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin.version}</version>
 				<configuration>
 					<skipTests>${skipTests}</skipTests>
-					<skip>false</skip>
-					<argLine>
-						${argLine}
-						--add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
-						--add-opens java.base/java.lang=ALL-UNNAMED
-						--illegal-access=debug
-						--enable-preview
-					</argLine>
+					<argLine>@{argLine} --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --enable-preview</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${maven.jacoco.plugin.version}</version>
+				<version>${maven.jacoco.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/code/**</exclude>
+						<exclude>**/codes/**</exclude>
+						<exclude>**/config/**</exclude>
+						<exclude>**/dao/**</exclude>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/entity/**</exclude>
+						<exclude>**/errorcodes/**</exclude>
+						<exclude>**/exception/**</exclude>
+						<exclude>**/repository/**</exclude>
+						<exclude>**/*Config.class</exclude>
+						<exclude>**/*Application.class</exclude>
+						<exclude>**/batchjob/**</exclude>
+						<exclude>**/util/**</exclude>
+						<exclude>**/stateUtil/**</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -279,15 +361,33 @@
 							<goal>report</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${jacoco.minimum.coverage}</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-                                <version>${spring.boot.version}</version>
 				<configuration>
-					<executable>true</executable>
-					<layout>ZIP</layout>
+					<!-- Boot 4: java -jar (no launch-script). JVM flags from JDK_JAVA_OPTIONS / Helm javaOpts. -->
 				</configuration>
 				<executions>
 					<execution>
@@ -304,7 +404,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<inherited>true</inherited>
 				<version>${maven.source.plugin.version}</version>
 				<executions>
 					<execution>
@@ -329,13 +428,13 @@
 				</executions>
 				<configuration>
 					<doclint>none</doclint>
-					<sourcepath>src/main/java</sourcepath>
+					<failOnError>false</failOnError>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>3.2.3</version>
+				<version>${maven.gpg.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -355,7 +454,7 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>${git.commit.id.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>get-the-git-infos</id>
@@ -366,15 +465,15 @@
 					</execution>
 				</executions>
 				<configuration>
+					<!-- service-git.properties: avoid colliding with git.properties from kernel-core / other MOSIP jars. -->
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
-					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
 					<includeOnlyProperties>
 						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
 						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
 					</includeOnlyProperties>
 					<commitIdGenerationMode>full</commitIdGenerationMode>
 					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-					<!-- <format>json</format> -->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -389,6 +488,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 	<profiles>
 		<profile>
 			<id>sonar</id>
@@ -422,121 +522,54 @@
 		<profile>
 			<id>openapi-doc-generate-profile</id>
 			<dependencies>
+				<!--
+					kernel-auth-adapter: MOSIP auth token adapter for outbound REST.
+					Not part of kernel-core; still a separate commons artifact.
+					Version property: ${kernel.auth.adapter.version}.
+				-->
 				<dependency>
 					<groupId>io.mosip.kernel</groupId>
 					<artifactId>kernel-auth-adapter</artifactId>
-					<version>1.3.1</version>
+					<version>${kernel.auth.adapter.version}</version>
 				</dependency>
 			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<configuration>
-							<executable>true</executable>
-							<layout>ZIP</layout>
-						</configuration>
-						<executions>
-							<execution>
-								<id>pre-integration-test</id>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<folders>
-										<folder>src/test/resources</folder>
-									</folders>
-									<profiles>
-										<profile>openapi-profile</profile>
-									</profiles>
-								</configuration>
-							</execution>
-							<execution>
-								<id>post-integration-test</id>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-							<execution>
-								<goals>
-									<goal>build-info</goal>
-									<goal>repackage</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.springdoc</groupId>
-						<artifactId>springdoc-openapi-maven-plugin</artifactId>
-						<version>0.2</version>
-						<executions>
-							<execution>
-								<id>integration-test</id>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<apiDocsUrl>http://localhost:9095/preregistration/v1/v3/api-docs/Pre-Registration-Booking</apiDocsUrl>
-							<outputFileName>${artifactId}-openapi.json</outputFileName>
-							<outputDir>${project.build.directory}</outputDir>
-							<skip>false</skip>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>pl.project13.maven</groupId>
-						<artifactId>git-commit-id-plugin</artifactId>
-						<version>${git.commit.id.plugin.version}</version>
-						<executions>
-							<execution>
-								<id>get-the-git-infos</id>
-								<goals>
-									<goal>revision</goal>
-								</goals>
-								<phase>validate</phase>
-							</execution>
-						</executions>
-						<configuration>
-							<generateGitPropertiesFile>true</generateGitPropertiesFile>
-							<generateGitPropertiesFilename>
-							${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
-							<includeOnlyProperties>
-								<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
-								<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
-							</includeOnlyProperties>
-							<commitIdGenerationMode>full</commitIdGenerationMode>
-							<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
-	<scm>	
-        <connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>	
-        <developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>	
-        <url>https://github.com/mosip/mosip-ref-impl</url>	
-        <tag>HEAD</tag>	
-    </scm>
+	<repositories>
+		<repository>
+			<id>ossrh</id>
+			<name>Central Snapshots</name>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
-	<licenses>	
-        <license>	
-            <name>MPL 2.0</name>	
-            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>	
-        </license>	
-	 </licenses>
+	<scm>
+		<connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
+		<developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
+		<url>https://github.com/mosip/mosip-ref-impl</url>
+		<tag>HEAD</tag>
+	</scm>
+	<licenses>
+		<license>
+			<name>MPL 2.0</name>
+			<url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+		</license>
+	</licenses>
 	<developers>
 		<developer>
-			<name>Mosip</name>
+			<name>MOSIP</name>
 			<email>mosip.emailnotifier@gmail.com</email>
 			<organization>io.mosip</organization>
 			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
 		</developer>
 	</developers>
-
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>

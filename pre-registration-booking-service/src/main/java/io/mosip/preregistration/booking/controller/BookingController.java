@@ -48,6 +48,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -63,16 +64,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/")
 @Tag(name = "booking-controller", description = "Booking Controller")
+@SecurityRequirement(name = "Authorization")
 public class BookingController {
 
 	/** Autowired reference for {@link #bookingService}. */
 	@Autowired
 	private BookingServiceIntf bookingService;
-	
+
+	/** Validates MOSIP request ids on POST/PUT bodies. */
 	@Autowired
 	private RequestValidator requestValidator;
-	
-	/** The Constant CREATE application. */
+
+	/** MOSIP request-id constant for booking APIs. */
 	private static final String BOOKING = "book";
 	
 	

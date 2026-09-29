@@ -22,7 +22,7 @@ import io.mosip.kernel.core.virusscanner.exception.VirusScannerException;
 import io.mosip.kernel.core.virusscanner.spi.VirusScanner;
 import io.mosip.kernel.virusscanner.clamav.impl.VirusScannerImpl;
 import xyz.capybara.clamav.ClamavClient;
-import xyz.capybara.clamav.exceptions.ClamavException;
+import xyz.capybara.clamav.ClamavException;
 
 /**
  * 
@@ -81,5 +81,24 @@ public class VirusScannerExceptionTest {
 	public void serviceUnavailableForScanDocumentTest() throws ClamavException, IOException {
 		Mockito.doThrow(ClamavException.class).when(clamavClient).scan(any(FileInputStream.class));
 		virusScannerService.scanDocument(doc);
+	}
+
+	@Test(expected = VirusScannerException.class)
+	public void serviceUnavailableForScanFileInputStreamTest() throws ClamavException, FileNotFoundException {
+		Mockito.doThrow(ClamavException.class).when(clamavClient).scan(any(InputStream.class));
+		virusScannerService.scanFile(new FileInputStream(file));
+	}
+
+	@Test(expected = VirusScannerException.class)
+	public void missingFileForScanFolderTest() throws IOException {
+		File tmp = java.nio.file.Files.createTempDirectory("clamav-scan").toFile();
+		File nestedDir = new File(tmp, "nested");
+		nestedDir.mkdir();
+		try {
+			virusScannerService.scanFolder(tmp.getAbsolutePath());
+		} finally {
+			nestedDir.delete();
+			tmp.delete();
+		}
 	}
 }

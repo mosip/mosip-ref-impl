@@ -7,14 +7,13 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import io.mosip.registrationprocessor.externalstage.stage.ExternalStage;
 
 /**
- * external stage beans configuration class
- *
+ * Registers Vert.x {@link ExternalStage} as a Spring bean (aspects enabled).
  */
 @Configuration
 @EnableAspectJAutoProxy
 public class Externalconfig {
 	/**
-	 * ExternalStage bean
+	 * @return new {@link ExternalStage} instance managed by Spring
 	 */
 	@Bean
 	public ExternalStage externalStage() {

@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -116,26 +116,26 @@ import io.mosip.preregistration.core.util.ValidationUtil;
 @Ignore
 public class BookingServiceTest {
 
-	@MockBean
+	@MockitoBean
 	private BookingAvailabilityRepository bookingAvailabilityRepository;
 
-	@MockBean
+	@MockitoBean
 	private RegistrationBookingRepository registrationBookingRepository;
 
 	/**
 	 * Mocking the RestTemplateBuilder bean
 	 */
 
-	@MockBean(name = "selfTokenRestTemplate")
+	@MockitoBean(name = "selfTokenRestTemplate")
 	RestTemplate restTemplate;
 
-	@MockBean
+	@MockitoBean
 	private SecurityContextHolder context;
 
-	@MockBean
+	@MockitoBean
 	private RequestValidator requestValidator;
 
-	@MockBean
+	@MockitoBean
 	private AuditLogUtil auditLogUtil;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -144,7 +144,7 @@ public class BookingServiceTest {
 	@InjectMocks
 	private BookingService service;
 
-	@MockBean
+	@MockitoBean
 	private BookingServiceUtil serviceUtil;
 
 	private DemographicEntity preRegistrationEntity;
@@ -152,16 +152,16 @@ public class BookingServiceTest {
 	/**
 	 * Mocking the JsonValidatorImpl bean
 	 */
-	@MockBean(name = "idObjectValidator")
+	@MockitoBean(name = "idObjectValidator")
 	private IdObjectValidator jsonValidator;
 
 	@Autowired
 	private ValidationUtil validationUtil;
 
-	@MockBean
+	@MockitoBean
 	ObjectMapper mapper;
 
-	@MockBean
+	@MockitoBean
 	private BookingDAO bookingDAO;
 
 	AuditRequestDto auditRequestDto = new AuditRequestDto();

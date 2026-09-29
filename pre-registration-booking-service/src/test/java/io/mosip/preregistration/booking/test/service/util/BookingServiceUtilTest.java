@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -70,28 +70,28 @@ import io.mosip.preregistration.core.util.RequestValidator;
 @SpringBootTest(classes = { BookingServiceUtil.class })
 public class BookingServiceUtilTest {
 
-	@MockBean
+	@MockitoBean
 	private BookingAvailabilityRepository bookingAvailabilityRepository;
 
-	@MockBean
+	@MockitoBean
 	private RegistrationBookingRepository registrationBookingRepository;
 
-	@MockBean(name = "selfTokenRestTemplate")
+	@MockitoBean(name = "selfTokenRestTemplate")
 	RestTemplate restTemplate;
 
-	@MockBean
+	@MockitoBean
 	private RequestValidator requestValidator;
 
-	@MockBean
+	@MockitoBean
 	ObjectMapper mapper;
 
 	@Autowired
 	private BookingServiceUtil serviceUtil;
 
-	@MockBean
+	@MockitoBean
 	private BookingDAO bookingDAO;
 
-	@MockBean
+	@MockitoBean
 	private UserDetailsService userDetailsService;
 
 	@Mock

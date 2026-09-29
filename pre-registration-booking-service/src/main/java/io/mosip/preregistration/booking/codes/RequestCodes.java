@@ -1,41 +1,43 @@
 package io.mosip.preregistration.booking.codes;
 
+/**
+ * JSON / persistence field names used when reading MOSIP booking requests.
+ */
 public enum RequestCodes {
 
-	/* id */
+	/** Envelope id. */
 	id("id"),
 
-	/* version */
+	/** Envelope version. */
 	version("version"),
 
-	/* request date time */
+	/** Envelope request timestamp. */
 	requesttime("requesttime"),
 
-	/* request object */
+	/** Envelope request object. */
 	request("request"),
 
-	/* preRegistration Id */
+	/** Pre-registration identifier. */
 	PRE_REGISTRAION_ID("preRegistrationId"),
 
-	/* Appointment Date */
-	REG_DATE("appointment_date"), 
-	
-	/* From Time Slot */
+	/** Appointment date column / JSON key. */
+	REG_DATE("appointment_date"),
+
+	/** Slot start time column / JSON key. */
 	FROM_SLOT_TIME("time_slot_from");
+
 	/**
-	 * @param code
+	 * @param code wire or column name
 	 */
 	private RequestCodes(String code) {
 		this.code = code;
 	}
 
-	/**
-	 * Code
-	 */
+	/** Canonical code stored with this enum constant. */
 	private final String code;
 
 	/**
-	 * @return the code
+	 * @return the wire or column name
 	 */
 	public String getCode() {
 		return code;

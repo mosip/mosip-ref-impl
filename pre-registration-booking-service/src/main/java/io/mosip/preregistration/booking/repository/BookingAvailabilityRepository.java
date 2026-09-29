@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import jakarta.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.Query;

@@ -20,6 +20,7 @@ on:
       - 1.*
       - develop*
       - MOSIP*
+      - issue*
 
 jobs:
   build-maven-kernel:
@@ -122,11 +123,16 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-  build-maven-registration-processor-external-stage:
+  # Maven runs at registration-processor/ (registration-processor-ref-parent), same pattern as kernel/.
+  # kattu xmlstarlet checks licenses/gpg/git-commit-id on that pom. Children inherit them.
+  # Docker stays on each service dir so image names and Helm/K8s deploy are unchanged.
+  # No publish_to_nexus here (same as before) — parent POM is not published as a Docker image
+  # and artifactId is registration-processor-ref-parent (not registration-processor).
+  build-maven-registration-processor:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
-      SERVICE_LOCATION: registration-processor/registration-processor-external-stage
-      BUILD_ARTIFACT: registration-processor-external-stage
+      SERVICE_LOCATION: registration-processor
+      BUILD_ARTIFACT: registration-processor
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
@@ -135,13 +141,13 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   build-dockers-registration-processor-external-stage:
-    needs: build-maven-registration-processor-external-stage
+    needs: build-maven-registration-processor
     strategy:
       matrix:
         include:
           - SERVICE_LOCATION: 'registration-processor/registration-processor-external-stage'
             SERVICE_NAME: 'registration-processor-external-stage'
-            BUILD_ARTIFACT: 'registration-processor-external-stage'
+            BUILD_ARTIFACT: 'registration-processor'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21
@@ -154,26 +160,15 @@ jobs:
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-  build-maven-registration-processor-external-integration-service:
-    uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
-    with:
-      SERVICE_LOCATION: registration-processor/registration-processor-external-integration-service
-      BUILD_ARTIFACT: registration-processor-external-integration-service
-    secrets:
-      OSSRH_USER: ${{ secrets.OSSRH_USER }}
-      OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}
-      OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-      GPG_SECRET: ${{ secrets.GPG_SECRET }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   build-dockers-registration-processor-external-integration-service:
-    needs: build-maven-registration-processor-external-integration-service
+    needs: build-maven-registration-processor
     strategy:
       matrix:
         include:
           - SERVICE_LOCATION: 'registration-processor/registration-processor-external-integration-service'
             SERVICE_NAME: 'registration-processor-external-integration-service'
-            BUILD_ARTIFACT: 'registration-processor-external-integration-service'
+            BUILD_ARTIFACT: 'registration-processor'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master-java21

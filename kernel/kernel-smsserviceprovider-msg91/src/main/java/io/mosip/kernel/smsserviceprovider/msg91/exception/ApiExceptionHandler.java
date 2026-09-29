@@ -48,6 +48,7 @@ public class ApiExceptionHandler {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	/** Space inserted between a validation field name and its message. */
 	private static final String WHITESPACE = " ";
 
 	/**
@@ -134,6 +135,14 @@ public class ApiExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 	}
 
+	/**
+	 * Maps MSG91 / gateway 5xx bodies into MOSIP {@code KER-NOS-004}.
+	 *
+	 * @param httpServletRequest original request
+	 * @param exception Spring {@link HttpServerErrorException}
+	 * @return HTTP 500 wrapper
+	 * @throws IOException if the vendor body cannot be parsed
+	 */
 	@ExceptionHandler(HttpServerErrorException.class)
 	public ResponseEntity<ResponseWrapper<ServiceError>> httpServerErrorException(HttpServletRequest httpServletRequest,
 			final HttpServerErrorException exception) throws IOException {
@@ -151,6 +160,14 @@ public class ApiExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Catch-all handler for unmapped exceptions ({@code KER-NOS-500}).
+	 *
+	 * @param httpServletRequest original request
+	 * @param e any remaining exception
+	 * @return HTTP 500 wrapper
+	 * @throws IOException if the cached request body cannot be read
+	 */
 	@ExceptionHandler(value = { Exception.class, RuntimeException.class })
 	public ResponseEntity<ResponseWrapper<ServiceError>> defaultErrorHandler(
 			final HttpServletRequest httpServletRequest, Exception e) throws IOException {
@@ -163,6 +180,13 @@ public class ApiExceptionHandler {
 		return new ResponseEntity<>(responseWrapper, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Copies {@code id} / {@code version} from a cached JSON body when present.
+	 *
+	 * @param httpServletRequest possibly a {@link ContentCachingRequestWrapper}
+	 * @return empty wrapper or wrapper with id and version
+	 * @throws IOException if JSON parsing fails
+	 */
 	private ResponseWrapper<ServiceError> setErrors(HttpServletRequest httpServletRequest) throws IOException {
 		ResponseWrapper<ServiceError> responseWrapper = new ResponseWrapper<>();
 		String requestBody = null;

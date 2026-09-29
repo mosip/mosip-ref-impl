@@ -1,26 +1,25 @@
 package io.mosip.registrationprocessor.externalstage.entity;
 
-
 import java.io.Serializable;
 
 import lombok.Data;
 
 /**
- * base request class
- *
+ * MOSIP REST envelope used when posting to EIS.
  */
 @Data
-public class BaseRestRequestDTO implements Serializable{
-	
+public class BaseRestRequestDTO implements Serializable {
+
+	/** Serialization version. */
 	private static final long serialVersionUID = 4373201325809902206L;
 
-	/** The id. */
+	/** MOSIP request id. */
 	private String id;
-	
-	/** The ver. */
+
+	/** API version. */
 	private String version;
-	
-	/** The timestamp. */
+
+	/** Request timestamp. */
 	private String requesttime;
 
 }

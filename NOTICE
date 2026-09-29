@@ -1,0 +1,126 @@
+NOTICES
+
+Copyright (c) MOSIP.
+All rights reserved.
+
+This project is MPL 2.0 (see LICENSE). Third-party versions match each module
+pom.xml and Spring Boot 4.1.1 / Java 21 (no kernel-bom; kernel-core 1.4.1-SNAPSHOT).
+Full texts, MOSIP comments, and dual-license elections: licenses/.
+
+MOSIP open-source license matrix (Compatible with MPL 2.0 / Use with MOSIP):
+
+ License                         Compatible?  Use with MOSIP?  MOSIP comments
+ ------------------------------- ------------ ---------------- ----------------
+ BSD (2-Clause, 3-Clause)        Yes          Yes              Combine freely
+ MIT                             Yes          Yes              Combine freely
+ Apache-2.0                      Yes          Yes              Permissive; meet attribution
+ MPL-2.0                         Yes          Yes              Combine freely
+ EPL                             No           No               Differing requirements vs MPL
+ LGPLv3                          Yes          No               Terms may apply to combined work
+ GPLv2                           No           No               No explicit MPL 2.0 compatibility
+ GPLv3                           Yes          No               Combined work must be GPLv3
+ AGPLv3                          Yes          No               Combined work must be AGPLv3
+ Creative Commons (general)      No           No               Not designed for software
+ ISC                             Yes          Yes              Keep ISC text + attribution
+ Python-2.0                      Yes          Yes              Comply with both licenses
+ AFL-2.0                         No           No               Clauses conflict with MPL 2.0
+ AFL-2.1                         Yes          Yes              Keep AFL notice + attribution
+ ODC-By-1.0                      No           No               Database license; not software
+ CDDL-1.0                        Yes          Yes              Each file keeps original license
+ Unicode-DFS-2016                Yes          Yes              Keep Unicode license + notice
+ BlueOak-1.0.0                   Yes          Yes              Keep license text or link
+ OFL-1.1                         Yes          Yes              Fonts; include full OFL text
+ CC-BY-4.0                       —            —                To be reviewed (not used here)
+ Zlib                            Yes          Yes              Keep zlib license text
+ 0BSD                            Yes          Yes              Permissive; broad reuse
+
+CDDL-1.1 treated as CDDL-1.0 successor. Unicode-3.0 treated as Unicode-DFS-2016
+successor. Dual-licensed jars: MOSIP elects an allowed option (never EPL, GPL,
+AGPL, LGPLv3, or Creative Commons as the product license).
+
+Compatibility verdict (this repo):
+- Project code and MOSIP SNAPSHOT libs: MPL-2.0 — Use = Yes.
+- Runtime third-party: MIT / Apache-2.0 / BSD / CDDL (elected) / MPL (H2 elected)
+  — Use = Yes after dual-license election. No GPLv2/v3, AGPL, AFL-2.0, ODC-By,
+  or Creative Commons software deps.
+- Use = No still on classpath (Boot/test/build; not elected as product license):
+  JUnit (EPL, test), Logback (EPL-2.0 OR LGPL-2.1, Boot logger), AspectJ (EPL,
+  Boot AOP), JaCoCo plugin (EPL, build only).
+
+===========================
+MIT License (licenses/MIT.txt)
+===========================
+
+- org.projectlombok:lombok 1.18.46
+- org.slf4j:slf4j-api 2.0.18
+- org.mockito:mockito-core 5.23.0 (test)
+- redis.clients:jedis 7.4.1 (cache-provider-redis; Boot 4.1.1)
+- xyz.capybara:clamav-client 2.1.2
+
+===========================
+Apache-2.0 (licenses/Apache-2.0.txt)
+===========================
+
+- Spring Boot 4.1.1 / Spring Framework 7.0.9 / Spring Cloud 2025.1.3
+- com.fasterxml.jackson.* 2.21.5 (Jackson 2 via spring-boot-jackson2)
+- org.hibernate.validator:hibernate-validator 9.1.3.Final
+- io.micrometer:micrometer-core 1.17.1 / micrometer-registry-prometheus
+- com.hazelcast:hazelcast 5.7.0
+- io.jsonwebtoken:jjwt-api / jjwt-impl / jjwt-jackson 0.13.0
+- org.apache.commons:commons-collections4 4.6.0
+- net.logstash.logback:logstash-logback-encoder 9.0
+- com.jayway.jsonpath:json-path 2.10.0 (kernel) / 3.0.0 (booking)
+- net.minidev:json-smart 2.6.0
+- org.javassist:javassist 3.33.0-GA (MPL-1.1 OR LGPL-2.1 OR Apache-2.0;
+  MOSIP elects Apache-2.0 — not LGPL)
+- org.springdoc:springdoc-openapi-* 3.1.1
+- net.bytebuddy:byte-buddy 1.18.11
+- javax.inject:javax.inject 1
+- org.jetbrains.kotlin:kotlin-stdlib (transitive via clamav-client)
+- io.vertx 4.5.34 (EPL-2.0 OR Apache-2.0; MOSIP elects Apache-2.0 — not EPL)
+- Maven build plugins (Apache-2.0): compiler, surefire, jar, source, javadoc,
+  gpg, deploy, assembly, git-commit-id, central-publishing
+
+===========================
+EDL 1.0 / BSD (licenses/BSD-2-Clause.txt)
+===========================
+
+- javax.xml.bind:jaxb-api 2.3.1
+- org.glassfish.jaxb:jaxb-runtime 2.3.9
+
+===========================
+Mozilla Public License 2.0 (LICENSE)
+===========================
+
+- This repository (mosip-ref-impl modules)
+- io.mosip.kernel:kernel-core / kernel-auth-adapter 1.4.1-SNAPSHOT
+- io.mosip.preregistration:pre-registration-core 1.4.1-SNAPSHOT
+- io.mosip.registrationprocessor:* 1.4.1-SNAPSHOT
+- com.h2database:h2 2.4.240 (EPL-1.0 OR MPL-2.0; MOSIP elects MPL-2.0 — not EPL)
+
+===========================
+CDDL-1.1 (licenses/COMMON-DEVLOPMENT-AND-DISTRIBUTION-1.1.txt)
+===========================
+
+CDDL files keep CDDL; this project's files stay MPL-2.0 (MOSIP CDDL comment).
+
+- javax.activation (transitive via JAXB; CDDL-1.1 OR GPL-2.0-with-CPE;
+  MOSIP elects CDDL-1.1 — not GPL)
+- javax.servlet:javax.servlet-api (CDDL OR GPL-2.0-with-CPE; MOSIP elects CDDL)
+
+===========================
+Public Domain / 0BSD-like (licenses/0BSD.txt)
+===========================
+
+- org.json:json (Public Domain; treated like 0BSD — Use = Yes)
+
+===========================
+MOSIP matrix: Use = No (classpath exception — not a product election)
+===========================
+
+- org.junit.jupiter / junit-vintage / junit:junit — EPL, test only
+- ch.qos.logback — EPL-2.0 OR LGPL-2.1 (both Use = No); Boot default logger
+- org.aspectj:aspectjweaver — EPL-2.0; Boot AOP transitive
+- org.jacoco:* — EPL-2.0; Maven plugin / test agent only, not shipped in product
+
+See licenses/NOTICE for the full MOSIP comments and elections.

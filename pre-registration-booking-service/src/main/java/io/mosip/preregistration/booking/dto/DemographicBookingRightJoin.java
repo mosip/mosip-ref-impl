@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Join projection of demographic status and booked slot.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,6 +21,7 @@ public class DemographicBookingRightJoin implements Serializable {
 	/**
 	 * 
 	 */
+	/** Serialization version. */
 	private static final long serialVersionUID = -6964396778095509912L;
 
 	/** Status of the preid */

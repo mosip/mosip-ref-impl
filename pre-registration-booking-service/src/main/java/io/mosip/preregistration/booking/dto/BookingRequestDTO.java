@@ -10,9 +10,10 @@ import lombok.Setter;
 
 
 /**
+ * Appointment request: centre, date, and from/to slot.
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Getter
 @Setter
@@ -20,6 +21,7 @@ public class BookingRequestDTO implements Serializable{
 	/**
 	 * 
 	 */
+	/** Serialization version. */
 	private static final long serialVersionUID = 3339740008361919496L;
 	/**
 	 * registration Center Id

@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -45,7 +45,7 @@ public class SmsServiceProviderTest {
 	@Autowired
 	SMSServiceProviderImpl service;
 
-	@MockBean
+	@MockitoBean
 	RestTemplate restTemplate;
 
 	@Value("${mosip.kernel.sms.api}")
@@ -72,7 +72,7 @@ public class SmsServiceProviderTest {
 	@Test
 	public void sendSmsTest() {
 
-		UriComponentsBuilder sms = UriComponentsBuilder.fromHttpUrl(api)
+		UriComponentsBuilder sms = UriComponentsBuilder.fromUriString(api)
 				.queryParam(SmsPropertyConstant.AUTH_KEY.getProperty(), authkey)
 				.queryParam(SmsPropertyConstant.SMS_MESSAGE.getProperty(), "your otp is 4646")
 				.queryParam(SmsPropertyConstant.ROUTE.getProperty(), route)
@@ -114,7 +114,26 @@ public class SmsServiceProviderTest {
 
 	@Test
 	public void validGateWayTest() {
-		service.sendSms(phone, "hello your otp is 45373");
+		when(restTemplate.getForEntity(Mockito.anyString(), Mockito.eq(String.class)))
+				.thenReturn(new ResponseEntity<>("ok", HttpStatus.OK));
+		SMSResponseDto dto = service.sendSms(phone, "hello your otp is 45373");
+		org.junit.Assert.assertEquals("success", dto.getStatus());
+		org.junit.Assert.assertEquals("Sms Request Sent", dto.getMessage());
+	}
+
+	@Test
+	public void sendSmsEncodesHashAndSucceeds() {
+		when(restTemplate.getForEntity(Mockito.anyString(), Mockito.eq(String.class)))
+				.thenReturn(new ResponseEntity<>("ok", HttpStatus.OK));
+		SMSResponseDto dto = service.sendSms(phone, "otp # 1234");
+		org.junit.Assert.assertEquals("success", dto.getStatus());
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void sendSmsPropagatesVendorHttpError() {
+		when(restTemplate.getForEntity(Mockito.anyString(), Mockito.eq(String.class)))
+				.thenThrow(new org.springframework.web.client.HttpClientErrorException(HttpStatus.BAD_REQUEST, "bad"));
+		service.sendSms(phone, "hello");
 	}
 
 }

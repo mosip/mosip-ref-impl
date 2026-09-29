@@ -3,18 +3,17 @@ package io.mosip.registrationprocessor.eis.entity;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-@Data
 
-/* (non-Javadoc)
- * @see io.mosip.registration.processor.core.common.rest.dto.BaseRestRequestDTO#hashCode()
+/**
+ * EIS POST body: MOSIP envelope plus a list of registration ids to process.
  */
+@Data
 @EqualsAndHashCode(callSuper = true)
 public class MessageRequestDTO extends BaseRestRequestDTO {
 
-	/**
-	 * 
-	 */
+	/** Serialization version. */
 	private static final long serialVersionUID = 7914304502765754692L;
-	/** The request. */
+
+	/** Registration ids (or equivalent keys) sent by external-stage. */
 	private List<String> request;
 }

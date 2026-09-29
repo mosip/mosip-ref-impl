@@ -2,8 +2,8 @@ package io.mosip.registrationprocessor.externalstage.stage;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -82,6 +83,7 @@ public class ExternalStageTest {
 	InternalRegistrationStatusDto registrationStatusDto=new InternalRegistrationStatusDto();
 	@Before
 	public void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
 		ReflectionTestUtils.setField(externalStage, "workerPoolSize", 10);
 		ReflectionTestUtils.setField(externalStage, "clusterManagerUrl", "/dummyPath");
 		ReflectionTestUtils.setField(externalStage, "messageExpiryTimeLimit", Long.valueOf(0));

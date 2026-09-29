@@ -5,42 +5,64 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
+/**
+ * Binds {@code openapi.*} properties used by {@link BookingConfig} for Springdoc.
+ */
 @Configuration
 @ConfigurationProperties(prefix = "openapi")
 @Data
 public class OpenApiProperties {
-    private InfoProperty info;
-    private Service service;
-    private Group group;
+	/** API title, description, version, and license. */
+	private InfoProperty info;
+	/** Published server URLs for the OpenAPI document. */
+	private Service service;
+	/** Swagger UI group name and path filters. */
+	private Group group;
 }
 
+/** OpenAPI info block bound from {@code openapi.info.*}. */
 @Data
 class InfoProperty {
-    private String title;
-    private String description;
-    private String version;
-    private LicenseProperty license;
+	/** Display title in Swagger UI. */
+	private String title;
+	/** Longer description of the API. */
+	private String description;
+	/** Document version string. */
+	private String version;
+	/** License name and URL. */
+	private LicenseProperty license;
 }
 
+/** License fields bound from {@code openapi.info.license.*}. */
 @Data
 class LicenseProperty {
-    private String name;
-    private String url;
+	/** License display name (for example Mosip). */
+	private String name;
+	/** License document URL. */
+	private String url;
 }
 
+/** Server list bound from {@code openapi.service.*}. */
 @Data
 class Service {
-    private List<Server> servers;
+	/** OpenAPI servers (Try-it-out base URLs). */
+	private List<Server> servers;
 }
 
+/** A single OpenAPI server URL and description. */
 @Data
 class Server {
-    private String description;
-    private String url;
+	/** Human-readable server label. */
+	private String description;
+	/** Absolute or relative base URL. */
+	private String url;
 }
 
+/** Path group bound from {@code openapi.group.*}. */
 @Data
 class Group {
-    private String name;
-    private List<String> paths;
+	/** Springdoc group name. */
+	private String name;
+	/** Ant-style paths included in this group. */
+	private List<String> paths;
 }

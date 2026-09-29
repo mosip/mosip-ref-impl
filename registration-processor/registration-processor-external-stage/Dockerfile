@@ -9,52 +9,21 @@ LABEL commit_hash=${COMMIT_HASH}
 LABEL commit_id=${COMMIT_ID}
 LABEL build_time=${BUILD_TIME}
 
-#Uncomment below and Comment above line(i.e. FROM openjdk:8) for OS specific (e.g. Alpine OS ) docker base image
-#FROM openjdk:8-jdk-alpine
-
-# can be passed during Docker build as build time environment for github branch to pickup configuration from.
+# Build-time config (also overridable at runtime via matching ENV).
 ARG spring_config_label
-
-# can be passed during Docker build as build time environment for spring profiles active 
 ARG active_profile
-
-# can be passed during Docker build as build time environment for config server URL
 ARG spring_config_url
 
-# can be passed during Docker build as build time environment for glowroot 
-ARG is_glowroot
-
-# can be passed during Docker build as build time environment for artifactory URL
-ARG artifactory_url
-
-# environment variable to pass active profile such as DEV, QA etc at docker runtime
 ENV active_profile_env=${active_profile}
-
-# environment variable to pass github branch to pickup configuration from, at docker runtime
 ENV spring_config_label_env=${spring_config_label}
+ENV spring_config_url_env=${spring_config_url}
 
-# environment variable to pass github branch to pickup configuration from, at docker runtime
-ENV spring_config_label_env=${spring_config_label}
+# JVM flags (ZGC, heap, encoding, …) come from JDK_JAVA_OPTIONS, set by Helm
+# additionalResources.javaOpts — not hardcoded here.
 
-# environment variable to pass glowroot, at docker runtime
-ENV is_glowroot_env=${is_glowroot}
-
-# environment variable to pass artifactory url, at docker runtime
-ENV artifactory_url_env=${artifactory_url}
-
-# environment variable to pass iam_adapter url, at docker runtime
-ENV iam_adapter_url_env=${iam_adapter_url}
-
-# can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user=mosip
-
-# can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user_group=mosip
-
-# can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user_uid=1002
-
-# can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user_gid=1001
 
 RUN apk -q update \
@@ -64,21 +33,12 @@ RUN apk -q update \
 && addgroup sudo \
 && adduser ${container_user} sudo
 
-# set working directory for the user
 WORKDIR /home/${container_user}
 
 ENV work_dir=/home/${container_user}
 
-ARG loader_path=${work_dir}/additional_jars/
-
-RUN mkdir -p ${loader_path}
-
-ENV loader_path_env=${loader_path}
-
-# change volume to whichever storage directory you want to use for this container.
 VOLUME ${work_dir}/logs
 
-# copying shaded jar into docker image
 ADD ./target/*.jar ./target/
 
 RUN find target/ -regextype posix-extended -regex '.*registration-processor-external-stage-[0-9\.]+[-A-Za-z0-9\.]*\.jar'  "-print0" | xargs "-0" cp -t ./ \
@@ -86,14 +46,13 @@ RUN find target/ -regextype posix-extended -regex '.*registration-processor-exte
   && rm -rf original*.jar \
   && rm -rf *-sources.jar \
   && rm -rf *-javadoc.jar \
-  && mv *.jar registration-processor-external-stage.jar 
+  && mv *.jar registration-processor-external-stage.jar
 
-# change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
 
-# select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
 
-CMD wget "${iam_adapter_url_env}" -O "${loader_path_env}"/kernel-auth-adapter.jar; \
-    java -XX:-UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:-UseParallelGC -XX:+UseZGC -XX:+ZGenerational -XX:-UseShenandoahGC -XX:MaxGCPauseMillis=200  -XX:+UnlockExperimentalVMOptions -XX:+UseStringDeduplication -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseCompressedOops \
-    -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" -jar registration-processor-external-stage.jar ; \
+CMD java -Dspring.cloud.config.label="${spring_config_label_env}" \
+    -Dspring.profiles.active="${active_profile_env}" \
+    -Dspring.cloud.config.uri="${spring_config_url_env}" \
+    -jar registration-processor-external-stage.jar

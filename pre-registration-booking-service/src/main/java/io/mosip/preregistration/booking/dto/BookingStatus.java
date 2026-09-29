@@ -2,14 +2,16 @@ package io.mosip.preregistration.booking.dto;
 
 import java.util.List;
 
-import io.mosip.preregistration.booking.dto.BookingStatusDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Multi-appointment response: one status per requested pre-id.
+ */
 @Getter
 @Setter
 public class BookingStatus {
-	
-	List<BookingStatusDTO> bookingStatusResponse;
 
+	/** Per-pre-id booking outcomes. */
+	List<BookingStatusDTO> bookingStatusResponse;
 }

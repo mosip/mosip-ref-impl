@@ -2,21 +2,19 @@ package io.mosip.registrationprocessor.externalstage.entity;
 
 import java.util.List;
 
-import io.mosip.registration.processor.core.abstractverticle.MessageDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-@Data
 
-/* (non-Javadoc)
- * @see io.mosip.registration.processor.core.common.rest.dto.BaseRestRequestDTO#hashCode()
+/**
+ * Body posted to {@code ApiName.EISERVICE}: envelope plus registration ids.
  */
+@Data
 @EqualsAndHashCode(callSuper = true)
 public class MessageRequestDTO extends BaseRestRequestDTO {
 
-	/**
-	 * 
-	 */
+	/** Serialization version. */
 	private static final long serialVersionUID = 7914304502765754692L;
-	/** The request. */
+
+	/** Registration ids forwarded to the External Integration Service. */
 	private List<String> request;
 }
