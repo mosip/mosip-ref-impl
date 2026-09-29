@@ -16,6 +16,9 @@ import io.mosip.preregistration.core.common.dto.MainRequestDTO;
 import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.dto.PreRegIdsByRegCenterIdResponseDTO;
 
+/**
+ * Booking operations: availability, book, multi-book, cancel, delete, and queries by centre/date.
+ */
 @Service
 public interface BookingServiceIntf {
 

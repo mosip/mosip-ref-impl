@@ -119,9 +119,9 @@ resources:
     cpu: 250m
     memory: 1250Mi
 additionalResources:
-  ## Specify any JAVA_OPTS string here. These typically will be specified in conjunction with above resources
-  ## Example: java_opts: "-Xms500M -Xmx500M"
-  javaOpts: "-Xms1125M -Xmx1875M"
+  ## Passed to the container as JDK_JAVA_OPTIONS (see templates/deployment.yaml).
+  ## Heap plus GC/encoding flags — not hardcoded in the Dockerfile.
+  javaOpts: "-Xms1125M -Xmx1875M -XX:-UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:-UseParallelGC -XX:+UseZGC -XX:+ZGenerational -XX:-UseShenandoahGC -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+UseStringDeduplication -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseCompressedOops"
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
 ## Clamav container already runs as 'mosip' user, so we may not need to enable this
 containerSecurityContext:

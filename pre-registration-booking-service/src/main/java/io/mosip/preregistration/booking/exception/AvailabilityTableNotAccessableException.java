@@ -4,6 +4,9 @@ import io.mosip.kernel.core.exception.BaseUncheckedException;
 import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import lombok.Getter;
 
+/**
+ * Thrown when the availability table cannot be read.
+ */
 @Getter
 public class AvailabilityTableNotAccessableException extends BaseUncheckedException {
 
@@ -11,6 +14,7 @@ public class AvailabilityTableNotAccessableException extends BaseUncheckedExcept
 	 * 
 	 */
 	private static final long serialVersionUID = 5135952690225019228L;
+	/** MOSIP envelope copied onto the error response. */
 	private MainResponseDTO<?> mainResponseDTO;
 
 	public AvailabilityTableNotAccessableException(String msg) {

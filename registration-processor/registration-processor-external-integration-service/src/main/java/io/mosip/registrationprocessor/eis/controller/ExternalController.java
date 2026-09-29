@@ -11,22 +11,30 @@ import io.mosip.registrationprocessor.eis.entity.MessageRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * External Controller
+ * Country stub REST API for external system integration.
+ * <p>
+ * Default behaviour: HTTP 200 with {@code true} when {@code request} is non-null,
+ * otherwise {@code false}. Replace this method with country logic.
+ * </p>
  *
+ * @author MOSIP
  */
 @RestController
 @RequestMapping("/registration-processor")
 @Tag(name = "external-integration-service", description = "External Controller")
+@SecurityRequirement(name = "Authorization")
 public class ExternalController {
 	/**
-	 * dummy method to process incoming requests
-	 * @param messageRequestDTO
-	 * @return boolean
+	 * Accepts a packet-id list from registration-processor-external-stage.
+	 *
+	 * @param messageRequestDTO MOSIP envelope plus {@code request} list
+	 * @return {@code true} if {@code request} is not {@code null}
 	 */
 	@PostMapping(path = "/external-integration-service/v1.0", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {

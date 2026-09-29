@@ -4,6 +4,9 @@ import io.mosip.kernel.core.exception.BaseUncheckedException;
 import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import lombok.Getter;
 
+/**
+ * Thrown when incrementing/decrementing slot availability fails.
+ */
 @Getter
 public class AvailabilityUpdationFailedException extends BaseUncheckedException{
 
@@ -12,6 +15,7 @@ public class AvailabilityUpdationFailedException extends BaseUncheckedException{
 	 * 
 	 */
 	private static final long serialVersionUID = -8740121632422570371L;
+	/** MOSIP envelope copied onto the error response. */
 	private MainResponseDTO<?> mainResponseDTO;
 	
 	public AvailabilityUpdationFailedException(String msg) {

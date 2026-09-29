@@ -23,12 +23,18 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 
 /**
- * This class is used for Swagger configuration, also to configure Host and
- * Port.
+ * This class is used for Swagger / Springdoc configuration, host and port helpers,
+ * and MOSIP booking id maps.
+ * <p>
+ * {@link #openApi()} registers an <strong>Authorize</strong> apiKey named
+ * {@code Authorization} (header), same pattern as commons kernel-auth-service.
+ * </p>
  * 
  * @author Kishan Rathore
  * @author Jagadishwari
@@ -106,13 +112,19 @@ public class BookingConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(BookingConfig.class);
 
+	/**
+	 * Scheme name shown by Swagger UI as Authorize (IDA-style Authorization apiKey).
+	 */
+	public static final String AUTHORIZATION_SCHEME = "Authorization";
+
 	@Autowired
 	private OpenApiProperties openApiProperties;
 
 	@Bean
 	public OpenAPI openApi() {
 		OpenAPI api = new OpenAPI()
-				.components(new Components())
+				.components(new Components().addSecuritySchemes(AUTHORIZATION_SCHEME, authorizationApiKey()))
+				.addSecurityItem(new SecurityRequirement().addList(AUTHORIZATION_SCHEME))
 				.info(new Info()
 						.title(openApiProperties.getInfo().getTitle())
 						.version(openApiProperties.getInfo().getVersion())
@@ -126,6 +138,17 @@ public class BookingConfig {
 		});
 		logger.info("swagger open api bean is ready");
 		return api;
+	}
+
+	/**
+	 * Header apiKey named {@code Authorization} so Swagger UI shows Authorize
+	 * with Name / In / Value (same as commons kernel-auth-service).
+	 *
+	 * @return the security scheme
+	 */
+	private static SecurityScheme authorizationApiKey() {
+		return new SecurityScheme().type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.HEADER)
+				.name(AUTHORIZATION_SCHEME);
 	}
 
 	@Bean

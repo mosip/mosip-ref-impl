@@ -176,9 +176,9 @@ public class BookingServiceUtil {
 			String regCentersDetailsPageNo = new StringBuilder(regCenterUrl).append("/").append(regCenterId)
 					.append("/all").toString();
 
-			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(regCentersDetailsPageNo);
+			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromUriString(regCentersDetailsPageNo);
 			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+			headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
 			String uriBuilder = regbuilder.build().encode().toUriString();
 			log.info("sessionId", "idType", "id",
@@ -713,7 +713,7 @@ public class BookingServiceUtil {
 		MainResponseDTO<String> response = new MainResponseDTO<>();
 		//String url = preRegResourceUrl + "/applications/status/" + applicationId;
 		UriComponentsBuilder builder = UriComponentsBuilder
-				.fromHttpUrl(preRegResourceUrl + "/applications/status/" + applicationId);
+				.fromUriString(preRegResourceUrl + "/applications/status/" + applicationId);
 		String uriBuilder = builder.build().encode().toUriString();
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);

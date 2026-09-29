@@ -1,69 +1,89 @@
 # registration-processor-external-integration-service
 
+Country stub REST service that receives POSTs from `registration-processor-external-stage`. Replace the controller body with country-specific integration logic.
+
+- **Artifact**: `io.mosip.registrationprocessor:registration-processor-external-integration-service:1.4.1-SNAPSHOT`
+- **Parent**: `registration-processor-ref-parent` (Boot **4.1.1**)
+- **Logging**: `kernel-core` (commons)
+- **Git info**: `service-git.properties`
+
 ## Overview
-This service details used by Registration service for external integration service.
+
+Used by registration-processor for external system integration. Default implementation returns `true` when the request body is non-null.
 
 ## Design
-[Design - Approach for External System Integration](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_external_system_integration.md)
 
-[Design - Approach for Adding HTTP Stage](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_http_integration.md)
+- [Approach for External System Integration](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_external_system_integration.md)
+- [Approach for Adding HTTP Stage](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_http_integration.md)
 
-## Default Context-path and Port
-```
+## Default context and port
+
+```text
 server.port=8201
 server.servlet.path=/registrationprocessor/v1/eis
 ```
 
-## Operations done by the Service
-1. It returns boolean value true for every non-null requests
+See [bootstrap.properties](src/main/resources/bootstrap.properties).
 
-## Build & run (for developers)
-The project requires JDK 21.0.3
-and mvn version - 3.9.6
+## Operations
 
-1. Build and install:
-    ```
-    $ cd registration-processor\registration-processor-external-integration-service
-    $ mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
-    ```
-2. Build Docker for a service:
-    ```
-    $ cd <service folder>
-    $ docker build -f Dockerfile
-    ```
+1. `POST /registration-processor/external-integration-service/v1.0` — returns `true` for a non-null request payload.
 
-## Configuration files
-Registration processor external integration Service uses the following configuration files:
-[Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) and
-[Configuration-Registration-processor](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties) defined here.
-Refer to the required released tagged version.
+## Prerequisites
 
-Need to run the config-server along with the files mentioned above in order to run the registration processor external integration service.
+- JDK **21.0.3**
+- Maven **3.9.6**
+- Spring Cloud Config
 
-## Deployment in K8 cluster with other MOSIP services:
-### Pre-requisites
-* Set KUBECONFIG variable to point to existing K8 cluster kubeconfig file:
-    ```
-    export KUBECONFIG=~/.kube/<k8s-cluster.config>
-    ```
-### Install
-  ```
-    $ cd deploy
-    $ ./install.sh
-   ```
-### Delete
-  ```
-    $ cd deploy
-    $ ./delete.sh
-   ```
-### Restart
-  ```
-    $ cd deploy
-    $ ./restart.sh
-   ```
+## Build & run
+
+```text
+cd registration-processor
+mvn -pl registration-processor-external-integration-service clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
+```
+
+```text
+java -jar target/registration-processor-external-integration-service-1.4.1-SNAPSHOT.jar
+```
+
+### Docker
+
+```text
+docker build -t registration-processor-external-integration-service .
+```
+
+## Configuration
+
+- [application-default.properties](https://github.com/mosip/mosip-config/blob/master/application-default.properties)
+- [registration-processor-default.properties](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties)
+
+## Swagger UI (Authorize)
+
+| | |
+|---|---|
+| UI | `http://localhost:8201/registrationprocessor/v1/eis/swagger-ui.html` (springdoc default under servlet path) |
+| Scheme | **Authorization** header apiKey |
+
+Click **Authorize**, paste the authmanager token, then Try-it-out.
+
+```text
+mvn -pl registration-processor-external-integration-service clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
+```
+
+JaCoCo LINE covered ratio **0.90**. Boot 4 tests use `org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest`.
+
+## Deployment (Kubernetes)
+
+```text
+export KUBECONFIG=~/.kube/<k8s-cluster.config>
+cd deploy
+./install.sh
+```
 
 ## APIs
-API documentation is available [here](https://mosip.github.io/documentation/).
+
+[External Integration Service API](https://mosip.github.io/documentation/1.2.0/registration-processor-external-integration-service.html)
 
 ## License
-This project is licensed under the terms of [Mozilla Public License 2.0](https://github.com/mosip/mosip-ref-impl/blob/master/LICENSE).
+
+[Mozilla Public License 2.0](../../LICENSE) — [NOTICE](../../NOTICE)

@@ -1,162 +1,97 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.4.1-SNAPSHOT</version>
 	</parent>
 
-	<name>kernel-ref-idobjectvalidator</name>
 	<artifactId>kernel-ref-idobjectvalidator</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
+	<name>kernel-ref-idobjectvalidator</name>
+	<description>
+		Reference IdObjectValidator: JSON schema + masterdata validation.
+		kernel-core (commons) supplies logging; do not add kernel-logger-logback.
+	</description>
 
-	<properties>
-		<kernel-logger-logback.version>1.3.1-rc.1</kernel-logger-logback.version>
-		<kerne.bom.version>1.3.1-rc.1</kerne.bom.version>
-		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
-	</properties>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.mosip.kernel</groupId>
-				<artifactId>kernel-bom</artifactId>
-				<version>${kerne.bom.version}</version>
-				<type>pom</type>
-			    <scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	<dependencies>		
-		<dependency>
-		    <groupId>org.mockito</groupId>
-		    <artifactId>mockito-core</artifactId>
-		    <scope>test</scope>
-		</dependency>		
-		<dependency>
-		    <groupId>net.bytebuddy</groupId>
-		    <artifactId>byte-buddy</artifactId>
-		</dependency>				
+	<dependencies>
+		<!--
+			kernel-core: SPI + logging (commons). Version from parent ${kernel.core.version}.
+			Do not add kernel-logger-logback.
+		-->
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
-			<version>${kernel-core.version}</version>
 		</dependency>
+		<!--
+			commons-collections4: Multi-valued maps for masterdata caches. Version from parent.
+		-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 		</dependency>
+		<!--
+			json-path: identity JSON queries. Version from parent ${json-path.version}.
+		-->
 		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jdk8</artifactId>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
 		</dependency>
+		<!--
+			json-smart: JSONArray (net.minidev.json). Version from parent ${json-smart.version}.
+		-->
+		<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>json-smart</artifactId>
+		</dependency>
+		<!--
+			spring-boot-starter-web: RestTemplate / web types used by masterdata lookups.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!--
+			spring-cloud-starter-config / bootstrap: optional Cloud Config when used as a service lib.
+		-->
 		<dependency>
-			<groupId>io.mosip.kernel</groupId>
-			<artifactId>kernel-logger-logback</artifactId>
-			<version>${kernel-logger-logback.version}</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
 		</dependency>
+		<!--
+			mockito-core: Unit tests. Scope: test.
+		-->
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
 		</dependency>
+		<!--
+			byte-buddy: Mockito/inline mocks on JDK 21. Version from Boot parent.
+		-->
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId> 
-		</dependency>
-		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>	
-		</dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
 	</dependencies>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://central.sonatype.com/api/v1/publisher</url>
-		</repository>
-	</distributionManagement>
+
 	<build>
+		<!--
+			Parent plugins: surefire enable-preview is required (id-object JSONPath / preview APIs).
+		-->
 		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
-                <configuration>
-                    <skipTests>false</skipTests>
-                    <skip>false</skip>
-                    <argLine>
-                        ${jacocoArgLine}
-                        --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
-                        --add-opens java.base/java.lang=ALL-UNNAMED
-                        --add-opens java.base/java.util=ALL-UNNAMED
-                        --add-opens java.base/java.io=ALL-UNNAMED
-                        --enable-preview
-                    </argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${maven.jacoco.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <propertyName>jacocoArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-			<plugin>
-				<groupId>org.sonatype.central</groupId>
-				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>${central.publishing.maven.plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<publishingServerId>ossrh</publishingServerId>
-					<autoPublish>false</autoPublish>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.version}</version>
+				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>					
+					<argLine>@{argLine} --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --enable-preview</argLine>
 				</configuration>
 			</plugin>
 		</plugins>

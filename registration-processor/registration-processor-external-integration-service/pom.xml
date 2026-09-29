@@ -1,72 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <groupId>io.mosip.registrationprocessor</groupId>
-    <artifactId>pre-processor</artifactId>
-    <version>1.3.1-rc.1</version>
- 	 </parent>
+		<groupId>io.mosip.registrationprocessor</groupId>
+		<artifactId>registration-processor-ref-parent</artifactId>
+		<version>1.4.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
 	<artifactId>registration-processor-external-integration-service</artifactId>
-	 <version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<name>registration-processor-external-integration-service</name>
-	<description>Registration processor external integration service</description>
+	<description>
+		MOSIP External Integration Service stub. Spring Boot 4.1.1 via parent
+		registration-processor-ref-parent. No pre-processor parent. Logging via kernel-core (commons).
+	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
-	<licenses>
-		<license>
-			<name>MPL 2.0</name>
-			<url>https://www.mozilla.org/en-US/MPL/2.0/</url>
-		</license>
-	</licenses>
-
-	<scm>
-		<connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
-		<developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
-		<url>https://github.com/mosip/mosip-ref-impl</url>
-		<tag>HEAD</tag>
-	</scm>
-	<developers>
-		<developer>
-			<name>Mosip</name>
-			<email>mosip.emailnotifier@gmail.com</email>
-			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/mosip/mosip-ref-impl</organizationUrl>
-		</developer>
-	</developers>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
-		<maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
-		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
-		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/verticle/**,**/spi/**,"**/proxy/**","**/entities/**","**/filter/**","**/util/**","**/verifier/**"</sonar.coverage.exclusions>
-		<spring.boot.version>3.2.3</spring.boot.version>
-		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
-	</properties>
 
 	<dependencies>
+		<!--
+			spring-boot-starter-web: EIS stub REST (ExternalController). Version from Boot 4.1.1 parent.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!--
+			spring-boot-starter-actuator: health/info/refresh.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<!--
+			spring-cloud-starter-config / bootstrap: registration-processor-default.properties.
+		-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
+		<!--
+			micrometer-core / prometheus: Actuator metrics.
+		-->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
@@ -75,258 +56,50 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
+		<!--
+			springdoc-openapi-starter-webmvc-ui: Swagger UI + Authorize. Version from parent ${springdoc.version}.
+		-->
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 		</dependency>
+		<!--
+			spring-boot-configuration-processor: metadata for openapi.* / EIS properties. Optional.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!--
+			spring-boot-starter-webmvc-test: Boot 4 MockMvc / @WebMvcTest (not in starter-test).
+		-->
 		<dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-             <scope>test</scope>
-        </dependency>
-        <dependency>
-             <groupId>junit</groupId>
-             <artifactId>junit</artifactId>
-             <scope>test</scope>
-             </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-             <artifactId>junit-vintage-engine</artifactId>
-        </dependency>
-        <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--
+			mockito-core / junit: JUnit 4 EIS tests. Scope: test.
+		-->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://central.sonatype.com/api/v1/publisher</url>
-		</repository>
-	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.central</groupId>
-				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>${central.publishing.maven.plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<publishingServerId>ossrh</publishingServerId>
-					<autoPublish>false</autoPublish>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.surefire.plugin.version}</version>
-				<configuration>
-					<skipTests>${skipTests}</skipTests>
-					<skip>false</skip>
-					<argLine>
-						${argLine} --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --illegal-access=permit
-					</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${maven.jacoco.plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-						<configuration>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>get-the-git-infos</id>
-						<goals>
-							<goal>revision</goal>
-						</goals>
-						<phase>validate</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<generateGitPropertiesFile>true</generateGitPropertiesFile>
-					<generateGitPropertiesFilename>${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
-					<includeOnlyProperties>
-						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
-						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
-					</includeOnlyProperties>
-					<commitIdGenerationMode>full</commitIdGenerationMode>
-					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-					<!-- <format>json</format> -->
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${spring.boot.version}</version>
-				<configuration>
-					<executable>true</executable>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<attach>false</attach>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>sonar</id>
-			<properties>
-				<sonar.sources>.</sonar.sources>
-				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.sonarsource.scanner.maven</groupId>
-						<artifactId>sonar-maven-plugin</artifactId>
-						<version>${maven.sonar.plugin.version}</version>
-						<executions>
-							<execution>
-								<phase>verify</phase>
-								<goals>
-									<goal>sonar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>openapi-doc-generate-profile</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<version>${spring.boot.version}</version>
-						<configuration>
-							<executable>true</executable>
-							<layout>ZIP</layout>
-						</configuration>
-						<executions>
-							<!-- Build info and repackage -->
-							<execution>
-								<id>build-info-repackage</id>
-								<goals>
-									<goal>build-info</goal>
-									<goal>repackage</goal>
-								</goals>
-								<configuration>
-									<attach>false</attach>
-								</configuration>
-							</execution>
-							<!-- Integration test startup -->
-							<execution>
-								<id>pre-integration-test</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<folders>
-										<folder>src/test/resources</folder>
-									</folders>
-									<profiles>
-										<profile>openapi-profile</profile>
-									</profiles>
-									<arguments>
-										<argument>--server.port=8090</argument>
-										<argument>--server.servlet.path=/app/generic</argument>
-									</arguments>
-								</configuration>
-							</execution>
-							<!-- Integration test shutdown -->
-							<execution>
-								<id>post-integration-test</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.springdoc</groupId>
-						<artifactId>springdoc-openapi-maven-plugin</artifactId>
-						<version>0.2</version>
-						<executions>
-							<execution>
-								<id>integration-test</id>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<apiDocsUrl>http://localhost:8090/app/generic/v3/api-docs</apiDocsUrl>
-							<outputFileName>${artifactId}-openapi.json</outputFileName>
-							<outputDir>${project.build.directory}</outputDir>
-							<skip>false</skip>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 </project>

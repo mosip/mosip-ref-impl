@@ -82,6 +82,12 @@ import net.minidev.json.JSONArray;
 
 /**
  * The Class IdObjectReferenceValidator.
+ * <p>
+ * Reference {@link IdObjectValidator}: validates identity JSON types, languages,
+ * DOB, documents, and masterdata codes. Caches masterdata; optional cron reset
+ * via {@code mosip.idobjectvalidator.scheduler.reset-cache.cron-job-pattern}.
+ * Logging is obtained from kernel-core.
+ * </p>
  *
  * @author Manoj SP
  */
@@ -89,24 +95,32 @@ import net.minidev.json.JSONArray;
 @RefreshScope
 public class IdObjectReferenceValidator implements IdObjectValidator {
 
+	/** SLF4J logger supplied by kernel-core. */
 	private final static Logger logger = Logfactory.getSlf4jLogger(IdObjectReferenceValidator.class);
 
+	/** Comma-separated mandatory languages ({@code mosip.mandatory-languages}). */
 	@Value("${" + MOSIP_MANDATORY_LANG + ":}")
 	private String mandatoryLanguages;
 
+	/** Comma-separated optional languages ({@code mosip.optional-languages}). */
 	@Value("${" + MOSIP_OPTIONAL_LANG + ":}")
 	private String optionalLanguages;
 
+	/** Masterdata REST URI template. */
 	@Value("${" + MASTER_DATA_URI + "}")
 	private String masterDataUri;
 
+	/** JsonPath to the identity schema version field. */
 	@Value("${" + IDENTITY_ID_SCHEMA_VERSION_PATH + "}")
 	private String idSchemaVersionPath;
 
+	/** Identity field name → masterdata subType. */
 	private Map<String, String> fieldToSubTypeMapping;
 
+	/** Identity field name → schema type (simpleType, documentType, …). */
 	private Map<String, String> fieldToFieldDefMapping;
 
+	/** Schema versions already parsed in this JVM. */
 	private Set<String> processedSchemaVersions = new HashSet<>();
 
 	/** The env. */
@@ -136,7 +150,7 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 	private Map<String, SetValuedMap<String, String>> validationDataCache = new HashMap<>();
 
 	/**
-	 * Load data.
+	 * Loads languages, optionally schedules cache reset, and registers Jackson time modules.
 	 */
 	@PostConstruct
 	public void loadData() {
@@ -149,6 +163,9 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		mapper.registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
 	}
 
+	/**
+	 * Clears language, schema, and masterdata caches then reloads them.
+	 */
 	public void resetCache() {
 		languageList = Set.of();
 		fieldToSubTypeMapping = Map.of();
@@ -159,12 +176,13 @@ public class IdObjectReferenceValidator implements IdObjectValidator {
 		loadLanguages();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * io.mosip.kernel.core.idobjectvalidator.spi.IdObjectValidator#validateIdObject
-	 * (java.lang.Object)
+	/**
+	 * Validates identity JSON against schema types, languages, DOB, and masterdata codes.
+	 *
+	 * @param identitySchema ID schema JSON
+	 * @param identityObject identity payload
+	 * @param requiredFields unused by this reference impl (SPI signature)
+	 * @return {@code true} when no {@link ServiceError}s are collected
 	 */
 	@Override
 	public boolean validateIdObject(String identitySchema, Object identityObject, List<String> requiredFields)

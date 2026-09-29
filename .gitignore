@@ -7,9 +7,6 @@ target/
 .springBeans
 .metadata
 .factorypath
-.classpath
-.project
-.settings/
 .vertx/
 bin/
 tmp/
@@ -22,11 +19,22 @@ local.properties
 .loadpath
 .DS_Store
 test.txt
-.idea/
-.settings/
 .sonarlint/
 .recommenders/
 /.recommenders/
 **/*.iml
 .vscode
 authentication-demo-ui/keys/
+
+# Local / IDE (Eclipse, STS, IntelliJ)
+.local/
+.local
+.idea/
+.idea
+.classpath
+.project
+.settings/
+*/.classpath
+*/.project
+*/.settings/
+.sts4-cache/

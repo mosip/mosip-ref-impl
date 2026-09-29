@@ -10,9 +10,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * One row of a multi-booking request (pre-id plus slot).
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Getter
 @Setter
@@ -21,6 +22,7 @@ public class MultiBookingRequestDTO implements Serializable{
 	/**
 	 * 
 	 */
+	/** Serialization version. */
 	private static final long serialVersionUID = -4081838636811604986L;
 	/**
 	 * pre-Registration Id

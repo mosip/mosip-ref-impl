@@ -13,7 +13,11 @@ import org.springframework.context.annotation.FilterType;
 import io.mosip.preregistration.booking.config.BookingConfig;
 
 /**
- * This class is used to define the start of the Booking application.
+ * Starts the Pre-registration booking REST service (Spring Boot 4.1.1).
+ * <p>
+ * Component scan is {@code io.mosip.*} with kernel crypto/keymanager packages excluded.
+ * Swagger UI Authorize is wired in {@link BookingConfig}.
+ * </p>
  * 
  * @author Kishan Rathore
  * @author Jagadishwari
@@ -39,9 +43,9 @@ import io.mosip.preregistration.booking.config.BookingConfig;
 @EnableConfigurationProperties(BookingConfig.class)
 public class BookingApplication {
 	/**
-	 * Method to start the Booking API service
-	 * 
-	 * @param args
+	 * Method to start the Booking API service.
+	 *
+	 * @param args Spring Boot arguments
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(BookingApplication.class, args);

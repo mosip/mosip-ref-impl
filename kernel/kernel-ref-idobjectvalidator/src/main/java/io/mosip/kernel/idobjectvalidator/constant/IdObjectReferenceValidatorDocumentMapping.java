@@ -11,16 +11,22 @@ import java.util.stream.Collectors;
  */
 public enum IdObjectReferenceValidatorDocumentMapping {
 	
+	/** Proof of address document. */
 	POA("proofOfAddress", "POA"),
-	
+
+	/** Proof of identity document. */
 	POI("proofOfIdentity", "POI"),
 	
+	/** Proof of relationship document. */
 	POR("proofOfRelationship", "POR"),
-	
+
+	/** Proof of exception document. */
 	POE("proofOfException", "POE");
 
+	/** Identity JSON attribute name. */
 	private final String attributeName;
-	
+
+	/** MOSIP document category code. */
 	private final String code;
 	
 	/**

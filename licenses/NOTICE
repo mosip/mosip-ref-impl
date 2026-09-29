@@ -1,0 +1,195 @@
+================================================================================
+COPYRIGHT NOTICES — mosip-ref-impl
+================================================================================
+
+mosip-ref-impl is MPL 2.0 (see ../LICENSE). Spring Boot 4.1.1 / Java 21.
+No kernel-bom — Boot parent is the BOM. kernel-core 1.4.1-SNAPSHOT.
+Versions match each module pom.xml (1.4.1-SNAPSHOT).
+License texts in this directory.
+
+This NOTICE applies the MOSIP open-source license matrix
+(Compatible with MPL 2.0? / Use with MOSIP? / MOSIP comments).
+
+--------------------------------------------------------------------------------
+MOSIP open-source license matrix
+--------------------------------------------------------------------------------
+
+License                         Compatible with MPL 2.0?   Use with MOSIP?
+------------------------------- ------------------------- ---------------
+BSD (2-Clause, 3-Clause)        Yes                       Yes
+MIT                             Yes                       Yes
+Apache-2.0                      Yes                       Yes
+MPL-2.0                         Yes                       Yes
+EPL                             No                        No
+LGPLv3                          Yes                       No
+GPLv2                           No                        No
+GPLv3                           Yes                       No
+AGPLv3                          Yes                       No
+Creative Commons (general)      No                        No
+ISC                             Yes                       Yes
+Python-2.0                      Yes                       Yes
+AFL-2.0                         No                        No
+AFL-2.1                         Yes                       Yes
+ODC-By-1.0                      No                        No
+CDDL-1.0                        Yes                       Yes
+Unicode-DFS-2016                Yes                       Yes
+BlueOak-1.0.0                   Yes                       Yes
+OFL-1.1                         Yes                       Yes
+CC-BY-4.0                       To be reviewed            To be reviewed
+Zlib                            Yes                       Yes
+0BSD                            Yes                       Yes
+
+MOSIP comments (authoritative wording):
+
+- BSD / MIT / MPL-2.0: code can be combined freely.
+- Apache-2.0: both licenses are permissive and compatible; meet attribution.
+- EPL: generally incompatible with MPL due to differing requirements.
+- LGPLv3: compatible, but LGPLv3 terms may apply to the combined work;
+  MOSIP Use = No.
+- GPLv2: lacks explicit compatibility with MPL 2.0.
+- GPLv3 / AGPLv3: MPL 2.0 may be included in a larger work, but the combined
+  work must be GPLv3 / AGPLv3; MOSIP Use = No.
+- Creative Commons (general): not designed for software.
+- ISC: permissive. ISC code stays ISC; the overall project may be MPL 2.0.
+  Include the ISC text and attribute authors.
+- Python-2.0: may be included and the project distributed as MPL 2.0 if both
+  licenses are complied with.
+- AFL-2.0: clauses conflict with MPL 2.0; incompatible for a unified license.
+- AFL-2.1: keep AFL notice and a copy of the license; attribute original
+  authors; AFL files stay AFL, MPL files stay MPL.
+- ODC-By-1.0: database license; incompatible with MPL 2.0 as software.
+- CDDL-1.0: weak copyleft coexistence. Each file keeps its original license
+  (MPL files stay MPL; CDDL files stay CDDL). Include both license texts
+  and identify which files are which.
+- Unicode-DFS-2016: each part keeps its original license. Keep Unicode files
+  identified, do not strip headers, include the Unicode license and notice.
+- BlueOak-1.0.0: permissive; keep the license text or a link with the software.
+- OFL-1.1: fonts; include the full OFL-1.1 text when distributing fonts.
+- CC-BY-4.0: Creative Commons Attribution 4.0 — to be reviewed. Not used in
+  this repository.
+- Zlib: distributed copies must include the original zlib license text.
+- 0BSD: permissive; broad use, modification, and distribution.
+
+CDDL-1.1 treated as CDDL-1.0 successor. Unicode-3.0 treated as
+Unicode-DFS-2016 successor. LGPL-2.1 is not on the matrix; treated like
+LGPLv3 (Use = No).
+
+Dual-licensed jars: MOSIP elects an allowed option (never EPL, GPL, AGPL,
+LGPLv3, or Creative Commons as the product license).
+
+--------------------------------------------------------------------------------
+Compatibility audit (this repository)
+--------------------------------------------------------------------------------
+
+PASS — Use with MOSIP = Yes (product / runtime after election)
+  MPL-2.0: this repo; kernel-core; kernel-auth-adapter; pre-registration-core;
+           registration-processor-*; H2 (elects MPL-2.0, not EPL-1.0)
+  Apache-2.0: Spring Boot / Framework / Cloud; Jackson 2; Hazelcast; Jedis
+           stack via Boot; jjwt; json-path; json-smart; springdoc; Micrometer;
+           Hibernate Validator; byte-buddy; Vert.x (elects Apache-2.0, not EPL);
+           javassist (elects Apache-2.0, not LGPL-2.1 / MPL-1.1);
+           kotlin-stdlib (transitive of clamav-client)
+  MIT: Lombok, SLF4J API, Mockito (test), Jedis, clamav-client
+  BSD / EDL: JAXB API + jaxb-runtime (javax 2.3.x)
+  CDDL-1.1 elected (not GPL): javax.activation, javax.servlet-api
+           CDDL files remain CDDL; project files remain MPL-2.0
+  Public Domain (treated as 0BSD): org.json:json
+
+NONE found: GPLv2, GPLv3, AGPLv3, AFL-2.0, ODC-By-1.0, Creative Commons
+  software, Python-2.0, ISC, AFL-2.1, Unicode-DFS-2016, BlueOak, OFL, Zlib
+  product dependencies. Matrix texts for those licenses are kept as reference.
+
+FAIL matrix Use = No — still present (not elected as product license)
+  EPL test: JUnit Jupiter / vintage / junit:junit — test scope only
+  EPL Boot AOP: aspectjweaver — transitive of Spring AOP
+  EPL OR LGPL-2.1: Logback classic/core — Boot default logger (kernel-core
+           logging). Both options are Use = No on the MOSIP matrix.
+  EPL build: JaCoCo Maven plugin / agent — not packaged into product jars
+
+CC-BY-4.0: to be reviewed; no CC-BY-4.0 files in this tree.
+
+================================================================================
+ELECTED / ALLOWED (Use with MOSIP = Yes)
+================================================================================
+
+Apache License 2.0 (Apache-2.0.txt)
+  Spring Boot 4.1.1 / Spring Framework 7.0.9 / Spring Cloud 2025.1.3
+  Jackson 2.21.5 via spring-boot-jackson2 (MOSIP APIs)
+  Hibernate Validator 9.1.3.Final, Micrometer 1.17.1 + Prometheus registry
+  Hazelcast 5.7.0 (cache-provider-hazelcast)
+  spring-boot-starter-data-redis + Jedis 7.4.1 (cache-provider-redis)
+  io.jsonwebtoken:jjwt-api/impl/jackson 0.13.0
+  Apache Commons Collections4 4.6.0, logstash-logback-encoder 9.0
+  json-path 2.10.0 (kernel-ref-idobjectvalidator) / 3.0.0 (booking)
+  json-smart 2.6.0
+  org.javassist:javassist 3.33.0-GA (Apache-2.0 elected)
+  springdoc-openapi 3.1.1, byte-buddy 1.18.11
+  javax.inject:javax.inject 1
+  Eclipse Vert.x 4.5.34 (EPL-2.0 OR Apache-2.0; MOSIP elects Apache-2.0)
+  Maven build plugins that are Apache-2.0 (compiler 3.16.0, surefire 3.6.0,
+  jar 3.5.1, source 3.4.0, javadoc 3.12.0, gpg 3.2.8, deploy 3.2.0,
+  assembly 3.8.0, git-commit-id 4.9.10, central-publishing 0.11.0)
+
+MIT License (MIT.txt)
+  Lombok 1.18.46, SLF4J API 2.0.18, Mockito 5.23.0 (test)
+  redis.clients:jedis 7.4.1 (Boot-managed; cache-provider-redis)
+  xyz.capybara:clamav-client 2.1.2
+  Keep MIT text and author attribution
+
+EDL 1.0 / BSD-2-Clause (BSD-2-Clause.txt)
+  JAXB API 2.3.1 / JAXB Runtime 2.3.9 (javax — not Jakarta 4.x)
+
+Mozilla Public License 2.0 (project LICENSE / MPL-2.0.txt / MOZILLA-2.0.txt)
+  MOSIP ref-impl modules (kernel-ref-idobjectvalidator,
+  kernel-smsserviceprovider-msg91, kernel-virusscanner-clamav,
+  cache-provider-hazelcast, cache-provider-redis,
+  pre-registration-booking-service, registration-processor-external-stage,
+  registration-processor-external-integration-service)
+  MOSIP kernel-core, kernel-auth-adapter 1.4.1-SNAPSHOT,
+  pre-registration-core 1.4.1-SNAPSHOT, registration-processor-* 1.4.1-SNAPSHOT
+  H2 Database 2.4.240 (EPL-1.0 OR MPL-2.0; MOSIP elects MPL-2.0)
+
+CDDL-1.1 (COMMON-DEVLOPMENT-AND-DISTRIBUTION-1.1.txt) — successor to CDDL-1.0
+  JavaBeans Activation Framework (transitive via JAXB; CDDL-1.1 OR
+  GPL-2.0-with-CPE; MOSIP elects CDDL-1.1)
+  javax.servlet-api (CDDL OR GPL-2.0-with-CPE; MOSIP elects CDDL)
+  Files retain CDDL; project code remains MPL-2.0
+  Also see CDDL-1.0.txt (matrix reference / predecessor text)
+
+Public Domain / 0BSD-like (0BSD.txt)
+  org.json:json — Public Domain; treated as 0BSD (Use = Yes)
+
+Matrix reference texts (not currently a product-license election):
+  ISC.txt, Python-2.0 is not vendored (no Python-2.0 dependency),
+  Zlib.txt, BlueOak-1.0.0.txt, OFL-1.1.txt, Unicode-DFS-2016.txt,
+  AFL-2.1.txt, BSD-3-Clause.txt, BSD-3-Clause-No-Nuclear-License.txt
+
+================================================================================
+MOSIP MATRIX: Use = No (still on classpath — exception or replace)
+================================================================================
+
+EPL is incompatible with MPL 2.0 on the MOSIP matrix.
+LGPLv3 is compatible with MPL but MOSIP Use = No.
+LGPL-2.1 is not listed on the matrix; treated like LGPLv3 (Use = No).
+GPLv2 is incompatible. GPLv3 / AGPLv3: Use = No.
+
+EPL-2.0 only (test / Boot tooling)
+  org.junit.jupiter / junit-vintage (test)
+  org.aspectj:aspectjweaver (Boot AOP transitive)
+
+EPL-1.0 only (test)
+  junit:junit 4.x (test; vintage)
+
+EPL-2.0 OR LGPL-2.1 (both MOSIP Use = No)
+  ch.qos.logback:logback-classic / logback-core — Boot default logger
+  (logging is supplied via kernel-core in commons)
+
+EPL-2.0 (build only — not a product jar)
+  org.jacoco:jacoco-maven-plugin / org.jacoco.agent
+
+LGPL-3.0.txt is retained for reference only; not used as a product
+dependency license election.
+
+================================================================================
+END OF NOTICES
+================================================================================

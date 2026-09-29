@@ -41,8 +41,11 @@ import io.mosip.registration.processor.status.service.RegistrationStatusService;
 import io.mosip.registrationprocessor.externalstage.entity.MessageRequestDTO;
 
 /**
- * External stage verticle class
+ * Vert.x external stage: consumes {@code EXTERNAL_STAGE_BUS_IN}, POSTs registration
+ * ids to EIS ({@link ApiName#EISERVICE}), updates registration status, then emits
+ * {@code EXTERNAL_STAGE_BUS_OUT}.
  *
+ * @see ExternalStageApplication
  */
 @Service
 public class ExternalStage extends MosipVerticleAPIManager {
@@ -55,7 +58,7 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	private static final String ID = "io.mosip.registrationprocessor";
 	/** request version */
 	private static final String VERSION = "1.0";
-	/** mosipEventBus */
+	/** MOSIP event bus used by {@link #deployVerticle()}. */
 	private MosipEventBus mosipEventBus;
 	/** vertx Cluster Manager Url. */
 	@Value("${vertx.cluster.configuration}")
@@ -95,11 +98,13 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	/** The Constant USER. */
 	private static final String USER = "MOSIP_SYSTEM";
 
+	/** Maps exception types to registration transaction status codes. */
 	@Autowired
 	RegistrationExceptionMapperUtil registrationStatusMapperUtil;
 
 	/**
-	 * method to deploy external stage verticle
+	 * Deploys this verticle, then consumes {@code EXTERNAL_STAGE_BUS_IN} and sends
+	 * {@code EXTERNAL_STAGE_BUS_OUT}.
 	 */
 	public void deployVerticle() {
 		this.mosipEventBus = this.getEventBus(this, clusterManagerUrl, workerPoolSize);
@@ -107,10 +112,8 @@ public class ExternalStage extends MosipVerticleAPIManager {
 				MessageBusAddress.EXTERNAL_STAGE_BUS_OUT, messageExpiryTimeLimit);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see io.vertx.core.AbstractVerticle#start()
+	/**
+	 * Registers HTTP routes for the stage and starts the Vert.x HTTP server.
 	 */
 	@Override
 	public void start() {
@@ -120,12 +123,11 @@ public class ExternalStage extends MosipVerticleAPIManager {
 		this.createServer(router.getRouter(), Integer.parseInt(port));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * io.mosip.registration.processor.core.spi.eventbus.EventBusManager#process(
-	 * java.lang.Object)
+	/**
+	 * POSTs the registration id to EIS, updates status, and sets {@code isValid}.
+	 *
+	 * @param object packet message from the SEDA bus
+	 * @return the same message with validity / internal-error flags
 	 */
 	@Override
 	public MessageDTO process(MessageDTO object) {
@@ -228,7 +230,12 @@ public class ExternalStage extends MosipVerticleAPIManager {
 
 		return object;
 	}
-	
+
+	/**
+	 * Vert.x property prefix {@code mosip.regproc.external.}.
+	 *
+	 * @return stage property prefix
+	 */
 	@Override
 	protected String getPropertyPrefix() {
 		return STAGE_PROPERTY_PREFIX;

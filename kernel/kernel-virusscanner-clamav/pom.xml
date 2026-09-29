@@ -1,64 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.mosip.kernel</groupId>
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.4.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>kernel-virusscanner-clamav</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<name>kernel-virusscanner-clamav</name>
-	<properties>	
-		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-		<clamav.client.version>1.0.4</clamav.client.version>
-		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
-	</properties>
+	<description>
+		Reference VirusScanner SPI using ClamAV (clamav-client 2.1.2).
+		kernel-core (commons) supplies logging; do not add kernel-logger-logback.
+	</description>
 
 	<dependencies>
+		<!-- kernel-core: SPI + logging (commons). Version from parent ${kernel.core.version}. -->
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
-			<version>${kernel-core.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.datatype</groupId>
-					<artifactId>jackson-datatype-jsr310</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-
+		<!-- clamav-client: ClamAV daemon client. Version from parent ${clamav.client.version}. License: MIT. -->
 		<dependency>
 			<groupId>xyz.capybara</groupId>
 			<artifactId>clamav-client</artifactId>
-			<version>${clamav.client.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
-			<version>${junit.vintage.version}</version>
 		</dependency>
 	</dependencies>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://central.sonatype.com/api/v1/publisher</url>
-		</repository>
-	</distributionManagement>
+
 	<build>
 		<plugins>
-			<!-- assembly-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${maven-assembly-plugin.version}</version>
+				<version>${maven.assembly.plugin.version}</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
@@ -75,143 +52,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.sonatype.central</groupId>
-				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>${central.publishing.maven.plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<publishingServerId>ossrh</publishingServerId>
-					<autoPublish>false</autoPublish>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<inherited>true</inherited>
-				<version>${maven.source.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.version}</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven.javadoc.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doclint>none</doclint>
-					<sourcepath>src/main/java</sourcepath>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>${maven.gpg.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-						<configuration>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>${git.commit.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>get-the-git-infos</id>
-						<goals>
-							<goal>revision</goal>
-						</goals>
-						<phase>validate</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<generateGitPropertiesFile>true</generateGitPropertiesFile>
-					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-					<includeOnlyProperties>
-						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
-						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
-					</includeOnlyProperties>
-					<commitIdGenerationMode>full</commitIdGenerationMode>
-					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-					<!-- <format>json</format> -->
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${maven.jacoco.plugin.version}</version>
-				<configuration>
-					<excludes>
-						<exclude>**/constant/**</exclude>
-						<exclude>**/config/**</exclude>
-						<exclude>**/dto/**</exclude>
-						<exclude>io/mosip/authentication/service/*.class</exclude>
-						<exclude>io/mosip/authentication/service/filter/**</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.surefire.plugin.version}</version>
-				<configuration>
-					<skipTests>${skipTests}</skipTests>
-					<skip>false</skip>
-					<argLine>
-						${argLine} --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --illegal-access=permit
-					</argLine>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
-
-	</project>
+</project>

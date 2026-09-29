@@ -2,183 +2,271 @@
 
 [![Maven Package upon a push](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml/badge.svg?branch=release-1.3.x)](https://github.com/mosip/mosip-ref-impl/actions/workflows/push-trigger.yml)
 
+Country-pluggable **reference implementations** (not MOSIP core). Each Maven module is independent, publishes to OSSRH, and can be swapped by dropping in another JAR that implements the same SPI or REST contract.
+
+There is **no repo-root POM** and **no `kernel-bom`**. Standalone modules parent `spring-boot-starter-parent` **4.1.1**. Kernel children inherit through `kernel-ref-parent`; registration-processor children inherit through `registration-processor-ref-parent`. MOSIP library versions (`kernel-core`, `kernel-auth-adapter`, `pre-registration-core`, registration-processor jars) are pinned in each module `pom.xml`, not here.
+
+## Contents
+
+- [Overview](#overview)
+- [Repository layout](#repository-layout)
+- [Prerequisites](#prerequisites)
+- [Shared facts](#shared-facts)
+- [Build](#build)
+- [Tests and coverage](#tests-and-coverage)
+- [Configuration](#configuration)
+- [Swagger UI (Authorize)](#swagger-ui-authorize)
+- [Docker](#docker)
+- [Kubernetes / Helm](#kubernetes--helm)
+- [Documentation](#documentation)
+- [Notices and licensing](#notices-and-licensing)
+- [Contribution](#contribution--community)
+
 ## Overview
-The MOSIP Reference Implementation (Ref Impl) repository contains country-specific customizations and implementations that extend the core MOSIP platform. It serves as a reference for how different countries can adapt and implement MOSIP according to their unique requirements and regulations.
 
-## Services
+This repository is the reference for how a country can adapt MOSIP:
 
-The mosip-ref-impl contains the following services:
+| Area | What you replace |
+|---|---|
+| Packet cache | Hazelcast or Redis `PacketCacheProvider` JAR |
+| Kernel SPIs | ID-object validator, MSG91 SMS, ClamAV virus scanner (`META-INF/spring.factories`) |
+| Pre-registration | Booking REST service (`/appointment/**`) |
+| Registration processor | External stage (Vert.x) + External Integration Service stub REST |
+| Identity | Keycloak login theme (FTL) |
+| Deploy | Helm chart for booking |
 
-1. **[cache-provider-hazelcast](cache-provider-hazelcast)** : Hazelcast based cache provider Reference implementation
-2. **[cache-provider-redis](cache-provider-redis)** : Redis based cache provider Reference implementation
-3. **[kernel](kernel)** : Reference implementation for core libraries
-   - **[kernel-ref-idobjectvalidator](kernel/kernel-ref-idobjectvalidator)** : Reference implementation for ID Object Validator
-   - **[kernel-smsserviceprovider-msg91](kernel/kernel-smsserviceprovider-msg91)** : Reference implementation for msg91 SMS Service Provider
-   - **[kernel-virusscanner-clamav](kernel/kernel-virusscanner-clamav)** : Reference implementation for clamv Virus Scanner
-4. **[keycloak](keycloak)** : Reference implementation for keycloak
-5. **[pre-registration-booking-service](pre-registration-booking-service)** : Reference implementation for pre-registration booking service.
-6. **[registration-processor](registration-processor)** : Reference implementation for registration processor external integration.
-   - **[registration-processor-external-integration-service](registration-processor/registration-processor-external-integration-service)** : Reference implementation for external integration service.
-   - **[registration-processor-external-stage](registration-processor/registration-processor-external-stage)** : Reference implementation for external stage.
+Angular UIs (`pre-registration-ui`, `admin-ui`) live in their own MOSIP repositories, not this tree. Coverage is produced at build time (`mvn clean verify` → `target/site/jacoco/index.html`); TestNG report archives are not checked in.
 
-## Local Setup
+<!--
+  A former directoryAngularFiles pointer list was unused and has been removed.
+  testng-report-failed1.tar.gz was unused (no module, CI job, or script referenced it)
+  and has been removed.
+-->
 
-The project can be set up in two ways:
-
-1. [Local Setup (for Development or Contribution)](#local-setup-for-development-or-contribution)
-2. [Local Setup with Docker (Easy Setup for Demos)](#local-setup-with-docker-easy-setup-for-demos)
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **JDK**: 21.0.3
-- **Maven**: 3.9.6
-- **Docker**: Latest stable version
-- **PostgreSQL**: 16.0
-- **Keycloak**: [Check here](https://github.com/mosip/keycloak/tree/master)
-
-### Runtime Dependencies
-
-Add the below dependencies to the classpath, or include it as a Maven dependency in your `pom.xml`.
-- `kernel-auth-adapter.jar`
-- `kernel-ref-idobjectvalidator.jar`
-
-### Configuration
-
-- This module uses the following configuration files that are accessible in this [mosip-config repository](https://github.com/mosip/mosip-config/tree/master).
-  Please refer to the required released tagged version for configuration:
-  - [Configuration-registration](https://github.com/mosip/mosip-config/blob/master/registration-default.properties),
-    [Configuration-pre-registration](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties) and
-    [Configuration-Application](https://github.com/mosip/mosip-config/blob/master/application-default.properties) are defined here. You need to run the config-server along with the files mentioned above.
-
-#### Required Configuration Properties
-
-The following properties must be configured with your environment-specific values before deployment:
-
-**Database Configuration:**
-- `mosip.registration.processor.database.hostname` - Database hostname (default: postgres-postgresql.postgres)
-- `mosip.registration.processor.database.port` - Database port (default: 5432)
-- `db.dbuser.password` - Database user password (passed as environment variable)
-
-**IAM/Keycloak Configuration:**
-- `keycloak.internal.url` - Internal Keycloak URL (passed as environment variable)
-- `keycloak.external.url` - External Keycloak URL (passed as environment variable)
-- `mosip.regproc.client.secret` - Registration processor client secret (passed as environment variable)
-
-**Service URLs:**
-- `mosip.kernel.authmanager.url` - Auth manager service URL
-- `mosip.kernel.keymanager.url` - Key manager service URL
-- `mosip.kernel.masterdata.url` - Masterdata service URL
-- `mosip.kernel.notification.url` - Notification service URL
-- `mosip.idrepo.identity.url` - ID repository identity service URL
-- `mosip.api.internal.url` - Internal API base URL
-
-## Installation
-
-### Local Setup (for Development or Contribution)
-
-1. Make sure the config server is running. For detailed instructions on setting up and running the config server, refer to the [MOSIP Config Server Setup Guide](https://docs.mosip.io/1.2.0/modules/registration-processor/registration-processor-developers-guide#environment-setup).
-
-**Note**: Refer to the MOSIP Config Server Setup Guide for setup, and ensure the properties mentioned above in the configuration section are taken care of. Replace the properties with your own configurations (e.g., DB credentials, IAM credentials, URL).
-
-2. Clone the repository:
+## Repository layout
 
 ```text
-git clone <repo-url>
-cd <service-name>
+mosip-ref-impl/
+├── cache-provider-hazelcast/                 PacketCacheProvider + Actuator health
+├── cache-provider-redis/                     PacketCacheProvider (Jedis)
+├── kernel/                                   kernel-ref-parent (3 SPI modules)
+│   ├── kernel-ref-idobjectvalidator/         IdObjectValidator
+│   ├── kernel-smsserviceprovider-msg91/      SMS SPI (MSG91)
+│   └── kernel-virusscanner-clamav/           VirusScanner + ClamAV
+├── keycloak/theme/base/login/                login FTL theme
+├── pre-registration-booking-service/         Spring Boot /appointment/**
+├── registration-processor/                   registration-processor-ref-parent
+│   ├── registration-processor-external-stage/
+│   └── registration-processor-external-integration-service/
+├── helm/prereg-booking/                      Kubernetes chart
+├── licenses/                                 third-party texts + NOTICE
+├── .github/workflows/                        CI (kattu Java 21)
+├── deploy.sh  LICENSE  NOTICE  README.md
 ```
 
-3. Build the project:
+### Modules
+
+| Module | Parent | Role | Typical port / notes |
+|---|---|---|---|
+| [cache-provider-hazelcast](cache-provider-hazelcast) | Boot 4.1.1 | Hazelcast packet cache + `HazelcastHealthIndicator` | library JAR (provided starter/actuator) |
+| [cache-provider-redis](cache-provider-redis) | Boot 4.1.1 | Redis/Jedis packet cache (`RedisConfig`) | library JAR |
+| [kernel-ref-idobjectvalidator](kernel/kernel-ref-idobjectvalidator) | `kernel-ref-parent` | Identity JSON vs schema + masterdata | library; `--enable-preview` on tests |
+| [kernel-smsserviceprovider-msg91](kernel/kernel-smsserviceprovider-msg91) | `kernel-ref-parent` | MSG91 `SMSServiceProvider` | library; `spring.factories` |
+| [kernel-virusscanner-clamav](kernel/kernel-virusscanner-clamav) | `kernel-ref-parent` | ClamAV `VirusScanner` | library; host/port properties |
+| [pre-registration-booking-service](pre-registration-booking-service) | Boot 4.1.1 | Book / cancel / query appointments | **9095**, context `/preregistration/v1` |
+| [registration-processor-external-integration-service](registration-processor/registration-processor-external-integration-service) | `registration-processor-ref-parent` | Country EIS stub REST | **8201**, path `/registrationprocessor/v1/eis` |
+| [registration-processor-external-stage](registration-processor/registration-processor-external-stage) | `registration-processor-ref-parent` | Vert.x stage → POST EIS | eventbus **5736**, HTTP **8095** |
+| [keycloak](keycloak) | — | Login theme | FTL under `theme/base/login/` |
+| [helm/prereg-booking](helm/prereg-booking) | — | Booking Helm chart | namespace `prereg` |
+
+Each module has its own `README.md` with artifact id, build, config, and (where applicable) Swagger.
+
+## Prerequisites
+
+| Tool | Version |
+|---|---|
+| JDK | **21.0.3** |
+| Maven | **3.9.6** |
+| Spring Boot parent | **4.1.1** |
+| Spring Cloud | **2025.1.3** (Oakwood; pinned in module POMs) |
+| Docker | latest stable (optional) |
+| PostgreSQL | **16.0** (booking / MOSIP stack) |
+| Keycloak | [mosip/keycloak](https://github.com/mosip/keycloak/tree/master) |
+| Spring Cloud Config | required for services (see [Configuration](#configuration)) |
+
+### Runtime JARs for services
+
+Add to the classpath or as Maven dependencies (versions from the consuming module `pom.xml`):
+
+- `kernel-auth-adapter` — outbound auth / `@PreAuthorize` on booking
+- `kernel-ref-idobjectvalidator` — identity object validation on booking
+
+Unpublished MOSIP SNAPSHOTs (`pre-registration-core`, `registration-processor-core`, status-service-impl, rest-client) must be installed locally if they are not on Central snapshots.
+
+## Shared facts
+
+- **Swap impl = swap JAR.** Kernel SPIs load via `META-INF/spring.factories`. Services are Spring Boot 4.1.1 apps.
+- **No `pre-processor` parent.** Registration-processor uses `registration-processor-ref-parent` → Boot 4.1.1.
+- **Jackson 2** via `spring-boot-jackson2` (Boot 4 defaults to Jackson 3; MOSIP APIs still use Jackson 2).
+- **Logging** is in `kernel-core` (commons). Do not add `kernel-logger-logback`.
+- **`git-commit-id-plugin`** writes `service-git.properties` (not `git.properties`) so it does not collide with `kernel-core`.
+- Tests: JUnit 4 vintage + JUnit 5 + Mockito; `--add-opens` is already in POMs. `kernel-ref-idobjectvalidator` uses `--enable-preview`.
+- CI: `.github/workflows/push-trigger.yml` uses `mosip/kattu@master-java21` (build, Docker, OSSRH, Sonar).
+
+## Build
+
+Always run Maven **in the module directory** (or with `-f` / `-pl` as below). Skip Javadoc and GPG for local builds:
 
 ```text
 mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-4. Start the application:
-    - Click the Run button in your IDE, or
-    - Run via command: `java -jar target/specific-service:<$version>.jar`
+| What | Command (from repo root) |
+|---|---|
+| Kernel (all 3 SPIs) | `mvn -f kernel/pom.xml clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
+| One kernel module | `mvn -f kernel/pom.xml -pl kernel-ref-idobjectvalidator clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
+| Registration-processor (both) | `mvn -f registration-processor/pom.xml clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
+| EIS only | `mvn -f registration-processor/pom.xml -pl registration-processor-external-integration-service clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
+| Booking | `cd pre-registration-booking-service && mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
+| Hazelcast cache | `cd cache-provider-hazelcast && mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
+| Redis cache | `cd cache-provider-redis && mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true` |
 
-5. Verify Swagger is accessible.
+Run a single test class:
 
-### Local Setup with Docker (Easy Setup for Demos)
+```text
+mvn test -Dtest=ClassName[#method]
+```
 
-#### Option 1: Pull from Docker Hub
+Start a Boot service from the IDE (`BookingApplication`, `ExternalIntegrationServiceApplication`) or:
 
-Recommended for users who want a quick, ready-to-use setup — testers, students, and external users.
+```text
+java -jar target/<artifact>-1.4.1-SNAPSHOT.jar
+```
 
-Pull the latest pre-built images from Docker Hub using the following commands:
+## Tests and coverage
+
+`mvn clean verify` runs tests, writes JaCoCo HTML at `target/site/jacoco/index.html`, and enforces **LINE covered ratio 0.90** (`jacoco-check`), using the same package excludes as `sonar.coverage.exclusions`.
+
+```text
+mvn clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
+mvn clean verify -Psonar
+```
+
+`-Psonar` needs `SONAR_TOKEN` and uploads to SonarCloud. Local JaCoCo XML is the coverage input (`sonar.coverage.jacoco.xmlReportPaths`).
+
+## Configuration
+
+Services pull properties from Spring Cloud Config ([mosip/mosip-config](https://github.com/mosip/mosip-config/tree/master)). Use the tagged release that matches your platform:
+
+- [application-default.properties](https://github.com/mosip/mosip-config/blob/master/application-default.properties)
+- [pre-registration-default.properties](https://github.com/mosip/mosip-config/blob/master/pre-registration-default.properties)
+- [registration-processor-default.properties](https://github.com/mosip/mosip-config/blob/master/registration-processor-default.properties) (registration pipeline; some docs also refer to `registration-default.properties`)
+
+Packaged defaults: each service `src/main/resources/bootstrap.properties`.
+
+### Environment-specific properties (typical)
+
+**Database**
+
+- `mosip.registration.processor.database.hostname` (default: `postgres-postgresql.postgres`)
+- `mosip.registration.processor.database.port` (default: `5432`)
+- `db.dbuser.password` (environment)
+
+**IAM / Keycloak**
+
+- `keycloak.internal.url`, `keycloak.external.url`
+- `mosip.regproc.client.secret`
+
+**Service URLs**
+
+- `mosip.kernel.authmanager.url`
+- `mosip.kernel.keymanager.url`
+- `mosip.kernel.masterdata.url`
+- `mosip.kernel.notification.url`
+- `mosip.idrepo.identity.url`
+- `mosip.api.internal.url`
+
+Config-server setup: [MOSIP Config Server Setup Guide](https://docs.mosip.io/1.2.0/modules/registration-processor/registration-processor-developers-guide#environment-setup).
+
+## Swagger UI (Authorize)
+
+Booking and EIS expose Springdoc OpenAPI 3. Click **Authorize**, scheme **Authorization** (header apiKey), paste the token from authmanager. Try-it-out then sends that header on each request.
+
+| Service | UI |
+|---|---|
+| pre-registration-booking-service | `http://localhost:9095/preregistration/v1/appointment/booking-service/swagger-ui.html` |
+| registration-processor-external-integration-service | `http://localhost:8201/registrationprocessor/v1/eis/swagger-ui.html` |
+
+## Docker
+
+### Pull (demo)
 
 ```text
 docker pull mosipid/pre-registration-booking-service:1.3.0
 ```
 
-#### Option 2: Build Docker Images Locally
-
-Recommended for contributors or developers who want to modify or build the services from source.
-
-1. Clone and build the project:
+### Build locally
 
 ```text
-git clone <repo-url>
-cd <service-name>
+cd <service-directory>
 mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
-```
-
-2. Navigate to each service directory and build the Docker image:
-
-```text
-cd <service-name>/<service-directory>
 docker build -t <service-name> .
-```
-
-#### Running the Services
-
-Start each service using Docker:
-
-```text
 docker run -d -p <port>:<port> --name <service-name> <service-name>
-```
-
-#### Verify Installation
-
-Check that all containers are running:
-
-```text
 docker ps
 ```
 
-Access the services at `http://localhost:<port>` using the port mappings listed above.
+Booking `Dockerfile` is in `pre-registration-booking-service/`. EIS and external-stage have Dockerfiles under `registration-processor/<module>/`.
 
-## Deployment
+## Kubernetes / Helm
 
-### Kubernetes
+Sandbox: [Sandbox Deployment Guide](https://docs.mosip.io/1.2.0/deploymentnew/v3-installation).
 
-To deploy mosip ref impl services on a Kubernetes cluster, refer to the [Sandbox Deployment Guide](https://docs.mosip.io/1.2.0/deploymentnew/v3-installation).
+Booking chart:
+
+```text
+kubectl create namespace prereg
+helm repo add mosip https://mosip.github.io
+helm -n prereg install my-release mosip/prereg-booking
+```
+
+Chart sources: [helm/prereg-booking](helm/prereg-booking).
 
 ## Documentation
 
-### API Documentation
+**APIs**
 
-API endpoints, base URL, and mock server details are available via Stoplight and Swagger documentation for below services:
-- **[Registration Processor External Integration Service API Documentation](https://mosip.github.io/documentation/1.2.0/registration-processor-external-integration-service.html)**.
-- **[Pre-Registration Booking Service API Documentation](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html)**.
+- [Pre-Registration Booking Service](https://mosip.github.io/documentation/1.2.0/pre-registration-booking-service.html)
+- [Registration Processor External Integration Service](https://mosip.github.io/documentation/1.2.0/registration-processor-external-integration-service.html)
 
-### Product Documentation
-For more detailed documents check below links:
+**Product**
+
 - [Registration Processor](https://docs.mosip.io/1.2.0/id-lifecycle-management/identity-issuance/registration-processor/overview)
 - [Pre-Registration](https://docs.mosip.io/1.2.0/id-lifecycle-management/identity-issuance/pre-registration)
-- [keycloak](https://docs.mosip.io/1.2.0/id-lifecycle-management/supporting-components/keycloak)
-- [Common components](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#common-components)
+- [Keycloak](https://docs.mosip.io/1.2.0/id-lifecycle-management/supporting-components/keycloak)
+- [Reference implementations](https://docs.mosip.io/1.2.0/setup/implementations/reference-implementations#common-components)
 
-## Contribution & Community
+Booking SQL: [pre-registration db_scripts](https://github.com/mosip/pre-registration/tree/master/db_scripts).
 
-• To learn how you can contribute code to this application, [click here](https://docs.mosip.io/1.2.0/community/code-contributions).
+External stage design:
 
-• If you have questions or encounter issues, visit the [MOSIP Community](https://community.mosip.io/) for support.
+- [External system integration](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_external_system_integration.md)
+- [HTTP stage](https://github.com/mosip/registration/blob/master/design/registration-processor/Approach_for_http_integration.md)
+- [Adding an external stage](https://github.com/mosip/registration/blob/master/design/registration-processor/External_System_Integration_Guide.md)
 
-• For any GitHub issues: [Report here](https://github.com/mosip/mosip-ref-impl/issues)
+## Notices and licensing
 
-## License
+This project is [Mozilla Public License 2.0](LICENSE).
 
-This project is licensed under the [Mozilla Public License 2.0](LICENSE).
+Third-party attributions and the MOSIP matrix (**Compatible with MPL 2.0?** / **Use with MOSIP?**) are in:
+
+- [NOTICE](NOTICE) — elected licenses and classpath exceptions
+- [licenses/NOTICE](licenses/NOTICE) — full comments and dual-license elections
+- [licenses/](licenses/) — Apache-2.0, MIT, BSD, CDDL, EPL, MPL, and matrix reference texts
+
+Product runtime elects Use = Yes options (Apache-2.0, MIT, BSD, MPL-2.0, CDDL). Dual-licensed jars never elect EPL, GPL, AGPL, LGPLv3, or Creative Commons as the product license. JUnit / Logback / AspectJ / JaCoCo remain EPL or EPL-or-LGPL on the test, Boot-logger, or build path; see NOTICE.
+
+## Contribution & community
+
+- [Code contributions](https://docs.mosip.io/1.2.0/community/code-contributions)
+- [MOSIP Community](https://community.mosip.io/)
+- [GitHub issues](https://github.com/mosip/mosip-ref-impl/issues)

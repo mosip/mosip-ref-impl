@@ -6,15 +6,15 @@ import io.mosip.registration.processor.core.config.reader.ConfigPropertyReader;
 import io.mosip.registrationprocessor.externalstage.stage.ExternalStage;
 
 /**
- * External Stage application
- *
+ * Launches the external-stage Vert.x application via an annotation config context
+ * (scans MOSIP core, status, rest-client, and this stage).
  */
 public class ExternalStageApplication {
 
 	/**
-	 * main method to launch external stage application
-	 * 
-	 * @param args
+	 * Boots Spring, then deploys {@link ExternalStage}.
+	 *
+	 * @param args unused
 	 */
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext();

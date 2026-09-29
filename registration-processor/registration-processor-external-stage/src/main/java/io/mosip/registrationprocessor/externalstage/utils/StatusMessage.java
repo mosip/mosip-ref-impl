@@ -1,21 +1,19 @@
 package io.mosip.registrationprocessor.externalstage.utils;
 
 /**
- * The Class StatusMessage.
+ * Human-readable status strings written after EIS success or failure.
  */
 public final class StatusMessage {
 
-	/**
-	 * Instantiates a new status message.
-	 */
+	/** Utility class; do not instantiate. */
 	private StatusMessage() {
 
 	}
 
-	/** The Constant PACKET_CHECKSUM_VALIDATION_FAILURE. */
+	/** Human-readable text after a failed EIS call. */
 	public static final String EXTERNAL_STAGE_FAILURE = "external stage failure";
 
-	/** The Constant PACKET_FILES_VALIDATION_FAILURE. */
+	/** Human-readable text after a successful EIS call. */
 	public static final String EXTERNAL_STAGE_SUCCESS = "external stage success";
 
 }

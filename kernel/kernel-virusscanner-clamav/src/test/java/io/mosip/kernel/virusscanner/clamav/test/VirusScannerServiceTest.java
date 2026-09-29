@@ -22,10 +22,12 @@ import org.springframework.test.context.TestPropertySource;
 
 import io.mosip.kernel.core.virusscanner.spi.VirusScanner;
 import io.mosip.kernel.virusscanner.clamav.impl.VirusScannerImpl;
+import java.util.List;
+import java.util.Map;
+
 import xyz.capybara.clamav.ClamavClient;
+import xyz.capybara.clamav.ClamavException;
 import xyz.capybara.clamav.commands.scan.result.ScanResult;
-import xyz.capybara.clamav.commands.scan.result.ScanResult.Status;
-import xyz.capybara.clamav.exceptions.ClamavException;
 
 /**
  * 
@@ -63,8 +65,8 @@ public class VirusScannerServiceTest {
 		file = new File(classLoader.getResource("files/0000.zip").getFile());
 		is = new FileInputStream(file);
 		folder = new File(classLoader.getResource("files").getFile());
-		virusNotFound = new ScanResult(Status.OK);
-		virusFound = new ScanResult(Status.VIRUS_FOUND);
+		virusNotFound = ScanResult.OK.INSTANCE;
+		virusFound = new ScanResult.VirusFound(Map.of("eicar", List.of("EICAR-Test-File")));
 		doc = new File(classLoader.getResource("files/test1.docx").getFile());
 		byteArray = new byte[(int) doc.length()];
 	}
@@ -139,5 +141,18 @@ public class VirusScannerServiceTest {
 		Mockito.when(clamavClient.scan(any(FileInputStream.class))).thenReturn(virusFound);
 		Boolean result = virusScanner.scanDocument(doc);
 		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void createConnectionIsIdempotent() {
+		VirusScannerImpl impl = new VirusScannerImpl();
+		org.springframework.test.util.ReflectionTestUtils.setField(impl, "host", "127.0.0.1");
+		org.springframework.test.util.ReflectionTestUtils.setField(impl, "port", 3310);
+		impl.createConnection();
+		Object first = org.springframework.test.util.ReflectionTestUtils.getField(impl, "clamavClient");
+		impl.createConnection();
+		Object second = org.springframework.test.util.ReflectionTestUtils.getField(impl, "clamavClient");
+		org.junit.Assert.assertNotNull(first);
+		org.junit.Assert.assertSame(first, second);
 	}
 }

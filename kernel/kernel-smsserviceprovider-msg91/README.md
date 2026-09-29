@@ -1,78 +1,69 @@
-## kernel-smsserviceprovider-msg91
+# kernel-smsserviceprovider-msg91
 
- [Background & Design]()
+Reference implementation of `io.mosip.kernel.core.notification.spi.SMSServiceProvider` using the MSG91 HTTP API.
 
- **Implementation**
-This service is provided as a reference implementation so the adopters could change this code to support their respective service provider.
+- **Artifact**: `io.mosip.kernel:kernel-smsserviceprovider-msg91:1.4.1-SNAPSHOT`
+- **Parent**: `kernel-ref-parent` (Boot **4.1.1**, `kernel-core` for logging)
+- **SPI**: `SMSServiceProviderImpl` auto-loaded via `META-INF/spring.factories`
+- Do not add `kernel-logger-logback`; logging is in `kernel-core`.
 
-```
+## Implementation
+
+Keep the SPI contract. Change `SMSServiceProviderImpl` (or an equivalent impl) for another vendor. Do not change the REST contract of consuming services.
+
+```text
 io.mosip.kernel.core.notification.spi.SMSServiceProvider
-
 ```
-The above interface is implemented in this service. Adopters are expected to be compliant to the interface  and add their implementation in the SMSServiceProviderImpl.java or create equivalent impl.
 
-Its expected that the adopters do not change the controller and the REST api.
+## API docs (Javadoc)
 
- [API Documentation ]
- 
- ```
- mvn javadoc:javadoc
+```text
+cd kernel
+mvn -pl kernel-smsserviceprovider-msg91 javadoc:javadoc
+```
 
- ```
- 
-**Properties to be added in Spring application environment using this component**
+## Properties (config server / application environment)
 
-[application-dev.properties](../../config/application-dev.properties)
-
- ```
- #-----------------------------VID Properties--------------------------------------
+```text
 mosip.kernel.sms.enabled=true
 mosip.kernel.sms.country.code=91
 mosip.kernel.sms.number.min.length=10
 mosip.kernel.sms.number.max.length=10
-
-
-
-#----------msg91 gateway---------------
 mosip.kernel.sms.api=http://api.msg91.com/api/v2/sendsms
 mosip.kernel.sms.authkey=<authkey>
 mosip.kernel.sms.route=4
 mosip.kernel.sms.sender=MOSMSG
-
-auth.server.admin.validate.url=<auth server validate url>
-
- ```
- 
- **Maven Dependency**
- 
- ```
- 	<dependency>
-			<groupId>io.mosip.kernel</groupId>
-			<artifactId>kernel-smsserviceprovider-msg91</artifactId>
-			<version>${version}</version>
-		</dependency>
-
- ```
- 
-
-
-
-**Usage Sample:**
-
-Autowired interface 
-
+mosip.id.validation.identity.phone=^([6-9]{1})([0-9]{9})$
 ```
-	@Autowired
-	private VidValidator<String> vidValidatorImpl;
+
+## Maven
+
+```xml
+<dependency>
+    <groupId>io.mosip.kernel</groupId>
+    <artifactId>kernel-smsserviceprovider-msg91</artifactId>
+    <version>1.4.1-SNAPSHOT</version>
+</dependency>
 ```
-Call the method 
 
-Example:
- 
- ```
-	 smsServiceProvider.sendSms(contactNumber, contentMessage);
+## Usage
 
+```java
+@Autowired
+private SMSServiceProvider smsServiceProvider;
+
+smsServiceProvider.sendSms(contactNumber, contentMessage);
 ```
-	
 
- 
+## Build
+
+```text
+cd kernel
+mvn -pl kernel-smsserviceprovider-msg91 clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
+```
+
+JaCoCo LINE covered ratio **0.90**. Outbound MOSIP tokens: `kernel-auth-adapter` (version in parent `pom.xml`).
+
+## License
+
+[Mozilla Public License 2.0](../../LICENSE) — [NOTICE](../../NOTICE)
