@@ -8,7 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import io.mosip.kernel.dataaccess.hibernate.repository.impl.HibernateRepositoryImpl;
 import io.mosip.preregistration.booking.config.BookingConfig;
 
 /**
@@ -21,6 +24,13 @@ import io.mosip.preregistration.booking.config.BookingConfig;
  * whose {@code Class} constructor Boot 4 cannot autowire. Kernel-core sidecar
  * auto-configs are excluded by name; DataSource/JPA stay enabled. Swagger UI
  * Authorize is wired in {@link BookingConfig}.
+ * {@code scanBasePackages} does not register Spring Data repositories or JPA
+ * entities outside this application's package. BookingServiceUtil autowires
+ * core {@code UserDetailsService}, which needs {@code UserDetailsRepository}
+ * from pre-registration-core; {@link EnableJpaRepositories} and
+ * {@link EntityScan} cover booking plus {@code io.mosip.preregistration.core.common}.
+ * Kernel {@code BaseRepository.update} is implemented by
+ * {@link HibernateRepositoryImpl}; Boot's default factory cannot parse that method.
  * </p>
  * 
  * @author Kishan Rathore
@@ -35,6 +45,14 @@ import io.mosip.preregistration.booking.config.BookingConfig;
 		"${mosip.auth.adapter.impl.basepackage}",
 		"io.mosip.kernel.core.logger.config",
 		"io.mosip.kernel.idobjectvalidator.*"
+})
+@EnableJpaRepositories(basePackages = {
+		"io.mosip.preregistration.booking.repository",
+		"io.mosip.preregistration.core.common.repository"
+}, repositoryBaseClass = HibernateRepositoryImpl.class)
+@EntityScan(basePackages = {
+		"io.mosip.preregistration.booking.entity",
+		"io.mosip.preregistration.core.common.entity"
 })
 @EnableAutoConfiguration(excludeName = {
 		"io.mosip.kernel.idgenerator.vid.impl.VidGeneratorImpl",
@@ -51,7 +69,6 @@ import io.mosip.preregistration.booking.config.BookingConfig;
 		"io.mosip.kernel.idvalidator.uin.impl.UinValidatorImpl",
 		"io.mosip.kernel.idvalidator.vid.impl.VidValidatorImpl",
 		"io.mosip.kernel.idvalidator.mispid.impl.MispIdValidatorImpl",
-		"io.mosip.kernel.templatemanager.velocity.builder.TemplateManagerBuilderImpl",
 		"io.mosip.kernel.pdfgenerator.impl.PDFGeneratorImpl",
 		"io.mosip.kernel.qrcode.generator.zxing.QrcodeGeneratorImpl",
 		"io.mosip.kernel.transliteration.icu4j.impl.TransliterationImpl",
