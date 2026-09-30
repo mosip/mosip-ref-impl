@@ -1,17 +1,15 @@
 # .github
 
-Do not glob. Do not read `keys/`.
+Do not glob. Never read `keys/`.
 
 ```
 .github/
 ├── AGENTS.md
 ├── workflows/
-│   ├── push-trigger.yml          # Maven/Docker/OSSRH/Sonar — kattu@master-java21
-│   ├── chart-lint-publish.yml    # helm
+│   ├── push-trigger.yml           # kattu@master-java21
+│   ├── chart-lint-publish.yml
 │   └── use-pr-linker.yml
-└── keys/                         # GPG — never read/edit/commit
-    ├── mosipgpgkey_pub.gpg
-    └── mosipgpgkey_sec.gpg
+└── keys/                          # GPG — never read/edit/commit
 ```
 
-`push-trigger.yml`: Maven `SERVICE_LOCATION` = aggregator for `kernel/` + `registration-processor/`. Docker still child paths. OSSRH skip on `master` + PRs.
+`push-trigger.yml`: Maven at aggregator (`kernel/`, `registration-processor/`). Docker = child paths. OSSRH skip `master`+PR. Booking Maven `needs` kernel publish. Regproc Docker downloads artifact `registration-processor` (both Boot JARs).

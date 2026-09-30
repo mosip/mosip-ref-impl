@@ -1,6 +1,6 @@
 # keycloak
 
-Theme overlay only. Empty `standalone/deployments/`.
+Theme overlay. Empty `standalone/deployments/`.
 
 ```
 keycloak/
