@@ -240,7 +240,7 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!--
-			h2: In-memory DB for tests and spring.profiles.active=local. Version from Boot parent.
+			h2: In-memory DB for tests. Version from Boot parent.
 		-->
 		<dependency>
 			<groupId>com.h2database</groupId>
