@@ -35,7 +35,10 @@
 		logstash-logback-encoder) live in this pom — not in README.md or AGENTS.md.
 		kernel-auth-adapter and kernel-ref-idobjectvalidator are packaged in the
 		service JAR; do not wget them at container start. Logging is in kernel-core
-		(commons); do not depend on kernel-logger-logback. Jackson 2 via
+		(commons); do not depend on kernel-logger-logback. The io.mosip.* scan loads
+		SleuthLoggingAutoConfiguration, which autowires io.micrometer.tracing.Tracer;
+		spring-boot-micrometer-tracing-brave registers that bean (the Brave bridge
+		is already on kernel-core). Jackson 2 via
 		spring-boot-jackson2 because Boot 4 defaults to Jackson 3. Spring Cloud
 		Oakwood is imported for config/bootstrap (pre-registration properties).
 		git-commit-id writes service-git.properties. JaCoCo LINE covered-ratio gate.
@@ -275,6 +278,16 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		<!--
+			spring-boot-micrometer-tracing-brave: Registers BraveAutoConfiguration so an
+			io.micrometer.tracing.Tracer bean exists. kernel-core SleuthLoggingAutoConfiguration
+			is picked up by the io.mosip.* component scan and autowires that bean.
+			micrometer-tracing-bridge-brave is already a kernel-core dependency. Version from Boot parent.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-micrometer-tracing-brave</artifactId>
 		</dependency>
 		<!--
 			jaxb-api (javax): JAXB 2.3. JDK 21 has no JAXB; stay off Jakarta 4.x. MOSIP elects CDDL-1.1.
