@@ -23,7 +23,8 @@
 	<name>pre-registration-booking-service</name>
 	<description>
 		MOSIP Pre-registration appointment booking REST service. BookingApplication
-		scans io.mosip.* (kernel crypto and keymanager packages excluded) and serves
+		allow-lists scanBasePackages (booking, pre-registration-core, auth adapter,
+		logger config, idobjectvalidator) like kernel-notification-service and serves
 		BookingController under /appointment/** on context /preregistration/v1:
 		slot availability, single and multi book, get by pre-registration id, cancel,
 		batch cancel, delete, and centre/date queries. Roles come from the
@@ -35,8 +36,9 @@
 		logstash-logback-encoder) live in this pom — not in README.md or AGENTS.md.
 		kernel-auth-adapter and kernel-ref-idobjectvalidator are packaged in the
 		service JAR; do not wget them at container start. Logging is in kernel-core
-		(commons); do not depend on kernel-logger-logback. The io.mosip.* scan loads
-		SleuthLoggingAutoConfiguration, which autowires io.micrometer.tracing.Tracer;
+		(commons); do not depend on kernel-logger-logback. scanBasePackages includes
+		io.mosip.kernel.core.logger.config so SleuthLoggingAutoConfiguration loads;
+		it autowires io.micrometer.tracing.Tracer;
 		spring-boot-micrometer-tracing-brave registers that bean (the Brave bridge
 		is already on kernel-core). Jackson 2 via
 		spring-boot-jackson2 because Boot 4 defaults to Jackson 3. Spring Cloud

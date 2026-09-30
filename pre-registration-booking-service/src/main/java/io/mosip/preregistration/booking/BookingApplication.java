@@ -5,18 +5,22 @@
 package io.mosip.preregistration.booking;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 
 import io.mosip.preregistration.booking.config.BookingConfig;
 
 /**
  * Starts the Pre-registration booking REST service (Spring Boot 4.1.1).
  * <p>
- * Component scan is {@code io.mosip.*} with kernel crypto/keymanager packages excluded.
- * Swagger UI Authorize is wired in {@link BookingConfig}.
+ * Component scan is an allow-list (same pattern as kernel-notification-service
+ * {@code NotificationBootApplication}): booking, pre-registration-core, auth
+ * adapter, logger config, and the packaged idobjectvalidator SPI. Do not scan
+ * {@code io.mosip.*} — kernel-core {@code DataMapperImpl} is a {@code @Component}
+ * whose {@code Class} constructor Boot 4 cannot autowire. Kernel-core sidecar
+ * auto-configs are excluded by name; DataSource/JPA stay enabled. Swagger UI
+ * Authorize is wired in {@link BookingConfig}.
  * </p>
  * 
  * @author Kishan Rathore
@@ -25,21 +29,39 @@ import io.mosip.preregistration.booking.config.BookingConfig;
  * @since 1.0.0
  *
  */
-@SpringBootApplication
-@ComponentScan(basePackages = "io.mosip.*", excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.REGEX,
-				pattern = {"io\\.mosip\\.kernel\\.zkcryptoservice\\..*",
-						"io\\.mosip\\.kernel\\.tokenidgenerator\\..*",
-						"io\\.mosip\\.kernel\\.signature\\..*",
-						"io\\.mosip\\.kernel\\.partnercertservice\\..*",
-						"io\\.mosip\\.kernel\\.lkeymanager\\..*",
-						"io\\.mosip\\.kernel\\.keymanagerservice\\..*",
-						"io\\.mosip\\.kernel\\.keymanager\\..*",
-						"io\\.mosip\\.kernel\\.keygenerator\\..*",
-						"io\\.mosip\\.kernel\\.cryptomanager\\..*",
-						"io\\.mosip\\.kernel\\.crypto\\..*",
-						"io\\.mosip\\.kernel\\.clientcrypto\\..*",
-				}) })
+@SpringBootApplication(scanBasePackages = {
+		"io.mosip.preregistration.booking.*",
+		"io.mosip.preregistration.core.*",
+		"${mosip.auth.adapter.impl.basepackage}",
+		"io.mosip.kernel.core.logger.config",
+		"io.mosip.kernel.idobjectvalidator.*"
+})
+@EnableAutoConfiguration(excludeName = {
+		"io.mosip.kernel.idgenerator.vid.impl.VidGeneratorImpl",
+		"io.mosip.kernel.idgenerator.vid.util.VidFilterUtils",
+		"io.mosip.kernel.idgenerator.tokenid.impl.TokenIdGeneratorImpl",
+		"io.mosip.kernel.idgenerator.machineid.impl.MachineIdGeneratorImpl",
+		"io.mosip.kernel.idgenerator.regcenterid.impl.RegistrationCenterIdGeneratorImpl",
+		"io.mosip.kernel.idgenerator.mispid.impl.MispIdGeneratorImpl",
+		"io.mosip.kernel.licensekeygenerator.misp.impl.MISPLicenseKeyGeneratorImpl",
+		"io.mosip.kernel.licensekeygenerator.misp.util.MISPLicenseKeyGeneratorUtil",
+		"io.mosip.kernel.idgenerator.rid.impl.RidGeneratorImpl",
+		"io.mosip.kernel.idvalidator.prid.impl.PridValidatorImpl",
+		"io.mosip.kernel.idvalidator.rid.impl.RidValidatorImpl",
+		"io.mosip.kernel.idvalidator.uin.impl.UinValidatorImpl",
+		"io.mosip.kernel.idvalidator.vid.impl.VidValidatorImpl",
+		"io.mosip.kernel.idvalidator.mispid.impl.MispIdValidatorImpl",
+		"io.mosip.kernel.templatemanager.velocity.builder.TemplateManagerBuilderImpl",
+		"io.mosip.kernel.pdfgenerator.impl.PDFGeneratorImpl",
+		"io.mosip.kernel.qrcode.generator.zxing.QrcodeGeneratorImpl",
+		"io.mosip.kernel.transliteration.icu4j.impl.TransliterationImpl",
+		"io.mosip.kernel.applicanttype.api.impl.ApplicantTypeImpl",
+		"io.mosip.kernel.idobjectvalidator.config.IdObjectValidatorConfig",
+		"io.mosip.kernel.websub.api.config.IntentVerificationConfig",
+		"io.mosip.kernel.websub.api.config.WebSubClientConfig",
+		"io.mosip.kernel.websub.api.config.publisher.WebSubPublisherClientConfig",
+		"io.mosip.kernel.websub.api.config.publisher.RestTemplateHelper"
+})
 @EnableConfigurationProperties(BookingConfig.class)
 public class BookingApplication {
 	/**
