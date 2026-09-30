@@ -14,4 +14,4 @@ Do not glob. Do not read `keys/`.
     └── mosipgpgkey_sec.gpg
 ```
 
-`push-trigger.yml`: Maven `SERVICE_LOCATION` = aggregator for `kernel/` + `registration-processor/`. Docker still child paths. OSSRH skip on `master` + PRs.
+`push-trigger.yml`: Maven `SERVICE_LOCATION` = aggregator for `kernel/` + `registration-processor/`. Docker still child paths. OSSRH skip on `master` + PRs. Booking Maven waits for `publish_to_nexus_kernel` (same-repo `kernel-ref-idobjectvalidator`).

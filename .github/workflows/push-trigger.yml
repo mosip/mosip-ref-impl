@@ -62,7 +62,14 @@ jobs:
       OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  # Booking packages kernel-ref-idobjectvalidator 1.4.1-SNAPSHOT from this repo.
+  # Wait for kernel publish so Central snapshots has the JAR. On PR/master, publish
+  # is skipped — still run booking (artifact may already be on snapshots).
   build-maven-pre-registration-booking-service:
+    needs:
+      - build-maven-kernel
+      - publish_to_nexus_kernel
+    if: ${{ always() && needs.build-maven-kernel.result == 'success' && (needs.publish_to_nexus_kernel.result == 'success' || needs.publish_to_nexus_kernel.result == 'skipped') }}
     uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
       SERVICE_LOCATION: pre-registration-booking-service
@@ -128,11 +135,14 @@ jobs:
   # Docker stays on each service dir so image names and Helm/K8s deploy are unchanged.
   # No publish_to_nexus here (same as before) — parent POM is not published as a Docker image
   # and artifactId is registration-processor-ref-parent (not registration-processor).
+  # kattu zips +x Boot JARs as artifact "registration-processor". Docker jobs
+  # download that zip. MAVEN_NON_EXEC_ARTIFACTS covers JARs without the exec bit.
   build-maven-registration-processor:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
       SERVICE_LOCATION: registration-processor
       BUILD_ARTIFACT: registration-processor
+      MAVEN_NON_EXEC_ARTIFACTS: registration-processor-external-stage.jar,registration-processor-external-integration-service.jar
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}

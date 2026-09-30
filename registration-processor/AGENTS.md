@@ -1,6 +1,6 @@
 # registration-processor
 
-`registration-processor-ref-parent` (`packaging=pom`). Boot 4.1.1. No `pre-processor`. Child → that folder’s `AGENTS.md`. Pins in this `pom.xml`.
+`registration-processor-ref-parent` (`packaging=pom`). Boot 4.1.1. No `pre-processor`. Child → that folder’s `AGENTS.md`. Pins in this `pom.xml`. CI artifact name: `registration-processor` (both child Boot JARs).
 
 ```
 registration-processor/
