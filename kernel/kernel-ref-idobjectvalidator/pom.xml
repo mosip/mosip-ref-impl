@@ -6,7 +6,7 @@
 
 	<!--
 		Child of kernel-ref-parent. MOSIP and third-party pins live in kernel/pom.xml.
-		This pom declares module dependencies and surefire --enable-preview.
+		This pom declares module dependencies and surefire enable-preview.
 		Do not import kernel-bom.
 	-->
 	<parent>
