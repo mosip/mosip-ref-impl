@@ -1,5 +1,6 @@
 package io.mosip.preregistration.booking.config;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -9,7 +10,10 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import io.mosip.kernel.dataaccess.hibernate.repository.impl.HibernateRepositoryImpl;
 import io.mosip.preregistration.booking.BookingApplication;
 
 /**
@@ -30,6 +34,21 @@ public class BookingApplicationComponentScanTest {
 		assertTrue(packages.contains("${mosip.auth.adapter.impl.basepackage}"));
 		assertTrue(packages.contains("io.mosip.kernel.core.logger.config"));
 		assertTrue(packages.contains("io.mosip.kernel.idobjectvalidator.*"));
+	}
+
+	@Test
+	public void jpaScanIncludesBookingAndCoreRepositoriesAndEntities() {
+		List<String> repositories = Arrays.asList(
+				BookingApplication.class.getAnnotation(EnableJpaRepositories.class).basePackages());
+		assertTrue(repositories.contains("io.mosip.preregistration.booking.repository"));
+		assertTrue(repositories.contains("io.mosip.preregistration.core.common.repository"));
+		assertEquals(HibernateRepositoryImpl.class,
+				BookingApplication.class.getAnnotation(EnableJpaRepositories.class).repositoryBaseClass());
+
+		List<String> entities = Arrays.asList(
+				BookingApplication.class.getAnnotation(EntityScan.class).basePackages());
+		assertTrue(entities.contains("io.mosip.preregistration.booking.entity"));
+		assertTrue(entities.contains("io.mosip.preregistration.core.common.entity"));
 	}
 
 	@Test

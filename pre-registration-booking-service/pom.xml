@@ -240,11 +240,19 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!--
-			h2: In-memory DB for tests. Version from Boot parent.
+			h2: In-memory DB for tests and spring.profiles.active=local. Version from Boot parent.
 		-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+		</dependency>
+		<!--
+			postgresql: Cluster JDBC driver. Version from Boot parent.
+		-->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<!--
 			logstash-logback-encoder: JSON encoder for log shipping. Version ${logstash-logback-encoder.version}.
