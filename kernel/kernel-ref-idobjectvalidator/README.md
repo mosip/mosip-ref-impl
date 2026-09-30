@@ -1,11 +1,13 @@
 # kernel-ref-idobjectvalidator
 
-Reference `IdObjectValidator` that checks identity JSON against schema and masterdata (documents, locations, gender, etc.).
+Reference `IdObjectValidator` that checks identity JSON against schema and masterdata (documents, locations, gender, languages).
 
-- **Artifact**: `io.mosip.kernel:kernel-ref-idobjectvalidator:1.4.1-SNAPSHOT`
-- **Parent**: `kernel-ref-parent` (Boot **4.1.1**, `kernel-core` supplies logging)
+Pins live in parent [`kernel/pom.xml`](../pom.xml). Module description lives in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.kernel:kernel-ref-idobjectvalidator`
+- **Impl**: `IdObjectReferenceValidator`
 - **Preview**: tests use `--enable-preview`
-- **Config**: `mosip.idobjectvalidator.scheduler.reset-cache.cron-job-pattern` and masterdata URI properties
+- **Config**: `mosip.idobjectvalidator.masterdata.rest.uri`, `mosip.idobjectvalidator.scheduler.reset-cache.cron-job-pattern`
 
 ## Build
 
@@ -14,13 +16,11 @@ cd kernel
 mvn -pl kernel-ref-idobjectvalidator clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-Runtime consumers (booking, registration client) add this JAR plus `kernel-auth-adapter` as needed.
-
 ```text
 mvn -pl kernel-ref-idobjectvalidator clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio **0.90**. `json-path` / `json-smart` are compile dependencies (identity JSON queries).
+JaCoCo LINE covered ratio is gated in the parent `pom.xml` (`target/site/jacoco/index.html`). Drop the JAR onto booking / registration-client.
 
 ## License
 

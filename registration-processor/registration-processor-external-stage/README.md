@@ -2,9 +2,10 @@
 
 Vert.x stage that reads `EXTERNAL_STAGE_BUS_IN`, POSTs to the External Integration Service, then emits `EXTERNAL_STAGE_BUS_OUT`.
 
-- **Artifact**: `io.mosip.registrationprocessor:registration-processor-external-stage:1.4.1-SNAPSHOT`
-- **Parent**: `registration-processor-ref-parent` (Boot **4.1.1**)
-- **Logging**: `kernel-core` (commons)
+Pins live in parent [`registration-processor/pom.xml`](../pom.xml). Module description lives in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.registrationprocessor:registration-processor-external-stage`
+- **Logging**: `kernel-core` (commons) — do not add `kernel-logger-logback`
 - **Git info**: `service-git.properties`
 
 ## Overview
@@ -75,7 +76,7 @@ docker build -t registration-processor-external-stage .
 </dependency>
 ```
 
-JaCoCo LINE covered ratio **0.90**. Needs MOSIP `registration-processor-core` / status-service-impl / rest-client SNAPSHOTs on the classpath.
+JaCoCo LINE covered ratio is gated in the parent `pom.xml`. Needs MOSIP `registration-processor-core` / status-service-impl / rest-client SNAPSHOTs on the classpath. `kernel-auth-adapter` is packaged in the Boot JAR.
 
 ## Configuration
 

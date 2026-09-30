@@ -1,6 +1,13 @@
 # registration-processor
 
-Parent **`registration-processor-ref-parent`** (`packaging=pom`). Spring Boot **4.1.1**, Java 21. No MOSIP `pre-processor` parent and no `kernel-bom`. MOSIP registration-processor jars are pinned in `registration-processor/pom.xml`. Logging via `kernel-core` (commons).
+Parent `registration-processor-ref-parent` (`packaging=pom`) for the MOSIP registration-processor reference implementations (Vert.x external stage and the country EIS stub).
+
+Pins (Boot parent, MOSIP jars, plugins, JaCoCo gate) and the module description live in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.registrationprocessor:registration-processor-ref-parent`
+- **Logging**: `kernel-core` (commons) — do not add `kernel-logger-logback`
+- **Git info**: `service-git.properties`
+- **CI**: both Boot JARs publish as artifact `registration-processor`
 
 ## Modules
 
@@ -23,7 +30,7 @@ mvn clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 
 External-stage needs unpublished MOSIP SNAPSHOTs (`registration-processor-core`, status-service-impl, rest-client) installed locally if they are not on Central snapshots. EIS can be built with `-pl` on its own.
 
-JaCoCo LINE covered ratio **0.90** on `verify`. Git info: `service-git.properties`.
+JaCoCo LINE covered ratio is gated in `pom.xml` (`target/site/jacoco/index.html` per child).
 
 ## Config
 

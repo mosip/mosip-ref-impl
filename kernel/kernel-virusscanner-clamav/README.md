@@ -1,10 +1,11 @@
-# Kernel Virus Scanner — ClamAV
+# kernel-virusscanner-clamav
 
-Reference `VirusScanner<Boolean, InputStream>` using [ClamAV](https://www.clamav.net/) via `xyz.capybara:clamav-client` **2.1.2**.
+Reference `VirusScanner<Boolean, InputStream>` using [ClamAV](https://www.clamav.net/).
 
-- **Artifact**: `io.mosip.kernel:kernel-virusscanner-clamav:1.4.1-SNAPSHOT`
-- **Parent**: `kernel-ref-parent` (Boot **4.1.1**)
-- **Logging**: `kernel-core` (commons)
+Pins live in parent [`kernel/pom.xml`](../pom.xml). Module description lives in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.kernel:kernel-virusscanner-clamav`
+- **Impl**: `VirusScannerImpl` via `META-INF/spring.factories`
 - **Config**: `mosip.kernel.virus-scanner.host`, `mosip.kernel.virus-scanner.port`
 
 To integrate another scanner, see [Integrating Virus Scanner](docs/av.md).
@@ -17,7 +18,7 @@ mvn -pl kernel-virusscanner-clamav clean install -Dmaven.javadoc.skip=true -Dgpg
 mvn -pl kernel-virusscanner-clamav clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio **0.90**. Scan API: `ScanResult.OK` / `VirusFound` (clamav-client 2.1.2).
+JaCoCo LINE covered ratio is gated in the parent `pom.xml`. Scan API: `ScanResult.OK` / `VirusFound`. Fat JAR from the assembly plugin (no classifier).
 
 ## License
 

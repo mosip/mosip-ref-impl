@@ -3,6 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!--
+		Child of kernel-ref-parent. MOSIP pins live in kernel/pom.xml.
+		This pom declares module dependencies and packaged resources.
+		Do not import kernel-bom.
+	-->
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
@@ -13,8 +19,18 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>kernel-smsserviceprovider-msg91</name>
 	<description>
-		Reference SMS SPI using MSG91. kernel-core (commons) supplies logging;
-		do not add kernel-logger-logback. kernel-auth-adapter injects MOSIP tokens.
+		Reference SMSServiceProvider SPI using the MSG91 HTTP API.
+		SMSServiceProviderImpl validates mosip.id.validation.identity.phone then
+		GET-calls mosip.kernel.sms.api with authkey, sender, route, unicode, and
+		country code (mosip.kernel.sms.enabled, country.code, number min/max
+		length, api, sender, password, route, authkey, unicode). Auto-loaded via
+		META-INF/spring.factories (EnableAutoConfiguration to
+		SMSServiceProviderImpl and ApiExceptionHandler). kernel-core supplies
+		logging; do not add kernel-logger-logback. kernel-auth-adapter injects
+		MOSIP tokens on outbound calls. Versions from parent kernel-ref-parent;
+		module description lives in this pom, not in README.md or AGENTS.md.
+		Swap vendor by replacing the impl, not the SPI. bootstrap.properties is
+		excluded from the packaged resources.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
@@ -24,7 +40,7 @@
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-core</artifactId>
 		</dependency>
-		<!-- kernel-auth-adapter: MOSIP auth tokens on outbound MSG91 calls. -->
+		<!-- kernel-auth-adapter: MOSIP auth tokens on outbound MSG91 calls. Version from parent. -->
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-auth-adapter</artifactId>
@@ -36,6 +52,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
+					<!-- bootstrap.properties is for local Cloud Config only; not shipped in the JAR. -->
 					<exclude>bootstrap.properties</exclude>
 				</excludes>
 			</resource>
