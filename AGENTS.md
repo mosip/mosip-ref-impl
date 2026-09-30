@@ -15,8 +15,8 @@ mosip-ref-impl/
 ├── keycloak/                            login FTL                         → AGENTS.md
 ├── pre-registration-booking-service/    /appointment/**                   → AGENTS.md
 ├── registration-processor/              registration-processor-ref-parent → AGENTS.md
-│   ├── registration-processor-external-stage/                             → AGENTS.md
-│   └── registration-processor-external-integration-service/               → AGENTS.md
+│   ├── registration-processor-external-stage/                 Vert.x → EIS → AGENTS.md
+│   └── registration-processor-external-integration-service/   EIS stub REST → AGENTS.md
 ├── helm/prereg-booking/                 javaOpts → JDK_JAVA_OPTIONS       → AGENTS.md
 ├── licenses/                            NOTICE texts
 ├── .github/                             CI; never read keys/              → AGENTS.md

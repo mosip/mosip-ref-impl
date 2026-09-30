@@ -3,6 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!--
+		Child of registration-processor-ref-parent. MOSIP and third-party pins live in
+		registration-processor/pom.xml. This pom declares module dependencies.
+		Do not import kernel-bom. No pre-processor parent.
+	-->
 	<parent>
 		<groupId>io.mosip.registrationprocessor</groupId>
 		<artifactId>registration-processor-ref-parent</artifactId>
@@ -14,14 +20,23 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>registration-processor-external-integration-service</name>
 	<description>
-		MOSIP External Integration Service stub. Spring Boot 4.1.1 via parent
-		registration-processor-ref-parent. No pre-processor parent. Logging via kernel-core (commons).
+		Country External Integration Service stub (Boot web). ExternalController
+		POST /registration-processor/external-integration-service/v1.0 returns HTTP 200
+		true when MessageRequestDTO.request is non-null, otherwise false. Replace the
+		controller body with country-specific logic. bootstrap.properties sets
+		server.servlet.path=/registrationprocessor/v1/eis. Swagger UI Authorize is an
+		Authorization header apiKey (SwaggerConfig, OpenApiProperties, springdoc;
+		openapi.* keys). spring-boot-starter-webmvc-test supplies Boot 4 @WebMvcTest.
+		Actuator exposes info, health, refresh; git metadata from service-git.properties.
+		Logging via kernel-core (transitive); do not add kernel-logger-logback. Versions
+		from parent registration-processor-ref-parent; module description lives in this
+		pom, not in README.md or AGENTS.md.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
 	<dependencies>
 		<!--
-			spring-boot-starter-web: EIS stub REST (ExternalController). Version from Boot 4.1.1 parent.
+			spring-boot-starter-web: EIS stub REST (ExternalController). Version from Boot parent.
 		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

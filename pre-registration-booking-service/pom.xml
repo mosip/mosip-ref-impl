@@ -4,6 +4,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!--
+		Standalone Boot service (not under kernel-ref-parent). Boot parent is the
+		third-party BOM equivalent. Do not import kernel-bom. relativePath empty =
+		resolve from Maven repos. Module, plugin, and MOSIP pins live in this pom —
+		not in README.md or AGENTS.md.
+	-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -16,8 +22,27 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>pre-registration-booking-service</name>
 	<description>
-		MOSIP Pre-registration appointment booking REST service (Spring Boot 4.1.1, Java 21).
-		No kernel-bom. MOSIP versions are pinned here — not in README.md.
+		MOSIP Pre-registration appointment booking REST service. BookingApplication
+		scans io.mosip.* (kernel crypto and keymanager packages excluded) and serves
+		BookingController under /appointment/** on context /preregistration/v1:
+		slot availability, single and multi book, get by pre-registration id, cancel,
+		batch cancel, delete, and centre/date queries. Roles come from the
+		authorizedRoles bean. Slot contention uses BookingLock (registration centre,
+		date, timeslot). Spring Boot 4.1.1 parent, Java 21. No kernel-bom. MOSIP pins
+		(pre-registration-core, kernel-core, kernel-auth-adapter,
+		kernel-ref-idobjectvalidator) and third-party pins (springdoc, jjwt,
+		json-path, json-smart, JAXB 2.3 javax line, javassist,
+		logstash-logback-encoder) live in this pom — not in README.md or AGENTS.md.
+		kernel-auth-adapter and kernel-ref-idobjectvalidator are packaged in the
+		service JAR; do not wget them at container start. Logging is in kernel-core
+		(commons); do not depend on kernel-logger-logback. Jackson 2 via
+		spring-boot-jackson2 because Boot 4 defaults to Jackson 3. Spring Cloud
+		Oakwood is imported for config/bootstrap (pre-registration properties).
+		git-commit-id writes service-git.properties. JaCoCo LINE covered-ratio gate.
+		Tests are JUnit 4 + Mockito (junit-vintage-engine); Surefire adds
+		--enable-preview. JVM flags come from Helm prereg-booking javaOpts as
+		JDK_JAVA_OPTIONS, not from the Dockerfile. CI waits for kernel publish
+		before this module.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
@@ -25,13 +50,6 @@
 		<java.version>21</java.version>
 		<argLine />
 		<skipTests>false</skipTests>
-		<!-- ── MOSIP (external — no kernel-bom) ─────────────────────────────── -->
-		<!-- commons/kernel must be installed locally for these SNAPSHOTs. -->
-		<!-- Logging lives in kernel-core (commons); do not depend on kernel-logger-logback. -->
-		<pre.registration.core.version>1.4.0-SNAPSHOT</pre.registration.core.version>
-		<kernel.core.version>1.4.1-SNAPSHOT</kernel.core.version>
-		<kernel.auth.adapter.version>1.4.1-SNAPSHOT</kernel.auth.adapter.version>
-		<kernel.ref.idobjectvalidator.version>1.4.1-SNAPSHOT</kernel.ref.idobjectvalidator.version>
 		<spring-cloud.version>2025.1.3</spring-cloud.version>
 		<!-- springdoc-openapi: Swagger UI + Authorize (Authorization apiKey). Not Boot-managed. -->
 		<springdoc.version>3.1.1</springdoc.version>
@@ -60,6 +78,14 @@
 		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
+
+		<!-- ── MOSIP (external — no kernel-bom) ─────────────────────────────── -->
+		<!-- commons/kernel must be installed locally for these SNAPSHOTs. -->
+		<!-- Logging lives in kernel-core (commons); do not depend on kernel-logger-logback. -->
+		<pre.registration.core.version>1.4.0-SNAPSHOT</pre.registration.core.version>
+		<kernel.core.version>1.4.1-SNAPSHOT</kernel.core.version>
+		<kernel.auth.adapter.version>1.4.1-SNAPSHOT</kernel.auth.adapter.version>
+		<kernel.ref.idobjectvalidator.version>1.4.1-SNAPSHOT</kernel.ref.idobjectvalidator.version>
 	</properties>
 
 	<dependencyManagement>

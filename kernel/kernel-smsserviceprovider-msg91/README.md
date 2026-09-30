@@ -1,11 +1,12 @@
 # kernel-smsserviceprovider-msg91
 
-Reference implementation of `io.mosip.kernel.core.notification.spi.SMSServiceProvider` using the MSG91 HTTP API.
+Reference `SMSServiceProvider` using the MSG91 HTTP API.
 
-- **Artifact**: `io.mosip.kernel:kernel-smsserviceprovider-msg91:1.4.1-SNAPSHOT`
-- **Parent**: `kernel-ref-parent` (Boot **4.1.1**, `kernel-core` for logging)
-- **SPI**: `SMSServiceProviderImpl` auto-loaded via `META-INF/spring.factories`
-- Do not add `kernel-logger-logback`; logging is in `kernel-core`.
+Pins live in parent [`kernel/pom.xml`](../pom.xml). Module description lives in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.kernel:kernel-smsserviceprovider-msg91`
+- **SPI**: `SMSServiceProviderImpl` via `META-INF/spring.factories`
+- **Logging**: `kernel-core` (commons) — do not add `kernel-logger-logback`
 
 ## Implementation
 
@@ -15,35 +16,18 @@ Keep the SPI contract. Change `SMSServiceProviderImpl` (or an equivalent impl) f
 io.mosip.kernel.core.notification.spi.SMSServiceProvider
 ```
 
-## API docs (Javadoc)
+## Properties
 
 ```text
-cd kernel
-mvn -pl kernel-smsserviceprovider-msg91 javadoc:javadoc
-```
-
-## Properties (config server / application environment)
-
-```text
-mosip.kernel.sms.enabled=true
-mosip.kernel.sms.country.code=91
-mosip.kernel.sms.number.min.length=10
-mosip.kernel.sms.number.max.length=10
-mosip.kernel.sms.api=http://api.msg91.com/api/v2/sendsms
-mosip.kernel.sms.authkey=<authkey>
-mosip.kernel.sms.route=4
-mosip.kernel.sms.sender=MOSMSG
-mosip.id.validation.identity.phone=^([6-9]{1})([0-9]{9})$
-```
-
-## Maven
-
-```xml
-<dependency>
-    <groupId>io.mosip.kernel</groupId>
-    <artifactId>kernel-smsserviceprovider-msg91</artifactId>
-    <version>1.4.1-SNAPSHOT</version>
-</dependency>
+mosip.kernel.sms.enabled
+mosip.kernel.sms.country.code
+mosip.kernel.sms.number.min.length
+mosip.kernel.sms.number.max.length
+mosip.kernel.sms.api
+mosip.kernel.sms.authkey
+mosip.kernel.sms.route
+mosip.kernel.sms.sender
+mosip.id.validation.identity.phone
 ```
 
 ## Usage
@@ -62,7 +46,7 @@ cd kernel
 mvn -pl kernel-smsserviceprovider-msg91 clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio **0.90**. Outbound MOSIP tokens: `kernel-auth-adapter` (version in parent `pom.xml`).
+JaCoCo LINE covered ratio is gated in the parent `pom.xml`. Outbound MOSIP tokens: `kernel-auth-adapter`.
 
 ## License
 

@@ -2,9 +2,10 @@
 
 Country stub REST service that receives POSTs from `registration-processor-external-stage`. Replace the controller body with country-specific integration logic.
 
-- **Artifact**: `io.mosip.registrationprocessor:registration-processor-external-integration-service:1.4.1-SNAPSHOT`
-- **Parent**: `registration-processor-ref-parent` (Boot **4.1.1**)
-- **Logging**: `kernel-core` (commons)
+Pins live in parent [`registration-processor/pom.xml`](../pom.xml). Module description lives in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.registrationprocessor:registration-processor-external-integration-service`
+- **Logging**: `kernel-core` (commons) — do not add `kernel-logger-logback`
 - **Git info**: `service-git.properties`
 
 ## Overview
@@ -70,7 +71,7 @@ Click **Authorize**, paste the authmanager token, then Try-it-out.
 mvn -pl registration-processor-external-integration-service clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio **0.90**. Boot 4 tests use `org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest`.
+JaCoCo LINE covered ratio is gated in the parent `pom.xml`. Boot 4 tests use `org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest`.
 
 ## Deployment (Kubernetes)
 

@@ -3,6 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!--
+		Child of kernel-ref-parent. MOSIP and clamav-client pins live in kernel/pom.xml.
+		This pom declares module dependencies and the fat-JAR assembly.
+		Do not import kernel-bom.
+	-->
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
@@ -13,9 +19,19 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>kernel-virusscanner-clamav</name>
 	<description>
-		Reference VirusScanner SPI using ClamAV (clamav-client 2.1.2).
-		kernel-core (commons) supplies logging; do not add kernel-logger-logback.
+		Reference VirusScanner SPI (Boolean / InputStream) using ClamAV via
+		xyz.capybara clamav-client. VirusScannerImpl connects lazily to
+		mosip.kernel.virus-scanner.host and mosip.kernel.virus-scanner.port;
+		scan returns true on ScanResult.OK and false on VirusFound. Unreachable
+		daemon or missing files throw VirusScannerException. Auto-loaded via
+		META-INF/spring.factories. kernel-core supplies logging; do not add
+		kernel-logger-logback. clamav-client version is pinned on
+		kernel-ref-parent. Module description lives in this pom, not in
+		README.md or AGENTS.md. Fat JAR (assembly jar-with-dependencies,
+		appendAssemblyId false) for drop-in on the consumer classpath.
+		Another AV: see docs/av.md.
 	</description>
+	<url>https://github.com/mosip/mosip-ref-impl</url>
 
 	<dependencies>
 		<!-- kernel-core: SPI + logging (commons). Version from parent ${kernel.core.version}. -->
@@ -32,6 +48,7 @@
 
 	<build>
 		<plugins>
+			<!-- Fat JAR for drop-in on the consumer classpath (no classifier). -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>

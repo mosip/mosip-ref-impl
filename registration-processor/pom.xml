@@ -4,7 +4,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- Independent of mosip/registration pre-processor. Boot 4.1.1 is the Maven parent. -->
+	<!--
+		Aggregator (packaging=pom) for registration-processor ref-impls. Independent of
+		the mosip/registration pre-processor parent. Boot parent is the third-party BOM
+		equivalent. Do not import kernel-bom. relativePath empty = resolve from Maven
+		repos. Children inherit plugins and dependencyManagement. Module, plugin, and
+		third-party pins live in this pom — not in README.md or AGENTS.md.
+	-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -18,9 +24,24 @@
 	<packaging>pom</packaging>
 	<name>registration-processor</name>
 	<description>
-		Parent of MOSIP registration-processor reference implementations (external-stage, EIS stub).
-		Boot 4.1.1, Java 21, no kernel-bom, no pre-processor parent.
-		MOSIP registration-processor-* jars pinned here.
+		Parent POM (packaging=pom) of MOSIP registration-processor reference implementations:
+		external-stage (Vert.x ExternalStage, EXTERNAL_STAGE_BUS_IN → POST ApiName.EISERVICE
+		→ EXTERNAL_STAGE_BUS_OUT, status via registration-status-service-impl) and
+		external-integration-service (country EIS stub; POST
+		/registration-processor/external-integration-service/v1.0 returns true when
+		MessageRequestDTO.request is non-null; Swagger Authorize = Authorization apiKey).
+		Spring Boot 4.1.1 parent, Java 21. Independent of the MOSIP registration
+		pre-processor parent. No kernel-bom — MOSIP jars (registration-processor-core,
+		registration-processor-registration-status-service-impl,
+		registration-processor-rest-client, kernel-auth-adapter) and third-party pins
+		(springdoc-openapi, vertx-unit, javax.inject) live in this pom, not in README.md
+		or AGENTS.md. Logging is in kernel-core (commons, transitive); do not depend on
+		kernel-logger-logback. Jackson 2 via spring-boot-jackson2 because Boot 4 defaults
+		to Jackson 3. Spring Cloud Oakwood is imported for config/bootstrap. JaCoCo LINE
+		covered-ratio gate and git-commit-id (service-git.properties) apply to children.
+		kernel-auth-adapter is packaged in the service JAR (not fetched at container
+		start). CI publishes both Boot JARs as artifact registration-processor. Config:
+		mosip/mosip-config. Stage property prefix: mosip.regproc.external.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 

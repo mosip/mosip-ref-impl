@@ -2,9 +2,9 @@
 
 MOSIP `PacketCacheProvider` SPI backed by Hazelcast, plus an Actuator health indicator.
 
-- **Artifact**: `io.mosip.cacheprovider:cache-provider-hazelcast:1.4.1-SNAPSHOT`
-- **Parent**: `spring-boot-starter-parent` **4.1.1**
-- **Hazelcast**: 5.7.0
+Pins (Boot parent, Hazelcast, plugins, JaCoCo gate) live in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.cacheprovider:cache-provider-hazelcast`
 - **Health**: `HazelcastHealthIndicator` (`org.springframework.boot.health.contributor` — Boot 4)
 - **Git info**: `service-git.properties`
 
@@ -21,7 +21,7 @@ Drop the JAR on the packet-manager classpath (scope of `spring-boot-starter` / a
 mvn clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio **0.90** (`target/site/jacoco/index.html`).
+JaCoCo LINE covered ratio is gated in `pom.xml` (`target/site/jacoco/index.html`).
 
 ## Health
 

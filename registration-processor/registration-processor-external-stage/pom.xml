@@ -3,6 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!--
+		Child of registration-processor-ref-parent. MOSIP and third-party pins live in
+		registration-processor/pom.xml. This pom declares module dependencies.
+		Do not import kernel-bom. No pre-processor parent.
+	-->
 	<parent>
 		<groupId>io.mosip.registrationprocessor</groupId>
 		<artifactId>registration-processor-ref-parent</artifactId>
@@ -14,15 +20,25 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>registration-processor-external-stage</name>
 	<description>
-		MOSIP registration-processor Vert.x stage that POSTs to the External Integration Service.
-		Spring Boot 4.1.1 via parent registration-processor-ref-parent. No pre-processor parent.
-		Logging via kernel-core (commons); do not add kernel-logger-logback.
+		Vert.x registration-processor stage. ExternalStage extends MosipVerticleAPIManager:
+		consumes EXTERNAL_STAGE_BUS_IN, POSTs registration ids to EIS (ApiName.EISERVICE)
+		via registration-processor-rest-client, updates status through
+		registration-processor-registration-status-service-impl, then emits
+		EXTERNAL_STAGE_BUS_OUT. Property prefix mosip.regproc.external. (message
+		expiry-time-limit, eventbus kafka commit/poll/group, eventbus port, server port,
+		servlet path). bootstrap.properties sets eventbus.port, server.port, and
+		server.servlet.path=/registrationprocessor/v1/external. kernel-auth-adapter is
+		packaged in the Boot JAR (no container wget). Logging via kernel-core; do not
+		add kernel-logger-logback. Versions from parent registration-processor-ref-parent;
+		module description lives in this pom, not in README.md or AGENTS.md. Git info:
+		service-git.properties. Needs registration-processor-core, status-service-impl,
+		and rest-client SNAPSHOTs on the classpath.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
 	<dependencies>
 		<!--
-			spring-boot-starter: Vert.x stage Spring context. Version from Boot 4.1.1 parent.
+			spring-boot-starter: Vert.x stage Spring context. Version from Boot parent.
 		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

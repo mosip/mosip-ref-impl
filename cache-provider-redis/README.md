@@ -2,8 +2,9 @@
 
 MOSIP `PacketCacheProvider` SPI backed by Redis (Jedis; Lettuce excluded).
 
-- **Artifact**: `io.mosip.cacheprovider:cache-provider-redis:1.4.1-SNAPSHOT`
-- **Parent**: `spring-boot-starter-parent` **4.1.1**
+Pins (Boot parent, plugins, JaCoCo gate) and the module description live in [`pom.xml`](pom.xml) — not here.
+
+- **Artifact**: `io.mosip.cacheprovider:cache-provider-redis`
 - **Config**: `RedisConfig` (`redis.cache.hostname`, `port`, `password`, pool timeouts)
 - **Git info**: `service-git.properties`
 
@@ -20,7 +21,7 @@ Drop the JAR on the packet-manager classpath.
 mvn clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio **0.90** (`target/site/jacoco/index.html`). Redis: `redis.cache.hostname`, `port`, `password`, pool timeouts (see `RedisConfig`). Lettuce is excluded in favor of Jedis.
+JaCoCo LINE covered ratio is gated in `pom.xml` (`target/site/jacoco/index.html`). Redis: `redis.cache.hostname`, `port`, `password`, pool timeouts (see `RedisConfig`). Lettuce is excluded in favor of Jedis.
 
 ## License
 

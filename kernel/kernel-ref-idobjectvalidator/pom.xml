@@ -3,6 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!--
+		Child of kernel-ref-parent. MOSIP and third-party pins live in kernel/pom.xml.
+		This pom declares module dependencies and surefire --enable-preview.
+		Do not import kernel-bom.
+	-->
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
@@ -13,9 +19,23 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>kernel-ref-idobjectvalidator</name>
 	<description>
-		Reference IdObjectValidator: JSON schema + masterdata validation.
-		kernel-core (commons) supplies logging; do not add kernel-logger-logback.
+		Reference IdObjectValidator: identity JSON vs schema and masterdata
+		(documents, locations, gender, languages). IdObjectReferenceValidator
+		queries identity with json-path / json-smart, caches masterdata in
+		commons-collections4 multi-maps, and refreshes via
+		mosip.idobjectvalidator.masterdata.rest.uri,
+		mosip.idobjectvalidator.scheduler.reset-cache.cron-job-pattern, and
+		mosip.idobjectvalidator.refresh-cache-on-unknown-value. Also uses
+		mosip.mandatory-languages, mosip.optional-languages, and
+		mosip.kernel.idobjectvalidator identity path / date-format keys.
+		Tests require surefire --enable-preview. kernel-core (commons) supplies
+		logging; do not add kernel-logger-logback. Versions from parent
+		kernel-ref-parent; module description lives in this pom, not in
+		README.md or AGENTS.md. spring-boot-starter-web (RestTemplate) and
+		Spring Cloud config/bootstrap are declared here. Drop the JAR onto
+		booking / registration-client.
 	</description>
+	<url>https://github.com/mosip/mosip-ref-impl</url>
 
 	<dependencies>
 		<!--

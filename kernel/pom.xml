@@ -4,6 +4,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!--
+		Aggregator (packaging=pom) for kernel SPI ref-impls. Boot parent is the
+		third-party BOM equivalent. Do not import kernel-bom. relativePath empty =
+		resolve from Maven repos. Children inherit plugins and dependencyManagement.
+		Module, plugin, and third-party pins live in this pom — not in README.md
+		or AGENTS.md.
+	-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -17,8 +24,20 @@
 	<packaging>pom</packaging>
 	<name>kernel</name>
 	<description>
-		Parent of MOSIP kernel reference implementations (id object validator, MSG91 SMS, ClamAV).
-		Boot 4.1.1, Java 21, no kernel-bom. MOSIP kernel jars pinned here.
+		Parent POM (packaging=pom) of MOSIP kernel reference implementations:
+		IdObjectValidator (identity JSON vs schema and masterdata; tests use
+		--enable-preview), MSG91 SMSServiceProvider (META-INF/spring.factories,
+		outbound tokens via kernel-auth-adapter), and ClamAV VirusScanner
+		(VirusScanner&lt;Boolean, InputStream&gt;, ScanResult.OK / VirusFound).
+		Spring Boot 4.1.1 parent, Java 21. No kernel-bom — MOSIP jars (kernel-core,
+		kernel-auth-adapter) and third-party pins (commons-collections4, json-path,
+		json-smart, clamav-client, JAXB 2.3 javax line) live in this pom, not in
+		README.md or AGENTS.md. Logging is in kernel-core (commons); do not depend
+		on kernel-logger-logback. Jackson 2 via spring-boot-jackson2 because Boot 4
+		defaults to Jackson 3. Spring Cloud Oakwood is imported for config/bootstrap.
+		JaCoCo LINE covered-ratio gate and git-commit-id (service-git.properties)
+		apply to children. Swap an impl by swapping the child JAR on the consumer
+		classpath.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
@@ -49,11 +68,6 @@
 		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
 		<maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
 
-		<!-- ── MOSIP (external — no kernel-bom) ─────────────────────────────── -->
-		<!-- commons/kernel must be installed locally for this SNAPSHOT. -->
-		<!-- Logging lives in kernel-core (commons); do not depend on kernel-logger-logback. -->
-		<kernel.core.version>1.4.1-SNAPSHOT</kernel.core.version>
-		<kernel.auth.adapter.version>1.4.1-SNAPSHOT</kernel.auth.adapter.version>
 		<spring-cloud.version>2025.1.3</spring-cloud.version>
 
 		<commons-collections4.version>4.6.0</commons-collections4.version>
@@ -68,6 +82,12 @@
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<!-- Local Sonar-equivalent gate: LINE covered ratio on non-excluded classes. -->
 		<jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
+
+		<!-- ── MOSIP (external — no kernel-bom) ─────────────────────────────── -->
+		<!-- commons/kernel must be installed locally for this SNAPSHOT. -->
+		<!-- Logging lives in kernel-core (commons); do not depend on kernel-logger-logback. -->
+		<kernel.core.version>1.4.1-SNAPSHOT</kernel.core.version>
+		<kernel.auth.adapter.version>1.4.1-SNAPSHOT</kernel.auth.adapter.version>
 	</properties>
 
 	<dependencyManagement>

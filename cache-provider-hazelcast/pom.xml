@@ -4,6 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!--
+		Standalone ref-impl (not under kernel-ref-parent). Boot parent is the third-party
+		BOM equivalent. Do not import kernel-bom. relativePath empty = resolve from Maven repos.
+	-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -16,18 +20,27 @@
 	<version>1.4.1-SNAPSHOT</version>
 	<name>cache-provider-hazelcast</name>
 	<description>
-		MOSIP PacketCacheProvider SPI backed by Hazelcast (Spring Boot 4.1.1, Java 21).
-		No kernel-bom. Module version and third-party pins live in this pom — not in README.md.
+		MOSIP PacketCacheProvider SPI backed by Hazelcast IMDG, plus Boot 4 Actuator
+		health (HazelcastHealthIndicator on org.springframework.boot.health.contributor).
+		Spring Boot 4.1.1 parent, Java 21. Standalone — no kernel-bom and no
+		kernel-ref-parent. Module, plugin, and third-party pins live in this pom —
+		not in README.md or AGENTS.md. Fat JAR (assembly jar-with-dependencies,
+		appendAssemblyId false) is dropped onto the packet-manager classpath;
+		spring-boot-starter and actuator are provided by that host.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
 	<properties>
 		<java.version>21</java.version>
+		<!-- Empty so JaCoCo prepare-agent can append @{argLine} without unbound-property failure. -->
 		<argLine />
 		<skipTests>false</skipTests>
+
+		<!-- ── Maven plugins (not version-managed by Boot parent) ───────────── -->
 		<maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
 		<maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
 		<maven.jacoco.version>0.8.15</maven.jacoco.version>
+		<!-- Local Sonar-equivalent gate: LINE covered ratio on this module. -->
 		<jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<maven.sonar.plugin.version>5.8.0.7211</maven.sonar.plugin.version>
@@ -37,36 +50,18 @@
 		<maven.deploy.plugin.version>3.2.0</maven.deploy.plugin.version>
 		<git.commit.id.plugin.version>4.9.10</git.commit.id.plugin.version>
 		<central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
+		<!-- Fat JAR for packet-manager drop-in (no classifier). -->
 		<maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
-		<!-- hazelcast: IMDG client/server. Not version-managed by Boot parent. License: Apache-2.0. -->
+
+		<!-- ── Third-party (not Boot-managed) ───────────────────────────────── -->
+		<!-- hazelcast: IMDG client/server used by PacketCacheProvider. License: Apache-2.0. -->
 		<hazelcast.version>5.7.0</hazelcast.version>
 	</properties>
 
-	<licenses>
-		<license>
-			<name>MPL 2.0</name>
-			<url>https://www.mozilla.org/en-US/MPL/2.0/</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
-		<developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
-		<url>https://github.com/mosip/mosip-ref-impl</url>
-		<tag>HEAD</tag>
-	</scm>
-	<developers>
-		<developer>
-			<name>MOSIP</name>
-			<email>mosip.emailnotifier@gmail.com</email>
-			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/mosip</organizationUrl>
-		</developer>
-	</developers>
-
 	<dependencies>
 		<!--
-			spring-boot-starter: provided by the consuming packet-manager service.
+			spring-boot-starter: logging + auto-config APIs. Scope provided — the consuming
+			packet-manager service already ships Boot. Version from Boot parent.
 		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -74,8 +69,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<!--
-			spring-boot-starter-actuator: HealthIndicator base (Boot 4: org.springframework.boot.health.contributor).
-			Scope provided — host service already exposes Actuator.
+			spring-boot-starter-actuator: HealthIndicator base
+			(Boot 4: org.springframework.boot.health.contributor.AbstractHealthIndicator).
+			Scope provided — host service already exposes Actuator. Version from Boot parent.
 		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,13 +79,18 @@
 			<scope>provided</scope>
 		</dependency>
 		<!--
-			hazelcast: IMDG used by PacketCacheProvider. Version: ${hazelcast.version}. License: Apache-2.0.
+			hazelcast: IMDG used by PacketCacheProvider and HazelcastHealthIndicator.
+			Not version-managed by Boot parent. Pin: ${hazelcast.version}. License: Apache-2.0.
 		-->
 		<dependency>
 			<groupId>com.hazelcast</groupId>
 			<artifactId>hazelcast</artifactId>
 			<version>${hazelcast.version}</version>
 		</dependency>
+		<!--
+			spring-boot-starter-test: JUnit 5, Mockito, Spring Test for HazelcastHealthIndicatorTest.
+			Scope: test. Version from Boot parent.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -110,6 +111,11 @@
 
 	<build>
 		<plugins>
+			<!--
+				maven-assembly-plugin: package a single fat JAR (jar-with-dependencies)
+				so packet-manager can drop this artifact on its classpath. appendAssemblyId
+				false replaces the thin JAR as the main attached artifact.
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -130,6 +136,10 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--
+				maven-compiler-plugin: Java 21 (release flag). parameters true keeps constructor
+				names for Spring injection of HazelcastInstance.
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -139,6 +149,10 @@
 					<parameters>true</parameters>
 				</configuration>
 			</plugin>
+			<!--
+				maven-surefire-plugin: @{argLine} is the JaCoCo agent slot. add-opens keep
+				Mockito / XML internals usable on JDK 21.
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -148,6 +162,10 @@
 					<argLine>@{argLine} --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
 				</configuration>
 			</plugin>
+			<!--
+				jacoco-maven-plugin: LINE COVEREDRATIO gate ${jacoco.minimum.coverage}.
+				No package excludes — this module is only HazelcastHealthIndicator.
+			-->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -187,6 +205,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- maven-source-plugin: attach sources JAR for Maven Central. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -200,6 +219,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- maven-javadoc-plugin: attach javadoc JAR; doclint off / failOnError false for CI. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -217,6 +237,7 @@
 					<failOnError>false</failOnError>
 				</configuration>
 			</plugin>
+			<!-- maven-gpg-plugin: sign artifacts at verify. loopback pinentry for CI. Skip with -Dgpg.skip=true. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -237,6 +258,10 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--
+				git-commit-id-plugin: writes service-git.properties (not git.properties)
+				so the fat JAR does not collide with kernel-core / other MOSIP jars.
+			-->
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
@@ -251,7 +276,6 @@
 					</execution>
 				</executions>
 				<configuration>
-					<!-- service-git.properties: avoid colliding with git.properties from kernel-core / other MOSIP jars. -->
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 					<generateGitPropertiesFilename>${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
 					<includeOnlyProperties>
@@ -262,11 +286,16 @@
 					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
 				</configuration>
 			</plugin>
+			<!-- maven-deploy-plugin: deploy to OSSRH / Central via distributionManagement. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>${maven.deploy.plugin.version}</version>
 			</plugin>
+			<!--
+				central-publishing-maven-plugin: Maven Central Publisher API. Server id ossrh.
+				autoPublish false — upload only; a human publishes.
+			-->
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
@@ -280,6 +309,7 @@
 		</plugins>
 	</build>
 	<profiles>
+		<!-- sonar: opt-in SonarCloud scan at verify. Not active by default. -->
 		<profile>
 			<id>sonar</id>
 			<properties>
@@ -309,4 +339,26 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<licenses>
+		<license>
+			<name>MPL 2.0</name>
+			<url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/mosip/mosip-ref-impl.git</connection>
+		<developerConnection>scm:git:ssh://github.com:mosip/mosip-ref-impl.git</developerConnection>
+		<url>https://github.com/mosip/mosip-ref-impl</url>
+		<tag>HEAD</tag>
+	</scm>
+	<developers>
+		<developer>
+			<name>MOSIP</name>
+			<email>mosip.emailnotifier@gmail.com</email>
+			<organization>io.mosip</organization>
+			<organizationUrl>https://github.com/mosip</organizationUrl>
+		</developer>
+	</developers>
 </project>
