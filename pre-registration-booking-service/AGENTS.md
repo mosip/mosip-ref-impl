@@ -19,9 +19,9 @@ pre-registration-booking-service/
     │   ├── errorcodes/ErrorCodes.java  ErrorMessages.java
     │   ├── dto/
     │   └── exception/  util/BookingExceptionCatcher.java  BookingExceptionHandler.java
-    ├── main/resources/  bootstrap.properties  logback.xml
+    ├── main/resources/  bootstrap.properties  application-local.properties  logback.xml
     └── test/
-        ├── java/.../booking/config/BookingConfigOpenApiTest.java
+        ├── java/.../booking/config/BookingApplicationComponentScanTest.java  BookingConfigOpenApiTest.java
         ├── java/.../booking/test/BookingApplicationTest.java
         ├── java/.../test/config/TestConfig.java  TestSecurityConfig.java
         ├── java/.../test/controller/BookingControllerTest.java
