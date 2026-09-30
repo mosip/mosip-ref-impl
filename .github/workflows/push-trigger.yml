@@ -74,6 +74,7 @@ jobs:
     with:
       SERVICE_LOCATION: pre-registration-booking-service
       BUILD_ARTIFACT: pre-registration-booking-service
+      MAVEN_NON_EXEC_ARTIFACTS: pre-registration-booking-service.jar
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
       OSSRH_SECRET: ${{ secrets.OSSRH_SECRET }}

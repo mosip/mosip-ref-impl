@@ -387,7 +387,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!-- Boot 4: java -jar (no launch-script). JVM flags from JDK_JAVA_OPTIONS / Helm javaOpts. -->
+					<executable>true</executable>
 				</configuration>
 				<executions>
 					<execution>
@@ -395,9 +395,6 @@
 							<goal>build-info</goal>
 							<goal>repackage</goal>
 						</goals>
-						<configuration>
-							<attach>false</attach>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
