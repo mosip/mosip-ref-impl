@@ -1,6 +1,6 @@
 # kernel-ref-idobjectvalidator
 
-`IdObjectValidator` SPI. Tests: `--enable-preview`. Pins in parent `kernel/pom.xml`.
+`IdObjectValidator` SPI. Tests `--enable-preview`. Pins in `kernel/pom.xml`.
 
 ```
 kernel-ref-idobjectvalidator/
@@ -8,13 +8,10 @@ kernel-ref-idobjectvalidator/
 └── src/
     ├── main/java/io/mosip/kernel/idobjectvalidator/
     │   ├── impl/IdObjectReferenceValidator.java
-    │   └── constant/
-    │       ├── IdObjectReferenceValidatorConstant.java
-    │       ├── IdObjectReferenceValidatorDocumentMapping.java
-    │       └── IdObjectReferenceValidatorLocationMapping.java
+    │   └── constant/IdObjectReferenceValidatorConstant.java
+    │       IdObjectReferenceValidatorDocumentMapping.java
+    │       IdObjectReferenceValidatorLocationMapping.java
     └── test/
-        ├── java/.../idobjectvalidator/test/
-        │   ├── IdObjectReferenceValidatorTest.java
-        │   └── TestConfig.java
+        ├── java/.../test/IdObjectReferenceValidatorTest.java  TestConfig.java
         └── resources/  application-test.properties  schema.json
 ```

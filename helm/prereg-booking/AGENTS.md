@@ -1,12 +1,12 @@
 # helm/prereg-booking
 
-Chart for booking image. GC/encoding flags = `values.yaml` `additionalResources.javaOpts` → `JDK_JAVA_OPTIONS` (not Dockerfile).
+`values.yaml` `additionalResources.javaOpts` → `JDK_JAVA_OPTIONS`. Not in Dockerfile.
 
 ```
 helm/prereg-booking/
 ├── Chart.yaml  values.yaml  README.md  AGENTS.md
 └── templates/
-    ├── deployment.yaml     # JDK_JAVA_OPTIONS from javaOpts
+    ├── deployment.yaml
     ├── service.yaml
     ├── serviceaccount.yaml
     ├── servicemonitor.yaml

@@ -1,6 +1,6 @@
 # kernel-smsserviceprovider-msg91
 
-`SMSServiceProvider` SPI (MSG91). Auto-config: `META-INF/spring.factories`. Pins in `kernel/pom.xml`.
+`SMSServiceProvider` SPI. `META-INF/spring.factories`. Pins in `kernel/pom.xml`.
 
 ```
 kernel-smsserviceprovider-msg91/
@@ -12,10 +12,7 @@ kernel-smsserviceprovider-msg91/
     │   │   ├── exception/ApiExceptionHandler.java
     │   │   ├── dto/SmsVendorRequestDto.java  SmsServerResponseDto.java
     │   │   └── constant/SmsPropertyConstant.java  SmsExceptionConstant.java
-    │   └── resources/
-    │       ├── META-INF/spring.factories
-    │       └── logback.xml
-    └── test/
-        ├── java/.../msg91/SmsServiceProviderTest.java
-        └── resources/application.properties
+    │   └── resources/META-INF/spring.factories  logback.xml
+    └── test/java/.../SmsServiceProviderTest.java
+        resources/application.properties
 ```
