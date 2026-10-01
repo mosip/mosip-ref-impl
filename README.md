@@ -232,19 +232,28 @@ Vert.x stage (`ExternalStageApplication`), not a servlet Boot app. Maven runs fr
 cd registration-processor/registration-processor-external-stage
 run-local.bat init
 run-local.bat test
+run-local.bat start
+run-local.bat smoke
+run-local.bat stop
 ```
 
 ```text
 cd registration-processor/registration-processor-external-stage
 ./run-local.sh init
 ./run-local.sh test
+./run-local.sh start
+./run-local.sh smoke
+./run-local.sh stop
 ```
+
+`run-local.bat all` is init + test + start + smoke.
 
 | | |
 |---|---|
 | HTTP port | **8095** (`STAGE_PORT`) |
 | Eventbus | **5736** |
 | Servlet path | `/registrationprocessor/v1/external` |
+| Health | `http://127.0.0.1:8095/registrationprocessor/v1/external/actuator/health` |
 | Properties | `src/main/resources/application-local.properties` |
 | Logs / PID | `.local/logs/external-stage.log`, `.local/pids/external-stage.pid` |
 
