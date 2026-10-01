@@ -50,7 +50,44 @@ External validation by sending the packet id list to EIS (`ApiName.EISERVICE`). 
 
 - JDK **21.0.3**
 - Maven **3.9.6**
-- Config server + Kafka/Vert.x cluster as in MOSIP registration-processor
+- Cluster: config-server + Kafka/Vert.x. Laptop: `run-local` (`init`/`test` without that stack)
+
+## Local testing (run-local)
+
+Laptop runner (same commands as commons `kernel-notification-service`). Profile **`local`** loads `src/main/resources/application-local.properties` from `ExternalStageApplication` (this is Vert.x, not `SpringApplication`). Cluster Docker does **not** set this profile.
+
+Windows cmd (from this module directory):
+
+```text
+run-local.bat init
+run-local.bat test
+run-local.bat start
+run-local.bat smoke
+run-local.bat stop
+```
+
+| Command | What it does |
+|---|---|
+| `init` | Stops a leftover process, then `mvn clean package` (skip tests, skip GPG/Javadoc) |
+| `test` | `mvn test` for this module |
+| `start` | Fat JAR with profile `local`, waits until HTTP `:8095` (or `EXTERNAL_STAGE_STARTUP_FAILED`) |
+| `smoke` | GET health if present, else port listening / `Started ExternalStageApplication` |
+| `stop` | Kills the PID under `.local/pids/` |
+| `all` | `init` + `test` + `start` + `smoke` |
+
+Linux / macOS / Git Bash: `./run-local.sh <command>`. Maven is invoked from `registration-processor/` with `-pl registration-processor-external-stage -am`. Override the port with `set STAGE_PORT=8095` (cmd) or `STAGE_PORT=8095 ./run-local.sh start`.
+
+Profile `local` skips config-server (`ConfigPropertyReader` / Vert.x `SpringConfigServerStore`), Hazelcast cluster (`getEventBus`), and Brave 5 `postUrl` tracing. H2 supplies `javax.persistence.jdbc.*`. This module shadows MOSIP `BasePacketEntity` / `BaseRegistrationEntity` (Hibernate 7 forbids `@Inheritance` on `@MappedSuperclass`). Packet processing still needs Kafka, a status DB, and EIS. `init` / `test` work without that stack.
+
+| | |
+|---|---|
+| HTTP | `8095` (`STAGE_PORT`) |
+| Eventbus | `5736` |
+| Health | `http://127.0.0.1:8095/registrationprocessor/v1/external/actuator/health` |
+| Logs | `.local/logs/external-stage.log` (gitignored) |
+| PID | `.local/pids/external-stage.pid` |
+
+Full command table: [repo README — Local testing](../../README.md#local-testing-run-local).
 
 ## Build & run
 

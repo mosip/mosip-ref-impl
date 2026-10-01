@@ -5,8 +5,8 @@
 ```
 registration-processor/
 ├── pom.xml  README.md  AGENTS.md
-├── registration-processor-external-stage/                 Vert.x → EIS  → AGENTS.md
-└── registration-processor-external-integration-service/   EIS stub REST → AGENTS.md
+├── registration-processor-external-stage/                 Vert.x → EIS  run-local  → AGENTS.md
+└── registration-processor-external-integration-service/   EIS stub REST  run-local → AGENTS.md
 ```
 
 ```bash

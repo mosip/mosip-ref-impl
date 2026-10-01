@@ -18,6 +18,10 @@ Pins (Boot parent, MOSIP jars, plugins, JaCoCo gate) and the module description 
 
 Prefix for stage properties: `mosip.regproc.external.`
 
+## Local testing (run-local)
+
+Each child has `run-local.bat` / `run-local.sh` (`init` `start` `smoke` `stop` `test` `all`) and `src/main/resources/application-local.properties` (profile `local` only). Usage: [repo README — Local testing](../README.md#local-testing-run-local).
+
 ## Build
 
 From this directory:

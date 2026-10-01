@@ -23,6 +23,7 @@ import io.mosip.registration.processor.core.constant.RegistrationType;
 import io.mosip.registration.processor.core.exception.ApisResourceAccessException;
 import io.mosip.registration.processor.core.logger.LogDescription;
 import io.mosip.registration.processor.core.spi.restclient.RegistrationProcessorRestClientService;
+import io.mosip.registration.processor.core.eventbus.MosipEventBusFactory;
 import io.mosip.registration.processor.core.util.RegistrationExceptionMapperUtil;
 import io.mosip.registration.processor.rest.client.audit.builder.AuditLogRequestBuilder;
 import io.mosip.registration.processor.status.dto.InternalRegistrationStatusDto;
@@ -60,6 +61,9 @@ public class ExternalStageTest {
 	public void testDeployVerticle() {
 		externalStage.deployVerticle();
 	}
+	@Mock
+	private MosipEventBusFactory mosipEventBusFactory;
+
 	@Mock
 	private AuditLogRequestBuilder auditLogRequestBuilder;
 
@@ -103,6 +107,19 @@ public class ExternalStageTest {
 	public void testStart()
 	{
 		externalStage.start();
+	}
+
+	@Test
+	public void testStartLocalSkipsBravePostUrl() {
+		System.setProperty("spring.profiles.active", "local");
+		Vertx vertx = Vertx.vertx();
+		try {
+			ReflectionTestUtils.setField(externalStage, "vertx", vertx);
+			externalStage.start();
+		} finally {
+			System.clearProperty("spring.profiles.active");
+			vertx.close();
+		}
 	}
 	
 	@Test

@@ -4,7 +4,7 @@
 
 ```
 pre-registration-booking-service/
-├── pom.xml  Dockerfile  README.md  AGENTS.md
+├── pom.xml  Dockerfile  README.md  AGENTS.md  run-local.bat  run-local.sh
 └── src/
     ├── main/java/io/mosip/preregistration/booking/
     │   ├── BookingApplication.java
@@ -19,7 +19,7 @@ pre-registration-booking-service/
     │   ├── errorcodes/ErrorCodes.java  ErrorMessages.java
     │   ├── dto/
     │   └── exception/  util/BookingExceptionCatcher.java  BookingExceptionHandler.java
-    ├── main/resources/  bootstrap.properties  logback.xml
+    ├── main/resources/  bootstrap.properties  application-local.properties  logback.xml
     └── test/
         ├── java/.../booking/config/BookingApplicationComponentScanTest.java  BookingConfigOpenApiTest.java
         ├── java/.../booking/test/BookingApplicationTest.java

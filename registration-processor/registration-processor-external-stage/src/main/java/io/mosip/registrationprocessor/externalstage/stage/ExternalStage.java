@@ -3,6 +3,7 @@ package io.mosip.registrationprocessor.externalstage.stage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import io.mosip.registration.processor.core.abstractverticle.MessageDTO;
 import io.mosip.registration.processor.core.abstractverticle.MosipEventBus;
 import io.mosip.registration.processor.core.abstractverticle.MosipRouter;
 import io.mosip.registration.processor.core.abstractverticle.MosipVerticleAPIManager;
+import io.mosip.registration.processor.core.eventbus.MosipEventBusFactory;
 import io.mosip.registration.processor.core.code.ApiName;
 import io.mosip.registration.processor.core.code.EventId;
 import io.mosip.registration.processor.core.code.EventName;
@@ -39,6 +41,10 @@ import io.mosip.registration.processor.status.dto.InternalRegistrationStatusDto;
 import io.mosip.registration.processor.status.dto.RegistrationStatusDto;
 import io.mosip.registration.processor.status.service.RegistrationStatusService;
 import io.mosip.registrationprocessor.externalstage.entity.MessageRequestDTO;
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 
 /**
  * Vert.x external stage: consumes {@code EXTERNAL_STAGE_BUS_IN}, POSTs registration
@@ -53,6 +59,8 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	private static Logger regProcLogger = RegProcessorLogger.getLogger(ExternalStage.class);
 	
 	private static final String STAGE_PROPERTY_PREFIX = "mosip.regproc.external.";
+
+	private static final String LOCAL = "local";
 	
 	/** request id */
 	private static final String ID = "io.mosip.registrationprocessor";
@@ -67,6 +75,10 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	/** server port number. */
 	@Value("${server.port}")
 	private String port;
+
+	/** HTTP path used by run-local smoke ({@code .../actuator/health}). */
+	@Value("${server.servlet.path:/registrationprocessor/v1/external}")
+	private String servletPath;
 
 	/** worker pool size. */
 	@Value("${worker.pool.size}")
@@ -102,13 +114,50 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	@Autowired
 	RegistrationExceptionMapperUtil registrationStatusMapperUtil;
 
+	@Autowired
+	private MosipEventBusFactory mosipEventBusFactory;
+
 	/**
 	 * Deploys this verticle, then consumes {@code EXTERNAL_STAGE_BUS_IN} and sends
 	 * {@code EXTERNAL_STAGE_BUS_OUT}.
 	 */
 	public void deployVerticle() {
+		if (LOCAL.equals(System.getProperty("spring.profiles.active", ""))) {
+			deployLocalVerticle();
+			return;
+		}
 		this.mosipEventBus = this.getEventBus(this, clusterManagerUrl, workerPoolSize);
 		this.consumeAndSend(mosipEventBus, MessageBusAddress.EXTERNAL_STAGE_BUS_IN,
+				MessageBusAddress.EXTERNAL_STAGE_BUS_OUT, messageExpiryTimeLimit);
+	}
+
+	/**
+	 * Profile {@code local} skips MOSIP {@code getEventBus} (Hazelcast cluster
+	 * manager from {@code vertx-hazelcast} needs {@code MembershipListener} in
+	 * {@code com.hazelcast.core}, which current Hazelcast no longer has). In-process
+	 * Vert.x still binds {@link #start()} on {@code server.port}.
+	 */
+	void deployLocalVerticle() {
+		int workers = workerPoolSize != null ? workerPoolSize : 10;
+		Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(workers));
+		CompletableFuture<String> deployed = new CompletableFuture<>();
+		vertx.deployVerticle(this, ar -> {
+			if (ar.succeeded()) {
+				deployed.complete(ar.result());
+			} else {
+				deployed.completeExceptionally(ar.cause());
+			}
+		});
+		try {
+			deployed.get();
+			this.mosipEventBus = mosipEventBusFactory.getEventBus(vertx, "vertx", this.getClass().getSimpleName());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IllegalStateException("Local Vert.x deploy interrupted", e);
+		} catch (Exception e) {
+			throw new IllegalStateException("Local Vert.x deploy failed", e);
+		}
+		this.consumeAndSend(this.mosipEventBus, MessageBusAddress.EXTERNAL_STAGE_BUS_IN,
 				MessageBusAddress.EXTERNAL_STAGE_BUS_OUT, messageExpiryTimeLimit);
 	}
 
@@ -117,10 +166,32 @@ public class ExternalStage extends MosipVerticleAPIManager {
 	 */
 	@Override
 	public void start() {
-
+		if (LOCAL.equals(System.getProperty("spring.profiles.active", ""))) {
+			startLocalHttp();
+			return;
+		}
 		router.setRoute(
 				this.postUrl(getVertx(), MessageBusAddress.EXTERNAL_STAGE_BUS_IN, MessageBusAddress.EXTERNAL_STAGE_BUS_OUT));
 		this.createServer(router.getRouter(), Integer.parseInt(port));
+	}
+
+	/**
+	 * Profile {@code local} skips {@code postUrl}. MOSIP {@code VertxWebTracingLocal}
+	 * needs Brave 5 {@code brave.http.HttpServerAdapter}; Boot 4 ships Brave 6,
+	 * which dropped that class. Binds the same port and a JSON health GET for
+	 * run-local smoke.
+	 */
+	void startLocalHttp() {
+		Router localRouter = Router.router(getVertx());
+		localRouter.route().handler(BodyHandler.create());
+		String path = servletPath == null || servletPath.isBlank() ? "/registrationprocessor/v1/external" : servletPath;
+		localRouter.get(path + "/actuator/health").handler(ctx -> ctx.response()
+				.putHeader("content-type", "application/json")
+				.end("{\"status\":\"UP\"}"));
+		if (router != null) {
+			router.setRoute(localRouter);
+		}
+		this.createServer(localRouter, Integer.parseInt(port));
 	}
 
 	/**
