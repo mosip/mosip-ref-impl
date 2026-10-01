@@ -50,7 +50,30 @@ External validation by sending the packet id list to EIS (`ApiName.EISERVICE`). 
 
 - JDK **21.0.3**
 - Maven **3.9.6**
-- Config server + Kafka/Vert.x cluster as in MOSIP registration-processor
+- Cluster: config-server + Kafka/Vert.x. Laptop: `run-local` (`init`/`test` without that stack)
+
+## Local testing (run-local)
+
+Laptop runner (same commands as commons `kernel-notification-service`). Profile **`local`** loads `src/main/resources/application-local.properties` from `ExternalStageApplication` (this is Vert.x, not `SpringApplication`). Cluster Docker does **not** set this profile.
+
+Windows cmd (from this module directory):
+
+```text
+run-local.bat init
+run-local.bat test
+```
+
+`start` / `smoke` / `all` boot the Vert.x stage. Profile `local` does **not** call MOSIP `ConfigPropertyReader` and drops `CoreConfigBean.getPropertiesFromConfigServer` (Vert.x `SpringConfigServerStore` against bootstrap `localhost`). H2 supplies `javax.persistence.jdbc.*` for `HibernateDaoConfig`. This module also shadows MOSIP `BasePacketEntity` / `BaseRegistrationEntity` (Hibernate 7 forbids `@Inheritance` on `@MappedSuperclass`). Packet processing still needs a real status DB and EIS. If status-service beans cannot load, startup prints `EXTERNAL_STAGE_STARTUP_FAILED` and exits. Use `init` / `test` on a laptop without that stack.
+
+Linux / macOS / Git Bash: `./run-local.sh <command>`. Maven is invoked from `registration-processor/` with `-pl registration-processor-external-stage -am`.
+
+| | |
+|---|---|
+| HTTP | `8095` (`STAGE_PORT`) |
+| Eventbus | `5736` |
+| Logs | `.local/logs/external-stage.log` (gitignored) |
+
+Full command table: [repo README — Local testing](../../README.md#local-testing-run-local).
 
 ## Build & run
 

@@ -13,6 +13,7 @@ There is **no repo-root POM** and **no `kernel-bom`**. Standalone modules parent
 - [Prerequisites](#prerequisites)
 - [Shared facts](#shared-facts)
 - [Build](#build)
+- [Local testing (run-local)](#local-testing-run-local)
 - [Tests and coverage](#tests-and-coverage)
 - [Configuration](#configuration)
 - [Swagger UI (Authorize)](#swagger-ui-authorize)
@@ -92,7 +93,7 @@ Each module has its own `README.md` with artifact id, build, config, and (where 
 | Docker | latest stable (optional) |
 | PostgreSQL | **16.0** (booking / MOSIP stack) |
 | Keycloak | [mosip/keycloak](https://github.com/mosip/keycloak/tree/master) |
-| Spring Cloud Config | required for services (see [Configuration](#configuration)) |
+| Spring Cloud Config | required **on cluster** (see [Configuration](#configuration)). Laptop smoke uses profile `local` — see [Local testing (run-local)](#local-testing-run-local) |
 
 ### Runtime JARs for services
 
@@ -137,11 +138,131 @@ Run a single test class:
 mvn test -Dtest=ClassName[#method]
 ```
 
-Start a Boot service from the IDE (`BookingApplication`, `ExternalIntegrationServiceApplication`) or:
+For a laptop process **without** config-server, use the module `run-local` scripts (next section). Cluster / Docker still starts the JAR with the Dockerfile config-server flags and **does not** activate profile `local`.
+
+## Local testing (run-local)
+
+The three runnable services ship the same command shape as commons `kernel-notification-service`: `init`, `start`, `smoke`, `stop`, `test`, `all`. Each module keeps laptop-only settings in `src/main/resources/application-local.properties` and activates them with **`-Dspring.profiles.active=local`**. Packaged `bootstrap.properties` is unchanged. Dockerfiles still pass `spring_config_url_env` / `active_profile_env` / config label — they never set profile `local`, so a cluster node does not read these files.
+
+Artifacts, PIDs, and logs go under each module’s `.local/` (gitignored).
+
+### Prerequisites
+
+- JDK **21** and Maven **3.9.6** on `PATH`
+- `curl` on Windows `smoke` (Git for Windows / Windows 10+). Linux/macOS smoke also accepts `python3`
+- Unpublished MOSIP SNAPSHOTs installed locally if they are not on Central (booking: `pre-registration-core`; external-stage: `registration-processor-core`, status-service-impl, rest-client)
+
+### Commands (same on every module)
+
+| Command | What it does |
+|---|---|
+| `init` | Stops a leftover process, then `mvn clean package` (skip tests, skip GPG/Javadoc) |
+| `test` | `mvn test` for that module |
+| `start` | `java -jar` with profile `local`, waits until ready, prints URLs |
+| `smoke` | HTTP checks (health + OpenAPI for Boot services) |
+| `stop` | Kills the PID recorded under `.local/pids/` |
+| `all` | `init` + `test` + `start` + `smoke` |
+
+Windows **cmd** (not PowerShell as the entrypoint): `run-local.bat <command>`. Linux / macOS / Git Bash: `chmod +x run-local.sh` once, then `./run-local.sh <command>`.
+
+### pre-registration-booking-service
+
+Standalone Boot app (run Maven **in this folder**). In-memory **H2**; masterdata / demographic / notification URLs are stubs. Method security is off; tokens are not validated against IAM.
 
 ```text
-java -jar target/<artifact>-1.4.1-SNAPSHOT.jar
+cd pre-registration-booking-service
+run-local.bat all
 ```
+
+```text
+cd pre-registration-booking-service
+./run-local.sh all
+```
+
+| | |
+|---|---|
+| Port | **9095** (`BOOKING_PORT`) |
+| Context | `/preregistration/v1` |
+| Health | `http://127.0.0.1:9095/preregistration/v1/actuator/health` |
+| Swagger | `http://127.0.0.1:9095/preregistration/v1/appointment/booking-service/swagger-ui.html` |
+| OpenAPI | `http://127.0.0.1:9095/preregistration/v1/appointment/booking-service/v3/api-docs` |
+| Properties | `src/main/resources/application-local.properties` |
+| Logs / PID | `.local/logs/booking.log`, `.local/pids/booking.pid` |
+
+Step by step: `run-local.bat init` then `start` then `smoke`. `stop` when finished. Override the port with `set BOOKING_PORT=9195` (cmd) or `BOOKING_PORT=9195 ./run-local.sh start`.
+
+### registration-processor-external-integration-service
+
+Country EIS stub. Maven runs from `registration-processor/` with `-pl registration-processor-external-integration-service`.
+
+```text
+cd registration-processor/registration-processor-external-integration-service
+run-local.bat all
+```
+
+```text
+cd registration-processor/registration-processor-external-integration-service
+./run-local.sh all
+```
+
+| | |
+|---|---|
+| Port | **8201** (`EIS_PORT`) |
+| Servlet path | `/registrationprocessor/v1/eis` |
+| Health | `http://127.0.0.1:8201/registrationprocessor/v1/eis/actuator/health` |
+| Swagger | `http://127.0.0.1:8201/registrationprocessor/v1/eis/swagger-ui.html` |
+| OpenAPI | `http://127.0.0.1:8201/registrationprocessor/v1/eis/v3/api-docs` |
+| Stub POST | `http://127.0.0.1:8201/registrationprocessor/v1/eis/registration-processor/external-integration-service/v1.0` |
+| Properties | `src/main/resources/application-local.properties` |
+| Logs / PID | `.local/logs/eis.log`, `.local/pids/eis.pid` |
+
+`smoke` checks health and OpenAPI. To hit the stub yourself:
+
+```text
+curl -sS -H "Content-Type: application/json" -d "{\"id\":\"io.mosip.registrationprocessor\",\"version\":\"1.0\",\"request\":[\"10002100770001520240708000001\"]}" http://127.0.0.1:8201/registrationprocessor/v1/eis/registration-processor/external-integration-service/v1.0
+```
+
+A non-null `request` body returns `true`.
+
+### registration-processor-external-stage
+
+Vert.x stage (`ExternalStageApplication`), not a servlet Boot app. Maven runs from `registration-processor/` with `-pl registration-processor-external-stage -am`. `start` loads `application-local.properties` only when profile `local` is set (the main class registers that file because there is no `SpringApplication`).
+
+```text
+cd registration-processor/registration-processor-external-stage
+run-local.bat init
+run-local.bat test
+```
+
+```text
+cd registration-processor/registration-processor-external-stage
+./run-local.sh init
+./run-local.sh test
+```
+
+| | |
+|---|---|
+| HTTP port | **8095** (`STAGE_PORT`) |
+| Eventbus | **5736** |
+| Servlet path | `/registrationprocessor/v1/external` |
+| Properties | `src/main/resources/application-local.properties` |
+| Logs / PID | `.local/logs/external-stage.log`, `.local/pids/external-stage.pid` |
+
+**`init` and `test`** are the reliable laptop checks (unit tests mock Vert.x / EIS). **`start` / `smoke` / `all`** try to boot the real stage without config-server (`ConfigPropertyReader` / Vert.x SpringConfigServerStore are skipped). Packet processing still needs Kafka, registration-status DB, and a running EIS. If MOSIP status beans cannot load, the process prints `EXTERNAL_STAGE_STARTUP_FAILED` and exits (scripts no longer wait 120s). Use `test` for CI-style verification.
+
+`smoke` accepts Actuator 200 if present, otherwise a listening HTTP port or the `Started ExternalStageApplication` log line (this stage does not publish Springdoc).
+
+### What local vs cluster uses
+
+| | Laptop `run-local` | Cluster / Docker |
+|---|---|---|
+| Profile | `local` | `active_profile_env` (typically `default` / env name) |
+| Config | `application-local.properties` + `-Dspring.cloud.config.enabled=false` | Config server URI/label/name from the Dockerfile `CMD` |
+| Booking DB | H2 in-memory | PostgreSQL from MOSIP config |
+| IAM / issuer | Offline token validation; no Eureka lookup of IAM | Config-server IAM URLs |
+| Artifacts | `.local/` | container logs |
+
+Do not copy `application-local.properties` keys into `bootstrap.properties`. Do not activate profile `local` in Helm or the Dockerfile.
 
 ## Tests and coverage
 

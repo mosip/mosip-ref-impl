@@ -34,7 +34,33 @@ See [bootstrap.properties](src/main/resources/bootstrap.properties).
 
 - JDK **21.0.3**
 - Maven **3.9.6**
-- Spring Cloud Config
+- Cluster: Spring Cloud Config. Laptop: `run-local` (no config-server)
+
+## Local testing (run-local)
+
+Laptop runner (same commands as commons `kernel-notification-service`). Profile **`local`** reads `src/main/resources/application-local.properties` (config-server off). Cluster Docker does **not** set this profile.
+
+Windows cmd (from this module directory):
+
+```text
+run-local.bat init
+run-local.bat test
+run-local.bat start
+run-local.bat smoke
+run-local.bat stop
+```
+
+`run-local.bat all` is init + test + start + smoke. Linux / macOS / Git Bash: `./run-local.sh <command>`. Maven is invoked from `registration-processor/` with `-pl registration-processor-external-integration-service`.
+
+| | |
+|---|---|
+| Port | `8201` (`EIS_PORT`) |
+| Health | `http://127.0.0.1:8201/registrationprocessor/v1/eis/actuator/health` |
+| Swagger | `http://127.0.0.1:8201/registrationprocessor/v1/eis/swagger-ui.html` |
+| Stub POST | `/registrationprocessor/v1/eis/registration-processor/external-integration-service/v1.0` |
+| Logs | `.local/logs/eis.log` (gitignored) |
+
+Full command table: [repo README — Local testing](../../README.md#local-testing-run-local).
 
 ## Build & run
 
@@ -43,9 +69,13 @@ cd registration-processor
 mvn -pl registration-processor-external-integration-service clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
+Cluster-style JAR (expects config-server):
+
 ```text
 java -jar target/registration-processor-external-integration-service-1.4.1-SNAPSHOT.jar
 ```
+
+Laptop without config-server: `run-local` above.
 
 ### Docker
 

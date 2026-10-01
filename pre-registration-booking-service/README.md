@@ -21,8 +21,33 @@ Refer to the required released tagged version [SQL scripts](https://github.com/m
 
 - JDK **21.0.3**
 - Maven **3.9.6**
-- Spring Cloud Config server (see Configuration)
-- PostgreSQL 16 (typical MOSIP stack)
+- Cluster: Spring Cloud Config + PostgreSQL 16. Laptop: `run-local` (H2, no config-server)
+
+## Local testing (run-local)
+
+Laptop runner (same commands as commons `kernel-notification-service`). Profile **`local`** reads `src/main/resources/application-local.properties` (H2, config-server off). Cluster Docker does **not** set this profile.
+
+Windows cmd:
+
+```text
+cd pre-registration-booking-service
+run-local.bat init
+run-local.bat test
+run-local.bat start
+run-local.bat smoke
+run-local.bat stop
+```
+
+`run-local.bat all` is init + test + start + smoke. Linux / macOS / Git Bash: `./run-local.sh <command>`.
+
+| | |
+|---|---|
+| Port | `9095` (`BOOKING_PORT`) |
+| Health | `http://127.0.0.1:9095/preregistration/v1/actuator/health` |
+| Swagger | `http://127.0.0.1:9095/preregistration/v1/appointment/booking-service/swagger-ui.html` |
+| Logs | `.local/logs/booking.log` (gitignored) |
+
+Full command table: [repo README — Local testing](../README.md#local-testing-run-local).
 
 ## Build & run (for developers)
 
@@ -31,11 +56,13 @@ cd pre-registration-booking-service
 mvn clean install -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-Run `BookingApplication` from the IDE or:
+Cluster-style JAR (expects config-server via `bootstrap.properties` / Docker env):
 
 ```text
 java -jar target/pre-registration-booking-service-1.4.1-SNAPSHOT.jar
 ```
+
+Or run `BookingApplication` from the IDE. For a laptop process without config-server, use `run-local` above.
 
 ### Docker
 

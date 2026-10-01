@@ -26,15 +26,18 @@ test.txt
 .vscode
 authentication-demo-ui/keys/
 
-# Local / IDE (Eclipse, STS, IntelliJ)
+# Local run artifacts (run-local) and IDEs (Eclipse, STS, IntelliJ)
 .local/
-.local
+**/.local/
 .idea/
-.idea
+**/.idea/
 .classpath
 .project
 .settings/
 */.classpath
 */.project
 */.settings/
+**/.classpath
+**/.project
+**/.settings/
 .sts4-cache/

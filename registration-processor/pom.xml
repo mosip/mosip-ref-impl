@@ -83,7 +83,7 @@
 		<vertx.version>4.5.34</vertx.version>
 		<javax.inject.version>1</javax.inject.version>
 
-		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/verticle/**,**/spi/**,**/proxy/**,**/entities/**,**/filter/**,**/util/**,**/verifier/**,**/*Application.java</sonar.coverage.exclusions>
+		<sonar.coverage.exclusions>**/constant/**,**/config/**,**/httpfilter/**,**/cache/**,**/entity/**,**/model/**,**/exception/**,**/repository/**,**/verticle/**,**/spi/**,**/proxy/**,**/entities/**,**/filter/**,**/util/**,**/verifier/**,**/*Application.java,**/org/springframework/boot/web/client/**</sonar.coverage.exclusions>
 		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
@@ -276,6 +276,7 @@
 						<exclude>**/util/**</exclude>
 						<exclude>**/verifier/**</exclude>
 						<exclude>**/*Application.class</exclude>
+						<exclude>**/org/springframework/boot/web/client/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>

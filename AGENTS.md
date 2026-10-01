@@ -13,10 +13,10 @@ mosip-ref-impl/
 │   ├── kernel-smsserviceprovider-msg91/ SMS SPI                           → AGENTS.md
 │   └── kernel-virusscanner-clamav/      VirusScanner                      → AGENTS.md
 ├── keycloak/                            login FTL                         → AGENTS.md
-├── pre-registration-booking-service/    /appointment/**                   → AGENTS.md
+├── pre-registration-booking-service/    /appointment/**  run-local     → AGENTS.md
 ├── registration-processor/              registration-processor-ref-parent → AGENTS.md
-│   ├── registration-processor-external-stage/                 Vert.x → EIS → AGENTS.md
-│   └── registration-processor-external-integration-service/   EIS stub REST → AGENTS.md
+│   ├── registration-processor-external-stage/                 Vert.x → EIS  run-local → AGENTS.md
+│   └── registration-processor-external-integration-service/   EIS stub REST run-local → AGENTS.md
 ├── helm/prereg-booking/                 javaOpts → JDK_JAVA_OPTIONS       → AGENTS.md
 ├── licenses/                            NOTICE texts
 ├── .github/                             CI; never read keys/              → AGENTS.md
