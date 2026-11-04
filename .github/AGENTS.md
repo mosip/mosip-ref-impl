@@ -12,4 +12,4 @@ Do not glob. Never read `keys/`.
 └── keys/                          # GPG — never read/edit/commit
 ```
 
-`push-trigger.yml`: Maven at aggregator (`kernel/`, `registration-processor/`). Docker = child paths. OSSRH skip `master`+PR. Regproc Docker artifact `registration-processor`. Booking service is not in this repo (mosip/pre-registration).
+`push-trigger.yml`: Maven at aggregator (`kernel/`, `registration-processor/`). Docker = child paths. OSSRH skip `master`+PR. Regproc Docker artifact `registration-processor`. Booking service is moved to mosip/pre-registration.

@@ -34,9 +34,9 @@ This repository is the reference for how a country can adapt MOSIP:
 | Kernel SPIs | ID-object validator, MSG91 SMS, ClamAV virus scanner (`META-INF/spring.factories`) |
 | Registration processor | External stage (Vert.x) + External Integration Service stub REST |
 | Identity | Keycloak login theme (FTL) |
-| Deploy | Helm chart for booking (`helm/prereg-booking`; service is not in this repo) |
+| Deploy | Helm chart for booking (`helm/prereg-booking`; service is moved to mosip/pre-registration) |
 
-Angular UIs (`pre-registration-ui`, `admin-ui`) live in their own MOSIP repositories, not this tree. Booking REST (`pre-registration-booking-service`) also lives elsewhere — see [Moved: pre-registration-booking-service](#moved-pre-registration-booking-service). Coverage is produced at build time (`mvn clean verify` → `target/site/jacoco/index.html`); TestNG report archives are not checked in.
+Angular UIs (`pre-registration-ui`, `admin-ui`) live in their own MOSIP repositories, not this tree. Booking REST (`pre-registration-booking-service`) is moved — see [Moved: pre-registration-booking-service](#moved-pre-registration-booking-service). Coverage is produced at build time (`mvn clean verify` → `target/site/jacoco/index.html`); TestNG report archives are not checked in.
 
 <!--
   A former directoryAngularFiles pointer list was unused and has been removed.
@@ -82,7 +82,7 @@ Each module has its own `README.md` with artifact id, build, config, and (where 
 
 ## Moved: pre-registration-booking-service
 
-`pre-registration-booking-service` (Spring Boot `/appointment/**`, laptop `run-local` on **9095**) is **not** in this repository anymore.
+`pre-registration-booking-service` (Spring Boot `/appointment/**`, laptop `run-local` on **9095**) is **moved** to mosip/pre-registration.
 
 | | |
 |---|---|

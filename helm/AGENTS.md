@@ -1,6 +1,6 @@
 # helm
 
-Chart for pre-registration booking (service lives in mosip/pre-registration).
+Chart for pre-registration booking (service is moved to mosip/pre-registration).
 
 ```
 helm/prereg-booking/
