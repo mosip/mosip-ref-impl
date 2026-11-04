@@ -33,7 +33,7 @@
 		kernel-ref-parent; module description lives in this pom, not in
 		README.md or AGENTS.md. spring-boot-starter-web (RestTemplate) and
 		Spring Cloud config/bootstrap are declared here. Drop the JAR onto
-		booking / registration-client.
+		pre-registration / registration-client.
 	</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
