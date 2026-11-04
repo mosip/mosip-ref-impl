@@ -82,7 +82,7 @@ Compatibility audit (this repository)
 --------------------------------------------------------------------------------
 
 PASS — Use with MOSIP = Yes (product / runtime after election)
-  MPL-2.0: this repo; kernel-core; kernel-auth-adapter; pre-registration-core;
+  MPL-2.0: this repo; kernel-core; kernel-auth-adapter;
            registration-processor-*; H2 (elects MPL-2.0, not EPL-1.0)
   Apache-2.0: Spring Boot / Framework / Cloud; Jackson 2; Hazelcast; Jedis
            stack via Boot; jjwt; json-path; json-smart; springdoc; Micrometer;
@@ -120,7 +120,7 @@ Apache License 2.0 (Apache-2.0.txt)
   spring-boot-starter-data-redis + Jedis 7.4.1 (cache-provider-redis)
   io.jsonwebtoken:jjwt-api/impl/jackson 0.13.0
   Apache Commons Collections4 4.6.0, logstash-logback-encoder 9.0
-  json-path 2.10.0 (kernel-ref-idobjectvalidator) / 3.0.0 (booking)
+  json-path 2.10.0 (kernel-ref-idobjectvalidator)
   json-smart 2.6.0
   org.javassist:javassist 3.33.0-GA (Apache-2.0 elected)
   springdoc-openapi 3.1.1, byte-buddy 1.18.11
@@ -143,10 +143,10 @@ Mozilla Public License 2.0 (project LICENSE / MPL-2.0.txt / MOZILLA-2.0.txt)
   MOSIP ref-impl modules (kernel-ref-idobjectvalidator,
   kernel-smsserviceprovider-msg91, kernel-virusscanner-clamav,
   cache-provider-hazelcast, cache-provider-redis,
-  pre-registration-booking-service, registration-processor-external-stage,
+  registration-processor-external-stage,
   registration-processor-external-integration-service)
   MOSIP kernel-core, kernel-auth-adapter 1.4.1-SNAPSHOT,
-  pre-registration-core 1.4.1-SNAPSHOT, registration-processor-* 1.4.1-SNAPSHOT
+  registration-processor-* 1.4.1-SNAPSHOT
   H2 Database 2.4.240 (EPL-1.0 OR MPL-2.0; MOSIP elects MPL-2.0)
 
 CDDL-1.1 (COMMON-DEVLOPMENT-AND-DISTRIBUTION-1.1.txt) — successor to CDDL-1.0

@@ -69,7 +69,7 @@ Apache-2.0 (licenses/Apache-2.0.txt)
 - io.jsonwebtoken:jjwt-api / jjwt-impl / jjwt-jackson 0.13.0
 - org.apache.commons:commons-collections4 4.6.0
 - net.logstash.logback:logstash-logback-encoder 9.0
-- com.jayway.jsonpath:json-path 2.10.0 (kernel) / 3.0.0 (booking)
+- com.jayway.jsonpath:json-path 2.10.0 (kernel)
 - net.minidev:json-smart 2.6.0
 - org.javassist:javassist 3.33.0-GA (MPL-1.1 OR LGPL-2.1 OR Apache-2.0;
   MOSIP elects Apache-2.0 — not LGPL)
@@ -94,7 +94,6 @@ Mozilla Public License 2.0 (LICENSE)
 
 - This repository (mosip-ref-impl modules)
 - io.mosip.kernel:kernel-core / kernel-auth-adapter 1.4.1-SNAPSHOT
-- io.mosip.preregistration:pre-registration-core 1.4.1-SNAPSHOT
 - io.mosip.registrationprocessor:* 1.4.1-SNAPSHOT
 - com.h2database:h2 2.4.240 (EPL-1.0 OR MPL-2.0; MOSIP elects MPL-2.0 — not EPL)
 

@@ -20,7 +20,7 @@ mvn -pl kernel-ref-idobjectvalidator clean install -Dmaven.javadoc.skip=true -Dg
 mvn -pl kernel-ref-idobjectvalidator clean verify -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 
-JaCoCo LINE covered ratio is gated in the parent `pom.xml` (`target/site/jacoco/index.html`). Drop the JAR onto booking / registration-client.
+JaCoCo LINE covered ratio is gated in the parent `pom.xml` (`target/site/jacoco/index.html`). Drop the JAR onto pre-registration / registration-client.
 
 ## License
 
