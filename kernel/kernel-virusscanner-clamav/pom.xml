@@ -9,6 +9,7 @@
 		This pom declares module dependencies and the fat-JAR assembly.
 		Do not import kernel-bom.
 	-->
+	
 	<parent>
 		<groupId>io.mosip.kernel</groupId>
 		<artifactId>kernel-ref-parent</artifactId>
